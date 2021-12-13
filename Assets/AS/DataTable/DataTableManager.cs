@@ -11,9 +11,13 @@ public static class DataTableManager
 
     public static void Init()
     {
-        //var itemTable = new ItemTable();
-        //itemTable.Load();
-        //tables.Add(typeof(ItemTable), itemTable);
+        var itemTable = new ItemTable();
+        itemTable.Load();
+        tables.Add(typeof(ItemTable), itemTable);
+
+        var armorTable = new ArmorTable();
+        armorTable.Load();
+        tables.Add(typeof(ArmorTable), armorTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase
