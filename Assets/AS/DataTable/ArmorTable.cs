@@ -72,7 +72,7 @@ public class ArmorTable : DataTableBase
         if (data != null)
             data.Clear();
         else
-            data = new Dictionary<string, DataTableElemBase>();
+            data = new SerializeDictionary<string, DataTableElemBase>();
         var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
         foreach (var line in list)
         {

@@ -12,7 +12,7 @@ public class TableEditor : EditorWindow
 
     private static DataTableElemBase dataTableElemBase;
 
-    private List<DataTableElemBase> dataList = new List<DataTableElemBase>();
+    private List<ItemTableElem> dataList = new List<ItemTableElem>();
     private static Dictionary<string, Type> tableTypes = new Dictionary<string, Type>();
 
     [MenuItem("Window/Table Editor")]
@@ -38,20 +38,20 @@ public class TableEditor : EditorWindow
         var itemType = DataTableManager.tables[tableTypes[tableType[typeIndex]]];
         var itemTypeList = itemType.data.Keys.Select(n => n.ToString()).ToArray();
         itemIndex = EditorGUILayout.Popup("ItemList", itemIndex, itemTypeList); // 해당 타입의 아이템 리스트
-
+        
         dataTableElemBase = itemType.data[itemTypeList[itemIndex]];
-
+        
         switch (itemType) // 아이템 출력 부분
         {
             case ItemTable: // 아이템 테이블
-                ConsumTable(itemType as ItemTable);
+                ConsumTable(itemType);
                 break;
             case ArmorTable: // 아머 테이블
                 break;
         }
     }
 
-    private void ConsumTable(ItemTable itemTable)
+    private void ConsumTable(DataTableBase itemTable)
     {
         // 에디터에서 보여주는 데이터들
         var consumData = dataTableElemBase as ItemTableElem;
@@ -70,11 +70,11 @@ public class TableEditor : EditorWindow
 
         if (GUILayout.Button("CreateScriptableObj"))
         {
-            OnCreate(itemTable);
+            OnCreate(itemTable, consumData);
         }
     }
 
-    private void OnCreate(ItemTable itemTable)
+    private void OnCreate(DataTableBase itemTable, ItemTableElem itemTableElem)
     {
         //if (dataList.Exists(n => (n as ItemTableElem).name == itemTableElem.name))
         //{
@@ -84,19 +84,29 @@ public class TableEditor : EditorWindow
         //    data.mp = itemTableElem.mp;
         //    return;
         //}
+
         var itemData = ScriptableObject.CreateInstance<CreateScriptableObject>();
         itemData.dicScriptableObj = itemTable.data;
-        //foreach (var elem in itemTable.data)
-        //{
-        //    itemData.dicScriptableObj.Add(elem.Key, elem.Value);
-        //    id[count++] = elem.Key;
-        //}
+        var dictionary = new SerializeDictionary<string, int>();
+        var list = new List<TestList>();
+        var test = new TestList();
+        test.id = "하나";
+        test.num = 1;
+        list.Add(test);
+        dictionary.Add("하나", 1);
+        dictionary.Add("둘", 2);
+        dictionary.Add("셋", 3);
+        itemData.dic = dictionary;
+        itemData.testList = list;
 
-        
-        foreach (var elem in itemData.dicScriptableObj)
-        {
-            Debug.Log($"{elem.Key} {elem.Value}");
-        }
+        itemData.id = itemTableElem.id;
+        itemData.hp = itemTableElem.hp;
+        itemData.mp = itemTableElem.mp;
+
+        //foreach (var elem in itemData.dicScriptableObj)
+        //{
+        //    Debug.Log($"{elem.Key} {elem.Value}");
+        //}
 
         //Debug.Log(itemData.dicScriptableObj.Count);
         //var itemDataElem = itemData.dicScriptableObj[consumData.id] as ItemTableElem;
@@ -105,8 +115,8 @@ public class TableEditor : EditorWindow
         //itemDataElem.mp = consumData.mp;
 
         //dataList.Add(itemData.dicScriptableObj[consumData.id]);
-
-        AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.data}.asset");
+        //dataList.Add(itemTableElem);
+        AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
         AssetDatabase.Refresh();
     }
 }

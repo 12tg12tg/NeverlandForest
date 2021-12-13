@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+[Serializable]
 public static class DataTableManager
 {
     public static Dictionary<System.Type, DataTableBase> tables = 

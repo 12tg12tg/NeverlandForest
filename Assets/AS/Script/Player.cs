@@ -13,15 +13,13 @@ public class Player : MonoBehaviour
 
         foreach (var elem in prefab.dicScriptableObj)
         {
-            Debug.Log(elem.Key);
+            Debug.Log($"{elem.Key} {elem.Value}");
         }
     }
     public void OnGUI()
     {
-        
-
-
-        //hp = (prefab.dicScriptableObj["CON_0001"] as ItemTableElem).hp;
-        //mp = (prefab.dicScriptableObj["CON_0001"] as ItemTableElem).mp;
+        var elem = prefab.dicScriptableObj["CON_0001"] as ItemTableElem;
+        hp = elem.hp;
+        mp = elem.mp;
     }
 }
