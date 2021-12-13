@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +15,7 @@ public enum WeaponStat
 }
 
 // ¸â¹öµé
+[Serializable]
 public class WeaponTableElem : DataTableElemBase
 {
     public string name;
@@ -61,6 +63,7 @@ public class WeaponTableElem : DataTableElemBase
     }
 }
 
+[Serializable]
 public class WeaponTable : DataTableBase
 {
     public WeaponTable()

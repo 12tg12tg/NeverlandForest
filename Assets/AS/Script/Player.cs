@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
     }
     public void OnGUI()
     {
+        //prefab.dicScriptableObj.OnBeforeSerialize();
         var elem = prefab.dicScriptableObj["CON_0001"] as ItemTableElem;
+
         hp = elem.hp;
         mp = elem.mp;
     }

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using UnityEngine;
 
 [Serializable]
@@ -38,8 +40,19 @@ public class ItemTableElem : DataTableElemBase // ¾ê´Â ID ¿ëµµ
         duration = float.Parse(data["DURATION"]);
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
+    protected ItemTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+
+    }
+
+    [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        base.GetObjectData(info, context);
+    }
 }
 
+[Serializable]
 public class ItemTable : DataTableBase
 {
     public ItemTable()

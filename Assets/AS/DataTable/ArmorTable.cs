@@ -1,5 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Security.Permissions;
 using UnityEngine;
 
 public enum ArmorStat
@@ -12,6 +15,8 @@ public enum ArmorStat
     Evade,
     Block,
 }
+
+[Serializable]
 public class ArmorTableElem : DataTableElemBase
 {
     public string name;
@@ -58,8 +63,18 @@ public class ArmorTableElem : DataTableElemBase
 
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
+    protected ArmorTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
+
+    [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
+    public override void GetObjectData(SerializationInfo info, StreamingContext context)
+    {
+        base.GetObjectData(info, context);
+    }
 }
 
+[Serializable]
 public class ArmorTable : DataTableBase
 {
     public ArmorTable()

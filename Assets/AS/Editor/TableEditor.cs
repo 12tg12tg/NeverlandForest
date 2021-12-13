@@ -86,22 +86,25 @@ public class TableEditor : EditorWindow
         //}
 
         var itemData = ScriptableObject.CreateInstance<CreateScriptableObject>();
+        
         itemData.dicScriptableObj = itemTable.data;
-        var dictionary = new SerializeDictionary<string, int>();
-        var list = new List<TestList>();
-        var test = new TestList();
-        test.id = "하나";
-        test.num = 1;
-        list.Add(test);
-        dictionary.Add("하나", 1);
-        dictionary.Add("둘", 2);
-        dictionary.Add("셋", 3);
-        itemData.dic = dictionary;
-        itemData.testList = list;
+        var elem = itemData.dicScriptableObj["CON_0001"] as ItemTableElem;
+        Debug.Log(elem.hp);
+        //var dictionary = new SerializeDictionary<string, int>();
+        //var list = new List<TestList>();
+        //var test = new TestList();
+        //test.id = "하나";
+        //test.num = 1;
+        //list.Add(test);
+        //dictionary.Add("하나", 1);
+        //dictionary.Add("둘", 2);
+        //dictionary.Add("셋", 3);
+        //itemData.dic = dictionary;
+        //itemData.testList = list;
 
-        itemData.id = itemTableElem.id;
-        itemData.hp = itemTableElem.hp;
-        itemData.mp = itemTableElem.mp;
+        //itemData.id = itemTableElem.id;
+        //itemData.hp = itemTableElem.hp;
+        //itemData.mp = itemTableElem.mp;
 
         //foreach (var elem in itemData.dicScriptableObj)
         //{
