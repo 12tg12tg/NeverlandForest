@@ -12,20 +12,48 @@ public class Invoker : MonoBehaviour
 
     private SortedList<float, Command> recordedCommands =
         new SortedList<float, Command>();
-
+    public Command Precommand
+    {
+        get
+        {
+            return recordedCommands.Last().Value;
+        }
+    }
+    private List<Command> undocommands = new List<Command>();
+    public bool CanRedo
+    {
+        get
+        {
+          return undocommands.Count > 0;
+        }
+    }
     public void ExecuteCommand(Command command)
     {
         command.Execute();
         if (isRecording)
             recordedCommands.Add(recordingTime, command);
+
         Debug.Log("Recorded Time: " + recordingTime);
         Debug.Log("Recorded Command: " + command);
     }
-    public void UndoCommand(Command undocommand)
+    public void UndoCommand()
     {
-        undocommand.Undo(); // 이전상태로되돌린다.
-        Debug.Log("undoCommand : " + $"{undocommand}");
+        var pre = Precommand;
+        pre.Undo(); // 이전상태로되돌린다. ->상충되는 행동을 한다.
+        Debug.Log("undoCommand : " + $"{pre}");
+        undocommands.Add(pre);
         recordedCommands.RemoveAt(recordedCommands.Count -1);
+    }
+    public void RedoCommand()
+    {
+        if (undocommands.Count >0)
+        {
+            undocommands[undocommands.Count - 1].Redo();
+            Debug.Log("redoCommand : " + $"{undocommands[undocommands.Count - 1]}");
+            recordedCommands.Add(recordingTime, undocommands[undocommands.Count - 1]);
+
+            undocommands.RemoveAt(undocommands.Count - 1);
+        }
     }
     public void Record()
     {

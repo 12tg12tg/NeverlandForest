@@ -17,5 +17,9 @@ public class TurnLeft : Command
     {
         m_controller.Turn(TestController.Direction.RIght);
     }
+    public override void Redo()
+    {
+        m_controller.Turn(TestController.Direction.Left);
+    }
 }
 

@@ -6,8 +6,8 @@ public class TestHandler : MonoBehaviour
     private bool isReplaying;
     private bool isRecording;
     private TestController controller;
-    private Command buttonA, buttonD , PreCommand;
-    
+    private Command buttonA, buttonD;
+
     private void Start()
     {
         invoker = gameObject.AddComponent<Invoker>();
@@ -24,16 +24,12 @@ public class TestHandler : MonoBehaviour
             {
                 invoker.ExecuteCommand(buttonA);
                 Debug.Log("<-");
-                PreCommand = buttonA;
             }
-
             if (Input.GetKeyUp(KeyCode.D))
             {
                 invoker.ExecuteCommand(buttonD);
                 Debug.Log("->");
-                PreCommand = buttonD;
             }
-
         }
     }
 
@@ -61,7 +57,14 @@ public class TestHandler : MonoBehaviour
         }
         if (GUILayout.Button("Undo"))
         {
-            invoker.UndoCommand(PreCommand);
+            invoker.UndoCommand();
+        }
+        if (invoker.CanRedo)
+        {
+            if (GUILayout.Button("Redo"))
+            {
+                invoker.RedoCommand();
+            }
         }
     }
 }
