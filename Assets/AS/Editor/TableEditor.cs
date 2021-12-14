@@ -70,8 +70,7 @@ public class TableEditor : EditorWindow
         GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("Change"))
         {
-            // ??? csv 새롭게 쓰는게 목표
-            OnChangeData(itemTable);
+            OnChangeConsumData(itemTable);
         }
         GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("CreateScriptableObj"))
@@ -79,13 +78,6 @@ public class TableEditor : EditorWindow
             OnCreateConsumable(itemTable, consumData);
         }
     }
-
-    private void OnChangeData(DataTableBase dataTableBase)
-    {
-        var consum = dataTableBase as ConsumableTable;
-        consum.Save(dataTableBase);
-    }
-
     private void OnCreateConsumable(DataTableBase itemTable, ConsumableTableElem consumableTableElem)
     {
         var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
@@ -105,6 +97,13 @@ public class TableEditor : EditorWindow
         AssetDatabase.CreateAsset(itemData, path);
         AssetDatabase.Refresh();
     }
+    private void OnChangeArmorData(DataTableBase dataTableBase)
+    {
+        var armor = dataTableBase as ArmorTable;
+        armor.Save(dataTableBase);
+    }
+
+
     private void ArmorTableEditor(DataTableBase itemTable)
     {
         // 에디터에서 보여주는 데이터들
@@ -128,7 +127,7 @@ public class TableEditor : EditorWindow
         GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("Change"))
         {
-            // ??? csv 새롭게 쓰는게 목표
+            OnChangeArmorData(itemTable);
         }
         GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("CreateScriptableObj"))
@@ -136,22 +135,15 @@ public class TableEditor : EditorWindow
             OnCreateArmor(itemTable, armorData);
         }
     }
-
     private void OnCreateArmor(DataTableBase itemTable, ArmorTableElem armorTableElem)
     {
         var itemData = ScriptableObject.CreateInstance<CreateArmorScriptableObject>();
+        var path = $"Assets/Editor/{itemTable.GetType()}.asset";
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
             Debug.Log("있음");
-            foreach (var elem in dataList)
-            {
-                foreach (var data in elem.data)
-                {
-                    var armorData = data.Value as ArmorTableElem;
-                    armorData = armorTableElem;
-                }
-            }
-            return;
+            dataList.Remove(itemTable);
+            AssetDatabase.DeleteAsset(path);
         }
 
         foreach (var item in itemTable.data)
@@ -162,5 +154,10 @@ public class TableEditor : EditorWindow
         dataList.Add(itemTable);
         AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
         AssetDatabase.Refresh();
+    }
+    private void OnChangeConsumData(DataTableBase dataTableBase)
+    {
+        var consum = dataTableBase as ConsumableTable;
+        consum.Save(dataTableBase);
     }
 }
