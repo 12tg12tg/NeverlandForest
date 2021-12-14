@@ -13,7 +13,7 @@ public class WindowManager : MonoBehaviour
 		return windows[value];
 	}
 
-	private void ToggleVisability(int value, bool closeAllOpen)
+	private void ToggleVisability(int value, bool closeAllOpen) 
 	{
 		var total = windows.Length;
 
@@ -39,7 +39,15 @@ public class WindowManager : MonoBehaviour
 
 		return GetWindow(currentWindowID);
 	}
-
+	public GenericWindow PopUpOpen(int value)
+    {
+		if (value < 0 || value >= windows.Length)
+			return null;
+		currentWindowID = value;
+		GetWindow(value).Open();
+		return GetWindow(currentWindowID);
+		
+	}
 	void Start()
 	{
 		GenericWindow.manager = this;

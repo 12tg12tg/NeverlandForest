@@ -8,6 +8,24 @@ public class TestHandler : MonoBehaviour
     private TestController controller;
     private Command buttonA, buttonD;
 
+    private Weapon weapon;
+
+    public void setWeapon(Weapon weapon)
+    {
+        this.weapon = weapon;
+    }
+    public void attack()
+    {
+        if (weapon ==null)
+        {
+            Debug.Log("맨손공격");
+        }
+        else
+        {
+            weapon.attack();
+        }
+    }
+    
     private void Start()
     {
         invoker = gameObject.AddComponent<Invoker>();
@@ -30,6 +48,16 @@ public class TestHandler : MonoBehaviour
                 invoker.ExecuteCommand(buttonD);
                 Debug.Log("->");
             }
+        }
+
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            setWeapon(new Knife());
+            attack();
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            attack();
         }
     }
 
