@@ -12,9 +12,9 @@ public static class DataTableManager
 
     public static void Init()
     {
-        var itemTable = new ItemTable();
+        var itemTable = new ConsumableTable();
         itemTable.Load();
-        tables.Add(typeof(ItemTable), itemTable);
+        tables.Add(typeof(ConsumableTable), itemTable);
 
         var armorTable = new ArmorTable();
         armorTable.Load();

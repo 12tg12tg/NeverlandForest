@@ -1,27 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public CreateScriptableObject prefab;
+    public CreateConsumScriptableObject consumableObj;
+    public CreateArmorScriptableObject armorObj;
+    public Text text;
     public int hp;
     public int mp;
-    private void Start()
-    {
-        Debug.Log(prefab.dicScriptableObj.Count); // 0
-
-        foreach (var elem in prefab.dicScriptableObj)
-        {
-            Debug.Log($"{elem.Key} {elem.Value}");
-        }
-    }
+    public string armorName;
+    public string consumName;
     public void OnGUI()
     {
         //prefab.dicScriptableObj.OnBeforeSerialize();
-        var elem = prefab.dicScriptableObj["CON_0001"] as ItemTableElem;
-
-        hp = elem.hp;
-        mp = elem.mp;
+        var consum = consumableObj.dicConsumObj["CON_0001"];
+        var armor = armorObj.dicArmorObj["DEF_0001"];
+        hp = consum.hp + armor.stat_con;
+        mp = consum.mp;
+        consumName = consum.name;
+        armorName = armor.name;
+        text.text = $"{hp}\n{mp}\n{consumName}\n{armorName}";
     }
 }

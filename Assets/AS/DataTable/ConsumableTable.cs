@@ -6,7 +6,7 @@ using System.Security.Permissions;
 using UnityEngine;
 
 [Serializable]
-public class ItemTableElem : DataTableElemBase // 얘는 ID 용도
+public class ConsumableTableElem : DataTableElemBase // 얘는 ID 용도
 {
     public string iconID;
     public string prefabsID;
@@ -25,7 +25,7 @@ public class ItemTableElem : DataTableElemBase // 얘는 ID 용도
     {
         get { return iconSprite; }
     }
-    public ItemTableElem(Dictionary<string, string> data) : base(data)
+    public ConsumableTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
         iconID = data["ICON_ID"];
@@ -40,7 +40,7 @@ public class ItemTableElem : DataTableElemBase // 얘는 ID 용도
         duration = float.Parse(data["DURATION"]);
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
-    protected ItemTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
+    protected ConsumableTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
     {
 
     }
@@ -53,9 +53,9 @@ public class ItemTableElem : DataTableElemBase // 얘는 ID 용도
 }
 
 [Serializable]
-public class ItemTable : DataTableBase
+public class ConsumableTable : DataTableBase
 {
-    public ItemTable()
+    public ConsumableTable()
     {
         csvFilePath = "Tables/ConsumDataTable"; // csv파일 이름
     }
@@ -69,7 +69,7 @@ public class ItemTable : DataTableBase
         var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
         foreach (var line in list)
         {
-            var elem = new ItemTableElem(line);
+            var elem = new ConsumableTableElem(line);
             data.Add(elem.id, elem);
         }
     }

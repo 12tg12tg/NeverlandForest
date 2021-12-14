@@ -12,7 +12,7 @@ public class TableEditor : EditorWindow
 
     private static DataTableElemBase dataTableElemBase;
 
-    private List<ItemTableElem> dataList = new List<ItemTableElem>();
+    private List<DataTableBase> dataList = new List<DataTableBase>();
     private static Dictionary<string, Type> tableTypes = new Dictionary<string, Type>();
 
     [MenuItem("Window/Table Editor")]
@@ -43,82 +43,121 @@ public class TableEditor : EditorWindow
         
         switch (itemType) // 아이템 출력 부분
         {
-            case ItemTable: // 아이템 테이블
-                ConsumTable(itemType);
+            case ConsumableTable: // 아이템 테이블
+                ConsumTableEditor(itemType);
                 break;
             case ArmorTable: // 아머 테이블
+                ArmorTableEditor(itemType);
                 break;
         }
     }
 
-    private void ConsumTable(DataTableBase itemTable)
+    private void ConsumTableEditor(DataTableBase itemTable)
     {
         // 에디터에서 보여주는 데이터들
-        var consumData = dataTableElemBase as ItemTableElem;
+        var consumData = dataTableElemBase as ConsumableTableElem;
+        consumData.id = EditorGUILayout.TextField("Id", consumData.id);
+        consumData.iconID = EditorGUILayout.TextField("IconID", consumData.iconID);
+        consumData.prefabsID = EditorGUILayout.TextField("PrefabsID", consumData.prefabsID);
         consumData.name = EditorGUILayout.TextField("Name", consumData.name);
         consumData.description = EditorGUILayout.TextField("Description", consumData.description);
+        consumData.cost = EditorGUILayout.IntField("Cost", consumData.cost);
         consumData.hp = EditorGUILayout.IntField("Hp", consumData.hp);
         consumData.mp = EditorGUILayout.IntField("Mp", consumData.mp);
         consumData.statStr = EditorGUILayout.IntField("statStr", consumData.statStr);
         consumData.duration = EditorGUILayout.FloatField("Duration", consumData.duration);
-        consumData.cost = EditorGUILayout.IntField("Cost", consumData.cost);
-
+        
+        GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("Change"))
         {
             // ??? csv 새롭게 쓰는게 목표
         }
-
+        GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("CreateScriptableObj"))
         {
-            OnCreate(itemTable, consumData);
+            OnCreateConsumable(itemTable, consumData);
+        }
+    }
+    private void OnCreateConsumable(DataTableBase itemTable, ConsumableTableElem consumableTableElem)
+    {
+        var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
+        if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
+        {
+            Debug.Log("있음");
+            foreach (var elem in dataList)
+            {
+                foreach (var data in elem.data)
+                {
+                    var consumData = data.Value as ConsumableTableElem;
+                    consumData = consumableTableElem;
+                }
+            }
+            return;
+        }
+
+        foreach (var item in itemTable.data)
+        {
+            itemData.dicConsumObj.Add(item.Key, item.Value as ConsumableTableElem);
+        }
+
+        //dataList.Add(itemTable);
+        AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
+        AssetDatabase.Refresh();
+    }
+    private void ArmorTableEditor(DataTableBase itemTable)
+    {
+        // 에디터에서 보여주는 데이터들
+        var armorData = dataTableElemBase as ArmorTableElem;
+        armorData.id = EditorGUILayout.TextField("Id", armorData.id);
+        armorData.name = EditorGUILayout.TextField("Name", armorData.name);
+        armorData.description = EditorGUILayout.TextField("Description", armorData.description);
+        armorData.iconID = EditorGUILayout.TextField("IconID", armorData.iconID);
+        armorData.prefabsID = EditorGUILayout.TextField("PrefabsID", armorData.prefabsID);
+        armorData.type = EditorGUILayout.TextField("Name", armorData.type);
+        armorData.cost = EditorGUILayout.IntField("Cost", armorData.cost);
+        armorData.defence = EditorGUILayout.IntField("Defence", armorData.defence);
+        armorData.weight = EditorGUILayout.IntField("Weight", armorData.weight);
+        armorData.stat_str = EditorGUILayout.IntField("Str", armorData.stat_str);
+        armorData.stat_con = EditorGUILayout.IntField("Con", armorData.stat_con);
+        armorData.stat_int = EditorGUILayout.IntField("Int", armorData.stat_int);
+        armorData.stat_luk = EditorGUILayout.IntField("Luk", armorData.stat_luk);
+        armorData.evade = EditorGUILayout.IntField("Evade", armorData.evade);
+        armorData.block = EditorGUILayout.IntField("Block", armorData.block);
+
+        GUILayout.Space(10f); // 간격 용도
+        if (GUILayout.Button("Change"))
+        {
+            // ??? csv 새롭게 쓰는게 목표
+        }
+        GUILayout.Space(10f); // 간격 용도
+        if (GUILayout.Button("CreateScriptableObj"))
+        {
+            OnCreateArmor(itemTable, armorData);
         }
     }
 
-    private void OnCreate(DataTableBase itemTable, ItemTableElem itemTableElem)
+    private void OnCreateArmor(DataTableBase itemTable, ArmorTableElem armorTableElem)
     {
-        //if (dataList.Exists(n => (n as ItemTableElem).name == itemTableElem.name))
-        //{
-        //    var data = dataList.Find(n => (n as ItemTableElem).name == itemTableElem.name) as ItemTableElem;
-        //    data.name = itemTableElem.name;
-        //    data.hp = itemTableElem.hp;
-        //    data.mp = itemTableElem.mp;
-        //    return;
-        //}
+        var itemData = ScriptableObject.CreateInstance<CreateArmorScriptableObject>();
+        if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
+        {
+            foreach (var elem in dataList)
+            {
+                foreach (var data in elem.data)
+                {
+                    var armorData = data.Value as ArmorTableElem;
+                    armorData = armorTableElem;
+                }
+            }
+            return;
+        }
 
-        var itemData = ScriptableObject.CreateInstance<CreateScriptableObject>();
-        
-        itemData.dicScriptableObj = itemTable.data;
-        var elem = itemData.dicScriptableObj["CON_0001"] as ItemTableElem;
-        Debug.Log(elem.hp);
-        //var dictionary = new SerializeDictionary<string, int>();
-        //var list = new List<TestList>();
-        //var test = new TestList();
-        //test.id = "하나";
-        //test.num = 1;
-        //list.Add(test);
-        //dictionary.Add("하나", 1);
-        //dictionary.Add("둘", 2);
-        //dictionary.Add("셋", 3);
-        //itemData.dic = dictionary;
-        //itemData.testList = list;
+        foreach (var item in itemTable.data)
+        {
+            itemData.dicArmorObj.Add(item.Key, item.Value as ArmorTableElem);
+        }
 
-        //itemData.id = itemTableElem.id;
-        //itemData.hp = itemTableElem.hp;
-        //itemData.mp = itemTableElem.mp;
-
-        //foreach (var elem in itemData.dicScriptableObj)
-        //{
-        //    Debug.Log($"{elem.Key} {elem.Value}");
-        //}
-
-        //Debug.Log(itemData.dicScriptableObj.Count);
-        //var itemDataElem = itemData.dicScriptableObj[consumData.id] as ItemTableElem;
-        //itemDataElem.name = consumData.name;
-        //itemDataElem.hp = consumData.hp;
-        //itemDataElem.mp = consumData.mp;
-
-        //dataList.Add(itemData.dicScriptableObj[consumData.id]);
-        //dataList.Add(itemTableElem);
+        //dataList.Add(itemTable);
         AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
         AssetDatabase.Refresh();
     }
