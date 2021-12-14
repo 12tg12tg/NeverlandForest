@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using UnityEngine;
+using System.Linq;
 
 [Serializable]
 public class ConsumableTableElem : DataTableElemBase // 얘는 ID 용도
@@ -55,6 +56,7 @@ public class ConsumableTableElem : DataTableElemBase // 얘는 ID 용도
 [Serializable]
 public class ConsumableTable : DataTableBase
 {
+    public string[] tableTitle;
     public ConsumableTable()
     {
         csvFilePath = "Tables/ConsumDataTable"; // csv파일 이름
@@ -67,10 +69,17 @@ public class ConsumableTable : DataTableBase
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
         var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
+        tableTitle = list.First().Keys.ToArray();
+        
         foreach (var line in list)
         {
             var elem = new ConsumableTableElem(line);
+            
             data.Add(elem.id, elem);
         }
+    }
+    public override void Save(DataTableBase dataTableBase)
+    {
+        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }

@@ -12,6 +12,8 @@ public static class DataTableManager
 
     public static void Init()
     {
+        tables.Clear();
+
         var itemTable = new ConsumableTable();
         itemTable.Load();
         tables.Add(typeof(ConsumableTable), itemTable);

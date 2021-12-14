@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum WeaponStat
@@ -66,6 +67,7 @@ public class WeaponTableElem : DataTableElemBase
 [Serializable]
 public class WeaponTable : DataTableBase
 {
+    public string[] tableTitle;
     public WeaponTable()
     {
         csvFilePath = "Tables/WeaponDataTable"; // csv파일 이름
@@ -78,10 +80,16 @@ public class WeaponTable : DataTableBase
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
         var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
+        tableTitle = list.First().Keys.ToArray();
         foreach (var line in list)
         {
             var elem = new WeaponTableElem(line);
             data.Add(elem.id, elem);
         }
+    }
+
+    public override void Save(DataTableBase dataTableBase)
+    {
+        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }

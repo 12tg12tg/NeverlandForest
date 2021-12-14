@@ -4,15 +4,15 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System;
+using System.IO;
 
 public class TableEditor : EditorWindow
 {
     private int typeIndex;
     private int itemIndex;
 
-    private static DataTableElemBase dataTableElemBase;
-
-    private List<DataTableBase> dataList = new List<DataTableBase>();
+    private DataTableElemBase dataTableElemBase;
+    private static List<DataTableBase> dataList = new List<DataTableBase>();
     private static Dictionary<string, Type> tableTypes = new Dictionary<string, Type>();
 
     [MenuItem("Window/Table Editor")]
@@ -23,8 +23,8 @@ public class TableEditor : EditorWindow
         title.text = "Table Editor";
         window.titleContent = title;
         DataTableManager.Init();
-
         var fullTable = DataTableManager.tables;
+        tableTypes.Clear();
         foreach (var key in fullTable.Keys)
         {
             tableTypes.Add(key.ToString(), key);
@@ -71,6 +71,7 @@ public class TableEditor : EditorWindow
         if (GUILayout.Button("Change"))
         {
             // ??? csv 새롭게 쓰는게 목표
+            OnChangeData(itemTable);
         }
         GUILayout.Space(10f); // 간격 용도
         if (GUILayout.Button("CreateScriptableObj"))
@@ -78,30 +79,30 @@ public class TableEditor : EditorWindow
             OnCreateConsumable(itemTable, consumData);
         }
     }
+
+    private void OnChangeData(DataTableBase dataTableBase)
+    {
+        var consum = dataTableBase as ConsumableTable;
+        consum.Save(dataTableBase);
+    }
+
     private void OnCreateConsumable(DataTableBase itemTable, ConsumableTableElem consumableTableElem)
     {
         var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
+        var path = $"Assets/Editor/{itemTable.GetType()}.asset";
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
             Debug.Log("있음");
-            foreach (var elem in dataList)
-            {
-                foreach (var data in elem.data)
-                {
-                    var consumData = data.Value as ConsumableTableElem;
-                    consumData = consumableTableElem;
-                }
-            }
-            return;
+            dataList.Remove(itemTable);
+            AssetDatabase.DeleteAsset(path);
         }
 
         foreach (var item in itemTable.data)
         {
             itemData.dicConsumObj.Add(item.Key, item.Value as ConsumableTableElem);
         }
-
-        //dataList.Add(itemTable);
-        AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
+        dataList.Add(itemTable);
+        AssetDatabase.CreateAsset(itemData, path);
         AssetDatabase.Refresh();
     }
     private void ArmorTableEditor(DataTableBase itemTable)
@@ -141,6 +142,7 @@ public class TableEditor : EditorWindow
         var itemData = ScriptableObject.CreateInstance<CreateArmorScriptableObject>();
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
+            Debug.Log("있음");
             foreach (var elem in dataList)
             {
                 foreach (var data in elem.data)
@@ -157,7 +159,7 @@ public class TableEditor : EditorWindow
             itemData.dicArmorObj.Add(item.Key, item.Value as ArmorTableElem);
         }
 
-        //dataList.Add(itemTable);
+        dataList.Add(itemTable);
         AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
         AssetDatabase.Refresh();
     }

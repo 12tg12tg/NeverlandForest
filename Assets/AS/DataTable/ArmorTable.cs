@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 using UnityEngine;
@@ -77,6 +78,7 @@ public class ArmorTableElem : DataTableElemBase
 [Serializable]
 public class ArmorTable : DataTableBase
 {
+    public string[] tableTitle;
     public ArmorTable()
     {
         csvFilePath = "Tables/DefDataTable"; // csv파일 이름
@@ -89,10 +91,16 @@ public class ArmorTable : DataTableBase
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
         var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
+        tableTitle = list.First().Keys.ToArray();
         foreach (var line in list)
         {
             var elem = new ArmorTableElem(line);
             data.Add(elem.id, elem);
         }
+    }
+
+    public override void Save(DataTableBase dataTableBase)
+    {
+        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }
