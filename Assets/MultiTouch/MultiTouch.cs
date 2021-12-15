@@ -1,9 +1,9 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.Interactions;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.InputSystem.Utilities;
+using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class MultiTouch : Singleton<MultiTouch>
 {
@@ -63,14 +63,14 @@ public class MultiTouch : Singleton<MultiTouch>
 
     private void Update()
     {
-        var touchList = UnityEngine.InputSystem.EnhancedTouch.Touch.activeTouches.ToArray();
-        if (touchList.Length == 2)
+        var touchList = NewTouch.activeTouches;
+        if (touchList.Count == 2)
         {
             UpdateDoubleTouch(touchList);
         }
     }
 
-    private void UpdateDoubleTouch(UnityEngine.InputSystem.EnhancedTouch.Touch[] touches)
+    private void UpdateDoubleTouch(ReadOnlyArray<NewTouch> touches)
     {
         var touch0 = touches[0];
         var touch1 = touches[1];

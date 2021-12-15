@@ -155,7 +155,7 @@ public static class SaveLoadSystem
         {
             using (StreamWriter writer = new StreamWriter(new FileStream(tempPath, FileMode.Create)))
             {
-                string json = JsonConvert.SerializeObject(data);
+                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 writer.WriteLine(json);
                 Debug.Log(json);
             }

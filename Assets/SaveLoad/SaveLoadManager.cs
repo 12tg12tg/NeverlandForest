@@ -8,6 +8,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     PlayerSaveData_1 playerDate;
     OptionSaveData_0 optionDate;
 
+    private void Start()
+    {
+        //SaveLoadSystem.Init();
+    }
+
     public void Save(SaveLoadSystem.SaveType saveType)
     {
         switch (saveType)
@@ -26,6 +31,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     }
     private void SaveOption()
+    {
+
+    }
+    private void LoadPlayer()
+    {
+
+    }
+    private void LoadOption()
     {
 
     }
