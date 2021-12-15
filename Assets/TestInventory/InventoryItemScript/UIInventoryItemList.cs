@@ -14,6 +14,7 @@ public enum WeaponOrder
     Weight,
     Cost,
     Damage,
+    Count,
 }
 
 public enum ArmorOrder
@@ -24,6 +25,7 @@ public enum ArmorOrder
     Weight,
     Cost,
     Def,
+    Count,
 }
 
 public enum ConsumeOrder
@@ -33,7 +35,8 @@ public enum ConsumeOrder
     Type,
     Weight,
     Cost,
-    Duration
+    Duration,
+    Count,
 }
 
 public class UIInventoryItemList : MonoBehaviour
@@ -86,15 +89,15 @@ public class UIInventoryItemList : MonoBehaviour
         textAccending.text = sortingOptionAccending ? "Accending" : "Deccending";
 
         this.itemList = itemList.Select(x => x).ToList();
-        switch (invenType)
-        {
-            case InventoryTypes.Weapon:
-                break;
-            case InventoryTypes.Armor:
-                break;
-            case InventoryTypes.Consumable:
-                break;
-        }
+        //switch (invenType)
+        //{
+        //    case InventoryTypes.Weapon:
+        //        break;
+        //    case InventoryTypes.Armor:
+        //        break;
+        //    case InventoryTypes.Consumable:
+        //        break;
+        //}
         options = InitFiltering(this.itemList);
         dropdownFiltering.options = options;
 
@@ -110,20 +113,28 @@ public class UIInventoryItemList : MonoBehaviour
         switch (invenType)
         {
             case InventoryTypes.Weapon:
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Default.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Name.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Type.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Weight.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Cost.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Damage.ToString()));
+                for(int i=0; i < (int)WeaponOrder.Count; i++)
+                {
+                    options.Add(new TMP_Dropdown.OptionData(((WeaponOrder)i).ToString()));
+                }
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Default.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Name.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Type.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Weight.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Cost.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(WeaponOrder.Damage.ToString()));
                 break;
             case InventoryTypes.Consumable:
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Default.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Name.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Type.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Weight.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Cost.ToString()));
-                options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Duration.ToString()));
+                for (int i = 0; i < (int)ConsumeOrder.Count; i++)
+                {
+                    options.Add(new TMP_Dropdown.OptionData(((ConsumeOrder)i).ToString()));
+                }
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Default.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Name.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Type.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Weight.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Cost.ToString()));
+                //options.Add(new TMP_Dropdown.OptionData(ConsumeOrder.Duration.ToString()));
                 break;
         }
         return options;
@@ -196,25 +207,7 @@ public class UIInventoryItemList : MonoBehaviour
         }
     }
 
-    public List<T> ChangeListType<T>(List<DataTableElemBase> list) where T : DataTableElemBase
-    {
-        var newlist = new List<T>();
-        foreach (var elem in list)
-        {
-            newlist.Add(elem as T);
-        }
-        return newlist;
-    }
 
-    public List<DataTableElemBase> ChangeListType<T>(List<T> list) where T : DataTableElemBase
-    {
-        var newlist = new List<DataTableElemBase>();
-        foreach (var elem in list)
-        {
-            newlist.Add(elem);
-        }
-        return newlist;
-    }
 
     public void SortConsumable(ConsumeOrder sortingOption, bool accending = true)
     {
@@ -338,5 +331,26 @@ public class UIInventoryItemList : MonoBehaviour
 
     //    var parent = GetComponentInParent<UIManager>();
     //    parent.BackCharacter();
+    //}
+
+
+    //public List<T> ChangeListType<T>(List<DataTableElemBase> list) where T : DataTableElemBase
+    //{
+    //    var newlist = new List<T>();
+    //    foreach (var elem in list)
+    //    {
+    //        newlist.Add(elem as T);
+    //    }
+    //    return newlist;
+    //}
+
+    //public List<DataTableElemBase> ChangeListType<T>(List<T> list) where T : DataTableElemBase
+    //{
+    //    var newlist = new List<DataTableElemBase>();
+    //    foreach (var elem in list)
+    //    {
+    //        newlist.Add(elem);
+    //    }
+    //    return newlist;
     //}
 }

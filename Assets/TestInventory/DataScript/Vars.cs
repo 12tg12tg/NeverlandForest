@@ -5,6 +5,53 @@ using UnityEngine;
 public static class Vars
 {
     private static UserData userData;
+    private static List<DataCunsumable> consumableItemList =
+        new List<DataCunsumable>();
+    private static List<DataWeapon> weaponItemList =
+        new List<DataWeapon>();
+
+    public static List<DataCunsumable> ConsumableItemList
+    {
+        get
+        {
+            if (consumableItemList.Count == 0)
+            {
+                var consumableTable = DataTableMgr.GetTable<ItemTable>();
+
+                for (int i = 1; i <= consumableTable.Data.Count; i++)
+                {
+                    var newItem = new DataCunsumable();
+                    newItem.itemId = i;
+                    newItem.dataType = DataType.Consume;
+                    var Id = $"CON_000{i}";
+                    newItem.itemTableElem = consumableTable.GetData<ItemTableElem>(Id);
+                    consumableItemList.Add(newItem);
+                }
+            }
+            return consumableItemList;
+        }
+    }
+    public static List<DataWeapon> WeaponItemList
+    {
+        get
+        {
+            if (weaponItemList.Count == 0)
+            {
+                var weaponTable = DataTableMgr.GetTable<WeaponTable>();
+
+                for (int i = 1; i <= weaponTable.Data.Count; i++)
+                {
+                    var newWeapon = new DataWeapon();
+                    newWeapon.itemId = i;
+                    newWeapon.dataType = DataType.Weapon;
+                    var Id = $"WEA_000{i}";
+                    newWeapon.itemTableElem = weaponTable.GetData<WeaponTableElem>(Id);
+                    weaponItemList.Add(newWeapon);
+                }
+            }
+            return weaponItemList;
+        }
+    }
 
     public static UserData UserData
     {
@@ -23,15 +70,17 @@ public static class Vars
                 {
                     var newWeapon = new DataWeapon();
                     newWeapon.itemId = i;
+                    newWeapon.dataType = DataType.Weapon;
                     var randId = $"WEA_000{Random.Range(1, 5)}";
                     newWeapon.itemTableElem = weaponTable.GetData<WeaponTableElem>(randId);
                     userData.weaponItemList.Add(newWeapon);
                 }
 
-                for (var i = 0; i < 80; ++i)
+                for (var i = 0; i < 50; ++i)
                 {
                     var newItem = new DataCunsumable();
                     newItem.itemId = i;
+                    newItem.dataType = DataType.Consume;
                     var randId = $"CON_000{Random.Range(1, 8)}";
                     newItem.itemTableElem = consumalbeTable.GetData<ItemTableElem>(randId);
                     userData.consumableItemList.Add(newItem);

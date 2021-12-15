@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// 팝업창
 public class UIWeaponSelect : MonoBehaviour
 {
     public UICharacter parent;
@@ -45,8 +46,9 @@ public class UIWeaponSelect : MonoBehaviour
 
     public void OnClicnUnEquip()
     {
-        selectedCharacter.dataWeapon = null;
-        parent.SetCharacter(selectedCharacter);
+        // 여기서 직접 dataWeapon값 처리보단 SetCharacter를 통해 하는게 좋을수도!
+        //selectedCharacter.dataWeapon = null;
+        parent.SetCharacter(selectedCharacter, UserInput.UnEquip);
     }
 
     public void OnClickWeapon(DataWeapon dataWeapon)

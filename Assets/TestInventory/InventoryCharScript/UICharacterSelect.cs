@@ -27,6 +27,7 @@ public class UICharacterSelect : MonoBehaviour
         }
     }
 
+    // View의 사용자 입력 받는 부분
     public void OnClickCharacterIcon(DataCharacter dataCha)
     {
         var parent = GetComponentInParent<UICharacter>();

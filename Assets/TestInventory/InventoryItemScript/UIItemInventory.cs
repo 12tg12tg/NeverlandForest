@@ -72,14 +72,36 @@ public class UIItemInventory : MonoBehaviour
     {
         itemPopUp.gameObject.SetActive(true);
         itemPopUp.isDelete = false;
-        itemPopUp.init();
+        var list = new List<DataItem>();
+        list.AddRange(Vars.WeaponItemList);
+        list.AddRange(Vars.ConsumableItemList);
+        itemPopUp.init(list);
+
+        //var list2 = new List<DataItem>();
+        //list2.AddRange(Vars.UserData.weaponItemList);
+        //list2.AddRange(Vars.UserData.consumableItemList);
+        //itemPopUp.init2(list2);
     }
 
     public void OnDeleteItem()
     {
         itemPopUp.gameObject.SetActive(true);
         itemPopUp.isDelete = true;
-        itemPopUp.init();
+        //var list = new List<DataItem>();
+        //list.AddRange(Vars.WeaponItemList);
+        //list.AddRange(Vars.ConsumableItemList);
+        //itemPopUp.init(list);
+
+
+        var list2 = new List<DataItem>();
+        list2.AddRange(Vars.UserData.weaponItemList);
+        list2.AddRange(Vars.UserData.consumableItemList);
+        itemPopUp.init2(list2);
+    }
+
+    public void OnItemUse()
+    {
+
     }
 
     //public void UseItem(DataCharacter character)
