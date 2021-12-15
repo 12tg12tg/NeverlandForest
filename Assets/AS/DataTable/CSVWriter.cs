@@ -16,8 +16,8 @@ public class CSVWriter
             Debug.Log("파일이 없습니다");
             return;
         }
-        File.Delete(csvPath);
-        using (StreamWriter outStream = new StreamWriter(csvPath, true, Encoding.UTF8))
+        
+        using (StreamWriter outStream = new StreamWriter(csvPath, false, Encoding.UTF8))
         {
             string[][] keyData = new string[dataTableBase.GetSizeCount() + 1][];
             switch (dataTableBase)

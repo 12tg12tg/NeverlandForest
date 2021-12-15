@@ -15,7 +15,6 @@ public enum WeaponStat
     Stat_luk,
 }
 
-// ¸â¹öµé
 [Serializable]
 public class WeaponTableElem : DataTableElemBase
 {
@@ -64,7 +63,6 @@ public class WeaponTableElem : DataTableElemBase
     }
 }
 
-[Serializable]
 public class WeaponTable : DataTableBase
 {
     public string[] tableTitle;

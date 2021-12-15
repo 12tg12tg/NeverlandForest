@@ -64,18 +64,8 @@ public class ArmorTableElem : DataTableElemBase
 
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
-    protected ArmorTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
-
-    [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        base.GetObjectData(info, context);
-    }
 }
 
-[Serializable]
 public class ArmorTable : DataTableBase
 {
     public string[] tableTitle;

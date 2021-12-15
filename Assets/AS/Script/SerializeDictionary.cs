@@ -13,7 +13,6 @@ public class SerializeDictionary<K,V> : Dictionary<K,V>, ISerializationCallbackR
     {
         keys.Clear();
         values.Clear();
-
         foreach (var pair in this)
         {
             keys.Add(pair.Key);
@@ -23,10 +22,10 @@ public class SerializeDictionary<K,V> : Dictionary<K,V>, ISerializationCallbackR
 
     public void OnAfterDeserialize()
     {
-        this.Clear();
+        Clear();
         for (int i = 0; i < keys.Count; i++)
         {
-            this.Add(keys[i], values[i]);
+            Add(keys[i], values[i]);
         }
     }
 

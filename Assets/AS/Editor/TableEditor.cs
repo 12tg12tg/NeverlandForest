@@ -5,6 +5,7 @@ using UnityEditor;
 using System.Linq;
 using System;
 using System.IO;
+using UnityEngine.Events;
 
 public class TableEditor : EditorWindow
 {
@@ -82,6 +83,7 @@ public class TableEditor : EditorWindow
     {
         var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
         var path = $"Assets/Editor/{itemTable.GetType()}.asset";
+        
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
             Debug.Log("¿÷¿Ω");
@@ -94,6 +96,7 @@ public class TableEditor : EditorWindow
             itemData.dicConsumObj.Add(item.Key, item.Value as ConsumableTableElem);
         }
         dataList.Add(itemTable);
+
         AssetDatabase.CreateAsset(itemData, path);
         AssetDatabase.Refresh();
     }

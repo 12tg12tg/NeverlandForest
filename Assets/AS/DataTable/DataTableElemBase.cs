@@ -4,8 +4,7 @@ using System.Runtime.Serialization;
 using System.Security.Permissions;
 using UnityEngine;
 
-[Serializable]
-public class DataTableElemBase : ISerializable
+public class DataTableElemBase
 {
     public string id;
 
@@ -13,16 +12,4 @@ public class DataTableElemBase : ISerializable
     {
 
     }
-
-    protected DataTableElemBase(SerializationInfo info, StreamingContext context)
-    {
-
-    }
-
-    [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-    public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-
-    }
-
 }

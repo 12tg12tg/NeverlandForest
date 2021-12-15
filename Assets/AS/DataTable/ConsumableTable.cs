@@ -13,12 +13,10 @@ public class ConsumableTableElem : DataTableElemBase // ¾ê´Â ID ¿ëµµ
     public string prefabsID;
     public string name;
     public string description;
-
     public int cost;
     public int hp;
     public int mp;
     public int statStr;
-
     public float duration;
 
     private Sprite iconSprite;
@@ -41,19 +39,8 @@ public class ConsumableTableElem : DataTableElemBase // ¾ê´Â ID ¿ëµµ
         duration = float.Parse(data["DURATION"]);
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
-    protected ConsumableTableElem(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-
-    }
-
-    [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
-    public override void GetObjectData(SerializationInfo info, StreamingContext context)
-    {
-        base.GetObjectData(info, context);
-    }
 }
 
-[Serializable]
 public class ConsumableTable : DataTableBase
 {
     public string[] tableTitle;
