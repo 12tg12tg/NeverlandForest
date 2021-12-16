@@ -16,7 +16,7 @@ public static class Vars
         {
             if (consumableItemList.Count == 0)
             {
-                var consumableTable = DataTableMgr.GetTable<ItemTable>();
+                var consumableTable = DataTableMgr.GetTable<ConsumableTable>();
 
                 for (int i = 1; i <= consumableTable.Data.Count; i++)
                 {
@@ -24,7 +24,7 @@ public static class Vars
                     newItem.itemId = i;
                     newItem.dataType = DataType.Consume;
                     var Id = $"CON_000{i}";
-                    newItem.itemTableElem = consumableTable.GetData<ItemTableElem>(Id);
+                    newItem.itemTableElem = consumableTable.GetData<ConsumableTableElem>(Id);
                     consumableItemList.Add(newItem);
                 }
             }
@@ -60,7 +60,7 @@ public static class Vars
             if (userData == null)
             {
                 var weaponTable = DataTableMgr.GetTable<WeaponTable>();
-                var consumalbeTable = DataTableMgr.GetTable<ItemTable>();
+                var consumalbeTable = DataTableMgr.GetTable<ConsumableTable>();
 
                 userData = new UserData();
                 userData.id = 111;
@@ -82,7 +82,7 @@ public static class Vars
                     newItem.itemId = i;
                     newItem.dataType = DataType.Consume;
                     var randId = $"CON_000{Random.Range(1, 8)}";
-                    newItem.itemTableElem = consumalbeTable.GetData<ItemTableElem>(randId);
+                    newItem.itemTableElem = consumalbeTable.GetData<ConsumableTableElem>(randId);
                     userData.consumableItemList.Add(newItem);
                 }
 

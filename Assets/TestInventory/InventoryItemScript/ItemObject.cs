@@ -25,7 +25,7 @@ public class ItemObject : MonoBehaviour
         }
 
         dataItem = data;
-        ItemTableElem elem = data.ItemTableElem;
+        ConsumableTableElem elem = data.ItemTableElem;
 
         icon.sprite = elem.IconSprite;
         nameText.text = elem.name;

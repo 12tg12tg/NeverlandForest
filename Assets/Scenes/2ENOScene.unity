@@ -128,7 +128,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 1101566978}
+    m_TransformParent: {fileID: 1657367954}
     m_Modifications:
     - target: {fileID: 124382107832541484, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
       propertyPath: m_Pivot.x
@@ -140,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 124382107832541484, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 124382107832541484, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
       propertyPath: m_AnchorMax.x
@@ -217,6 +217,10 @@ PrefabInstance:
     - target: {fileID: 3964344579506423474, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
       propertyPath: m_Name
       value: EquipItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 3964344579506423474, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6903476034302540202, guid: be030e6086ec2b44d870a734a4637d97, type: 3}
       propertyPath: m_Sprite
@@ -4408,7 +4412,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1657367954}
-  - {fileID: 1191256024}
   - {fileID: 1308477439}
   m_Father: {fileID: 149116116}
   m_RootOrder: 0
@@ -5763,7 +5766,7 @@ RectTransform:
   - {fileID: 1159560748}
   - {fileID: 1684048156}
   m_Father: {fileID: 1101566978}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6679,6 +6682,7 @@ RectTransform:
   - {fileID: 1280959165}
   - {fileID: 145443874}
   - {fileID: 1342732307}
+  - {fileID: 1191256024}
   m_Father: {fileID: 1101566978}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

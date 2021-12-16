@@ -37,7 +37,7 @@ public class UIInventoryItemInfo : MonoBehaviour
             $"农府啦 : {itemInfo.critRate}\n" +
             $"农府旦 : {itemInfo.critDamage}\n";
     }
-    public void SetInfo(ItemTableElem itemInfo)
+    public void SetInfo(ConsumableTableElem itemInfo)
     {
         title.text = itemInfo.name;
         image.sprite = itemInfo.IconSprite;

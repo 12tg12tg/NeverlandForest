@@ -6,11 +6,11 @@ public class DataCunsumable : DataItem
 {
     public int count;
 
-    public ItemTableElem ItemTableElem
+    public ConsumableTableElem ItemTableElem
     {
         get
         {
-            return itemTableElem as ItemTableElem;
+            return itemTableElem as ConsumableTableElem;
         }
     }
 }
