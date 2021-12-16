@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ConsumableTableElem : DataTableElemBase
+public class ConsumableTableElemInho : DataTableElemBase
 {
     public string iconId;
     public string prefabsId;
@@ -22,7 +22,7 @@ public class ConsumableTableElem : DataTableElemBase
         get { return iconSprite; }
     }
 
-    public ConsumableTableElem(Dictionary<string, string> data)
+    public ConsumableTableElemInho(Dictionary<string, string> data)
     {
         id = data["ID"];
         iconId = data["ICON_ID"];
@@ -40,9 +40,9 @@ public class ConsumableTableElem : DataTableElemBase
     }
 }
 
-public class ConsumableTable : DataTableBase
+public class ConsumableTableInho : DataTableBase
 {
-    public ConsumableTable()
+    public ConsumableTableInho()
     {
         csvFilePath = @"Tables\ConsumDataTable";
     }
@@ -53,7 +53,7 @@ public class ConsumableTable : DataTableBase
         var list = CSVReader.Read(csvFilePath);
         foreach (var line in list)
         {
-            var elem = new ConsumableTableElem(line);
+            var elem = new ConsumableTableElemInho(line);
             data.Add(elem.id, elem);
         }
 

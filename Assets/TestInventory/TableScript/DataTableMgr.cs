@@ -16,9 +16,9 @@ public static class DataTableMgr
 
     public static void Init()
     {
-        var itemTable = new ConsumableTable();
+        var itemTable = new ConsumableTableInho();
         itemTable.Load();
-        tables.Add(typeof(ConsumableTable), itemTable);
+        tables.Add(typeof(ConsumableTableInho), itemTable);
 
 
         var weaponTable = new WeaponTable();
