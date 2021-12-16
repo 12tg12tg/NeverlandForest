@@ -27,6 +27,14 @@ public class Invoker : MonoBehaviour
           return undocommands.Count > 0;
         }
     }
+    public bool CanUndo
+    {
+        get
+        {
+            return recordedCommands.Count > 0;
+        }
+    }
+
     public void ExecuteCommand(Command command)
     {
         command.Execute();

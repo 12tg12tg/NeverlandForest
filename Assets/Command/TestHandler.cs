@@ -83,10 +83,14 @@ public class TestHandler : MonoBehaviour
             isReplaying = true;
             invoker.Replay();
         }
-        if (GUILayout.Button("Undo"))
+        if (invoker.CanUndo)
         {
-            invoker.UndoCommand();
+            if (GUILayout.Button("Undo"))
+            {
+                invoker.UndoCommand();
+            }
         }
+        
         if (invoker.CanRedo)
         {
             if (GUILayout.Button("Redo"))

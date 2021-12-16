@@ -19,7 +19,7 @@ public class TurnLeft : Command
     }
     public override void Redo()
     {
-        m_controller.Turn(TestController.Direction.Left);
+        Execute();
     }
 }
 

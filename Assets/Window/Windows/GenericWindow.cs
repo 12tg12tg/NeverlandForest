@@ -45,7 +45,7 @@ public class GenericWindow : MonoBehaviour
 	public void OnNextWindow()
 	{
 		//manager.Open((int)nextWindow - 1);
-		manager.PopUpOpen((int)nextWindow - 1);
+		manager.Open((int)nextWindow - 1,true);
 	}
 
 	public void OnPreviousWindow()

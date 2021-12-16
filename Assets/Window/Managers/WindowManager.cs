@@ -13,11 +13,11 @@ public class WindowManager : MonoBehaviour
 		return windows[value];
 	}
 
-	private void ToggleVisability(int value, bool closeAllOpen) 
+	private void CloseAllAndOpen(int value, bool isPopUpOpen) 
 	{
 		var total = windows.Length;
 
-		if (closeAllOpen)
+		if (!isPopUpOpen)
 		{
 			for (var i = 0; i < total; i++)
 			{
@@ -26,27 +26,18 @@ public class WindowManager : MonoBehaviour
 					window.Close();
 			}
 		}
-		GetWindow(value).Open();
+		GetWindow(value ).Open();
 	}
-	public GenericWindow Open(int value, bool closeAllOpen = true)
+	public GenericWindow Open(int value, bool isPopUpOpen = false)
 	{
 		if (value < 0 || value >= windows.Length)
 			return null;
 
 		currentWindowID = value;
 
-		ToggleVisability(currentWindowID, closeAllOpen);
+		CloseAllAndOpen(currentWindowID, isPopUpOpen);
 
 		return GetWindow(currentWindowID);
-	}
-	public GenericWindow PopUpOpen(int value)
-    {
-		if (value < 0 || value >= windows.Length)
-			return null;
-		currentWindowID = value;
-		GetWindow(value).Open();
-		return GetWindow(currentWindowID);
-		
 	}
 	void Start()
 	{

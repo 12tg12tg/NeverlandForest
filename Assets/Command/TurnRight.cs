@@ -19,6 +19,6 @@ public class TurnRight : Command
     }
     public override void Redo()
     {
-        m_controller.Turn(TestController.Direction.RIght);
+        Execute();
     }
 }
