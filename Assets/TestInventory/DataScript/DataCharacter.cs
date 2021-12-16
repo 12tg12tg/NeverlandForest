@@ -33,7 +33,7 @@ public class DataCharacter
         get
         {
             var ad = tableElem.ad;
-            ad += GetWeaponStat(WeaponStat.Ad);
+            ad += GetWeaponStat(WeaponStat.Damage);
             return ad;
         }
     }
@@ -45,26 +45,26 @@ public class DataCharacter
             return ap;
         }
     }
-    public float Df
+    public float Defence
     {
         get
         {
-            var df = tableElem.ad;
-            df += GetArmorStat(ArmorStat.Df);
-            return df;
+            var Defence = tableElem.ad;
+            Defence += GetArmorStat(ArmorStat.Defence);
+            return Defence;
         }
     }
-    public int StatStr
+    public int Stat_str
     {
         get
         {
-            var statStr = tableElem.statStr;
-            statStr += GetWeaponStat(WeaponStat.StatStr);
-            statStr += GetArmorStat(ArmorStat.StatStr);
-            return statStr;
+            var Stat_str = tableElem.statStr;
+            Stat_str += GetWeaponStat(WeaponStat.Stat_str);
+            Stat_str += GetArmorStat(ArmorStat.Stat_str);
+            return Stat_str;
         }
     }
-    public int StatDex
+    public int Stat_dex
     {
         get
         {
@@ -72,27 +72,27 @@ public class DataCharacter
             return statDex;
         }
     }
-    public int StatInt
+    public int Stat_int
     {
         get
         {
-            var statInt = tableElem.statInt;
+            var Stat_int = tableElem.statInt;
 
 
-            statInt += GetWeaponStat(WeaponStat.StatInt);
-            statInt += GetArmorStat(ArmorStat.StatInt);
-            return statInt;
+            Stat_int += GetWeaponStat(WeaponStat.Stat_int);
+            Stat_int += GetArmorStat(ArmorStat.Stat_int);
+            return Stat_int;
         }
     }
-    public int StatLuk
+    public int Stat_luk
     {
         get
         {
-            var statLuk = tableElem.statLuk;
+            var Stat_luk = tableElem.statLuk;
 
-            statLuk += GetWeaponStat(WeaponStat.StatLuk);
-            statLuk += GetArmorStat(ArmorStat.StatLuk);
-            return statLuk;
+            Stat_luk += GetWeaponStat(WeaponStat.Stat_luk);
+            Stat_luk += GetArmorStat(ArmorStat.Stat_luk);
+            return Stat_luk;
         }
     }
 
@@ -121,17 +121,17 @@ public class DataCharacter
         {
             switch (statType)
             {
-                case WeaponStat.Ad:
+                case WeaponStat.Damage:
                     stat = dataWeapon.ItemTableElem.damage;
                     break;
-                case WeaponStat.StatStr:
-                    stat = dataWeapon.ItemTableElem.str;
+                case WeaponStat.Stat_str:
+                    stat = dataWeapon.ItemTableElem.stat_str;
                     break;
-                case WeaponStat.StatInt:
-                    stat = dataWeapon.ItemTableElem.intellet;
+                case WeaponStat.Stat_int:
+                    stat = dataWeapon.ItemTableElem.stat_int;
                     break;
-                case WeaponStat.StatLuk:
-                    stat = dataWeapon.ItemTableElem.luck;
+                case WeaponStat.Stat_luk:
+                    stat = dataWeapon.ItemTableElem.stat_luk;
                     break;
             }
         }
@@ -143,28 +143,28 @@ public class DataCharacter
         int stat = 0;
         switch (statType)
         {
-            case ArmorStat.Df:
+            case ArmorStat.Defence:
                 foreach (var armor in listDataArmor)
                 {
-                    stat += armor.def;
+                    stat += armor.defence;
                 }
                 break;
-            case ArmorStat.StatStr:
+            case ArmorStat.Stat_str:
                 foreach (var armor in listDataArmor)
                 {
-                    stat += armor.str;
+                    stat += armor.stat_str;
                 }
                 break;
-            case ArmorStat.StatInt:
+            case ArmorStat.Stat_int:
                 foreach (var armor in listDataArmor)
                 {
-                    stat += armor.intellet;
+                    stat += armor.stat_int;
                 }
                 break;
-            case ArmorStat.StatLuk:
+            case ArmorStat.Stat_luk:
                 foreach (var armor in listDataArmor)
                 {
-                    stat += armor.luck;
+                    stat += armor.stat_luk;
                 }
                 break;
         }

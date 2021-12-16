@@ -18,7 +18,7 @@ public static class Vars
             {
                 var consumableTable = DataTableManager.GetTable<ConsumableTable>();
 
-                for (int i = 1; i <= consumableTable.Data.Count; i++)
+                for (int i = 1; i <= consumableTable.data.Count; i++)
                 {
                     var newItem = new DataCunsumable();
                     newItem.itemId = i;
@@ -39,7 +39,7 @@ public static class Vars
             {
                 var weaponTable = DataTableManager.GetTable<WeaponTable>();
 
-                for (int i = 1; i <= weaponTable.Data.Count; i++)
+                for (int i = 1; i <= weaponTable.data.Count; i++)
                 {
                     var newWeapon = new DataWeapon();
                     newWeapon.itemId = i;

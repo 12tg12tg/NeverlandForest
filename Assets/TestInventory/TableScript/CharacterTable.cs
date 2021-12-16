@@ -31,7 +31,7 @@ public class CharacterTableElem : DataTableElemBase
 	{
 		get { return profileSprite; }
 	}
-	public CharacterTableElem(Dictionary<string, string> data)
+	public CharacterTableElem(Dictionary<string, string> data) :base(data)
 	{
 		id = data["ID"];
 		iconId = data["ICON_ID"];
@@ -62,6 +62,10 @@ public class CharacterTable : DataTableBase
 	{
 		csvFilePath = @"Tables\CharacterDataTable";
 	}
+	public override void Save(DataTableBase dataTableBase)
+    {
+
+    }
 	public override void Load()
 	{
 		data.Clear();

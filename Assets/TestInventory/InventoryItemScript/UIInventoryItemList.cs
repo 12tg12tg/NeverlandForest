@@ -145,15 +145,15 @@ public class UIInventoryItemList : MonoBehaviour
         var strList = new List<string>();
 
         options.Add(new TMP_Dropdown.OptionData("Default"));
-        foreach (var data in list)
-        {
-            var elem = data.itemTableElem;
-            if (!strList.Contains(elem.type))
-            {
-                options.Add(new TMP_Dropdown.OptionData(elem.type));
-                strList.Add(elem.type);
-            }
-        }
+        //foreach (var data in list)
+        //{
+        //    var elem = data.itemTableElem;
+        //    if (!strList.Contains(elem.type))
+        //    {
+        //        options.Add(new TMP_Dropdown.OptionData(elem.type));
+        //        strList.Add(elem.type);
+        //    }
+        //}
         return options;
     }
 
@@ -181,22 +181,22 @@ public class UIInventoryItemList : MonoBehaviour
         }
         else
         {
-            for (var i = 0; i < itemList.Count; ++i)
-            {
-                if (itemList[i].itemTableElem.type.Equals(filtering))
-                {
-                    itemGoList[i].gameObject.SetActive(true);
-                    switch (invenType)
-                    {
-                        case InventoryTypes.Weapon:
-                            itemGoList[i].Init(itemList[i] as DataWeapon);
-                            break;
-                        case InventoryTypes.Consumable:
-                            itemGoList[i].Init(itemList[i] as DataCunsumable);
-                            break;
-                    }
-                }
-            }
+            //for (var i = 0; i < itemList.Count; ++i)
+            //{
+            //    if (itemList[i].itemTableElem.type.Equals(filtering))
+            //    {
+            //        itemGoList[i].gameObject.SetActive(true);
+            //        switch (invenType)
+            //        {
+            //            case InventoryTypes.Weapon:
+            //                itemGoList[i].Init(itemList[i] as DataWeapon);
+            //                break;
+            //            case InventoryTypes.Consumable:
+            //                itemGoList[i].Init(itemList[i] as DataCunsumable);
+            //                break;
+            //        }
+            //    }
+            //}
         }
 
         if (this.itemList.Count > 0)
@@ -218,12 +218,12 @@ public class UIInventoryItemList : MonoBehaviour
             case ConsumeOrder.Name:
                 consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.name.CompareTo(rhs.ItemTableElem.name));
                 break;
-            case ConsumeOrder.Type:
-                consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.type.CompareTo(rhs.ItemTableElem.type));
-                break;
-            case ConsumeOrder.Weight:
-                consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.weight.CompareTo(rhs.ItemTableElem.weight));
-                break;
+            //case ConsumeOrder.Type:
+            //    consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.type.CompareTo(rhs.ItemTableElem.type));
+            //    break;
+            //case ConsumeOrder.Weight:
+            //    consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.weight.CompareTo(rhs.ItemTableElem.weight));
+            //    break;
             case ConsumeOrder.Cost:
                 consumalbeList.Sort((lhs, rhs) => lhs.ItemTableElem.cost.CompareTo(rhs.ItemTableElem.cost));
                 break;

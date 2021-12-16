@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-    
-
 public enum PlayerState
 {
     Idle,
@@ -23,7 +19,7 @@ public class PlayerFSM : FSM<PlayerState>
         SetState(curstate);
 
     }
-    public  void Update()
+    public override void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
@@ -57,7 +53,5 @@ public class PlayerFSM : FSM<PlayerState>
             curstate = PlayerState.Idle;
             ChangeState(curstate);
         }
-
-
     }
 }

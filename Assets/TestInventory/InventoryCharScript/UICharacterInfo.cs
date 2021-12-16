@@ -18,11 +18,11 @@ public class UICharacterInfo : MonoBehaviour
             $"마력 : {dataCharacter.Mp}\n\n" +
             $"물리공격력 : {dataCharacter.Ad}\n" +
             $"마법공격력 : {dataCharacter.Ap}\n" +
-            $"방어력 : {dataCharacter.Df}\n\n" +
-            $"힘 : {dataCharacter.StatStr}\n" +
-            $"민첩 : {dataCharacter.StatDex}\n" +
-            $"지능 : {dataCharacter.StatInt}\n" +
-            $"운 : {dataCharacter.StatLuk}";
+            $"방어력 : {dataCharacter.Defence}\n\n" +
+            $"힘 : {dataCharacter.Stat_str}\n" +
+            $"민첩 : {dataCharacter.Stat_dex}\n" +
+            $"지능 : {dataCharacter.Stat_int}\n" +
+            $"운 : {dataCharacter.Stat_luk}";
 
         if (dataCharacter.dataWeapon != null)
             itemInfo.text += $"\n무기 : {dataCharacter.dataWeapon.ItemTableElem.name}";

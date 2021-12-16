@@ -29,13 +29,13 @@ public class UIInventoryItemInfo : MonoBehaviour
             $"타입 : {itemInfo.type}\n" +
             $"가격 : {itemInfo.cost}\n" +
             $"무게 : {itemInfo.weight}\n" +
-            $"힘 : {itemInfo.str}\n" +
-            $"건강 : {itemInfo.con}\n" +
-            $"지능 : {itemInfo.intellet}\n" +
-            $"운 : {itemInfo.luck}\n" +
+            $"힘 : {itemInfo.stat_str}\n" +
+            $"건강 : {itemInfo.stat_con}\n" +
+            $"지능 : {itemInfo.stat_int}\n" +
+            $"운 : {itemInfo.stat_luk}\n" +
             $"공격력 : {itemInfo.damage}\n" +
-            $"크리율 : {itemInfo.critRate}\n" +
-            $"크리뎀 : {itemInfo.critDamage}\n";
+            $"크리율 : {itemInfo.critical}\n" +
+            $"크리뎀 : {itemInfo.criticalDamage}\n";
     }
     public void SetInfo(ConsumableTableElem itemInfo)
     {
@@ -48,7 +48,7 @@ public class UIInventoryItemInfo : MonoBehaviour
             //$"무게 : {itemInfo.weight}\n" +
             $"체력 : {itemInfo.hp}\n" +
             $"마력 : {itemInfo.mp}\n" +
-            $"힘 : {itemInfo.str}\n" +
+            $"힘 : {itemInfo.statStr}\n" +
             $"사용주기 : {itemInfo.duration}\n";
     }
 }
