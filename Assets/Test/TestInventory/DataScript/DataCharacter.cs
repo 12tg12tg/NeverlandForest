@@ -105,7 +105,7 @@ public class DataCharacter
 
     public DataCharacter(string charId, string charName)
     {
-        var charTable = DataTableManager.GetTable<CharacterTable>();
+        var charTable = DataTable.GetTable<CharacterTable>();
         tableElem = charTable.GetData<CharacterTableElem>(charId);
         //levelTable = DataTableMgr.GetLevelTable(charName);
     }

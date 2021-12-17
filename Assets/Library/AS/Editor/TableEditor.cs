@@ -16,6 +16,8 @@ public class TableEditor : EditorWindow
     private static List<DataTableBase> dataList = new List<DataTableBase>();
     private static Dictionary<string, Type> tableTypes = new Dictionary<string, Type>();
 
+    private Dictionary<string, string> tableData = new Dictionary<string, string>();
+
     [MenuItem("Window/Table Editor")]
     public static void OpenTableWindow() // 얘는 Window-Table Editor로 킬 때 딱 한번 호출 된다
     {
@@ -23,8 +25,8 @@ public class TableEditor : EditorWindow
         var title = new GUIContent();
         title.text = "Table Editor";
         window.titleContent = title;
-        DataTableManager.Init();
-        var fullTable = DataTableManager.tables;
+        DataTable.Init();
+        var fullTable = DataTable.tables;
         tableTypes.Clear();
         foreach (var key in fullTable.Keys)
         {
@@ -33,10 +35,10 @@ public class TableEditor : EditorWindow
     }
     private void OnGUI()
     {
-        var tableType = DataTableManager.tables.Keys.Select(n => n.ToString()).ToArray();
+        var tableType = DataTable.tables.Keys.Select(n => n.ToString()).ToArray();
         typeIndex = EditorGUILayout.Popup("TableType", typeIndex, tableType);
 
-        var itemType = DataTableManager.tables[tableTypes[tableType[typeIndex]]];
+        var itemType = DataTable.tables[tableTypes[tableType[typeIndex]]];
         var itemTypeList = itemType.data.Keys.Select(n => n.ToString()).ToArray();
         itemIndex = EditorGUILayout.Popup("ItemList", itemIndex, itemTypeList); // 해당 타입의 아이템 리스트
         
@@ -82,7 +84,7 @@ public class TableEditor : EditorWindow
     private void OnCreateConsumable(DataTableBase itemTable, ConsumableTableElem consumableTableElem)
     {
         var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
-        var path = $"Assets/Editor/{itemTable.GetType()}.asset";
+        var path = $"Assets/Resources/{itemTable.GetType()}.asset";
         
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
@@ -141,7 +143,7 @@ public class TableEditor : EditorWindow
     private void OnCreateArmor(DataTableBase itemTable, ArmorTableElem armorTableElem)
     {
         var itemData = ScriptableObject.CreateInstance<CreateArmorScriptableObject>();
-        var path = $"Assets/Editor/{itemTable.GetType()}.asset";
+        var path = $"Assets/Resources/{itemTable.GetType()}.asset";
         if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
         {
             Debug.Log("있음");
@@ -155,7 +157,7 @@ public class TableEditor : EditorWindow
         }
 
         dataList.Add(itemTable);
-        AssetDatabase.CreateAsset(itemData, $"Assets/Editor/{itemTable.GetType()}.asset");
+        AssetDatabase.CreateAsset(itemData, $"Assets/Resources/{itemTable.GetType()}.asset");
         AssetDatabase.Refresh();
     }
     private void OnChangeConsumData(DataTableBase dataTableBase)

@@ -15,7 +15,13 @@ public class TestPlayer : MonoBehaviour
 
     private void Start()
     {
-        aaa= consumableObj.dicConsumObj;
+        DataTableManager.Init();
+        var sdic = DataTableManager.dic.Values;
+
+        var ddd = DataTableManager.GetTable<CreateConsumScriptableObject>().GetData<ConsumableTableElem>("");
+        
+        
+        
     }
     public void OnGUI()
     {

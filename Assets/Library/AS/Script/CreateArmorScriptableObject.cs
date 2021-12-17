@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CreateArmorScriptableObject : ScriptableObject
+public class CreateArmorScriptableObject : ScriptableObjects
 {
     public SerializeDictionary<string, ArmorTableElem> dicArmorObj = new SerializeDictionary<string, ArmorTableElem>();
 }
