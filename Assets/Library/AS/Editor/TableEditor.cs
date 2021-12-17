@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using System.Linq;
 using System;
-using System.IO;
-using UnityEngine.Events;
 
 public class TableEditor : EditorWindow
 {
