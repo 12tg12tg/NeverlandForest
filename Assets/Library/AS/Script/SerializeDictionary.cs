@@ -3,12 +3,16 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class SerializeDictionary<K,V> : Dictionary<K,V>, ISerializationCallbackReceiver
+public class SerializeDictionary<K, V> : Dictionary<K, V>, ISerializationCallbackReceiver
 {
     [SerializeField]
     List<K> keys = new List<K>();
     [SerializeField]
     List<V> values = new List<V>();
+
+    public SerializeDictionary() { }
+    public SerializeDictionary(IDictionary<K, V> dictionary) : base(dictionary) { }
+
     public void OnBeforeSerialize()
     {
         keys.Clear();
@@ -28,5 +32,4 @@ public class SerializeDictionary<K,V> : Dictionary<K,V>, ISerializationCallbackR
             Add(keys[i], values[i]);
         }
     }
-
 }

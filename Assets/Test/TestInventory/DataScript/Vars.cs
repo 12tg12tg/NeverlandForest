@@ -16,7 +16,7 @@ public static class Vars
         {
             if (consumableItemList.Count == 0)
             {
-                var consumableTable = DataTable.GetTable<ConsumableTable>();
+                var consumableTable = DataTableManager.GetTable<ConsumableTable>();
 
                 for (int i = 1; i <= consumableTable.data.Count; i++)
                 {
@@ -37,7 +37,7 @@ public static class Vars
         {
             if (weaponItemList.Count == 0)
             {
-                var weaponTable = DataTable.GetTable<WeaponTable>();
+                var weaponTable = DataTableManager.GetTable<WeaponTable>();
 
                 for (int i = 1; i <= weaponTable.data.Count; i++)
                 {
@@ -59,8 +59,8 @@ public static class Vars
         {
             if (userData == null)
             {
-                var weaponTable = DataTable.GetTable<WeaponTable>();
-                var consumalbeTable = DataTable.GetTable<ConsumableTable>();
+                var weaponTable = DataTableManager.GetTable<WeaponTable>();
+                var consumalbeTable = DataTableManager.GetTable<ConsumableTable>();
 
                 userData = new UserData();
                 userData.id = 111;

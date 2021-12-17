@@ -1,168 +1,140 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
-using System;
-using System.IO;
-using UnityEngine.Events;
 
 public class TableEditor : EditorWindow
 {
+    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable" };
+    private static string csvFilePath = "Tables/";
+
     private int typeIndex;
     private int itemIndex;
 
-    private DataTableElemBase dataTableElemBase;
-    private static List<DataTableBase> dataList = new List<DataTableBase>();
-    private static Dictionary<string, Type> tableTypes = new Dictionary<string, Type>();
+    private static Dictionary<string, string[]> tableFirstElem = new Dictionary<string, string[]>();
+    private static Dictionary<string, List<Dictionary<string, string>>> tableTypes = new Dictionary<string, List<Dictionary<string, string>>>();
 
-    private Dictionary<string, string> tableData = new Dictionary<string, string>();
+    private static List<List<Dictionary<string, string>>> dataList = new List<List<Dictionary<string, string>>>();
 
     [MenuItem("Window/Table Editor")]
-    public static void OpenTableWindow() // 얘는 Window-Table Editor로 킬 때 딱 한번 호출 된다
+    private static void OpenTableWindow()
     {
+        Init();
         var window = GetWindow<TableEditor>();
         var title = new GUIContent();
         title.text = "Table Editor";
         window.titleContent = title;
-        DataTable.Init();
-        var fullTable = DataTable.tables;
+    }
+    private static void Init()
+    {
         tableTypes.Clear();
-        foreach (var key in fullTable.Keys)
+        tableFirstElem.Clear();
+        for (int i = 0; i < tableName.Length; i++)
         {
-            tableTypes.Add(key.ToString(), key);
+            var path = csvFilePath + tableName[i];
+            var tableElemList = CSVReader.Read(path);
+            tableTypes.Add(tableName[i], tableElemList);
+            tableFirstElem.Add(tableName[i], tableElemList.First().Keys.ToArray());
         }
     }
     private void OnGUI()
     {
-        var tableType = DataTable.tables.Keys.Select(n => n.ToString()).ToArray();
+        var tableType = tableTypes.Keys.Select(n => n.ToString()).ToArray();
         typeIndex = EditorGUILayout.Popup("TableType", typeIndex, tableType);
+        var tableList = tableTypes[tableType[typeIndex]];
+        var itemTypeList = tableList.Select(n => n["ID"]).ToArray();
+        itemIndex = EditorGUILayout.Popup("TableElemList", itemIndex, itemTypeList);
 
-        var itemType = DataTable.tables[tableTypes[tableType[typeIndex]]];
-        var itemTypeList = itemType.data.Keys.Select(n => n.ToString()).ToArray();
-        itemIndex = EditorGUILayout.Popup("ItemList", itemIndex, itemTypeList); // 해당 타입의 아이템 리스트
-        
-        dataTableElemBase = itemType.data[itemTypeList[itemIndex]];
-        
-        switch (itemType) // 아이템 출력 부분
+        switch (tableType[typeIndex])
         {
-            case ConsumableTable: // 아이템 테이블
-                ConsumTableEditor(itemType);
+            case "CharacterDataTable":
                 break;
-            case ArmorTable: // 아머 테이블
-                ArmorTableEditor(itemType);
+            case "CharacterLevelTable":
+                break;
+            case "ConsumDataTable":
+                ViewConsumableData(tableList);
+                break;
+            case "DefDataTable":
+                ViewArmorData(tableList);
+                break;
+            case "WeaponDataTable":
                 break;
         }
+        GUIButton(tableList, tableType[typeIndex]);
     }
 
-    private void ConsumTableEditor(DataTableBase itemTable)
+    private void ViewConsumableData(List<Dictionary<string, string>> consumList)
     {
         // 에디터에서 보여주는 데이터들
-        var consumData = dataTableElemBase as ConsumableTableElem;
-        consumData.id = EditorGUILayout.TextField("Id", consumData.id);
-        consumData.iconID = EditorGUILayout.TextField("IconID", consumData.iconID);
-        consumData.prefabsID = EditorGUILayout.TextField("PrefabsID", consumData.prefabsID);
-        consumData.name = EditorGUILayout.TextField("Name", consumData.name);
-        consumData.description = EditorGUILayout.TextField("Description", consumData.description);
-        consumData.cost = EditorGUILayout.IntField("Cost", consumData.cost);
-        consumData.hp = EditorGUILayout.IntField("Hp", consumData.hp);
-        consumData.mp = EditorGUILayout.IntField("Mp", consumData.mp);
-        consumData.statStr = EditorGUILayout.IntField("statStr", consumData.statStr);
-        consumData.duration = EditorGUILayout.FloatField("Duration", consumData.duration);
-        
+        var consumData = consumList[itemIndex];
+        consumData["ID"] = EditorGUILayout.TextField("Id", consumData["ID"]);
+        consumData["ICON_ID"] = EditorGUILayout.TextField("IconID", consumData["ICON_ID"]);
+        consumData["PREFAB_ID"] = EditorGUILayout.TextField("PrefabsID", consumData["PREFAB_ID"]);
+        consumData["NAME"] = EditorGUILayout.TextField("Name", consumData["NAME"]);
+        consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"]);
+        consumData["COST"] = EditorGUILayout.TextField("Cost", consumData["COST"]);
+        consumData["STAT_HP"] = EditorGUILayout.TextField("Hp", consumData["STAT_HP"]);
+        consumData["STAT_MP"] = EditorGUILayout.TextField("Mp", consumData["STAT_MP"]);
+        consumData["STAT_STR"] = EditorGUILayout.TextField("statStr", consumData["STAT_STR"]);
+        consumData["DURATION"] = EditorGUILayout.TextField("Duration", consumData["DURATION"]);
+    }
+    private void ViewArmorData(List<Dictionary<string, string>> armorList)
+    {
+        // 에디터에서 보여주는 데이터들
+        var armorData = armorList[itemIndex];
+        armorData["ID"] = EditorGUILayout.TextField("Id", armorData["ID"]);
+        armorData["ICON_ID"] = EditorGUILayout.TextField("IconID", armorData["ICON_ID"]);
+        armorData["PREFAB_ID"] = EditorGUILayout.TextField("PrefabsID", armorData["PREFAB_ID"]);
+        armorData["NAME"] = EditorGUILayout.TextField("Name", armorData["NAME"]);
+        armorData["DESC"] = EditorGUILayout.TextField("Description", armorData["DESC"]);
+        armorData["TYPE"] = EditorGUILayout.TextField("Type", armorData["TYPE"]);
+        armorData["DEF"] = EditorGUILayout.TextField("Def", armorData["DEF"]);
+        armorData["COST"] = EditorGUILayout.TextField("Cost", armorData["COST"]);
+        armorData["WEIGHT"] = EditorGUILayout.TextField("Weight", armorData["WEIGHT"]);
+        armorData["STR"] = EditorGUILayout.TextField("Str", armorData["STR"]);
+        armorData["INT"] = EditorGUILayout.TextField("Int", armorData["INT"]);
+        armorData["LUK"] = EditorGUILayout.TextField("Luk", armorData["LUK"]);
+        armorData["EVADE"] = EditorGUILayout.TextField("Evade", armorData["EVADE"]);
+        armorData["BLOCK"] = EditorGUILayout.TextField("Block", armorData["BLOCK"]);
+    }
+
+    private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)
+    {
         GUILayout.Space(10f); // 간격 용도
-        if (GUILayout.Button("Change"))
+        if (GUILayout.Button("CSVChange"))
         {
-            OnChangeConsumData(itemTable);
+            OnChangeCSV(tableName, tableList);
         }
         GUILayout.Space(10f); // 간격 용도
-        if (GUILayout.Button("CreateScriptableObj"))
+        if (GUILayout.Button("ScriptableObjCreateOrChange"))
         {
-            OnCreateConsumable(itemTable, consumData);
+            OnCreateScriptableObject(tableName, tableList);
         }
     }
-    private void OnCreateConsumable(DataTableBase itemTable, ConsumableTableElem consumableTableElem)
+    private void OnCreateScriptableObject(string tableName, List<Dictionary<string, string>> tableList)
     {
-        var itemData = ScriptableObject.CreateInstance<CreateConsumScriptableObject>();
-        var path = $"Assets/Resources/{itemTable.GetType()}.asset";
-        
-        if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
+        var itemData = ScriptableObject.CreateInstance<ScriptableObjectDataBase>();
+        var path = $"Assets/Resources/{tableName}.asset";
+        var assetPath = AssetDatabase.GetAssetPath(Resources.Load<ScriptableObjectDataBase>(tableName));
+        if (assetPath.Equals(path))
         {
             Debug.Log("있음");
-            dataList.Remove(itemTable);
+            dataList.Remove(tableList);
             AssetDatabase.DeleteAsset(path);
         }
-
-        foreach (var item in itemTable.data)
+        foreach (var dic in tableList)
         {
-            itemData.dicConsumObj.Add(item.Key, item.Value as ConsumableTableElem);
+            var serialDic = new SerializeDictionary<string, string>(dic);
+            itemData.sc.Add(serialDic);
         }
-        dataList.Add(itemTable);
+        dataList.Add(tableList);
 
         AssetDatabase.CreateAsset(itemData, path);
         AssetDatabase.Refresh();
     }
-    private void OnChangeArmorData(DataTableBase dataTableBase)
+    private void OnChangeCSV(string tableName, List<Dictionary<string, string>> tableList)
     {
-        var armor = dataTableBase as ArmorTable;
-        armor.Save(dataTableBase);
-    }
-
-
-    private void ArmorTableEditor(DataTableBase itemTable)
-    {
-        // 에디터에서 보여주는 데이터들
-        var armorData = dataTableElemBase as ArmorTableElem;
-        armorData.id = EditorGUILayout.TextField("Id", armorData.id);
-        armorData.name = EditorGUILayout.TextField("Name", armorData.name);
-        armorData.description = EditorGUILayout.TextField("Description", armorData.description);
-        armorData.iconID = EditorGUILayout.TextField("IconID", armorData.iconID);
-        armorData.prefabsID = EditorGUILayout.TextField("PrefabsID", armorData.prefabsID);
-        armorData.type = EditorGUILayout.TextField("Name", armorData.type);
-        armorData.cost = EditorGUILayout.IntField("Cost", armorData.cost);
-        armorData.defence = EditorGUILayout.IntField("Defence", armorData.defence);
-        armorData.weight = EditorGUILayout.IntField("Weight", armorData.weight);
-        armorData.stat_str = EditorGUILayout.IntField("Str", armorData.stat_str);
-        armorData.stat_con = EditorGUILayout.IntField("Con", armorData.stat_con);
-        armorData.stat_int = EditorGUILayout.IntField("Int", armorData.stat_int);
-        armorData.stat_luk = EditorGUILayout.IntField("Luk", armorData.stat_luk);
-        armorData.evade = EditorGUILayout.IntField("Evade", armorData.evade);
-        armorData.block = EditorGUILayout.IntField("Block", armorData.block);
-
-        GUILayout.Space(10f); // 간격 용도
-        if (GUILayout.Button("Change"))
-        {
-            OnChangeArmorData(itemTable);
-        }
-        GUILayout.Space(10f); // 간격 용도
-        if (GUILayout.Button("CreateScriptableObj"))
-        {
-            OnCreateArmor(itemTable, armorData);
-        }
-    }
-    private void OnCreateArmor(DataTableBase itemTable, ArmorTableElem armorTableElem)
-    {
-        var itemData = ScriptableObject.CreateInstance<CreateArmorScriptableObject>();
-        var path = $"Assets/Resources/{itemTable.GetType()}.asset";
-        if (dataList.Exists(n => n.GetType() == itemTable.GetType()))
-        {
-            Debug.Log("있음");
-            dataList.Remove(itemTable);
-            AssetDatabase.DeleteAsset(path);
-        }
-
-        foreach (var item in itemTable.data)
-        {
-            itemData.dicArmorObj.Add(item.Key, item.Value as ArmorTableElem);
-        }
-
-        dataList.Add(itemTable);
-        AssetDatabase.CreateAsset(itemData, $"Assets/Resources/{itemTable.GetType()}.asset");
-        AssetDatabase.Refresh();
-    }
-    private void OnChangeConsumData(DataTableBase dataTableBase)
-    {
-        var consum = dataTableBase as ConsumableTable;
-        consum.Save(dataTableBase);
+        var firstElem = tableFirstElem[tableName];
+        CSVWriter.Writer(csvFilePath + tableName, firstElem, tableList);
     }
 }

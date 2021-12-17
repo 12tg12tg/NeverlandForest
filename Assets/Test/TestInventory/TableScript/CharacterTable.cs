@@ -60,17 +60,13 @@ public class CharacterTable : DataTableBase
 {
 	public CharacterTable()
 	{
-		csvFilePath = @"Tables\CharacterDataTable";
+		csvFilePath = "CharacterDataTable";
 	}
-	public override void Save(DataTableBase dataTableBase)
-    {
-
-    }
 	public override void Load()
 	{
 		data.Clear();
-		var list = CSVReader.Read(csvFilePath);
-		foreach (var line in list)
+        var list = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
+		foreach (var line in list.sc)
 		{
 			var elem = new CharacterTableElem(line);
 			data.Add(elem.id, elem);

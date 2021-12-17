@@ -1,30 +1,36 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
+[Serializable]
 public static class DataTableManager
 {
-    public static Dictionary<System.Type, ScriptableObjects> dic;
+    public static Dictionary<System.Type, DataTableBase> tables = 
+        new Dictionary<System.Type, DataTableBase>();
     private static bool inited = false;
 
     public static void Init()
     {
-        var armor = Resources.Load<CreateArmorScriptableObject>("");
-        var consum = Resources.Load<CreateConsumScriptableObject>("");
+        tables.Clear();
 
-        dic.Add(typeof(CreateArmorScriptableObject), armor);
+        var itemTable = new ConsumableTable();
+        itemTable.Load();
+        tables.Add(typeof(ConsumableTable), itemTable);
+
+        var armorTable = new ArmorTable();
+        armorTable.Load();
+        tables.Add(typeof(ArmorTable), armorTable);
     }
 
-    public static T GetTable<T>() where T: ScriptableObjects
+    public static T GetTable<T>() where T : DataTableBase
     {
-        if(!inited)
+        if (!inited)
         {
             Init();
-            inited = false;
+            inited = true;
         }
 
-        if (!dic.ContainsKey(typeof(T)))
-            return default(T);
-        return (T)dic[typeof(T)];
+        if (!tables.ContainsKey(typeof(T)))
+            return null;
+        return (T)tables[typeof(T)];
     }
 }
