@@ -63,7 +63,7 @@ public static class Vars
                 var consumalbeTable = DataTableManager.GetTable<ConsumableTable>();
 
                 userData = new UserData();
-                userData.id = 111;
+               /* userData.id = 111;
                 userData.nickname = "KANG";
 
                 for (var i = 0; i < 20; ++i)
@@ -89,10 +89,16 @@ public static class Vars
                 userData.characterList.Add(new DataCharacter("CHAR_0001", "Diluc"));
                 userData.characterList.Add(new DataCharacter("CHAR_0002", "Jean"));
 
-                //userData.characterList[0].dataWeapon = weaponTable.GetData<WeaponTableElem>("WEA_0001");
-                //userData.characterList[0].listDataArmor.Add(armorTable.GetData<ArmorTableElem>("DEF_0012"));
-                //userData.characterList[0].listDataArmor.Add(armorTable.GetData<ArmorTableElem>("DEF_0002"));
-                //userData.characterList[0].listDataArmor.Add(armorTable.GetData<ArmorTableElem>("DEF_0001"));
+*/
+              /*  var materialTable = DataTableManager.GetTable<MaterialDataTable>();
+                for (int i = 0; i < 7; i++)
+                {
+                    var newmaterial = new DataMaterial();
+                    newmaterial.itemId = i;
+                    var randId = $"MTR_000{i+1}";
+                    newmaterial.itemTableElem = materialTable.GetData<MaterialTableElem>(randId);
+                    userData.HaveMaterialList.Add(newmaterial);
+                }*/
             }
             return userData;
         }

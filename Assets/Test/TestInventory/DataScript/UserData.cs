@@ -13,4 +13,8 @@ public class UserData
         new List<DataCunsumable>();
     public List<DataWeapon> weaponItemList =
         new List<DataWeapon>();
+    public List<DataMaterial> HaveMaterialList =
+        new List<DataMaterial>();
+    public List<DataRecipe> RecipeList =
+      new List<DataRecipe>();
 }
