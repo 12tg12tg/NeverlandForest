@@ -15,6 +15,7 @@ public struct Edge
 
     public bool IsCrossing(Vector3 start2, Vector3 end2)
     {
+        // z가 x, x가 y로 보면 됨
         if (System.Math.Max(start.z, end.z) <= System.Math.Min(start2.z, end2.z))
             return false;
         if (System.Math.Min(start.z, end.z) >= System.Math.Max(start2.z, end2.z))
@@ -38,6 +39,15 @@ public struct Edge
 
         return p1 * p2 < 0 && p3 * p4 < 0;
     }
+
+    //public bool IsCrossingLineToDot(Vector3 dot)
+    //{
+    //    if ((start.z < dot.z && dot.z < end.z) &&
+    //        Mathf.Approximately(dot.x - start.x, ((end.x - start.x) / (end.z - start.z) * dot.z) - start.z))
+    //        return true;
+
+    //    return false;
+    //}
 }
 
 
@@ -77,14 +87,16 @@ public class NewWorldMap : MonoBehaviour
             MapFirstCreateNode();
             MapNextCreateNode();
             MapLinked();
-            
+            MapRndLinked();
+
             isFirst = false;
         }
     }
 
     private void Update()
     {
-        PaintLink();
+        if(!isFirst)
+            PaintLink();
     }
 
     private void MapFirstCreateNode()
@@ -142,7 +154,7 @@ public class NewWorldMap : MonoBehaviour
 
         for (int i = 2; i < column - 2; i++) // 가운데 맵
         {
-            for (int j = 0; j < Random.Range(1, 2); j++)
+            for (int j = 0; j < Random.Range(0, 3); j++)
             {
                 var rnd = Random.Range(0, row);
                 while (maps[rnd, i] != null)
@@ -179,6 +191,8 @@ public class NewWorldMap : MonoBehaviour
                         if (maps[k, i + 1] == null)
                             continue;
                         var children = maps[j, i].Children;
+                        if (children.Count >= 3)
+                            break;
                         for (int h = 0; h < children.Count; h++)
                         {
                             if (children[h].Equals(maps[k, i + 1]))
@@ -197,7 +211,9 @@ public class NewWorldMap : MonoBehaviour
                         if (maps[k, i + 1] == null)
                             continue;
                         var children = maps[j, i].Children;
-                        if(children.Count == 0)
+                        if (children.Count >= 3)
+                            break;
+                        if (children.Count == 0)
                         {
                             var pos1 = maps[j, i].prefab.transform.position;
                             var pos2 = maps[k, i + 1].prefab.transform.position;
@@ -205,7 +221,7 @@ public class NewWorldMap : MonoBehaviour
                             for (int g = 0; g < edges.Count; g++)
                             {
                                 isCrossing = edges[g].IsCrossing(pos1, pos2);
-                                Debug.Log(isCrossing);
+                                
                                 if (isCrossing)
                                     break;
                             }
@@ -229,7 +245,7 @@ public class NewWorldMap : MonoBehaviour
                                 for (int g = 0; g < edges.Count; g++)
                                 {
                                     isCrossing = edges[g].IsCrossing(pos1, pos2);
-                                    Debug.Log(isCrossing);
+                                    
                                     if (isCrossing)
                                         break;
                                 }
@@ -248,6 +264,143 @@ public class NewWorldMap : MonoBehaviour
             }
         }
     }
+    private void MapRndLinked()
+    {
+        // 2-3칸 넘어에 있는 노드도 연결하는 것(이동거리)
+        var rnd = Random.Range(0f, 1f) >= 0.2f ?
+            (Random.Range(0f, 1f) >= 0.3f ? 2 : 3) : 1;
+        var rndLine = Random.Range(0f, 1f) >= 0.8f ? 2 : 3;
+
+        if (rnd == 1)
+            return;
+
+        for (int i = 0; i < column; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+
+                if (i == 0) // 시작노드
+                {
+                    for (int k = 0; k < row; k++)
+                    {
+                        if (maps[k, i + rnd] == null)
+                            continue;
+                        var children = maps[j, i].Children;
+
+                        if (children.Count >= rndLine)
+                            break;
+
+                        for (int h = 0; h < children.Count; h++)
+                        {
+                            if (children[h].Equals(maps[k, i + rnd]))
+                            {
+                                break;
+                            }
+
+                            var pos1 = maps[j, i].prefab.transform.position;
+                            var pos2 = maps[k, i + rnd].prefab.transform.position;
+                            bool isCrossing = default;
+                            for (int g = 0; g < edges.Count; g++)
+                            {
+                                isCrossing = edges[g].IsCrossing(pos1, pos2);
+                                
+                                if (isCrossing)
+                                    break;
+                            }
+
+                            var isChack = ChackDot(i + 1, i + rnd, pos1, pos2);
+
+                            if (!isCrossing && isChack)
+                            {
+                                if (children.Count >= rndLine)
+                                    break;
+                                Debug.Log(children.Count);
+
+                                var edge = new Edge(maps[j, i].prefab.transform.position, maps[k, i + rnd].prefab.transform.position);
+                                edges.Add(edge);
+                                children.Add(maps[k, i + rnd]);
+                                maps[k, i + rnd].Parent.Add(maps[j, i]); 
+                            }
+                        }
+                    }
+                }
+                else if (i < column - rnd) // 1~8 까지
+                {
+                    for (int k = 0; k < row; k++)
+                    {
+                        if (maps[k, i + rnd] == null)
+                            continue;
+                        var children = maps[j, i].Children;
+
+                        if (children.Count >= rndLine)
+                            break;
+
+                        if (children.Count == 0)
+                        {
+                            var pos1 = maps[j, i].prefab.transform.position;
+                            var pos2 = maps[k, i + rnd].prefab.transform.position;
+                            bool isCrossing = default;
+                            for (int g = 0; g < edges.Count; g++)
+                            {
+                                isCrossing = edges[g].IsCrossing(pos1, pos2);
+                                
+                                if (isCrossing)
+                                    break;
+                            }
+
+                            var isChack = ChackDot(i + 1, i + rnd, pos1, pos2);
+
+                            if (!isCrossing && isChack)
+                            {
+                                if (children.Count >= rndLine)
+                                    break;
+                                Debug.Log(children.Count);
+
+                                var edge = new Edge(maps[j, i].prefab.transform.position, maps[k, i + rnd].prefab.transform.position);
+                                edges.Add(edge);
+                                children.Add(maps[k, i + rnd]);
+                            }
+                        }
+                        else
+                        {
+                            for (int h = 0; h < children.Count; h++)
+                            {
+                                if (children[h].Equals(maps[k, i + rnd]))
+                                    break;
+                                var pos1 = maps[j, i].prefab.transform.position;
+                                var pos2 = maps[k, i + rnd].prefab.transform.position;
+                                bool isCrossing = default;
+                                for (int g = 0; g < edges.Count; g++)
+                                {
+                                    isCrossing = edges[g].IsCrossing(pos1, pos2);
+                                    
+                                    if (isCrossing)
+                                        break;
+                                }
+
+                                var isChack = ChackDot(i + 1, i + rnd, pos1, pos2);
+
+                                if (!isCrossing && isChack)
+                                {
+                                    if (children.Count >= rndLine)
+                                        break;
+                                    Debug.Log(children.Count);
+                                    var edge = new Edge(maps[j, i].prefab.transform.position, maps[k, i + rnd].prefab.transform.position);
+                                    edges.Add(edge);
+                                    children.Add(maps[k, i + rnd]);
+                                    maps[k, i + rnd].Parent.Add(maps[j, i]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
 
     private void InitNode(NewMapNode node, Vector2 index)
     {
@@ -256,9 +409,7 @@ public class NewWorldMap : MonoBehaviour
         if (isTest)
             node.prefab.GetComponent<MeshRenderer>().material = material;
         node.prefab.transform.SetParent(gameObject.transform);
-        node.prefab.AddComponent<LineRenderer>();
     }
-
     private void PaintLink()
     {
         if (maps == null)
@@ -267,8 +418,13 @@ public class NewWorldMap : MonoBehaviour
         {
             for (int j = 0; j < row; j++)
             {
+
                 if (maps[j, i] == null || maps[j, i].Children.Count == 0)
                     continue;
+                if (maps[j, i].Children.Count > 2)
+                {
+                    Debug.Log(maps[j, i].Children.Count);
+                }
                 Debug.DrawLine(maps[j, i].prefab.transform.position, maps[j, i].Children[0].prefab.transform.position, Color.white);
                 if (maps[j, i].Children.Count >= 2)
                     Debug.DrawLine(maps[j, i].prefab.transform.position, maps[j, i].Children[1].prefab.transform.position, Color.red);
@@ -295,5 +451,41 @@ public class NewWorldMap : MonoBehaviour
         }
         edges.Clear();
         isTest = true;
+    }
+
+    private bool ChackLine(Vector3 pos1, Vector3 pos2)
+    {
+        //for (int g = 0; g < edges.Count; g++)
+        //{
+        //    isCrossing = edges[g].IsCrossing(pos1, pos2);
+
+        //    if (isCrossing)
+        //        break;
+        //}
+        return false;
+    }
+    private bool ChackDot(int startRange, int endRange, Vector3 pos1, Vector3 pos2)
+    {
+        for (int i = startRange; i < endRange; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    return false;
+                var dot = maps[j, i].prefab.transform.position;
+                return IsCrossingLineToDot(pos1, pos2, dot);
+            }
+        }
+        return false;
+    }
+
+
+    public bool IsCrossingLineToDot(Vector3 start,Vector3 end,Vector3 dot)
+    {
+        if ((start.z < dot.z && dot.z < end.z) &&
+            Mathf.Approximately(dot.x - start.x, ((end.x - start.x) / (end.z - start.z) * dot.z) - start.z))
+            return true;
+
+        return false;
     }
 }
