@@ -28,13 +28,14 @@ public class TestAlgorism : MonoBehaviour
         }
     }
 
-    //private int maxNodwCount = 11;
     private int row = 5;
     private int col = 8;
     private StageNode startNode;
     private StageNode[,] stageArr;
+    private static int[,] baseArr;
     private List<Edge> allEdge = new List<Edge>();
     private bool isGenerateEnd;
+    private static bool isResetArr = true;
 
     private int StartRow { get => row / 2; }
 
@@ -50,40 +51,30 @@ public class TestAlgorism : MonoBehaviour
         {
             isDone = true;
 
-            //int[][] arr = new int[row][];
-
-            ///*0열 시작 노드*/
-            //startNode';'
-            //startNode.Row = StartRow;
-
-            ///*1열 노드 생성*/
-            //var parentRow = startNode.Row;
-            //var count = Random.Range(1, 3);
-            //for (int i = 0; i < count; i++)
-            //{
-            //    var ran = Random.Range(-1, 1);
-
-            //}
-
-
-            //테스트 - 고정. 나중에 랜덤생성 구현. 배열의 배열로 교체예정.
-            int[,] testArr = new int[5, 8]
+            //랜덤생성. 배열의 배열로 교체예정.
+            if(isResetArr)
             {
-            { 1, 1, 0, 0, 1, 0, 1, 1 },
-            { 0, 0, 1, 0, 0, 1, 0, 0 },
-            { 0, 1, 0, 1, 1, 0, 1, 0 },
-            { 1, 0, 0, 0, 0, 0, 0, 0 },
-            { 0, 0, 1, 0, 0, 1, 0, 1 },
-            };
+                baseArr = new int[row, col];
+                CreateBaseArr();
+                //{
+                //{
+                //    { 1, 1, 0, 0, 1, 0, 1, 1 },
+                //    { 0, 0, 1, 0, 0, 1, 0, 0 },
+                //    { 0, 1, 0, 1, 1, 0, 1, 0 },
+                //    { 1, 0, 0, 0, 0, 0, 0, 0 },
+                //    { 0, 0, 1, 0, 0, 1, 0, 1 },
+                //};
+            }
+
 
             //컴포넌트 부착 게임오브젝트 생성 - 나중에 프리펩으로 대체. 불필요해질 과정.
             stageArr = new StageNode[row, col];
             var offset = new Vector3(100, 100, 0);
-            for (int i = 0; i < testArr.GetLength(0); i++)
+            for (int i = 0; i < baseArr.GetLength(0); i++)
             {
-                for (int j = 0; j < testArr.GetLength(1); j++)
+                for (int j = 0; j < baseArr.GetLength(1); j++)
                 {
-                    if (testArr[i, j] == 1)
+                    if (baseArr[i, j] == 1)
                     {
                         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         cube.transform.position = offset + new Vector3(j * 10, i * -5, 0);
@@ -98,9 +89,9 @@ public class TestAlgorism : MonoBehaviour
             //1회 순회. 정점 연결.
             allEdge.Clear();
             List<StageNode> candidate = new List<StageNode>();
-            for (int j = 0; j < testArr.GetLength(1); j++)
+            for (int j = 0; j < baseArr.GetLength(1); j++)
             {
-                for (int i = 0; i < testArr.GetLength(0); i++)
+                for (int i = 0; i < baseArr.GetLength(0); i++)
                 {
                     if (stageArr[i, j] == null) continue;
 
@@ -116,7 +107,10 @@ public class TestAlgorism : MonoBehaviour
                         FindParents(candidate, stageArr[i, j].index);
 
                         if (candidate.Count == 0)
-                            Debug.LogError($"No Parents for {stageArr[i, j].index}");
+                        {
+                            Debug.LogWarning($"No Parents for {stageArr[i, j].index}");
+                            isDone = false;
+                        }
                         else
                         {
                             int rand = Random.Range(0, candidate.Count);
@@ -127,7 +121,7 @@ public class TestAlgorism : MonoBehaviour
 
                     }
 
-                    if (j == testArr.GetLength(1) - 1)
+                    if (j == baseArr.GetLength(1) - 1)
                     {
                         stageArr[i, j].downVertice.Add(lastNode);
                         lastNode.upVertice.Add(stageArr[i, j]);
@@ -136,9 +130,9 @@ public class TestAlgorism : MonoBehaviour
             }
 
             //2회순회 확률기반 추가 정점 연결.
-            for (int j = 0; j < testArr.GetLength(1); j++)
+            for (int j = 0; j < baseArr.GetLength(1); j++)
             {
-                for (int i = 0; i < testArr.GetLength(0); i++)
+                for (int i = 0; i < baseArr.GetLength(0); i++)
                 {
                     if (stageArr[i, j] == null) continue;
                     if (j != 0)
@@ -175,9 +169,9 @@ public class TestAlgorism : MonoBehaviour
             }
 
             //3회순회 자식 없는 노드 연결.
-            for (int j = 0; j < testArr.GetLength(1); j++)
+            for (int j = 0; j < baseArr.GetLength(1); j++)
             {
-                for (int i = 0; i < testArr.GetLength(0); i++)
+                for (int i = 0; i < baseArr.GetLength(0); i++)
                 {
                     if (stageArr[i, j] == null) continue;
                     if (stageArr[i, j].downVertice.Count == 0)
@@ -195,7 +189,7 @@ public class TestAlgorism : MonoBehaviour
                         }
                         else
                         {
-                            Debug.LogError("Final Step Error! There is no Child Node to connect.");
+                            Debug.LogWarning("Final Step Error! There is no Child Node to connect.");
                             isDone = false;
                             break;
                         }
@@ -232,6 +226,33 @@ public class TestAlgorism : MonoBehaviour
         Debug.Log(new Edge(new Vector2(2, 4), new Vector2(0, 6)).IsPointOnEquation(new Vector2(1, 5))); // True
     }
 
+    private void CreateBaseArr()
+    {
+        for (int j = 0; j < baseArr.GetLength(1); j++)
+        {
+            var prof = Random.Range(0f, 1f);
+            var nodeNum = prof < 0.3f ? 1 : (prof < 0.9f ? 2 : 3);
+
+            for (int k = 0; k < nodeNum; k++)
+            {
+                var rand = Random.Range(0, row - k);
+                int count = 0;
+                for (int i = 0; i < baseArr.GetLength(0); i++)
+                {
+                    if (baseArr[i, j] == 0)
+                    {
+                        if (count == rand)
+                        {
+                            baseArr[i, j] = 1;
+                            break;
+                        }
+                        else
+                            count++;
+                    }
+                }
+            }
+        }
+    }
     private bool IsEdgeThroughAnyNode(Edge edge)
     {
         for (int i = 0; i < stageArr.GetLength(0); i++)
@@ -345,8 +366,6 @@ public class TestAlgorism : MonoBehaviour
         return isCross;
     }
 
-
-
     public Transform parent;
     public StageNode rootNode;
     public StageNode lastNode;
@@ -380,11 +399,17 @@ public class TestAlgorism : MonoBehaviour
     {
         if (GUILayout.Button("Refresh"))
         {
+            isResetArr = true;
             SceneManager.LoadScene(0);
         }
-        if(GUILayout.Button("Test"))
+        if (GUILayout.Button("ReConnect"))
         {
-            Debug.Log(IsEdgeThroughAnyNode(new Edge(new Vector2(2, 4), new Vector2(0, 6)))); // True
+            isResetArr = false;
+            SceneManager.LoadScene(0);
         }
+        //if (GUILayout.Button("Test"))
+        //{
+        //    //Debug.Log(IsEdgeThroughAnyNode(new Edge(new Vector2(2, 4), new Vector2(0, 6)))); // True
+        //}
     }
 }
