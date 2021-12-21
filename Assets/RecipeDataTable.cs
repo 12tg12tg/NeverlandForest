@@ -42,15 +42,17 @@ public class RecipeTableElem : DataTableElemBase
 public class RecipeDataTable : DataTableBase
 {
     public string[] tableTitle;
+    public List<Dictionary<string, string>> list;
+
     public RecipeDataTable()
     {
         csvFilePath = "Tables/RecipeDataTable";
     }
 
     public Dictionary<int, string> CombineDictionary =
-        new Dictionary<int, string>();
+        new Dictionary<int, string>(); // 조합식이랑 결과값을 가지고있는 diction
     public Dictionary<string, string[]> CombineListDictionary =
-        new Dictionary<string, string[]>();
+        new Dictionary<string, string[]>(); // 재료들의 번호를 가지고있는 diction
    
     public override void Load()
     {
@@ -58,7 +60,7 @@ public class RecipeDataTable : DataTableBase
             data.Clear();
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
-        var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
+        list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
         tableTitle = list.First().Keys.ToArray();
         foreach (var line in list)
         {
@@ -81,7 +83,7 @@ public class RecipeDataTable : DataTableBase
         }
     }
 
-    public bool ISCombine(string fireexist, string msg, string material,out string result)
+    public bool ISCombine(string msg,string material,out string result,string fireexist= "0")
     {
         var combinekey = new RecipeCombine();
         combinekey.fire = byte.Parse(fireexist);
@@ -94,8 +96,18 @@ public class RecipeDataTable : DataTableBase
     {
         return CombineListDictionary[key];
     }
-
-
+    public string GetRecipeId(string result)
+    {
+        foreach (var line in list)
+        {
+            if (line["RESULTID"].Equals(result))
+            {
+                return line["ID"];
+            }
+        }
+        return string.Empty;
+    }
+   
     public override void Save(DataTableBase dataTableBase)
     {
         CSVWriter.Writer(csvFilePath, dataTableBase);

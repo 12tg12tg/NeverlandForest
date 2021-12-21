@@ -15,6 +15,7 @@ public class UserData
         new List<DataWeapon>();
     public List<DataMaterial> HaveMaterialList =
         new List<DataMaterial>();
-    public List<DataRecipe> RecipeList =
-      new List<DataRecipe>();
+    public List<string>HaveRecipeIDList =
+      new List<string>();
+   
 }

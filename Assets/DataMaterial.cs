@@ -5,11 +5,11 @@ using UnityEngine;
 public class DataMaterial : DataItem
 {
     public int count;
-    public MaterialTableElem ItemTableElem
+    public AllItemTableElem ItemTableElem
     {
         get
         {
-            return itemTableElem as MaterialTableElem;
+            return itemTableElem as AllItemTableElem;
         }
     }
 }

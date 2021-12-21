@@ -5,30 +5,34 @@ using System.Linq;
 using UnityEngine;
 [Serializable]
 
-public class MaterialTableElem : DataTableElemBase
+public class AllItemTableElem : DataTableElemBase
 {
     public string name;
-    private string type;
-
+    public string type;
+    private string Desc;
+    private string iconID;
     private Sprite iconSprite;
     public Sprite IconSprite
     {
         get { return iconSprite; }
     }
-    public MaterialTableElem(Dictionary<string, string> data) :base(data)
+    public AllItemTableElem(Dictionary<string, string> data) :base(data)
     {
         id = data["ID"];
         name = data["NAME"];
+        Desc = data["DESC"];
         type = data["TYPE"];
+        iconID = data["ICON_ID"];
+        iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
 }
 
-public class MaterialDataTable : DataTableBase
+public class AllItemDataTable : DataTableBase
 {
     public string[] tableTitle;
-    public MaterialDataTable()
+    public AllItemDataTable()
     {
-        csvFilePath = "Tables/MaterialDataTable";
+        csvFilePath = "Tables/AllItemDataTable";
     }
     public override void Load()
     {
@@ -41,7 +45,7 @@ public class MaterialDataTable : DataTableBase
         tableTitle = list.First().Keys.ToArray();
         foreach (var line in list)
         {
-            var elem = new MaterialTableElem(line);
+            var elem = new AllItemTableElem(line);
             data.Add(elem.id, elem);
         }
     }

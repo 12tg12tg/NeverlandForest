@@ -19,7 +19,7 @@
 //    }
 
 //    public UIInventoryItemList itemList;
-//    public UIInventoryItemInfo itemInfo;
+ //  public UIInventoryItemInfo itemInfo;
 
 //    public ItemPopUpList itemPopUp;
 
