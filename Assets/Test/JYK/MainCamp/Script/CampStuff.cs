@@ -10,6 +10,7 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         clickEvent.Invoke();
+        Debug.Log("Click");
     }
 
     public void StartCook()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainManager : Singleton<MainManager>
+public class MainManager : MonoBehaviour
 {
     public enum CampEvent
     {
@@ -11,11 +11,18 @@ public class MainManager : Singleton<MainManager>
         StartEquipment
     }
 
-    public void Init() //GM의 Start에서 호출.
+    public void OnEnable()
     {
         EventBus<CampEvent>.Subscribe(CampEvent.StartCook, OpenCookScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartInventory, OpenInventoryWindow);
         EventBus<CampEvent>.Subscribe(CampEvent.StartEquipment, OpenEquipmentWindow);
+    }
+    private void OnDisable()
+    {
+        EventBus<CampEvent>.Unsubscribe(CampEvent.StartCook, OpenCookScene);
+        EventBus<CampEvent>.Unsubscribe(CampEvent.StartInventory, OpenInventoryWindow);
+        EventBus<CampEvent>.Unsubscribe(CampEvent.StartEquipment, OpenEquipmentWindow);
+        EventBus<CampEvent>.ResetEventBus();
     }
 
     public void OpenCookScene(object[] vals)
@@ -34,14 +41,5 @@ public class MainManager : Singleton<MainManager>
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Equipment Window");
-    }
-
-    private new void OnDestroy()
-    {
-        base.OnDestroy();
-        EventBus<CampEvent>.Unsubscribe(CampEvent.StartCook, OpenCookScene);
-        EventBus<CampEvent>.Unsubscribe(CampEvent.StartInventory, OpenInventoryWindow);
-        EventBus<CampEvent>.Unsubscribe(CampEvent.StartEquipment, OpenEquipmentWindow);
-        EventBus<CampEvent>.ResetEventBus();
     }
 }
