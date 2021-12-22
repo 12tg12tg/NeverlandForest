@@ -28,8 +28,8 @@ public class TestAlgorism : MonoBehaviour
         }
     }
 
-    private int row = 5;
-    private int col = 8;
+    public int row = 5;
+    public int col = 8;
     private StageNode startNode;
     private StageNode[,] stageArr;
     private static int[,] baseArr;
@@ -50,6 +50,14 @@ public class TestAlgorism : MonoBehaviour
         while (!isDone)
         {
             isDone = true;
+
+            var old = parent.GetComponentsInChildren<StageNode>();
+            foreach (var go in old)
+                if(go != rootNode && go != lastNode)
+                    Destroy(go.gameObject);
+
+            rootNode.downVertice.Clear();
+            lastNode.upVertice.Clear();
 
             //랜덤생성. 배열의 배열로 교체예정.
             if(isResetArr)

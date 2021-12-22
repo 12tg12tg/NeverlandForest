@@ -424,7 +424,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ca1ea7a312bf54cb99d34db6f330fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertice: []
+  downVertice: []
+  upVertice: []
   index: {x: 0, y: 0}
 --- !u!1 &472758980
 GameObject:
@@ -473,7 +474,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15ca1ea7a312bf54cb99d34db6f330fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertice: []
+  downVertice: []
+  upVertice: []
   index: {x: 0, y: 0}
 --- !u!65 &472758983
 BoxCollider:
@@ -1017,6 +1019,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 369bb497e26568a499566d734fc513a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  row: 200
+  col: 200
   parent: {fileID: 1432176366}
   rootNode: {fileID: 353945521}
   lastNode: {fileID: 472758982}

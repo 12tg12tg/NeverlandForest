@@ -11,5 +11,4 @@ public class MapBlock : MonoBehaviour
         transform.position = original.position;
         transform.rotation = original.rotation;
     }
-
 }
