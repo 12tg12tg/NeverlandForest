@@ -49,6 +49,7 @@ public class TestAlgorism : MonoBehaviour
         bool isDone = false;
         while (!isDone)
         {
+            Debug.Log("asd");
             isDone = true;
 
             var old = parent.GetComponentsInChildren<StageNode>();
@@ -137,6 +138,9 @@ public class TestAlgorism : MonoBehaviour
                 }
             }
 
+            if (!isDone)
+                continue;
+
             //2회순회 확률기반 추가 정점 연결.
             for (int j = 0; j < baseArr.GetLength(1); j++)
             {
@@ -203,6 +207,8 @@ public class TestAlgorism : MonoBehaviour
                         }
                     }
                 }
+                if (!isDone)
+                    break;
             }
 
             yield return null;
@@ -228,10 +234,10 @@ public class TestAlgorism : MonoBehaviour
         //Debug.Log(IsCrossEdge(new Edge(new Vector2(2, 1), new Vector2(0, 4)),
         //    new Edge(new Vector2(2, 1), new Vector2(0, 4)))); // True
 
-        Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(0, 1))); // False
-        Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(2, 5))); // False
-        Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(1, 3))); // True
-        Debug.Log(new Edge(new Vector2(2, 4), new Vector2(0, 6)).IsPointOnEquation(new Vector2(1, 5))); // True
+        //Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(0, 1))); // False
+        //Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(2, 5))); // False
+        //Debug.Log(new Edge(new Vector2(0, 1), new Vector2(2, 5)).IsPointOnEquation(new Vector2(1, 3))); // True
+        //Debug.Log(new Edge(new Vector2(2, 4), new Vector2(0, 6)).IsPointOnEquation(new Vector2(1, 5))); // True
     }
 
     private void CreateBaseArr()
