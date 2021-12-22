@@ -19,6 +19,19 @@ public static class DataTableManager
         var armorTable = new ArmorTable();
         armorTable.Load();
         tables.Add(typeof(ArmorTable), armorTable);
+
+        var weaponTable = new WeaponTable();
+        weaponTable.Load();
+        tables.Add(typeof(WeaponTable), weaponTable);
+
+        var materialTable = new AllItemDataTable();
+        materialTable.Load();
+        tables.Add(typeof(AllItemDataTable), materialTable);
+
+        var recipeTable = new RecipeDataTable();
+        recipeTable.Load();
+        tables.Add(typeof(RecipeDataTable), recipeTable);
+
     }
 
     public static T GetTable<T>() where T : DataTableBase

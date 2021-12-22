@@ -6,9 +6,10 @@ using System.Security.Cryptography;
 using System.Text;
 using PlayerSaveDataCurrentVersion = PlayerSaveData_1;
 using OptionSaveDataCurrentVersion = OptionSaveData_0;
+using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
 
 //=========================================================================================
-// SaveData 버전 추가시 해야할 일.
+// SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
 // 1. using 구문 업데이트.
 // 2. Manager의 필드변수 자료형 바꾸고, Save / Load 함수 수정.
 //=========================================================================================
@@ -31,6 +32,7 @@ public static class SaveLoadSystem
     {
         Player,
         Option,
+        Recipe,
     }
 
     private static bool isInit;
@@ -231,6 +233,17 @@ public static class SaveLoadSystem
                         return null;
                 }
 
+            case SaveType.Recipe:
+
+                switch (version)
+                {
+                    case 0:
+                       
+                        return JsonConvert.DeserializeObject<RecipeSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
+
             default:
                 return null;
         }
@@ -248,7 +261,6 @@ public static class SaveLoadSystem
                 }
                 return data;
 
-
             case SaveType.Option:
                 while (!(data is OptionSaveDataCurrentVersion))
                 {
@@ -256,6 +268,12 @@ public static class SaveLoadSystem
                 }
                 return data;
 
+            case SaveType.Recipe:
+                while (!(data is RecipeSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
 
             default:
                 return null;
