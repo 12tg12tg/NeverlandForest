@@ -1,236 +1,264 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class MapNode : MonoBehaviour
+public struct Edge
 {
-    public List<MapNode> Children { get; set; } = new List<MapNode>();
+    public Vector3 start;
+    public Vector3 end;
 
-    public Vector3 pos;
-    public int level;
+    public Edge(Vector3 start, Vector3 end)
+    {
+        this.start = start;
+        this.end = end;
+    }
+
+    public bool IsCrossing(Vector3 start2, Vector3 end2)
+    {
+        // z가 x, x가 y로 보면 됨
+        if (System.Math.Max(start.z, end.z) <= System.Math.Min(start2.z, end2.z))
+            return false;
+        if (System.Math.Min(start.z, end.z) >= System.Math.Max(start2.z, end2.z))
+            return false;
+        if (System.Math.Max(start.x, end.x) <= System.Math.Min(start2.x, end2.x))
+            return false;
+        if (System.Math.Min(start.x, end.x) >= System.Math.Max(start2.x, end2.x))
+            return false;
+
+        var p1 = (end.z - start.z) * (start2.x - start.x)
+            - (start2.z - start.z) * (end.x - start.x);
+        var p2 = (end.z - start.z) * (end2.x - start.x)
+            - (end2.z - start.z) * (end.x - start.x);
+        var p3 = (end2.z - start2.z) * (start.x - start2.x)
+            - (start.z - start2.z) * (end2.x - start2.x);
+        var p4 = (end2.z - start2.z) * (end.x - start2.x)
+            - (end.z - start2.z) * (end2.x - start2.x);
+
+        if (p1 == 0 && p2 == 0 && p3 == 0 && p4 == 0)
+            return true;
+
+        return p1 * p2 < 0 && p3 * p4 < 0;
+    }
 }
+
 
 public class WorldMap : MonoBehaviour
 {
     public GameObject cube;
-
+    public Material material;
+    
     public int column;
     public int row;
-    public int[,] map;
-    public MapNode[,] linkMap;
-    private float posX;
-    private float posY;
+    public MapNode[,] maps;
+    public List<Edge> edges = new List<Edge>();
 
-    private bool isFirst = true; // 테스트용
+    private float posX = 2.5f;
+    private float posY = 5f;
 
-    private List<MapNode> Map = new List<MapNode>();
-
+    private bool isFirst = true; // 리롤용
+    private bool isAllLinked = false;
 
     private void OnGUI()
     {
         if (GUILayout.Button("Show"))
         {
-            // 그래프형태로 하고싶지만 아닌 ver
-            //if (!isFirst) // 리롤용
-            //{
-            //    ChildrenDestroy();
-            //}
-            //SetMap();
-            //MapView();
-
-            // 일반형태 ver
-            if (!isFirst) // 리롤용
-                ChildrenDestroy();
-
-            MapRndNode();
-            MapInit();
-            MapLink();
+            StartCoroutine(InitMap());
         }
     }
+
     private void Update()
     {
-        if (linkMap == null)
-            return;
-        foreach (var item in linkMap)
+        if (isAllLinked)
         {
-            if (item == null)
-                return;
-            var line = item.GetComponent<LineRenderer>();
-            line.startWidth = 0.25f;
-            line.endWidth = 0.25f;
-            line.SetPosition(0, item.pos);
-            foreach (var elem in item.Children)
-            {
-                line.SetPosition(1, elem.pos);
-            }
+            PaintLink();
         }
     }
 
-    //private void SetMap()
-    //{
-    //    Map.Clear();
-    //    posX = posY = 0f;
-    //    for (int i = 0; i < column; i++)
-    //    {
-    //        switch (i)
-    //        {
-    //            case 0:
-    //                var startNode = new MapNode<GameObject>();
-    //                startNode.level = i;
-    //                startNode.pos = new Vector3(posX, 0f, posY);
-    //                Map.Add(startNode);
-    //                break;
-    //            case 1:
-    //                posX += 10f;
-    //                for (int j = 0; j < 2; j++)
-    //                {
-    //                    var NextNode = new MapNode<GameObject>();
-    //                    NextNode.level = i;
-    //                    NextNode.pos = new Vector3(posX, 0f, posY);
-    //                    posY += 5f;
-    //                    Map.Add(NextNode);
-    //                }
-    //                posY = 0f;
-    //                break;
-    //            case 2:
-    //            case 3:
-    //            case 4:
-    //            case 5:
-    //            case 6:
-    //            case 7:
-    //                posX += 10f;
-    //                for (int j = 0; j < Random.Range(1, row); j++)
-    //                {
-    //                    var NextNode = new MapNode<GameObject>();
-    //                    NextNode.level = i;
-    //                    NextNode.pos = new Vector3(posX, 0f, posY);
-    //                    posY += 5f;
-    //                    Map.Add(NextNode);
-    //                }
-    //                posY = 0f;
-    //                break;
-    //            case 8:
-    //                for (int j = 0; j < 2; j++)
-    //                {
-    //                    var NextNode = new MapNode<GameObject>();
-    //                    NextNode.level = i;
-    //                    NextNode.pos = new Vector3(posX, 0f, posY);
-    //                    posY += 5f;
-    //                    Map.Add(NextNode);
-    //                }
-    //                posY = 0f;
-    //                break;
-    //            case 9:
-    //                var endNode = new MapNode<GameObject>();
-    //                posX += 10f;
-    //                endNode.level = i;
-    //                endNode.pos = new Vector3(posX, 0f, posY);
-    //                Map.Add(endNode);
-    //                break;
-    //        }
-    //    }
-    //    isFirst = false; // 테스트용
-    //}
-    //private void MapView()
-    //{
-    //    foreach (var item in Map)
-    //    {
-    //        var newCube = Instantiate(cube, new Vector3(item.pos.x, 0f, item.pos.z), Quaternion.identity);
-    //        newCube.transform.SetParent(gameObject.transform);
-    //    }
-    //}
-
-
-
-
-    // 이하 일반용 메서드
-    private void MapRndNode()
+    private IEnumerator InitMap()
     {
-        map = new int[row, column]; // 현재 기준 5, 10 [4,9]
+        if (!isFirst)
+            ChildrenDestroy();
+        while (!isAllLinked)
+        {
+            MapFirstCreateNode();
+            MapNextCreateNode();
+            MapRandomLink();
+
+            yield return null;
+        }
+
+        isFirst = false;
+    }
+
+    private void MapFirstCreateNode()
+    {
+        maps = new MapNode[row, column];
 
         var startEnd = Random.Range(0, row);
-        map[startEnd, 0] = 1; // 처음
-        map[startEnd, column - 1] = 1; // 끝
+        
+        InitNode(out maps[startEnd, 0], new Vector2(startEnd, 0));
 
-        var startNext = 0;
-        var nextRnd = 0;
-        while (startNext.Equals(nextRnd)) // 처음 다음 노드에서 중복되지 않는 한 줄과 2갈래 용도 하나
-        {
-            startNext = Random.Range(0, row);
-            nextRnd = Random.Range(0, row);
-        }
         for (int i = 1; i < column - 1; i++)
         {
-            map[startNext, i] = 1; // 한줄 깔기 용도 현재 기준 8개
+            var selectNode = Random.Range(0, row);
+            InitNode(out maps[selectNode, i], new Vector2(selectNode, i));
         }
-        map[nextRnd, 1] = 1; // 처음 다음 노드에 2갈래 길 만들기 위한 애
-        
-        nextRnd = Random.Range(0, row); // 마지막 노드 전에 2갈래 길 만들기 위하여 한번 더 랜덤을 돌려서 중복되지 않는 노드 생성
-        while (startNext.Equals(nextRnd)) // 중복되면 다시 돌리기 위한 용도
-        {
-            nextRnd = Random.Range(0, row);
-        }
-        map[nextRnd, column - 2] = 1;
 
-        //[,(????)]: 0(처음), 1(두번째) ,column - 1(마지막), column - 2(마지막 전)
+        InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1));
+    }
+    private void MapNextCreateNode()
+    {
+        var startNextOther = Random.Range(0, row);
+        while (maps[startNextOther, 1] != null)
+        {
+            startNextOther = Random.Range(0, row);
+        }
+        InitNode(out maps[startNextOther, 1], new Vector2(startNextOther, 1));
+
         for (int i = 2; i < column - 2; i++) // 가운데 맵
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < Random.Range(0, 3); j++)
             {
-                map[Random.Range(0, row), i] = 1; // 중복 검사하지 않고 2번 돌려서 노드 생성하게끔 해놓음
+                var rnd = Random.Range(0, row);
+                while (maps[rnd, i] != null)
+                {
+                    rnd = Random.Range(0, row);
+                }
+                InitNode(out maps[rnd, i], new Vector2(rnd, i));
             }
         }
 
-        isFirst = false; // 테스트용
+        var endBeforeOther = Random.Range(0, row);
+        while (maps[endBeforeOther, column - 2] != null)
+        {
+            endBeforeOther = Random.Range(0, row);
+        }
+        InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2));
     }
-    private void MapInit()
+    private void MapRandomLink()
     {
-        linkMap = new MapNode[row, column];
+        var list = new List<MapNode>();
+        
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
             {
-                if (map[j, i].Equals(1))
-                {
-                    var newCube = Instantiate(cube, new Vector3(posX, 0, posY), Quaternion.identity);
-                    newCube.transform.SetParent(gameObject.transform);
-                    newCube.AddComponent<LineRenderer>();
-                    newCube.AddComponent<MapNode>();
-                    var node = newCube.GetComponent<MapNode>();
-                    node.level = i;
-                    node.pos = newCube.transform.position;
-                    linkMap[j, i] = node;
-                }
-                posY += 5f;
-            }
-            posY = 0f;
-            posX += 10f;
-        }
-        posX = posY = 0f;
-    }
-    private void MapLink()
-    {
-        for (int i = 0; i < row; i++)
-        {
-            for (int j = 0; j < column; j++)
-            {
-                if (linkMap[i, j] == null)
+                if (maps[j, i] == null)
                     continue;
-                if (i < row - 1)
+                maps[j, i].level = i;
+
+                var rndRange = Random.Range(0f, 1f) >= 0.8f ?       // 랜덤 거리
+                    (Random.Range(0f, 1f) >= 0.3f ? 2 : 3) : 1;
+                var rndLine = Random.Range(0f, 1f) >= 0.1f ?        // 랜덤 연결 선
+                    (Random.Range(0f, 1f) >= 0.3f ? 2 : 3) : 1;
+
+                if (i == 0 && rndLine < 2)
+                    rndLine = Random.Range(0f, 1f) >= 0.5f ? 2 : 3;
+                
+                list.Clear();
+                FindNode(list, i, i + rndRange);
+
+                for (int k = 0; k < list.Count; k++)
                 {
-                    for (int k = 0; k < row; k++)
+                    if (maps[j, i].Children.Count >= rndLine)
+                        break;
+                    var isEquals = false;
+                    for (int h = 0; h < maps[j, i].Children.Count; h++)
                     {
-                        if (linkMap[k, j] == null)
-                            continue;
-                        linkMap[i, j].Children.Add(linkMap[k, j]);
+                        isEquals = maps[j, i].Children[h].Equals(list[k]);
+                        if (isEquals)
+                            break;
+                    }
+                    if (isEquals)
+                        continue;
+                    var pos1 = maps[j, i].transform.position;
+                    var pos2 = list[k].transform.position;
+                    var isCrossing = false;
+                    for (int g = 0; g < edges.Count; g++)
+                    {
+                        isCrossing = edges[g].IsCrossing(pos1, pos2);
+                        if (isCrossing)
+                            break;
+                    }
+                    var isChack = ChackDot(i, i + rndRange, pos1, pos2);
+
+                    if (!isCrossing && !isChack)
+                    {
+                        var edge = new Edge(maps[j, i].transform.position, list[k].transform.position);
+                        edges.Add(edge);
+                        maps[j, i].Children.Add(list[k]);
+                        list[k].Parent.Add(maps[j, i]);
                     }
                 }
             }
         }
+
+        isAllLinked = ChackAllLinked();
+        if (!isAllLinked)
+            ChildrenDestroy();
+    }
+    private void FindNode(List<MapNode> nodeList, int startIndex, int endIndex)
+    {
+        var end = endIndex + 1 > column  ? column : endIndex + 1;
+        for (int j = 0; j < row; j++)
+        {
+            for (int i = startIndex + 1; i < end; i++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+                nodeList.Add(maps[j, i]);
+                break;
+            }
+        }
+    }
+    private void InitNode(out MapNode node, Vector2 index)
+    {
+        var go = Instantiate(cube, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
+        go.transform.SetParent(gameObject.transform);
+        node = go.AddComponent<MapNode>();
+        node.index = index;
     }
 
-    
-    // 리롤용
+    private void OnClick(MapNode node)
+    {
+        //RaycastHit hit;
+        //if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),
+        //    out hit, 50, clickableLayer.value))    //Ray가 닿았는가?
+        //{
+        //    bool door = false;                    //닿았다면, Door인가 Target인가
+        //    if (hit.collider.gameObject.tag == "Doorway")
+        //    {
+        //        Cursor.SetCursor(doorway, new Vector2(16, 16), CursorMode.Auto);
+        //        door = true;
+        //    }
+        //    else
+        //    {
+        //        Cursor.SetCursor(target, new Vector2(16, 16), CursorMode.Auto);
+        //    }
+        //    /*클릭 시 구현 부*/
+        //}
+
+
+        
+    }
+
+    private void PaintLink()
+    {
+        for (int i = 0; i < column - 1; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null || maps[j, i].Children.Count == 0)
+                    continue;
+                Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[0].transform.position);
+                if (maps[j, i].Children.Count >= 2)
+                    Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[1].transform.position);
+                if (maps[j, i].Children.Count >= 3)
+                    Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[2].transform.position);
+            }
+        }
+    }
     private void ChildrenDestroy()
     {
         Transform[] childList = GetComponentsInChildren<Transform>();
@@ -242,6 +270,51 @@ public class WorldMap : MonoBehaviour
                     Destroy(childList[i].gameObject);
             }
         }
-        
+        edges.Clear();
+        isAllLinked = false;
+    }
+
+    private bool ChackDot(int startRange, int endRange, Vector3 pos1, Vector3 pos2)
+    {
+        var end = endRange > column - 1 ? column : endRange;
+        for (int i = startRange + 1; i < end; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+                var dot = maps[j, i].transform.position;
+                if (IsCrossingLineToDot(pos1, pos2, dot))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private bool ChackAllLinked()
+    {
+        for (int i = 0; i < column; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+                if ((i < column - 1 && maps[j, i].Children.Count == 0) ||
+                    (i > 0 && maps[j, i].Parent.Count == 0))
+                {
+                    Debug.Log("asd");
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public bool IsCrossingLineToDot(Vector3 start, Vector3 end, Vector3 dot)
+    {
+        if (start.x < dot.x && dot.x < end.x)
+            return Mathf.Approximately((dot.x - start.x) * (end.z - start.z) / (end.x - start.x) + start.z, dot.z);
+
+        return false;
     }
 }
