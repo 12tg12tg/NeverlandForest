@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public struct Edge
 {
@@ -73,12 +72,31 @@ public class WorldMap : MonoBehaviour
         {
             StartCoroutine(InitMap());
         }
+        if (GUILayout.Button("MapSave"))
+        {
+            Save();
+        }
+        if (GUILayout.Button("NodeDelete"))
+        {
+            Utility.ChildrenDestroy(gameObject);
+            edges.Clear();
+            isAllLinked = false;
+        }
+        if (GUILayout.Button("MapLoad"))
+        {
+            Load();
+        }
+
     }
 
     private IEnumerator InitMap()
     {
         if (!isFirst)
-            ChildrenDestroy();
+        { 
+            Utility.ChildrenDestroy(gameObject);
+            edges.Clear();
+            isAllLinked = false;
+        }
         while (!isAllLinked)
         {
             MapFirstCreateNode();
@@ -88,7 +106,7 @@ public class WorldMap : MonoBehaviour
             yield return null;
         }
         isFirst = false;
-        player.GetComponent<TestPlayer>().Init();
+        player.Init();
         PaintLink();
     }
 
@@ -197,7 +215,11 @@ public class WorldMap : MonoBehaviour
 
         isAllLinked = ChackAllLinked();
         if (!isAllLinked)
-            ChildrenDestroy();
+        {
+            Utility.ChildrenDestroy(gameObject);
+            edges.Clear();
+            isAllLinked = false;
+        }
     }
     private void FindNode(List<MapNode> nodeList, int startIndex, int endIndex)
     {
@@ -224,6 +246,7 @@ public class WorldMap : MonoBehaviour
 
     private void PaintLink()
     {
+        Utility.ChildrenDestroy(lines);
         for (int i = 0; i < column - 1; i++)
         {
             for (int j = 0; j < row; j++)
@@ -257,20 +280,6 @@ public class WorldMap : MonoBehaviour
                 }
             }
         }
-    }
-    private void ChildrenDestroy()
-    {
-        Transform[] childList = GetComponentsInChildren<Transform>();
-        if (childList != null)
-        {
-            for (int i = 0; i < childList.Length; i++)
-            {
-                if (childList[i] != transform)
-                    Destroy(childList[i].gameObject);
-            }
-        }
-        edges.Clear();
-        isAllLinked = false;
     }
 
     private bool ChackDot(int startRange, int endRange, Vector3 pos1, Vector3 pos2)
@@ -315,5 +324,79 @@ public class WorldMap : MonoBehaviour
             return Mathf.Approximately((dot.x - start.x) * (end.z - start.z) / (end.x - start.x) + start.z, dot.z);
 
         return false;
+    }
+
+    public void Save()
+    {
+        for (int i = 0; i < column; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+                var data = new MapNodeStruct_0();
+                data.index = maps[j, i].index;
+                data.level = maps[j, i].level;
+                data.children = new List<Vector2>();
+                data.parent = new List<Vector2>();
+                for (int k = 0; k < maps[j, i].children.Count; k++)
+                {
+                    data.children.Add(maps[j, i].children[k].index);
+                }
+                for (int k = 0; k < maps[j, i].parent.Count; k++)
+                {
+                    data.parent.Add(maps[j, i].parent[k].index);
+                }
+                Vars.UserData.WorldMapNodeStruct.Add(data);
+            }
+        }
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMap);
+    }
+    public void Load()
+    {
+        maps = new MapNode[row, column];
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMap);
+        var loadData = Vars.UserData.WorldMapNodeStruct;
+        for (int i = 0; i < column; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                var index = new Vector2(j, i);
+                for (int k = 0; k < loadData.Count; k++)
+                {
+                    if (loadData[k].index.Equals(index))
+                    {
+                        InitNode(out maps[j, i], index);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < column; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                var index = new Vector2(j, i);
+                for (int k = 0; k < loadData.Count; k++)
+                {
+                    if (loadData[k].index.Equals(index))
+                    {
+                        var children = loadData[k].children;
+                        var parent = loadData[k].parent;
+                        for (int h = 0; h < children.Count; h++)
+                        {
+                            maps[j, i].children.Add(maps[(int)children[h].x, (int)children[h].y]);
+                        }
+                        for (int h = 0; h < parent.Count; h++)
+                        {
+                            maps[j, i].parent.Add(maps[(int)parent[h].x, (int)parent[h].y]);
+                        }
+                    }
+                }
+            }
+        }
+
+        PaintLink();
+        player.Init();
     }
 }

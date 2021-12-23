@@ -9,6 +9,8 @@ using OptionSaveDataCurrentVersion = OptionSaveData_0;
 using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
 using TimeSaveDataCurrentVersion = TimeSaveData_0;
 using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
+using WorldMapSaveDataCurrentVersion = WorldMapSaveData_0;
+
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -37,6 +39,7 @@ public static class SaveLoadSystem
         Recipe,
         Time,
         DungeonMap,
+        WorldMap,
     }
 
     private static bool isInit;
@@ -265,6 +268,14 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.WorldMap:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<WorldMapSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -304,6 +315,12 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.DungeonMap:
                 while (!(data is DungeonSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.WorldMap:
+                while (!(data is WorldMapSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }
