@@ -60,6 +60,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.DungeonMap:
                 LoadDungeonMap();
+                break;
             case SaveLoadSystem.SaveType.WorldMap:
                 LoadWorldMap();
                 break;
@@ -130,10 +131,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void LoadDungeonMap()
     {
         dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
-        if(dungeonMapData != null)
+        if (dungeonMapData != null)
         {
             Vars.UserData.dungeonMapData = dungeonMapData.dungeonMap;
         }
+    }
     private void LoadWorldMap()
     {
         worldMapSaveData = (WorldMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
