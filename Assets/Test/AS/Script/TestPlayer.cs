@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
 {
@@ -41,6 +42,5 @@ public class TestPlayer : MonoBehaviour
     {
         currentIndex = index;
         StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f));
-        Debug.Log("¿Ãµø ≥°");
     }
 }

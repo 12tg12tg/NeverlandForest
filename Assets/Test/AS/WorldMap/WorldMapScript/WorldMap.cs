@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct Edge
 {
@@ -41,7 +42,6 @@ public struct Edge
     }
 }
 
-[DefaultExecutionOrder(-1)]
 public class WorldMap : MonoBehaviour
 {
     public GameObject cube;
@@ -85,6 +85,10 @@ public class WorldMap : MonoBehaviour
         if (GUILayout.Button("MapLoad"))
         {
             Load();
+        }
+        if (GUILayout.Button("NextScene"))
+        {
+            SceneManager.LoadScene(4);
         }
 
     }
