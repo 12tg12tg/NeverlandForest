@@ -13,7 +13,7 @@ public class Utility
             var rnd = random.Next(0, i);
             T temp = list[i];
             list[i] = list[rnd];
-            list[rnd] = temp;           
+            list[rnd] = temp;    
         }
         return list;
     }
@@ -40,6 +40,19 @@ public class Utility
 
             timer += Time.deltaTime;
             yield return null;
+        }
+    }
+
+    public static void ChildrenDestroy(GameObject gameObject)
+    {
+        var childList = gameObject.GetComponentsInChildren<Transform>();
+        if (childList != null)
+        {
+            for (int i = 0; i < childList.Length; i++)
+            {
+                if (childList[i] != gameObject.transform)
+                    UnityEngine.Object.Destroy(childList[i].gameObject);
+            }
         }
     }
 }

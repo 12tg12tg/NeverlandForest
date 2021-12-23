@@ -18,4 +18,6 @@ public class UserData
     public List<string>HaveRecipeIDList =
       new List<string>();
     public Dictionary<string, float> MakeList = new Dictionary<string, float>();
+
+    public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
 }

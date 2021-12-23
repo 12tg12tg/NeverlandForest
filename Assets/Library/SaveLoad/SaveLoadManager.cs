@@ -9,6 +9,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     OptionSaveData_0 optionDate;
     RecipeSaveData_0 recipeData;
     TimeSaveData_0 timeData;
+    WorldMapSaveData_0 worldMapSaveData;
 
     private void Start()
     {
@@ -31,6 +32,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Time:
                 SaveTime();
                 break;
+            case SaveLoadSystem.SaveType.WorldMap:
+                SaveWorldMap();
+                break;
         }
     }
 
@@ -49,6 +53,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Time:
                 LoadTime();
+                break;
+            case SaveLoadSystem.SaveType.WorldMap:
+                LoadWorldMap();
                 break;
         }
     }
@@ -72,6 +79,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         timeData = new TimeSaveData_0();
         timeData.makeTime = Vars.UserData.MakeList;
         SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+    }
+    private void SaveWorldMap()
+    {
+        worldMapSaveData = new WorldMapSaveData_0();
+        worldMapSaveData.MapNodeStruct = Vars.UserData.WorldMapNodeStruct;
+        SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
     }
    
     private void LoadPlayer()
@@ -98,6 +111,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (timeData !=null)
         {
             Vars.UserData.MakeList = timeData.makeTime;
+        }
+    }
+
+    private void LoadWorldMap()
+    {
+        worldMapSaveData = (WorldMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
+        if(worldMapSaveData != null)
+        {
+            Vars.UserData.WorldMapNodeStruct = worldMapSaveData.MapNodeStruct;
         }
     }
 }

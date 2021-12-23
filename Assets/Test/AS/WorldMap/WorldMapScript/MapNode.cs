@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class MapNode : MonoBehaviour, IPointerClickHandler
 {
     public TestPlayer player;
+    
     public List<MapNode> children = new List<MapNode>();
     public List<MapNode> parent = new List<MapNode>();
     public List<MapNode> Children { get => children; set => children = value; }
@@ -21,6 +22,8 @@ public class MapNode : MonoBehaviour, IPointerClickHandler
         {
             if (parent[i].index.Equals(player.CurrentIndex))
             {
+                // ¾ÀÀüÈ¯(´øÀü¸ÊÀ¸·Î)
+
                 var pos = gameObject.transform.position + new Vector3(0f, 1.5f, 0f);
                 player.PlayerWorldMap(pos, index);
             }
