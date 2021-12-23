@@ -68,29 +68,19 @@ public class ArmorTableElem : DataTableElemBase
 
 public class ArmorTable : DataTableBase
 {
-    public string[] tableTitle;
     public ArmorTable()
     {
-        csvFilePath = "Tables/DefDataTable"; // csv파일 이름
+        csvFilePath = "DefDataTable"; // csv파일 이름
     }
 
     public override void Load()
     {
-        if (data != null)
-            data.Clear();
-        else
-            data = new SerializeDictionary<string, DataTableElemBase>();
-        var list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
-        tableTitle = list.First().Keys.ToArray();
-        foreach (var line in list)
+        data.Clear();
+        var list = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
+        foreach (var line in list.sc)
         {
             var elem = new ArmorTableElem(line);
             data.Add(elem.id, elem);
         }
-    }
-
-    public override void Save(DataTableBase dataTableBase)
-    {
-        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }

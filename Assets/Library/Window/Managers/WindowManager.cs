@@ -8,6 +8,7 @@ public class WindowManager : MonoBehaviour
 	public GenericWindow[] windows;
 	public int currentWindowID;
 	public int defaultWindowID;
+	public int NextWindowID;
 	public GenericWindow GetWindow(int value)
 	{
 		return windows[value];
@@ -42,6 +43,7 @@ public class WindowManager : MonoBehaviour
 	void Start()
 	{
 		GenericWindow.manager = this;
-		Open(defaultWindowID);
+		Open(defaultWindowID,true);
+		Open(NextWindowID, true);
 	}
 }

@@ -1,1 +1,1 @@
-public enum Windows{None,StartWindow,TestWindow}
+public enum Windows{None,StartWindow,TestWindow,CookingWindow,UserRecipeWindow}
