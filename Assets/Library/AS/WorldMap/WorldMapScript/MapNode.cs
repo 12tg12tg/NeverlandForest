@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 [Serializable]
 public class MapNode : MonoBehaviour, IPointerClickHandler
 {
+    public TestPlayer player;
     public List<MapNode> children = new List<MapNode>();
     public List<MapNode> parent = new List<MapNode>();
     public List<MapNode> Children { get => children; set => children = value; }
@@ -16,9 +17,15 @@ public class MapNode : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        for (int i = 0; i < Children.Count; i++)
+        for (int i = 0; i < parent.Count; i++)
         {
-            Debug.Log(Children[i].index);
+            if (parent[i].index.Equals(player.CurrentIndex))
+            {
+                var pos = gameObject.transform.position + new Vector3(0f, 1.5f, 0f);
+                player.PlayerWorldMap(pos, index);
+            }
+            else
+                Debug.Log("ÀÌµ¿ xxx");
         }
     }
 }

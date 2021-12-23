@@ -5,7 +5,7 @@ using System.Linq;
 
 public class TableEditor : EditorWindow
 {
-    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable" };
+    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable" };
     private static string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -58,6 +58,8 @@ public class TableEditor : EditorWindow
                 ViewArmorData(tableList);
                 break;
             case "WeaponDataTable":
+                break;
+            case "AllItemDataTable":
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);

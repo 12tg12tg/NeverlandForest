@@ -36,7 +36,6 @@ public class AllItemDataTable : DataTableBase
     }
     public override void Load()
     {
-
         if (data != null)
             data.Clear();
         else
@@ -48,10 +47,5 @@ public class AllItemDataTable : DataTableBase
             var elem = new AllItemTableElem(line);
             data.Add(elem.id, elem);
         }
-    }
-
-    public override void Save(DataTableBase dataTableBase)
-    {
-        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }

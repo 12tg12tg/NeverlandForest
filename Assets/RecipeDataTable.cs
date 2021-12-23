@@ -60,7 +60,7 @@ public class RecipeDataTable : DataTableBase
             data.Clear();
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
-        list = CSVReader.Read(csvFilePath); // 생성자에서 해도 된다 어차피 무조껀 해야하는 것 이기 때문에
+        list = CSVReader.Read(csvFilePath);
         tableTitle = list.First().Keys.ToArray();
         foreach (var line in list)
         {
@@ -106,10 +106,5 @@ public class RecipeDataTable : DataTableBase
             }
         }
         return string.Empty;
-    }
-   
-    public override void Save(DataTableBase dataTableBase)
-    {
-        CSVWriter.Writer(csvFilePath, dataTableBase);
     }
 }

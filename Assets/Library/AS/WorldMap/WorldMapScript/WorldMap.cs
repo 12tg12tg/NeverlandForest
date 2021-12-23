@@ -42,10 +42,13 @@ public struct Edge
     }
 }
 
-
+[DefaultExecutionOrder(-1)]
 public class WorldMap : MonoBehaviour
 {
     public GameObject cube;
+    public GameObject line;
+    public GameObject lines;
+    public TestPlayer player;
     public Material material;
     
     public int column;
@@ -58,6 +61,11 @@ public class WorldMap : MonoBehaviour
 
     private bool isFirst = true; // 리롤용
     private bool isAllLinked = false;
+
+    private void Awake()
+    {
+        StartCoroutine(InitMap());
+    }
 
     private void OnGUI()
     {
@@ -75,6 +83,19 @@ public class WorldMap : MonoBehaviour
         }
     }
 
+    private void SetMap()
+    {
+        if (!isFirst)
+            ChildrenDestroy();
+        while (!isAllLinked)
+        {
+            MapFirstCreateNode();
+            MapNextCreateNode();
+            MapRandomLink();
+        }
+        isFirst = false;
+    }
+
     private IEnumerator InitMap()
     {
         if (!isFirst)
@@ -87,8 +108,8 @@ public class WorldMap : MonoBehaviour
 
             yield return null;
         }
-
         isFirst = false;
+        player.GetComponent<TestPlayer>().Init();
     }
 
     private void MapFirstCreateNode()
@@ -217,30 +238,8 @@ public class WorldMap : MonoBehaviour
         var go = Instantiate(cube, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<MapNode>();
+        node.player = player;
         node.index = index;
-    }
-
-    private void OnClick(MapNode node)
-    {
-        //RaycastHit hit;
-        //if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition),
-        //    out hit, 50, clickableLayer.value))    //Ray가 닿았는가?
-        //{
-        //    bool door = false;                    //닿았다면, Door인가 Target인가
-        //    if (hit.collider.gameObject.tag == "Doorway")
-        //    {
-        //        Cursor.SetCursor(doorway, new Vector2(16, 16), CursorMode.Auto);
-        //        door = true;
-        //    }
-        //    else
-        //    {
-        //        Cursor.SetCursor(target, new Vector2(16, 16), CursorMode.Auto);
-        //    }
-        //    /*클릭 시 구현 부*/
-        //}
-
-
-        
     }
 
     private void PaintLink()
@@ -249,13 +248,33 @@ public class WorldMap : MonoBehaviour
         {
             for (int j = 0; j < row; j++)
             {
-                if (maps[j, i] == null || maps[j, i].Children.Count == 0)
+                if (maps[j, i] == null )
                     continue;
-                Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[0].transform.position);
+                var lineGo = Instantiate(line, lines.transform);
+                var lineRender = lineGo.GetComponent<LineRenderer>();
+                lineRender.startWidth = lineRender.endWidth = 0.1f;
+                lineRender.material.color = Color.white;
+                lineRender.SetPosition(0, maps[j, i].transform.position);
+                lineRender.SetPosition(1, maps[j, i].Children[0].transform.position);
+
                 if (maps[j, i].Children.Count >= 2)
-                    Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[1].transform.position);
+                {
+                    var lineGoSecond = Instantiate(line, lines.transform);
+                    var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
+                    lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.1f;
+                    lineRenderSecond.material.color = Color.white;
+                    lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
+                    lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
+                }
                 if (maps[j, i].Children.Count >= 3)
-                    Debug.DrawLine(maps[j, i].transform.position, maps[j, i].Children[2].transform.position);
+                {
+                    var lineGoThird = Instantiate(line, lines.transform);
+                    var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
+                    lineRenderThird.startWidth = lineRenderThird.endWidth = 0.1f;
+                    lineRenderThird.material.color = Color.white;
+                    lineRenderThird.SetPosition(0, maps[j, i].transform.position);
+                    lineRenderThird.SetPosition(1, maps[j, i].Children[2].transform.position);
+                }
             }
         }
     }
