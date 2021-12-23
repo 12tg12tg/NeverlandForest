@@ -75,27 +75,6 @@ public class WorldMap : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (isAllLinked)
-        {
-            PaintLink();
-        }
-    }
-
-    private void SetMap()
-    {
-        if (!isFirst)
-            ChildrenDestroy();
-        while (!isAllLinked)
-        {
-            MapFirstCreateNode();
-            MapNextCreateNode();
-            MapRandomLink();
-        }
-        isFirst = false;
-    }
-
     private IEnumerator InitMap()
     {
         if (!isFirst)
@@ -110,6 +89,7 @@ public class WorldMap : MonoBehaviour
         }
         isFirst = false;
         player.GetComponent<TestPlayer>().Init();
+        PaintLink();
     }
 
     private void MapFirstCreateNode()

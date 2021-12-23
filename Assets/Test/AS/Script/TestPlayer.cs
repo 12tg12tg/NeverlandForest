@@ -29,17 +29,9 @@ public class TestPlayer : MonoBehaviour
     public void PlayerWorldMap(Vector3 pos, Vector2 index)
     {
         currentIndex = index;
-        StartCoroutine(PlayerWorldMove(pos));
+        //StartCoroutine(PlayerWorldMove(pos));
+        StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f));
         Debug.Log("¿Ãµø ≥°");
     }
-    public IEnumerator PlayerWorldMove(Vector3 pos)
-    {
-        var time = 0f;
-        while (time < 1f)
-        {
-            time += Time.deltaTime;
-            gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, pos, time);
-            yield return null;
-        }
-    }
+
 }
