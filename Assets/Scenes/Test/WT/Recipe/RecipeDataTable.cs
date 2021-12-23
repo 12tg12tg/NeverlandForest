@@ -18,9 +18,6 @@ struct RecipeCombine
     public byte material;
 
 }
-
-
-
 [Serializable]
 public class RecipeTableElem : DataTableElemBase
 {
@@ -28,7 +25,11 @@ public class RecipeTableElem : DataTableElemBase
     public string FireExist;
     public string MSG;
     public string Material;
-  
+
+    public string Hour;
+    public string Mininute;
+    public string Second;
+
     public RecipeTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
@@ -36,6 +37,9 @@ public class RecipeTableElem : DataTableElemBase
         FireExist = data["FIRE"];
         MSG = data["MSG"];
         Material = data["MATERIAL"];
+        Hour = data["HOUR"];
+        Mininute = data["MININUTE"];
+        Second = data["SECOND"];
     }
 }
 
@@ -53,7 +57,10 @@ public class RecipeDataTable : DataTableBase
         new Dictionary<int, string>(); // 조합식이랑 결과값을 가지고있는 diction
     public Dictionary<string, string[]> CombineListDictionary =
         new Dictionary<string, string[]>(); // 재료들의 번호를 가지고있는 diction
-   
+
+    public Dictionary<string, string[]> MakingTimeDictionary = new Dictionary<string, string[]>();
+    //아이템 번호(Result)랑 시간에 대한 값들을 가지고 있다. 
+
     public override void Load()
     {
         if (data != null)
@@ -80,6 +87,9 @@ public class RecipeDataTable : DataTableBase
             string[] recipe = new string[] { elem.FireExist ,elem.MSG, elem.Material};
 
             CombineListDictionary.Add(elem.result_ID, recipe);
+
+            string[] TimeRecipe = new string[] { elem.Hour, elem.Mininute, elem.Second };
+            MakingTimeDictionary.Add(elem.result_ID, TimeRecipe);
         }
     }
 
@@ -91,6 +101,13 @@ public class RecipeDataTable : DataTableBase
         combinekey.material = byte.Parse(material);
         return CombineDictionary.TryGetValue(combinekey.fullkey, out result);
     }
+
+    public string[] IsMakingTime(string key)
+    {
+        return MakingTimeDictionary[key];
+    }
+
+
 
     public string[] GetCombination(string key)
     {

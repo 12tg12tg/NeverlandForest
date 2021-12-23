@@ -8,6 +8,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     PlayerSaveData_1 playerDate;
     OptionSaveData_0 optionDate;
     RecipeSaveData_0 recipeData;
+    TimeSaveData_0 timeData;
 
     private void Start()
     {
@@ -27,6 +28,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Recipe:
                 SaveRecipe();
                 break;
+            case SaveLoadSystem.SaveType.Time:
+                SaveTime();
+                break;
         }
     }
 
@@ -42,6 +46,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Recipe:
                 LoadRecipe();
+                break;
+            case SaveLoadSystem.SaveType.Time:
+                LoadTime();
                 break;
         }
     }
@@ -60,6 +67,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         recipeData.haveRecipe = Vars.UserData.HaveRecipeIDList;
         SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Text,SaveLoadSystem.SaveType.Recipe);
     }
+    private void SaveTime()
+    {
+        timeData = new TimeSaveData_0();
+        timeData.makeTime = Vars.UserData.MakeList;
+        SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+    }
+   
     private void LoadPlayer()
     {
 
@@ -77,6 +91,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.HaveRecipeIDList = recipeData.haveRecipe;
 
         }
-
+    }
+    private void LoadTime()
+    {
+        timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+        if (timeData !=null)
+        {
+            Vars.UserData.MakeList = timeData.makeTime;
+        }
     }
 }
