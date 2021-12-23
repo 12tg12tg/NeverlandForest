@@ -20,7 +20,7 @@ public enum DunGeonEvent
     SubStory = 0b_0001_0000,
     Count = 0b_0010_0000,
 }
-
+[Serializable]
 public class DungeonRoom
 {
     private bool isCheck;
@@ -166,10 +166,12 @@ public static class DunGeonRoomSetting
 
     public static void DungeonLink(DungeonRoom[] dungeonList)
     {
+        int count = 0;
         for (int i = 0; i < dungeonList.Length; i++)
         {
             if(dungeonList[i].IsCheck)
             {
+                count++;
                 var nextIdx = dungeonList[i].nextRoomIdx;
                 if (nextIdx != -1 && dungeonList[nextIdx].IsCheck == true)
                 {
@@ -179,7 +181,7 @@ public static class DunGeonRoomSetting
         }
     }
     // 시작방 입력받기, road개수 카운트 메소드
-    public static void DungeonLink(DungeonRoom dungeonRoom, DungeonRoom[] dungeonList, List<DungeonRoom> list)
+    public static void DungeonLink(DungeonRoom dungeonRoom, List<DungeonRoom> list)
     {
         int roadCount = 0;
         while(dungeonRoom.nextRoomIdx != -1)
@@ -198,5 +200,6 @@ public static class DunGeonRoomSetting
             list.Add(dungeonRoom);
             dungeonRoom = dungeonRoom.nextRoom;
         }
+        list.Add(dungeonRoom);
     }
 }

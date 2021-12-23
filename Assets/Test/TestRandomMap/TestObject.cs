@@ -6,4 +6,5 @@ using TMPro;
 public class TestObject : MonoBehaviour
 {
     public TextMeshProUGUI text;
+    public DungeonRoom roomInfo;
 }

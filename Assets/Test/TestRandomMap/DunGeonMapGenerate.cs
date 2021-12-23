@@ -24,32 +24,21 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public DirectionInho direction;
 
-    public GameObject mainRoomPrefab;
-    public GameObject roadPrefab;
+    public TestObject mainRoomPrefab;
+    public TestObject roadPrefab;
     // 원소 초기화 대기
     public bool isSet = false;
 
     public DungeonRoom[] DungeonRoomList = new DungeonRoom[400];
     public List<DungeonRoom> testList = new List<DungeonRoom>();
+    public List<TestObject> mapObjectList = new List<TestObject>();
     public int[] testMap = new int[400];
+
+    public SaveLoadManager saveManager;
+
     public void Start()
     {
-        //MapInit();
-        //showMapTest();
-
         StartCoroutine(MapCorutine());
-
-        //RandomMapInit();
-        //showMap();
-        //var dungen = new DungeonRoom();
-
-        //dungen.SetEvent(DunGeonEvent.Hunt);
-        //dungen.SetEvent(DunGeonEvent.Gathering);
-        //dungen.SetEvent(DunGeonEvent.RandomIncount);
-
-        //dungen.CheckEvent(DunGeonEvent.Hunt);
-        //dungen.CheckEvent(DunGeonEvent.Gathering);
-        //dungen.CheckEvent(DunGeonEvent.RandomIncount);
     }
 
     IEnumerator MapCorutine()
@@ -62,11 +51,12 @@ public class DunGeonMapGenerate : MonoBehaviour
             TestMapSet(startId, DirectionInho.Right, 0);
             yield return null;
         }
-        //MapMarking();
-        CreateMapObject();
         DunGeonRoomSetting.DungeonLink(DungeonRoomList);
-        DunGeonRoomSetting.DungeonLink(DungeonRoomList[startId],DungeonRoomList, testList);
+        DunGeonRoomSetting.DungeonLink(DungeonRoomList[startId], testList);
+        CreateMapObject();
         isSet = true;
+
+        Vars.UserData.dungeonMapData = DungeonRoomList;
     }
 
     public void OnGUI()
@@ -74,6 +64,18 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (GUILayout.Button("reStart"))
         {
             SceneManager.LoadScene(0);
+        }
+        if (GUILayout.Button("SaveMap"))
+        {
+            saveManager.Save(SaveLoadSystem.SaveType.DungeonMap);
+        }
+        if (GUILayout.Button("LoadMap"))
+        {
+            saveManager.Load(SaveLoadSystem.SaveType.DungeonMap);
+            DungeonRoomList = Vars.UserData.dungeonMapData;
+            //DunGeonRoomSetting.DungeonLink(DungeonRoomList);
+            DunGeonRoomSetting.DungeonLink(DungeonRoomList[startId], testList);
+            CreateMapObject();
         }
     }
 
@@ -96,38 +98,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             testMap[i] = 0;
         }
         remainRoom = RoomCount;
-    }
-
-    //public void showMapTest()
-    //{
-    //    while (remainRoom > 0)
-    //    {
-    //        // 다시 초기화
-    //        MapInit();
-    //        TestMapSet(startId, DirectionInho.Right, 0);
-    //    }
-
-    //    MapMarking();
-    //    CreateMapObject();
-    //}
-    // 필요없어진듯?
-    public void MapMarking()
-    {
-        for (int i = 0; i < DungeonRoomList.Length; i++)
-        {
-            if (testMap[i] == 3)
-            {
-                DungeonRoomList[i].IsCheck = true;
-                DungeonRoomList[i].RoomType = DunGeonRoomType.MainRoom;
-                DunGeonRoomSetting.RoomEventSet(DungeonRoomList[i]);
-            }
-            else if (testMap[i] == 4)
-            {
-                DungeonRoomList[i].IsCheck = true;
-                DungeonRoomList[i].RoomType = DunGeonRoomType.SubRoom;
-                DunGeonRoomSetting.RoomEventSet(DungeonRoomList[i]);
-            }
-        }
     }
 
     public void TestMapSet(int curId, DirectionInho lastDir, int roadCount)
@@ -195,7 +165,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (curId == -1)
             return false;
 
-        if (testMap[curId] != 0)
+        if (DungeonRoomList[curId].IsCheck == true)
             return false;
 
         return true;
@@ -203,24 +173,48 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void CreateMapObject()
     {
-        for (int i = 0; i < DungeonRoomList.Length; i++)
+        //for (int i = 0; i < DungeonRoomList.Length; i++)
+        //{
+        //    if (DungeonRoomList[i].IsCheck)
+        //    {
+        //        if (DungeonRoomList[i].RoomType == DunGeonRoomType.MainRoom)
+        //        {
+        //            var obj = Instantiate(mainRoomPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
+        //                 , Quaternion.identity);
+        //            var text =  obj.GetComponent<TestObject>();
+        //            text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
+        //            mapObjectList.Add(obj);
+        //        }
+        //        else
+        //        {
+        //            var obj = Instantiate(roadPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
+        //            , Quaternion.identity);
+        //            var text = obj.GetComponent<TestObject>();
+        //            text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
+        //            mapObjectList.Add(obj);
+        //        }
+        //    }
+        //}
+
+        foreach(var room in testList)
         {
-            if (DungeonRoomList[i].IsCheck)
+            if (room.RoomType == DunGeonRoomType.MainRoom)
             {
-                if (DungeonRoomList[i].RoomType == DunGeonRoomType.MainRoom)
-                {
-                    var obj = Instantiate(mainRoomPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
-                         , Quaternion.identity);
-                    var text =  obj.GetComponent<TestObject>();
-                    text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
-                }
-                else
-                {
-                    var obj = Instantiate(roadPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
-                    , Quaternion.identity);
-                    var text = obj.GetComponent<TestObject>();
-                    text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
-                }
+                var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                     , Quaternion.identity);
+                var objectInfo = obj.GetComponent<TestObject>();
+                objectInfo.text.SetText(room.GetEvent().ToString());
+                objectInfo.roomInfo = room;
+                mapObjectList.Add(obj);
+            }
+            else
+            {
+                var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                , Quaternion.identity);
+                var objectInfo = obj.GetComponent<TestObject>();
+                objectInfo.text.SetText(room.GetEvent().ToString());
+                objectInfo.roomInfo = room;
+                mapObjectList.Add(obj);
             }
         }
     }
@@ -262,7 +256,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                 result = currentId + 1;
                 break;
             case DirectionInho.Left:
-                //if (currentId % col == 0)
+                //if (currentId % col == 0)  왼쪽으로 못가게 (기획 요청)
                 //{
                 //    break;
                 //}
@@ -456,3 +450,42 @@ public class DunGeonMapGenerate : MonoBehaviour
 //        break;
 //    }    
 //}
+
+
+// 필요없어진듯?
+//public void MapMarking()
+//{
+//    for (int i = 0; i < DungeonRoomList.Length; i++)
+//    {
+//        if (testMap[i] == 3)
+//        {
+//            DungeonRoomList[i].IsCheck = true;
+//            DungeonRoomList[i].RoomType = DunGeonRoomType.MainRoom;
+//            DunGeonRoomSetting.RoomEventSet(DungeonRoomList[i]);
+//        }
+//        else if (testMap[i] == 4)
+//        {
+//            DungeonRoomList[i].IsCheck = true;
+//            DungeonRoomList[i].RoomType = DunGeonRoomType.SubRoom;
+//            DunGeonRoomSetting.RoomEventSet(DungeonRoomList[i]);
+//        }
+//    }
+//}
+
+//public void showMapTest()
+//{
+//    while (remainRoom > 0)
+//    {
+//        // 다시 초기화
+//        MapInit();
+//        TestMapSet(startId, DirectionInho.Right, 0);
+//    }
+
+//    MapMarking();
+//    CreateMapObject();
+//}
+
+//MapInit();
+//showMapTest();
+//RandomMapInit();
+//showMap();

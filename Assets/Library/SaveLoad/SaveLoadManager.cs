@@ -9,6 +9,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     OptionSaveData_0 optionDate;
     RecipeSaveData_0 recipeData;
     TimeSaveData_0 timeData;
+    DungeonMapSaveData_0 dungeonMapData;
 
     private void Start()
     {
@@ -31,6 +32,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Time:
                 SaveTime();
                 break;
+            case SaveLoadSystem.SaveType.DungeonMap:
+                SaveDungeonMap();
+                break;
         }
     }
 
@@ -50,6 +54,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Time:
                 LoadTime();
                 break;
+            case SaveLoadSystem.SaveType.DungeonMap:
+                LoadDungeonMap();
+                break;
         }
     }
 
@@ -61,6 +68,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     {
 
     }
+    private void SaveDungeonMap()
+    {
+        dungeonMapData = new DungeonMapSaveData_0();
+        dungeonMapData.dungeonMap = Vars.UserData.dungeonMapData;
+        SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
+    }
+
     private void SaveRecipe()
     {
         recipeData = new RecipeSaveData_0();
@@ -98,6 +112,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (timeData !=null)
         {
             Vars.UserData.MakeList = timeData.makeTime;
+        }
+    }
+
+    private void LoadDungeonMap()
+    {
+        dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
+        if(dungeonMapData != null)
+        {
+            Vars.UserData.dungeonMapData = dungeonMapData.dungeonMap;
         }
     }
 }
