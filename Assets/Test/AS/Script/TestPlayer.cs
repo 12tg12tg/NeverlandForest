@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class TestPlayer : MonoBehaviour
 {
@@ -22,16 +23,24 @@ public class TestPlayer : MonoBehaviour
         totalMap.OrderBy(n => n.level);
         currentIndex = totalMap[0].index;
 
-        gameObject.transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
+        transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
+    }
 
+    public void ComeBackWorldMap()
+    {
+        for (int i = 0; i < totalMap.Length; i++)
+        {
+            if(totalMap[i].index.Equals(currentIndex))
+            {
+                transform.position = totalMap[i].transform.position + new Vector3(0f, 1.5f, 0f);
+                return;
+            }
+        }
     }
 
     public void PlayerWorldMap(Vector3 pos, Vector2 index)
     {
         currentIndex = index;
-        //StartCoroutine(PlayerWorldMove(pos));
         StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f));
-        Debug.Log("ÀÌµ¿ ³¡");
     }
-
 }

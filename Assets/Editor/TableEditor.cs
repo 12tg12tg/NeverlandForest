@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Linq;
+using System.IO;
 
 public class TableEditor : EditorWindow
 {
@@ -31,7 +32,7 @@ public class TableEditor : EditorWindow
         tableFirstElem.Clear();
         for (int i = 0; i < tableName.Length; i++)
         {
-            var path = csvFilePath + tableName[i];
+            var path = Path.Combine(csvFilePath, tableName[i]);
             var tableElemList = CSVReader.Read(path);
             tableTypes.Add(tableName[i], tableElemList);
             tableFirstElem.Add(tableName[i], tableElemList.First().Keys.ToArray());

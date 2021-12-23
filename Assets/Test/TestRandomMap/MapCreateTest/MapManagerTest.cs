@@ -16,7 +16,6 @@ public class MapManagerTest : MonoBehaviour
 
     public DunGeonMapGenerate dungeonGen;
 
-
     public TextMeshProUGUI text;
     void Start()
     {
@@ -63,6 +62,16 @@ public class MapManagerTest : MonoBehaviour
                 break;
         }
     }
+    // 받은 room의 색은 원복, room의 next의 색을 변경
+    public void SetCheckRoom(DungeonRoom room)
+    {
+        var obj = dungeonGen.mapObjectList.Find(x => x.roomInfo.Pos.Equals(room.Pos));
+        var mesh = obj.gameObject.GetComponent<MeshRenderer>();
+        mesh.material.color = Color.white;
+
+
+
+    }
 
     public void changeRoom(bool isEnd)
     { 
@@ -91,5 +100,6 @@ public class MapManagerTest : MonoBehaviour
             curRoom = curRoom.nextRoom;
             text.SetText(curRoom.GetEvent().ToString());
         }
+        
     }
 }
