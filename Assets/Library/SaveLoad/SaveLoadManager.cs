@@ -69,9 +69,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void SaveTime()
     {
-        timeData = new TimeSaveData_0();
+        /*timeData = new TimeSaveData_0();
         timeData.makeTime = Vars.UserData.MakeList;
-        SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+        SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);*/
     }
    
     private void LoadPlayer()
@@ -94,10 +94,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadTime()
     {
-        timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+       /* timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
         if (timeData !=null)
         {
             Vars.UserData.MakeList = timeData.makeTime;
-        }
+        }*/
     }
 }

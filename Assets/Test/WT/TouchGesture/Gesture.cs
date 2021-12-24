@@ -246,7 +246,6 @@ public class Gesture : MonoBehaviour
                 circleCount++;
                 // 국자 처럼 돌릴꺼면 여기함수에서 뭔가를 해주면 된다.
             }
-           
         }
         Debug.Log(circleCount);
     }
