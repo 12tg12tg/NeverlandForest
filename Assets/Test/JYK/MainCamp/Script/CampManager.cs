@@ -30,7 +30,7 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Cooking Scene");
-        SceneManager.LoadScene("wt_recipe");
+        SceneManager.LoadScene("Wt_Scene");
     }
 
     public void OpenInventoryWindow(object[] vals)

@@ -6,9 +6,9 @@ public class TileMaker : MonoBehaviour
 {
     public GameObject wholeTile;
     public Material material;
-    private int row = 3;
-    private int col = 7;
-    private float spacing = 1f;
+    public int row = 3;
+    public int col = 7;
+    public float spacing = 1f;
     
     private void Start()
     {

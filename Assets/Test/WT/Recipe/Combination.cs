@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class Combination : MonoBehaviour
 {
     private string fire;
@@ -57,6 +59,10 @@ public class Combination : MonoBehaviour
     }
     void OnGUI()
     {
+        if (GUILayout.Button("Main"))
+        {
+            SceneManager.LoadScene("JYK_Test_Main");
+        }
         if (GUILayout.Button("Start Cooking"))
         {
             if (inventory.FireObject != null)
@@ -79,6 +85,7 @@ public class Combination : MonoBehaviour
 
             }
         }
+
     }
 
     private void OnEnable()
