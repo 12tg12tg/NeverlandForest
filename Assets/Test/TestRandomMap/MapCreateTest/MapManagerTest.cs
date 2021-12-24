@@ -11,6 +11,8 @@ public class MapManagerTest : MonoBehaviour
     public MapRoadCtrl roadRoom5;
 
     public DungeonRoom curRoom;
+    public DungeonRoom beforeRoom;
+
     public GameObject player;
     private MapRoadCtrl curRoad;
 
@@ -30,6 +32,7 @@ public class MapManagerTest : MonoBehaviour
             // 100 은 스타트 id
             curRoom = dungeonGen.DungeonRoomList[100];
             SetCurRoad(curRoom);
+            SetCheckRoom(curRoom,beforeRoom);
             curRoad.gameObject.SetActive(false);
             mainRoom.gameObject.SetActive(true);
             player.gameObject.SetActive(true);
@@ -63,20 +66,26 @@ public class MapManagerTest : MonoBehaviour
         }
     }
     // 받은 room의 색은 원복, room의 next의 색을 변경
-    public void SetCheckRoom(DungeonRoom room)
+    public void SetCheckRoom(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
-        var obj = dungeonGen.mapObjectList.Find(x => x.roomInfo.Pos.Equals(room.Pos));
+        var obj = dungeonGen.mapObjectList.Find(x => x.roomInfo.Pos.Equals(curRoom.Pos));
         var mesh = obj.gameObject.GetComponent<MeshRenderer>();
-        mesh.material.color = Color.white;
+        mesh.material.color = Color.blue;
 
+        if (beforeRoom.IsCheck == true)
+        {
+            var obj2 = dungeonGen.mapObjectList.Find(x => x.roomInfo.Pos.Equals(beforeRoom.Pos));
+            var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
-
+            mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
+            new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
+        }
     }
-
     public void changeRoom(bool isEnd)
     { 
         if(isEnd)
         {
+            beforeRoom = curRoom;
             if(curRoom.RoomType == DunGeonRoomType.MainRoom)
             {
                 curRoom = curRoom.nextRoom;
@@ -97,9 +106,10 @@ public class MapManagerTest : MonoBehaviour
         }
         else
         {
+            beforeRoom = curRoom;
             curRoom = curRoom.nextRoom;
             text.SetText(curRoom.GetEvent().ToString());
         }
-        
+        SetCheckRoom(curRoom, beforeRoom);
     }
 }

@@ -108,17 +108,17 @@ public static class DunGeonRoomSetting
         {
             for (int i = 0; i < rndEvnetCount; i++)
             {
-                room.SetEvent(eventPic(tempPercent));
+                room.SetEvent(EventPic(tempPercent));
             }
         }
         else
         {
             for (int i = 0; i < rndEvnetCount; i++)
             {
-                var SubEvent = eventPic(tempPercent);
+                var SubEvent = EventPic(tempPercent);
                 while (SubEvent == DunGeonEvent.Battle)
                 {
-                    SubEvent = eventPic(tempPercent);
+                    SubEvent = EventPic(tempPercent);
                 }
                 room.SetEvent(SubEvent);
             }
@@ -126,7 +126,7 @@ public static class DunGeonRoomSetting
     }
 
     // 받는 리스트에는 순서대로 각 이벤트 확률이 들어있다고 가정
-    public static DunGeonEvent eventPic(List<int> percentage)
+    public static DunGeonEvent EventPic(List<int> percentage)
     {
         // 일단 각 이벤트 발생 확률 = 20프로
         List<int> eventP = new List<int>();

@@ -26,13 +26,14 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public TestObject mainRoomPrefab;
     public TestObject roadPrefab;
+    public GameObject mapPos;
     // 원소 초기화 대기
     public bool isSet = false;
 
     public DungeonRoom[] DungeonRoomList = new DungeonRoom[400];
     public List<DungeonRoom> testList = new List<DungeonRoom>();
     public List<TestObject> mapObjectList = new List<TestObject>();
-    public int[] testMap = new int[400];
+    //public int[] testMap = new int[400];
 
     public SaveLoadManager saveManager;
 
@@ -95,7 +96,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                 var colum = i / col;
                 DungeonRoomList[i].Pos = new Vector2(row * 2f, colum * 2f);
             }
-            testMap[i] = 0;
+            //testMap[i] = 0;
         }
         remainRoom = RoomCount;
     }
@@ -201,7 +202,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             if (room.RoomType == DunGeonRoomType.MainRoom)
             {
                 var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
-                     , Quaternion.identity);
+                     , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<TestObject>();
                 objectInfo.text.SetText(room.GetEvent().ToString());
                 objectInfo.roomInfo = room;
@@ -210,13 +211,15 @@ public class DunGeonMapGenerate : MonoBehaviour
             else
             {
                 var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
-                , Quaternion.identity);
+                , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<TestObject>();
                 objectInfo.text.SetText(room.GetEvent().ToString());
                 objectInfo.roomInfo = room;
                 mapObjectList.Add(obj);
             }
         }
+
+        mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
     }
     public DirectionInho oppsiteDir(DirectionInho dir)
     {
