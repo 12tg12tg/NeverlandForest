@@ -16,7 +16,7 @@ public class TestRecipe : MonoBehaviour
         var user = new UserData();
         var sb = new StringBuilder();
         var allitem = DataTableManager.GetTable<AllItemDataTable>();
-        if (recipeTable.ISCombine("3","10", out result))
+        if (recipeTable.IsCombine("3","10", out result))
         {
             if (allitem.data.ContainsKey(result))
             {
