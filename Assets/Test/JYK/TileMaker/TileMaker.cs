@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-1)]
 public class TileMaker : MonoBehaviour
 {
+    public HuntingPlayer player;
+
     public GameObject wholeTile;
     public Material material;
     public int row = 3;
@@ -56,6 +59,7 @@ public class TileMaker : MonoBehaviour
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<Tiles>();
+        tile.player = player;
         tile.index = index;
         tile.ren = ren;
 
