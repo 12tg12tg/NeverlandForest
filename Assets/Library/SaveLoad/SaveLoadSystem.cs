@@ -98,6 +98,10 @@ public static class SaveLoadSystem
     {
         SaveDataBase data = null;
         var path = MakePath(mode, saveType);
+        if (!File.Exists(path))
+        {
+            return null;
+        }
         if (mode == Modes.Text)
         {
             using (StreamReader reader = new StreamReader(new FileStream(path, FileMode.Open)))

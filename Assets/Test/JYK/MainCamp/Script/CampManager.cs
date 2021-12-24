@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CampManager : MonoBehaviour
 {
@@ -29,6 +30,7 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Cooking Scene");
+        SceneManager.LoadScene("wt_recipe");
     }
 
     public void OpenInventoryWindow(object[] vals)
