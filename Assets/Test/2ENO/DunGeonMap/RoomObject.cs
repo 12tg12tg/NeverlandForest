@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class TestObject : MonoBehaviour
+public class RoomObject : MonoBehaviour
 {
     public TextMeshProUGUI text;
     public DungeonRoom roomInfo;

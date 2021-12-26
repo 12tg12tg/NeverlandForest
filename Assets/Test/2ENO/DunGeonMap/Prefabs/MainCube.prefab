@@ -146,10 +146,10 @@ GameObject:
   - component: {fileID: 615193437515059012}
   - component: {fileID: 1922878634258406767}
   - component: {fileID: 5890061925157980097}
-  - component: {fileID: 6931192322554332496}
+  - component: {fileID: 2648536484572839898}
   - component: {fileID: 6028506201022931724}
   m_Layer: 0
-  m_Name: Main
+  m_Name: MainCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -221,7 +221,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6931192322554332496
+--- !u!114 &2648536484572839898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -230,10 +230,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7367737409360402476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02dbb91da17bf6c4f81805e9bff5dadb, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d438e505d6b3844cb90dded303d2b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 2691288415689645161}
+  roomInfo:
+    nextRoomIdx: 0
+    nextRoadCount: 0
 --- !u!65 &6028506201022931724
 BoxCollider:
   m_ObjectHideFlags: 0

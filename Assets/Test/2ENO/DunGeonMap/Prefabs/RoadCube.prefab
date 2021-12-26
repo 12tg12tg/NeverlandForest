@@ -247,10 +247,10 @@ GameObject:
   - component: {fileID: 5840764123117316741}
   - component: {fileID: 6100967545544218695}
   - component: {fileID: 3418979416239666179}
-  - component: {fileID: -7903034292031140005}
+  - component: {fileID: 4511944954999672932}
   - component: {fileID: 2022835297637610905}
   m_Layer: 0
-  m_Name: Road
+  m_Name: RoadCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,7 +322,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-7903034292031140005
+--- !u!114 &4511944954999672932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -331,10 +331,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4038445036579095096}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02dbb91da17bf6c4f81805e9bff5dadb, type: 3}
+  m_Script: {fileID: 11500000, guid: 8d438e505d6b3844cb90dded303d2b34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 7490276977198925397}
+  roomInfo:
+    nextRoomIdx: 0
+    nextRoadCount: 0
 --- !u!65 &2022835297637610905
 BoxCollider:
   m_ObjectHideFlags: 0

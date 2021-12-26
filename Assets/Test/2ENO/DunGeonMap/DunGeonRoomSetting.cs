@@ -27,26 +27,18 @@ public class DungeonRoom
     private Vector2 pos;
     private DunGeonRoomType roomType;
 
-    private DunGeonEvent eventCase;
-    private int battleSet = 0b_1110_0011;
-    private int noBattleSet = 0b_1111_1110;
+    //private DunGeonEvent eventCase;
 
+    //private int eventCount;
+    //private int battleSet = 0b_1110_0011;
+    //private int noBattleSet = 0b_1111_1110;
+
+    public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
+    
     public DungeonRoom nextRoom;
     public int nextRoomIdx;
     public int nextRoadCount = 0;
     //public List<int> nextRoomIndex = new List<int>();
-
-    public DungeonRoom() { }
-    public DungeonRoom(DungeonRoom room)
-    {
-        isCheck = room.isCheck;
-        pos = room.pos;
-        roomType = room.roomType;
-        eventCase = room.eventCase;
-        nextRoom = room.nextRoom;
-        nextRoomIdx = room.nextRoomIdx;
-        nextRoadCount = room.nextRoadCount;
-    }
 
     public DunGeonRoomType RoomType
     {
@@ -63,36 +55,49 @@ public class DungeonRoom
         set => pos = value;
         get => pos;
     }
+    //public DunGeonEvent EventCase
+    //{
+    //    get => eventCase;
+    //}
+    //public int EventCount
+    //{
+    //    set => eventCount = value;
+    //    get => eventCount;
+    //}
     public void SetEvent(DunGeonEvent eventType)
     {
         switch (eventType)
         {
             case DunGeonEvent.Battle:
-                eventCase &= (DunGeonEvent)battleSet;
+                //eventCase &= (DunGeonEvent)battleSet;
+                if (eventList.FindIndex(x => x == DunGeonEvent.Hunt) != -1
+                    || eventList.FindIndex(x => x == DunGeonEvent.RandomIncount) != -1
+                    || eventList.FindIndex(x => x == DunGeonEvent.SubStory) != -1)
+                    return;
                 break;
             case DunGeonEvent.Hunt:
             case DunGeonEvent.RandomIncount:
             case DunGeonEvent.SubStory:
-                eventCase &= (DunGeonEvent)noBattleSet;
+                //eventCase &= (DunGeonEvent)noBattleSet;
+                if (eventList.FindIndex(x => x == DunGeonEvent.Battle) != -1)
+                    return;
                 break;
         }
+        eventList.Add(eventType);
+        //eventCase |= eventType;
+    }
 
-        eventCase |= eventType;
-    }
-    public DunGeonEvent GetEvent()
+    public bool CheckEvent(DunGeonEvent evnetType)
     {
-        return eventCase;
-    }
-    public void CheckEvent(DunGeonEvent evnetType)
-    {
-        if((eventCase & evnetType) != 0)
-        {
-            Debug.Log("이벤트가 있다");
-        }
-        else
-        {
-            Debug.Log("이벤트가 없다");
-        }
+        //if((eventCase & evnetType) != 0)
+        //{
+        //    return true;
+        //}
+        //return false;
+        if (eventList.FindIndex(x => x == evnetType) != -1)
+            return true;
+
+        return false;
     }
 }
 
@@ -100,7 +105,7 @@ public static class DunGeonRoomSetting
 {
     public static void RoomEventSet(DungeonRoom room)
     {
-        // 입력받은 방에 1~2사이의 이벤트를 넣어주고
+        // 입력받은 방에 1~2개 사이의 이벤트를 넣어주고
         // 각 이벤트를 나올수 있는 이벤트 타입중 확률적으로 1개 골라서 넣어준다
         var rndEvnetCount = UnityEngine.Random.Range(1, 3);
         var tempPercent = new List<int> { 20, 20, 20, 20, 20 };
@@ -108,7 +113,13 @@ public static class DunGeonRoomSetting
         {
             for (int i = 0; i < rndEvnetCount; i++)
             {
-                room.SetEvent(EventPic(tempPercent));
+                var picEvent = EventPic(tempPercent);
+                if (room.CheckEvent(picEvent))
+                {
+                    i--;
+                    continue;
+                }
+                room.SetEvent(picEvent);
             }
         }
         else
@@ -119,6 +130,11 @@ public static class DunGeonRoomSetting
                 while (SubEvent == DunGeonEvent.Battle)
                 {
                     SubEvent = EventPic(tempPercent);
+                }
+                if (room.CheckEvent(SubEvent))
+                {
+                    i--;
+                    continue;
                 }
                 room.SetEvent(SubEvent);
             }
@@ -146,7 +162,7 @@ public static class DunGeonRoomSetting
         {
             // 혹시몰라서 무한방지
             if (j > eventP.Count) break;
-
+            // empty는 현재 약 30프로 확률
             if (rnd > 100)
             {
                 eventType = DunGeonEvent.Empty;
@@ -160,7 +176,6 @@ public static class DunGeonRoomSetting
             i <<= 1;
             j++;
         }
-
         return eventType;
     }
 
@@ -181,7 +196,7 @@ public static class DunGeonRoomSetting
         }
     }
     // 시작방 입력받기, road개수 카운트 메소드
-    public static void DungeonLink(DungeonRoom dungeonRoom, List<DungeonRoom> list)
+    public static void DungeonRoadCount(DungeonRoom dungeonRoom, List<DungeonRoom> list)
     {
         int roadCount = 0;
         while(dungeonRoom.nextRoomIdx != -1)

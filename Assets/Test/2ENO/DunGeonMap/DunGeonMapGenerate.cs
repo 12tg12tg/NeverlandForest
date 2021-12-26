@@ -19,21 +19,20 @@ public class DunGeonMapGenerate : MonoBehaviour
     public int startId = 100;
     public int col = 20;
 
-    public int RoomCount = 6;
+    public int roomCount = 6;
     public int remainRoom = 4;
 
     public DirectionInho direction;
 
-    public TestObject mainRoomPrefab;
-    public TestObject roadPrefab;
+    public RoomObject mainRoomPrefab;
+    public RoomObject roadPrefab;
     public GameObject mapPos;
     // 원소 초기화 대기
     public bool isSet = false;
 
-    public DungeonRoom[] DungeonRoomList = new DungeonRoom[400];
-    public List<DungeonRoom> testList = new List<DungeonRoom>();
-    public List<TestObject> mapObjectList = new List<TestObject>();
-    //public int[] testMap = new int[400];
+    public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
+    public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
+    public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
 
     public SaveLoadManager saveManager;
 
@@ -52,12 +51,12 @@ public class DunGeonMapGenerate : MonoBehaviour
             TestMapSet(startId, DirectionInho.Right, 0);
             yield return null;
         }
-        DunGeonRoomSetting.DungeonLink(DungeonRoomList);
-        DunGeonRoomSetting.DungeonLink(DungeonRoomList[startId], testList);
+        DunGeonRoomSetting.DungeonLink(dungeonRoomArray);
+        DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
         CreateMapObject();
         isSet = true;
 
-        Vars.UserData.dungeonMapData = DungeonRoomList;
+        Vars.UserData.dungeonMapData = dungeonRoomArray;
     }
 
     public void OnGUI()
@@ -73,32 +72,32 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (GUILayout.Button("LoadMap"))
         {
             saveManager.Load(SaveLoadSystem.SaveType.DungeonMap);
-            DungeonRoomList = Vars.UserData.dungeonMapData;
+            dungeonRoomArray = Vars.UserData.dungeonMapData;
             //DunGeonRoomSetting.DungeonLink(DungeonRoomList);
-            DunGeonRoomSetting.DungeonLink(DungeonRoomList[startId], testList);
+            DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
             CreateMapObject();
         }
     }
 
     public void MapInit()
     {
-        for (int i = 0; i < DungeonRoomList.Length; i++)
+        for (int i = 0; i < dungeonRoomArray.Length; i++)
         {
-            DungeonRoomList[i] = new DungeonRoom();
-            DungeonRoomList[i].IsCheck = false;
+            dungeonRoomArray[i] = new DungeonRoom();
+            dungeonRoomArray[i].IsCheck = false;
             if (i == 0)
             {
-                DungeonRoomList[i].Pos = Vector2.zero;
+                dungeonRoomArray[i].Pos = Vector2.zero;
             }
             else
             {
                 var row = i % col;
                 var colum = i / col;
-                DungeonRoomList[i].Pos = new Vector2(row * 2f, colum * 2f);
+                dungeonRoomArray[i].Pos = new Vector2(row * 2f, colum * 2f);
             }
             //testMap[i] = 0;
         }
-        remainRoom = RoomCount;
+        remainRoom = roomCount;
     }
 
     public void TestMapSet(int curId, DirectionInho lastDir, int roadCount)
@@ -111,9 +110,9 @@ public class DunGeonMapGenerate : MonoBehaviour
 
         if (roadCount <= 0)
         {
-            DungeonRoomList[curId].IsCheck = true;
-            DungeonRoomList[curId].RoomType = DunGeonRoomType.MainRoom;
-            DunGeonRoomSetting.RoomEventSet(DungeonRoomList[curId]);
+            dungeonRoomArray[curId].IsCheck = true;
+            dungeonRoomArray[curId].RoomType = DunGeonRoomType.MainRoom;
+            DunGeonRoomSetting.RoomEventSet(dungeonRoomArray[curId]);
             remainRoom--;
 
             // 랜덤 방향
@@ -127,17 +126,17 @@ public class DunGeonMapGenerate : MonoBehaviour
             var rndCount = Random.Range(2, 6);
             var nextId = NextRoomId(curId, (DirectionInho)rnd);
             
-            DungeonRoomList[curId].nextRoomIdx = nextId;
+            dungeonRoomArray[curId].nextRoomIdx = nextId;
             if (remainRoom <= 0)
-                DungeonRoomList[curId].nextRoomIdx = -1;
+                dungeonRoomArray[curId].nextRoomIdx = -1;
             TestMapSet(nextId, (DirectionInho)rnd, rndCount);
         }
         else
         {
             roadCount--;
-            DungeonRoomList[curId].IsCheck = true;
-            DungeonRoomList[curId].RoomType = DunGeonRoomType.SubRoom;
-            DunGeonRoomSetting.RoomEventSet(DungeonRoomList[curId]);
+            dungeonRoomArray[curId].IsCheck = true;
+            dungeonRoomArray[curId].RoomType = DunGeonRoomType.SubRoom;
+            DunGeonRoomSetting.RoomEventSet(dungeonRoomArray[curId]);
 
             var perCent = Random.Range(0, 10);
             // 이전 방향과 같은 방향, 즉 직진
@@ -155,7 +154,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                 nextId = NextRoomId(curId, (DirectionInho)rnd);
             }
 
-            DungeonRoomList[curId].nextRoomIdx = nextId;
+            dungeonRoomArray[curId].nextRoomIdx = nextId;
             TestMapSet(nextId, lastDir, roadCount);
         }
         return;
@@ -166,56 +165,44 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (curId == -1)
             return false;
 
-        if (DungeonRoomList[curId].IsCheck == true)
+        if (dungeonRoomArray[curId].IsCheck == true)
             return false;
 
         return true;
     }
 
+    public string GetText(DungeonRoom roomInfo)
+    {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < roomInfo.eventList.Count; i++)
+        {
+            sb.Append(roomInfo.eventList[i].ToString());
+            sb.Append("\n");
+        }
+        return sb.ToString();
+    }
+
     public void CreateMapObject()
     {
-        //for (int i = 0; i < DungeonRoomList.Length; i++)
-        //{
-        //    if (DungeonRoomList[i].IsCheck)
-        //    {
-        //        if (DungeonRoomList[i].RoomType == DunGeonRoomType.MainRoom)
-        //        {
-        //            var obj = Instantiate(mainRoomPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
-        //                 , Quaternion.identity);
-        //            var text =  obj.GetComponent<TestObject>();
-        //            text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
-        //            mapObjectList.Add(obj);
-        //        }
-        //        else
-        //        {
-        //            var obj = Instantiate(roadPrefab, new Vector3(DungeonRoomList[i].Pos.x, DungeonRoomList[i].Pos.y, 0f)
-        //            , Quaternion.identity);
-        //            var text = obj.GetComponent<TestObject>();
-        //            text.text.SetText(DungeonRoomList[i].GetEvent().ToString());
-        //            mapObjectList.Add(obj);
-        //        }
-        //    }
-        //}
-
-        foreach(var room in testList)
+        foreach(var room in dungeonRoomList)
         {
             if (room.RoomType == DunGeonRoomType.MainRoom)
             {
                 var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
                      , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<TestObject>();
-                objectInfo.text.SetText(room.GetEvent().ToString());
+                var objectInfo = obj.GetComponent<RoomObject>();
+                objectInfo.text.SetText(GetText(room));
                 objectInfo.roomInfo = room;
-                mapObjectList.Add(obj);
+                dungeonRoomObjectList.Add(obj);
             }
             else
             {
                 var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
                 , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<TestObject>();
-                objectInfo.text.SetText(room.GetEvent().ToString());
+                var objectInfo = obj.GetComponent<RoomObject>();
+                objectInfo.text.SetText(GetText(room));
                 objectInfo.roomInfo = room;
-                mapObjectList.Add(obj);
+                dungeonRoomObjectList.Add(obj);
             }
         }
 
