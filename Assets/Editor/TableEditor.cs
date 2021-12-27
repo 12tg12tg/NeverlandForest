@@ -138,6 +138,7 @@ public class TableEditor : EditorWindow
     private void OnChangeCSV(string tableName, List<Dictionary<string, string>> tableList)
     {
         var firstElem = tableFirstElem[tableName];
-        CSVWriter.Writer(csvFilePath + tableName, firstElem, tableList);
+        var path = Path.Combine(csvFilePath, tableName);
+        CSVWriter.Writer(path, firstElem, tableList);
     }
 }

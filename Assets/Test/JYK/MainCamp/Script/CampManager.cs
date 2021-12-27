@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class MainManager : MonoBehaviour
+public class CampManager : MonoBehaviour
 {
     public enum CampEvent
     {
@@ -29,6 +30,7 @@ public class MainManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Cooking Scene");
+        SceneManager.LoadScene("Wt_Scene");
     }
 
     public void OpenInventoryWindow(object[] vals)

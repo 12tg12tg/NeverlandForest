@@ -332,6 +332,7 @@ public class WorldMap : MonoBehaviour
 
     public void Save()
     {
+        Vars.UserData.WorldMapNodeStruct.Clear();
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)

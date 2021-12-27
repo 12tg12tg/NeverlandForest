@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class SaveLoadManager : Singleton<SaveLoadManager>
 {
     PlayerSaveData_1 playerDate;
@@ -11,12 +10,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     TimeSaveData_0 timeData;
     DungeonMapSaveData_0 dungeonMapData;
     WorldMapSaveData_0 worldMapSaveData;
-
     private void Start()
     {
-        //SaveLoadSystem.Init();
+        //SaveLoadSystem.Init();	
     }
-
     public void Save(SaveLoadSystem.SaveType saveType)
     {
         switch (saveType)
@@ -41,7 +38,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
         }
     }
-
     public void Load(SaveLoadSystem.SaveType saveType)
     {
         switch (saveType)
@@ -66,14 +62,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
         }
     }
-
     private void SavePlayer()
     {
-
     }
     private void SaveOption()
     {
-
     }
     private void SaveDungeonMap()
     {
@@ -81,18 +74,17 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.dungeonMap = Vars.UserData.dungeonMapData;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
-
     private void SaveRecipe()
     {
         recipeData = new RecipeSaveData_0();
         recipeData.haveRecipe = Vars.UserData.HaveRecipeIDList;
-        SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Text,SaveLoadSystem.SaveType.Recipe);
+        SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
     }
     private void SaveTime()
     {
-        timeData = new TimeSaveData_0();
-        timeData.makeTime = Vars.UserData.MakeList;
-        SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+        //timeData = new TimeSaveData_0();
+        //timeData.makeTime = Vars.UserData.MakeList;
+        //SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
     }
     private void SaveWorldMap()
     {
@@ -100,34 +92,29 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         worldMapSaveData.MapNodeStruct = Vars.UserData.WorldMapNodeStruct;
         SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
     }
-   
+
     private void LoadPlayer()
     {
-
     }
     private void LoadOption()
     {
-
     }
     private void LoadRecipe()
     {
-        recipeData =(RecipeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
-
-        if (recipeData !=null)
+        recipeData = (RecipeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
+        if (recipeData != null)
         {
             Vars.UserData.HaveRecipeIDList = recipeData.haveRecipe;
-
         }
     }
     private void LoadTime()
     {
-        timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
-        if (timeData !=null)
-        {
-            Vars.UserData.MakeList = timeData.makeTime;
-        }
+        //timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+        //if (timeData != null)
+        //{
+        //    Vars.UserData.MakeList = timeData.makeTime;
+        //}
     }
-
     private void LoadDungeonMap()
     {
         dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
@@ -139,7 +126,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void LoadWorldMap()
     {
         worldMapSaveData = (WorldMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
-        if(worldMapSaveData != null)
+        if (worldMapSaveData != null)
         {
             Vars.UserData.WorldMapNodeStruct = worldMapSaveData.MapNodeStruct;
         }

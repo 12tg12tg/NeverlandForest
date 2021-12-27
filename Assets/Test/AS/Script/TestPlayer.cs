@@ -18,7 +18,7 @@ public class TestPlayer : MonoBehaviour
         totalMap = new MapNode[map.transform.childCount];
         for (int i = 0; i < map.transform.childCount; i++)
         {
-            totalMap[i] = map.transform.GetChild(i).gameObject.GetComponent<MapNode>();
+            totalMap[i] = map.transform.GetChild(i).GetComponent<MapNode>();
         }
         totalMap.OrderBy(n => n.level);
         currentIndex = totalMap[0].index;

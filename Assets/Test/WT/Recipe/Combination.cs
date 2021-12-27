@@ -1,7 +1,9 @@
-using TMPro;
-using UnityEngine;
 using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
 public class Combination : MonoBehaviour
 {
     private string fire;
@@ -15,12 +17,20 @@ public class Combination : MonoBehaviour
     public GameObject CheckCombination;
     public TextMeshProUGUI CheckCombinationText;
 
-    private string result ;
+    private string result;
     private AllItemTableElem item;
     private string[] time;
     private bool CookingStart = false;
-    private float MakingTime = 0f;
-    private Dictionary<string, float> WhatMakeWhenMake = new Dictionary<string, float>();
+    private float MakingTime=0f;
+/*    public struct Savefortime
+    {
+        public DateTime startTime;
+        public string MakeItem;
+    }
+    Savefortime save;
+    DateTime now;
+    DateTime after;*/
+
     public void Start()
     {
         recipeTable = DataTableManager.GetTable<RecipeDataTable>();
@@ -32,12 +42,11 @@ public class Combination : MonoBehaviour
     private void Update()
     {
         if (CookingStart)
-        {
+        {   
             MakingTime -= Time.deltaTime;
             //Debug.Log(MakingTime);
         }
-
-        if (MakingTime<0f)
+        if (MakingTime < 0f)
         {
             MakingTime = 0f;
             if (MakingTime == 0f && CookingStart)
@@ -50,18 +59,22 @@ public class Combination : MonoBehaviour
     }
     void OnGUI()
     {
+        if (GUILayout.Button("Main"))
+        {
+            SceneManager.LoadScene("JYK_Test_Main");
+        }
         if (GUILayout.Button("Start Cooking"))
         {
-            if (inventory.FireObject !=null)
+            if (inventory.FireObject != null)
                 fire = inventory.FireObject.DataItem.ItemTableElem.id;
-            if (inventory.CondimentObject !=null)
-            condiment = inventory.CondimentObject.DataItem.ItemTableElem.id;
-            if(inventory.MaterialObject !=null)
-            material = inventory.MaterialObject.DataItem.ItemTableElem.id;
-            if (fire!=null && condiment !=null && material !=null)
+            if (inventory.CondimentObject != null)
+                condiment = inventory.CondimentObject.DataItem.ItemTableElem.id;
+            if (inventory.MaterialObject != null)
+                material = inventory.MaterialObject.DataItem.ItemTableElem.id;
+            if (fire != null && condiment != null && material != null)
             {
                 //CheckCombinationText.text = "제작 시간은 2:00:00 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
-                if (recipeTable.ISCombine(condiment, material, out result, fire))
+                if (recipeTable.IsCombine(condiment, material, out result, fire))
                 {
                     CheckCombination.gameObject.SetActive(true); // 팝업창 띄우고 
                     time = recipeTable.IsMakingTime(result); // 시간받아오고 
@@ -69,40 +82,55 @@ public class Combination : MonoBehaviour
                                                              //레시피에 등록되어있는 아이템을 하는경우 시간이 뜨면서 만들것인지 체크
                     CheckCombinationText.text = $"제작 시간은 {time[0]}:{time[1]}:{time[2]} 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
                 }
-               
+
             }
         }
+
+    }
+
+    private void OnEnable()
+    {
+      /*  SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Time);
+        var list = Vars.UserData.MakeList;
+        for (int i = 0; i < list.Count; i++)
+        {
+           
+        }*/
+    }
+    private void OnDisable()
+    {
+        
     }
 
     public void YesICook()
     {
-        if (Application.internetReachability ==NetworkReachability.NotReachable)
+        if (Application.internetReachability == NetworkReachability.NotReachable)
         {
             //인터넷이 연결되어있지 않을 때 행동
-
+            //아예 기능을 막아버린다.
         }
-   /*   else if(Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
-        {
-            //데이터로 연결되어 있을 때의 행동
-        }
-   */
+        /*   else if(Application.internetReachability == NetworkReachability.ReachableViaCarrierDataNetwork)
+             {
+                 //데이터로 연결되어 있을 때의 행동
+             }
+        */
         else
         {
             //와이파이로 연결 되어 있을 때의 행동 (그냥 인터넷이 연결되어있을 때)
-            if (recipeTable.ISCombine(condiment, material, out result, fire))
+            if (recipeTable.IsCombine(condiment, material, out result, fire))
             {
                 CookingStart = true;
+
                 Debug.Log($"장비를 시작했을때의 시간 : {DateTime.Now}");
                 var hour = int.Parse(time[0]);
                 var minute = int.Parse(time[1]);
                 var second = int.Parse(time[2]);
                 MakingTime = hour * 60f * 60f + minute * 60f + second;
 
-                WhatMakeWhenMake.Add(result, MakingTime);
+                //SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Time);
 
                 var allitem = DataTableManager.GetTable<AllItemDataTable>();
                 item = allitem.GetData<AllItemTableElem>(result);
-            
                 CheckCombination.gameObject.SetActive(false); // 팝업창 끄고
 
             }
