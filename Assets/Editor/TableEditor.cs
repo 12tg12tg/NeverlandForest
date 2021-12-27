@@ -6,7 +6,7 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable" };
+    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
     private static string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -62,6 +62,9 @@ public class TableEditor : EditorWindow
                 break;
             case "AllItemDataTable":
                 break;
+            case "PlayerSkillTable":
+                ViewPlayerSkillData(tableList);
+                break;
         }
         GUIButton(tableList, tableType[typeIndex]);
     }
@@ -100,6 +103,39 @@ public class TableEditor : EditorWindow
         armorData["EVADE"] = EditorGUILayout.TextField("Evade", armorData["EVADE"]);
         armorData["BLOCK"] = EditorGUILayout.TextField("Block", armorData["BLOCK"]);
     }
+    private void ViewPlayerSkillData(List<Dictionary<string, string>> skillList)
+    {
+        // 에디터에서 보여주는 데이터들
+        var consumData = skillList[itemIndex];
+
+        var id = int.Parse(consumData["ID"]);
+        consumData["ID"] = EditorGUILayout.IntField("Id", id).ToString();
+
+        consumData["ICON_ID"] = EditorGUILayout.TextField("IconID", consumData["ICON_ID"]);
+
+        consumData["NAME"] = EditorGUILayout.TextField("Name", consumData["NAME"]);
+
+        var count = int.Parse(consumData["COUNT"]);
+        consumData["COUNT"] = EditorGUILayout.IntField("Count", count).ToString();
+
+        var damage = int.Parse(consumData["DAMAGE"]);
+        consumData["DAMAGE"] = EditorGUILayout.IntField("Damgae", damage).ToString();
+
+        var toggle = consumData["SIDE EFFECT"].Equals("O") ? true : false;
+        consumData["SIDE EFFECT"] = EditorGUILayout.Toggle("Side Effect", toggle) ? "O" : "X";
+
+        var shapeType = new string[] { "One", "Six", "Eight", "Nine", "Cross", "X" };
+        int shapeIndex = ArrayUtility.IndexOf(shapeType, consumData["RANGE SHAPE"]);
+        EditorGUILayout.Popup("TableType", shapeIndex, shapeType);
+        consumData["RANGE SHAPE"] = shapeType[shapeIndex];
+
+        var range = int.Parse(consumData["RANGE"]);
+        consumData["RANGE"] = EditorGUILayout.IntField("Range", range).ToString();
+
+        GUI.skin.textField.wordWrap = true;
+        consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));
+    }
+
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)
     {

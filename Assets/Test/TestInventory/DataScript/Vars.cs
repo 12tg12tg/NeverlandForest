@@ -9,7 +9,7 @@ public static class Vars
         new List<DataCunsumable>();
     private static List<DataWeapon> weaponItemList =
         new List<DataWeapon>();
-  
+
     public static List<DataCunsumable> ConsumableItemList
     {
         get

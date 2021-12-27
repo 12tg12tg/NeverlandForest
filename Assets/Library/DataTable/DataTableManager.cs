@@ -32,6 +32,10 @@ public static class DataTableManager
         recipeTable.Load();
         tables.Add(typeof(RecipeDataTable), recipeTable);
 
+        var playerSkillTable = new PlayerSkillTable();
+        playerSkillTable.Load();
+        tables.Add(typeof(PlayerSkillTable), playerSkillTable);
+
     }
 
     public static T GetTable<T>() where T : DataTableBase

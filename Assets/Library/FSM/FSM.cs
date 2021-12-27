@@ -28,6 +28,9 @@ public class FSM<T> : MonoBehaviour
     }
     public void ChangeState(T state)
     {
+        if (curState.Equals(state))
+            return;
+
         preState = curState;
         stateList[curState].Release();
 
