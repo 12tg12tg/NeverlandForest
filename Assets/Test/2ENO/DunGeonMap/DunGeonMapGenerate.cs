@@ -34,10 +34,9 @@ public class DunGeonMapGenerate : MonoBehaviour
     public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
 
-    public SaveLoadManager saveManager;
-
     public void Start()
     {
+        ConsumeManager.init();
         StartCoroutine(MapCorutine());
     }
 
@@ -67,11 +66,11 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         if (GUILayout.Button("SaveMap"))
         {
-            saveManager.Save(SaveLoadSystem.SaveType.DungeonMap);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.DungeonMap);
         }
         if (GUILayout.Button("LoadMap"))
         {
-            saveManager.Load(SaveLoadSystem.SaveType.DungeonMap);
+            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
             dungeonRoomArray = Vars.UserData.dungeonMapData;
             //DunGeonRoomSetting.DungeonLink(DungeonRoomList);
             DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);

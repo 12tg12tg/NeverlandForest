@@ -67,7 +67,6 @@ public class MapManagerTest : MonoBehaviour
                 break;
         }
     }
-    // 받은 room의 색은 원복, room의 next의 색을 변경
     public void SetCheckRoom(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
         var obj = dungeonGen.dungeonRoomObjectList.Find(x => x.roomInfo.Pos.Equals(curRoom.Pos));
@@ -85,6 +84,8 @@ public class MapManagerTest : MonoBehaviour
     }
     public void ChangeRoom(bool isEnd)
     {
+        ConsumeManager.TimeUp(1,0);
+
         if(isEnd)
         {
             beforeRoomInfo = curRoomInfo;
