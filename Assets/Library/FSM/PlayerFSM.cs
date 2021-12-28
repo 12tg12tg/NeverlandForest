@@ -17,7 +17,7 @@ public class PlayerFSM : FSM<PlayerState>
         AddState(PlayerState.Death, new DeathState());
         curstate = PlayerState.Idle;
         SetState(curstate);
-
+        
     }
     public override void Update()
     {
