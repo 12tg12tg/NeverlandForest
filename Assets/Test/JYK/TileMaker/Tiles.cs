@@ -7,9 +7,13 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
 {
     public MeshRenderer ren;
     public Vector2 index;
+    public bool isObstacle;
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log($"{index} Clicked!");
         ren.enabled = true;
     }
+
+  
+
 }
