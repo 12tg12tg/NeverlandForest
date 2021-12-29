@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-[Serializable]
 
+[Serializable]
 public class AllItemTableElem : DataTableElemBase
 {
     public string name;

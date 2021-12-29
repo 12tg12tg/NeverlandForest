@@ -4,18 +4,21 @@ using UnityEngine;
 
 public enum BattleState
 {
-    Idle, Player, Monster, Start, End,
+    Start, Player, Monster, Action, End,
 }
 
 public class BattleFSM : FSM<BattleState>
 {
+    public BattleManager manager;
+    public void GetManager() { }
+
     private void Start()
     {
-        AddState(BattleState.Idle, new BattleIdle());
-        AddState(BattleState.Player, new BattlePlayerTurn());
-        AddState(BattleState.Monster, new BattleMonsterTurn());
-        AddState(BattleState.Start, new BattleStart());
-        AddState(BattleState.End, new BattleEnd());
+        AddState(BattleState.Action, new BattleAction(manager));
+        AddState(BattleState.Player, new BattlePlayerTurn(manager));
+        AddState(BattleState.Monster, new BattleMonsterTurn(manager));
+        AddState(BattleState.Start, new BattleStart(manager));
+        AddState(BattleState.End, new BattleEnd(manager));
         SetState(BattleState.Start);
     }
 
@@ -25,27 +28,5 @@ public class BattleFSM : FSM<BattleState>
 
         
     }
-    private void OnGUI()
-    {
-        if (GUILayout.Button("Idle"))
-        {
-            ChangeState(BattleState.Idle);
-        }
-        if (GUILayout.Button("Player Turn"))
-        {
-            ChangeState(BattleState.Player);
-        }
-        if (GUILayout.Button("Monster Turn"))
-        {
-            ChangeState(BattleState.Monster);
-        }
-        if (GUILayout.Button("Battle Start"))
-        {
-            ChangeState(BattleState.Start);
-        }
-        if (GUILayout.Button("Battle End"))
-        {
-            ChangeState(BattleState.End);
-        }
-    }
+
 }

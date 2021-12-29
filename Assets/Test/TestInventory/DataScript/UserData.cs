@@ -22,8 +22,8 @@ public class UserData
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
     //public List<Combination.Savefortime> MakeList = new List<Combination.Savefortime>();
 
-    public static List<DataPlayerSkill> boySkillList =
-    new List<DataPlayerSkill>();
-    public static List<DataPlayerSkill> girlSkillList =
+    public List<DataPlayerSkill> boySkillList =
+        new List<DataPlayerSkill>();
+    public List<DataPlayerSkill> girlSkillList =
         new List<DataPlayerSkill>();
 }

@@ -57,7 +57,7 @@ public class PlayerSkillTable : DataTableBase
         var list = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
         foreach (var line in list.sc)
         {
-            var elem = new AllItemTableElem(line);
+            var elem = new PlayerSkillTableElem(line);
             data.Add(elem.id, elem);
         }
     }

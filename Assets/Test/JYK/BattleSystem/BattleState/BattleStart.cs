@@ -4,14 +4,19 @@ using UnityEngine;
 
 public class BattleStart : State<BattleState>
 {
+    private BattleManager manager;
     private float startDelay = 3f;
-    private float timer;
+    private bool isMessageEnd;
+
+    public BattleStart(BattleManager manager)
+    {
+        this.manager = manager;
+    }
 
     public override void Init()
     {
-        Debug.Log("Battle Start Init");
-
-        timer = 0f;
+        isMessageEnd = false;
+        manager.PrintMessage("전투시작", startDelay, () => isMessageEnd = true);
     }
 
     public override void Release()
@@ -21,12 +26,10 @@ public class BattleStart : State<BattleState>
 
     public override void Update()
     {
-        Debug.Log("Battle Start Update");
-
-        timer += Time.deltaTime;
-        if(timer > startDelay)
+        /*메세지 띄운 후 시작 연출*/
+        if (isMessageEnd)
         {
-            FSM.ChangeState(BattleState.Idle);
+            FSM.ChangeState(BattleState.Player);
         }
     }
 

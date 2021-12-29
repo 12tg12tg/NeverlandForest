@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class BattleEnd : State<BattleState>
 {
+    private BattleManager manager;
+    public BattleEnd(BattleManager manager)
+    {
+        this.manager = manager;
+    }
+
     public override void Init()
     {
         Debug.Log("Battle End Init");

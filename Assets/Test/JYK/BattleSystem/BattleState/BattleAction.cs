@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleIdle : State<BattleState>
+public class BattleAction : State<BattleState>
 {
+    private BattleManager manager;
+    public BattleAction(BattleManager manager)
+    {
+        this.manager = manager;
+    }
 
     public override void Init()
     {
