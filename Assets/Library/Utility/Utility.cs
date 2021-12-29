@@ -30,7 +30,7 @@ public class Utility
         }
     }
 
-    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time,UnityAction action)
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time,Action action)
     {
         float timer = 0f;
         while (timer < time)
