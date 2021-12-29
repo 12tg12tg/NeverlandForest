@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class Utility
 {
     public static List<T> Shuffle<T>(List<T> list)
@@ -30,6 +30,19 @@ public class Utility
         }
     }
 
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time,UnityAction action)
+    {
+        float timer = 0f;
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.position = Vector3.Lerp(start, end, ratio);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        action.Invoke();
+    }
     public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time)
     {
         float timer = 0f;
@@ -42,7 +55,6 @@ public class Utility
             yield return null;
         }
     }
-
     public static void ChildrenDestroy(GameObject gameObject)
     {
         var childList = gameObject.GetComponentsInChildren<Transform>();
