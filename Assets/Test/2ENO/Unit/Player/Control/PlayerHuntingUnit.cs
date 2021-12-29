@@ -22,8 +22,8 @@ public class PlayerHuntingUnit : UnitBase
     public void TileMove(Vector2 index, Vector3 position)
     {
         playerStat.Pos = tileMoveCoroutine == null ? index : playerStat.Pos;
-        tileMoveCoroutine ??= StartCoroutine(Utility.CoTranslate2(transform, transform.position, position, 1f,
-            TileMoveAnimation, () => tileMoveCoroutine = null));
+        //tileMoveCoroutine ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, position, 1f,
+        //    TileMoveAnimation, () => tileMoveCoroutine = null));
     }
 
     private void TileMoveAnimation(Vector3 pos, bool isMove, bool tileMoveEnd)
