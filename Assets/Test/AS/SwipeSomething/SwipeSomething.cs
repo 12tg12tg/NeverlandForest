@@ -8,8 +8,8 @@ public class SwipeSomething : MonoBehaviour
 {
     public TMP_Text tmp;
     public GameObject inventory;
+    public GameObject bar;
     private RectTransform inven;
-
 
     private bool isChange;
 
@@ -34,14 +34,17 @@ public class SwipeSomething : MonoBehaviour
     }
     private void Update()
     {
-        if (isChange)
-        {
-            Swipe();
-        }
-        else
-        {
-            Other();
-        }
+        Bar();
+        //if (isChange)
+        //{
+        //    Swipe();
+        //    tmp.text = "Swipe";
+        //}
+        //else
+        //{
+        //    Drag();
+        //    tmp.text = "Drag";
+        //}
     }
 
     public void OnChange() => isChange = !isChange;
@@ -53,7 +56,6 @@ public class SwipeSomething : MonoBehaviour
             pos.y >= minlocation && pos.y <= maxlocation)
         {
             var swipe = Camera.main.ScreenToViewportPoint(MultiTouch.Instance.Swipe);
-
             if (swipe.y >= swipeDistance && !inven.gameObject.activeSelf)
             {
                 inven.gameObject.SetActive(true);
@@ -62,7 +64,6 @@ public class SwipeSomething : MonoBehaviour
                     var startPos = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0f, 0f));
                     startPos.y -= inven.rect.height / 4;
                     inven.position = startPos;
-                    tmp.text = "Swipe";
                 }
                 coMove ??= StartCoroutine(Utility.CoTranslate(inven, inven.localPosition, Vector3.zero, tiemr, () => coMove = null));
 
@@ -70,7 +71,7 @@ public class SwipeSomething : MonoBehaviour
             }
         }
     }
-    private void Other()
+    private void Drag()
     {
         var startPos = Camera.main.ScreenToViewportPoint(MultiTouch.Instance.PrimaryStartPos);
         if (MultiTouch.Instance.TouchCount > 0)
@@ -87,7 +88,6 @@ public class SwipeSomething : MonoBehaviour
                     screenPos.y -= inven.rect.height / 4;
                     inven.position = screenPos;
                     this.startPos = inven.position;
-                    tmp.text = "Other";
                 }
                 inven.position = new Vector3(0f, -pos.y, 0f) * power + this.startPos;
             }
@@ -99,6 +99,16 @@ public class SwipeSomething : MonoBehaviour
 
             this.startPos = inven.position;
             MultiTouch.Instance.PrimaryStartPos = Vector2.zero; // 일단 임시로 해결방안 찾으면 바꿀 예정
+        }
+    }
+    private void Bar()
+    {
+        var startPos = Camera.main.ScreenToViewportPoint(MultiTouch.Instance.PrimaryStartPos);
+        Debug.Log(startPos);
+        if (startPos.x >= minlocation && startPos.x <= maxlocation &&
+            startPos.y >= minlocation && startPos.y <= maxlocation)
+        {
+
         }
     }
 }
