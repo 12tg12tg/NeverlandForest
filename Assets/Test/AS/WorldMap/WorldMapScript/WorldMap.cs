@@ -47,23 +47,28 @@ public class WorldMap : MonoBehaviour
     public GameObject cube;
     public GameObject line;
     public GameObject lines;
-    public TestPlayer player;
-    public Material material;
+    public GameObject fog;
+    public WorldMapPlayer player;
+    public WorldMapCamera worldMapCamera;
     
     public int column;
     public int row;
-    public MapNode[,] maps;
+    public WorldMapNode[,] maps;
     public List<Edge> edges = new List<Edge>();
 
-    private float posX = 2.5f;
-    private float posY = 5f;
+    private float posX = 5f;
+    private float posY = 15f;
 
     private bool isFirst = true; // ¸®·Ñ¿ë
     private bool isAllLinked = false;
 
+    public object[] day;
+    public int testDay = 0;
     private void Awake()
     {
         StartCoroutine(InitMap());
+
+        day = new object[1];
     }
 
     private void OnGUI()
@@ -84,13 +89,21 @@ public class WorldMap : MonoBehaviour
         }
         if (GUILayout.Button("MapLoad"))
         {
+            Utility.ChildrenDestroy(gameObject);
+            edges.Clear();
+            isAllLinked = false;
             Load();
         }
         if (GUILayout.Button("NextScene"))
         {
             SceneManager.LoadScene(4);
         }
-
+        if (GUILayout.Button("DayFog"))
+        {
+            testDay++;
+            day[0] = testDay;
+            FogComing(day);
+        }
     }
 
     private IEnumerator InitMap()
@@ -111,12 +124,13 @@ public class WorldMap : MonoBehaviour
         }
         isFirst = false;
         player.Init();
+        worldMapCamera.Init();
         PaintLink();
     }
 
     private void MapFirstCreateNode()
     {
-        maps = new MapNode[row, column];
+        maps = new WorldMapNode[row, column];
 
         var startEnd = Random.Range(0, row);
         
@@ -161,7 +175,7 @@ public class WorldMap : MonoBehaviour
     }
     private void MapRandomLink()
     {
-        var list = new List<MapNode>();
+        var list = new List<WorldMapNode>();
         
         for (int i = 0; i < column; i++)
         {
@@ -225,29 +239,6 @@ public class WorldMap : MonoBehaviour
             isAllLinked = false;
         }
     }
-    private void FindNode(List<MapNode> nodeList, int startIndex, int endIndex)
-    {
-        var end = endIndex + 1 > column  ? column : endIndex + 1;
-        for (int j = 0; j < row; j++)
-        {
-            for (int i = startIndex + 1; i < end; i++)
-            {
-                if (maps[j, i] == null)
-                    continue;
-                nodeList.Add(maps[j, i]);
-                break;
-            }
-        }
-    }
-    private void InitNode(out MapNode node, Vector2 index)
-    {
-        var go = Instantiate(cube, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
-        go.transform.SetParent(gameObject.transform);
-        node = go.AddComponent<MapNode>();
-        node.player = player;
-        node.index = index;
-    }
-
     private void PaintLink()
     {
         Utility.ChildrenDestroy(lines);
@@ -285,7 +276,42 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
-
+    public void FogComing(object[] day)
+    {
+        var now = (int)day[0];
+        if(now == 3)
+        {
+            fog = Instantiate(fog);
+        }
+        else if (now > 3)
+        {
+            fog.transform.position += new Vector3(posY, 0f, 0f);
+        }
+        Debug.Log(now);
+    }
+    private void InitNode(out WorldMapNode node, Vector2 index)
+    {
+        var go = Instantiate(cube, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
+        go.transform.SetParent(gameObject.transform);
+        node = go.AddComponent<WorldMapNode>();
+        node.difficulty = (Difficulty)Random.Range(0, 3);
+        node.player = player;
+        node.index = index;
+    }
+    private void FindNode(List<WorldMapNode> nodeList, int startIndex, int endIndex)
+    {
+        var end = endIndex + 1 > column  ? column : endIndex + 1;
+        for (int j = 0; j < row; j++)
+        {
+            for (int i = startIndex + 1; i < end; i++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+                nodeList.Add(maps[j, i]);
+                break;
+            }
+        }
+    }
     private bool ChackDot(int startRange, int endRange, Vector3 pos1, Vector3 pos2)
     {
         var end = endRange > column - 1 ? column : endRange;
@@ -302,7 +328,6 @@ public class WorldMap : MonoBehaviour
         }
         return false;
     }
-
     private bool ChackAllLinked()
     {
         for (int i = 0; i < column; i++)
@@ -321,7 +346,6 @@ public class WorldMap : MonoBehaviour
         }
         return true;
     }
-
     public bool IsCrossingLineToDot(Vector3 start, Vector3 end, Vector3 dot)
     {
         if (start.x < dot.x && dot.x < end.x)
@@ -329,9 +353,9 @@ public class WorldMap : MonoBehaviour
 
         return false;
     }
-
     public void Save()
     {
+        Vars.UserData.WorldMapNodeStruct.Clear();
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -343,13 +367,13 @@ public class WorldMap : MonoBehaviour
                 data.level = maps[j, i].level;
                 data.children = new List<Vector2>();
                 data.parent = new List<Vector2>();
-                for (int k = 0; k < maps[j, i].children.Count; k++)
+                for (int k = 0; k < maps[j, i].Children.Count; k++)
                 {
-                    data.children.Add(maps[j, i].children[k].index);
+                    data.children.Add(maps[j, i].Children[k].index);
                 }
-                for (int k = 0; k < maps[j, i].parent.Count; k++)
+                for (int k = 0; k < maps[j, i].Parent.Count; k++)
                 {
-                    data.parent.Add(maps[j, i].parent[k].index);
+                    data.parent.Add(maps[j, i].Parent[k].index);
                 }
                 Vars.UserData.WorldMapNodeStruct.Add(data);
             }
@@ -358,7 +382,7 @@ public class WorldMap : MonoBehaviour
     }
     public void Load()
     {
-        maps = new MapNode[row, column];
+        maps = new WorldMapNode[row, column];
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         for (int i = 0; i < column; i++)
@@ -389,11 +413,11 @@ public class WorldMap : MonoBehaviour
                         var parent = loadData[k].parent;
                         for (int h = 0; h < children.Count; h++)
                         {
-                            maps[j, i].children.Add(maps[(int)children[h].x, (int)children[h].y]);
+                            maps[j, i].Children.Add(maps[(int)children[h].x, (int)children[h].y]);
                         }
                         for (int h = 0; h < parent.Count; h++)
                         {
-                            maps[j, i].parent.Add(maps[(int)parent[h].x, (int)parent[h].y]);
+                            maps[j, i].Parent.Add(maps[(int)parent[h].x, (int)parent[h].y]);
                         }
                     }
                 }

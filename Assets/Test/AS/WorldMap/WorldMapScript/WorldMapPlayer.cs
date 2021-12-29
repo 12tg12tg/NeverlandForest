@@ -1,24 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
-using UnityEngine.SceneManagement;
 
-public class TestPlayer : MonoBehaviour
+public class WorldMapPlayer : MonoBehaviour
 {
     public GameObject map;
-    private MapNode[] totalMap;
-
+    private WorldMapNode[] totalMap;
+    private Coroutine coMove;
     private Vector2 currentIndex;
     public Vector2 CurrentIndex => currentIndex;
 
     public void Init()
     {
-        totalMap = new MapNode[map.transform.childCount];
+        totalMap = new WorldMapNode[map.transform.childCount];
         for (int i = 0; i < map.transform.childCount; i++)
         {
-            totalMap[i] = map.transform.GetChild(i).gameObject.GetComponent<MapNode>();
+            totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
         }
         totalMap.OrderBy(n => n.level);
         currentIndex = totalMap[0].index;
@@ -40,7 +37,7 @@ public class TestPlayer : MonoBehaviour
 
     public void PlayerWorldMap(Vector3 pos, Vector2 index)
     {
-        currentIndex = index;
-        StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f));
+        currentIndex = coMove == null ? index : currentIndex;
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f, () => coMove = null));
     }
 }

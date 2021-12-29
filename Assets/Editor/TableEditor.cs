@@ -6,8 +6,8 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
-    private static string csvFilePath = "Tables/";
+    private static readonly string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
+    private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
     private int itemIndex;
@@ -174,6 +174,7 @@ public class TableEditor : EditorWindow
     private void OnChangeCSV(string tableName, List<Dictionary<string, string>> tableList)
     {
         var firstElem = tableFirstElem[tableName];
-        CSVWriter.Writer(csvFilePath + tableName, firstElem, tableList);
+        var path = Path.Combine(csvFilePath, tableName);
+        CSVWriter.Writer(path, firstElem, tableList);
     }
 }
