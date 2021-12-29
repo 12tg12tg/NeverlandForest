@@ -9,14 +9,16 @@ public class TileMaker : MonoBehaviour
     public int row = 3;
     public int col = 7;
     public float spacing = 1f;
-    
-    private void Start()
-    {
+    private Tiles[,] allTiles;
+    private void Awake()
+    {   
+
         MakeTiles();
     }
 
     private void MakeTiles()
     {
+        allTiles = new Tiles[row, col];
         var bound = wholeTile.GetComponent<MeshRenderer>().bounds;
         var maxX = bound.max.x; //°¡·Î
         var minX = bound.min.x;
@@ -43,6 +45,7 @@ public class TileMaker : MonoBehaviour
                 Vector3 offset = new Vector3(x, startPos.y, z);
                 var go = CreateTileQuad(new Vector2(i, j), tileWidth, tileHeight);
                 go.transform.position = offset;
+               
             }
         }
     }
@@ -58,6 +61,7 @@ public class TileMaker : MonoBehaviour
         var tile = plane.AddComponent<Tiles>();
         tile.index = index;
         tile.ren = ren;
+        allTiles[(int)index.x, (int)index.y] = tile;
 
         var col = plane.AddComponent<MeshCollider>();
 
@@ -108,4 +112,36 @@ public class TileMaker : MonoBehaviour
 
         return plane;
     }
+    private void OnGUI()
+    {
+        if (GUILayout.Button("Obstacle"))
+        {
+            if (!IsObstacleTile(new Vector2(0,5)))
+            {
+                var ob = GetTile(new Vector2(0, 5));
+                ob.isObstacle = true;
+            }
+        }
+    }
+
+
+
+    public Tiles GetTile(Vector2 position)
+    {
+        if (IsValidTile(position))
+            return allTiles[(int)position.x, (int)position.y];
+        else return null;
+    }
+    public bool IsObstacleTile(Vector2 position)
+    {
+        return allTiles[(int)position.x, (int)position.y].isObstacle;
+    }
+
+    public bool IsValidTile(Vector2 tilePos)
+    {
+        var x = (int)tilePos.x;
+        var y = (int)tilePos.y;
+        return 0 <= x && x < row && y >= 0 && y < col;
+    }
+
 }
