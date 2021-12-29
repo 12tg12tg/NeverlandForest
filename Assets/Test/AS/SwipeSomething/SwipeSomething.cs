@@ -34,17 +34,17 @@ public class SwipeSomething : MonoBehaviour
     }
     private void Update()
     {
-        Bar();
-        //if (isChange)
-        //{
-        //    Swipe();
-        //    tmp.text = "Swipe";
-        //}
-        //else
-        //{
-        //    Drag();
-        //    tmp.text = "Drag";
-        //}
+        //Bar();
+        if (isChange)
+        {
+            Swipe();
+            tmp.text = "Swipe";
+        }
+        else
+        {
+            Drag();
+            tmp.text = "Drag";
+        }
     }
 
     public void OnChange() => isChange = !isChange;

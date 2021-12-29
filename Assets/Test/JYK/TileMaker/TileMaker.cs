@@ -2,33 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(-1)]
-public class HuntTilesMaker : MonoBehaviour
+public class TileMaker : MonoBehaviour
 {
-    public HuntPlayer player;
-    public GameObject cloak;
-
     public GameObject wholeTile;
     public Material material;
     public int row = 3;
     public int col = 7;
     public float spacing = 1f;
-    public int[] randomBush;
+    private Tiles[,] allTiles;
+    private void Awake()
+    {   
 
-    private void Start()
-    {
         MakeTiles();
     }
 
     private void MakeTiles()
     {
-        // ÀºÆó¹°
-        randomBush = new int[col - 2];
-        for (int i = 0; i < randomBush.Length; i++)
-        {
-            randomBush[i] = Random.Range(0, 3);
-        }
-
+        allTiles = new Tiles[row, col];
         var bound = wholeTile.GetComponent<MeshRenderer>().bounds;
         var maxX = bound.max.x; //°¡·Î
         var minX = bound.min.x;
@@ -38,8 +28,12 @@ public class HuntTilesMaker : MonoBehaviour
         var width = maxX - minX;
         var height = maxZ - minZ;
 
+        Debug.Log($"{width} {height}");
+
         var tileWidth = (width - spacing * (col + 1)) / col;
         var tileHeight = (height - spacing * (row + 1)) / row;
+
+        Debug.Log($"{tileWidth} {tileHeight}");
 
         var startPos = new Vector3(minX + tileWidth / 2, wholeTile.transform.position.y + 0.01f, minZ + tileHeight / 2);
         for (int i = 0; i < row; i++)
@@ -64,28 +58,17 @@ public class HuntTilesMaker : MonoBehaviour
 
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
-        var tile = plane.AddComponent<HuntTile>();
-        tile.player = player;
+        var tile = plane.AddComponent<Tiles>();
         tile.index = index;
         tile.ren = ren;
+        allTiles[(int)index.x, (int)index.y] = tile;
 
-        // ÀºÆó¹°
-        var bushIndex = (int)index.y;
-        if(bushIndex > 0 && bushIndex < col - 1)
-        {
-            if(randomBush[bushIndex - 1].Equals((int)index.x))
-            {
-                var go = Instantiate(cloak, tile.transform);
-                tile.cloak = go.GetComponent<Bush>();
-            }
-        }
-
-        var meshCol = plane.AddComponent<MeshCollider>();
+        var col = plane.AddComponent<MeshCollider>();
 
         var mesh = new Mesh();
         mf.mesh = mesh;
         ren.material = material;
-        meshCol.sharedMesh = mesh;
+        col.sharedMesh = mesh;
 
         var vertices  = new Vector3[4];
 
@@ -129,4 +112,36 @@ public class HuntTilesMaker : MonoBehaviour
 
         return plane;
     }
+    private void OnGUI()
+    {
+        if (GUILayout.Button("Obstacle"))
+        {
+            if (!IsObstacleTile(new Vector2(0,5)))
+            {
+                var ob = GetTile(new Vector2(0, 5));
+                ob.isObstacle = true;
+            }
+        }
+    }
+
+
+
+    public Tiles GetTile(Vector2 position)
+    {
+        if (IsValidTile(position))
+            return allTiles[(int)position.x, (int)position.y];
+        else return null;
+    }
+    public bool IsObstacleTile(Vector2 position)
+    {
+        return allTiles[(int)position.x, (int)position.y].isObstacle;
+    }
+
+    public bool IsValidTile(Vector2 tilePos)
+    {
+        var x = (int)tilePos.x;
+        var y = (int)tilePos.y;
+        return 0 <= x && x < row && y >= 0 && y < col;
+    }
+
 }
