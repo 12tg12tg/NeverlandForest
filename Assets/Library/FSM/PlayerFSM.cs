@@ -23,7 +23,7 @@ public class PlayerFSM : FSM<PlayerState>
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-             SetState(PlayerState.Idle);
+            SetState(PlayerState.Idle);
         }
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -36,12 +36,12 @@ public class PlayerFSM : FSM<PlayerState>
 
         Timer += Time.deltaTime;
 
-        if (Timer>3f)
+        if (Timer > 3f)
         {
             curstate = PlayerState.Move;
             ChangeState(curstate);
         }
-        if (Timer>7f)
+        if (Timer > 7f)
         {
             curstate = PlayerState.Death;
             ChangeState(curstate);

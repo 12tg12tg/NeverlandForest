@@ -57,8 +57,6 @@ public class HuntingPlayer : MonoBehaviour
                 StartCoroutine(Utility.CoTranslate(transform, transform.position, tiles[i].transform.position, 1f));
             }
         }
-
-
     }
 
 

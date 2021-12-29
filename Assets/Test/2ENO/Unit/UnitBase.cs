@@ -7,7 +7,7 @@ public class UnitBase : MonoBehaviour
     private int hp;
     private int atk;
     private int eva;
-    private int pos;
+    private Vector2 pos;
 
     public int Hp
     {
@@ -36,7 +36,7 @@ public class UnitBase : MonoBehaviour
         }
     }
 
-    public int Pos
+    public Vector2 Pos
     {
         get => pos;
         set => pos = value;

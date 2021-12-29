@@ -133,6 +133,9 @@ public class MultiTouch : Singleton<MultiTouch>
                 IsTap = true;
                 break;
         }
+        // 임시추가
+        primaryPos = context.ReadValue<Vector2>();
+        Debug.Log(primaryPos);
     }
 
     public void OnPrimaryPosition(InputAction.CallbackContext context)

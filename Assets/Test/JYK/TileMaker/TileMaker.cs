@@ -5,7 +5,8 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class TileMaker : MonoBehaviour
 {
-    public HuntingPlayer player;
+    //public HuntingPlayer player;
+    public PlayerHuntingUnit player;
 
     public GameObject wholeTile;
     public Material material;

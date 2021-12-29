@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Utility
 {
@@ -41,6 +42,22 @@ public class Utility
             timer += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public static IEnumerator CoTranslate2(Transform transform, Vector3 start, Vector3 end, float time, UnityAction<Vector3, bool, bool> mathod, UnityAction action = null)
+    {
+        float timer = 0f;
+        mathod.Invoke(end, true, false);
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.position = Vector3.Lerp(start, end, ratio);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        mathod.Invoke(end, false, true);
+        action?.Invoke();
     }
 
     public static void ChildrenDestroy(GameObject gameObject)
