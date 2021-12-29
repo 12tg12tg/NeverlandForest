@@ -10,6 +10,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     TimeSaveData_0 timeData;
     DungeonMapSaveData_0 dungeonMapData;
     WorldMapSaveData_0 worldMapSaveData;
+    ConsumableSaveData_0 consumableSaveData;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -93,6 +94,17 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMap);
     }
 
+    private void SaveConsumableData()
+    {
+        consumableSaveData = new ConsumableSaveData_0();
+        consumableSaveData.curStamina = ConsumeManager.CurStamina;
+        consumableSaveData.curStaminaState = ConsumeManager.CurStaminaState;
+        consumableSaveData.curIngameHour = ConsumeManager.CurIngameHour;
+        consumableSaveData.curIngameMinute = ConsumeManager.CurIngameMinute;
+        consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
+        consumableSaveData.date = ConsumeManager.Date;
+    }
+
     private void LoadPlayer()
     {
     }
@@ -129,6 +141,20 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (worldMapSaveData != null)
         {
             Vars.UserData.WorldMapNodeStruct = worldMapSaveData.MapNodeStruct;
+        }
+    }
+
+    private void LoadConsumableData()
+    {
+        consumableSaveData = (ConsumableSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
+        if (consumableSaveData != null)
+        {
+            ConsumeManager.CurStamina = consumableSaveData.curStamina;
+            ConsumeManager.CurStaminaState = consumableSaveData.curStaminaState;
+            ConsumeManager.CurIngameHour = consumableSaveData.curIngameHour;
+            ConsumeManager.CurIngameMinute = consumableSaveData.curIngameMinute;
+            ConsumeManager.CurTimeState = consumableSaveData.curTimeState;
+            ConsumeManager.Date = consumableSaveData.date;
         }
     }
 }
