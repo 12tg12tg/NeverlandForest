@@ -21,7 +21,9 @@ public class MultiTouch : Singleton<MultiTouch>
     public float minZoomInch = 0.2f;
     public float maxZoomInch = 0.5f;
 
-    public Vector2 TapPosition { get => primaryPos; }
+
+    public int TouchCount { get; private set; }
+    //public Vector2 TapPosition { get => PrimaryPos; } 
 
     public bool IsTap { get; private set; }
 
@@ -35,11 +37,18 @@ public class MultiTouch : Singleton<MultiTouch>
 
     public float RotateAngle { get; private set; }
 
+    public Vector2 PrimaryStartPos { get; set; }
+
+    public Vector2 PrimaryPos { get; private set; }
+
+    private float primaryStartTime;
+
+
     private void Awake()
     {
         touchInput = new TouchInput();
         minSwipeDistancePixels = Screen.dpi * minSwipeDistanceInch; //픽셀계산.
-        TouchSimulation.Enable();
+        //TouchSimulation.Enable(); // 얘가 없어야 멀티터치랑 3D 오브젝트 터치가 시뮬레이터에서 인식 된다
     }
 
     private void OnEnable()
@@ -64,6 +73,7 @@ public class MultiTouch : Singleton<MultiTouch>
     private void Update()
     {
         var touchList = NewTouch.activeTouches;
+        TouchCount = touchList.Count;
         if (touchList.Count == 2)
         {
             UpdateDoubleTouch(touchList);
@@ -105,13 +115,13 @@ public class MultiTouch : Singleton<MultiTouch>
 
     public void OnPrimaryStarted(InputAction.CallbackContext context)
     {
-        primaryStartPos = primaryPos;
+        PrimaryStartPos = PrimaryPos;
         primaryStartTime = (float)context.startTime;
     }
     public void OnPrimaryEnded(InputAction.CallbackContext context)
     {
-        var primaryEndPos = primaryPos;
-        var delta = primaryEndPos - primaryStartPos;
+        var primaryEndPos = PrimaryPos;
+        var delta = primaryEndPos - PrimaryStartPos;
         var duration = context.time - primaryStartTime;
         if (delta.magnitude > minSwipeDistancePixels && duration < maxSwipeTime)
         {
@@ -137,12 +147,10 @@ public class MultiTouch : Singleton<MultiTouch>
 
     public void OnPrimaryPosition(InputAction.CallbackContext context)
     {
-        primaryPos = context.ReadValue<Vector2>();
+        PrimaryPos = context.ReadValue<Vector2>();
     }
 
-    private Vector2 primaryStartPos;
-    private Vector2 primaryPos;
-    private float primaryStartTime;
+    
 
     private void LateUpdate()
     {

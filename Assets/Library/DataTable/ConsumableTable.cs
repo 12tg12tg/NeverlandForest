@@ -20,10 +20,7 @@ public class ConsumableTableElem : DataTableElemBase // 얘는 ID 용도
     public float duration;
 
     private Sprite iconSprite;
-    public Sprite IconSprite
-    {
-        get { return iconSprite; }
-    }
+    public Sprite IconSprite => iconSprite;
     public ConsumableTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
@@ -43,10 +40,7 @@ public class ConsumableTableElem : DataTableElemBase // 얘는 ID 용도
 
 public class ConsumableTable : DataTableBase
 {
-    public ConsumableTable()
-    {
-        csvFilePath = "ConsumDataTable"; // csv파일 이름
-    }
+    public ConsumableTable() => csvFilePath = "ConsumDataTable";
 
     public override void Load()
     {

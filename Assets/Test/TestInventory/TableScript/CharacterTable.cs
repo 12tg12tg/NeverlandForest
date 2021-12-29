@@ -18,19 +18,13 @@ public class CharacterTableElem : DataTableElemBase
 	public int statDex;
 	public int statInt;
 	public int statLuk;
-	private Sprite iconSprite;
 
-	public Sprite IconSprite
-	{
-		get { return iconSprite; }
-	}
+	private Sprite iconSprite;
+	public Sprite IconSprite => iconSprite;
 
 	private Sprite profileSprite;
+	public Sprite ProfileSprite => profileSprite;
 
-	public Sprite ProfileSprite
-	{
-		get { return profileSprite; }
-	}
 	public CharacterTableElem(Dictionary<string, string> data) :base(data)
 	{
 		id = data["ID"];
@@ -58,10 +52,7 @@ public class CharacterTableElem : DataTableElemBase
 
 public class CharacterTable : DataTableBase
 {
-	public CharacterTable()
-	{
-		csvFilePath = "CharacterDataTable";
-	}
+	public CharacterTable() => csvFilePath = "CharacterDataTable";
 	public override void Load()
 	{
 		data.Clear();

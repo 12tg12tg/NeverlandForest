@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [DefaultExecutionOrder(-1)]
-public class TileMaker : MonoBehaviour
+public class HuntTilesMaker : MonoBehaviour
 {
-    public HuntingPlayer player;
+    public HuntPlayer player;
+    public GameObject cloak;
 
     public GameObject wholeTile;
     public Material material;
     public int row = 3;
     public int col = 7;
     public float spacing = 1f;
-    
+
+    public int[] randomBush;
+
     private void Start()
     {
         MakeTiles();
@@ -20,6 +23,13 @@ public class TileMaker : MonoBehaviour
 
     private void MakeTiles()
     {
+        // 은폐물
+        randomBush = new int[col - 2];
+        for (int i = 0; i < randomBush.Length; i++)
+        {
+            randomBush[i] = Random.Range(0, 3);
+        }
+
         var bound = wholeTile.GetComponent<MeshRenderer>().bounds;
         var maxX = bound.max.x; //가로
         var minX = bound.min.x;
@@ -29,12 +39,12 @@ public class TileMaker : MonoBehaviour
         var width = maxX - minX;
         var height = maxZ - minZ;
 
-        Debug.Log($"{width} {height}");
+        //Debug.Log($"{width} {height}");
 
         var tileWidth = (width - spacing * (col + 1)) / col;
         var tileHeight = (height - spacing * (row + 1)) / row;
 
-        Debug.Log($"{tileWidth} {tileHeight}");
+        //Debug.Log($"{tileWidth} {tileHeight}");
 
         var startPos = new Vector3(minX + tileWidth / 2, wholeTile.transform.position.y + 0.01f, minZ + tileHeight / 2);
         for (int i = 0; i < row; i++)
@@ -53,22 +63,34 @@ public class TileMaker : MonoBehaviour
 
     private GameObject CreateTileQuad(Vector2 index, float width, float height)
     {
+
         GameObject plane = new GameObject("Tile Plane");  //빈 게임오브젝트 생성
         plane.transform.SetParent(transform);
 
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
-        var tile = plane.AddComponent<Tiles>();
+        var tile = plane.AddComponent<HuntTile>();
         tile.player = player;
         tile.index = index;
         tile.ren = ren;
 
-        var col = plane.AddComponent<MeshCollider>();
+        // 은폐물
+        var bushIndex = (int)index.y;
+        if(bushIndex > 0 && bushIndex < col - 1)
+        {
+            if(randomBush[bushIndex - 1].Equals((int)index.x))
+            {
+                var go = Instantiate(cloak, tile.transform);
+                tile.cloak = go.GetComponent<Bush>();
+            }
+        }
+
+        var meshCol = plane.AddComponent<MeshCollider>();
 
         var mesh = new Mesh();
         mf.mesh = mesh;
         ren.material = material;
-        col.sharedMesh = mesh;
+        meshCol.sharedMesh = mesh;
 
         var vertices  = new Vector3[4];
 

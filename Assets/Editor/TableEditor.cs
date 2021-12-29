@@ -6,8 +6,8 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable" };
-    private static string csvFilePath = "Tables/";
+    private static readonly string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable" };
+    private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
     private int itemIndex;
