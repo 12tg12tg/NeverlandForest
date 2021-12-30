@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class Animal : MonoBehaviour
 {
@@ -18,19 +19,20 @@ public class Animal : MonoBehaviour
     public void Escaping()
     {
         // 플레이어가 이동할 때 마다 호출 되어야 하는 메서드
-        if (Random.Range(0f, 1f) > escapePercent * 0.01f)
+        var rnd = Random.Range(0f, 1f);
+        if (rnd < escapePercent * 0.01f)
         {
-            Debug.Log($"현재 확률: {escapePercent} 동물 도망 실패");
-        }
-        else
-        {
-            Debug.Log($"현재 확률: {escapePercent} 동물 도망 성공");
+            Debug.Log($"{rnd} 현재 확률: {escapePercent * 0.01f} 동물 도망 성공");
 
             resultPopUp.SetActive(true);
             var tm = resultPopUp.transform.GetChild(0).GetComponent<TMP_Text>();
             tm.text = "The Animal Run Away";
             
             StartCoroutine(Utility.CoSceneChange("2ENO_RandomMap", 3f));
+        }
+        else
+        {
+            Debug.Log($"{rnd} 현재 확률: {escapePercent * 0.01f} 동물 도망 실패");
         }
     }
     public void EscapingPercentageUp()
