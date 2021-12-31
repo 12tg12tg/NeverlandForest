@@ -6,22 +6,22 @@ public class EndPos : MonoBehaviour
 {
     public bool isLastPos;
 
-    private MapManagerTest mapManager;
+    private DungeonSystem dungeonSystem;
 
     void Start()
     {
-        mapManager = GameObject.FindWithTag("MapManager").GetComponent<MapManagerTest>();
+        dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
     }
 
     public void OnTriggerEnter(Collider other)
     {
         if(isLastPos)
         {
-            mapManager.ChangeRoom(true);
+            dungeonSystem.ChangeRoomEvent(true);
         }
         else
         {
-            mapManager.ChangeRoom(false);
+            dungeonSystem.ChangeRoomEvent(false);
         }
     }
 
