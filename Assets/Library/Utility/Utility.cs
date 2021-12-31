@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class Utility
 {
+    public static UnityAction arg0Event;
+    public static UnityAction<object> arg1Event;
+    public static UnityAction<object, object> arg2Event;
 
     public static IEnumerator CoRotate(Transform transform, Quaternion start, Quaternion end, float time)
     {
@@ -31,6 +35,27 @@ public class Utility
             yield return null;
         }
         action?.Invoke();
+    }
+
+    public static IEnumerator CoTranslate2(Transform transform, Vector3 start, Vector3 end, float time, Vector3 lookDir, Action action = null)
+    {
+        Debug.Log(transform.gameObject.name, transform.gameObject);
+        float timer = 0f;
+        var dir = Vector3.Normalize(end - start);
+        arg1Event?.Invoke(true);
+        transform.rotation = Quaternion.LookRotation(dir);
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.position = Vector3.Lerp(start, end, ratio);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        action?.Invoke();
+        arg0Event?.Invoke();
+        transform.rotation = Quaternion.Euler(lookDir);
+        arg1Event?.Invoke(false);
     }
 
     public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, Action action = null)

@@ -123,121 +123,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &185031595
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 185031599}
-  - component: {fileID: 185031598}
-  - component: {fileID: 185031597}
-  - component: {fileID: 185031596}
-  - component: {fileID: 185031600}
-  m_Layer: 0
-  m_Name: Player
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!136 &185031596
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185031595}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.81
-  m_Height: 3.41
-  m_Direction: 1
-  m_Center: {x: -0.04, y: 0, z: 0}
---- !u!23 &185031597
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185031595}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &185031598
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185031595}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &185031599
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185031595}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 1.49, z: -3.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &185031600
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 185031595}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &216066727
 GameObject:
   m_ObjectHideFlags: 0
@@ -269,7 +154,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 438457895}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -320,10 +205,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 388943631}
+  - component: {fileID: 388943632}
   - component: {fileID: 388943630}
   m_Layer: 0
-  m_Name: Dungeon
-  m_TagString: Dungeon
+  m_Name: DungeonSystem
+  m_TagString: DungeonSystem
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -340,820 +226,1613 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2c2c06bb2a0a0843b0b9e845cae41b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 7
-  startId: 100
-  col: 20
-  roomCount: 6
-  remainRoom: 4
   direction: 0
   mainRoomPrefab: {fileID: 2648536484572839898, guid: 702e36fe9bf1c7547af28d0be4fa6336, type: 3}
   roadPrefab: {fileID: 4511944954999672932, guid: f45fc04f1042acc4cb91c46c38deeb4a, type: 3}
   mapPos: {fileID: 1024494425}
-  isSet: 0
   dungeonRoomArray:
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
-    nextRoadCount: 0
-  - nextRoomIdx: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
+    nextRoadCount: 0
+  - eventList: 
+    roomIdx: 0
+    nextRoomIdx: 0
     nextRoadCount: 0
   dungeonRoomList: []
   dungeonRoomObjectList: []
-  saveManager: {fileID: 1053012678}
 --- !u!4 &388943631
 Transform:
   m_ObjectHideFlags: 0
@@ -1169,6 +1848,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &388943632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 388943629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebc1fc8d5018fce4abcd71b674e885ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roomPrefab:
+  - {fileID: 810640554}
+  - {fileID: 7584246905361125056}
+  - {fileID: 4695159423563187973}
+  - {fileID: 8093582564620863380}
+  - {fileID: 6960739314580329662}
+  eventObjectPrefab: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
+  text: {fileID: 585348767}
+  dungeonPlayer: {fileID: 1660251649}
+  GatheringSystem: {fileID: 2104294271}
 --- !u!1 &438457891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1261,10 +1962,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 887364344}
   - {fileID: 585348766}
   - {fileID: 216066728}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1302,7 +2004,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 438457895}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1405,6 +2107,140 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 585348765}
+  m_CullTransparentMesh: 1
+--- !u!1 &612631853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 612631854}
+  - component: {fileID: 612631857}
+  - component: {fileID: 612631856}
+  - component: {fileID: 612631855}
+  m_Layer: 5
+  m_Name: No
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &612631854
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612631853}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1002002885}
+  m_Father: {fileID: 970942190}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: -175}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &612631855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612631853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 612631856}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2104294271}
+        m_TargetAssemblyTypeName: gathering, Assembly-CSharp
+        m_MethodName: NoIDonGathering
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &612631856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612631853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &612631857
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 612631853}
   m_CullTransparentMesh: 1
 --- !u!1 &625113834
 GameObject:
@@ -1511,6 +2347,351 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e0c5bc8e88d9243a4857e529007f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &887364343
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 887364344}
+  - component: {fileID: 887364347}
+  - component: {fileID: 887364346}
+  - component: {fileID: 887364345}
+  m_Layer: 5
+  m_Name: GatheringOk
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &887364344
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887364343}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 970942190}
+  m_Father: {fileID: 438457895}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &887364345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887364343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &887364346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887364343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &887364347
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 887364343}
+  m_CullTransparentMesh: 1
+--- !u!1 &970942189
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 970942190}
+  - component: {fileID: 970942193}
+  - component: {fileID: 970942192}
+  - component: {fileID: 970942191}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &970942190
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970942189}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1039577364}
+  - {fileID: 1290839601}
+  - {fileID: 612631854}
+  m_Father: {fileID: 887364344}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 380.5, y: -214.00002}
+  m_SizeDelta: {x: 400, y: 200}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &970942191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970942189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 10
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &970942192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970942189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &970942193
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 970942189}
+  m_CullTransparentMesh: 1
+--- !u!1 &1002002884
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1002002885}
+  - component: {fileID: 1002002887}
+  - component: {fileID: 1002002886}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1002002885
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002002884}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 612631854}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1002002886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002002884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\uC544\uB2C8\uC694."
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_sharedMaterial: {fileID: 4696221850651074432, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1002002887
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002002884}
+  m_CullTransparentMesh: 1
 --- !u!1 &1024494425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1541,8 +2722,170 @@ Transform:
   m_Children:
   - {fileID: 1289931474}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1039577363
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1039577364}
+  - component: {fileID: 1039577367}
+  - component: {fileID: 1039577366}
+  - component: {fileID: 1039577365}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1039577364
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039577363}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 970942190}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: -45}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1039577365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039577363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
+--- !u!114 &1039577366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039577363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: New Text
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_sharedMaterial: {fileID: 4696221850651074432, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4279374355
+  m_fontColor: {r: 0.0754717, g: 0.07155571, b: 0.07155571, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 30
+  m_fontSizeBase: 30
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1039577367
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1039577363}
+  m_CullTransparentMesh: 1
 --- !u!1 &1053012677
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,7 +2928,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1058215667
 PrefabInstance:
@@ -1594,14 +2937,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1163355826589887314, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
-      propertyPath: eventObj
-      value: 
-      objectReference: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-    - target: {fileID: 1163355826589887314, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
-      propertyPath: spawnPos
-      value: 
-      objectReference: {fileID: 1058215668}
     - target: {fileID: 4663217701123318138, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
       propertyPath: m_Name
       value: MainRoom
@@ -1612,7 +2947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5457698884079939450, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5457698884079939450, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1656,11 +2991,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
---- !u!1 &1058215668 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4296374505344579308, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
-  m_PrefabInstance: {fileID: 1058215667}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1226712150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1677,7 +3007,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1226712151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1690,20 +3020,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b993d050c64c8944b212d571a8f8b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainRoomPrefab: {fileID: 810640554}
-  roadRoom2Prefab: {fileID: 7584246905361125056}
-  roadRoom3Prefab: {fileID: 4695159423563187973}
-  roadRoom4Prefab: {fileID: 8093582564620863380}
-  roadRoom5Prefab: {fileID: 6960739314580329662}
-  curRoomInfo:
-    nextRoomIdx: 0
-    nextRoadCount: 0
-  beforeRoomInfo:
-    nextRoomIdx: 0
-    nextRoadCount: 0
-  player: {fileID: 185031595}
-  dungeonGen: {fileID: 388943630}
-  text: {fileID: 585348767}
 --- !u!4 &1226712152
 Transform:
   m_ObjectHideFlags: 0
@@ -1717,7 +3033,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1289931473
 GameObject:
@@ -1807,7 +3123,390 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c0cd07fffb63144b67867c6cb0e9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapManager: {fileID: 1226712151}
+--- !u!1 &1290839600
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1290839601}
+  - component: {fileID: 1290839604}
+  - component: {fileID: 1290839603}
+  - component: {fileID: 1290839602}
+  m_Layer: 5
+  m_Name: Yes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1290839601
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290839600}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1683828077}
+  m_Father: {fileID: 970942190}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: -115}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1290839602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290839600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1290839603}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2104294271}
+        m_TargetAssemblyTypeName: gathering, Assembly-CSharp
+        m_MethodName: YesIGathering
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1290839603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290839600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1290839604
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1290839600}
+  m_CullTransparentMesh: 1
+--- !u!1001 &1660251643
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5373660537789497079, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_Name
+      value: TestPlayerDungeon
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+--- !u!1 &1660251644 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5373660537789497079, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+  m_PrefabInstance: {fileID: 1660251643}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &1660251645
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660251644}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &1660251646
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660251644}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.25
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.57, z: 0}
+--- !u!114 &1660251649 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3896487010923381921, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
+  m_PrefabInstance: {fileID: 1660251643}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660251644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67a5253dd039a154aa8a8ebd5836fb41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1683828076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1683828077}
+  - component: {fileID: 1683828079}
+  - component: {fileID: 1683828078}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1683828077
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683828076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1290839601}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1683828078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683828076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: "\uC608."
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_sharedMaterial: {fileID: 4696221850651074432, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4281479730
+  m_fontColor: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 24
+  m_fontSizeBase: 24
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1683828079
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683828076}
+  m_CullTransparentMesh: 1
 --- !u!1 &1926325744
 GameObject:
   m_ObjectHideFlags: 0
@@ -1833,7 +3532,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1926325744}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
@@ -1873,8 +3572,55 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2104294269
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2104294270}
+  - component: {fileID: 2104294271}
+  m_Layer: 0
+  m_Name: GatheringSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2104294270
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104294269}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 380.5, y: 214.00002, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2104294271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2104294269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42b5a557cd7cfaa4ab6f53b598545749, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1660251649}
+  gatheringPanel: {fileID: 887364343}
+  text: {fileID: 1039577366}
 --- !u!1 &2117095897
 GameObject:
   m_ObjectHideFlags: 0
@@ -1886,6 +3632,7 @@ GameObject:
   - component: {fileID: 2117095900}
   - component: {fileID: 2117095899}
   - component: {fileID: 2117095898}
+  - component: {fileID: 2117095901}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1959,11 +3706,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 28.36, y: 270, z: 0}
---- !u!1 &3815094686546950046 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4946040986898395149, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
-  m_PrefabInstance: {fileID: 8093582564620863379}
+--- !u!114 &2117095901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117095897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &4695159423563187972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1975,9 +3733,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoadRoom3
       objectReference: {fileID: 0}
+    - target: {fileID: 2817708107953157715, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4681140411966140738, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4681140411966140738, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2019,14 +3781,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7457345414972346445, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
-      propertyPath: eventObj
-      value: 
-      objectReference: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-    - target: {fileID: 7457345414972346445, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
-      propertyPath: spawnPos
-      value: 
-      objectReference: {fileID: 5832142450741767353}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
 --- !u!114 &4695159423563187973 stripped
@@ -2040,16 +3794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e0c5bc8e88d9243a4857e529007f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &4942887021610929164 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3303392449915110067, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
-  m_PrefabInstance: {fileID: 7584246905361125055}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5832142450741767353 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1281098404235029437, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
-  m_PrefabInstance: {fileID: 4695159423563187972}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6960739314580329661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2061,9 +3805,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoadRoom5
       objectReference: {fileID: 0}
+    - target: {fileID: 4587492269795797699, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6360851885476933074, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6360851885476933074, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2105,14 +3853,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9093845614979025217, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
-      propertyPath: eventObj
-      value: 
-      objectReference: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-    - target: {fileID: 9093845614979025217, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
-      propertyPath: spawnPos
-      value: 
-      objectReference: {fileID: 7633155797368300432}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
 --- !u!114 &6960739314580329662 stripped
@@ -2141,21 +3881,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5110320126270374072, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6287933399187833769, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
-      propertyPath: eventObj
-      value: 
-      objectReference: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-    - target: {fileID: 6287933399187833769, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
-      propertyPath: spawnPos
-      value: 
-      objectReference: {fileID: 4942887021610929164}
     - target: {fileID: 9000903173978576972, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 9000903173978576972, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2210,11 +3938,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5e0c5bc8e88d9243a4857e529007f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7633155797368300432 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 682270361918764845, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
-  m_PrefabInstance: {fileID: 6960739314580329661}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8093582564620863379
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2224,7 +3947,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1554443650456480498, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1554443650456480498, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2266,14 +3989,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5040328884513767373, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
-      propertyPath: eventObj
-      value: 
-      objectReference: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-    - target: {fileID: 5040328884513767373, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
-      propertyPath: spawnPos
-      value: 
-      objectReference: {fileID: 3815094686546950046}
     - target: {fileID: 8250098349457239523, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
       propertyPath: m_Name
       value: RoadRoom4

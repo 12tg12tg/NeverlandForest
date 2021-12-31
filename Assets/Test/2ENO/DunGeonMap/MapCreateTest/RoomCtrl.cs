@@ -6,14 +6,17 @@ public class RoomCtrl : MonoBehaviour
 {
     public GameObject spawnPos;
     public GameObject[] evnetObjPos;
-    public GameObject eventObjPrefab;
-
-    public List<DungeonRoom> curRoomInfoList = new List<DungeonRoom>();
+    //public GameObject eventObjPrefab;
 
     private List<Vector3> posCheckList = new List<Vector3>();
-    private List<GameObject> eventObjList = new List<GameObject>();
-    void Start()
+    public List<GameObject> eventObjList = new List<GameObject>();
+
+    public DungeonSystem dungeonSystem;
+
+    private void OnEnable()
     {
+        dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
+
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
 
         for (int i = 0; i < childEnd.Length; i++)
@@ -40,9 +43,8 @@ public class RoomCtrl : MonoBehaviour
         return true;
     }
 
-    public void CreateAllEventObject(List<DungeonRoom> roomInfoList)
+    public void CreateAllEventObject(List<DungeonRoom> roomInfoList, GameObject eventObjPrefab)
     {
-        int tempCount = 0;
         for (int i = 0; i < roomInfoList.Count; i++)
         {
             for (int j = 0; j < roomInfoList[i].eventList.Count; j++)
@@ -53,19 +55,13 @@ public class RoomCtrl : MonoBehaviour
                 if(!PositionCheck(rndPos))
                 {
                     j--;
-                    tempCount++;
-                    if(tempCount > 200)
-                    {
-                        Debug.Log("무한루프");
-                        return;
-                    }    
                     continue;
                 }
                 
                 posCheckList.Add(rndPos);
 
                 var eventObj = Instantiate(eventObjPrefab, rndPos, Quaternion.identity);
-                eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j]);
+                eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j], dungeonSystem, rndPos);
 
                 eventObjList.Add(eventObj);
             }
@@ -74,6 +70,8 @@ public class RoomCtrl : MonoBehaviour
 
     public void DestroyAllEventObject()
     {
+        if (eventObjList.Count <= 0)
+            return;
         for(int i=0; i< eventObjList.Count; i++)
         {
             Destroy(eventObjList[i]);

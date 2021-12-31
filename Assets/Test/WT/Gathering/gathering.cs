@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class gathering : MonoBehaviour, IPointerClickHandler
+public class Gathering : MonoBehaviour
 {
-    public GameObject player;
+    private Coroutine coMove;
+    public PlayerDungeonUnit player;
     public GameObject gatheringPanel;
     public TextMeshProUGUI text;
 
@@ -15,11 +16,15 @@ public class gathering : MonoBehaviour, IPointerClickHandler
     private Vector3 weedPos;
     private List<DataCunsumable> userconsume;
     private float speed = 3f;
+
+    private Vector3 beforePosition;
     public void Init()
     {
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
         rand = Random.Range(0, 3);
         id = $"CON_000{rand}";
+        Utility.arg1Event += player.AnimationChange;
+        Utility.arg0Event += player.CoMoveStop;
     }
     private void Awake()
     {
@@ -46,6 +51,12 @@ public class gathering : MonoBehaviour, IPointerClickHandler
         Init();
     }
 
+    private void OnDestroy()
+    {
+        Utility.arg1Event -= player.AnimationChange;
+        Utility.arg0Event -= player.CoMoveStop;
+    }
+
     private void Update()
     {
         //플레이어 움직이게 하기 
@@ -68,17 +79,17 @@ public class gathering : MonoBehaviour, IPointerClickHandler
         }
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
+        player.isCoMove = true;
+        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, beforePosition, speed, Vector3.zero,
+            () => coMove = null));
     }
     public void NoIDonGathering()
     {
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
-
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        StartCoroutine(Utility.CoTranslate(player.transform, player.transform.position, weedPos, speed, PopUp));
+        player.isCoMove = true;
+        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, beforePosition, speed, Vector3.zero,
+            () => coMove = null));
     }
 
     private void PopUp()
@@ -87,5 +98,15 @@ public class gathering : MonoBehaviour, IPointerClickHandler
         gatheringPanel.SetActive(true);
         text.gameObject.SetActive(true);
         text.text = " 채집을 시작하겠습니까";
+        Utility.arg0Event -= PopUp;
+    }
+
+    public void GoGatheringObject(Vector3 objectPos)
+    {
+        beforePosition = player.transform.position;
+        Utility.arg0Event += PopUp;
+        player.isCoMove = true;
+        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, objectPos, 1f, Vector3.zero,
+            () => coMove = null));
     }
 }

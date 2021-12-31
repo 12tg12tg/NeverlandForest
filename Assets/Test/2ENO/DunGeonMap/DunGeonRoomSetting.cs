@@ -27,18 +27,13 @@ public class DungeonRoom
     private Vector2 pos;
     private DunGeonRoomType roomType;
 
-    //private DunGeonEvent eventCase;
-
-    //private int eventCount;
-    //private int battleSet = 0b_1110_0011;
-    //private int noBattleSet = 0b_1111_1110;
-
     public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
     
     public DungeonRoom nextRoom;
+
+    public int roomIdx;
     public int nextRoomIdx;
     public int nextRoadCount = 0;
-    //public List<int> nextRoomIndex = new List<int>();
 
     public DunGeonRoomType RoomType
     {
@@ -55,21 +50,12 @@ public class DungeonRoom
         set => pos = value;
         get => pos;
     }
-    //public DunGeonEvent EventCase
-    //{
-    //    get => eventCase;
-    //}
-    //public int EventCount
-    //{
-    //    set => eventCount = value;
-    //    get => eventCount;
-    //}
+
     public void SetEvent(DunGeonEvent eventType)
     {
         switch (eventType)
         {
             case DunGeonEvent.Battle:
-                //eventCase &= (DunGeonEvent)battleSet;
                 if (eventList.FindIndex(x => x == DunGeonEvent.Hunt) != -1
                     || eventList.FindIndex(x => x == DunGeonEvent.RandomIncount) != -1
                     || eventList.FindIndex(x => x == DunGeonEvent.SubStory) != -1)
@@ -78,22 +64,17 @@ public class DungeonRoom
             case DunGeonEvent.Hunt:
             case DunGeonEvent.RandomIncount:
             case DunGeonEvent.SubStory:
-                //eventCase &= (DunGeonEvent)noBattleSet;
                 if (eventList.FindIndex(x => x == DunGeonEvent.Battle) != -1)
                     return;
                 break;
         }
         eventList.Add(eventType);
-        //eventCase |= eventType;
+
     }
 
     public bool CheckEvent(DunGeonEvent evnetType)
     {
-        //if((eventCase & evnetType) != 0)
-        //{
-        //    return true;
-        //}
-        //return false;
+
         if (eventList.FindIndex(x => x == evnetType) != -1)
             return true;
 
@@ -160,7 +141,6 @@ public static class DunGeonRoomSetting
         // i는 이벤트enum 순회느낌, j는 확률 리스트 인덱스용
         for (int i = 1, j = 0; i != (int)DunGeonEvent.Count;)
         {
-            // 혹시몰라서 무한방지
             if (j > eventP.Count) break;
             // empty는 현재 약 30프로 확률
             if (rnd > 100)
@@ -218,3 +198,26 @@ public static class DunGeonRoomSetting
         list.Add(dungeonRoom);
     }
 }
+
+
+//private DunGeonEvent eventCase;
+
+//private int eventCount;
+//private int battleSet = 0b_1110_0011;
+//private int noBattleSet = 0b_1111_1110;
+
+//public DunGeonEvent EventCase
+//{
+//    get => eventCase;
+//}
+//public int EventCount
+//{
+//    set => eventCount = value;
+//    get => eventCount;
+//}
+
+//if((eventCase & evnetType) != 0)
+//{
+//    return true;
+//}
+//return false;

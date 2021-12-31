@@ -18,7 +18,6 @@ public class UserData
     public List<string> HaveRecipeIDList =
         new List<string>();
     public Dictionary<string, float> MakeList = new Dictionary<string, float>();
-    public DungeonRoom[] dungeonMapData;
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
     //public List<Combination.Savefortime> MakeList = new List<Combination.Savefortime>();
 
@@ -26,4 +25,10 @@ public class UserData
         new List<DataPlayerSkill>();
     public List<DataPlayerSkill> girlSkillList =
         new List<DataPlayerSkill>();
+
+
+    public DungeonRoom[] dungeonMapData;
+    public DungeonData curAllDungeonData = new DungeonData();
+
+
 }
