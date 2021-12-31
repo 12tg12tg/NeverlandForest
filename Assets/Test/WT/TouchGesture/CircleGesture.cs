@@ -1,53 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Gesture_v2 : MonoBehaviour
+public class CircleGesture : MonoBehaviour
 {
-    public GameObject cube;
-    private float cubleroateSpeed = 10.0f;
-    private float count = 0f;
+    public Transform target;
+    float previous;
+    float current;
+    Vector3 touchStart = Vector3.zero;
     private bool fingerIsDown = false;
-    private Vector3 touchStart;
+
     private string touchPattern = string.Empty;
     private string touchPatternChain = string.Empty;
     private float deviationCheckDistance = 1.0f; //체크편차거리 5
     private Vector3 lastDeviationCheck = Vector3.zero; //마지막 편차 0
+
+    private int clockCount = 0;
+    private int counterclockCount = 0;
     private bool isclock = false;
     private bool iscounterclock = false;
 
     private string[] clockCircleChain = new string[2] { "32413", "34132" };
     private string[] counterCircleChain = new string[4] { "42314", "43142", "43241", "23142" };
-    private float timer =0f;
-    public void Update()
+    private Vector3 inputPosition;
+    private void Update()
     {
-        Debug.Log($"cubleroateSpeed{cubleroateSpeed}");
+        CircleGestureRotate();
         // touch start
         if (!fingerIsDown && Input.GetMouseButton(0))
         {
             fingerIsDown = true;
-            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             touchStart.z = -1;
             lastDeviationCheck = touchStart;
         }
         // touch middle
         if (fingerIsDown && Input.GetMouseButton(0))
         {
-            if (isclock)
-            {
-                cubleroateSpeed -= 0.003f;
-            }
-            else if (iscounterclock)
-            {
-                cubleroateSpeed += 0.003f;
-            }
-            var inputPosition = Input.mousePosition;
-            inputPosition.z = 10f;
             Vector3 touchCurrent = Camera.main.ScreenToWorldPoint(inputPosition);
             float diffX = Mathf.Abs(touchCurrent.x - lastDeviationCheck.x);
             float diffY = Mathf.Abs(touchCurrent.y - lastDeviationCheck.y);
             bool deviated = false;
-            var previoustouch = touchCurrent;
+
             if (diffX > deviationCheckDistance)
             {
                 //left ->right
@@ -67,7 +58,6 @@ public class Gesture_v2 : MonoBehaviour
 
                 }
             }
-
             if (diffY > deviationCheckDistance)
             {
                 // TOP -> BOTTOM
@@ -76,7 +66,6 @@ public class Gesture_v2 : MonoBehaviour
                     RecordPattern("3");
                     deviated = true;
                     touchPatternChain += touchPattern;
-
                 }
                 // BOTTOM -> TOP
                 if (touchCurrent.y > lastDeviationCheck.y)
@@ -84,50 +73,12 @@ public class Gesture_v2 : MonoBehaviour
                     RecordPattern("4");
                     deviated = true;
                     touchPatternChain += touchPattern;
-
                 }
             }
-
             if (deviated)
             {
                 lastDeviationCheck = touchCurrent;
             }
-            //touchPattern = string.Empty;
-          
-            if (touchCurrent== previoustouch) //멈춰있다
-            {
-                Debug.Log("같다");
-                timer += Time.deltaTime;
-                Debug.Log(timer);
-            }
-            if (timer > 5f)
-            {
-                iscounterclock = false;
-                isclock = false;
-                if (cubleroateSpeed > 0f)
-                {
-                    cubleroateSpeed--;
-                    if ( cubleroateSpeed < 0f)
-                    {
-                        cubleroateSpeed = 0f;
-                        timer = 0f;
-                    }
-                   
-                }
-                else if (cubleroateSpeed < 0f)
-                {
-                    cubleroateSpeed++;
-                    if (cubleroateSpeed > 0f)
-                    {
-                        cubleroateSpeed = 0f;
-                        timer = 0f;
-                    }
-                }
-
-            }
-
-            cube.transform.rotation *= Quaternion.Euler(
-                new Vector3(0f, 0f, cubleroateSpeed));
 
             foreach (var chain in clockCircleChain)
             {
@@ -136,12 +87,10 @@ public class Gesture_v2 : MonoBehaviour
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
                     Debug.Log("시계방향으로 돌고있다");
-                    count += 0.1f;
+                    clockCount++;
                     isclock = true;
                     iscounterclock = false;
-                    timer = 0f;
                 }
-
             }
             foreach (var chain in counterCircleChain)
             {
@@ -149,41 +98,71 @@ public class Gesture_v2 : MonoBehaviour
                 {
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
-
                     Debug.Log("반시계방향으로 돌고있다");
-                    count += 0.1f;
-                    iscounterclock = true;
+                    counterclockCount++;
                     isclock = false;
-                    timer = 0f;
+                    iscounterclock = true;
                 }
-              
             }
         }
-
-        // touch end
         if (fingerIsDown && Input.GetMouseButtonUp(0))
         {
+            fingerIsDown = false;
             touchPatternChain = string.Empty;
             touchPattern = string.Empty;
-            count = 0f;
-            iscounterclock = false;
             isclock = false;
+            iscounterclock = false;
         }
     }
     void RecordPattern(string thisPattern)
     {
-        if (touchPattern.Length ==0)
+        if (touchPattern.Length == 0)
         {
             touchPattern += thisPattern;
         }
         else
         {
-            Debug.Log($"if문이전에 touchPattern : {touchPattern}");
             if (touchPattern.Substring(touchPattern.Length - 1) != thisPattern) //마지막 인덱스와 비교해서 같지 않으면 더해라.
             {
                 touchPattern += thisPattern;
-                Debug.Log($"if문이후에 touchPattern : {touchPattern}");
             }
         }
+    }
+    private void CircleGestureRotate()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            previous = 0;
+            current = 0;
+            touchStart = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            previous = current;
+            inputPosition = Input.mousePosition;
+            inputPosition.z = 10f;
+            current = GetAngle(target.position, Camera.main.ScreenToWorldPoint(inputPosition));
+            if (previous != 0.0f)
+            {
+                float diffrence = current - previous;
+                if (isclock)
+                {
+                    target.Rotate(0, 0, diffrence);
+                }
+                else if (iscounterclock)
+                {
+                    target.Rotate(0, 0, -diffrence);
+                }
+            }
+        }
+    }
+
+    public float GetAngle(Vector3 vStart, Vector3 vEnd)
+    {
+        Vector3 v = vEnd - vStart;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        if (angle < 0) angle += 360;
+        return angle;
     }
 }
