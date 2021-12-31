@@ -12,7 +12,7 @@ public class DungeonSystem : MonoBehaviour
     public TextMeshProUGUI text;
 
     public PlayerDungeonUnit dungeonPlayer;
-    public Gathering GatheringSystem;
+    public GatheringSystem GatheringSystem;
 
     DunGeonMapGenerate dungeonGenerator;
     RoomManager roomManager;

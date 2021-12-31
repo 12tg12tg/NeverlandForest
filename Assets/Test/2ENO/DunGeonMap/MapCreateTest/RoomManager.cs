@@ -27,7 +27,7 @@ public class RoomManager
     public DunGeonMapGenerate dungeonGen;
     public TextMeshProUGUI text;
 
-    public Gathering gatheringSystem;
+    public GatheringSystem gatheringSystem;
 
     private int curRoadCount;
     void Start()
