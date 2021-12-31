@@ -7,6 +7,7 @@ public class HuntTilesMaker : MonoBehaviour
 {
     public HuntPlayer player;
     public GameObject cloak;
+    public GameObject blue;
 
     public GameObject wholeTile;
     public Material material;
@@ -65,6 +66,7 @@ public class HuntTilesMaker : MonoBehaviour
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<HuntTile>();
+        tile.blue = blue;
         tile.player = player;
         tile.index = index;
         tile.ren = ren;

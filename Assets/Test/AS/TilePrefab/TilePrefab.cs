@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Tiles : MonoBehaviour, IPointerClickHandler
+public class TilePrefab : MonoBehaviour, IPointerClickHandler
 {
-    public MeshRenderer ren;
     public Vector2 index;
-    public bool isObstacle;
+    public Material[] material;
+
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log($"{index} Clicked!");
-        //ren.enabled = true;
+    }
+
+    public void BlueLine()
+    {
+        //GetComponent<MeshRenderer>().materials += material;
+    }
+
+    public void RedLine()
+    {
+
     }
 }
