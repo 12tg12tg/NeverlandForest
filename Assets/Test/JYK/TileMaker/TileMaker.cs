@@ -28,12 +28,12 @@ public class TileMaker : MonoBehaviour
         var width = maxX - minX;
         var height = maxZ - minZ;
 
-        Debug.Log($"{width} {height}");
+        //Debug.Log($"{width} {height}");
 
         var tileWidth = (width - spacing * (col + 1)) / col;
         var tileHeight = (height - spacing * (row + 1)) / row;
 
-        Debug.Log($"{tileWidth} {tileHeight}");
+        //Debug.Log($"{tileWidth} {tileHeight}");
 
         var startPos = new Vector3(minX + tileWidth / 2, wholeTile.transform.position.y + 0.01f, minZ + tileHeight / 2);
         for (int i = 0; i < row; i++)
@@ -112,19 +112,17 @@ public class TileMaker : MonoBehaviour
 
         return plane;
     }
-    private void OnGUI()
-    {
-        if (GUILayout.Button("Obstacle"))
-        {
-            if (!IsObstacleTile(new Vector2(0,5)))
-            {
-                var ob = GetTile(new Vector2(0, 5));
-                ob.isObstacle = true;
-            }
-        }
-    }
-
-
+    //private void OnGUI()
+    //{
+    //    if (GUILayout.Button("Obstacle"))
+    //    {
+    //        if (!IsObstacleTile(new Vector2(0,5)))
+    //        {
+    //            var ob = GetTile(new Vector2(0, 5));
+    //            ob.isObstacle = true;
+    //        }
+    //    }
+    //}
 
     public Tiles GetTile(Vector2 position)
     {

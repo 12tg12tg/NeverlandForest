@@ -25,6 +25,28 @@ public class MultiTouch : Singleton<MultiTouch>
     public int TouchCount { get; private set; }
     //public Vector2 TapPosition { get => PrimaryPos; } 
 
+    public Vector2 TouchStart 
+    { 
+        get
+        {
+            if (isOneTouch)
+                return NewTouch.activeTouches[0].startScreenPosition;
+            else
+                return Vector2.zero;
+        }
+    }
+    public Vector2 TouchPos 
+    { 
+        get
+        {
+            if (isOneTouch)
+                return NewTouch.activeTouches[0].screenPosition;
+            else
+                return Vector2.zero;
+        }
+    }
+    private bool isOneTouch;
+
     public bool IsTap { get; private set; }
 
     public bool IsDoubleTap { get; private set; }
@@ -77,6 +99,15 @@ public class MultiTouch : Singleton<MultiTouch>
         if (touchList.Count == 2)
         {
             UpdateDoubleTouch(touchList);
+            isOneTouch = false;
+        }
+        else if(touchList.Count == 1)
+        {
+            isOneTouch = true;
+        }
+        else
+        {
+            isOneTouch = false;
         }
     }
 

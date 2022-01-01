@@ -16,14 +16,13 @@ public class BattlePlayerTurn : State<BattleState>
 
     public override void Init()
     {
-        Debug.Log("Battle Player Init");
         isMessageOff = false;
         manager.PrintMessage("플레이어 턴", messageTime, () => isMessageOff = true);
     }
 
     public override void Release()
     {
-        Debug.Log("Battle Player Release");
+
     }
 
     public override void Update()
