@@ -11,7 +11,7 @@ public class DungeonData
     public DungeonRoom curDungeonData;
     public RoomCtrl curRoomData;
     public int curRoadCount;
-    public List<DungeonRoom> curSubRoomList = new List<DungeonRoom>();
-    public Vector3 curPlayerPosition;
-    public List<EventObject> curEventObjList = new List<EventObject>();
+    public List<DungeonRoom> curIncludeRoomList = new List<DungeonRoom>();
+    public PlayerDungeonUnitData curPlayerData = new PlayerDungeonUnitData();
+    public List<EventObjectData> curEventObjList = new List<EventObjectData>();
 }

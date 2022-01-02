@@ -30,10 +30,14 @@ public class DungeonRoom
     public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
     
     public DungeonRoom nextRoom;
+    // 아직 미사용
+    public DungeonRoom beforeRoom;
 
     public int roomIdx;
     public int nextRoomIdx;
     public int nextRoadCount = 0;
+    // 아직 미사용
+    public int beforeRoomIdx;
 
     public DunGeonRoomType RoomType
     {
@@ -158,15 +162,13 @@ public static class DunGeonRoomSetting
         }
         return eventType;
     }
-
+    // 다음방과 연결
     public static void DungeonLink(DungeonRoom[] dungeonList)
     {
-        int count = 0;
         for (int i = 0; i < dungeonList.Length; i++)
         {
             if(dungeonList[i].IsCheck)
             {
-                count++;
                 var nextIdx = dungeonList[i].nextRoomIdx;
                 if (nextIdx != -1 && dungeonList[nextIdx].IsCheck == true)
                 {
@@ -175,7 +177,18 @@ public static class DunGeonRoomSetting
             }
         }
     }
-    // 시작방 입력받기, road개수 카운트 메소드
+    // 순서대로 연결된 던전방 리스트를 통해, 역순으로 이전방과 연결하기 ( 아직 미사용 )
+    public static void DungeonReverseLink(List<DungeonRoom> list)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (i == 0)
+                return;
+            list[i].beforeRoom = list[i - 1];
+            list[i].beforeRoomIdx = list[i - 1].roomIdx;
+        }
+    }
+    // 시작방 입력받기, road개수 카운트, 생성된 던전맵을 순서대로 리스트에 담기
     public static void DungeonRoadCount(DungeonRoom dungeonRoom, List<DungeonRoom> list)
     {
         int roadCount = 0;

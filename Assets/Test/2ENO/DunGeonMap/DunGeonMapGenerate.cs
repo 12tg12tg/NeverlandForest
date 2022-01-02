@@ -69,6 +69,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         DunGeonRoomSetting.DungeonLink(dungeonRoomArray);
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
+        DunGeonRoomSetting.DungeonReverseLink(dungeonRoomList);
         CreateMapObject();
 
         dungeonSystem.DungeonSystemData.dungeonRoomArray = dungeonRoomArray;
@@ -140,7 +141,10 @@ public class DunGeonMapGenerate : MonoBehaviour
                 rnd = Random.Range(0, (int)DirectionInho.Count);
             }
 
+
             var rndCount = Random.Range(2, 6);
+            if (curId == 100)
+                rndCount = 5;
             var nextId = NextRoomId(curId, (DirectionInho)rnd);
             
             dungeonRoomArray[curId].nextRoomIdx = nextId;

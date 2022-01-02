@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-public class Gathering : MonoBehaviour
+public class GatheringSystem : MonoBehaviour
 {
     private Coroutine coMove;
     public PlayerDungeonUnit player;
@@ -77,19 +77,11 @@ public class Gathering : MonoBehaviour
                 Debug.Log($"{userconsume[i].ItemTableElem.name}À» ¾ò¾ú´Ù.");
             }
         }
-        gatheringPanel.SetActive(false);
-        Debug.Log("ÆË¾÷²¯´Ù");
-        player.isCoMove = true;
-        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, beforePosition, speed, Vector3.zero,
-            () => coMove = null));
+        PlayerMoveBack();
     }
     public void NoIDonGathering()
     {
-        gatheringPanel.SetActive(false);
-        Debug.Log("ÆË¾÷²¯´Ù");
-        player.isCoMove = true;
-        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, beforePosition, speed, Vector3.zero,
-            () => coMove = null));
+        PlayerMoveBack();
     }
 
     private void PopUp()
@@ -103,10 +95,19 @@ public class Gathering : MonoBehaviour
 
     public void GoGatheringObject(Vector3 objectPos)
     {
-        beforePosition = player.transform.position;
         Utility.arg0Event += PopUp;
-        player.isCoMove = true;
+        beforePosition = player.transform.position;
+        player.IsCoMove = true;
         coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, objectPos, 1f, Vector3.zero,
+            () => coMove = null));
+    }
+
+    private void PlayerMoveBack()
+    {
+        gatheringPanel.SetActive(false);
+        Debug.Log("ÆË¾÷²¯´Ù");
+        player.IsCoMove = true;
+        coMove ??= StartCoroutine(Utility.CoTranslate2(player.transform, player.transform.position, beforePosition, speed, Vector3.zero,
             () => coMove = null));
     }
 }

@@ -6,7 +6,11 @@ public class MiniMapCamMove : MonoBehaviour
 {
     private DungeonSystem dungeonSystem;
     private Vector3 curRoomPos;
-    void Start()
+    //void enable()
+    //{
+    //    dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
+    //}
+    private void OnEnable()
     {
         dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
     }

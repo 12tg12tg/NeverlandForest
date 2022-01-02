@@ -12,12 +12,12 @@ public class DungeonSystem : MonoBehaviour
     public TextMeshProUGUI text;
 
     public PlayerDungeonUnit dungeonPlayer;
-    public Gathering GatheringSystem;
+    public GatheringSystem GatheringSystem;
 
     DunGeonMapGenerate dungeonGenerator;
     RoomManager roomManager;
 
-
+    // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
     private DungeonData dungeonSystemData;
     public DungeonData DungeonSystemData
     {
@@ -43,18 +43,18 @@ public class DungeonSystem : MonoBehaviour
         roomManager.text = text;
         dungeonGenerator.DungeonGenerate(dungeonSystemData.dungeonRoomArray, RoomSetMethod);
     }
-
+    // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
     private void RoomSetMethod()
     {
-        roomManager.init(DungeonSystemData, this);
         dungeonPlayer.gameObject.SetActive(true);
-        if (dungeonSystemData.curPlayerPosition == null)
+        roomManager.init(DungeonSystemData, this);
+        if (dungeonSystemData.curPlayerData == null)
         {
             dungeonPlayer.transform.position = roomPrefab[0].spawnPos.transform.position;
         }
         else
         {
-            dungeonPlayer.transform.position = dungeonSystemData.curPlayerPosition;
+            dungeonPlayer.SetPlayerData(dungeonSystemData.curPlayerData);
         }
 
         for (int i=0; i < dungeonSystemData.curEventObjList.Count; i++)
@@ -62,29 +62,39 @@ public class DungeonSystem : MonoBehaviour
             var eventObj = Instantiate(eventObjectPrefab, dungeonSystemData.curEventObjList[i].objectPosition, Quaternion.identity);
             eventObj.GetComponent<EventObject>().Init(dungeonSystemData.curEventObjList[i].roomInfo
                 , dungeonSystemData.curEventObjList[i].eventType, this, dungeonSystemData.curEventObjList[i].objectPosition);
+            dungeonSystemData.curRoomData.eventObjList.Add(eventObj);
         }
     }
 
-    public void ChangeRoomEvent(bool isRoomEnd)
-    {
+    // 방마다 위치해있는 트리거 발동할때 실행
+    public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
+    {        
+        //ConsumeManager.TimeUp(1,0);
         if (isRoomEnd)
         {
             dungeonSystemData.curRoomData.DestroyAllEventObject();
             dungeonSystemData.curEventObjList.Clear();
 
-            roomManager.ChangeRoom(isRoomEnd);
-            dungeonSystemData.curRoomData.CreateAllEventObject(dungeonSystemData.curSubRoomList, eventObjectPrefab);
+            roomManager.ChangeRoomForward(isRoomEnd);
+            dungeonSystemData.curRoomData.CreateAllEventObject(dungeonSystemData.curIncludeRoomList, eventObjectPrefab);
             dungeonPlayer.transform.position = dungeonSystemData.curRoomData.spawnPos.transform.position;
         }
         else
         {
-            roomManager.ChangeRoom(isRoomEnd);
+            if(isGoForward)
+            {
+                roomManager.ChangeRoomForward(isRoomEnd);
+            }
+            else
+            {
+                roomManager.ChangeRoomGoBack();
+            }
         }
     }
-
+    // 이벤트 오브젝트 클릭시, 실행
     public void EventObjectClickEvent(DunGeonEvent eventType, EventObject eventObject)
     {
-        dungeonSystemData.curPlayerPosition = dungeonPlayer.transform.position;
+        dungeonSystemData.curPlayerData.SetUnitData(dungeonPlayer);
 
         switch (eventType)
         {
@@ -97,7 +107,6 @@ public class DungeonSystem : MonoBehaviour
                 break;
             case DunGeonEvent.Hunt:
                 Vars.UserData.curAllDungeonData = dungeonSystemData;
-                dungeonPlayer.gameObject.SetActive(false);
                 SceneManager.LoadScene("Hunting");
                 break;
             case DunGeonEvent.RandomIncount:

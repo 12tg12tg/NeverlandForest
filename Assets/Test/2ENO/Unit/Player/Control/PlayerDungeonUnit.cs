@@ -2,12 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class PlayerDungeonUnitData
+{
+    public PlayerMoveAnimation curAnimation;
+    public int curRoomNumber = 0;
+    public Vector3 curPlayerPosition;
+    public void SetUnitData(PlayerDungeonUnit unitData)
+    {
+        curAnimation = unitData.CurAnimation;
+        curRoomNumber = unitData.CurRoomNumber;
+        curPlayerPosition = unitData.transform.position;
+    }
+}
 public class PlayerDungeonUnit : UnitBase
 {
     private Animator playerAnimation;
     private bool isMove;
-    public bool isCoMove;
-    public PlayerMoveAnimation curAnimation;
+    private PlayerMoveAnimation curAnimation;
+    private bool isCoMove;
+
+    private int curRoomNumber = 0;
+    public bool IsCoMove
+    {
+        set => isCoMove = value;
+        get => isCoMove;
+    }
+    public int CurRoomNumber
+    {
+        set => curRoomNumber = value;
+        get => curRoomNumber;
+    }
+    public PlayerMoveAnimation CurAnimation
+    {
+        get => curAnimation;
+    }
+
+    public void SetPlayerData(PlayerDungeonUnitData playerData)
+    {
+        curAnimation = playerData.curAnimation;
+        curRoomNumber = playerData.curRoomNumber;
+        transform.position = playerData.curPlayerPosition;
+    }
 
     private void Start()
     {

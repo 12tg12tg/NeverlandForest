@@ -7,6 +7,7 @@ using UnityEngine.Events;
 
 public class Utility
 {
+    // 매개변수 개수에 따른 이벤트 메소드 등록, 코루틴의 콜백으로 활용
     public static UnityAction arg0Event;
     public static UnityAction<object> arg1Event;
     public static UnityAction<object, object> arg2Event;

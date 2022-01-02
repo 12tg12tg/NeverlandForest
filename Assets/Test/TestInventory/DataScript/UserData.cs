@@ -29,6 +29,4 @@ public class UserData
 
     public DungeonRoom[] dungeonMapData;
     public DungeonData curAllDungeonData = new DungeonData();
-
-
 }

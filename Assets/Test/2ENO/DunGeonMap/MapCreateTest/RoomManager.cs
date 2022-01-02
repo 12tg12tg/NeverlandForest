@@ -4,16 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum DungeonMap
-{
-    EventObjectClick,
-    MapSetting,
-}
-
 public class RoomManager
 {
     private DungeonSystem dungeonSystem;
 
+    // 방 프리팹
     public RoomCtrl mainRoomPrefab;
     public RoomCtrl roadRoom2Prefab;
     public RoomCtrl roadRoom3Prefab;
@@ -27,13 +22,13 @@ public class RoomManager
     public DunGeonMapGenerate dungeonGen;
     public TextMeshProUGUI text;
 
-    public Gathering gatheringSystem;
+    public GatheringSystem gatheringSystem;
 
     private int curRoadCount;
-    void Start()
-    {
-    }
+    // 던전 정보 = 던전맵 생성기에 의해 만들어진 각 던전맵에 대한 정보 ex 인덱스, 이벤트 타입 등등
+    // 방 정보 = 던전정보를 이용할 방 프리팹, 메인부터 서브까지 총 5개
 
+    // 미니맵 표시, 생성된 던전에 맞는 방 프리팹 세팅, 현재 던전 및 방 정보 초기화
     public void init(DungeonData data, DungeonSystem system)
     {
         if (dungeonSystem == null)
@@ -61,14 +56,14 @@ public class RoomManager
                     SetCurRoad(data.curRoadCount);
                 break;
         }
-        beforeDungeonInfo = new DungeonRoom();
-        beforeDungeonInfo.IsCheck = false;
-
-        if(data.curDungeonData == null)
+        beforeDungeonInfo = new DungeonRoom
         {
-            data.curDungeonData = curDungeonInfo;
-            data.curRoomData = curRoomObjectInfo;
-        }
+            IsCheck = false
+        };
+
+        data.curDungeonData = curDungeonInfo;
+        data.curRoomData = curRoomObjectInfo;
+
         SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
         curRoomObjectInfo.gameObject.SetActive(true);
     }
@@ -130,9 +125,8 @@ public class RoomManager
             new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
         }
     }
-    public void ChangeRoom(bool isEnd)
+    public void ChangeRoomForward(bool isEnd)
     {
-        //ConsumeManager.TimeUp(1,0);
         beforeDungeonInfo = curDungeonInfo;
         if (isEnd)
         {
@@ -144,19 +138,17 @@ public class RoomManager
                     SceneManager.LoadScene("WorldMap");
                     return;
                 }
-                bool temp = true;
-                if (curDungeonInfo.nextRoadCount == 5)
-                    temp = false;
                 SetCurRoad(curDungeonInfo);
             }
             else
             {
                 curRoomObjectInfo = mainRoomPrefab;
-                
             }
-            curDungeonInfo = curDungeonInfo.nextRoom;
-            curRoomObjectInfo.gameObject.SetActive(true);
             GetRoomInfoList(curDungeonInfo);
+            curRoomObjectInfo.gameObject.SetActive(true);
+            curDungeonInfo = curDungeonInfo.nextRoom;
+
+            dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
         }
         else
         {
@@ -165,14 +157,24 @@ public class RoomManager
         
         SetText(curDungeonInfo);
         SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
+        dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
+    }
+    public void ChangeRoomGoBack()
+    {
+        beforeDungeonInfo = curDungeonInfo;
+        curDungeonInfo = curDungeonInfo.beforeRoom;
+
+        SetText(curDungeonInfo);
+        SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
         dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
         dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
     }
 
+
     public void SetText(DungeonRoom roomInfo)
     {
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i<roomInfo.eventList.Count; i++)
+        for(int i=0; i < roomInfo.eventList.Count; i++)
         {
             sb.Append(roomInfo.eventList[i].ToString());
             sb.Append("\n");
@@ -184,10 +186,13 @@ public class RoomManager
     public List<DungeonRoom> GetRoomInfoList(DungeonRoom curRoomInfo)
     {
         var roomList = new List<DungeonRoom>();
+        // 현재 end된 방이 메인 => 다음방은 서브룸, 반대경우도 마찬가지
+        // 다음방이 서브룸의 경우 리스트를 뽑아서 한번에 이벤트 오브젝트 해야함
 
-        if(curRoomInfo.RoomType == DunGeonRoomType.SubRoom)
+        if(curRoomInfo.RoomType == DunGeonRoomType.MainRoom)
         {
-            while(curRoomInfo.RoomType != DunGeonRoomType.MainRoom)
+            curRoomInfo = curRoomInfo.nextRoom;
+            while (curRoomInfo.RoomType != DunGeonRoomType.MainRoom)
             {
                 roomList.Add(curRoomInfo);
                 curRoomInfo = curRoomInfo.nextRoom;
@@ -195,13 +200,14 @@ public class RoomManager
         }
         else
         {
+            curRoomInfo = curRoomInfo.nextRoom;
             roomList.Add(curRoomInfo);
         }
 
-        dungeonSystem.DungeonSystemData.curSubRoomList = roomList;
+        dungeonSystem.DungeonSystemData.curIncludeRoomList = roomList;
         return roomList;
     }
-    //+ 비교문에 next를 넣어 비교하는순간 추적이나 돌아가는거 파악 직관성이 떨어진다
+    // + 비교문에 next를 넣어 비교하는순간 추적이나 돌아가는거 파악 직관성이 떨어진다
 }
 
 // 1회성 초기화 코루틴 기다리기 위해, 나중에 옵저버 패턴 등으로 구현?

@@ -3,8 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public class EventObjectData
+{
+    public DungeonRoom roomInfo;
+    public DunGeonEvent eventType;
+    public Vector3 objectPosition;
+
+    public EventObjectData(EventObject obj)
+    {
+        roomInfo = obj.roomInfo;
+        eventType = obj.eventType;
+        objectPosition = obj.objectPosition;
+    }
+}
+
 public class EventObject : MonoBehaviour, IPointerClickHandler
 {
+    EventObjectData eventObjInfo;
     public DungeonRoom roomInfo;
     public DunGeonEvent eventType;
     public Vector3 objectPosition;
@@ -52,16 +67,18 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
         
         if (dungeonSystem.DungeonSystemData.curEventObjList.FindIndex( x => x.objectPosition.Equals(objectPosition)) == -1)
         {
-            var eventObj = new EventObject(this);
-            dungeonSystem.DungeonSystemData.curEventObjList.Add(eventObj);
+            EventObjectData obj = new EventObjectData(this);
+            dungeonSystem.DungeonSystemData.curEventObjList.Add(obj);
+            eventObjInfo = obj;
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("클릭이동!");
-        //EventBus<DungeonMap>.Publish(DungeonMap.EventObjectClick, eventType, transform.position);
         dungeonSystem.EventObjectClickEvent(eventType, this);
+        dungeonSystem.DungeonSystemData.curEventObjList.Remove(eventObjInfo);
+        Destroy(gameObject);
 
     }
 }
