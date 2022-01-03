@@ -28,6 +28,7 @@ public class MapManagerTest : MonoBehaviour
     void Update()
     {
         // 1회성 초기화 코루틴 기다리기 위해, 나중에 옵저버 패턴 등으로 구현?
+        // 뭐냐구
         if(dungeonGen.isSet)
         {
             // 100 은 스타트 id
