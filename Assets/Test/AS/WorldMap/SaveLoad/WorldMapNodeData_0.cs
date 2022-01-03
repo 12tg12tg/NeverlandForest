@@ -9,10 +9,10 @@ public struct MapNodeStruct_0
     public int level;
     public List<Vector2> children;
     public List<Vector2> parent;
+    
 }
 
-public class WorldMapSaveData_0 : SaveDataBase
+public class WorldMapNodeData_0 : SaveDataBase
 {
     public List<MapNodeStruct_0> MapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
-    public Vector2 PlayerCurrentIndex { get; set; }
 }

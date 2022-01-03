@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using System.Linq;
+using System;
 
+[Serializable]
 public class WorldMapPlayer : MonoBehaviour
 {
     public GameObject map;
@@ -27,14 +29,27 @@ public class WorldMapPlayer : MonoBehaviour
 
         transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
 
-        var data = new WorldMapData();
+        var data = new WorldMapPlayerData();
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapData = data;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void Load()
     {
-        if(Vars.UserData.WorldMapData.isClear)
+        var data = Vars.UserData.WorldMapData;
+        transform.position = data.goalPos;
+        currentIndex = data.currentIndex;
+    }
+
+    public void ComeBackWorldMap()
+    {
+        if(Vars.UserData.WorldMapData == null)
+        {
+            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            Load();
+        }
+        else if(Vars.UserData.WorldMapData.isClear)
             PlayerClearWorldMap();
         else
             PlayerRunWorldMap();
@@ -66,14 +81,16 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = startPos;
 
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void PlayerClearWorldMap()
     {
         var data = Vars.UserData.WorldMapData;
-
+        data.isClear = false;
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void PlayerRunWorldMap()

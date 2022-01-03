@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldMapData
+public class WorldMapPlayerData
 {
     public Vector2 currentIndex;
     public Vector2 goalIndex;
@@ -10,4 +11,9 @@ public class WorldMapData
     public Vector3 currentPos;
 
     public bool isClear;
+}
+
+public class WorldMapPlayerData_0 : SaveDataBase
+{
+    public WorldMapPlayerData WorldMapPlayerData { get; set; }
 }

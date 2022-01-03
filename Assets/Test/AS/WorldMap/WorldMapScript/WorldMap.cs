@@ -50,8 +50,6 @@ public class WorldMap : MonoBehaviour
     public GameObject fog;
     public WorldMapPlayer player;
     public WorldMapCamera worldMapCamera;
-    private SaveLoadManager saveData;
-
 
     public int column;
     public int row;
@@ -68,43 +66,28 @@ public class WorldMap : MonoBehaviour
     public int testDay = 0;
     private void Awake()
     {
-        if (isFirst)
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        var loadData = Vars.UserData.WorldMapNodeStruct;
+        if (loadData.Count.Equals(0))
         { 
             StartCoroutine(InitMap());
-            Save();
         }
         else
-            Load();
-        day = new object[1];
+        {
+            LoadWorldMap(loadData);
+            player.ComeBackWorldMap();
+            worldMapCamera.FollowPlayer();
+        }
+    }
+
+    private void LoadWorldMap(List<MapNodeStruct_0> loadData)
+    {
+        Load(loadData);
+        PaintLink();
     }
 
     private void OnGUI()
     {
-        if (GUILayout.Button("Show"))
-        {
-            StartCoroutine(InitMap());
-        }
-        if (GUILayout.Button("MapSave"))
-        {
-            Save();
-        }
-        if (GUILayout.Button("NodeDelete"))
-        {
-            Utility.ChildrenDestroy(gameObject);
-            edges.Clear();
-            isAllLinked = false;
-        }
-        if (GUILayout.Button("MapLoad"))
-        {
-            Utility.ChildrenDestroy(gameObject);
-            edges.Clear();
-            isAllLinked = false;
-            Load();
-        }
-        if (GUILayout.Button("NextScene"))
-        {
-            SceneManager.LoadScene(4);
-        }
         if (GUILayout.Button("DayFog"))
         {
             testDay++;
@@ -132,10 +115,12 @@ public class WorldMap : MonoBehaviour
         if (isFirst)
             player.Init();
         else
-            player.Load();
+            player.ComeBackWorldMap();
+
         isFirst = false;
         worldMapCamera.Init();
         PaintLink();
+        Save();
     }
 
     private void MapFirstCreateNode()
@@ -388,13 +373,11 @@ public class WorldMap : MonoBehaviour
                 Vars.UserData.WorldMapNodeStruct.Add(data);
             }
         }
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMap);
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapNode);
     }
-    public void Load()
+    public void Load(List<MapNodeStruct_0> loadData)
     {
         maps = new WorldMapNode[row, column];
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMap);
-        var loadData = Vars.UserData.WorldMapNodeStruct;
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -434,8 +417,5 @@ public class WorldMap : MonoBehaviour
             }
         }
 
-        PaintLink();
-        player.Load();
-        worldMapCamera.FollowPlayer();
     }
 }

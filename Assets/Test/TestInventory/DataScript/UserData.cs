@@ -19,7 +19,7 @@ public class UserData
         new List<string>();
     public Dictionary<string, float> MakeList = new Dictionary<string, float>();
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
-    public WorldMapData WorldMapData { get; set; }
+    public WorldMapPlayerData WorldMapData { get; set; }
     //public List<Combination.Savefortime> MakeList = new List<Combination.Savefortime>();
 
     public List<DataPlayerSkill> boySkillList =

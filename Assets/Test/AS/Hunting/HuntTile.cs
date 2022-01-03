@@ -12,14 +12,7 @@ public class HuntTile : MonoBehaviour, IPointerClickHandler
     public Vector2 index;
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (cloak != null)
-        {
-            player.Move(index, transform.position, true);
-        }
-        else
-        {
-            player.Move(index, transform.position, false);
-        }
+        player.Move(index, transform.position, cloak != null);
 
         ren.enabled = true;
     }
