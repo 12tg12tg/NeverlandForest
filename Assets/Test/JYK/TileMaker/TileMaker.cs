@@ -17,6 +17,7 @@ public class TileMaker : MonoBehaviour
 
     //Property
     public Vector2 LastDropPos { get; set; }
+    public Tiles LastDropTile { get => GetTile(LastDropPos); }
 
     //Vars
     public int row = 3;
@@ -179,13 +180,14 @@ public class TileMaker : MonoBehaviour
         }
     }
 
-    public void SetAllTileClear()
+    public void SetAllTileSoftClear()
     {
-        var count = tileList.Count;
-        for (int i = 0; i < count; i++)
-        {
-            tileList[i].SetOriginalState();
-        }
+        tileList.ForEach((n) => n.ResetHighlightExceptConfirm());
+    }
+
+    public void SetAllTileHardClear(PlayerType type)
+    {
+        tileList.Where((n) => n.affectedPlayer == type).ToList().ForEach((n) => n.Clear());
     }
 
     public bool IsObstacleTile(Vector2 position)

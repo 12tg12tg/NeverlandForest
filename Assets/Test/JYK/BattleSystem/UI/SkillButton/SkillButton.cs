@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
-    private SkillSelectUI groupUI;
+    public SkillSelectUI groupUI;
     private BattleManager manager;
     public Image mainIcon;
     private DataPlayerSkill skill;
@@ -14,6 +14,9 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
     private bool isButtonDown;
     private bool isDragOnTile;
     private ActionType curState;
+    public ActionType CurState { get => curState; }
+    public DataPlayerSkill Skill { get => skill; }
+    public DataCunsumable Item { get => item; }
     public void Init(SkillSelectUI group, BattleManager manager, DataPlayerSkill skill)
     {
         this.groupUI ??= group;
@@ -36,15 +39,15 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
         if (MultiTouch.Instance.PrimaryPos != Vector2.zero)
         {
             if (curState == ActionType.Skill)
-                manager.OpenSkillInfo(skill, MultiTouch.Instance.PrimaryPos);
+                manager.OpenSkillInfo(this, skill, MultiTouch.Instance.PrimaryPos);
             else
-                manager.OpenItemInfo(item, MultiTouch.Instance.PrimaryPos);
+                manager.OpenItemInfo(this, item, MultiTouch.Instance.PrimaryPos);
         }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        groupUI.DisableGroupDuringDrag(this);
+        groupUI.DisableGroupDuringSelect(this);
 
         if (curState == ActionType.Skill)
         {
@@ -81,26 +84,63 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
         else
         {
             isDragOnTile = false;
+            TileMaker.Instance.SetAllTileMiddleState();
         }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        manager.DisplayTileClear();
-
         groupUI.EnableGroup();
         manager.EndTempUiForDrag();
 
         if (isDragOnTile)
         {
-            if (curState == ActionType.Skill)
+            var tileMaker = TileMaker.Instance;
+            if (true /*단일 타겟 스킬인지 확인*/)
             {
-                manager.UpdateComand(groupUI.type, TileMaker.Instance.LastDropPos, skill);
+                //단일 타겟이라면 유효성 검사
+                if (!manager.IsVaildTargetTile(tileMaker.LastDropTile))
+                {
+                    manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
+                    tileMaker.SetAllTileSoftClear();
+                    return;
+                }
+                else
+                {
+                    Color color;
+                    if (groupUI.type == PlayerType.Boy)
+                    {
+                        ColorUtility.TryParseHtmlString("#42C0FF", out color);
+                        tileMaker.LastDropTile.affectedPlayer = PlayerType.Boy;
+                    }
+                    else
+                    {
+                        ColorUtility.TryParseHtmlString("#FFCC42", out color);
+                        tileMaker.LastDropTile.affectedPlayer = PlayerType.Girl;
+                    }
+
+                    tileMaker.LastDropTile.ConfirmTarget(color);
+                }
             }
             else
             {
-                manager.UpdateComand(groupUI.type, TileMaker.Instance.LastDropPos, item);
+                //범위 스킬이라면
+                //  1) 범위 계산 후 타일 리스트를 만들어서.
+                //  2) tile.Confirm(color) 함수 호출하기.
+                //  3) affectedPlayer 설정하기.
             }
+
+            if (curState == ActionType.Skill)
+            {
+                manager.UpdateComand(groupUI.type, tileMaker.LastDropPos, skill);
+            }
+            else
+            {
+                manager.UpdateComand(groupUI.type, tileMaker.LastDropPos, item);
+            }
+
+            tileMaker.SetAllTileSoftClear();
+            groupUI.Close();
         }
     }
 

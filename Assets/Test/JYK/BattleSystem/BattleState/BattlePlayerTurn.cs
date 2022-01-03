@@ -10,7 +10,7 @@ public class BattlePlayerTurn : State<BattleState>
         this.manager = manager;
     }
 
-    private float messageTime = 3f;
+    private float messageTime = 2f;
     private bool isMessageOff;
 
 

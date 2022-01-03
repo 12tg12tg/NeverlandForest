@@ -97,8 +97,20 @@ public class BattleSkillInfo : MonoBehaviour
 
     public void SelectSkill()
     {
-        Debug.Log($"Select {curSkill.SkillTableElem.name}");
-        //DataPlayerSkill 전달
+        var button = manager.CurClickedButton;
+        button.groupUI.DisableGroupDuringSelect(button);
+
+        if (button.CurState == ActionType.Skill)
+        {
+            manager.DisplayMonsterTile();
+        }
+        else
+        {
+            manager.DisplayPlayerTile();
+        }
+        manager.ReadyTileClick();
+        manager.PrintCaution("사용할 지점을 터치하세요.", 1f, 0.7f, null);
+        gameObject.SetActive(false);
     }
 
     private bool IsContainPos(Vector2 pos)

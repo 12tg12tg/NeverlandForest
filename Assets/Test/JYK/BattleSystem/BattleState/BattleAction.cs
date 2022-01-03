@@ -5,6 +5,7 @@ using UnityEngine;
 public class BattleAction : State<BattleState>
 {
     private BattleManager manager;
+    public Queue<PlayerCommand> actionQueue;
     public BattleAction(BattleManager manager)
     {
         this.manager = manager;
@@ -12,16 +13,17 @@ public class BattleAction : State<BattleState>
 
     public override void Init()
     {
-        Debug.Log("Battle Idle Init");
+        Debug.Log("Battle Action Init");
+        actionQueue = manager.comandQueue;
     }
 
     public override void Release()
     {
-        Debug.Log("Battle Idle Release");
+        Debug.Log("Battle Action Release");
     }
     public override void Update()
     {
-        Debug.Log("Battle Idle Update");
+        Debug.Log("Battle Action Update");
     }
 
     public override void FixedUpdate()
