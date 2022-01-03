@@ -17,25 +17,27 @@ public class BattlePlayerTurn : State<BattleState>
     public override void Init()
     {
         isMessageOff = false;
-        manager.PrintMessage("플레이어 턴", messageTime, () => isMessageOff = true);
+        manager.ClearCommand();
+        manager.PrintMessage("플레이어 턴", messageTime, () =>
+        {
+            isMessageOff = true;
+            manager.playerTurnUI.SetActive(true);
+        });
     }
 
     public override void Release()
     {
-
+        manager.playerTurnUI.SetActive(false);
     }
 
     public override void Update()
     {
-        if(isMessageOff)
-        {
-            //플레이어 클릭 대기
+        if (!isMessageOff)
+            return;
 
-        }
+        //플레이어 클릭 대기
+
     }
-
-
-
 
     public override void FixedUpdate()
     {

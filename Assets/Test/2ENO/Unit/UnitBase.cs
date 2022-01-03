@@ -42,5 +42,8 @@ public class UnitBase : MonoBehaviour
         set => pos = value;
     }
 
-
+    public Tiles CurTile
+    {
+        get => TileMaker.Instance.GetTile(Pos);
+    }
 }

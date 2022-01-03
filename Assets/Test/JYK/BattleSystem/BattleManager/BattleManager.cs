@@ -7,17 +7,21 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-public class PlayerInput
+public class PlayerComand
 {
     private bool isUpdate;
     public PlayerStats attacker;
     public Vector2 target;
     public DataPlayerSkill skill;
-    public PlayerInput(PlayerStats stats)
+    public DataCunsumable item;
+    public ActionType actionType;
+    public PlayerComand(PlayerStats stats)
     {
         attacker = stats;
     }
     public bool IsUpdated { get => isUpdate; }
+    public bool IsFirst { get; set; }
+    public bool IsSecond { get => isUpdate ? !IsFirst : false; }
     public void Clear()
     {
         isUpdate = false;
@@ -27,88 +31,84 @@ public class PlayerInput
     }
     public void Create(Vector2 target, DataPlayerSkill skill)
     {
+        if (isUpdate)
+            Clear();
         this.target = target;
         this.skill = skill;
         isUpdate = true;
+        actionType = ActionType.Skill;
+    }
+    public void Create(Vector2 target, DataCunsumable item)
+    {
+        if (isUpdate)
+            Clear();
+        this.target = target;
+        this.item = item;
+        isUpdate = true;
+        actionType = ActionType.Item;
     }
 }
+
+public enum PlayerType { Boy, Girl }
+public enum ActionType { Skill, Item }
 
 
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager instance;
-    public static BattleManager Inastance { get => instance; }
+    public static BattleManager Instance { get => instance; }
+    private MultiTouch multiTouch;
 
     //Unit
-    public List<GameObject> enemy = new List<GameObject>();
+    public List<UnitBase> monster = new List<UnitBase>();
     public PlayerStats boy;
     public PlayerStats girl;
-    private PlayerInput boyInput;
-    private PlayerInput girlInput;
+    private PlayerComand boyInput;
+    private PlayerComand girlInput;
 
     //Canvas
     public CanvasScaler cs;
 
     //Instance
+    public TileMaker tileMaker;
     public Image dragSlot;
     public BattleSkillInfo info;
     public SkillSelectUI hunterUI;
     public SkillSelectUI herbologistUI;
     public BattleMessage message;
     public BattleFSM FSM;
-    private Vector3 belowScreen;
-    private float popupHeight;
-    private float popupTime = 0.4f;
-    private float popdownTime = 0.2f;
-    private bool isDrag;
+    public GameObject playerTurnUI;
 
-    private SkillSelectUI CurrentOpenUI
-    {
-        get
-        {
-            if (hunterUI.gameObject.activeInHierarchy)
-                return hunterUI;
-            else if (herbologistUI.gameObject.activeInHierarchy)
-                return herbologistUI;
-            else
-                return null;
-        }
-    }
+    //Vars
+    private bool isDrag;
+    private Queue<PlayerComand> comandQueue = new Queue<PlayerComand>();
 
     private void Awake()
     {       
         instance = this;
-        boyInput = new PlayerInput(boy);
-        girlInput = new PlayerInput(girl);
+        boyInput = new PlayerComand(boy);
+        girlInput = new PlayerComand(girl);
     }
 
     private void Start()
-    {     
-        //Multitouch 생성
-        var multi = MultiTouch.Instance;
+    {
+        //Multitouch 활성화
+        multiTouch = MultiTouch.Instance;
 
         //스킬목록 전달받기
-        Init();        
+        Init();
 
-        //스킬창 끌어올리기 위한 수치 계산
-        belowScreen = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0f, 0f));
-        var rt = hunterUI.GetComponent<RectTransform>();
+        //플레이어 배치
+        PlaceUnitOnTile(new Vector2(0, 0), girl);
+        PlaceUnitOnTile(new Vector2(1, 0), boy);
 
-        float wRatio = Screen.width / cs.referenceResolution.x;
-        float hRatio = Screen.height / cs.referenceResolution.y;
-
-        float ratio =
-            wRatio * (1f - cs.matchWidthOrHeight) +
-            hRatio * (cs.matchWidthOrHeight);
-
-        popupHeight = rt.rect.height * ratio;
-        belowScreen.y -= popupHeight;
-        hunterUI.transform.position = belowScreen;
-        herbologistUI.transform.position = belowScreen;
+        //몬스터 (랜덤뽑기) & 배치
+        PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
+        PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
 
         //스킬창 Init
-        hunterUI.Init(this, Vars.UserData.boySkillList);
-        herbologistUI.Init(this, Vars.UserData.girlSkillList);
+        hunterUI.Init(PlayerType.Boy, this, Vars.UserData.boySkillList, herbologistUI);
+        herbologistUI.Init(PlayerType.Girl, this, Vars.UserData.girlSkillList, hunterUI);
     }
 
 
@@ -116,10 +116,13 @@ public class BattleManager : MonoBehaviour
     {
         if(isDrag)
         {
-            dragSlot.transform.position = MultiTouch.Instance.TouchPos;
+            dragSlot.transform.position = multiTouch.TouchPos;
         }
+
+        Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
+    //초기화
     public void Init()
     {
         /*플레이어 스킬 목록 전달받기*/
@@ -160,7 +163,19 @@ public class BattleManager : MonoBehaviour
             // Vars 전역 저장소에서 불러오기.
     }    
 
+    //UI
+    public void PrintMessage(string message, float time, UnityAction action)
+    {
+        this.message.PrintMessage(message, time, action);
+    }
 
+    public void OpenSkillUI(PlayerType type)
+    {
+        if (type == PlayerType.Boy)
+            hunterUI.Open();
+        else
+            herbologistUI.Open();
+    }
 
     public void CreateTempSkillUiForDrag(DataPlayerSkill skill)
     {
@@ -169,85 +184,192 @@ public class BattleManager : MonoBehaviour
         isDrag = true;
     }
 
-    public void EndTempSkillUiForDrag()
+    public void CreateTempItemUiForDrag(DataCunsumable item)
+    {
+        dragSlot.gameObject.SetActive(true);
+        dragSlot.sprite = item.ItemTableElem.IconSprite;
+        isDrag = true;
+    }
+
+    public void EndTempUiForDrag()
     {
         dragSlot.gameObject.SetActive(false);
         isDrag = false;
-    }
-
-    public void PrintMessage(string message, float time, UnityAction action)
-    {
-        this.message.PrintMessage(message, time, action);
     }
     
     public void OpenSkillInfo(DataPlayerSkill skill, Vector2 pos)
     {
         info.gameObject.SetActive(true);
-        info.Init(skill);
-        info.transform.position = pos;
+        info.Init(skill, pos);
     }
 
-    private void OpenSkillSelectUI(SkillSelectUI target)
+    public void OpenItemInfo(DataCunsumable item, Vector2 pos)
     {
-        var curUI = CurrentOpenUI;
-        if (curUI == target)
-            return;
-
-        target.gameObject.SetActive(true);
-        target.transform.position = belowScreen;
-        StartCoroutine(
-            CoOpenUp(target.GetComponent<RectTransform>(), curUI?.GetComponent<RectTransform>()));
+        info.gameObject.SetActive(true);
+        info.Init(item, pos);
     }
 
-    private IEnumerator CoCloseDown(RectTransform target)
+    //Tile
+    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, bool isAnimation = false)
     {
-        float timer = 0f;
-        Vector3 startPos = target.position;
-        float startY = startPos.y;
-        float endY = belowScreen.y;
-        while (timer <= popdownTime)
+        var tile = tileMaker.GetTile(tilePos);
+        if(tile.CanStand)
         {
-            timer += Time.deltaTime;
-            var ratio = timer / popdownTime;
-            var lerp = Mathf.Lerp(startY, endY, ratio);
-            target.position = new Vector3(startPos.x, lerp, startPos.z);
-            yield return null;
-        }
-        target.position = new Vector3(startPos.x, endY, startPos.z);
-        target.gameObject.SetActive(false);
+            tile.units.Add(unit);
+            unit.Pos = tilePos;
+
+            var dest = tile.WolrdPos;
+            dest.y = unit.transform.position.y;
+
+            if (isAnimation)
+            {
+                StartCoroutine(
+                    Utility.CoTranslate(unit.transform, unit.transform.position, dest, 0.7f));
+            }
+            else
+            {
+                unit.transform.position = dest;
+            }
+        }  
     }
 
-    private IEnumerator CoOpenUp(RectTransform target, RectTransform haveToClose)
+    public void DisplayMonsterTile()
     {
-        if (haveToClose != null)
+        var list = tileMaker.GetMonsterTiles();
+        foreach (var tile in list)
         {
-            yield return StartCoroutine(CoCloseDown(haveToClose));
+            tile.HighlightCanAttackSign();
+        }
+    }
+
+    public void DisplayPlayerTile()
+    {
+        var list = tileMaker.GetPlayerTiles();
+        foreach (var tile in list)
+        {
+            tile.HighlightCanConsumeSign();
+        }
+    }
+
+    public void DisplayTileClear()
+    {
+        tileMaker.SetAllTileClear();
+    }
+
+    //Command
+    public void ClearCommand()
+    {
+        boyInput.Clear();
+        girlInput.Clear();
+    }
+
+    public void UpdateComand(PlayerType type, Vector2 target, DataPlayerSkill skill)
+    {
+        PlayerComand command;
+        PlayerComand another;
+        PlayerStats attacker;
+        if (type == PlayerType.Boy)
+        {
+            command = boyInput;
+            another = girlInput;
+
+            attacker = boy;
+        }
+        else
+        {
+            command = girlInput;
+            another = boyInput;
+
+            attacker = girl;
         }
 
-        float timer = 0f;
-        Vector3 startPos = target.position;
-        float startY = startPos.y;
-        float endY = startY + popupHeight;
-        while (timer <= popupTime)
+        if (!command.IsUpdated && !another.IsUpdated)
         {
-            timer += Time.deltaTime;
-            var ratio = timer / popupTime;
-            var lerp = Mathf.Lerp(startY, endY, ratio);
-            target.position = new Vector3(startPos.x, lerp, startPos.z);
-            yield return null;
+            command.IsFirst = true;
+            another.IsFirst = false;
         }
-        target.position = new Vector3(startPos.x, endY, startPos.z);
+        else if (command.IsUpdated && another.IsUpdated)
+        {
+            another.IsFirst = true;
+            command.IsFirst = false;
+        }
+
+        command.Create(target, skill);
+    }
+
+    public void UpdateComand(PlayerType type, Vector2 target, DataCunsumable item)
+    {
+        PlayerComand command;
+        PlayerComand another;
+        PlayerStats attacker;
+        if (type == PlayerType.Boy)
+        {
+            command = boyInput;
+            another = girlInput;
+
+            attacker = boy;
+        }
+        else
+        {
+            command = girlInput;
+            another = boyInput;
+
+            attacker = girl;
+        }
+
+        if (!command.IsUpdated && !another.IsUpdated)
+        {
+            command.IsFirst = true;
+            another.IsFirst = false;
+        }
+        else if (command.IsUpdated && another.IsUpdated)
+        {
+            another.IsFirst = true;
+            command.IsFirst = false;
+        }
+
+        command.Create(target, item);
+    }
+
+    public void FinishTurn()
+    {
+        if (!boyInput.IsUpdated && !girlInput.IsUpdated)
+            Debug.Log("사냥꾼과 약초학자의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
+        else if (boyInput.IsUpdated && !girlInput.IsUpdated)
+            Debug.Log("약초학자의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
+        else if (!boyInput.IsUpdated && girlInput.IsUpdated)
+            Debug.Log("사냥꾼의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
+        else
+        {
+            if (boyInput.IsFirst)
+                comandQueue.Enqueue(boyInput);
+        }
     }
 
     private void OnGUI()
     {
         if(GUILayout.Button("Boy Clicked"))
         {
-            OpenSkillSelectUI(hunterUI);
+            OpenSkillUI(PlayerType.Boy);
         }
         if (GUILayout.Button("Girl Clicked"))
         {
-            OpenSkillSelectUI(herbologistUI);
+            OpenSkillUI(PlayerType.Girl);
+        }
+        if(GUILayout.Button("Who First"))
+        {
+            Debug.Log($"Boy : {boyInput.IsFirst} / {boyInput.IsSecond}");
+            Debug.Log($"Girl : {girlInput.IsFirst} / {girlInput.IsSecond}");
+        }
+        if(GUILayout.Button("Move 1 Foward"))
+        {
+            var monster0 = monster[0];
+            var tile = monster0.CurTile;
+            Tiles foward;
+            if(tile.TryGetFowardTile(out foward, 1))
+            {
+                PlaceUnitOnTile(foward.index, monster0, true);
+            }
         }
     }
 }

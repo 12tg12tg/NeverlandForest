@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Utility
 {
@@ -83,5 +84,21 @@ public class Utility
                     UnityEngine.Object.Destroy(childList[i].gameObject);
             }
         }
+    }
+
+    public static Vector2 RelativeRectSize(CanvasScaler cs, RectTransform rt)
+    {
+        float wRatio = Screen.width / cs.referenceResolution.x;
+        float hRatio = Screen.height / cs.referenceResolution.y;
+
+        float ratio =
+            wRatio * (1f - cs.matchWidthOrHeight) +
+            hRatio * (cs.matchWidthOrHeight);
+
+        var size = new Vector2();
+        size.x = rt.rect.width * ratio;
+        size.y = rt.rect.height * ratio;
+
+        return size;
     }
 }
