@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,5 +43,8 @@ public class UnitBase : MonoBehaviour
         set => pos = value;
     }
 
-
+    public static explicit operator UnitBase(List<MonsterStats> v)
+    {
+        throw new NotImplementedException();
+    }
 }

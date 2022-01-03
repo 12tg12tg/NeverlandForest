@@ -9,7 +9,9 @@ public class TileMaker : MonoBehaviour
     public int row = 3;
     public int col = 7;
     public float spacing = 1f;
-    private Tiles[,] allTiles;
+    public Tiles[,] allTiles;
+
+
     private void Awake()
     {   
 

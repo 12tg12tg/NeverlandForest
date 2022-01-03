@@ -28,9 +28,20 @@ public class PlayerAttackReady : State<CharacterBattleState>
     {
         // 공격 하는순간을 기다렸다가 공격하면 몇초간 공격 애니메이션 실행,
         // 공격애니메이션 종료시 공격이 종료됬다는 것을 알려줌
+
     }
 
+    public IEnumerator AttackAnimation()
+    {
+        playerAnimation.SetTrigger("Attack");
+        while(playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("WTD_AttackA3") &&
+            playerAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
 
+        FSM.ChangeState(CharacterBattleState.Idle);
+    }
 
 
 

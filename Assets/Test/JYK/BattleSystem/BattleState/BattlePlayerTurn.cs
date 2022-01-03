@@ -18,6 +18,7 @@ public class BattlePlayerTurn : State<BattleState>
     {
         isMessageOff = false;
         manager.PrintMessage("플레이어 턴", messageTime, () => isMessageOff = true);
+        manager.TurnChage();
     }
 
     public override void Release()

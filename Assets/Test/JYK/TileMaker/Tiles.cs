@@ -12,6 +12,9 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log($"Pointer is drop here to {index} Tile! ");
+        // Ãß°¡
+        BattleManager.Instance.dropTileIndex = index;
+        BattleManager.Instance.isDropAttack = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)

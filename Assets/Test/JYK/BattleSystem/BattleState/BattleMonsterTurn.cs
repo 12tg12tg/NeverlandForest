@@ -9,11 +9,15 @@ public class BattleMonsterTurn : State<BattleState>
     {
         this.manager = manager;
     }
+    private float messageTime = 3f;
+    private bool isMessageOff;
 
     public override void Init()
     {
         Debug.Log("Battle Monster Init");
-        
+        isMessageOff = false;
+        manager.PrintMessage("몬스터 턴", messageTime, () => isMessageOff = true);
+        manager.TurnChage();
     }
 
     public override void Release()
@@ -23,7 +27,6 @@ public class BattleMonsterTurn : State<BattleState>
 
     public override void Update()
     {
-        Debug.Log("Battle Monster Update");
     }
     public override void FixedUpdate()
     {

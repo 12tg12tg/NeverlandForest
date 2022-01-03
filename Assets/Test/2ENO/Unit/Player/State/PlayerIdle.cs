@@ -8,6 +8,21 @@ public class PlayerIdle : State<CharacterBattleState>, IAttackable
 {
     PlayerStats playerStat;
     Animator playerAnimation;
+    PlayerBattleUnit playerUnit;
+
+    public void SetPlayerStat(PlayerStats playerStat)
+    {
+        this.playerStat = playerStat;
+    }
+    public void SetPlayerAnimation(Animator playerAnimation)
+    {
+        this.playerAnimation = playerAnimation;
+    }
+    public void SetPlayerUnit(PlayerBattleUnit unit)
+    {
+        playerUnit = unit;
+    }
+
     public void OnAttacked(UnitBase attacker)
     {
         // 피격당했을 시 피격 애니메이션 실행
@@ -15,6 +30,10 @@ public class PlayerIdle : State<CharacterBattleState>, IAttackable
     public override void Init()
     {
         // 공격을 마쳣을때 이 상태가 된다.
+        playerAnimation.SetTrigger("Idle");
+        playerUnit.SendAttackEndMessage();
+        playerUnit.SendSkillUseMessage();
+
     }
     public override void Release()
     {

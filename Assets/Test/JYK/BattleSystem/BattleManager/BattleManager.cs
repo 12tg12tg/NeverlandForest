@@ -6,7 +6,6 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-
 public class PlayerInput
 {
     private bool isUpdate;
@@ -34,10 +33,10 @@ public class PlayerInput
 }
 
 
-public class BattleManager : MonoBehaviour
+public class BattleManager : ObservablePublisher
 {
     private static BattleManager instance;
-    public static BattleManager Inastance { get => instance; }
+    public static BattleManager Instance { get => instance; }
 
     //Unit
     public List<GameObject> enemy = new List<GameObject>();
@@ -45,6 +44,12 @@ public class BattleManager : MonoBehaviour
     public PlayerStats girl;
     private PlayerInput boyInput;
     private PlayerInput girlInput;
+    // 추가
+    public PlayerBattleUnit boyChar;
+    public PlayerBattleUnit girlChar;
+    public MonsterUnit[] enemys;
+    public DataPlayerSkill curSelectSkill;
+    public int playerCount;
 
     //Canvas
     public CanvasScaler cs;
@@ -62,6 +67,8 @@ public class BattleManager : MonoBehaviour
     private float popdownTime = 0.2f;
     private bool isDrag;
 
+    public Vector2 dropTileIndex;
+    public bool isDropAttack = false;
     private SkillSelectUI CurrentOpenUI
     {
         get
@@ -74,12 +81,51 @@ public class BattleManager : MonoBehaviour
                 return null;
         }
     }
+    private PlayerBattleUnit CurrentSelectUnit
+    {
+        get
+        {
+            if (boyChar.isSelected)
+                return boyChar;
+            else if (girlChar.isSelected)
+                return girlChar;
+            else
+                return null;
+        }
+    }
+
+    // 추가
+    public void PlayerAttackEnd()
+    {
+        playerCount++;
+        if (playerCount == 2)
+        {
+            FSM.ChangeState(BattleState.Monster);
+            playerCount = 0;
+        }
+    }
+
+    public void TurnChage()
+    {
+        NotifyObservers();
+    }
+
 
     private void Awake()
     {       
         instance = this;
         boyInput = new PlayerInput(boy);
         girlInput = new PlayerInput(girl);
+
+        // 추가
+        boyChar.battleSystem = this;
+        girlChar.battleSystem = this;
+        Subscribe(boyChar);
+        Subscribe(girlChar);
+        for(int i=0; i<enemys.Length; i++)
+        {
+            Subscribe(enemys[i]);
+        }
     }
 
     private void Start()
@@ -117,6 +163,29 @@ public class BattleManager : MonoBehaviour
         if(isDrag)
         {
             dragSlot.transform.position = MultiTouch.Instance.TouchPos;
+        }
+
+        // 추가
+        if(isDropAttack)
+        {
+            if (curSelectSkill != null)
+            {
+                var curUI = CurrentOpenUI;
+                StartCoroutine(CoCloseDown(curUI?.GetComponent<RectTransform>()));
+                List<UnitBase> targetList = new List<UnitBase>();
+                for (int i = 0; i < enemys.Length; i++)
+                {
+                    if(enemys[i].monsterStat.tilePos == dropTileIndex)
+                    {
+                        targetList.Add(enemys[i].monsterStat);
+                    }
+                }
+
+                CurrentSelectUnit.SetAttackTarget(targetList);
+                CurrentSelectUnit.OnSkillUse(curSelectSkill);
+            }
+            isDropAttack = false;
+            curSelectSkill = null;
         }
     }
 
@@ -241,13 +310,27 @@ public class BattleManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if(GUILayout.Button("Boy Clicked"))
+        // 추가
+        if (FSM.curState == BattleState.Player)
         {
-            OpenSkillSelectUI(hunterUI);
-        }
-        if (GUILayout.Button("Girl Clicked"))
-        {
-            OpenSkillSelectUI(herbologistUI);
+            if (boyChar.playerState.curState == CharacterBattleState.AttackReady)
+            {
+                if (GUILayout.Button("Boy Clicked"))
+                {
+                    boyChar.isSelected = true;
+                    girlChar.isSelected = false;
+                    OpenSkillSelectUI(hunterUI);
+                }
+            }
+            if (girlChar.playerState.curState == CharacterBattleState.AttackReady)
+            {
+                if (GUILayout.Button("Girl Clicked"))
+                {
+                    boyChar.isSelected = false;
+                    girlChar.isSelected = true;
+                    OpenSkillSelectUI(herbologistUI);
+                }
+            }
         }
     }
 }

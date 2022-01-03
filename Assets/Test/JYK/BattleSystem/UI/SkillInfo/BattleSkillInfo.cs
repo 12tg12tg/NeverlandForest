@@ -42,5 +42,8 @@ public class BattleSkillInfo : MonoBehaviour
     {
         Debug.Log($"Select {curSkill.SkillTableElem.name}");
         //DataPlayerSkill 전달
+
+        // 추가
+        BattleManager.Instance.curSelectSkill = curSkill;
     }    
 }

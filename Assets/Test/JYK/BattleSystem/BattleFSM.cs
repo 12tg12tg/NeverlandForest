@@ -25,8 +25,18 @@ public class BattleFSM : FSM<BattleState>
     public override void Update()
     {
         base.Update();
-
-        
     }
 
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(0, 50, 100, 30), "playerTurn"))
+        {
+            ChangeState(BattleState.Player);
+        }
+
+        if(GUI.Button(new Rect(0, 90, 100, 30),"monsterTurn"))
+        {
+            ChangeState(BattleState.Monster);
+        }
+    }
 }
