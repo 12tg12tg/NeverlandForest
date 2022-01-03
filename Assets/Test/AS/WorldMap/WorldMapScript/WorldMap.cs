@@ -50,7 +50,9 @@ public class WorldMap : MonoBehaviour
     public GameObject fog;
     public WorldMapPlayer player;
     public WorldMapCamera worldMapCamera;
-    
+    private SaveLoadManager saveData;
+
+
     public int column;
     public int row;
     public WorldMapNode[,] maps;
@@ -59,15 +61,20 @@ public class WorldMap : MonoBehaviour
     private float posX = 5f;
     private float posY = 15f;
 
-    private bool isFirst = true; // 府费侩
+    private static bool isFirst = true; // 府费侩
     private bool isAllLinked = false;
 
     public object[] day;
     public int testDay = 0;
     private void Awake()
     {
-        StartCoroutine(InitMap());
-
+        if (isFirst)
+        { 
+            StartCoroutine(InitMap());
+            Save();
+        }
+        else
+            Load();
         day = new object[1];
     }
 
@@ -122,8 +129,11 @@ public class WorldMap : MonoBehaviour
 
             yield return null;
         }
+        if (isFirst)
+            player.Init();
+        else
+            player.Load();
         isFirst = false;
-        player.Init();
         worldMapCamera.Init();
         PaintLink();
     }
@@ -425,6 +435,7 @@ public class WorldMap : MonoBehaviour
         }
 
         PaintLink();
-        player.Init();
+        player.Load();
+        worldMapCamera.FollowPlayer();
     }
 }

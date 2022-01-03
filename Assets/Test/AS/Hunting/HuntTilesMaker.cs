@@ -66,7 +66,6 @@ public class HuntTilesMaker : MonoBehaviour
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<HuntTile>();
-        tile.blue = blue;
         tile.player = player;
         tile.index = index;
         tile.ren = ren;

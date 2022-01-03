@@ -47,7 +47,10 @@ public class WorldMapCamera : MonoBehaviour
     {
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
         var startPos = new Vector3(playerPos.position.x, transform.position.y, transform.position.z);
-        var endPos = new Vector3(10f, 0f, 0f) + startPos;
+        var endPos = Vector3.zero + startPos;
+        if (Vars.UserData.WorldMapData.isClear)
+            endPos = new Vector3(10f, 0f, 0f) + startPos;
+        
         coCameraMove ??= StartCoroutine(Utility.CoTranslate(transform, startPos, endPos, 1f, () => coCameraMove = null));
     }
 }

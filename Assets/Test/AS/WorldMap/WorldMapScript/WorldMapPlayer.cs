@@ -8,6 +8,11 @@ public class WorldMapPlayer : MonoBehaviour
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
     private Vector2 currentIndex;
+    private Vector2 goalIndex;
+    private Vector3 currentPos;
+    private Vector3 startPos;
+    private Vector3 goalPos;
+    public float distance;
     public Vector2 CurrentIndex => currentIndex;
 
     public void Init()
@@ -21,23 +26,63 @@ public class WorldMapPlayer : MonoBehaviour
         currentIndex = totalMap[0].index;
 
         transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
+
+        var data = new WorldMapData();
+        data.startPos = data.currentPos = transform.position;
+        data.currentIndex = currentIndex;
+        Vars.UserData.WorldMapData = data;
+    }
+    public void Load()
+    {
+        if(Vars.UserData.WorldMapData.isClear)
+            PlayerClearWorldMap();
+        else
+            PlayerRunWorldMap();
     }
 
-    public void ComeBackWorldMap()
+    public void PlayerWorldMap(Vector3 goal, Vector2 index)
     {
-        for (int i = 0; i < totalMap.Length; i++)
+        goalIndex = coMove == null ? index : goalIndex;
+        goalPos = goal;
+        startPos = transform.position;
+        var x = transform.position.x + (Mathf.Abs(goal.x - transform.position.x) * distance);
+        var z = goal.z;
+
+        if(transform.position.z > goal.z)
         {
-            if(totalMap[i].index.Equals(currentIndex))
-            {
-                transform.position = totalMap[i].transform.position + new Vector3(0f, 1.5f, 0f);
-                return;
-            }
+            z = transform.position.z - (Mathf.Abs(goal.z - transform.position.z) * distance);
         }
+        else if (transform.position.z < goal.z)
+        {
+            z = transform.position.z + (Mathf.Abs(goal.z - transform.position.z) * distance);
+        }
+
+        currentPos = goal = new Vector3(x, goal.y, z);
+
+        var data = Vars.UserData.WorldMapData;
+        data.goalIndex = goalIndex;
+        data.currentPos = currentPos;
+        data.goalPos = goalPos;
+        data.startPos = startPos;
+
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
+    }
+    public void PlayerClearWorldMap()
+    {
+        var data = Vars.UserData.WorldMapData;
+
+        data.currentIndex = currentIndex = data.goalIndex;
+        transform.position = data.currentPos;
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
     }
 
-    public void PlayerWorldMap(Vector3 pos, Vector2 index)
+    public void PlayerRunWorldMap()
     {
-        currentIndex = coMove == null ? index : currentIndex;
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f, () => coMove = null));
+        var data = Vars.UserData.WorldMapData;
+
+        currentIndex = data.currentIndex;
+        transform.position = data.currentPos;
+
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => coMove = null));
     }
 }

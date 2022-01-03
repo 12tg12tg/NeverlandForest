@@ -33,6 +33,22 @@ public class Utility
         action?.Invoke();
     }
 
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, string SceneName, Action action = null)
+    {
+        float timer = 0f;
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.position = Vector3.Lerp(start, end, ratio);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        action?.Invoke();
+        SceneManager.LoadScene(SceneName);
+    }
+
+
     public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, Action action = null)
     {
         float timer = 0f;

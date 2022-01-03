@@ -50,7 +50,6 @@ public class TileMaker : MonoBehaviour
         }
     }
 
-
     private GameObject CreateTileQuad(Vector2 index, float width, float height)
     {
         GameObject plane = new GameObject("Tile Plane");  //빈 게임오브젝트 생성
