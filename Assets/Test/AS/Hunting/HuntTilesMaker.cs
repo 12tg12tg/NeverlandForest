@@ -5,7 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class HuntTilesMaker : MonoBehaviour
 {
-    public HuntPlayer player;
+    public PlayerHuntingUnit player;
     public GameObject cloak;
     public GameObject blue;
 

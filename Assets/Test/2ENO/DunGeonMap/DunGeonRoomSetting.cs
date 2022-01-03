@@ -27,18 +27,17 @@ public class DungeonRoom
     private Vector2 pos;
     private DunGeonRoomType roomType;
 
-    //private DunGeonEvent eventCase;
-
-    //private int eventCount;
-    //private int battleSet = 0b_1110_0011;
-    //private int noBattleSet = 0b_1111_1110;
-
     public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
     
     public DungeonRoom nextRoom;
+    // 아직 미사용
+    public DungeonRoom beforeRoom;
+
+    public int roomIdx;
     public int nextRoomIdx;
     public int nextRoadCount = 0;
-    //public List<int> nextRoomIndex = new List<int>();
+    // 아직 미사용
+    public int beforeRoomIdx;
 
     public DunGeonRoomType RoomType
     {
@@ -55,21 +54,12 @@ public class DungeonRoom
         set => pos = value;
         get => pos;
     }
-    //public DunGeonEvent EventCase
-    //{
-    //    get => eventCase;
-    //}
-    //public int EventCount
-    //{
-    //    set => eventCount = value;
-    //    get => eventCount;
-    //}
+
     public void SetEvent(DunGeonEvent eventType)
     {
         switch (eventType)
         {
             case DunGeonEvent.Battle:
-                //eventCase &= (DunGeonEvent)battleSet;
                 if (eventList.FindIndex(x => x == DunGeonEvent.Hunt) != -1
                     || eventList.FindIndex(x => x == DunGeonEvent.RandomIncount) != -1
                     || eventList.FindIndex(x => x == DunGeonEvent.SubStory) != -1)
@@ -78,22 +68,17 @@ public class DungeonRoom
             case DunGeonEvent.Hunt:
             case DunGeonEvent.RandomIncount:
             case DunGeonEvent.SubStory:
-                //eventCase &= (DunGeonEvent)noBattleSet;
                 if (eventList.FindIndex(x => x == DunGeonEvent.Battle) != -1)
                     return;
                 break;
         }
         eventList.Add(eventType);
-        //eventCase |= eventType;
+
     }
 
     public bool CheckEvent(DunGeonEvent evnetType)
     {
-        //if((eventCase & evnetType) != 0)
-        //{
-        //    return true;
-        //}
-        //return false;
+
         if (eventList.FindIndex(x => x == evnetType) != -1)
             return true;
 
@@ -160,7 +145,6 @@ public static class DunGeonRoomSetting
         // i는 이벤트enum 순회느낌, j는 확률 리스트 인덱스용
         for (int i = 1, j = 0; i != (int)DunGeonEvent.Count;)
         {
-            // 혹시몰라서 무한방지
             if (j > eventP.Count) break;
             // empty는 현재 약 30프로 확률
             if (rnd > 100)
@@ -178,15 +162,13 @@ public static class DunGeonRoomSetting
         }
         return eventType;
     }
-
+    // 다음방과 연결
     public static void DungeonLink(DungeonRoom[] dungeonList)
     {
-        int count = 0;
         for (int i = 0; i < dungeonList.Length; i++)
         {
             if(dungeonList[i].IsCheck)
             {
-                count++;
                 var nextIdx = dungeonList[i].nextRoomIdx;
                 if (nextIdx != -1 && dungeonList[nextIdx].IsCheck == true)
                 {
@@ -195,7 +177,18 @@ public static class DunGeonRoomSetting
             }
         }
     }
-    // 시작방 입력받기, road개수 카운트 메소드
+    // 순서대로 연결된 던전방 리스트를 통해, 역순으로 이전방과 연결하기 ( 아직 미사용 )
+    public static void DungeonReverseLink(List<DungeonRoom> list)
+    {
+        for (int i = list.Count - 1; i >= 0; i--)
+        {
+            if (i == 0)
+                return;
+            list[i].beforeRoom = list[i - 1];
+            list[i].beforeRoomIdx = list[i - 1].roomIdx;
+        }
+    }
+    // 시작방 입력받기, road개수 카운트, 생성된 던전맵을 순서대로 리스트에 담기
     public static void DungeonRoadCount(DungeonRoom dungeonRoom, List<DungeonRoom> list)
     {
         int roadCount = 0;
@@ -218,3 +211,26 @@ public static class DunGeonRoomSetting
         list.Add(dungeonRoom);
     }
 }
+
+
+//private DunGeonEvent eventCase;
+
+//private int eventCount;
+//private int battleSet = 0b_1110_0011;
+//private int noBattleSet = 0b_1111_1110;
+
+//public DunGeonEvent EventCase
+//{
+//    get => eventCase;
+//}
+//public int EventCount
+//{
+//    set => eventCount = value;
+//    get => eventCount;
+//}
+
+//if((eventCase & evnetType) != 0)
+//{
+//    return true;
+//}
+//return false;

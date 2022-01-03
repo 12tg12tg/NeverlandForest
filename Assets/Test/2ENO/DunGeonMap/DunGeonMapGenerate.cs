@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public enum DirectionInho
@@ -15,32 +16,48 @@ public enum DirectionInho
 
 public class DunGeonMapGenerate : MonoBehaviour
 {
-    public int distance = 7;
-    public int startId = 100;
-    public int col = 20;
+    private DungeonSystem dungeonSystem;
 
-    public int roomCount = 6;
-    public int remainRoom = 4;
+    private float distance = 2f;
+    private int startId = 100;
+    private int col = 20;
+
+    private int roomCount = 6;
+    private int remainRoom;
 
     public DirectionInho direction;
 
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
     public GameObject mapPos;
-    // 원소 초기화 대기
-    public bool isSet = false;
 
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
     public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
 
-    public void Start()
+    public void Init(DungeonSystem system)
     {
-        ConsumeManager.init();
-        StartCoroutine(MapCorutine());
+        if(dungeonSystem == null)
+            dungeonSystem = system;
     }
 
-    IEnumerator MapCorutine()
+    public void DungeonGenerate(DungeonRoom[] mapArrayData, UnityAction action)
+    {
+        if(mapArrayData == null)
+        {
+            StartCoroutine(MapCorutine(action));
+        }
+        else
+        {
+            dungeonRoomArray = mapArrayData;
+            DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
+            CreateMapObject();
+            dungeonSystem.DungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
+            action?.Invoke();
+        }
+    }
+
+    IEnumerator MapCorutine(UnityAction action)
     {
         MapInit();
         while (remainRoom > 0)
@@ -52,10 +69,13 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         DunGeonRoomSetting.DungeonLink(dungeonRoomArray);
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
+        DunGeonRoomSetting.DungeonReverseLink(dungeonRoomList);
         CreateMapObject();
-        isSet = true;
 
-        Vars.UserData.dungeonMapData = dungeonRoomArray;
+        dungeonSystem.DungeonSystemData.dungeonRoomArray = dungeonRoomArray;
+        dungeonSystem.DungeonSystemData.dungeonRoomList = dungeonRoomList;
+        dungeonSystem.DungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
+        action?.Invoke();
     }
 
     public void OnGUI()
@@ -72,7 +92,6 @@ public class DunGeonMapGenerate : MonoBehaviour
         {
             SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
             dungeonRoomArray = Vars.UserData.dungeonMapData;
-            //DunGeonRoomSetting.DungeonLink(DungeonRoomList);
             DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
             CreateMapObject();
         }
@@ -102,9 +121,8 @@ public class DunGeonMapGenerate : MonoBehaviour
             {
                 var row = i % col;
                 var colum = i / col;
-                dungeonRoomArray[i].Pos = new Vector2(row * 2f, colum * 2f);
+                dungeonRoomArray[i].Pos = new Vector2(row * distance, colum * distance);
             }
-            //testMap[i] = 0;
         }
         remainRoom = roomCount;
     }
@@ -121,6 +139,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         {
             dungeonRoomArray[curId].IsCheck = true;
             dungeonRoomArray[curId].RoomType = DunGeonRoomType.MainRoom;
+            dungeonRoomArray[curId].roomIdx = curId;
             DunGeonRoomSetting.RoomEventSet(dungeonRoomArray[curId]);
             remainRoom--;
 
@@ -132,7 +151,10 @@ public class DunGeonMapGenerate : MonoBehaviour
                 rnd = Random.Range(0, (int)DirectionInho.Count);
             }
 
+
             var rndCount = Random.Range(2, 6);
+            if (curId == 100)
+                rndCount = 5;
             var nextId = NextRoomId(curId, (DirectionInho)rnd);
             
             dungeonRoomArray[curId].nextRoomIdx = nextId;
@@ -145,6 +167,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             roadCount--;
             dungeonRoomArray[curId].IsCheck = true;
             dungeonRoomArray[curId].RoomType = DunGeonRoomType.SubRoom;
+            dungeonRoomArray[curId].roomIdx = curId;
             DunGeonRoomSetting.RoomEventSet(dungeonRoomArray[curId]);
 
             var perCent = Random.Range(0, 10);
