@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class Utility
 {
@@ -19,7 +20,7 @@ public class Utility
         }
     }
 
-    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, Action action = null)
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {
         float timer = 0f;
         while (timer < time)
@@ -32,7 +33,7 @@ public class Utility
         }
         action?.Invoke();
     }
-    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, string SceneName, Action action = null)
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, string SceneName, UnityAction action = null)
     {
         float timer = 0f;
         while (timer < time)
@@ -47,7 +48,7 @@ public class Utility
         SceneManager.LoadScene(SceneName);
     }
 
-    public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, Action action = null)
+    public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {
         float timer = 0f;
         while (timer < time)
@@ -114,7 +115,7 @@ public class Utility
         return size;
     }
 
-    public static IEnumerator CoTranslateLookFoward(Transform transform, Vector3 start, Vector3 end, float time, Action action = null)
+    public static IEnumerator CoTranslateLookFoward(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {
         Debug.Log(transform.gameObject.name, transform.gameObject);
         float timer = 0f;

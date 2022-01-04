@@ -91,7 +91,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (GUILayout.Button("LoadMap"))
         {
             SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
-            dungeonRoomArray = Vars.UserData.dungeonMapData;
+            dungeonRoomArray = Vars.UserData.DungeonMapData;
             DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
             CreateMapObject();
         }

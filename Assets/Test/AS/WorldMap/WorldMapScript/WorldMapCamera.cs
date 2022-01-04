@@ -47,6 +47,8 @@ public class WorldMapCamera : MonoBehaviour
 
     public void FollowPlayer()
     {
+        if (coCameraMove != null)
+            return;
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
         var startPos = new Vector3(playerPos.position.x, transform.position.y, transform.position.z);
         var endPos = Vector3.zero + startPos;

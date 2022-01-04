@@ -119,8 +119,8 @@ public class BattleManager : MonoBehaviour
         PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
 
         //스킬창 Init
-        hunterUI.Init(PlayerType.Boy, this, Vars.UserData.boySkillList, herbologistUI);
-        herbologistUI.Init(PlayerType.Girl, this, Vars.UserData.girlSkillList, hunterUI);
+        hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
+        herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
     }
 
 
@@ -138,8 +138,8 @@ public class BattleManager : MonoBehaviour
     public void Init()
     {
         /*플레이어 스킬 목록 전달받기*/
-        var boy = Vars.UserData.boySkillList;
-        var girl = Vars.UserData.girlSkillList;
+        var boy = Vars.BoySkillList;
+        var girl = Vars.GirlSkillList;
 
         var skill = DataTableManager.GetTable<PlayerSkillTable>().GetData<PlayerSkillTableElem>("0");
         var data = new DataPlayerSkill(skill);

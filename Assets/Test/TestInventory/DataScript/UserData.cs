@@ -3,23 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class UserData
-{
-    public int id;
-    public string nickname;
+{   
+    /*
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!      유저마다 다른 변수들       !!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    */
+    //Item Info
+    public List<DataConsumable> ConsumableItemList { get; set; } = new List<DataConsumable>();
 
-    public List<DataCharacter> characterList = new List<DataCharacter>();
-
-    public List<DataConsumable> consumableItemList = new List<DataConsumable>();
-    public List<DataWeapon> weaponItemList = new List<DataWeapon>();
-    public List<DataMaterial> HaveMaterialList = new List<DataMaterial>();
-    public List<string> HaveRecipeIDList = new List<string>();
-    public Dictionary<string, float> MakeList = new Dictionary<string, float>();
+    //World Info
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
-    public List<DataPlayerSkill> boySkillList = new List<DataPlayerSkill>();
-    public List<DataPlayerSkill> girlSkillList = new List<DataPlayerSkill>();
+    //Dungeon Info
+    public DungeonRoom[] DungeonMapData { get; set; }
+    public DungeonData CurAllDungeonData { get; set; } = new DungeonData();
 
-    public DungeonRoom[] dungeonMapData;
-    public DungeonData curAllDungeonData = new DungeonData();
+    //Experienced Recipe
+    public List<string> HaveRecipeIDList { get; set; } = new List<string>();
+
+    //??? - Vars로 이사가도 되는가?
+    public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
+
 }

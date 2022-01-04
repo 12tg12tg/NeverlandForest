@@ -43,7 +43,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         weedPos = newweedPos;
 
         consumableTable = DataTableManager.GetTable<ConsumableTable>();
-        userconsume = Vars.UserData.consumableItemList;
+        userconsume = Vars.UserData.ConsumableItemList;
 
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
         rand = Random.Range(1, 4);

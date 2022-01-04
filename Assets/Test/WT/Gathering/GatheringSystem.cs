@@ -214,7 +214,7 @@ public class GatheringSystem : MonoBehaviour
         var item = curSelectedObj.item;
         if (item != null)
         {
-            Vars.UserData.consumableItemList.Add(item);
+            Vars.UserData.ConsumableItemList.Add(item);
         }
         // manplayer.isCoMove = true;
         womenplayer.IsCoMove = true;
@@ -232,7 +232,7 @@ public class GatheringSystem : MonoBehaviour
         var item = curSelectedObj.item;
         if (item != null)
         {
-            Vars.UserData.consumableItemList.Add(item);
+            Vars.UserData.ConsumableItemList.Add(item);
         }
         // manplayer.isCoMove = true;
         womenplayer.IsCoMove = true;

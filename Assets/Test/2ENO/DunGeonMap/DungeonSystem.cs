@@ -32,9 +32,9 @@ public class DungeonSystem : MonoBehaviour
         {
             roomPrefab[i].gameObject.SetActive(false);
         }
-        if (Vars.UserData.curAllDungeonData != null)
+        if (Vars.UserData.CurAllDungeonData != null)
         {
-            dungeonSystemData = Vars.UserData.curAllDungeonData;
+            dungeonSystemData = Vars.UserData.CurAllDungeonData;
         }
 
         dungeonGenerator = gameObject.GetComponent<DunGeonMapGenerate>();
@@ -114,7 +114,7 @@ public class DungeonSystem : MonoBehaviour
                 GatheringSystem.GoGatheringObject(eventObject.gameObject.transform.position);
                 break;
             case DunGeonEvent.Hunt:
-                Vars.UserData.curAllDungeonData = dungeonSystemData;
+                Vars.UserData.CurAllDungeonData = dungeonSystemData;
                 SceneManager.LoadScene("Hunting");
                 break;
             case DunGeonEvent.RandomIncount:

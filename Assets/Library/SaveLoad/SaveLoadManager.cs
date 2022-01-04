@@ -79,7 +79,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveDungeonMap()
     {
         dungeonMapData = new DungeonMapSaveData_0();
-        dungeonMapData.dungeonMap = Vars.UserData.dungeonMapData;
+        dungeonMapData.dungeonMap = Vars.UserData.DungeonMapData;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
     private void SaveRecipe()
@@ -145,7 +145,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
         if (dungeonMapData != null)
         {
-            Vars.UserData.dungeonMapData = dungeonMapData.dungeonMap;
+            Vars.UserData.DungeonMapData = dungeonMapData.dungeonMap;
         }
     }
     private void LoadWorldMapNode()

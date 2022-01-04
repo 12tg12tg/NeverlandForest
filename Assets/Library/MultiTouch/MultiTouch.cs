@@ -21,8 +21,8 @@ public class MultiTouch : Singleton<MultiTouch>
     public float minZoomInch = 0.2f;
     public float maxZoomInch = 0.5f;
 
-
-    public int TouchCount { get; private set; }
+    private int touchCount;
+    public int TouchCount => touchCount;
     //public Vector2 TapPosition { get => PrimaryPos; } 
 
     public Vector2 TouchStart 
@@ -95,7 +95,7 @@ public class MultiTouch : Singleton<MultiTouch>
     private void Update()
     {
         var touchList = NewTouch.activeTouches;
-        TouchCount = touchList.Count;
+        touchCount = touchList.Count;
         if (touchList.Count == 2)
         {
             UpdateDoubleTouch(touchList);
