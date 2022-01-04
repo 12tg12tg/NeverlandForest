@@ -1,18 +1,26 @@
 using System.Collections;
 using UnityEngine;
 using System.Linq;
+using System;
 
+[Serializable]
 public class WorldMapPlayer : MonoBehaviour
 {
     public GameObject map;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
     private Vector2 currentIndex;
+    private Vector2 goalIndex;
+    private Vector3 currentPos;
+    private Vector3 startPos;
+    private Vector3 goalPos;
+    public float distance;
     public Vector2 CurrentIndex => currentIndex;
 
     public void Init()
     {
         totalMap = new WorldMapNode[map.transform.childCount];
+        
         for (int i = 0; i < map.transform.childCount; i++)
         {
             totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
@@ -21,23 +29,77 @@ public class WorldMapPlayer : MonoBehaviour
         currentIndex = totalMap[0].index;
 
         transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
+
+        var data = new WorldMapPlayerData();
+        data.startPos = data.currentPos = transform.position;
+        data.currentIndex = currentIndex;
+        Vars.UserData.WorldMapPlayerData = data;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+    }
+    public void Load()
+    {
+        var data = Vars.UserData.WorldMapPlayerData;
+        transform.position = data.goalPos;
+        currentIndex = data.currentIndex;
     }
 
     public void ComeBackWorldMap()
     {
-        for (int i = 0; i < totalMap.Length; i++)
+        if(Vars.UserData.WorldMapPlayerData == null)
         {
-            if(totalMap[i].index.Equals(currentIndex))
-            {
-                transform.position = totalMap[i].transform.position + new Vector3(0f, 1.5f, 0f);
-                return;
-            }
+            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            Load();
         }
+        else if(Vars.UserData.WorldMapPlayerData.isClear)
+            PlayerClearWorldMap();
+        else
+            PlayerRunWorldMap();
     }
 
-    public void PlayerWorldMap(Vector3 pos, Vector2 index)
+    public void PlayerWorldMap(Vector3 goal, Vector2 index)
     {
-        currentIndex = coMove == null ? index : currentIndex;
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, pos, 1f, () => coMove = null));
+        goalIndex = coMove == null ? index : goalIndex;
+        goalPos = goal;
+        startPos = transform.position;
+        var x = transform.position.x + (Mathf.Abs(goal.x - transform.position.x) * distance);
+        var z = goal.z;
+
+        if(transform.position.z > goal.z)
+        {
+            z = transform.position.z - (Mathf.Abs(goal.z - transform.position.z) * distance);
+        }
+        else if (transform.position.z < goal.z)
+        {
+            z = transform.position.z + (Mathf.Abs(goal.z - transform.position.z) * distance);
+        }
+
+        currentPos = goal = new Vector3(x, goal.y, z);
+
+        var data = Vars.UserData.WorldMapPlayerData;
+        data.goalIndex = goalIndex;
+        data.currentPos = currentPos;
+        data.goalPos = goalPos;
+        data.startPos = startPos;
+
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+    }
+    public void PlayerClearWorldMap()
+    {
+        var data = Vars.UserData.WorldMapPlayerData;
+        data.currentIndex = currentIndex = data.goalIndex;
+        transform.position = data.currentPos;
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+    }
+
+    public void PlayerRunWorldMap()
+    {
+        var data = Vars.UserData.WorldMapPlayerData;
+
+        currentIndex = data.currentIndex;
+        transform.position = data.currentPos;
+
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => coMove = null));
     }
 }

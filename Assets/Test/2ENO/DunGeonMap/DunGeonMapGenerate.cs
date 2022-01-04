@@ -95,6 +95,16 @@ public class DunGeonMapGenerate : MonoBehaviour
             DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
             CreateMapObject();
         }
+        if(GUILayout.Button("Success"))
+        {
+            Vars.UserData.WorldMapPlayerData.isClear = true;
+            SceneManager.LoadScene("WorldMap");
+        }
+        if (GUILayout.Button("Run"))
+        {
+            Vars.UserData.WorldMapPlayerData.isClear = false;
+            SceneManager.LoadScene("WorldMap");
+        }
     }
 
     public void MapInit()

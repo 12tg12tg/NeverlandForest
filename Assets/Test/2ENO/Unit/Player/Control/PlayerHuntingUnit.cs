@@ -39,7 +39,7 @@ public class PlayerHuntingUnit : UnitBase
             return;
 
         // index의 y 값 비교를 통해서 앞으로 한칸 전진 했는지 판단 가능
-        if (index.y.Equals(currentIndex.y + 1))
+        if (index.y.Equals(currentIndex.y + 1) && coMove == null)
         {
             isForward = true;
             // 동물이 도망칠 확률 업
@@ -66,14 +66,7 @@ public class PlayerHuntingUnit : UnitBase
 
     private void AnimationChange(object isMove)
     {
-        if ((bool)isMove)
-        {
-            playerAnimation.SetTrigger("Walk");
-        }
-        else if (!(bool)isMove)
-        {
-            playerAnimation.SetTrigger("Idle");
-        }
+        playerAnimation.SetTrigger((bool)isMove ? "Walk" : "Idle");
     }
 
     private void PlayWalkAnimation()

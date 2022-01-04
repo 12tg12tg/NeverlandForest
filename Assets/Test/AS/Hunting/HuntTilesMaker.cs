@@ -7,6 +7,7 @@ public class HuntTilesMaker : MonoBehaviour
 {
     public PlayerHuntingUnit player;
     public GameObject cloak;
+    public GameObject blue;
 
     public GameObject wholeTile;
     public Material material;

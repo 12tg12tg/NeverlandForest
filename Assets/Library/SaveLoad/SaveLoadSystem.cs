@@ -9,7 +9,8 @@ using OptionSaveDataCurrentVersion = OptionSaveData_0;
 using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
 using TimeSaveDataCurrentVersion = TimeSaveData_0;
 using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
-using WorldMapSaveDataCurrentVersion = WorldMapSaveData_0;
+using WorldMapNodeSaveDataCurrentVersion = WorldMapNodeData_0;
+using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 
 //=========================================================================================
@@ -39,7 +40,8 @@ public static class SaveLoadSystem
         Recipe,
         Time,
         DungeonMap,
-        WorldMap,
+        WorldMapNode,
+        WorldMapPlayerData,
         ConsumableData,
     }
 
@@ -273,11 +275,19 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-            case SaveType.WorldMap:
+            case SaveType.WorldMapNode:
                 switch (version)
                 {
                     case 0:
-                        return JsonConvert.DeserializeObject<WorldMapSaveDataCurrentVersion>(json);
+                        return JsonConvert.DeserializeObject<WorldMapNodeSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
+            case SaveType.WorldMapPlayerData:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<WorldMapPlayerSaveDataCurrentVersion>(json);
                     default:
                         return null;
                 }
@@ -332,14 +342,20 @@ public static class SaveLoadSystem
                     data = data.VersionUp();
                 }
                 return data;
-            case SaveType.WorldMap:
-                while (!(data is WorldMapSaveDataCurrentVersion))
+            case SaveType.WorldMapNode:
+                while (!(data is WorldMapNodeSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }
                 return data;
             case SaveType.ConsumableData:
                 while (!(data is ConsumableSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.WorldMapPlayerData:
+                while (!(data is WorldMapPlayerSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

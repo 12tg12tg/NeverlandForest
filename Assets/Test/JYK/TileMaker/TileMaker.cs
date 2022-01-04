@@ -136,18 +136,6 @@ public class TileMaker : MonoBehaviour
         return plane;
     }
 
-    //private void OnGUI()
-    //{
-    //    if (GUILayout.Button("Obstacle"))
-    //    {
-    //        if (!IsObstacleTile(new Vector2(0,5)))
-    //        {
-    //            var ob = GetTile(new Vector2(0, 5));
-    //            ob.isObstacle = true;
-    //        }
-    //    }
-    //}
-
     public Tiles GetTile(Vector2 position)
     {
         if (IsValidTile(position))

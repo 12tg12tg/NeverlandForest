@@ -22,6 +22,9 @@ public class DungeonSystem : MonoBehaviour
         get => dungeonSystemData;
     }
 
+
+    public WorldMap worldMap;
+
     void Start()
     {
         dungeonPlayer.gameObject.SetActive(false);
@@ -40,6 +43,8 @@ public class DungeonSystem : MonoBehaviour
         roomManager = new RoomManager();
         roomManager.text = text;
         dungeonGenerator.DungeonGenerate(dungeonSystemData.dungeonRoomArray, RoomSetMethod);
+
+        worldMap.InitWorldMiniMap();
     }
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
     private void RoomSetMethod()
