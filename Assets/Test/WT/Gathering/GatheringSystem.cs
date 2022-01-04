@@ -26,22 +26,11 @@ public class GatheringSystem : MonoBehaviour
     }
     public GatheringType curgatheringType = GatheringType.MainDunguen;
 
-    public Coroutine CoManMove
-    {
-        get
-        {
-            return coManMove;
-        }
-    }
+    public Coroutine CoManMove => coManMove;
 
     private Coroutine coWomenMove;
-    public Coroutine CoWomenMove
-    {
-        get
-        {
-            return coWomenMove;
-        }
-    }
+    public Coroutine CoWomenMove => coWomenMove;
+
     public GatheringObject curSelectedObj;
     private float speed = 3f;
     private Vector3 manbeforePosition;
@@ -61,22 +50,6 @@ public class GatheringSystem : MonoBehaviour
             }
         }
         return true;
-    }
-
-    /* 
-    private List<TestGatheringObject> level0 = new List<TestGatheringObject>();
-    private List<TestGatheringObject> level1 = new List<TestGatheringObject>();
-    private List<TestGatheringObject> level2 = new List<TestGatheringObject>();
-    private List<TestGatheringObject> level3 = new List<TestGatheringObject>();
-    */
-
-    public void Awake()
-    {
-
-    }
-    private void Start()
-    {
-        Init();
     }
 
     public void CreateGathering(DunGeonRoomType roomType, GameObject[] objPos, List<DungeonRoom> roomInfoList)
@@ -170,40 +143,6 @@ public class GatheringSystem : MonoBehaviour
         }
         gatherings.Clear();
     }
-    public void Init()
-    {
-        //Utility.arg1Event += manplayer.AnimationChange;
-        // Utility.arg0Event += manplayer.CoMoveStop;
-
-        Utility.arg1Event += womenplayer.AnimationChange;
-        Utility.arg0Event += womenplayer.CoMoveStop;
-
-
-        /*  for (int i = 0; i < count; i++)
-          {
-              if (i % 4 == 0)
-                  level0.Add(weeds[i]);
-              else if (i % 4 == 1)
-                  level1.Add(weeds[i]);
-              else if (i % 4 == 2)
-                  level2.Add(weeds[i]);
-              else if (i % 4 == 3)
-                  level3.Add(weeds[i]);
-          }*/
-
-    }
-
-
-
-
-    private void OnDestroy()
-    {
-        // Utility.arg1Event -= manplayer.AnimationChange;
-        //Utility.arg0Event -= manplayer.CoMoveStop;
-
-        Utility.arg1Event -= womenplayer.AnimationChange;
-        Utility.arg0Event -= womenplayer.CoMoveStop;
-    }
 
     private void Update()
     {
@@ -222,8 +161,7 @@ public class GatheringSystem : MonoBehaviour
 
         // coManMove ??= StartCoroutine(Utility.CoTranslate2(manplayer.transform, manplayer.transform.position, manbeforePosition, speed, Vector3.zero,
         //    () => coManMove = null));
-        coWomenMove ??= StartCoroutine(Utility.CoTranslate2(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, Vector3.zero,
-         () => coWomenMove = null));
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
     }
 
     private void PopUp()
@@ -232,8 +170,6 @@ public class GatheringSystem : MonoBehaviour
         gatheringPanel.SetActive(true);
         gatheringtext.gameObject.SetActive(true);
         gatheringtext.text = " Ã¤ÁýÀ» ½ÃÀÛÇÏ°Ú½À´Ï±î";
-        Utility.arg0Event -= PopUp;
-
     }
     private void ToolPopUp()
     {
@@ -264,13 +200,13 @@ public class GatheringSystem : MonoBehaviour
         {
             // manbeforePosition = manplayer.transform.position;
             womenbeforePosition = womenplayer.transform.position;
-            Utility.arg0Event += PopUp;
             // manplayer.isCoMove = true;
             womenplayer.IsCoMove = true;
             // coManMove ??= StartCoroutine(Utility.CoTranslate2(manplayer.transform, manplayer.transform.position, objectPos, 1f, Vector3.zero,
             //    () => coManMove = null));
-            coWomenMove ??= StartCoroutine(Utility.CoTranslate2(womenplayer.transform, womenplayer.transform.position, objectPos, 1f, Vector3.zero,
-               () => coWomenMove = null));
+            
+            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, objectPos, 1f, 
+                () => { coWomenMove = null; PopUp(); }));
         }
     }
     public void YesTool()
@@ -284,8 +220,7 @@ public class GatheringSystem : MonoBehaviour
         womenplayer.IsCoMove = true;
         // coManMove ??= StartCoroutine(Utility.CoTranslate2(manplayer.transform, manplayer.transform.position, manbeforePosition, speed, Vector3.zero,
         //    () => coManMove = null));
-        coWomenMove ??= StartCoroutine(Utility.CoTranslate2(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, Vector3.zero,
-          () => coWomenMove = null));
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
 
@@ -303,13 +238,19 @@ public class GatheringSystem : MonoBehaviour
         womenplayer.IsCoMove = true;
         // coManMove ??= StartCoroutine(Utility.CoTranslate2(manplayer.transform, manplayer.transform.position, manbeforePosition, speed, Vector3.zero,
         //     () => coManMove = null));
-        coWomenMove ??= StartCoroutine(Utility.CoTranslate2(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, Vector3.zero,
-          () => coWomenMove = null));
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
 
 
         gatheringToolPanel.SetActive(false);
+    }
+
+    private void AfterMove()
+    {
+        coWomenMove = null;
+        womenplayer.CoMoveStop();
+        womenplayer.transform.rotation = Quaternion.Euler(Vector3.zero);
     }
 
     public void OnGUI()

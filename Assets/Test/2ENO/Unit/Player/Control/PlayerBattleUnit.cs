@@ -25,6 +25,7 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
 
     public PlayerCommand curCommand;
 
+    // 혹시 애니메이션이 문제가 된다면 이친구 인스페겉 초기화를 확인해보세요
     public PlayerType playerType;
 
     private void Start()

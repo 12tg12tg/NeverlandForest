@@ -13,7 +13,7 @@ public class BattleSkillInfo : MonoBehaviour
     //Instance
     private CanvasScaler cs;
     private DataPlayerSkill curSkill;
-    private DataCunsumable curItem;
+    private DataConsumable curItem;
     private BattleManager manager;
 
     //GmaeObject
@@ -65,7 +65,7 @@ public class BattleSkillInfo : MonoBehaviour
         transform.position = pos;
     }
 
-    public void Init(DataCunsumable item, Vector2 pos)
+    public void Init(DataConsumable item, Vector2 pos)
     {
         manager ??= BattleManager.Instance;
         cs ??= manager.cs;

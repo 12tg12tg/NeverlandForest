@@ -6,7 +6,7 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static readonly string[] tableName = { "CharacterDataTable", "CharacterLevelTable", "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
+    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -48,10 +48,6 @@ public class TableEditor : EditorWindow
 
         switch (tableType[typeIndex])
         {
-            case "CharacterDataTable":
-                break;
-            case "CharacterLevelTable":
-                break;
             case "ConsumDataTable":
                 ViewConsumableData(tableList);
                 break;

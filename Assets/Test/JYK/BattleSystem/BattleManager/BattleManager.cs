@@ -12,7 +12,7 @@ public class PlayerCommand
     public PlayerBattleUnit attacker;
     public Vector2 target;
     public DataPlayerSkill skill;
-    public DataCunsumable item;
+    public DataConsumable item;
     public ActionType actionType;
     public PlayerType type;
     public PlayerCommand(PlayerBattleUnit pUnit, PlayerType type)
@@ -39,7 +39,7 @@ public class PlayerCommand
         isUpdate = true;
         actionType = ActionType.Skill;
     }
-    public void Create(Vector2 target, DataCunsumable item)
+    public void Create(Vector2 target, DataConsumable item)
     {
         if (isUpdate)
             Clear();
@@ -201,7 +201,7 @@ public class BattleManager : MonoBehaviour
         isDrag = true;
     }
 
-    public void CreateTempItemUiForDrag(DataCunsumable item)
+    public void CreateTempItemUiForDrag(DataConsumable item)
     {
         dragSlot.gameObject.SetActive(true);
         dragSlot.sprite = item.ItemTableElem.IconSprite;
@@ -221,7 +221,7 @@ public class BattleManager : MonoBehaviour
         info.Init(skill, pos);
     }
 
-    public void OpenItemInfo(SkillButton clickedButton, DataCunsumable item, Vector2 pos)
+    public void OpenItemInfo(SkillButton clickedButton, DataConsumable item, Vector2 pos)
     {
         CurClickedButton = clickedButton;
         info.gameObject.SetActive(true);
@@ -336,7 +336,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void UpdateComand(PlayerType type, Vector2 target, DataCunsumable item)
+    public void UpdateComand(PlayerType type, Vector2 target, DataConsumable item)
     {
         PlayerCommand command;
         PlayerCommand another;

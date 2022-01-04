@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 
-public class DataCunsumable : DataItem
+public class DataConsumable : DataItem
 {
     public int count;
     

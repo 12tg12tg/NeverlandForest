@@ -5,12 +5,10 @@ using UnityEngine;
 public static class Vars
 {
     private static UserData userData;
-    private static List<DataCunsumable> consumableItemList =
-        new List<DataCunsumable>();
-    private static List<DataWeapon> weaponItemList =
-        new List<DataWeapon>();
+    private static List<DataConsumable> consumableItemList = new List<DataConsumable>();
+    private static List<DataWeapon> weaponItemList = new List<DataWeapon>();
 
-    public static List<DataCunsumable> ConsumableItemList
+    public static List<DataConsumable> ConsumableItemList
     {
         get
         {
@@ -20,7 +18,7 @@ public static class Vars
 
                 for (int i = 1; i <= consumableTable.data.Count; i++)
                 {
-                    var newItem = new DataCunsumable();
+                    var newItem = new DataConsumable();
                     newItem.itemId = i;
                     newItem.dataType = DataType.Consume;
                     var Id = $"CON_000{i}";
@@ -31,6 +29,7 @@ public static class Vars
             return consumableItemList;
         }
     }
+
     public static List<DataWeapon> WeaponItemList
     {
         get

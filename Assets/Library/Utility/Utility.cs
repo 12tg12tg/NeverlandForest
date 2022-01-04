@@ -9,11 +9,6 @@ using UnityEngine.Events;
 
 public class Utility
 {
-    // 매개변수 개수에 따른 이벤트 메소드 등록, 코루틴의 콜백으로 활용
-    public static UnityAction arg0Event;
-    public static UnityAction<object> arg1Event;
-    public static UnityAction<object, object> arg2Event;
-
     public static IEnumerator CoRotate(Transform transform, Quaternion start, Quaternion end, float time)
     {
         float timer = 0f;
@@ -108,12 +103,11 @@ public class Utility
         return size;
     }
 
-    public static IEnumerator CoTranslate2(Transform transform, Vector3 start, Vector3 end, float time, Vector3 lookDir, Action action = null)
+    public static IEnumerator CoTranslateLookFoward(Transform transform, Vector3 start, Vector3 end, float time, Action action = null)
     {
         Debug.Log(transform.gameObject.name, transform.gameObject);
         float timer = 0f;
         var dir = Vector3.Normalize(end - start);
-        arg1Event?.Invoke(true);
         transform.rotation = Quaternion.LookRotation(dir);
         while (timer < time)
         {
@@ -123,9 +117,6 @@ public class Utility
             yield return null;
         }
         action?.Invoke();
-        arg0Event?.Invoke();
-        transform.rotation = Quaternion.Euler(lookDir);
-        arg1Event?.Invoke(false);
     }
 
 }

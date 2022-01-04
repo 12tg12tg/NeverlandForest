@@ -23,14 +23,7 @@ public class PlayerHuntingUnit : UnitBase
         playerStat = gameObject.GetComponent<PlayerStats>();
 
         currentIndex = Vector2.right; // 인덱스 1,0 이라는 의미.. 최초 시작 왼쪽 가운데
-        Utility.arg1Event += AnimationChange;
     }
-
-    private void OnDestroy()
-    {
-        Utility.arg1Event -= AnimationChange;
-    }
-
 
     //Vector2 index, Vector3 pos
     public void Move(Vector2 index, Vector3 pos, bool isOnBush)
@@ -60,9 +53,13 @@ public class PlayerHuntingUnit : UnitBase
         }
         var newPos = pos/* + new Vector3(0f, 1f, 0f)*/;
 
-        currentIndex = coMove == null ? index : currentIndex;
-        coMove ??= StartCoroutine(Utility.CoTranslate2(transform, transform.position, newPos, 1f, new Vector3(0f,180f,0f)
-            ,() => coMove = null));
+        if (coMove == null)
+        {
+            PlayWalkAnimation();
+            currentIndex = index;   
+        }
+
+        coMove ??= StartCoroutine(Utility.CoTranslateLookFoward(transform, transform.position, newPos, 1f, () => AfterMove()));
 
         EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape);
     }
@@ -77,5 +74,22 @@ public class PlayerHuntingUnit : UnitBase
         {
             playerAnimation.SetTrigger("Idle");
         }
+    }
+
+    private void PlayWalkAnimation()
+    {
+        playerAnimation.SetTrigger("Walk");
+    }
+
+    private void PlayIdleAnimation()
+    {
+        playerAnimation.SetTrigger("Idle");
+    }
+
+    private void AfterMove()
+    {
+        PlayIdleAnimation();      
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+        coMove = null;
     }
 }

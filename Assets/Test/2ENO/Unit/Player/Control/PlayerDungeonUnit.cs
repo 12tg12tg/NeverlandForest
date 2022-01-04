@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerDungeonUnitData
 {
@@ -78,21 +79,27 @@ public class PlayerDungeonUnit : UnitBase
         isCoMove = false;
     }
 
-    public void AnimationChange(object isMove)
+    public void AnimationChange(bool isMove)
     {
-        if ((bool)isMove)
-        {
-            if (curAnimation == PlayerMoveAnimation.Walk)
-                return;
-            curAnimation = PlayerMoveAnimation.Walk;
-            playerAnimation.SetTrigger("Walk");
-        }
-        else if (!(bool)isMove)
-        {
-            if (curAnimation == PlayerMoveAnimation.Idle)
-                return;
-            curAnimation = PlayerMoveAnimation.Idle;
-            playerAnimation.SetTrigger("Idle");
-        }
+        if (isMove)
+            PlayWalkAnimation();
+        else
+            PlayIdleAnimation();
+    }
+
+    private void PlayWalkAnimation()
+    {
+        if (curAnimation == PlayerMoveAnimation.Walk)
+            return;
+        curAnimation = PlayerMoveAnimation.Walk;
+        playerAnimation.SetTrigger("Walk");
+    }
+
+    private void PlayIdleAnimation()
+    {
+        if (curAnimation == PlayerMoveAnimation.Idle)
+            return;
+        curAnimation = PlayerMoveAnimation.Idle;
+        playerAnimation.SetTrigger("Idle");
     }
 }

@@ -11,8 +11,8 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
             return consumableTable;
         }
     }
-    public DataCunsumable item;
-    private List<DataCunsumable> userconsume;
+    public DataConsumable item;
+    private List<DataConsumable> userconsume;
     private Vector3 weedPos;
    
     public GatheringSystem gathering;
@@ -48,7 +48,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
         rand = Random.Range(1, 4);
         id = $"CON_000{rand}";
-        item = new DataCunsumable();
+        item = new DataConsumable();
         item.itemId = rand;
         item.dataType = DataType.Consume;
         item.itemTableElem = consumableTable.GetData<ConsumableTableElem>(id);

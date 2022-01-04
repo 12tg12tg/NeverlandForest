@@ -10,13 +10,13 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
     private BattleManager manager;
     public Image mainIcon;
     private DataPlayerSkill skill;
-    private DataCunsumable item;
+    private DataConsumable item;
     private bool isButtonDown;
     private bool isDragOnTile;
     private ActionType curState;
     public ActionType CurState { get => curState; }
     public DataPlayerSkill Skill { get => skill; }
-    public DataCunsumable Item { get => item; }
+    public DataConsumable Item { get => item; }
     public void Init(SkillSelectUI group, BattleManager manager, DataPlayerSkill skill)
     {
         this.groupUI ??= group;
@@ -25,7 +25,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
         curState = ActionType.Skill;
         mainIcon.sprite = skill.SkillTableElem.IconSprite;
     }
-    public void Init(SkillSelectUI group, BattleManager manager, DataCunsumable item)
+    public void Init(SkillSelectUI group, BattleManager manager, DataConsumable item)
     {
         this.groupUI ??= group;
         this.manager ??= manager;
