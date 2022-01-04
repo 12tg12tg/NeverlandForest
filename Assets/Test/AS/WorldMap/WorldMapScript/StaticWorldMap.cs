@@ -6,7 +6,7 @@ public class StaticWorldMap : MonoBehaviour
 {
     public GameObject cube;
     public GameObject line;
-
+    public Material material;
     private WorldMapNode[,] maps;
     private int column = 10;
     private int row = 5;
@@ -70,7 +70,7 @@ public class StaticWorldMap : MonoBehaviour
     {
         var lines = new GameObject();
         lines.transform.SetParent(transform);
-        DefineLayer(lines);
+        Utility.DefineLayer(lines, "WorldMap");
         var curIndex = Vars.UserData.WorldMapData.currentIndex;
         var goalIndex = Vars.UserData.WorldMapData.goalIndex;
         for (int i = 0; i < column - 1; i++)
@@ -81,15 +81,16 @@ public class StaticWorldMap : MonoBehaviour
                     continue;
 
                 var lineGo = Instantiate(line, lines.transform);
-                DefineLayer(lineGo);
+                Utility.DefineLayer(lineGo, "WorldMap");
                 var lineRender = lineGo.GetComponent<LineRenderer>();
-                lineRender.startWidth = lineRender.endWidth = 0.1f;
                 if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[0].index.Equals(goalIndex))
                 {
-                    //lineRender.material.color = Color.yellow;
+                    lineRender.startWidth = lineRender.endWidth = 0.5f;
+                    lineRender.material = material;
                 }
                 else
                 {
+                    lineRender.startWidth = lineRender.endWidth = 0.1f;
                     lineRender.material.color = Color.white;
                 }
                 lineRender.SetPosition(0, maps[j, i].transform.position);
@@ -98,16 +99,17 @@ public class StaticWorldMap : MonoBehaviour
                 if (maps[j, i].Children.Count >= 2)
                 {
                     var lineGoSecond = Instantiate(line, lines.transform);
-                    DefineLayer(lineGoSecond);
+                    Utility.DefineLayer(lineGoSecond, "WorldMap");
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
-                    lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.1f;
                     if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[1].index.Equals(goalIndex))
                     {
-                        //lineRenderSecond.material.color = Color.yellow;
+                        lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.5f;
+                        lineRenderSecond.material = material;
                     }
                     else
                     {
                         lineRenderSecond.material.color = Color.white;
+                        lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.1f;
                     }
                     lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
                     lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
@@ -115,15 +117,16 @@ public class StaticWorldMap : MonoBehaviour
                 if (maps[j, i].Children.Count >= 3)
                 {
                     var lineGoThird = Instantiate(line, lines.transform);
-                    DefineLayer(lineGoThird);
+                    Utility.DefineLayer(lineGoThird, "WorldMap");
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
-                    lineRenderThird.startWidth = lineRenderThird.endWidth = 0.1f;
                     if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[2].index.Equals(goalIndex))
                     {
-                        //lineRenderThird.material.color = Color.yellow;
+                        lineRenderThird.startWidth = lineRenderThird.endWidth = 0.5f;
+                        lineRenderThird.material = material;
                     }
                     else
                     {
+                        lineRenderThird.startWidth = lineRenderThird.endWidth = 0.1f;
                         lineRenderThird.material.color = Color.white;
                     }
                     lineRenderThird.SetPosition(0, maps[j, i].transform.position);
@@ -136,15 +139,10 @@ public class StaticWorldMap : MonoBehaviour
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(cube, new Vector3(index.y * posY - 200f, 100f + index.x * posX, 0f), Quaternion.identity);
-        DefineLayer(go);
+        Utility.DefineLayer(go, "WorldMap");
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
         node.difficulty = (Difficulty)Random.Range(0, 3);
         node.index = index;
-    }
-
-    private void DefineLayer(GameObject go)
-    {
-        go.layer = LayerMask.NameToLayer("WorldMap");
     }
 }

@@ -126,4 +126,9 @@ public class Utility
             }
         }
     }
+
+    public static void DefineLayer(GameObject go, string name)
+    {
+        go.layer = LayerMask.NameToLayer(name);
+    }
 }
