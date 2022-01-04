@@ -79,7 +79,7 @@ public class DungeonSystem : MonoBehaviour
             dungeonPlayer.transform.position = dungeonSystemData.curRoomData.spawnPos.transform.position;
 
             GatheringSystem.CreateGathering(DungeonSystemData.curDungeonData.RoomType,
-          DungeonSystemData.curRoomData.evnetObjPos, DungeonSystemData.curSubRoomList);
+          DungeonSystemData.curRoomData.evnetObjPos, DungeonSystemData.curIncludeRoomList);
 
         }
         else
