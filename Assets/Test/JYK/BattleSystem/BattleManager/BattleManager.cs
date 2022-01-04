@@ -1,13 +1,12 @@
+using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;zz
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-public class PlayerComand
+public class PlayerCommand
 {
     private bool isUpdate;
     public PlayerBattleUnit attacker;
@@ -15,9 +14,11 @@ public class PlayerComand
     public DataPlayerSkill skill;
     public DataCunsumable item;
     public ActionType actionType;
-    public PlayerComand(PlayerBattleUnit stats)
+    public PlayerType type;
+    public PlayerCommand(PlayerBattleUnit pUnit, PlayerType type)
     {
-        attacker = stats;
+        attacker = pUnit;
+        this.type = type;
     }
     public bool IsUpdated { get => isUpdate; }
     public bool IsFirst { get; set; }
@@ -28,6 +29,7 @@ public class PlayerComand
         attacker = null;
         target = Vector2.zero;
         skill = null;
+        item = null;
     }
     public void Create(Vector2 target, DataPlayerSkill skill)
     {
@@ -49,7 +51,7 @@ public class PlayerComand
     }
 }
 
-public enum PlayerType { Boy, Girl }
+public enum PlayerType { None, Boy, Girl }
 public enum ActionType { Skill, Item }
 
 
@@ -61,14 +63,10 @@ public class BattleManager : MonoBehaviour
 
     //Unit
     public List<TestMonster> monster = new List<TestMonster>();
-    public PlayerStats boy;
-    public PlayerStats girl;
-    private PlayerComand boyInput;
-    private PlayerComand girlInput;
-
-    // 추가
-    public PlayerBattleUnit boyChar;
-    public PlayerBattleUnit girlChar;
+    public PlayerBattleUnit boy;
+    public PlayerBattleUnit girl;
+    private PlayerCommand boyInput;
+    private PlayerCommand girlInput;
 
     //Canvas
     public CanvasScaler cs;
@@ -80,36 +78,33 @@ public class BattleManager : MonoBehaviour
     public SkillSelectUI hunterUI;
     public SkillSelectUI herbologistUI;
     public BattleMessage message;
+    public BattleMessage cautionMessage;
     public BattleFSM FSM;
     public GameObject playerTurnUI;
+    public UserInputPanel userInputPanel;
 
     //Vars
     private bool isDrag;
-    private Queue<PlayerComand> comandQueue = new Queue<PlayerComand>();
-
+    private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
     private Queue<TestMonster> monsterQueue = new Queue<TestMonster>();
+    private IEnumerable<Tiles> targetTiles;
+    private bool isWaitingTileSelect;
 
-    public Queue<PlayerComand> CommandQueue
-    {
-        get => comandQueue;
-    }
-
-    public Queue<TestMonster> MonsterQueue
-    {
-        get => monsterQueue;
-    }
+    //Property
+    public SkillButton CurClickedButton { get; set; }
+    public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
+    public Queue<PlayerComand> CommandQueue { get => comandQueue; }
+    public Queue<TestMonster> MonsterQueue { get => monsterQueue; }
 
     private void Awake()
     {       
         instance = this;
-        
+        boyInput = new PlayerCommand(boy, PlayerType.Boy);
+        girlInput = new PlayerCommand(girl, PlayerType.Girl);
     }
 
     private void Start()
     {
-        boyInput = new PlayerComand(boyChar);
-        girlInput = new PlayerComand(girlChar);
-
         //Multitouch 활성화
         multiTouch = MultiTouch.Instance;
 
@@ -137,7 +132,7 @@ public class BattleManager : MonoBehaviour
             dragSlot.transform.position = multiTouch.TouchPos;
         }
 
-        //Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
+        Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
     //초기화
@@ -187,6 +182,11 @@ public class BattleManager : MonoBehaviour
         this.message.PrintMessage(message, time, action);
     }
 
+    public void PrintCaution(string message, float time, float fadeDelay, UnityAction action)
+    {
+        cautionMessage.PrintMessageFadeOut(message, 0.7f, 0.5f, null);
+    }
+
     public void OpenSkillUI(PlayerType type)
     {
         if (type == PlayerType.Boy)
@@ -215,14 +215,16 @@ public class BattleManager : MonoBehaviour
         isDrag = false;
     }
     
-    public void OpenSkillInfo(DataPlayerSkill skill, Vector2 pos)
+    public void OpenSkillInfo(SkillButton clickedButton, DataPlayerSkill skill, Vector2 pos)
     {
+        CurClickedButton = clickedButton;
         info.gameObject.SetActive(true);
         info.Init(skill, pos);
     }
 
-    public void OpenItemInfo(DataCunsumable item, Vector2 pos)
+    public void OpenItemInfo(SkillButton clickedButton, DataCunsumable item, Vector2 pos)
     {
+        CurClickedButton = clickedButton;
         info.gameObject.SetActive(true);
         info.Init(item, pos);
     }
@@ -253,8 +255,8 @@ public class BattleManager : MonoBehaviour
 
     public void DisplayMonsterTile()
     {
-        var list = tileMaker.GetMonsterTiles();
-        foreach (var tile in list)
+        targetTiles = tileMaker.GetMonsterTiles();
+        foreach (var tile in targetTiles)
         {
             tile.HighlightCanAttackSign();
         }
@@ -262,16 +264,26 @@ public class BattleManager : MonoBehaviour
 
     public void DisplayPlayerTile()
     {
-        var list = tileMaker.GetPlayerTiles();
-        foreach (var tile in list)
+        targetTiles = tileMaker.GetPlayerTiles();
+        foreach (var tile in targetTiles)
         {
             tile.HighlightCanConsumeSign();
         }
     }
 
-    public void DisplayTileClear()
+    public bool IsVaildTargetTile(Tiles tile)
     {
-        tileMaker.SetAllTileClear();
+        return targetTiles.Contains(tile);
+    }
+
+    public void ReadyTileClick()
+    {
+        isWaitingTileSelect = true;
+    }
+
+    public void EndTileClick()
+    {
+        isWaitingTileSelect = false;
     }
 
     //Command
@@ -279,26 +291,27 @@ public class BattleManager : MonoBehaviour
     {
         boyInput.Clear();
         girlInput.Clear();
+        userInputPanel.Clear();
     }
 
     public void UpdateComand(PlayerType type, Vector2 target, DataPlayerSkill skill)
     {
-        PlayerComand command;
-        PlayerComand another;
-        //PlayerBattleUnit attacker;
+        PlayerCommand command;
+        PlayerCommand another;
+        PlayerBattleUnit attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
             another = girlInput;
 
-            //attacker = boyChar;
+            attacker = boy;
         }
         else
         {
             command = girlInput;
             another = boyInput;
 
-            //attacker = girlChar;
+            attacker = girl;
         }
 
         if (!command.IsUpdated && !another.IsUpdated)
@@ -313,27 +326,35 @@ public class BattleManager : MonoBehaviour
         }
 
         command.Create(target, skill);
-        Debug.Log("d");
+
+        if(!another.IsUpdated)
+        {
+            userInputPanel.Init(command, null);
+        }
+        else
+        {
+            userInputPanel.Init(another, command);
+        }
     }
 
     public void UpdateComand(PlayerType type, Vector2 target, DataCunsumable item)
     {
-        PlayerComand command;
-        PlayerComand another;
-        //PlayerBattleUnit attacker;
+        PlayerCommand command;
+        PlayerCommand another;
+        PlayerBattleUnit attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
             another = girlInput;
 
-            //attacker = boyChar;
+            attacker = boy;
         }
         else
         {
             command = girlInput;
             another = boyInput;
 
-            //attacker = girlChar;
+            attacker = girl;
         }
 
         if (!command.IsUpdated && !another.IsUpdated)
@@ -348,16 +369,32 @@ public class BattleManager : MonoBehaviour
         }
 
         command.Create(target, item);
+
+        if (!another.IsUpdated)
+        {
+            userInputPanel.Init(command, null);
+        }
+        else
+        {
+            userInputPanel.Init(another, command);
+        }
     }
 
     public void FinishTurn()
     {
-        if (!boyInput.IsUpdated && !girlInput.IsUpdated)
-            Debug.Log("사냥꾼과 약초학자의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
-        else if (boyInput.IsUpdated && !girlInput.IsUpdated)
-            Debug.Log("약초학자의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
-        else if (!boyInput.IsUpdated && girlInput.IsUpdated)
-            Debug.Log("사냥꾼의 행동이 정해지지 않았습니다. 정말 턴을 마치시겠습니까?");
+        if (!boyInput.IsUpdated || !girlInput.IsUpdated)
+        {
+            string str = string.Empty;
+            if (!boyInput.IsUpdated && !girlInput.IsUpdated)
+                str = "사냥꾼과 약초학자의 행동이 정해지지 않았습니다.";
+            else if (boyInput.IsUpdated && !girlInput.IsUpdated)
+                str = "약초학자의 행동이 정해지지 않았습니다.";
+            else if (!boyInput.IsUpdated && girlInput.IsUpdated)
+                str = "사냥꾼의 행동이 정해지지 않았습니다.";
+
+            PrintCaution(str, 0.7f, 0.5f, null);
+            return;
+        }
         else
         {
             if (boyInput.IsFirst)
@@ -370,7 +407,24 @@ public class BattleManager : MonoBehaviour
                 comandQueue.Enqueue(girlInput);
                 comandQueue.Enqueue(boyInput);
             }
+
             FSM.ChangeState(BattleState.Action);
+            hunterUI.Close();
+            herbologistUI.Close();
+        }
+    }
+
+    public void CommandArrangeSwap()
+    {
+        if(boyInput.IsFirst)
+        {
+            boyInput.IsFirst = false;
+            girlInput.IsFirst = true;
+        }
+        else
+        {
+            boyInput.IsFirst = true;
+            girlInput.IsFirst = false;
         }
     }
 
@@ -379,27 +433,25 @@ public class BattleManager : MonoBehaviour
         if(GUILayout.Button("Boy Clicked"))
         {
             OpenSkillUI(PlayerType.Boy);
-            boyInput.attacker = boyChar;
         }
         if (GUILayout.Button("Girl Clicked"))
         {
             OpenSkillUI(PlayerType.Girl);
-            girlInput.attacker = girlChar;
         }
         if(GUILayout.Button("Who First"))
         {
             Debug.Log($"Boy : {boyInput.IsFirst} / {boyInput.IsSecond}");
             Debug.Log($"Girl : {girlInput.IsFirst} / {girlInput.IsSecond}");
         }
-        if(GUILayout.Button("Move 1 Foward"))
-        {
-            var monster0 = monster[0];
-            var tile = monster0.CurTile;
-            Tiles foward;
-            if(tile.TryGetFowardTile(out foward, 1))
-            {
-                PlaceUnitOnTile(foward.index, monster0, true);
-            }
-        }
+        //if(GUILayout.Button("Move 1 Foward"))
+        //{
+        //    var monster0 = monster[0];
+        //    var tile = monster0.CurTile;
+        //    Tiles foward;
+        //    if(tile.TryGetFowardTile(out foward, 1))
+        //    {
+        //        PlaceUnitOnTile(foward.index, monster0, true);
+        //    }
+        //}
     }
 }
