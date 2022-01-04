@@ -49,6 +49,8 @@ public class RoomCtrl : MonoBehaviour
         {
             for (int j = 0; j < roomInfoList[i].eventList.Count; j++)
             {
+                if (roomInfoList[i].eventList[j] == DunGeonEvent.Gathering)
+                    continue;
                 var rndPos = new Vector3(evnetObjPos[i].transform.position.x, evnetObjPos[i].transform.position.y + 1f,
                     Random.Range(evnetObjPos[i].transform.position.z - 5, evnetObjPos[i].transform.position.z + 5));
 
@@ -59,10 +61,10 @@ public class RoomCtrl : MonoBehaviour
                 }
                 
                 posCheckList.Add(rndPos);
-
+                
                 var eventObj = Instantiate(eventObjPrefab, rndPos, Quaternion.identity);
                 eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j], dungeonSystem, rndPos);
-
+                
                 eventObjList.Add(eventObj);
             }
         }

@@ -51,6 +51,7 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
                 break;
             case DunGeonEvent.Gathering:
                 mesh.material.color = Color.green;
+                gameObject.AddComponent<GatheringObject>();
                 break;
             case DunGeonEvent.Hunt:
                 mesh.material.color = Color.blue;
@@ -76,9 +77,24 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("클릭이동!");
-        dungeonSystem.EventObjectClickEvent(eventType, this);
         dungeonSystem.DungeonSystemData.curEventObjList.Remove(eventObjInfo);
         Destroy(gameObject);
-
+        //EventBus<DungeonMap>.Publish(DungeonMap.EventObjectClick, eventType, transform.position);
+      
+        switch (eventType)
+        {
+            case DunGeonEvent.Gathering:
+                break;
+            case DunGeonEvent.Empty:
+            case DunGeonEvent.Battle:
+            case DunGeonEvent.Hunt:
+            case DunGeonEvent.RandomIncount:
+            case DunGeonEvent.SubStory:
+            case DunGeonEvent.Count:
+                dungeonSystem.EventObjectClickEvent(eventType, this);
+                break;
+            default:
+                break;
+        }
     }
 }
