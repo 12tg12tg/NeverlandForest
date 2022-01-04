@@ -26,4 +26,6 @@ public class UserData
     //??? - Vars로 이사가도 되는가?
     public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
 
+    
+
 }

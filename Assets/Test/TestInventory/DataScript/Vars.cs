@@ -15,7 +15,7 @@ public static class Vars
     */
     private static UserData userData;
     public static UserData UserData
-    {
+    {   
         get
         {
             if (userData == null)

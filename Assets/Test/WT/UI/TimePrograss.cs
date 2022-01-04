@@ -7,21 +7,25 @@ public class TimePrograss : MonoBehaviour
 {
     public TextMeshProUGUI progressIndicator;
     public Image timeloadingBar;
+
     private float currentValue= 0f;
-    public float speed;
     
     void Update()
     {
-        if (currentValue < 100)
+        if (currentValue <= 12)
         {
-            currentValue += speed * Time.deltaTime;
-            progressIndicator.text = ((int)currentValue).ToString() + "%";
+            // ³·
+            ConsumeManager.CurTimeState = TimeState.DayTime;
+            currentValue = ConsumeManager.CurIngameHour+(ConsumeManager.CurIngameMinute/60);
+            progressIndicator.text = "³·";
         }
         else
         {
-            progressIndicator.text = "Done";
+            // ¹ã 
+            ConsumeManager.CurTimeState = TimeState.NightTime;
+            progressIndicator.text = "¹ã";
         }
 
-        timeloadingBar.fillAmount = currentValue / 100;
+        timeloadingBar.fillAmount = currentValue / 24;
     }
 }

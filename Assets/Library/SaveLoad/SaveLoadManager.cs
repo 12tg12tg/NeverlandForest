@@ -111,7 +111,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     {
         consumableSaveData = new ConsumableSaveData_0();
         consumableSaveData.curStamina = ConsumeManager.CurStamina;
-        consumableSaveData.curStaminaState = ConsumeManager.CurStaminaState;
         consumableSaveData.curIngameHour = ConsumeManager.CurIngameHour;
         consumableSaveData.curIngameMinute = ConsumeManager.CurIngameMinute;
         consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
@@ -171,7 +170,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (consumableSaveData != null)
         {
             ConsumeManager.CurStamina = consumableSaveData.curStamina;
-            ConsumeManager.CurStaminaState = consumableSaveData.curStaminaState;
             ConsumeManager.CurIngameHour = consumableSaveData.curIngameHour;
             ConsumeManager.CurIngameMinute = consumableSaveData.curIngameMinute;
             ConsumeManager.CurTimeState = consumableSaveData.curTimeState;
