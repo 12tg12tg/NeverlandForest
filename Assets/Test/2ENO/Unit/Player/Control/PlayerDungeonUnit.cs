@@ -55,6 +55,23 @@ public class PlayerDungeonUnit : UnitBase
         if (!isCoMove)
         {
             isMove = false;
+            if (Camera.main.ScreenToViewportPoint(new Vector3(MultiTouch.Instance .PrimaryPos.x,
+                MultiTouch.Instance.PrimaryPos.y, 0f)).x > 0.5f && MultiTouch.Instance.TouchCount >= 1)
+            {
+                var pos = Vector3.forward * 7f * Time.deltaTime;
+                transform.position += pos;
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                isMove = true;
+            }
+            else if(Camera.main.ScreenToViewportPoint(new Vector3(MultiTouch.Instance.PrimaryPos.x,
+                MultiTouch.Instance.PrimaryPos.y, 0f)).x > 0f && MultiTouch.Instance.TouchCount >= 1)
+            {
+                var pos = -Vector3.forward * 7f * Time.deltaTime;
+                transform.position += pos;
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                isMove = true;
+            }
+            // 키보드입력
             if (Input.GetKey(KeyCode.D))
             {
                 var pos = Vector3.forward * 7f * Time.deltaTime;
