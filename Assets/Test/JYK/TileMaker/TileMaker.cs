@@ -190,4 +190,10 @@ public class TileMaker : MonoBehaviour
         return 0 <= x && x < row && y >= 0 && y < col;
     }
 
+    public List<UnitBase> UnitOnTile(Vector2 pos)
+    {
+        var tile = GetTile(pos);
+        return tile.units;
+    }
+
 }
