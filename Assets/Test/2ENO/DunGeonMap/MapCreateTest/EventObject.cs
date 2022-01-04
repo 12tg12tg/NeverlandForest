@@ -33,7 +33,6 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
         eventType = obj.eventType;
         objectPosition = obj.objectPosition;
     }
-
     public void Init(DungeonRoom curRoomInfo, DunGeonEvent curEvnet, DungeonSystem system, Vector3 objectPos)
     {
         objectPosition = objectPos;
