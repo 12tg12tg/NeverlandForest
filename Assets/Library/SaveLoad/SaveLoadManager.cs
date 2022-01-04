@@ -103,7 +103,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveWorldMapPlayer()
     {
         worldMapPlayerData = new WorldMapPlayerData_0();
-        worldMapPlayerData.WorldMapPlayerData = Vars.UserData.WorldMapData;
+        worldMapPlayerData.WorldMapPlayerData = Vars.UserData.WorldMapPlayerData;
         SaveLoadSystem.Save(worldMapPlayerData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
@@ -161,7 +161,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         worldMapPlayerData = (WorldMapPlayerData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapPlayerData);
         if (worldMapPlayerData != null)
         {
-            Vars.UserData.WorldMapData = worldMapPlayerData.WorldMapPlayerData;
+            Vars.UserData.WorldMapPlayerData = worldMapPlayerData.WorldMapPlayerData;
         }
     }
 

@@ -97,12 +97,12 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         if(GUILayout.Button("Success"))
         {
-            Vars.UserData.WorldMapData.isClear = true;
+            Vars.UserData.WorldMapPlayerData.isClear = true;
             SceneManager.LoadScene("WorldMap");
         }
         if (GUILayout.Button("Run"))
         {
-            Vars.UserData.WorldMapData.isClear = false;
+            Vars.UserData.WorldMapPlayerData.isClear = false;
             SceneManager.LoadScene("WorldMap");
         }
     }

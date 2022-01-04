@@ -20,6 +20,7 @@ public class WorldMapPlayer : MonoBehaviour
     public void Init()
     {
         totalMap = new WorldMapNode[map.transform.childCount];
+        
         for (int i = 0; i < map.transform.childCount; i++)
         {
             totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
@@ -32,24 +33,24 @@ public class WorldMapPlayer : MonoBehaviour
         var data = new WorldMapPlayerData();
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
-        Vars.UserData.WorldMapData = data;
+        Vars.UserData.WorldMapPlayerData = data;
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void Load()
     {
-        var data = Vars.UserData.WorldMapData;
+        var data = Vars.UserData.WorldMapPlayerData;
         transform.position = data.goalPos;
         currentIndex = data.currentIndex;
     }
 
     public void ComeBackWorldMap()
     {
-        if(Vars.UserData.WorldMapData == null)
+        if(Vars.UserData.WorldMapPlayerData == null)
         {
             SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
             Load();
         }
-        else if(Vars.UserData.WorldMapData.isClear)
+        else if(Vars.UserData.WorldMapPlayerData.isClear)
             PlayerClearWorldMap();
         else
             PlayerRunWorldMap();
@@ -74,7 +75,7 @@ public class WorldMapPlayer : MonoBehaviour
 
         currentPos = goal = new Vector3(x, goal.y, z);
 
-        var data = Vars.UserData.WorldMapData;
+        var data = Vars.UserData.WorldMapPlayerData;
         data.goalIndex = goalIndex;
         data.currentPos = currentPos;
         data.goalPos = goalPos;
@@ -85,8 +86,7 @@ public class WorldMapPlayer : MonoBehaviour
     }
     public void PlayerClearWorldMap()
     {
-        var data = Vars.UserData.WorldMapData;
-        data.isClear = false;
+        var data = Vars.UserData.WorldMapPlayerData;
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
@@ -95,7 +95,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void PlayerRunWorldMap()
     {
-        var data = Vars.UserData.WorldMapData;
+        var data = Vars.UserData.WorldMapPlayerData;
 
         currentIndex = data.currentIndex;
         transform.position = data.currentPos;

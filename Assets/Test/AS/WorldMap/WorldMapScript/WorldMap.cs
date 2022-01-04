@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public struct Edge
 {
@@ -44,86 +43,64 @@ public struct Edge
 
 public class WorldMap : MonoBehaviour
 {
-    public GameObject cube;
-    public GameObject line;
-    public GameObject lines;
-    public GameObject fog;
-    public WorldMapPlayer player;
-    public WorldMapCamera worldMapCamera;
+    public GameObject nodePrefab;
+    public GameObject linePrefab;
+    public GameObject fogPrefab;
+    public Material material;
 
     public int column;
     public int row;
-    public WorldMapNode[,] maps;
-    public List<Edge> edges = new List<Edge>();
 
+    public WorldMapNode[,] maps;
+    private List<Edge> edges = new List<Edge>();
     private float posX = 5f;
     private float posY = 15f;
-
-    private static bool isFirst = true; // ¸®·Ñ¿ë
     private bool isAllLinked = false;
 
     public object[] day;
     public int testDay = 0;
-    private void Awake()
+    
+    public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
-        var loadData = Vars.UserData.WorldMapNodeStruct;
-        if (loadData.Count.Equals(0))
-        { 
-            StartCoroutine(InitMap());
-        }
-        else
-        {
-            LoadWorldMap(loadData);
-            player.ComeBackWorldMap();
-            worldMapCamera.FollowPlayer();
-        }
+        this.column = column;
+        this.row = row;
+        this.nodePrefab = nodePrefab;
+        this.linePrefab = linePrefab;
+        this.fogPrefab = fogPrefab;
     }
 
-    private void LoadWorldMap(List<MapNodeStruct_0> loadData)
+    public void LoadWorldMap(List<MapNodeStruct_0> loadData)
     {
         Load(loadData);
         PaintLink();
     }
-
-    private void OnGUI()
+    
+    public void InitWorldMiniMap()
     {
-        if (GUILayout.Button("DayFog"))
-        {
-            testDay++;
-            day[0] = testDay;
-            FogComing(day);
-        }
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        var loadData = Vars.UserData.WorldMapNodeStruct;
+        var layerName = "WorldMap";
+        Load(loadData, layerName);
+        PaintLink(layerName);
     }
 
-    private IEnumerator InitMap()
+    public IEnumerator InitMap(System.Action action)
     {
-        if (!isFirst)
-        { 
-            Utility.ChildrenDestroy(gameObject);
-            edges.Clear();
-            isAllLinked = false;
-        }
         while (!isAllLinked)
         {
-            MapFirstCreateNode();
-            MapNextCreateNode();
+            MapCreateNode();
             MapRandomLink();
 
             yield return null;
         }
-        if (isFirst)
-            player.Init();
-        else
-            player.ComeBackWorldMap();
-
-        isFirst = false;
-        worldMapCamera.Init();
+        
+        action.Invoke();
         PaintLink();
         Save();
     }
 
-    private void MapFirstCreateNode()
+    private void MapCreateNode()
     {
         maps = new WorldMapNode[row, column];
 
@@ -138,9 +115,7 @@ public class WorldMap : MonoBehaviour
         }
 
         InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1));
-    }
-    private void MapNextCreateNode()
-    {
+
         var startNextOther = Random.Range(0, row);
         while (maps[startNextOther, 1] != null)
         {
@@ -168,6 +143,7 @@ public class WorldMap : MonoBehaviour
         }
         InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2));
     }
+    
     private void MapRandomLink()
     {
         var list = new List<WorldMapNode>();
@@ -236,34 +212,34 @@ public class WorldMap : MonoBehaviour
     }
     private void PaintLink()
     {
-        Utility.ChildrenDestroy(lines);
+        var lines = new GameObject("Lines");
         for (int i = 0; i < column - 1; i++)
         {
             for (int j = 0; j < row; j++)
             {
                 if (maps[j, i] == null )
                     continue;
-                var lineGo = Instantiate(line, lines.transform);
+                var lineGo = Instantiate(linePrefab, lines.transform);
                 var lineRender = lineGo.GetComponent<LineRenderer>();
-                lineRender.startWidth = lineRender.endWidth = 0.1f;
+                lineRender.startWidth = lineRender.endWidth = 0.2f;
                 lineRender.material.color = Color.white;
                 lineRender.SetPosition(0, maps[j, i].transform.position);
                 lineRender.SetPosition(1, maps[j, i].Children[0].transform.position);
 
                 if (maps[j, i].Children.Count >= 2)
                 {
-                    var lineGoSecond = Instantiate(line, lines.transform);
+                    var lineGoSecond = Instantiate(linePrefab, lines.transform);
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
-                    lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.1f;
+                    lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.2f;
                     lineRenderSecond.material.color = Color.white;
                     lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
                     lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
                 }
                 if (maps[j, i].Children.Count >= 3)
                 {
-                    var lineGoThird = Instantiate(line, lines.transform);
+                    var lineGoThird = Instantiate(linePrefab, lines.transform);
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
-                    lineRenderThird.startWidth = lineRenderThird.endWidth = 0.1f;
+                    lineRenderThird.startWidth = lineRenderThird.endWidth = 0.2f;
                     lineRenderThird.material.color = Color.white;
                     lineRenderThird.SetPosition(0, maps[j, i].transform.position);
                     lineRenderThird.SetPosition(1, maps[j, i].Children[2].transform.position);
@@ -271,28 +247,109 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
+
+    public void PaintLink(string LayerName)
+    {
+        var lines = new GameObject();
+        lines.transform.SetParent(transform);
+        Utility.DefineLayer(lines, LayerName);
+        var curIndex = Vars.UserData.WorldMapPlayerData.currentIndex;
+        var goalIndex = Vars.UserData.WorldMapPlayerData.goalIndex;
+        for (int i = 0; i < column - 1; i++)
+        {
+            for (int j = 0; j < row; j++)
+            {
+                if (maps[j, i] == null)
+                    continue;
+
+                var lineGo = Instantiate(linePrefab, lines.transform);
+                Utility.DefineLayer(lineGo, LayerName);
+                var lineRender = lineGo.GetComponent<LineRenderer>();
+                if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[0].index.Equals(goalIndex))
+                {
+                    lineRender.startWidth = lineRender.endWidth = 0.5f;
+                    lineRender.material = material;
+                }
+                else
+                {
+                    lineRender.startWidth = lineRender.endWidth = 0.2f;
+                    lineRender.material.color = Color.white;
+                }
+                lineRender.SetPosition(0, maps[j, i].transform.position);
+                lineRender.SetPosition(1, maps[j, i].Children[0].transform.position);
+
+                if (maps[j, i].Children.Count >= 2)
+                {
+                    var lineGoSecond = Instantiate(linePrefab, lines.transform);
+                    Utility.DefineLayer(lineGoSecond, LayerName);
+                    var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
+                    if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[1].index.Equals(goalIndex))
+                    {
+                        lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.5f;
+                        lineRenderSecond.material = material;
+                    }
+                    else
+                    {
+                        lineRenderSecond.material.color = Color.white;
+                        lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.2f;
+                    }
+                    lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
+                    lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
+                }
+                if (maps[j, i].Children.Count >= 3)
+                {
+                    var lineGoThird = Instantiate(linePrefab, lines.transform);
+                    Utility.DefineLayer(lineGoThird, LayerName);
+                    var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
+                    if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[2].index.Equals(goalIndex))
+                    {
+                        lineRenderThird.startWidth = lineRenderThird.endWidth = 0.5f;
+                        lineRenderThird.material = material;
+                    }
+                    else
+                    {
+                        lineRenderThird.startWidth = lineRenderThird.endWidth = 0.2f;
+                        lineRenderThird.material.color = Color.white;
+                    }
+                    lineRenderThird.SetPosition(0, maps[j, i].transform.position);
+                    lineRenderThird.SetPosition(1, maps[j, i].Children[2].transform.position);
+                }
+            }
+        }
+    }
+
     public void FogComing(object[] day)
     {
         var now = (int)day[0];
         if(now == 3)
         {
-            fog = Instantiate(fog);
+            fogPrefab = Instantiate(fogPrefab);
         }
         else if (now > 3)
         {
-            fog.transform.position += new Vector3(posY, 0f, 0f);
+            fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
         }
         Debug.Log(now);
     }
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
-        var go = Instantiate(cube, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
         node.difficulty = (Difficulty)Random.Range(0, 3);
-        node.player = player;
         node.index = index;
     }
+
+    private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
+    {
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 200f, 100f + index.x * posX, 0f), Quaternion.identity);
+        Utility.DefineLayer(go, LayerName);
+        go.transform.SetParent(gameObject.transform);
+        node = go.AddComponent<WorldMapNode>();
+        node.difficulty = (Difficulty)Random.Range(0, 3);
+        node.index = index;
+    }
+
     private void FindNode(List<WorldMapNode> nodeList, int startIndex, int endIndex)
     {
         var end = endIndex + 1 > column  ? column : endIndex + 1;
@@ -375,7 +432,7 @@ public class WorldMap : MonoBehaviour
         }
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapNode);
     }
-    public void Load(List<MapNodeStruct_0> loadData)
+    private void Load(List<MapNodeStruct_0> loadData, string LayerName = "null")
     {
         maps = new WorldMapNode[row, column];
         for (int i = 0; i < column; i++)
@@ -387,7 +444,14 @@ public class WorldMap : MonoBehaviour
                 {
                     if (loadData[k].index.Equals(index))
                     {
-                        InitNode(out maps[j, i], index);
+                        if (LayerName.Equals("null"))
+                        {
+                            InitNode(out maps[j, i], index);
+                        }
+                        else
+                        {
+                            InitNode(out maps[j, i], index, LayerName);
+                        }
                     }
                 }
             }

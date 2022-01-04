@@ -2504,6 +2504,7 @@ MonoBehaviour:
   text: {fileID: 585348767}
   dungeonPlayer: {fileID: 1660251649}
   GatheringSystem: {fileID: 2104294271}
+  worldMap: {fileID: 1995851672}
 --- !u!1 &425094802
 GameObject:
   m_ObjectHideFlags: 0
@@ -3748,7 +3749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5457698884079939450, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5457698884079939450, guid: 8999e54a56945fc42b65d1ee09502e51, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4177,7 +4178,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8991518093556370660, guid: 5e315b6b4acc00b4ab2c4ea77b7189de, type: 3}
       propertyPath: m_LocalScale.x
@@ -4655,7 +4656,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1995851672
 MonoBehaviour:
@@ -4666,12 +4667,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1995851670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d372c64c15a97504eae3b1dfc946bf82, type: 3}
+  m_Script: {fileID: 11500000, guid: cc90c6386085fad4d951340d2c88b687, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cube: {fileID: 4246026130302862744, guid: 3c69f304a738e4245ae8067ea01520b4, type: 3}
-  line: {fileID: 8642558328347396266, guid: d3dae2b02611c7e42a6af5b32ffdae44, type: 3}
+  nodePrefab: {fileID: 4246026130302862744, guid: 3c69f304a738e4245ae8067ea01520b4, type: 3}
+  linePrefab: {fileID: 8642558328347396266, guid: d3dae2b02611c7e42a6af5b32ffdae44, type: 3}
+  fogPrefab: {fileID: 1510203785596791303, guid: 0e4c1f28af02d5641b690315f65243e3, type: 3}
   material: {fileID: 2100000, guid: 453d8e817617af641a695b21038977d6, type: 2}
+  column: 10
+  row: 5
+  testDay: 0
 --- !u!1 &2104294269
 GameObject:
   m_ObjectHideFlags: 0
@@ -4837,7 +4842,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4681140411966140738, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 4681140411966140738, guid: f02c93b7e7af23840931cd33d1154a5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4909,7 +4914,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6360851885476933074, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6360851885476933074, guid: 245022004ccbc8841ab68a8c634f78c3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4985,7 +4990,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9000903173978576972, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9000903173978576972, guid: a07904a51c8e8d64b8d51820644eaa30, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5049,7 +5054,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1554443650456480498, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1554443650456480498, guid: b915d1e8a798f954da5a27cd503aeeaa, type: 3}
       propertyPath: m_LocalPosition.x
