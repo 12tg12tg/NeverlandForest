@@ -23,7 +23,7 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
 
     public BattleManager battleSystem = BattleManager.Instance;
 
-    public PlayerComand curCommand;
+    public PlayerCommand curCommand;
 
     public PlayerType playerType;
 
@@ -33,7 +33,7 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
         playerStat = gameObject.GetComponent<PlayerStats>();
     }
 
-    public void TurnInit(PlayerComand command)
+    public void TurnInit(PlayerCommand command)
     {
         // 플레이어 턴이 되었을 때, 공격 준비 상태 등 상태 초기화
         // 턴 시작에 필요한 부분들 정의

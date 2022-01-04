@@ -1,6 +1,6 @@
 using System.Linq;
 using System.Collections;
-using System.Collections.Generic;zz
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
@@ -26,7 +26,6 @@ public class PlayerCommand
     public void Clear()
     {
         isUpdate = false;
-        attacker = null;
         target = Vector2.zero;
         skill = null;
         item = null;
@@ -93,7 +92,7 @@ public class BattleManager : MonoBehaviour
     //Property
     public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
-    public Queue<PlayerComand> CommandQueue { get => comandQueue; }
+    public Queue<PlayerCommand> CommandQueue { get => comandQueue; }
     public Queue<TestMonster> MonsterQueue { get => monsterQueue; }
 
     private void Awake()

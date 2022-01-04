@@ -10,7 +10,7 @@ public class BattleAction : State<BattleState>
         this.manager = manager;
     }
 
-    private PlayerComand curCommand;
+    private PlayerCommand curCommand;
     private TestMonster curMonster;
 
     bool onceTry = true;
