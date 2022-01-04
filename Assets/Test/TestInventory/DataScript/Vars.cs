@@ -63,42 +63,6 @@ public static class Vars
                 var consumalbeTable = DataTableManager.GetTable<ConsumableTable>();
                 var materialTable = DataTableManager.GetTable<AllItemDataTable>();
                 userData = new UserData();
-                /* userData.id = 111;
-                 userData.nickname = "KANG";
-
-                 for (var i = 0; i < 20; ++i)
-                 {
-                     var newWeapon = new DataWeapon();
-                     newWeapon.itemId = i;
-                     newWeapon.dataType = DataType.Weapon;
-                     var randId = $"WEA_000{Random.Range(1, 5)}";
-                     newWeapon.itemTableElem = weaponTable.GetData<WeaponTableElem>(randId);
-                     userData.weaponItemList.Add(newWeapon);
-                 }
-
-                 for (var i = 0; i < 50; ++i)
-                 {
-                     var newItem = new DataCunsumable();
-                     newItem.itemId = i;
-                     newItem.dataType = DataType.Consume;
-                     var randId = $"CON_000{Random.Range(1, 8)}";
-                     newItem.itemTableElem = consumalbeTable.GetData<ConsumableTableElem>(randId);
-                     userData.consumableItemList.Add(newItem);
-                 }
-
-                 userData.characterList.Add(new DataCharacter("CHAR_0001", "Diluc"));
-                 userData.characterList.Add(new DataCharacter("CHAR_0002", "Jean"));
-
- */
-                /*  var materialTable = DataTableManager.GetTable<MaterialDataTable>();
-                  for (int i = 0; i < 7; i++)
-                  {
-                      var newmaterial = new DataMaterial();
-                      newmaterial.itemId = i;
-                      var randId = $"MTR_000{i+1}";
-                      newmaterial.itemTableElem = materialTable.GetData<MaterialTableElem>(randId);
-                      userData.HaveMaterialList.Add(newmaterial);
-                  }*/
 
                 for (int i = 0; i < 16; i++)
                 {
@@ -109,6 +73,7 @@ public static class Vars
                     userData.HaveMaterialList.Add(newItem);
                 }
 
+                userData.consumableItemList.AddRange(consumableItemList);
             }
             return userData;
         }
