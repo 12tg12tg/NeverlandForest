@@ -6,8 +6,17 @@ using UnityEngine;
 // 몬스터 턴으로 넘어갔을 경우에도 이 상태 or 죽음상태
 public class PlayerIdle : State<CharacterBattleState>, IAttackable
 {
-    PlayerStats playerStat;
+    PlayerBattleUnit playerUnit;
     Animator playerAnimation;
+
+    public void SetPlayerUnit(PlayerBattleUnit unit)
+    {
+        this.playerUnit = unit;
+    }
+    public void SetPlayerAnimation(Animator playerAnimation)
+    {
+        this.playerAnimation = playerAnimation;
+    }
     public void OnAttacked(UnitBase attacker)
     {
         // 피격당했을 시 피격 애니메이션 실행
@@ -15,6 +24,7 @@ public class PlayerIdle : State<CharacterBattleState>, IAttackable
     public override void Init()
     {
         // 공격을 마쳣을때 이 상태가 된다.
+        playerAnimation.SetTrigger("Idle");
     }
     public override void Release()
     {

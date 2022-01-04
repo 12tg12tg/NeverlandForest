@@ -15,12 +15,17 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
     private List<UnitBase> targetUnit;
 
     // 캐릭터 전투상태 정보 ( 공격전 준비, 공격후 대기, 죽음 )
-    private PlayerBattleState playerState;
 
     // 캐릭터 보유 스킬, 능력치(스텟, 버프디버프 여부 등), 착용 장비 등에 대한 정보 및 값 수정
+    public PlayerBattleState playerState;
+
     private PlayerStats playerStat;
 
-    public BattleManager battleSystem;
+    public BattleManager battleSystem = BattleManager.Instance;
+
+    public PlayerComand curCommand;
+
+    public PlayerType playerType;
 
     private void Start()
     {
@@ -28,10 +33,13 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
         playerStat = gameObject.GetComponent<PlayerStats>();
     }
 
-    public void TurnInit()
+    public void TurnInit(PlayerComand command)
     {
         // 플레이어 턴이 되었을 때, 공격 준비 상태 등 상태 초기화
         // 턴 시작에 필요한 부분들 정의
+
+        curCommand = command;
+        playerState.ChangeState(CharacterBattleState.Action);
     }
 
     public void AttackTarget(List<UnitBase> targetList)
@@ -65,7 +73,7 @@ public class PlayerBattleUnit : UnitBase, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (playerState.curState != CharacterBattleState.AttackReady)
+        if (playerState.curState != CharacterBattleState.Action)
             return;
         // 캐릭터 클릭했을 시 수행할 동작들
 

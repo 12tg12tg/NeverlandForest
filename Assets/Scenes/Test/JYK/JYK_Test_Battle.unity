@@ -2124,6 +2124,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c713a3afc618234e9d0de825011de75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1134457964 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+  m_PrefabInstance: {fileID: 803355738}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9588207d97850d14a8db45ce67c4f9c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1206428045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2686,6 +2697,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: playerType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4117248464703305118, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
@@ -2698,6 +2713,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6794300049749596250, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 8acf74ea1c7e3ff4386cd2d653c768fe, type: 2}
     - target: {fileID: 7894601958050482710, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2718,6 +2737,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c713a3afc618234e9d0de825011de75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1574342576 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+  m_PrefabInstance: {fileID: 1574342570}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9588207d97850d14a8db45ce67c4f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1588534252
@@ -2828,7 +2858,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1588534252}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696499b65c0ea2f4289576cb0d5d12df, type: 3}
+  m_Script: {fileID: 11500000, guid: 77750eb0e0bb20c4ca1bb31e61711e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1590966361
@@ -3108,6 +3138,8 @@ MonoBehaviour:
   - {fileID: 1588534257}
   boy: {fileID: 1134457960}
   girl: {fileID: 1574342572}
+  boyChar: {fileID: 1134457964}
+  girlChar: {fileID: 1574342576}
   cs: {fileID: 914985194}
   tileMaker: {fileID: 1394283708}
   dragSlot: {fileID: 1590966363}
@@ -3670,7 +3702,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1814206702}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1666304047}
+        m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
+        m_MethodName: FinishTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1814206702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3817,7 +3861,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1917352887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696499b65c0ea2f4289576cb0d5d12df, type: 3}
+  m_Script: {fileID: 11500000, guid: 77750eb0e0bb20c4ca1bb31e61711e1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1959888767

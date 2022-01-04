@@ -25,8 +25,6 @@ public class BattleFSM : FSM<BattleState>
     public override void Update()
     {
         base.Update();
-
-        
     }
 
 }

@@ -10,12 +10,12 @@ using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 public class PlayerComand
 {
     private bool isUpdate;
-    public PlayerStats attacker;
+    public PlayerBattleUnit attacker;
     public Vector2 target;
     public DataPlayerSkill skill;
     public DataCunsumable item;
     public ActionType actionType;
-    public PlayerComand(PlayerStats stats)
+    public PlayerComand(PlayerBattleUnit stats)
     {
         attacker = stats;
     }
@@ -60,11 +60,15 @@ public class BattleManager : MonoBehaviour
     private MultiTouch multiTouch;
 
     //Unit
-    public List<UnitBase> monster = new List<UnitBase>();
+    public List<TestMonster> monster = new List<TestMonster>();
     public PlayerStats boy;
     public PlayerStats girl;
     private PlayerComand boyInput;
     private PlayerComand girlInput;
+
+    // 추가
+    public PlayerBattleUnit boyChar;
+    public PlayerBattleUnit girlChar;
 
     //Canvas
     public CanvasScaler cs;
@@ -83,15 +87,29 @@ public class BattleManager : MonoBehaviour
     private bool isDrag;
     private Queue<PlayerComand> comandQueue = new Queue<PlayerComand>();
 
+    private Queue<TestMonster> monsterQueue = new Queue<TestMonster>();
+
+    public Queue<PlayerComand> CommandQueue
+    {
+        get => comandQueue;
+    }
+
+    public Queue<TestMonster> MonsterQueue
+    {
+        get => monsterQueue;
+    }
+
     private void Awake()
     {       
         instance = this;
-        boyInput = new PlayerComand(boy);
-        girlInput = new PlayerComand(girl);
+        
     }
 
     private void Start()
     {
+        boyInput = new PlayerComand(boyChar);
+        girlInput = new PlayerComand(girlChar);
+
         //Multitouch 활성화
         multiTouch = MultiTouch.Instance;
 
@@ -119,7 +137,7 @@ public class BattleManager : MonoBehaviour
             dragSlot.transform.position = multiTouch.TouchPos;
         }
 
-        Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
+        //Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
     //초기화
@@ -267,20 +285,20 @@ public class BattleManager : MonoBehaviour
     {
         PlayerComand command;
         PlayerComand another;
-        PlayerStats attacker;
+        //PlayerBattleUnit attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
             another = girlInput;
 
-            attacker = boy;
+            //attacker = boyChar;
         }
         else
         {
             command = girlInput;
             another = boyInput;
 
-            attacker = girl;
+            //attacker = girlChar;
         }
 
         if (!command.IsUpdated && !another.IsUpdated)
@@ -295,26 +313,27 @@ public class BattleManager : MonoBehaviour
         }
 
         command.Create(target, skill);
+        Debug.Log("d");
     }
 
     public void UpdateComand(PlayerType type, Vector2 target, DataCunsumable item)
     {
         PlayerComand command;
         PlayerComand another;
-        PlayerStats attacker;
+        //PlayerBattleUnit attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
             another = girlInput;
 
-            attacker = boy;
+            //attacker = boyChar;
         }
         else
         {
             command = girlInput;
             another = boyInput;
 
-            attacker = girl;
+            //attacker = girlChar;
         }
 
         if (!command.IsUpdated && !another.IsUpdated)
@@ -342,7 +361,16 @@ public class BattleManager : MonoBehaviour
         else
         {
             if (boyInput.IsFirst)
+            {
                 comandQueue.Enqueue(boyInput);
+                comandQueue.Enqueue(girlInput);
+            }
+            else
+            {
+                comandQueue.Enqueue(girlInput);
+                comandQueue.Enqueue(boyInput);
+            }
+            FSM.ChangeState(BattleState.Action);
         }
     }
 
@@ -351,10 +379,12 @@ public class BattleManager : MonoBehaviour
         if(GUILayout.Button("Boy Clicked"))
         {
             OpenSkillUI(PlayerType.Boy);
+            boyInput.attacker = boyChar;
         }
         if (GUILayout.Button("Girl Clicked"))
         {
             OpenSkillUI(PlayerType.Girl);
+            girlInput.attacker = girlChar;
         }
         if(GUILayout.Button("Who First"))
         {
