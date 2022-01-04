@@ -123,6 +123,13 @@ public class SkillSelectUI : MonoBehaviour
         transform.position = BelowScreen;
         StartCoroutine(CoOpenThisUp());
     }
+    public void Close()
+    {
+        if (!gameObject.activeInHierarchy)
+            return;
+
+        StartCoroutine(CoCloseDown(rt));
+    }
     private IEnumerator CoOpenThisUp()
     {
         if (another.gameObject.activeInHierarchy)
@@ -164,7 +171,7 @@ public class SkillSelectUI : MonoBehaviour
 
 
     //드래그 드랍 관련
-    public void DisableGroupDuringDrag(SkillButton except)
+    public void DisableGroupDuringSelect(SkillButton except)
     {
         exceptGoDuringDrag = except.GetComponent<CanvasGroup>();
         exceptGoDuringDrag.ignoreParentGroups = true;
