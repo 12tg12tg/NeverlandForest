@@ -109,7 +109,7 @@ public static class DunGeonRoomSetting
         }
         else
         {
-            for (int i = 0; i < rndEvnetCount; i++)
+            for (int i = 0; i < 1; i++)
             {
                 var SubEvent = EventPic(tempPercent);
                 while (SubEvent == DunGeonEvent.Battle)

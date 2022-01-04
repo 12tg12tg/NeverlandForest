@@ -6,9 +6,10 @@ public class RoomCtrl : MonoBehaviour
 {
     public GameObject spawnPos;
     public GameObject[] evnetObjPos;
+    //public GameObject eventObjPrefab;
 
-    private List<Vector3> posCheckList = new();
-    public List<GameObject> eventObjList = new();
+    private List<Vector3> posCheckList = new List<Vector3>();
+    public List<GameObject> eventObjList = new List<GameObject>();
 
     public DungeonSystem dungeonSystem;
 
@@ -20,14 +21,13 @@ public class RoomCtrl : MonoBehaviour
 
         for (int i = 0; i < childEnd.Length; i++)
         {
-            childEnd[i].roomNumber = i + 1;
             if (i == childEnd.Length - 1)
             {
                 childEnd[i].isLastPos = true;
             }
         }
     }
-    // 오브젝트 위치 랜덤 배치시, 겹치는거 방지 지금은 일단 안씀
+
     public bool PositionCheck(Vector3 pos)
     {
         if(posCheckList.Count > 1)
@@ -49,7 +49,9 @@ public class RoomCtrl : MonoBehaviour
         {
             for (int j = 0; j < roomInfoList[i].eventList.Count; j++)
             {
-                var rndPos = new Vector3(evnetObjPos[i].transform.position.x, evnetObjPos[i].transform.position.y + 1f,
+                if (roomInfoList[i].eventList[j] == DunGeonEvent.Gathering)
+                    continue;
+                var rndPos = new Vector3(evnetObjPos[i].transform.position.x, evnetObjPos[i].transform.position.y,
                     Random.Range(evnetObjPos[i].transform.position.z - 5, evnetObjPos[i].transform.position.z + 5));
 
                 if(!PositionCheck(rndPos))
@@ -59,10 +61,10 @@ public class RoomCtrl : MonoBehaviour
                 }
                 
                 posCheckList.Add(rndPos);
-
+                
                 var eventObj = Instantiate(eventObjPrefab, rndPos, Quaternion.identity);
                 eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j], dungeonSystem, rndPos);
-
+                
                 eventObjList.Add(eventObj);
             }
         }
@@ -79,3 +81,55 @@ public class RoomCtrl : MonoBehaviour
         eventObjList.Clear();
     }
 }
+
+//public void EventObjectSet(List<DunGeonEvent> eventList, bool isMain)
+//{
+//    if(isMain)
+//    {
+//    }
+//    else
+//    {
+//        for (int i = 0; i < eventList.Count; i++)
+//        {
+//            for (int j = 0; j <= (int)DunGeonEvent.SubStory;)
+//            {
+//                if((eventList[i] & (DunGeonEvent)j) != 0)
+//                {
+//                    var pos = roomPos[i].getPosition();
+//                    var vecPos = new Vector3(Random.Range(pos.x - 5, pos.x - 3), 2f, Random.Range(pos.z - 4, pos.z + 4));
+
+//                    if((DunGeonEvent)j != DunGeonEvent.Empty)
+//                    {
+//                        var obj = Instantiate(eventObj, vecPos, Quaternion.identity);
+//                        var mesh = obj.GetComponent<MeshRenderer>();
+//                        objList.Add(obj);
+//                        switch ((DunGeonEvent)j)
+//                        {
+//                            case DunGeonEvent.Battle:
+//                                mesh.material.color = Color.red;
+//                                break;
+//                            case DunGeonEvent.Gathering:
+//                                mesh.material.color = Color.green;
+//                                break;
+//                            case DunGeonEvent.Hunt:
+//                                mesh.material.color = Color.blue;
+//                                break;
+//                            case DunGeonEvent.RandomIncount:
+//                                mesh.material.color = Color.black;
+//                                break;
+//                            case DunGeonEvent.SubStory:
+//                                mesh.material.color = Color.grey;
+//                                break;
+//                            case DunGeonEvent.Count:
+//                                break;
+//                        }
+//                    }
+//                }
+//                if (j == 0)
+//                    j++;
+//                else
+//                    j <<= 1;
+//            }
+//        }
+//    }
+//}

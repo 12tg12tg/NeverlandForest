@@ -3,23 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EventObjectData
-{
-    public DungeonRoom roomInfo;
-    public DunGeonEvent eventType;
-    public Vector3 objectPosition;
-
-    public EventObjectData(EventObject obj)
-    {
-        roomInfo = obj.roomInfo;
-        eventType = obj.eventType;
-        objectPosition = obj.objectPosition;
-    }
-}
-
 public class EventObject : MonoBehaviour, IPointerClickHandler
 {
-    EventObjectData eventObjInfo;
     public DungeonRoom roomInfo;
     public DunGeonEvent eventType;
     public Vector3 objectPosition;
@@ -51,6 +36,7 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
                 break;
             case DunGeonEvent.Gathering:
                 mesh.material.color = Color.green;
+                gameObject.AddComponent<GatheringObject>();
                 break;
             case DunGeonEvent.Hunt:
                 mesh.material.color = Color.blue;
@@ -67,18 +53,31 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
         
         if (dungeonSystem.DungeonSystemData.curEventObjList.FindIndex( x => x.objectPosition.Equals(objectPosition)) == -1)
         {
-            EventObjectData obj = new EventObjectData(this);
-            dungeonSystem.DungeonSystemData.curEventObjList.Add(obj);
-            eventObjInfo = obj;
+            var eventObj = new EventObject(this);
+            dungeonSystem.DungeonSystemData.curEventObjList.Add(eventObj);
         }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("클릭이동!");
-        dungeonSystem.EventObjectClickEvent(eventType, this);
-        dungeonSystem.DungeonSystemData.curEventObjList.Remove(eventObjInfo);
-        Destroy(gameObject);
+        //EventBus<DungeonMap>.Publish(DungeonMap.EventObjectClick, eventType, transform.position);
+      
+        switch (eventType)
+        {
+            case DunGeonEvent.Gathering:
 
+                break;
+            case DunGeonEvent.Empty:
+            case DunGeonEvent.Battle:
+            case DunGeonEvent.Hunt:
+            case DunGeonEvent.RandomIncount:
+            case DunGeonEvent.SubStory:
+            case DunGeonEvent.Count:
+                dungeonSystem.EventObjectClickEvent(eventType, this);
+                break;
+            default:
+                break;
+        }
     }
 }

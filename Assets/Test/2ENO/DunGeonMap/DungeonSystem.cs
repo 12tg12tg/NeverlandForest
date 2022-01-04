@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 // ÆÛ»çµå ´À³¦
 public class DungeonSystem : MonoBehaviour
@@ -57,7 +55,7 @@ public class DungeonSystem : MonoBehaviour
             dungeonPlayer.SetPlayerData(dungeonSystemData.curPlayerData);
         }
 
-        for (int i=0; i < dungeonSystemData.curEventObjList.Count; i++)
+        for (int i = 0; i < dungeonSystemData.curEventObjList.Count; i++)
         {
             var eventObj = Instantiate(eventObjectPrefab, dungeonSystemData.curEventObjList[i].objectPosition, Quaternion.identity);
             eventObj.GetComponent<EventObject>().Init(dungeonSystemData.curEventObjList[i].roomInfo
@@ -72,12 +70,17 @@ public class DungeonSystem : MonoBehaviour
         //ConsumeManager.TimeUp(1,0);
         if (isRoomEnd)
         {
+            GatheringSystem.DeleteObj();
             dungeonSystemData.curRoomData.DestroyAllEventObject();
             dungeonSystemData.curEventObjList.Clear();
 
             roomManager.ChangeRoomForward(isRoomEnd);
             dungeonSystemData.curRoomData.CreateAllEventObject(dungeonSystemData.curIncludeRoomList, eventObjectPrefab);
             dungeonPlayer.transform.position = dungeonSystemData.curRoomData.spawnPos.transform.position;
+
+            GatheringSystem.CreateGathering(DungeonSystemData.curDungeonData.RoomType,
+          DungeonSystemData.curRoomData.evnetObjPos, DungeonSystemData.curSubRoomList);
+
         }
         else
         {
