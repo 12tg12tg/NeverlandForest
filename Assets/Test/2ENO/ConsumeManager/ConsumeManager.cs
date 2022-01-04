@@ -96,39 +96,7 @@ public static class ConsumeManager
 
     private static void StaminaStateChange()
     {
-        if (curStamina <= 0)
-        {
-            // 매개변수로 수치 대신 그냥 상태 enum 넣어줘도 될지도..
-            if (curStaminaState != StaminaState.Zero)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.Zero, curStamina);
-            }
-            curStaminaState = StaminaState.Zero;
-        }
-        else if (curStamina < 25)
-        {
-            if (curStaminaState != StaminaState.Bad)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.Bad, curStamina);
-            }
-            curStaminaState = StaminaState.Bad;
-        }
-        else if (curStamina < 50)
-        {
-            if (curStaminaState != StaminaState.SoSo)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.SoSo, curStamina);
-            }
-            curStaminaState = StaminaState.SoSo;
-        }
-        else if (curStamina <= 100)
-        {
-            if (curStaminaState != StaminaState.Full)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.Full, curStamina);
-            }
-            curStaminaState = StaminaState.Full;
-        }
+       
     }
 
     private static void TimeStateChange()
@@ -192,6 +160,8 @@ public static class ConsumeManager
         if(date % 15 == 0)
         {
             EventBus<DateEvent>.Publish(DateEvent.BlueMoon);
+            EventBus<DateEvent>.Publish(DateEvent.BlueMoon, 54545);
+            EventBus<DateEvent>.Publish(DateEvent.BlueMoon,111111111);
         }
 
         if(date > 2)
@@ -226,6 +196,8 @@ public static class ConsumeManager
         if (vals.Length != 0) return;
         Debug.Log("ConsumeMgr : 블루문 실행");
     }
+
+
 
     private static void WitchEffect(object[] vals)
     {
