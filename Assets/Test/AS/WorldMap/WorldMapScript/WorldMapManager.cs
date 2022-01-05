@@ -24,23 +24,19 @@ public class WorldMapManager : MonoBehaviour
         worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
         if (loadData.Count.Equals(0))
         {
-            StartCoroutine(worldMap.InitMap(Link));
+            StartCoroutine(worldMap.InitMap(() => {
+                NodeLinkToPlayer();
+                player.Init();
+            }));
+            Debug.Log("들어왔음");
         }
         else
         {
             worldMap.LoadWorldMap(loadData);
             NodeLinkToPlayer();
-            worldMapCamera.isInit = true;
             player.ComeBackWorldMap();
             worldMapCamera.FollowPlayer();
         }
-    }
-
-    private void Link()
-    {
-        NodeLinkToPlayer();
-        player.Init();
-        worldMapCamera.Init();
     }
 
     private void NodeLinkToPlayer()

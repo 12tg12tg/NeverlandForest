@@ -9,12 +9,18 @@ public class WorldMapPlayer : MonoBehaviour
     public GameObject map;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
-    private Vector2 currentIndex;
+
+    public Vector2 currentIndex;
     private Vector2 goalIndex;
-    public Vector3 currentPos;
+
     private Vector3 startPos;
-    public Vector3 goalPos;
+    private Vector3 currentPos;
+    private Vector3 goalPos;
+
     public float distance;
+
+    public string sceneName;
+
     public Vector2 CurrentIndex => currentIndex;
 
     public void Init()
@@ -39,7 +45,7 @@ public class WorldMapPlayer : MonoBehaviour
     public void Load()
     {
         var data = Vars.UserData.WorldMapPlayerData;
-        transform.position = data.startPos;
+        transform.position = data.isClear ? data.goalPos : data.startPos;
         currentIndex = data.currentIndex;
     }
 
@@ -81,7 +87,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, sceneName, () => coMove = null));
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void PlayerClearWorldMap()

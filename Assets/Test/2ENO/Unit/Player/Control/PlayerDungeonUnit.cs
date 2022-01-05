@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class PlayerDungeonUnitData
 {
@@ -53,15 +54,16 @@ public class PlayerDungeonUnit : UnitBase
         multiTouch = GameManager.Manager.MultiTouch;
     }
 
-    void Update()
+    private void Update()
     {
         // 레이캐스트 필요
         // UI가 아닐 때 동작하게끔 만들어야함
         // 첫 터치 기준으로만 잡음
-        var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity, LayerMask.NameToLayer("UI"));
-
+        var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
         if (!isCoMove && multiTouch.TouchCount > 0 && isRayCol)
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
             isMove = false;
             // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
             var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;

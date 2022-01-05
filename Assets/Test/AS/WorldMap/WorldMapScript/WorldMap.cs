@@ -51,15 +51,13 @@ public class WorldMap : MonoBehaviour
     public int column;
     public int row;
 
+    private readonly float posX = 5f;
+    private readonly float posY = 15f;
+
     public WorldMapNode[,] maps;
-    private List<Edge> edges = new List<Edge>();
-    private float posX = 5f;
-    private float posY = 15f;
+    private readonly List<Edge> edges = new List<Edge>();
     private bool isAllLinked = false;
 
-    public object[] day;
-    public int testDay = 0;
-    
     public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
     {
         this.column = column;
@@ -73,8 +71,9 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
+        FogComing();
     }
-    
+
     public void InitWorldMiniMap()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
@@ -317,7 +316,21 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
-
+    public void FogComing()
+    {
+        var date = Vars.UserData.date;
+        if (date > 2) // 3일 째 되는 날 월드맵에 진입 했다면
+        {
+            fogPrefab = Instantiate(fogPrefab); // 생성하게끔
+            fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
+            fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(posY * 2, 0f, 0f);
+            for (int i = 0; i < date - 3; i++)   // 4일 이후에 진입하게 되면 위치 변경
+            {
+                fogPrefab.transform.localScale += new Vector3(1.20f, 0f, 0f);
+            }
+        }
+        Vars.UserData.date++;
+    }
     public void FogComing(object[] day)
     {
         var now = (int)day[0];
@@ -327,7 +340,10 @@ public class WorldMap : MonoBehaviour
         }
         else if (now > 3)
         {
-            fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
+            for (int i = 0; i < now - 3; i++)
+            {
+                fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
+            }
         }
         Debug.Log(now);
     }

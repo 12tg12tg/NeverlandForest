@@ -156,7 +156,7 @@ MonoBehaviour:
   worldMapCamera: {fileID: 1204652320}
   nodePrefab: {fileID: 4246026130302862744, guid: 3c69f304a738e4245ae8067ea01520b4, type: 3}
   linePrefab: {fileID: 8642558328347396266, guid: d3dae2b02611c7e42a6af5b32ffdae44, type: 3}
-  fogPrefab: {fileID: 1510203785596791303, guid: 0e4c1f28af02d5641b690315f65243e3, type: 3}
+  fogPrefab: {fileID: 9174522917237380771, guid: 5a21d53d493e20d41b871c1662d3933f, type: 3}
   column: 10
   row: 5
 --- !u!4 &317651537
@@ -289,6 +289,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPos: {fileID: 1281121502}
+  isInit: 0
 --- !u!1 &1281121498
 GameObject:
   m_ObjectHideFlags: 0
@@ -401,7 +402,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 317651535}
+  currentIndex: {x: 0, y: 0}
   distance: 0.3
+  sceneName: AS_RandomMap
 --- !u!1 &1529244521
 GameObject:
   m_ObjectHideFlags: 0

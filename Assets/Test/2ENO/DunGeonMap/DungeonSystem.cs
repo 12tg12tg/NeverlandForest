@@ -25,6 +25,21 @@ public class DungeonSystem : MonoBehaviour
 
     public WorldMap worldMap;
 
+    public void OnGUI()
+    {
+        if(GUILayout.Button("Clear"))
+        {
+            Vars.UserData.WorldMapPlayerData.isClear = true;
+            SceneManager.LoadScene("WorldMap");
+        }
+        if(GUILayout.Button("Run"))
+        {
+            Vars.UserData.WorldMapPlayerData.isClear = false;
+            SceneManager.LoadScene("WorldMap");
+        }
+    }
+
+
     void Start()
     {
         dungeonPlayer.gameObject.SetActive(false);

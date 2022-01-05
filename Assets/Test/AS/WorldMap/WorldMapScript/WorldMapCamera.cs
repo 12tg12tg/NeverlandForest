@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class WorldMapCamera : MonoBehaviour
 {
@@ -7,22 +8,19 @@ public class WorldMapCamera : MonoBehaviour
 
     private Coroutine coCameraMove;
     private Vector3 startPos;
-    private float startX;
+    private readonly float startX = 0f;
     private readonly float distance = 30f;
-    private readonly float maxDistance = 150f;
+    private readonly float maxDistance = 120f;
     public bool isInit = false;
 
-    public void Init()
+    public void Awake()
     {
-        transform.position = new Vector3(playerPos.position.x + 23f, transform.position.y, transform.position.z);
-        startPos = transform.position;
-        startX = startPos.x - 30f;
-        isInit = true; // 씬 전환 시 초기화가 되기전에 동작하지 못하게 막는 용도(간헐적으로 발생하는 카메라 돌아가는 현상 막기 위함)
+        transform.position = new Vector3(playerPos.position.x + startX, transform.position.y, transform.position.z);
     }
 
     private void Update()
     {
-        if (coCameraMove != null || !isInit)
+        if (coCameraMove != null)
             return;
 
         var touch = GameManager.Manager.MultiTouch;
@@ -30,7 +28,8 @@ public class WorldMapCamera : MonoBehaviour
         if (touch.TouchCount > 0)
         {
             var pos = Camera.main.ScreenToViewportPoint(touch.PrimaryStartPos - touch.PrimaryPos);
-            transform.position = new Vector3(pos.x, 0f, 0f) * distance + startPos;
+            if (!Vector3.zero.Equals(startPos))
+                transform.position = new Vector3(pos.x, 0f, 0f) * distance + startPos;
         }
         else
         {
@@ -52,11 +51,8 @@ public class WorldMapCamera : MonoBehaviour
             return;
 
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
-        var startPos = new Vector3(playerPos.position.x, transform.position.y, transform.position.z);
-        var endPos = Vector3.zero + startPos;
-        if (Vars.UserData.WorldMapPlayerData.isClear)
-            endPos = new Vector3(10f, 0f, 0f) + startPos;
-        
+        var startPos = new Vector3(playerPos.position.x - 10f, transform.position.y, transform.position.z);
+        var endPos = Vars.UserData.WorldMapPlayerData.isClear ? new Vector3(10f, 0f, 0f) + startPos : Vector3.zero + startPos;
         coCameraMove ??= StartCoroutine(Utility.CoTranslate(transform, startPos, endPos, 1f, () => coCameraMove = null));
     }
 }

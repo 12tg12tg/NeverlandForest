@@ -135,6 +135,7 @@ public class RoomManager
             {
                 if(curDungeonInfo.nextRoomIdx == -1)
                 {
+                    Vars.UserData.WorldMapPlayerData.isClear = true;
                     SceneManager.LoadScene("WorldMap");
                     return;
                 }
