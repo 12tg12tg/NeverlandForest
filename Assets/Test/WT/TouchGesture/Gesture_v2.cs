@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class Gesture_v2 : MonoBehaviour
 {
-    public GameObject cube;
     private float cubleroateSpeed = 10.0f;
-    private float count = 0f;
-    private bool fingerIsDown = false;
+    public bool fingerIsDown = false;
     private Vector3 touchStart;
     private string touchPattern = string.Empty;
     private string touchPatternChain = string.Empty;
@@ -17,11 +15,10 @@ public class Gesture_v2 : MonoBehaviour
     private bool iscounterclock = false;
 
     private string[] clockCircleChain = new string[2] { "32413", "34132" };
-    private string[] counterCircleChain = new string[4] { "42314", "43142", "43241", "23142" };
+    private string[] counterCircleChain = new string[3] { "42314", "43142", "23142" };
     private float timer =0f;
     public void Update()
     {
-        Debug.Log($"cubleroateSpeed{cubleroateSpeed}");
         // touch start
         if (!fingerIsDown && Input.GetMouseButton(0))
         {
@@ -96,9 +93,9 @@ public class Gesture_v2 : MonoBehaviour
           
             if (touchCurrent== previoustouch) //멈춰있다
             {
-                Debug.Log("같다");
+                //Debug.Log("같다");
                 timer += Time.deltaTime;
-                Debug.Log(timer);
+                //Debug.Log(timer);
             }
             if (timer > 5f)
             {
@@ -126,17 +123,15 @@ public class Gesture_v2 : MonoBehaviour
 
             }
 
-            cube.transform.rotation *= Quaternion.Euler(
-                new Vector3(0f, 0f, cubleroateSpeed));
-
             foreach (var chain in clockCircleChain)
             {
                 if (touchPatternChain.Contains(chain))
                 {
+                    //Debug.Log($"{chain} in {touchPatternChain} 시계방향으로 돌고있다");
+                    Debug.Log("☆시계방향으로 돌고있다");
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
-                    Debug.Log("시계방향으로 돌고있다");
-                    count += 0.1f;
+
                     isclock = true;
                     iscounterclock = false;
                     timer = 0f;
@@ -147,11 +142,11 @@ public class Gesture_v2 : MonoBehaviour
             {
                 if (touchPatternChain.Contains(chain))
                 {
+                    //Debug.Log($"{chain} in {touchPatternChain} 반시계방향으로 돌고있다");
+                    Debug.Log($"★반시계방향으로 돌고있다");
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
 
-                    Debug.Log("반시계방향으로 돌고있다");
-                    count += 0.1f;
                     iscounterclock = true;
                     isclock = false;
                     timer = 0f;
@@ -165,9 +160,9 @@ public class Gesture_v2 : MonoBehaviour
         {
             touchPatternChain = string.Empty;
             touchPattern = string.Empty;
-            count = 0f;
             iscounterclock = false;
             isclock = false;
+            fingerIsDown = false;
         }
     }
     void RecordPattern(string thisPattern)
@@ -178,11 +173,11 @@ public class Gesture_v2 : MonoBehaviour
         }
         else
         {
-            Debug.Log($"if문이전에 touchPattern : {touchPattern}");
+            //Debug.Log($"if문이전에 touchPattern : {touchPattern}");
             if (touchPattern.Substring(touchPattern.Length - 1) != thisPattern) //마지막 인덱스와 비교해서 같지 않으면 더해라.
             {
                 touchPattern += thisPattern;
-                Debug.Log($"if문이후에 touchPattern : {touchPattern}");
+                //Debug.Log($"if문이후에 touchPattern : {touchPattern}");
             }
         }
     }

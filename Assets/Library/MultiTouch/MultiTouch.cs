@@ -46,8 +46,11 @@ public class MultiTouch : Singleton<MultiTouch>
         }
     }
     private bool isOneTouch;
-
+    public bool IsOneTouch => isOneTouch;
     public bool IsTap { get; private set; }
+    public bool IsOneTouchStart { get => isOneTouch && NewTouch.activeTouches[0].began; }
+    public bool IsOneTouchIng { get => isOneTouch && NewTouch.activeTouches[0].isInProgress; }
+    public bool IsOneTouchEnd { get => isOneTouch && NewTouch.activeTouches[0].ended; }
 
     public bool IsDoubleTap { get; private set; }
 
