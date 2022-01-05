@@ -112,6 +112,8 @@ public class InventoryItemView : MonoBehaviour
             selectedSlot = 0;
             EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
         }
+
+        invenCtrl.UserDataUpdate(itemDataList);
     }
 
     private void OnItemClickEvent(int slot)
@@ -136,6 +138,7 @@ public class InventoryItemView : MonoBehaviour
             if(itemDataList[index].OwnCount <= 0)
             {
                 itemDataList.RemoveAt(index);
+                invenCtrl.UserDataItemRemove(item);
             }
 
             InitDivideItemList(itemDataList);

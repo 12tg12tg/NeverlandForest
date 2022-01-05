@@ -47,6 +47,28 @@ public class InventoryController : GenericWindow
         itemViewUI.DeleteItemExcute(item);
     }
 
+    public void UserDataUpdate(List<DataAllItem> dataItem)
+    {
+        for (int i=0; i< dataItem.Count; i++)
+        {
+            if (!Vars.UserData.HaveAllItemList2.ContainsKey(dataItem[i].ItemTableElem.name))
+            {
+                Vars.UserData.HaveAllItemList2.Add(dataItem[i].ItemTableElem.name, dataItem[i]);
+            }
+            else
+            {
+                Vars.UserData.HaveAllItemList2[dataItem[i].ItemTableElem.name].OwnCount = dataItem[i].OwnCount;
+            }
+        }
+    }
+    public void UserDataItemRemove(DataAllItem item)
+    {
+        if (Vars.UserData.HaveAllItemList2.ContainsKey(item.ItemTableElem.name))
+        {
+            Vars.UserData.HaveAllItemList2.Remove(item.ItemTableElem.name);
+        }
+    }
+
     private void OnGUI()
     {
         
