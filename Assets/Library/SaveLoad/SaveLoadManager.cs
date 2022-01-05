@@ -110,11 +110,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveConsumableData()
     {
         consumableSaveData = new ConsumableSaveData_0();
-        consumableSaveData.curStamina = ConsumeManager.CurStamina;
-        consumableSaveData.curIngameHour = ConsumeManager.CurIngameHour;
-        consumableSaveData.curIngameMinute = ConsumeManager.CurIngameMinute;
-        consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
-        consumableSaveData.date = ConsumeManager.Date;
+        consumableSaveData.curStamina = Vars.UserData.curStamina;
+        consumableSaveData.curIngameHour = Vars.UserData.curIngameHour;
+        consumableSaveData.curIngameMinute = Vars.UserData.curIngameMinute;
+        consumableSaveData.curTimeState =ConsumeManager.CurTimeState;
+        consumableSaveData.date = Vars.UserData.date;
     }
 
     private void LoadPlayer()
@@ -169,11 +169,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         consumableSaveData = (ConsumableSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
         if (consumableSaveData != null)
         {
-            ConsumeManager.CurStamina = consumableSaveData.curStamina;
-            ConsumeManager.CurIngameHour = consumableSaveData.curIngameHour;
-            ConsumeManager.CurIngameMinute = consumableSaveData.curIngameMinute;
+            Vars.UserData.curStamina = consumableSaveData.curStamina;
+            Vars.UserData.curIngameHour = consumableSaveData.curIngameHour;
+            Vars.UserData.curIngameMinute = consumableSaveData.curIngameMinute;
             ConsumeManager.CurTimeState = consumableSaveData.curTimeState;
-            ConsumeManager.Date = consumableSaveData.date;
+            Vars.UserData.date = consumableSaveData.date;
         }
     }
 }

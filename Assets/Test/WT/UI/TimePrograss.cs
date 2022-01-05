@@ -16,7 +16,6 @@ public class TimePrograss : MonoBehaviour
         {
             // ³·
             ConsumeManager.CurTimeState = TimeState.DayTime;
-            currentValue = ConsumeManager.CurIngameHour+(ConsumeManager.CurIngameMinute/60);
             progressIndicator.text = "³·";
         }
         else
@@ -26,6 +25,7 @@ public class TimePrograss : MonoBehaviour
             progressIndicator.text = "¹ã";
         }
 
+        currentValue = Vars.UserData.curIngameHour + (Vars.UserData.curIngameMinute / 60);
         timeloadingBar.fillAmount = currentValue / 24;
     }
 }
