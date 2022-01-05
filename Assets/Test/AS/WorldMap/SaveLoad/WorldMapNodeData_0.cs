@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ public struct MapNodeStruct_0
     public int level;
     public List<Vector2> children;
     public List<Vector2> parent;
-    
 }
 
 public class WorldMapNodeData_0 : SaveDataBase

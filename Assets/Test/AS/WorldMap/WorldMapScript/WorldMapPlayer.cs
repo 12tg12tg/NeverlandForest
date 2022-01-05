@@ -11,9 +11,9 @@ public class WorldMapPlayer : MonoBehaviour
     private Coroutine coMove;
     private Vector2 currentIndex;
     private Vector2 goalIndex;
-    private Vector3 currentPos;
+    public Vector3 currentPos;
     private Vector3 startPos;
-    private Vector3 goalPos;
+    public Vector3 goalPos;
     public float distance;
     public Vector2 CurrentIndex => currentIndex;
 
@@ -34,12 +34,12 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void Load()
     {
         var data = Vars.UserData.WorldMapPlayerData;
-        transform.position = data.goalPos;
+        transform.position = data.startPos;
         currentIndex = data.currentIndex;
     }
 
@@ -47,7 +47,7 @@ public class WorldMapPlayer : MonoBehaviour
     {
         if(Vars.UserData.WorldMapPlayerData == null)
         {
-            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
             Load();
         }
         else if(Vars.UserData.WorldMapPlayerData.isClear)
@@ -82,7 +82,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = startPos;
 
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void PlayerClearWorldMap()
     {
@@ -90,7 +90,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void PlayerRunWorldMap()
@@ -101,5 +101,6 @@ public class WorldMapPlayer : MonoBehaviour
         transform.position = data.currentPos;
 
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => coMove = null));
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 }

@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class UserData
-{   
+{
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     !!      유저마다 다른 변수들       !!
@@ -32,4 +30,13 @@ public class UserData
 
     public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
 
+    public int maxStamina { get; set; } = 100;
+    public int curStamina { get => baseStamina + hunger + tiredness; set { } }
+    public int baseStamina { get; set; } = 20; //임시의 스태미나 기본수치
+    public int hunger { get; set; } = 40;
+    public int tiredness { get; set; } = 40;
+    public int curIngameHour { get; set; } = 0;
+    public int curIngameMinute { get; set; } = 0;
+
+    public int date = 1;
 }

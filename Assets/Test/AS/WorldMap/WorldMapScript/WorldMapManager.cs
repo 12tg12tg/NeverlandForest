@@ -18,7 +18,7 @@ public class WorldMapManager : MonoBehaviour
 
     private void Awake()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMap = gameObject.AddComponent<WorldMap>();
         worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
@@ -30,6 +30,7 @@ public class WorldMapManager : MonoBehaviour
         {
             worldMap.LoadWorldMap(loadData);
             NodeLinkToPlayer();
+            worldMapCamera.isInit = true;
             player.ComeBackWorldMap();
             worldMapCamera.FollowPlayer();
         }

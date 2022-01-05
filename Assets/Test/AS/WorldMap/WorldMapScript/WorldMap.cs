@@ -77,8 +77,8 @@ public class WorldMap : MonoBehaviour
     
     public void InitWorldMiniMap()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         var layerName = "WorldMap";
         Load(loadData, layerName);
@@ -430,7 +430,7 @@ public class WorldMap : MonoBehaviour
                 Vars.UserData.WorldMapNodeStruct.Add(data);
             }
         }
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapNode);
     }
     private void Load(List<MapNodeStruct_0> loadData, string LayerName = "null")
     {

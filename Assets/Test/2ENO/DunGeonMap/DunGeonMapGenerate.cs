@@ -78,34 +78,34 @@ public class DunGeonMapGenerate : MonoBehaviour
         action?.Invoke();
     }
 
-    public void OnGUI()
-    {
-        if (GUILayout.Button("reStart"))
-        {
-            SceneManager.LoadScene(0);
-        }
-        if (GUILayout.Button("SaveMap"))
-        {
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.DungeonMap);
-        }
-        if (GUILayout.Button("LoadMap"))
-        {
-            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
-            dungeonRoomArray = Vars.UserData.DungeonMapData;
-            DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
-            CreateMapObject();
-        }
-        if(GUILayout.Button("Success"))
-        {
-            Vars.UserData.WorldMapPlayerData.isClear = true;
-            SceneManager.LoadScene("WorldMap");
-        }
-        if (GUILayout.Button("Run"))
-        {
-            Vars.UserData.WorldMapPlayerData.isClear = false;
-            SceneManager.LoadScene("WorldMap");
-        }
-    }
+    //public void OnGUI()
+    //{
+    //    if (GUILayout.Button("reStart"))
+    //    {
+    //        SceneManager.LoadScene(0);
+    //    }
+    //    if (GUILayout.Button("SaveMap"))
+    //    {
+    //        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.DungeonMap);
+    //    }
+    //    if (GUILayout.Button("LoadMap"))
+    //    {
+    //        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
+    //        dungeonRoomArray = Vars.UserData.DungeonMapData;
+    //        DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startId], dungeonRoomList);
+    //        CreateMapObject();
+    //    }
+    //    if(GUILayout.Button("Success"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = true;
+    //        SceneManager.LoadScene("WorldMap");
+    //    }
+    //    if (GUILayout.Button("Run"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = false;
+    //        SceneManager.LoadScene("WorldMap");
+    //    }
+    //}
 
     public void MapInit()
     {

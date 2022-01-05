@@ -7,7 +7,8 @@ public static class Vars
     //Skill Info
     public static List<DataPlayerSkill> BoySkillList { get; set; } = new List<DataPlayerSkill>();
     public static List<DataPlayerSkill> GirlSkillList { get; set; } = new List<DataPlayerSkill>();
-
+    public static int maxIngameHour = 24;
+    public static int maxIngameMinute = 60;
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     !!  게임에서 사용되는 공통 변수들  !!
