@@ -26,4 +26,10 @@ public class UserData
     //??? - Vars로 이사가도 되는가?
     public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
 
+    // 위랑 사실 비슷한 내용인데 보는쪽 가독성을 위해 따로 이름 지어서 만듬, 인벤토리에 사용
+
+    public List<DataAllItem> HaveAllItemList { get; set; } = new List<DataAllItem>();
+
+    public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
+
 }
