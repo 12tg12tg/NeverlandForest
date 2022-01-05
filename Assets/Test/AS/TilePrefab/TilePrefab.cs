@@ -16,7 +16,6 @@ public class TilePrefab : MonoBehaviour
     {
         MakeTiles();
     }
-
     private void MakeTiles()
     {
         var bound = mainLand.GetComponent<MeshRenderer>().bounds;

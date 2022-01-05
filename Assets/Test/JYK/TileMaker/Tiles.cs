@@ -10,13 +10,17 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public bool isObstacle;
     public List<UnitBase> units = new List<UnitBase>();
 
+    //Instance
+    private TileMaker tileMaker;
+    public MeshRenderer center;
+    public MeshRenderer edge;
+
     //Property
     public Vector3 WolrdPos { get => transform.position; }
     public bool HaveUnit { get => units.Count > 0; }
     public bool CanStand { get => units.Count < 2; }
 
     //Vars
-    private Color tempOriginalColor;
     private bool isHighlightAttack;
     private bool isHighlightConsume;
     private bool isConfirm;
@@ -25,7 +29,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     private void Start()
     {
-        tempOriginalColor = ren.material.color;
+        tileMaker = TileMaker.Instance;
     }
 
     //Move
@@ -55,53 +59,72 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         isConfirm = false;
         isHighlightAttack = false;
         isHighlightConsume = false;
-        ren.material.color = tempOriginalColor;
+        ren.material.color = tileMaker.noneColor;
+        center.material.color = tileMaker.noneColor;
+        edge.material.color = tileMaker.noneColor;
         affectedPlayer = PlayerType.None;
     }
 
     public void HighlightSkillRange()
     {
-        ren.material.color = Color.blue;
+        center.material.color = tileMaker.blueColor;
     }
 
     public void HighlightCanAttackSign()
     {
         isHighlightAttack = true;
-        ren.material.color = Color.red;
+        edge.material.color = tileMaker.targetColor;
     }
 
     public void HighlightCanConsumeSign()
     {
         isHighlightConsume = true;
-        ren.material.color = Color.green;
+        edge.material.color = tileMaker.consumeColor;
     }
 
     public void ResetHighlightExceptConfirm()
-    {
-        
+    {       
         isHighlightAttack = false;
         isHighlightConsume = false;
+        center.material.color = tileMaker.noneColor;
+        edge.material.color = tileMaker.noneColor;
         if (isConfirm)
-            ren.material.color = confirmColor;
-        else
-            ren.material.color = tempOriginalColor;
+            center.material.color = confirmColor;
     }
 
-    public void ConfirmTarget(Color confirmColor)
+    public void ConfirmAsTarget(PlayerType who)
     {
         isConfirm = true;
-        this.confirmColor = confirmColor;
+        Color color;
+        if (who == PlayerType.Boy)
+        {
+            ColorUtility.TryParseHtmlString("#42C0FF", out color);
+            affectedPlayer = PlayerType.Boy;
+        }
+        else
+        {
+            ColorUtility.TryParseHtmlString("#FFCC42", out color);
+            affectedPlayer = PlayerType.Girl;
+        }
+        this.confirmColor = color;
+    }
+
+    public void CancleConfirmTarget()
+    {
+        affectedPlayer = PlayerType.None;
+        isConfirm = false;
     }
 
     public void SetMiddleState()
     {
         //드래그 중 일때만 호출.
         //하이라이트를 초기화하진 않으나, 마우스 드래그중에 표시되는 블루 프린트를 없앤다.
+        center.material.color = tileMaker.noneColor;
         if (isHighlightAttack)
             HighlightCanAttackSign();
-        else if (isHighlightConsume)
+        if (isHighlightConsume)
             HighlightCanConsumeSign();
-        else
+        if(isConfirm)
             ResetHighlightExceptConfirm();
     }
 
@@ -119,7 +142,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             return;
 
         var manager = BattleManager.Instance;
-        var tileMaker = TileMaker.Instance;
         var button = manager.CurClickedButton;
 
         var skill = button.Skill;
@@ -137,24 +159,14 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             }
             else
             {
-                Color color;
-                if (button.groupUI.type == PlayerType.Boy)
-                {
-                    ColorUtility.TryParseHtmlString("#42C0FF", out color);
-                    affectedPlayer = PlayerType.Boy;
-                }
-                else
-                {
-                    ColorUtility.TryParseHtmlString("#FFCC42", out color);
-                    affectedPlayer = PlayerType.Girl;
-                }
-
-                ConfirmTarget(color);
+                tileMaker.AffectedTileCancle(button.groupUI.type);
+                ConfirmAsTarget(button.groupUI.type);
             }
         }
         else
         {
             //범위 스킬이라면
+            //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
             //  1) 범위 계산 후 타일 리스트를 만들어서.
             //  2) tile.Confirm(color) 함수 호출하기.
             //  3) affectedPlayer 설정하기.

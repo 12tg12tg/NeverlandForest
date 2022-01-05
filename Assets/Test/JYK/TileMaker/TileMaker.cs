@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class TileMaker : MonoBehaviour
 {
+    public enum PlaneType
+    {
+        Base, Center, Edge, Count
+    }
+
     private static TileMaker instance;
     public static TileMaker Instance { get => instance; }
 
@@ -13,13 +18,20 @@ public class TileMaker : MonoBehaviour
     public BattleManager manager;
 
     //Prefabs
-    public Material material;
+    public Material baseMaterial;
+    public Material centerMaterial;
+    public Material edgeMaterial;
 
     //Property
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
 
     //Vars
+    public Color blueColor;
+    public Color consumeColor;
+    public Color targetColor;
+    public Color noneColor;
+    private float reductionRatio = 0.9f;
     public int row = 3;
     public int col = 7;
     public float spacing = 1f;
@@ -55,8 +67,11 @@ public class TileMaker : MonoBehaviour
                 var x = startPos.x + spacing * (j + 1) + tileWidth * j;
                 var z = startPos.z + spacing * (i + 1) + tileHeight * i;
                 Vector3 offset = new Vector3(x, startPos.y, z);
-                var go = CreateTileQuad(new Vector2(i, j), tileWidth, tileHeight);
-                go.transform.position = offset;               
+                Vector2 index = new Vector2(i, j);
+                var go = CreateTileQuad(index, PlaneType.Base, tileWidth, tileHeight);
+                var tile = go.GetComponent<Tiles>();
+                CreateSubQuads(tileWidth, tileHeight, index, tile);
+                go.transform.position = offset;
             }
         }
 
@@ -67,31 +82,81 @@ public class TileMaker : MonoBehaviour
             var x = startPos.x + spacing;
             var z = startPos.z + playerSpacing * (i + 1) + tileHeight * i;
             Vector3 offset = new Vector3(x, startPos.y, z);
-            var go = CreateTileQuad(new Vector2(i, 0), tileWidth, tileHeight);
+            Vector2 index = new Vector2(i, 0);
+            var go = CreateTileQuad(index, PlaneType.Base, tileWidth, tileHeight);
+            var tile = go.GetComponent<Tiles>();
+            CreateSubQuads(tileWidth, tileHeight, index, tile);
             go.transform.position = offset;
         }
     }
 
-    private GameObject CreateTileQuad(Vector2 index, float width, float height)
+    private void CreateSubQuads(float tileWidth, float tileHeight, Vector3 index, Tiles parent)
     {
-        GameObject plane = new GameObject("Tile Plane");  //빈 게임오브젝트 생성
-        plane.transform.SetParent(transform);
-        plane.layer = LayerMask.NameToLayer("Tile");
+        int count = (int)PlaneType.Count;
+        for (int i = 1; i < count; i++)
+        {
+            var type = (PlaneType)(i);
+
+            var child = CreateTileQuad(index, type, tileWidth, tileHeight);
+            child.transform.SetParent(parent.transform);
+
+            switch (type)
+            {
+                case PlaneType.Center:
+                    parent.center = child.GetComponent<MeshRenderer>();
+                    break;
+                case PlaneType.Edge:
+                    parent.edge = child.GetComponent<MeshRenderer>();
+                    break;
+            }
+        }
+    }
+
+    private GameObject CreateTileQuad(Vector2 index, PlaneType type, float width, float height)
+    {
+        GameObject plane = new GameObject(type.ToString());  //빈 게임오브젝트 생성
+        Material material = null;
 
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
-        var tile = plane.AddComponent<Tiles>();
-        tile.index = index;
-        tile.ren = ren;
-        allTiles[(int)index.x, (int)index.y] = tile;
-        tileList.Add(tile);
-
-        var col = plane.AddComponent<MeshCollider>();
 
         var mesh = new Mesh();
         mf.mesh = mesh;
+
+
+        switch (type)
+        {
+            case PlaneType.Base:
+                plane.layer = LayerMask.NameToLayer("Tile");
+                plane.transform.SetParent(transform);
+                material = baseMaterial;
+
+                var col = plane.AddComponent<MeshCollider>();
+                col.sharedMesh = mesh;
+
+                var tile = plane.AddComponent<Tiles>();
+                tile.index = index;
+                tile.ren = ren;
+
+                allTiles[(int)index.x, (int)index.y] = tile;
+                tileList.Add(tile);
+                break;
+
+            case PlaneType.Center:
+                width *= reductionRatio;
+                height *= reductionRatio;
+                material = centerMaterial;
+                plane.transform.position += new Vector3(0f, 0.01f, 0f);
+                break;
+
+            case PlaneType.Edge:
+                material = edgeMaterial;
+                plane.transform.position += new Vector3(0f, 0.01f, 0f);
+                break;
+        }
+
         ren.material = material;
-        col.sharedMesh = mesh;
+
 
         var vertices  = new Vector3[4];
 
@@ -136,6 +201,7 @@ public class TileMaker : MonoBehaviour
         return plane;
     }
 
+
     public Tiles GetTile(Vector2 position)
     {
         if (IsValidTile(position))
@@ -171,6 +237,11 @@ public class TileMaker : MonoBehaviour
     public void SetAllTileSoftClear()
     {
         tileList.ForEach((n) => n.ResetHighlightExceptConfirm());
+    }
+
+    internal void AffectedTileCancle(PlayerType type)
+    {
+        tileList.Where(n => n.affectedPlayer == type).ToList().ForEach(n => n.CancleConfirmTarget());
     }
 
     public void SetAllTileHardClear(PlayerType type)

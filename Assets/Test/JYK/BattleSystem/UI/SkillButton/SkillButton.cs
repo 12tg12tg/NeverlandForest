@@ -93,9 +93,9 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
         groupUI.EnableGroup();
         manager.EndTempUiForDrag();
 
+        var tileMaker = TileMaker.Instance;
         if (isDragOnTile)
         {
-            var tileMaker = TileMaker.Instance;
             if (true /*단일 타겟 스킬인지 확인*/)
             {
                 //단일 타겟이라면 유효성 검사
@@ -107,24 +107,14 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
                 }
                 else
                 {
-                    Color color;
-                    if (groupUI.type == PlayerType.Boy)
-                    {
-                        ColorUtility.TryParseHtmlString("#42C0FF", out color);
-                        tileMaker.LastDropTile.affectedPlayer = PlayerType.Boy;
-                    }
-                    else
-                    {
-                        ColorUtility.TryParseHtmlString("#FFCC42", out color);
-                        tileMaker.LastDropTile.affectedPlayer = PlayerType.Girl;
-                    }
-
-                    tileMaker.LastDropTile.ConfirmTarget(color);
+                    tileMaker.AffectedTileCancle(groupUI.type);
+                    tileMaker.LastDropTile.ConfirmAsTarget(groupUI.type);
                 }
             }
             else
             {
                 //범위 스킬이라면
+                //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
                 //  1) 범위 계산 후 타일 리스트를 만들어서.
                 //  2) tile.Confirm(color) 함수 호출하기.
                 //  3) affectedPlayer 설정하기.
@@ -138,10 +128,10 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
             {
                 manager.UpdateComand(groupUI.type, tileMaker.LastDropPos, item);
             }
-
-            tileMaker.SetAllTileSoftClear();
             groupUI.Close();
         }
+
+        tileMaker.SetAllTileSoftClear();
     }
 
 

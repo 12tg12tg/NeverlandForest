@@ -243,7 +243,7 @@ MonoBehaviour:
   m_fontSize: 29.65
   m_fontSizeBase: 29.65
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -2786,7 +2786,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wholeTile: {fileID: 224913744}
   manager: {fileID: 1666304047}
-  material: {fileID: 2100000, guid: 9c2625c42f79bc44e8c0b737228c0499, type: 2}
+  baseMaterial: {fileID: 2100000, guid: ad30c64ec5072df4e842114aaabddc50, type: 2}
+  centerMaterial: {fileID: 2100000, guid: ad30c64ec5072df4e842114aaabddc50, type: 2}
+  edgeMaterial: {fileID: 2100000, guid: def4837f3f53bd342adaa1e491ac03ca, type: 2}
+  blueColor: {r: 0.5896226, g: 0.74962145, b: 1, a: 1}
+  consumeColor: {r: 0, g: 1, b: 0.0006520748, a: 1}
+  targetColor: {r: 1, g: 0.07623239, b: 0, a: 1}
+  noneColor: {r: 1, g: 1, b: 1, a: 0}
   row: 3
   col: 7
   spacing: 1
