@@ -113,17 +113,16 @@ public class WorldMap : MonoBehaviour
         for (int i = 1; i < column - 1; i++)
         {
             var selectNode = Random.Range(0, row);
-            InitNode(out maps[selectNode, i], new Vector2(selectNode, i));
+            InitNode(out maps[selectNode, i], new Vector2(selectNode, i), Random.Range(0, 3));
         }
-
-        InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1));
+        InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1), Random.Range(0, 3));
 
         var startNextOther = Random.Range(0, row);
         while (maps[startNextOther, 1] != null)
         {
             startNextOther = Random.Range(0, row);
         }
-        InitNode(out maps[startNextOther, 1], new Vector2(startNextOther, 1));
+        InitNode(out maps[startNextOther, 1], new Vector2(startNextOther, 1), Random.Range(0, 3));
 
         for (int i = 2; i < column - 2; i++) // 가운데 맵
         {
@@ -134,7 +133,7 @@ public class WorldMap : MonoBehaviour
                 {
                     rnd = Random.Range(0, row);
                 }
-                InitNode(out maps[rnd, i], new Vector2(rnd, i));
+                InitNode(out maps[rnd, i], new Vector2(rnd, i), Random.Range(0, 3));
             }
         }
 
@@ -143,7 +142,7 @@ public class WorldMap : MonoBehaviour
         {
             endBeforeOther = Random.Range(0, row);
         }
-        InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2));
+        InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2), Random.Range(0, 3));
     }
     
     private void MapRandomLink()
@@ -350,12 +349,21 @@ public class WorldMap : MonoBehaviour
         }
         beforeDate = Vars.UserData.date;
     }
+    private void InitNode(out WorldMapNode node, Vector2 index, int difficulty)
+    {
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
+        go.transform.SetParent(gameObject.transform);
+        node = go.AddComponent<WorldMapNode>();
+        node.difficulty = (Difficulty)difficulty;
+        ColorChange(node);
+        node.index = index;
+    }
+
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
-        node.difficulty = (Difficulty)Random.Range(0, 3); // 나중에 노드 생성할 때로 옮길 예정
         node.index = index;
     }
 
@@ -365,7 +373,6 @@ public class WorldMap : MonoBehaviour
         go.layer = LayerMask.NameToLayer(LayerName);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
-        node.difficulty = (Difficulty)Random.Range(0, 3); // 나중에 노드 생성할 때로 옮길 예정
         node.index = index;
     }
 
@@ -436,6 +443,7 @@ public class WorldMap : MonoBehaviour
                 var data = new MapNodeStruct_0();
                 data.index = maps[j, i].index;
                 data.level = maps[j, i].level;
+                data.difficulty = maps[j, i].difficulty;
                 data.children = new List<Vector2>();
                 data.parent = new List<Vector2>();
                 for (int k = 0; k < maps[j, i].Children.Count; k++)
@@ -485,6 +493,8 @@ public class WorldMap : MonoBehaviour
                 {
                     if (loadData[k].index.Equals(index))
                     {
+                        maps[j, i].difficulty = loadData[k].difficulty;
+                        ColorChange(maps[j, i]);
                         var children = loadData[k].children;
                         var parent = loadData[k].parent;
                         for (int h = 0; h < children.Count; h++)
@@ -501,4 +511,19 @@ public class WorldMap : MonoBehaviour
         }
 
     }
+    private void ColorChange(WorldMapNode node)
+    {
+        switch (node.difficulty)
+        {
+            case Difficulty.easy:
+                break;
+            case Difficulty.normal:
+                node.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
+                break;
+            case Difficulty.hard:
+                node.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+                break;
+        }
+    }
 }
+

@@ -174,7 +174,6 @@ public static class SaveLoadSystem
                 string json = JsonConvert.SerializeObject(data, Formatting.Indented);
                 writer.WriteLine(json);
                 Debug.Log(json);
-                Debug.Log(path);
             }
             File.Replace(tempPath, path, backupPath);
         }
