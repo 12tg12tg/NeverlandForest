@@ -37,7 +37,7 @@ public class PlayerStats : UnitBase, IAttackable
         var attackUnit = attacker as MonsterUnit;
 
         Hp -= attackUnit.Atk;
-        Debug.Log($"{controller.playerType}가 {attackUnit.name}에게 {attackUnit.Atk}의 피해를 받다.");
+        Debug.Log($"{controller.playerType}가 {attackUnit}에게 {attackUnit.Atk}의 피해를 받다.");
         Debug.Log($"{Hp + attackUnit.Atk} -> {Hp}");
     }
 }

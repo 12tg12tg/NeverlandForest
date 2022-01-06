@@ -36,6 +36,9 @@ public static class DataTableManager
         playerSkillTable.Load();
         tables.Add(typeof(PlayerSkillTable), playerSkillTable);
 
+        var monsterTable = new MonsterTable();
+        monsterTable.Load();
+        tables.Add(typeof(MonsterTable), monsterTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase

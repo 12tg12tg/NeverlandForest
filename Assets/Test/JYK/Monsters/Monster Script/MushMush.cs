@@ -5,8 +5,6 @@ using UnityEngine;
 public class MushMush : MonsterUnit
 {
     private Animator animator;
-    private MonsterTableElem baseElem;
-    public MonsterTableElem BaseElem { get => baseElem; }
 
     private void Awake()
     {
@@ -21,16 +19,28 @@ public class MushMush : MonsterUnit
 
     public override void PlayAttackAnimation()
     {
-        throw new System.NotImplementedException();
+        var rand = Random.Range(0, 3);
+        switch (rand)
+        {
+            case 0:
+                animator.SetTrigger("Projectile");
+                break;
+            case 1:
+                animator.SetTrigger("Punch");
+                break;
+            case 2:
+                animator.SetTrigger("Spell");
+                break;
+        }
     }
 
     public override void PlayDeadAnimation()
     {
-        throw new System.NotImplementedException();
+        animator.SetTrigger("Die");
     }
 
     public override void PlayHitAnimation()
     {
-        throw new System.NotImplementedException();
+        animator.SetTrigger("Damaged");
     }
 }

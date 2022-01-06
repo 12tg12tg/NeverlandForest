@@ -1,10 +1,10 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class BeeBee : MonsterUnit
+public class BeeQueen : MonsterUnit
 {
     private Animator animator;
-    private MonsterTableElem baseElem;
-    public MonsterTableElem BaseElem { get => baseElem; }
 
     private void Awake()
     {
@@ -12,7 +12,7 @@ public class BeeBee : MonsterUnit
     }
     private void Start()
     {
-        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>("0");
+        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>("2");
         Init(baseElem);
         Debug.Log($"{baseElem.name}이 태어나다.");
     }
@@ -23,13 +23,13 @@ public class BeeBee : MonsterUnit
         switch (rand)
         {
             case 0:
-                animator.SetTrigger("Projectile");
+                animator.SetTrigger("Jap");
                 break;
             case 1:
                 animator.SetTrigger("Sting");
                 break;
             case 2:
-                animator.SetTrigger("Bite");
+                animator.SetTrigger("Spell");
                 break;
         }
     }

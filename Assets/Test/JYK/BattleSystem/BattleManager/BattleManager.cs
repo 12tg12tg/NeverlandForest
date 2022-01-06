@@ -121,6 +121,7 @@ public class BattleManager : MonoBehaviour
         //몬스터 (랜덤뽑기) & 배치
         PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
         PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
+        PlaceUnitOnTile(new Vector2(1, 6), monster[2]);
 
         //스킬창 Init
         hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);

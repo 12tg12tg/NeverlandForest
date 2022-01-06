@@ -4,12 +4,18 @@ using UnityEngine;
 
 public abstract class MonsterUnit : UnitBase, IAttackable
 {
+    // Vars
     private int sheild;
-    public int Sheild { get => sheild; set => sheild = value; }
     private int speed;
-    public int Speed { get => speed; set => speed = value; }
     private MonsterType type;
+    protected MonsterTableElem baseElem;
+
+    // Property
+    public int Sheild { get => sheild; set => sheild = value; }
+    public int Speed { get => speed; set => speed = value; }
     public MonsterType Type { get => type; }
+    public MonsterTableElem BaseElem { get => baseElem; }
+
     public void OnAttacked(UnitBase attacker)
     {
         var playerStats = attacker as PlayerStats;
