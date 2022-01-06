@@ -8,6 +8,16 @@ using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
 public class MonsterCommand
 {
+    public MonsterUnit attacker;
+    public Vector2 target;
+    public MonsterActionType actionType;
+    public int Ordering { get; set; }
+
+    public MonsterCommand(MonsterUnit mUnit)
+    {
+        attacker = mUnit;
+        Ordering = mUnit.Speed;
+    }
 
 }
 public class PlayerCommand
@@ -54,6 +64,7 @@ public class PlayerCommand
     }
 }
 
+public enum MonsterActionType { None, Attack, Move }
 public enum PlayerType { None, Boy, Girl }
 public enum ActionType { Skill, Item }
 
@@ -256,6 +267,30 @@ public class BattleManager : MonoBehaviour
         }  
     }
 
+    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, UnityAction action, bool isAnimation = false)
+    {
+        var tile = tileMaker.GetTile(tilePos);
+        if (tile.CanStand)
+        {
+            tile.units.Add(unit);
+            unit.Pos = tilePos;
+
+            var dest = tile.WolrdPos;
+            dest.y = unit.transform.position.y;
+
+            if (isAnimation)
+            {
+                StartCoroutine(
+                    Utility.CoTranslate(unit.transform, unit.transform.position, dest, 0.7f, action)) ;
+            }
+            else
+            {
+                unit.transform.position = dest;
+            }
+        }
+    }
+
+
     public void DisplayMonsterTile()
     {
         targetTiles = tileMaker.GetMonsterTiles();
@@ -430,6 +465,8 @@ public class BattleManager : MonoBehaviour
             girlInput.IsFirst = false;
         }
     }
+
+
 
     private void OnGUI()
     {

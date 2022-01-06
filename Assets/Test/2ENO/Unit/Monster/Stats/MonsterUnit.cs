@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MonsterState
+{
+    Idle, Attack, Move
+}
+
 public abstract class MonsterUnit : UnitBase, IAttackable
 {
     private int sheild;
     public int Sheild { get => sheild; set => sheild = value; }
     private int speed;
     public int Speed { get => speed; set => speed = value; }
+
+    public bool IsBind { get; set; }
+    public MonsterState State { get; set; }
+
     private MonsterType type;
+
+    public MonsterCommand curCommand;
     public MonsterType Type { get => type; }
     public void OnAttacked(UnitBase attacker)
     {
@@ -28,7 +39,35 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     }
     /*행동결정함수 반환값은 MonsterCommand*/
 
+    public MonsterCommand SetActionCommand(Vector2 targetPos)
+    {
+        var command = new MonsterCommand(this);
+        switch (type)
+        {
+            case MonsterType.Near:
+                if(targetPos.y + 1 < Pos.y)
+                    command.actionType = MonsterActionType.Move;
+                else
+                    command.actionType = MonsterActionType.Attack;
+                break;
+            case MonsterType.Far:
+                if (targetPos.y + 2 < Pos.y)
+                    command.actionType = MonsterActionType.Move;
+                else
+                    command.actionType = MonsterActionType.Attack;
+                break;
+        }
+        if (IsBind)
+            command.actionType = MonsterActionType.None;
+        command.target = targetPos;
+        curCommand = command;
+        return command;
+    }
+
     public abstract void PlayAttackAnimation();
     public abstract void PlayDeadAnimation();
     public abstract void PlayHitAnimation();
+    public abstract void TargetAttack();
+    public abstract void Move();
+
 }

@@ -33,4 +33,14 @@ public class BeeQueen : MonsterUnit
     {
         throw new System.NotImplementedException();
     }
+
+    public override void TargetAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Move()
+    {
+        throw new System.NotImplementedException();
+    }
 }

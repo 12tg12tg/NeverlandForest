@@ -28,6 +28,17 @@ public class BattleAction : State<BattleState>
         else if (FSM.preState == BattleState.Monster)
         {
             curMonster = manager.MonsterQueue.Dequeue();
+            switch (curMonster.actionType)
+            {
+                case MonsterActionType.None:
+                    break;
+                case MonsterActionType.Attack:
+                    curMonster.attacker.PlayAttackAnimation();
+                    break;
+                case MonsterActionType.Move:
+                    curMonster.attacker.Move();
+                    break;
+            }
         }
     }
 
@@ -46,7 +57,6 @@ public class BattleAction : State<BattleState>
                     FSM.ChangeState(BattleState.Monster);
                     return;
                 }
-
                 curCommand = manager.CommandQueue.Dequeue();
                 curCommand.attacker.TurnInit(curCommand);
 
@@ -54,6 +64,27 @@ public class BattleAction : State<BattleState>
         }
         else if (FSM.preState == BattleState.Monster)
         {
+            if(curMonster.attacker.State == MonsterState.Idle)
+            {
+                if(manager.MonsterQueue.Count <= 0)
+                {
+                    FSM.ChangeState(BattleState.Player);
+                    return;
+                }
+
+                curMonster = manager.MonsterQueue.Dequeue();
+                switch (curMonster.actionType)
+                {
+                    case MonsterActionType.None:
+                        break;
+                    case MonsterActionType.Attack:
+                        curMonster.attacker.PlayAttackAnimation();
+                        break;
+                    case MonsterActionType.Move:
+                        curMonster.attacker.Move();
+                        break;
+                }
+            }
             //    var tile = curMonster.CurTile;
             //    Tiles foward;
             //    if (tile.TryGetFowardTile(out foward, 1))
