@@ -124,7 +124,7 @@ public static class ConsumeManager
     }
     private static void FullingLantern(int oil)
     {
-        Vars.UserData.LanternCount -= oil;
+        Vars.UserData.LanternCount += oil;
         LanternStateChange();
     }
     private static void RecoverHp(PlayerType type,float recovery)
@@ -149,7 +149,7 @@ public static class ConsumeManager
     private static void ConsumeLantern(int oil)
     {   
         // 사용하는 아이템에 따라서 oil의 수치값을 정해주면될것같다.
-        Vars.UserData.LanternCount += oil;
+        Vars.UserData.LanternCount -= oil;
         LanternStateChange();
     }
     private static void LanternStateChange()
