@@ -164,23 +164,24 @@ public class GatheringSystem : MonoBehaviour
         gatheringTooltext.gameObject.SetActive(true);
         gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";
         var lanternstate = ConsumeManager.CurLanternState;
-        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        {
-            case GatheringObject.GatheringObjectType.Tree:
-                TreeGatheing(lanternstate);
-                break;
-            case GatheringObject.GatheringObjectType.Pit:
-                PitGatheing(lanternstate);
-                break;
-            case GatheringObject.GatheringObjectType.Herbs:
-                HerbsGatheing(lanternstate);
-                break;
-            case GatheringObject.GatheringObjectType.Mushroom:
-                MushroomGatheing(lanternstate);
-                break;
-            default:
-                break;
-        }
+        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
+        //{
+        //    case GatheringObject.GatheringObjectType.Tree:
+        //        TreeGatheing(lanternstate);
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Pit:
+        //        PitGatheing(lanternstate);
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Herbs:
+        //        HerbsGatheing(lanternstate);
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Mushroom:
+        //        MushroomGatheing(lanternstate);
+        //        break;
+        //    default:
+        //        break;
+        //}
+        TreeGatheing(lanternstate);
     }
 
     private void TreeGatheing(LanternState lanternstate)
@@ -308,24 +309,25 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesTool()
     {
-        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        {
-            case GatheringObject.GatheringObjectType.Tree:
-                GatheringTreeByTool();
-                break;
-            case GatheringObject.GatheringObjectType.Pit:
-                GatheringPitByTool();
-                break;
-            case GatheringObject.GatheringObjectType.Herbs:
-                GatheringHerbsByTool();
-                break;
-            case GatheringObject.GatheringObjectType.Mushroom:
-                GatheringMushroomByTool();
-                break;
-            default:
-                break;
-        }
-       
+        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
+        //{
+        //    case GatheringObject.GatheringObjectType.Tree:
+        //        GatheringTreeByTool();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Pit:
+        //        GatheringPitByTool();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Herbs:
+        //        GatheringHerbsByTool();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Mushroom:
+        //        GatheringMushroomByTool();
+        //        break;
+        //    default:
+        //        break;
+        //}
+        GatheringTreeByTool();
+
         var item = curSelectedObj.item;
         if (item != null)
         {
@@ -383,23 +385,24 @@ public class GatheringSystem : MonoBehaviour
     }
     public void NoTool()
     {
-        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        {
-            case GatheringObject.GatheringObjectType.Tree:
-                GatheringTreeByHand();
-                break;
-            case GatheringObject.GatheringObjectType.Pit:
-                GatheringPitByHand();
-                break;
-            case GatheringObject.GatheringObjectType.Herbs:
-                GatheringHerbsByHand();
-                break;
-            case GatheringObject.GatheringObjectType.Mushroom:
-                GatheringMushroomByHand();
-                break;
-            default:
-                break;
-        }
+        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
+        //{
+        //    case GatheringObject.GatheringObjectType.Tree:
+        //        GatheringTreeByHand();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Pit:
+        //        GatheringPitByHand();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Herbs:
+        //        GatheringHerbsByHand();
+        //        break;
+        //    case GatheringObject.GatheringObjectType.Mushroom:
+        //        GatheringMushroomByHand();
+        //        break;
+        //    default:
+        //        break;
+        //}
+        GatheringTreeByHand();
         var item = curSelectedObj.item;
         if (item != null)
         {
