@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UserData
 {
@@ -14,9 +15,13 @@ public class UserData
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
-    //Dungeon Info
+    // 던전맵 데이터, 세이브 로드
     public DungeonRoom[] DungeonMapData { get; set; }
-    public DungeonData CurAllDungeonData { get; set; } = new DungeonData();
+    // 인게임 동작 나중에 위랑 하나로 합치는 정리 필요
+    public Dictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new Dictionary<Vector2, DungeonData>();
+    public Vector2 curDungeonIndex;
+
+    public Dictionary<Vector2, DungeonRoom[]> curLevelDungeonMaps = new Dictionary<Vector2, DungeonRoom[]>();
 
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
@@ -34,8 +39,14 @@ public class UserData
     public int CurIngameHour { get; set; } = 0;
     public int CurIngameMinute { get; set; } = 0;
     public int LanternCount = 18;
-    public int date = 1;
 
+    // 위랑 사실 비슷한 내용인데 보는쪽 가독성을 위해 따로 이름 지어서 만듬, 인벤토리에 사용
+
+    public List<DataAllItem> HaveAllItemList { get; set; } = new List<DataAllItem>();
+
+    public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
+
+    public int date = 1;
     public float hunterHp = 100;
     public float herbalistHp = 100;
 

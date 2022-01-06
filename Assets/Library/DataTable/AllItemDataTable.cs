@@ -22,7 +22,7 @@ public class AllItemTableElem : DataTableElemBase
         Desc = data["DESC"];
         type = data["TYPE"];
         iconID = data["ICON_ID"];
-        iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
+        iconSprite = Resources.Load<Sprite>($"Icons/{iconID}");
     }
 }
 

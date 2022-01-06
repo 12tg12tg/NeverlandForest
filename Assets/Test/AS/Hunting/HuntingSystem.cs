@@ -91,7 +91,7 @@ public class HuntingSystem : MonoBehaviour
             Debug.Log("실패");
             result.text = "Hunting Fail";
         }
-        StartCoroutine(Utility.CoSceneChange("2ENO_RandomMap", 3f));
+        StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
     }
 
     // 람다문으로 어떻게 쓰지..

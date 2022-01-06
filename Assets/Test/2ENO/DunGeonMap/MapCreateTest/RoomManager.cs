@@ -22,8 +22,6 @@ public class RoomManager
     public DunGeonMapGenerate dungeonGen;
     public TextMeshProUGUI text;
 
-    public GatheringSystem gatheringSystem;
-
     private int curRoadCount;
     // 던전 정보 = 던전맵 생성기에 의해 만들어진 각 던전맵에 대한 정보 ex 인덱스, 이벤트 타입 등등
     // 방 정보 = 던전정보를 이용할 방 프리팹, 메인부터 서브까지 총 5개
@@ -33,44 +31,11 @@ public class RoomManager
     {
         if (dungeonSystem == null)
             dungeonSystem = system;
-        mainRoomPrefab = dungeonSystem.roomPrefab[0];
-        roadRoom2Prefab = dungeonSystem.roomPrefab[1];
-        roadRoom3Prefab = dungeonSystem.roomPrefab[2];
-        roadRoom4Prefab = dungeonSystem.roomPrefab[3];
-        roadRoom5Prefab = dungeonSystem.roomPrefab[4];
-
-        if (data.curDungeonData != null)
-            curDungeonInfo = data.curDungeonData;
-        else
-            curDungeonInfo = data.dungeonRoomList[0];
-
-        switch (curDungeonInfo.RoomType)
-        {
-            case DunGeonRoomType.MainRoom:
-                curRoomObjectInfo = mainRoomPrefab;
-                break;
-            case DunGeonRoomType.SubRoom:
-                if (data.curRoadCount == 0)
-                    SetCurRoad(curDungeonInfo);
-                else
-                    SetCurRoad(data.curRoadCount);
-                break;
-        }
-        beforeDungeonInfo = new DungeonRoom
-        {
-            IsCheck = false
-        };
-
-        data.curDungeonData = curDungeonInfo;
-        data.curRoomData = curRoomObjectInfo;
-
-        SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
-        curRoomObjectInfo.gameObject.SetActive(true);
     }
 
     public void SetCurRoad(DungeonRoom curRoom)
     {
-        switch(curRoom.nextRoadCount)
+        switch(curRoom.roadCount)
         {
             case 2:
                 curRoomObjectInfo = roadRoom2Prefab;
@@ -89,7 +54,7 @@ public class RoomManager
                 curRoadCount = 5;
                 break;
         }
-        dungeonSystem.DungeonSystemData.curRoadCount = curRoadCount;
+        //dungeonSystem.DungeonSystemData.curRoadCount = curRoadCount;
     }
     public void SetCurRoad(int curRoadCount)
     {
@@ -112,13 +77,13 @@ public class RoomManager
     // 미니맵에 현재 있는 방 표시하기 위해
     public void SetCheckRoom(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
-        var obj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomInfo.Pos.Equals(curRoom.Pos));
+        var obj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
         var mesh = obj.gameObject.GetComponent<MeshRenderer>();
         mesh.material.color = Color.blue;
 
         if (beforeRoom.IsCheck == true)
         {
-            var obj2 = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomInfo.Pos.Equals(beforeRoom.Pos));
+            var obj2 = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
             var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
             mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
@@ -130,44 +95,45 @@ public class RoomManager
         beforeDungeonInfo = curDungeonInfo;
         if (isEnd)
         {
-            curRoomObjectInfo.gameObject.SetActive(false);
+            //curRoomObjectInfo.gameObject.SetActive(false);
             if (curDungeonInfo.RoomType == DunGeonRoomType.MainRoom)
             {
                 if(curDungeonInfo.nextRoomIdx == -1)
                 {
+                    Vars.UserData.WorldMapPlayerData.isClear = true;
                     SceneManager.LoadScene("WorldMap");
                     return;
                 }
-                SetCurRoad(curDungeonInfo);
+                //SetCurRoad(curDungeonInfo);
             }
             else
             {
-                curRoomObjectInfo = mainRoomPrefab;
+                //curRoomObjectInfo = mainRoomPrefab;
             }
-            GetRoomInfoList(curDungeonInfo);
-            curRoomObjectInfo.gameObject.SetActive(true);
-            curDungeonInfo = curDungeonInfo.nextRoom;
+            CurOnRoomList(curDungeonInfo);
+            //curRoomObjectInfo.gameObject.SetActive(true);
+            curDungeonInfo = GetNextRoom(curDungeonInfo);
 
-            dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
+            //dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
         }
         else
         {
-            curDungeonInfo = curDungeonInfo.nextRoom;
+            curDungeonInfo = GetNextRoom(curDungeonInfo);
         }
         
         SetText(curDungeonInfo);
-        SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
-        dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
+        //SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
+        //dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
     }
     public void ChangeRoomGoBack()
     {
         beforeDungeonInfo = curDungeonInfo;
-        curDungeonInfo = curDungeonInfo.beforeRoom;
+        curDungeonInfo = GetBeforeRoom(curDungeonInfo);
 
         SetText(curDungeonInfo);
-        SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
-        dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
-        dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
+        //SetCheckRoom(curDungeonInfo, beforeDungeonInfo);
+        //dungeonSystem.DungeonSystemData.curRoomData = curRoomObjectInfo;
+        //dungeonSystem.DungeonSystemData.curDungeonData = curDungeonInfo;
     }
 
 
@@ -183,7 +149,7 @@ public class RoomManager
     }
     
     // 메인에 연결된 길 방들에 대한 정보를 리스트로 정리해서 넘겨주기 위한
-    public List<DungeonRoom> GetRoomInfoList(DungeonRoom curRoomInfo)
+    public void CurOnRoomList(DungeonRoom curRoomInfo)
     {
         var roomList = new List<DungeonRoom>();
         // 현재 end된 방이 메인 => 다음방은 서브룸, 반대경우도 마찬가지
@@ -191,32 +157,36 @@ public class RoomManager
 
         if(curRoomInfo.RoomType == DunGeonRoomType.MainRoom)
         {
-            curRoomInfo = curRoomInfo.nextRoom;
+            curRoomInfo = GetNextRoom(curRoomInfo);
             while (curRoomInfo.RoomType != DunGeonRoomType.MainRoom)
             {
                 roomList.Add(curRoomInfo);
-                curRoomInfo = curRoomInfo.nextRoom;
+                curRoomInfo = GetNextRoom(curRoomInfo);
             }
         }
         else
         {
-            curRoomInfo = curRoomInfo.nextRoom;
+            curRoomInfo = GetNextRoom(curRoomInfo);
             roomList.Add(curRoomInfo);
         }
 
-        dungeonSystem.DungeonSystemData.curIncludeRoomList = roomList;
-        return roomList;
+        //dungeonSystem.DungeonSystemData.curIncludeRoomList = roomList;
     }
     // + 비교문에 next를 넣어 비교하는순간 추적이나 돌아가는거 파악 직관성이 떨어진다
+
+    public DungeonRoom GetNextRoom(DungeonRoom curRoom)
+    {
+        if (curRoom.nextRoomIdx == -1)
+            return null;
+        var nextRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curRoom.nextRoomIdx];
+        return nextRoom;
+    }
+
+    public DungeonRoom GetBeforeRoom(DungeonRoom curRoom)
+    {
+        if (curRoom.beforeRoomIdx == -1)
+            return null;
+        var beforeRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curRoom.beforeRoomIdx];
+        return beforeRoom;
+    }
 }
-
-// 1회성 초기화 코루틴 기다리기 위해, 나중에 옵저버 패턴 등으로 구현?
-//if(dungeonGen.isSet)
-//{
-//    // 100 은 스타트 id
-
-//    //DungeonStartSetUp();
-//    //curDungeonRoom.CreateAllEventObject(GetRoomInfoList(curRoomInfo));
-
-//    //dungeonGen.isSet = false;
-//}

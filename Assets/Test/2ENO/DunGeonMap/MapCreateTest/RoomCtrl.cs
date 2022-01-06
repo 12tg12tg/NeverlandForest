@@ -7,6 +7,8 @@ public class RoomCtrl : MonoBehaviour
     public GameObject spawnPos;
     public GameObject[] evnetObjPos;
 
+    public List<Vector3> objPosList = new List<Vector3>();
+
     private List<Vector3> posCheckList = new();
     public List<GameObject> eventObjList = new();
 
@@ -15,7 +17,6 @@ public class RoomCtrl : MonoBehaviour
     private void OnEnable()
     {
         dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
-
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
 
         for (int i = 0; i < childEnd.Length; i++)
@@ -25,6 +26,11 @@ public class RoomCtrl : MonoBehaviour
             {
                 childEnd[i].isLastPos = true;
             }
+        }
+
+        for (int i = 0; i < evnetObjPos.Length; i++)
+        {
+            objPosList.Add(evnetObjPos[i].transform.position);
         }
     }
     // 오브젝트 위치 랜덤 배치시, 겹치는거 방지 지금은 일단 안씀
@@ -43,32 +49,32 @@ public class RoomCtrl : MonoBehaviour
         return true;
     }
 
-    public void CreateAllEventObject(List<DungeonRoom> roomInfoList, GameObject eventObjPrefab)
-    {
-        for (int i = 0; i < roomInfoList.Count; i++)
-        {
-            for (int j = 0; j < roomInfoList[i].eventList.Count; j++)
-            {
-                if (roomInfoList[i].eventList[j] == DunGeonEvent.Gathering)
-                    continue;
-                var rndPos = new Vector3(evnetObjPos[i].transform.position.x, evnetObjPos[i].transform.position.y + 1f,
-                    Random.Range(evnetObjPos[i].transform.position.z - 5, evnetObjPos[i].transform.position.z + 5));
+    //public void CreateAllEventObject(List<DungeonRoom> roomInfoList, GameObject eventObjPrefab)
+    //{
+    //    for (int i = 0; i < roomInfoList.Count; i++)
+    //    {
+    //        for (int j = 0; j < roomInfoList[i].eventList.Count; j++)
+    //        {
+    //            if (roomInfoList[i].eventList[j] == DunGeonEvent.Gathering)
+    //                continue;
+    //            var rndPos = new Vector3(evnetObjPos[i].transform.position.x, evnetObjPos[i].transform.position.y + 1f,
+    //                Random.Range(evnetObjPos[i].transform.position.z - 5, evnetObjPos[i].transform.position.z + 5));
 
-                if(!PositionCheck(rndPos))
-                {
-                    j--;
-                    continue;
-                }
+    //            if(!PositionCheck(rndPos))
+    //            {
+    //                j--;
+    //                continue;
+    //            }
                 
-                posCheckList.Add(rndPos);
+    //            posCheckList.Add(rndPos);
                 
-                var eventObj = Instantiate(eventObjPrefab, rndPos, Quaternion.identity);
-                eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j], dungeonSystem, rndPos);
+    //            var eventObj = Instantiate(eventObjPrefab, rndPos, Quaternion.identity);
+    //            eventObj.GetComponent<EventObject>().Init(roomInfoList[i], roomInfoList[i].eventList[j], dungeonSystem, rndPos);
                 
-                eventObjList.Add(eventObj);
-            }
-        }
-    }
+    //            eventObjList.Add(eventObj);
+    //        }
+    //    }
+    //}
 
     public void DestroyAllEventObject()
     {
