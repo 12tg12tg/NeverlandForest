@@ -32,12 +32,12 @@ public class PlayerStats : UnitBase, IAttackable
     // 전투 시스템에서 현재 선택한 스킬 정보
     public DataPlayerSkill selectSkill;
 
-    public void OnAttacked(UnitBase attacker)
+    public void OnAttacked(BattleCommand attacker)
     {
-        var attackUnit = attacker as MonsterUnit;
-
-        Hp -= attackUnit.Atk;
-        Debug.Log($"{controller.playerType}가 {attackUnit}에게 {attackUnit.Atk}의 피해를 받다.");
-        Debug.Log($"{Hp + attackUnit.Atk} -> {Hp}");
+        var attackUnit = attacker as MonsterCommand;
+        var damage = attackUnit.attacker.Atk;
+        Hp -= damage;
+        Debug.Log($"{controller.playerType}가 {attackUnit}에게 {damage}의 피해를 받다.");
+        Debug.Log($"{Hp + damage} -> {Hp}");
     }
 }

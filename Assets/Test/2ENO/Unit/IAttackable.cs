@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IAttackable
 {
-    public abstract void OnAttacked(UnitBase attacker);
+    public abstract void OnAttacked(BattleCommand attacker);
 }

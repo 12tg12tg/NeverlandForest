@@ -19,18 +19,18 @@ public class BeeQueen : MonsterUnit
 
     public override void PlayAttackAnimation()
     {
-        var rand = Random.Range(0, 3);
+        var rand = Random.Range(0, 1);
         switch (rand)
         {
             case 0:
                 animator.SetTrigger("Jap");
                 break;
-            case 1:
-                animator.SetTrigger("Sting");
-                break;
-            case 2:
-                animator.SetTrigger("Spell");
-                break;
+            //case 1:
+            //    animator.SetTrigger("Sting");
+            //    break;
+            //case 2:
+            //    animator.SetTrigger("Spell");
+            //    break;
         }
     }
 
@@ -42,14 +42,5 @@ public class BeeQueen : MonsterUnit
     public override void PlayHitAnimation()
     {
         animator.SetTrigger("Damaged");
-    }
-    public override void TargetAttack()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Move()
-    {
-        throw new System.NotImplementedException();
     }
 }

@@ -27,13 +27,13 @@ public class BeeBee : MonsterUnit
         switch (rand)
         {
             case 0:
-                animator.SetTrigger("Projectile");
+                animator.SetTrigger("Bite");
                 break;
             //case 1:
             //    animator.SetTrigger("Sting");
             //    break;
             //case 2:
-            //    animator.SetTrigger("Bite");
+            //    animator.SetTrigger("Projectile");
             //    break;
         }
     }
@@ -47,27 +47,7 @@ public class BeeBee : MonsterUnit
     {
         animator.SetTrigger("Damaged");
     }
-    // 공격 애니메이션 끝날때 태그 실행
-    public override void TargetAttack()
-    {
-        var list = TileMaker.Instance.UnitOnTile(curCommand.target);
-        var targetList = list.Cast<PlayerBattleController>().ToList();
-        foreach(var target in targetList)
-        {
-            target.Stats.OnAttacked(this);
-        }
-        State = MonsterState.Idle;
-    }
 
-    public override void Move()
-    {
-        State = MonsterState.Move;
-        var moveCount = Random.Range(1, 4);
-        if(CurTile.TryGetFowardTile(out Tiles fowardTile, moveCount))
-        {
-            BattleManager.Instance.PlaceUnitOnTile(fowardTile.index, this, () => State = MonsterState.Idle , true);
-        }
-    }
 }
 
 //if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName(attackAnimationName) &&

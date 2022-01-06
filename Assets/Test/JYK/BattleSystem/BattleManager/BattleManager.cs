@@ -6,7 +6,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
-public class MonsterCommand
+public class BattleCommand { }
+public class MonsterCommand : BattleCommand
 {
     public MonsterUnit attacker;
     public Vector2 target;
@@ -20,7 +21,7 @@ public class MonsterCommand
     }
 
 }
-public class PlayerCommand
+public class PlayerCommand : BattleCommand
 {
     private bool isUpdate;
     public PlayerBattleController attacker;

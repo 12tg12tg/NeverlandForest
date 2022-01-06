@@ -14,7 +14,7 @@ public class PlayerIdle : State<CharacterBattleState>, IAttackable
         this.playerUnit = unit;
         this.playerAnimation = playerAnimation;
     }
-    public void OnAttacked(UnitBase attacker)
+    public void OnAttacked(BattleCommand attacker)
     {
         // 피격당했을 시 피격 애니메이션 실행
     }

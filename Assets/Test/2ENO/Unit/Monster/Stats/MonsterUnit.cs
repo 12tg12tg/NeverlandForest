@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public enum MonsterState
 {
@@ -25,12 +26,13 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     public MonsterTableElem BaseElem { get => baseElem; }
 
 
-    public void OnAttacked(UnitBase attacker)
+    public void OnAttacked(BattleCommand attacker)
     {
-        var playerStats = attacker as PlayerStats;
-        Debug.Log($"{Pos} 몬스터가 {playerStats.controller.playerType}에게 {attacker.Atk}의 피해를 받다.");
-        Hp -= attacker.Atk;
-        Debug.Log($"{Hp + attacker.Atk} -> {Hp}");
+        var playerStats = attacker as PlayerCommand;
+        var damage = playerStats.skill.SkillTableElem.damage;
+        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다.");
+        Hp -= damage;
+        Debug.Log($"{Hp + damage} -> {Hp}");
     }
 
     public void Init(MonsterTableElem elem)
@@ -71,7 +73,30 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     public abstract void PlayAttackAnimation();
     public abstract void PlayDeadAnimation();
     public abstract void PlayHitAnimation();
-    public abstract void TargetAttack();
-    public abstract void Move();
+    public void Move()
+    {
+        State = MonsterState.Move;
+        var moveCount = Random.Range(1, 4);
+        Tiles fowardTile = null;
+        int count = 0;
+        while (!CurTile.TryGetFowardTile(out fowardTile, moveCount) && count < 200)
+        {
+            count++;
+            moveCount = Random.Range(1, 4);
+        }
+        Debug.Log(count);
+        BattleManager.Instance.PlaceUnitOnTile(fowardTile.index, this, () => State = MonsterState.Idle, true);
+    }
+    // 공격 애니메이션 끝날때 태그 실행
+    public void TargetAttack()
+    {
+        var list = TileMaker.Instance.UnitOnTile(curCommand.target);
+        var targetList = list.Cast<PlayerBattleController>();
+        foreach (var target in targetList)
+        {
+            target.Stats.OnAttacked(curCommand);
+        }
+        State = MonsterState.Idle;
+    }
 
 }

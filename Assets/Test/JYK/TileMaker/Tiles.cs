@@ -39,7 +39,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         dest.y -= distance;
         var destTile = TileMaker.Instance.GetTile(dest);
         
-        if(destTile == null)
+        if(destTile == null || dest.y <= 0)
         {
             Debug.LogWarning($"Cant move foward beacuse there is no {dest} Index Tile!");
             tile = null;

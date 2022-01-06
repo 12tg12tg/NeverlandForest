@@ -32,7 +32,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
         //}
     }
 
-    public void OnAttacked(UnitBase attacker)
+    public void OnAttacked(BattleCommand attacker)
     {
         // 피격 애니메이션 몇초간 실행
     }

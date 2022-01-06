@@ -55,9 +55,7 @@ public class PlayerAction : State<CharacterBattleState>
             // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
             foreach (var target in targetList)
             {
-                var UnitBase = new UnitBase();
-                UnitBase.Atk = playerController.curCommand.skill.SkillTableElem.damage;
-                target.OnAttacked(UnitBase);
+                target.OnAttacked(playerController.curCommand);
             }
 
             FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행

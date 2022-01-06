@@ -19,18 +19,18 @@ public class MushMush : MonsterUnit
 
     public override void PlayAttackAnimation()
     {
-        var rand = Random.Range(0, 3);
+        var rand = Random.Range(0, 1);
         switch (rand)
         {
             case 0:
-                animator.SetTrigger("Projectile");
-                break;
-            case 1:
                 animator.SetTrigger("Punch");
                 break;
-            case 2:
-                animator.SetTrigger("Spell");
-                break;
+            //case 1:
+            //    animator.SetTrigger("Projectile");
+            //    break;
+            //case 2:
+            //    animator.SetTrigger("Spell");
+            //    break;
         }
     }
 
@@ -43,12 +43,5 @@ public class MushMush : MonsterUnit
     {
         animator.SetTrigger("Damaged");
     }
-    public override void TargetAttack()
-    {
-        throw new System.NotImplementedException();
-    }
-    public override void Move()
-    {
-        throw new System.NotImplementedException();
-    }
+
 }
