@@ -100,15 +100,6 @@ public class GatheringSystem : MonoBehaviour
                     gatherings.Add(eventObj);
 
                 }
-
-                /* for (int i = 0; i < weeds.Count; i++)
-                 {
-                     weeds[i].Disappear(); // 처음에는 전부 꺼두고
-                 }
-                 for (int i = 0; i < count; i++)
-                 {
-                     weeds[i].Appear();
-                 }*/
                 break;
             case GatheringType.Path:
                 //통로에서는 1개만 있으면 되기때문에 0,1번중 하나를 랜덤으로 킨다.
@@ -125,15 +116,10 @@ public class GatheringSystem : MonoBehaviour
                     obj.objId = i;
                     gatherings.Add(eventObj);
                 }
-
-                //weeds[rand].Appear();
                 break;
             default:
                 break;
         }
-        /*//level0.ForEach(i => i.Appear());
-       
-        */
     }
     public void DeleteObj()
     {
@@ -177,23 +163,134 @@ public class GatheringSystem : MonoBehaviour
         gatheringToolPanel.SetActive(true);
         gatheringTooltext.gameObject.SetActive(true);
         gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";
-
-        if (testLanternLight > 2)
+        var lanternstate = ConsumeManager.CurLanternState;
+        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
         {
-            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
-          + "도끼는 1시간을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 30 소비합니다" + "\n"
-        + "맨손은 2시간을 소비합니다";
-        }
-        else
-        {
-            yesTooltext.text = "도끼는 스테미나를 20 소비합니다" + "\n"
-         + "도끼는 2시간을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 40 소비합니다" + "\n"
-           + "맨손은 3시간을 소비합니다";
+            case GatheringObject.GatheringObjectType.Tree:
+                TreeGatheing(lanternstate);
+                break;
+            case GatheringObject.GatheringObjectType.Pit:
+                PitGatheing(lanternstate);
+                break;
+            case GatheringObject.GatheringObjectType.Herbs:
+                HerbsGatheing(lanternstate);
+                break;
+            case GatheringObject.GatheringObjectType.Mushroom:
+                MushroomGatheing(lanternstate);
+                break;
+            default:
+                break;
         }
     }
 
+    private void TreeGatheing(LanternState lanternstate)
+    {
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+        {
+            // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
+            // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
+            // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
+            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+        + "시간은 1시간을 소비합니다";
+        }
+        else if (lanternstate == LanternState.Level3)
+        {
+            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+          + "시간은 1시간을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간30분을 소비합니다";
+        }
+        else
+        {
+            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+       + "시간은 1시간 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 2시간을 소비합니다";
+        }
+    }
+    private void PitGatheing(LanternState lanternstate) //구덩이채집? 
+    {
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+        {
+            // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
+            // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
+            // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+        + "시간은 1시간을 소비합니다";
+        }
+        else if (lanternstate == LanternState.Level3)
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 1시간을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간30분을 소비합니다";
+        }
+        else
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+       + "시간은 1시간 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 2시간을 소비합니다";
+        }
+    }
+    private void HerbsGatheing(LanternState lanternstate) //구덩이채집? 
+    {
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+        {
+            // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
+            // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
+            // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+        + "시간은 1시간을 소비합니다";
+        }
+        else if (lanternstate == LanternState.Level3)
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간을 소비합니다";
+        }
+        else
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+       + "시간은 1시간 을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간30분을 소비합니다";
+        }
+    }
+    private void MushroomGatheing(LanternState lanternstate) //구덩이채집? 
+    {
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+        {
+            // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
+            // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
+            // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+        + "시간은 1시간을 소비합니다";
+        }
+        else if (lanternstate == LanternState.Level3)
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+          + "시간은 30분을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간을 소비합니다";
+        }
+        else
+        {
+            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+       + "시간은 1시간 을 소비합니다";
+            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+           + "시간은 1시간30분을 소비합니다";
+        }
+    }
     public void GoGatheringObject(Vector3 objectPos)
     {
         if (coManMove == null && coWomenMove == null)
@@ -211,6 +308,24 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesTool()
     {
+        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
+        {
+            case GatheringObject.GatheringObjectType.Tree:
+                GatheringTreeByTool();
+                break;
+            case GatheringObject.GatheringObjectType.Pit:
+                GatheringPitByTool();
+                break;
+            case GatheringObject.GatheringObjectType.Herbs:
+                GatheringHerbsByTool();
+                break;
+            case GatheringObject.GatheringObjectType.Mushroom:
+                GatheringMushroomByTool();
+                break;
+            default:
+                break;
+        }
+       
         var item = curSelectedObj.item;
         if (item != null)
         {
@@ -223,12 +338,68 @@ public class GatheringSystem : MonoBehaviour
         coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
-
-
         gatheringToolPanel.SetActive(false);
+    }
+
+    private static void GatheringTreeByTool()
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30);
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(0, 1);
+        else
+            ConsumeManager.TimeUp(30, 1);
+    }
+    private static void GatheringPitByTool() // 구덩이
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30);
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(0, 1);
+        else
+            ConsumeManager.TimeUp(30, 1);
+    }
+    private static void GatheringHerbsByTool() // 약초
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30);
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30);
+        else
+            ConsumeManager.TimeUp(0, 1);
+    }
+    private static void GatheringMushroomByTool() // 버섯
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30);
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30);
+        else
+            ConsumeManager.TimeUp(0, 1);
     }
     public void NoTool()
     {
+        switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
+        {
+            case GatheringObject.GatheringObjectType.Tree:
+                GatheringTreeByHand();
+                break;
+            case GatheringObject.GatheringObjectType.Pit:
+                GatheringPitByHand();
+                break;
+            case GatheringObject.GatheringObjectType.Herbs:
+                GatheringHerbsByHand();
+                break;
+            case GatheringObject.GatheringObjectType.Mushroom:
+                GatheringMushroomByHand();
+                break;
+            default:
+                break;
+        }
         var item = curSelectedObj.item;
         if (item != null)
         {
@@ -241,36 +412,52 @@ public class GatheringSystem : MonoBehaviour
         coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
-
-
         gatheringToolPanel.SetActive(false);
     }
-
+    private static void GatheringTreeByHand()
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(0, 1); // 1시간 0분
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30, 1);
+        else
+            ConsumeManager.TimeUp(0, 2);
+    }
+    private static void GatheringPitByHand()
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(0, 1); // 1시간 0분
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30, 1);
+        else
+            ConsumeManager.TimeUp(0, 2);
+    }
+    private static void GatheringHerbsByHand()
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30); //30분
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30); //30분
+        else
+            ConsumeManager.TimeUp(0, 1);
+    }
+    private static void GatheringMushroomByHand()
+    {
+        var lanternstate = ConsumeManager.CurLanternState;
+        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
+            ConsumeManager.TimeUp(30); //30분
+        else if (lanternstate == LanternState.Level3)
+            ConsumeManager.TimeUp(30); //30분
+        else
+            ConsumeManager.TimeUp(0, 1);
+    }
     private void AfterMove()
     {
         coWomenMove = null;
         womenplayer.CoMoveStop();
         womenplayer.transform.rotation = Quaternion.Euler(Vector3.zero);
     }
-
-    public void OnGUI()
-    {
-        /*if (GUILayout.Button("APPEAR"))
-        {
-
-        }
-        if (GUILayout.Button("LightUp"))
-        {
-            testLanternLight++;
-            Debug.Log("빛이 밝아진다.");
-            Debug.Log(testLanternLight);
-        }
-        if (GUILayout.Button("LightDown"))
-        {
-            testLanternLight--;
-            Debug.Log("빛이 어두워진다.");
-            Debug.Log(testLanternLight);
-        }*/
-    }
-
 }

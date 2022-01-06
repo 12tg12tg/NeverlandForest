@@ -7,6 +7,15 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
     public int roomIndex;
     public DungeonSystem dungeonSystem;
     private ConsumableTable consumableTable;
+
+    public enum GatheringObjectType
+    {
+        Tree,
+        Pit, //구덩이
+        Herbs, //약초
+        Mushroom, //버섯
+    }
+    public GatheringObjectType objectType = GatheringObjectType.Tree; //원래는 excel같은곳에서 받아와야한다.
     public ConsumableTable ConsumableTable
     {
         get

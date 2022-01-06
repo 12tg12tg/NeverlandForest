@@ -29,21 +29,25 @@ public class UserData
     //??? - Vars로 이사가도 되는가?
     public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
 
+    //ConsumeManager
+    //피로도는 실질적으로 줄어드는 수치
+    public int ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
+    public int Hunger { get; set; } = 70;
+    // public int Tiredness { get=> Vars.maxStamina - Tired; set { } }
+    public int Tiredness { get; set; } 
+    public int CurStamina { get =>Tiredness; set { } }
+    public int CurIngameHour { get; set; } = 0;
+    public int CurIngameMinute { get; set; } = 0;
+    public int LanternCount = 18;
+
     // 위랑 사실 비슷한 내용인데 보는쪽 가독성을 위해 따로 이름 지어서 만듬, 인벤토리에 사용
 
     public List<DataAllItem> HaveAllItemList { get; set; } = new List<DataAllItem>();
 
     public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
 
-
-
-    public int maxStamina { get; set; } = 100;
-    public int curStamina { get => baseStamina + hunger + tiredness; set { } }
-    public int baseStamina { get; set; } = 20; //임시의 스태미나 기본수치
-    public int hunger { get; set; } = 40;
-    public int tiredness { get; set; } = 40;
-    public int curIngameHour { get; set; } = 0;
-    public int curIngameMinute { get; set; } = 0;
-
     public int date = 1;
+    public float hunterHp = 100;
+    public float herbalistHp = 100;
+
 }
