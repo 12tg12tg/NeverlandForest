@@ -54,7 +54,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             dungeonRoomArray = mapArrayData;
             //CreateMapObject();
             //dungeonSystem.DungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
-            //action?.Invoke();
+            action?.Invoke();
         }
         Vars.UserData.DungeonMapData = dungeonRoomArray;
         Vars.UserData.CurAllDungeonData.dungeonRoomArray = dungeonRoomArray;
