@@ -64,18 +64,7 @@ public class HuntingSystem : MonoBehaviour
 
     private void OnBush(object[] vals)
     {
-        if (vals.Length != 2)
-            return;
-
-        if ((bool)vals[1])
-        {
-            bushHuntPercent = 10;
-        }
-        else
-        {
-            bushHuntPercent = 0;
-        }
-
+        bushHuntPercent = (bool)vals[1] && vals.Length.Equals(2) ? 5 : 0;
         HuntPercentagePrint();
     }
 
@@ -94,19 +83,9 @@ public class HuntingSystem : MonoBehaviour
         StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
     }
 
-    // 람다문으로 어떻게 쓰지..
-    //huntPercent = 
-    //(bool) vals[0].Length != 1 ? huntPercent + 10 : huntPercent;
-
     private void HuntPercentageUp(object[] vals)
     {
-        if (vals.Length != 2)
-            return;
-        if((bool)vals[0])
-        {
-            huntPercent += 10;
-        }
-
+        huntPercent = (bool)vals[0] && vals.Length.Equals(2) ? huntPercent + 10 : huntPercent;
         HuntPercentagePrint();
     }
 }
