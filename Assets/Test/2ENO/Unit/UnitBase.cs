@@ -9,41 +9,9 @@ public class UnitBase : MonoBehaviour
     private int eva;
     private Vector2 pos;
 
-    public int Hp
-    {
-        get => hp;
-        set
-        {
-            hp = value;
-        }
-    }
-
-    public int Atk
-    {
-        get => atk;
-        set
-        {
-            atk = value;
-        }
-    }
-
-    public int Eva
-    {
-        get => eva;
-        set
-        {
-            eva = value;
-        }
-    }
-
-    public Vector2 Pos
-    {
-        get => pos;
-        set => pos = value;
-    }
-
-    public Tiles CurTile
-    {
-        get => TileMaker.Instance.GetTile(Pos);
-    }
+    public int Hp { get => hp; set => hp = value;  }
+    public int Atk { get => atk; set => atk = value; }
+    public int Eva { get => eva; set => eva = value; }
+    public Vector2 Pos { get => pos; set => pos = value; }
+    public Tiles CurTile { get => TileMaker.Instance.GetTile(pos); }
 }

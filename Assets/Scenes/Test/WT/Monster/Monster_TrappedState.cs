@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster_TrappedState : State<MonsterState>
+[Obsolete("Not use anymore.")]
+public class Monster_TrappedState : State<TestMonsterState>
 {
     public override void Init()
     {

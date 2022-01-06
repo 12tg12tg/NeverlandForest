@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete("Do not call this method.")]
 public enum MonsterDirection
 {
     Forward,
@@ -12,8 +14,8 @@ public enum MonsterDirection
     Forward_Right
 }
 
-
-public class MonsterStats : MonoBehaviour
+[Obsolete("Do not call this method.")]
+public class TestMonsterStats : MonoBehaviour
 {
     public Vector2 tilePos;
     public bool istrapped;

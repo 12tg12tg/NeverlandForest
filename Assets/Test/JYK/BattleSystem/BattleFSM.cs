@@ -10,7 +10,6 @@ public enum BattleState
 public class BattleFSM : FSM<BattleState>
 {
     public BattleManager manager;
-    public void GetManager() { }
 
     private void Start()
     {

@@ -9,13 +9,13 @@ using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 public class PlayerCommand
 {
     private bool isUpdate;
-    public PlayerBattleUnit attacker;
+    public PlayerBattleController attacker;
     public Vector2 target;
     public DataPlayerSkill skill;
     public DataConsumable item;
     public ActionType actionType;
     public PlayerType type;
-    public PlayerCommand(PlayerBattleUnit pUnit, PlayerType type)
+    public PlayerCommand(PlayerBattleController pUnit, PlayerType type)
     {
         attacker = pUnit;
         this.type = type;
@@ -62,8 +62,8 @@ public class BattleManager : MonoBehaviour
 
     //Unit
     public List<TestMonster> monster = new List<TestMonster>();
-    public PlayerBattleUnit boy;
-    public PlayerBattleUnit girl;
+    public PlayerBattleController boy;
+    public PlayerBattleController girl;
     private PlayerCommand boyInput;
     private PlayerCommand girlInput;
 
@@ -111,8 +111,8 @@ public class BattleManager : MonoBehaviour
         Init();
 
         //플레이어 배치
-        PlaceUnitOnTile(new Vector2(0, 0), girl);
-        PlaceUnitOnTile(new Vector2(1, 0), boy);
+        PlaceUnitOnTile(new Vector2(0, 0), girl.Stats);
+        PlaceUnitOnTile(new Vector2(1, 0), boy.Stats);
 
         //몬스터 (랜덤뽑기) & 배치
         PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
@@ -297,7 +297,7 @@ public class BattleManager : MonoBehaviour
     {
         PlayerCommand command;
         PlayerCommand another;
-        PlayerBattleUnit attacker;
+        PlayerBattleController attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
@@ -340,7 +340,7 @@ public class BattleManager : MonoBehaviour
     {
         PlayerCommand command;
         PlayerCommand another;
-        PlayerBattleUnit attacker;
+        PlayerBattleController attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;

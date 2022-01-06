@@ -5,26 +5,24 @@ using System.Linq;
 // 공격 전 상태
 public class PlayerAction : State<CharacterBattleState>
 {
-    PlayerBattleUnit playerUnit;
+    PlayerBattleController playerController;
     Animator playerAnimation;
 
     private string attackAnimationName;
     private bool isAttackMotionEnd = false;
 
-    public void SetPlayerUnit(PlayerBattleUnit unit)
+    public PlayerAction(PlayerBattleController controller, Animator playerAnimation)
     {
-        this.playerUnit = unit;
-    }
-    public void SetPlayerAnimation(Animator playerAnimation)
-    {
+        this.playerController = controller;
         this.playerAnimation = playerAnimation;
     }
+
     public override void Init()
     {
         // 액션 상태, 커맨드에 따라 애니메이션, 이펙트 실행,
         // 애니메이션이 끝나면? 타겟들의 OnAttacked 실행
         isAttackMotionEnd = false;
-        if (playerUnit.playerType == PlayerType.Boy)
+        if (playerController.playerType == PlayerType.Boy)
         {
             attackAnimationName = "WTD_AttackA1";
         }
@@ -51,13 +49,13 @@ public class PlayerAction : State<CharacterBattleState>
 
         if(isAttackMotionEnd)
         {
-            var monsterList = GetTargetList(playerUnit.curCommand.target);
+            var monsterList = GetTargetList(playerController.curCommand.target);
             var targetList = monsterList.Cast<TestMonster>().ToList();
             // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
             foreach (var target in targetList)
             {
                 var UnitBase = new UnitBase();
-                UnitBase.Atk = playerUnit.curCommand.skill.SkillTableElem.damage;
+                UnitBase.Atk = playerController.curCommand.skill.SkillTableElem.damage;
                 target.OnAttacked(UnitBase);
             }
 

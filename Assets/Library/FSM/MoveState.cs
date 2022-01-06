@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete("Not use anymore.")]
 public class MoveState : State<PlayerState>
 {
     private float speed = 3f;

@@ -5,8 +5,15 @@ using UnityEngine;
 // авю╫ ╩Себ
 public class PlayerDeath : State<CharacterBattleState>
 {
+    PlayerBattleController playerUnit;
     PlayerStats playerStat;
     Animator playerAnimation;
+
+    public PlayerDeath(PlayerBattleController unit, Animator playerAnimation)
+    {
+        this.playerUnit = unit;
+        this.playerAnimation = playerAnimation;
+    }
 
     public override void Init()
     {

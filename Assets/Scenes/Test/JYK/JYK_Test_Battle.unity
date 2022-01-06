@@ -1219,7 +1219,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 0ad8eb71209bf9f4ead44e50057e78a5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1257,7 +1257,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649818203}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.6616, y: -0, z: 0}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 6.7811947, y: 1, z: 3.6473806}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1449,6 +1449,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 825024443}
     m_Modifications:
+    - target: {fileID: -7691668456545581902, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1666304047}
     - target: {fileID: 476090718872143667, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: m_Name
       value: TestPlayerBattle
@@ -1510,11 +1514,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1666304047}
+    - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: playerType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: battleSystem
+      value: 
+      objectReference: {fileID: 1666304047}
+    - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: battleManager
       value: 
       objectReference: {fileID: 1666304047}
     - target: {fileID: 4117248464703305118, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
@@ -2328,6 +2340,11 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 5
   m_LayoutPriority: 1
+--- !u!1 &1129158332 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 476090718872143667, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+  m_PrefabInstance: {fileID: 1574342570}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1134457956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3512860642349085984, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
@@ -2338,7 +2355,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
   m_PrefabInstance: {fileID: 803355738}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2082296552}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9588207d97850d14a8db45ce67c4f9c0, type: 3}
@@ -2934,6 +2951,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 57638333}
     m_Modifications:
+    - target: {fileID: -7691668456545581902, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1666304047}
     - target: {fileID: 476090718872143667, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: m_Name
       value: TestPlayerBattle
@@ -2995,11 +3016,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1666304047}
+    - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: playerType
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
       propertyPath: battleSystem
+      value: 
+      objectReference: {fileID: 1666304047}
+    - target: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+      propertyPath: battleManager
       value: 
       objectReference: {fileID: 1666304047}
     - target: {fileID: 4117248464703305118, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
@@ -3034,12 +3063,26 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3969670193411121425, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
   m_PrefabInstance: {fileID: 1574342570}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1129158332}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9588207d97850d14a8db45ce67c4f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &1574342581
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1129158332}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.21
+  m_Height: 1.15
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.59, z: -0.07}
 --- !u!1 &1588534252
 GameObject:
   m_ObjectHideFlags: 0
@@ -3052,7 +3095,6 @@ GameObject:
   - component: {fileID: 1588534255}
   - component: {fileID: 1588534254}
   - component: {fileID: 1588534253}
-  - component: {fileID: 1588534257}
   - component: {fileID: 1588534258}
   m_Layer: 0
   m_Name: TestMonster
@@ -3140,18 +3182,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1588534257
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1588534252}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696499b65c0ea2f4289576cb0d5d12df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1588534258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3355,14 +3385,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607426287}
-  m_LocalRotation: {x: 0.48522252, y: -0, z: -0, w: 0.8743908}
-  m_LocalPosition: {x: 0, y: 16.58, z: -14}
+  m_LocalRotation: {x: 0.357208, y: -0, z: -0, w: 0.9340249}
+  m_LocalPosition: {x: 0, y: 15.49, z: -20.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 58.054, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 41.858, y: 0, z: 0}
 --- !u!114 &1607426291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4069,7 +4099,6 @@ GameObject:
   - component: {fileID: 1917352890}
   - component: {fileID: 1917352889}
   - component: {fileID: 1917352888}
-  - component: {fileID: 1917352892}
   - component: {fileID: 1917352893}
   m_Layer: 0
   m_Name: TestMonster
@@ -4157,18 +4186,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1917352892
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917352887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 696499b65c0ea2f4289576cb0d5d12df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1917352893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4555,6 +4572,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a24a53ef11c93546ba6dc698fee3d21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2082296552 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 476090718872143667, guid: 8455fef4263bfbc4e89d9250143cb3ac, type: 3}
+  m_PrefabInstance: {fileID: 803355738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &2082296557
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082296552}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.21
+  m_Height: 1.15
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.59, z: -0.07}
 --- !u!1 &2091274618
 GameObject:
   m_ObjectHideFlags: 0

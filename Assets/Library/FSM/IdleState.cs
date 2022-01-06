@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Obsolete("Not use anymore.")]
 public class IdleState : State<PlayerState>
 {
     public override void Init()

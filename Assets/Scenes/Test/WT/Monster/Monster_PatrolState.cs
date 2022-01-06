@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 
-public class Monster_PatrolState : State<MonsterState>
+[Obsolete("Do not call this method.")]
+public class Monster_PatrolState : State<TestMonsterState>
 {
     private Transform playerTransform;
     private int rand;
@@ -30,7 +32,7 @@ public class Monster_PatrolState : State<MonsterState>
             }
             else
             {
-                FSM.ChangeState(MonsterState.Attack);
+                FSM.ChangeState(TestMonsterState.Attack);
             }
         }
     }
@@ -43,7 +45,7 @@ public class Monster_PatrolState : State<MonsterState>
 
     public void Move(MonsterDirection direction)
     {
-        var stats = gameObject.GetComponent<MonsterStats>();
+        var stats = gameObject.GetComponent<TestMonsterStats>();
         switch (direction)
         {
             case MonsterDirection.Forward:
@@ -69,7 +71,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoBack(MonsterStats stats)
+    private void GoBack(TestMonsterStats stats)
     {
         Debug.Log("뒤로");
         var checkPos = new Vector2(stats.tilePos.x, stats.tilePos.y + 1);
@@ -81,7 +83,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoLeft(MonsterStats stats)
+    private void GoLeft(TestMonsterStats stats)
     {
         Debug.Log("왼쪽으로");
         var checkPos = new Vector2(stats.tilePos.x - 1, stats.tilePos.y);
@@ -93,7 +95,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoRight(MonsterStats stats)
+    private void GoRight(TestMonsterStats stats)
     {
         Debug.Log("오른쪽으로");
         var checkPos = new Vector2(stats.tilePos.x + 1, stats.tilePos.y);
@@ -105,7 +107,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoForward_Left(MonsterStats stats)
+    private void GoForward_Left(TestMonsterStats stats)
     {
         Debug.Log("앞으로왼쪽으로");
         var checkPos = new Vector2(stats.tilePos.x - 1, stats.tilePos.y - 1);
@@ -117,7 +119,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoForward_Right(MonsterStats stats)
+    private void GoForward_Right(TestMonsterStats stats)
     {
         Debug.Log("앞으로오른쪽으로");
         var checkPos = new Vector2(stats.tilePos.x + 1, stats.tilePos.y - 1);
@@ -129,7 +131,7 @@ public class Monster_PatrolState : State<MonsterState>
         }
     }
 
-    private void GoFoward(MonsterStats stats)
+    private void GoFoward(TestMonsterStats stats)
     {
         Debug.Log("앞으로");
         var checkPos = new Vector2(stats.tilePos.x, stats.tilePos.y - 1);

@@ -1,8 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster_IdleState : State<MonsterState>
+[Obsolete("Do not call this method.")]
+public class Monster_IdleState : State<TestMonsterState>
 {
     public override void Init()
     {

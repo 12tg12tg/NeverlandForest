@@ -39,7 +39,7 @@ public class BattleAction : State<BattleState>
     {
         if (FSM.preState == BattleState.Player)
         {
-            if (curCommand.attacker.playerState.curState == CharacterBattleState.Idle)
+            if (curCommand.attacker.FSM.curState == CharacterBattleState.Idle)
             {
                 if (manager.CommandQueue.Count <= 0)
                 {

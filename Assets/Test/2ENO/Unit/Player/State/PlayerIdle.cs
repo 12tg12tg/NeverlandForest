@@ -6,15 +6,12 @@ using UnityEngine;
 // 몬스터 턴으로 넘어갔을 경우에도 이 상태 or 죽음상태
 public class PlayerIdle : State<CharacterBattleState>, IAttackable
 {
-    PlayerBattleUnit playerUnit;
+    PlayerBattleController playerUnit;
     Animator playerAnimation;
 
-    public void SetPlayerUnit(PlayerBattleUnit unit)
+    public PlayerIdle(PlayerBattleController unit, Animator playerAnimation)
     {
         this.playerUnit = unit;
-    }
-    public void SetPlayerAnimation(Animator playerAnimation)
-    {
         this.playerAnimation = playerAnimation;
     }
     public void OnAttacked(UnitBase attacker)
