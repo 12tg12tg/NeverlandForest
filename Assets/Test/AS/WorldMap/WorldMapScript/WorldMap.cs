@@ -50,6 +50,7 @@ public class WorldMap : MonoBehaviour
 
     public int column;
     public int row;
+    public int beforeDate;
 
     private readonly float posX = 5f;
     private readonly float posY = 15f;
@@ -57,6 +58,7 @@ public class WorldMap : MonoBehaviour
     public WorldMapNode[,] maps;
     private readonly List<Edge> edges = new List<Edge>();
     private bool isAllLinked = false;
+
 
     public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
     {
@@ -71,7 +73,7 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
-        FogComing();
+        Fog(Vars.UserData.date);
     }
 
     public void InitWorldMiniMap()
@@ -82,6 +84,7 @@ public class WorldMap : MonoBehaviour
         var layerName = "WorldMap";
         Load(loadData, layerName);
         PaintLink(layerName);
+        Fog(Vars.UserData.date);
     }
 
     public IEnumerator InitMap(System.Action action)
@@ -251,7 +254,7 @@ public class WorldMap : MonoBehaviour
     {
         var lines = new GameObject();
         lines.transform.SetParent(transform);
-        Utility.DefineLayer(lines, LayerName);
+        lines.layer = LayerMask.NameToLayer(LayerName);
         var curIndex = Vars.UserData.WorldMapPlayerData.currentIndex;
         var goalIndex = Vars.UserData.WorldMapPlayerData.goalIndex;
         for (int i = 0; i < column - 1; i++)
@@ -262,7 +265,7 @@ public class WorldMap : MonoBehaviour
                     continue;
 
                 var lineGo = Instantiate(linePrefab, lines.transform);
-                Utility.DefineLayer(lineGo, LayerName);
+                lineGo.layer = LayerMask.NameToLayer(LayerName);
                 var lineRender = lineGo.GetComponent<LineRenderer>();
                 if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[0].index.Equals(goalIndex))
                 {
@@ -280,7 +283,7 @@ public class WorldMap : MonoBehaviour
                 if (maps[j, i].Children.Count >= 2)
                 {
                     var lineGoSecond = Instantiate(linePrefab, lines.transform);
-                    Utility.DefineLayer(lineGoSecond, LayerName);
+                    lineGoSecond.layer = LayerMask.NameToLayer(LayerName);
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
                     if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[1].index.Equals(goalIndex))
                     {
@@ -298,7 +301,7 @@ public class WorldMap : MonoBehaviour
                 if (maps[j, i].Children.Count >= 3)
                 {
                     var lineGoThird = Instantiate(linePrefab, lines.transform);
-                    Utility.DefineLayer(lineGoThird, LayerName);
+                    lineGoThird.layer = LayerMask.NameToLayer(LayerName);
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
                     if (maps[j, i].index.Equals(curIndex) && maps[j, i].Children[2].index.Equals(goalIndex))
                     {
@@ -316,53 +319,53 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
-    public void FogComing()
+    public void Fog(int date)
     {
-        var date = Vars.UserData.date;
-        if (date > 2) // 3일 째 되는 날 월드맵에 진입 했다면
+        for (int i = 3; i <= date; i++)
         {
-            fogPrefab = Instantiate(fogPrefab); // 생성하게끔
-            fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
-            fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(posY * 2, 0f, 0f);
-            for (int i = 0; i < date - 3; i++)   // 4일 이후에 진입하게 되면 위치 변경
+            if (i.Equals(3))
             {
-                fogPrefab.transform.localScale += new Vector3(1.20f, 0f, 0f);
+                fogPrefab = Instantiate(fogPrefab); // 생성하게끔
+                fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
+                var scaleX = (fogPrefab.transform.localScale.x * 10f) - (posY / 2);
+                fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(scaleX, 0f, 0f);
             }
-        }
-        Vars.UserData.date++;
-    }
-    public void FogComing(object[] day)
-    {
-        var now = (int)day[0];
-        if(now == 3)
-        {
-            fogPrefab = Instantiate(fogPrefab);
-        }
-        else if (now > 3)
-        {
-            for (int i = 0; i < now - 3; i++)
+            else
             {
                 fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
             }
         }
-        Debug.Log(now);
+        beforeDate = date;
+    }
+    public void FogComing()
+    {
+        Vars.UserData.date++;
+        var date = Vars.UserData.date;
+        if (date == 3)
+            Fog(date);
+
+        for (int i = beforeDate; i < date; i++)
+        {
+            fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
+        }
+        beforeDate = Vars.UserData.date;
     }
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
-        node.difficulty = (Difficulty)Random.Range(0, 3);
+        node.difficulty = (Difficulty)Random.Range(0, 3); // 나중에 노드 생성할 때로 옮길 예정
         node.index = index;
     }
 
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 200f, 100f + index.x * posX, 0f), Quaternion.identity);
-        Utility.DefineLayer(go, LayerName);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 200f, 0f, index.x * posX + 200f), Quaternion.identity);
+        go.layer = LayerMask.NameToLayer(LayerName);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
-        node.difficulty = (Difficulty)Random.Range(0, 3);
+        node.difficulty = (Difficulty)Random.Range(0, 3); // 나중에 노드 생성할 때로 옮길 예정
         node.index = index;
     }
 

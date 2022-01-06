@@ -6,12 +6,14 @@ public class WorldMapUICamera : MonoBehaviour
 {
     private Vector3 startPos;
     private float startX;
+
     private readonly float distance = 30f;
     private readonly float maxDistance = 150f;
+
     private void Awake()
     {
         startPos = transform.position;
-        startX = startPos.x - 30f;
+        startX = startPos.x - distance / 2;
     }
     private void Update()
     {

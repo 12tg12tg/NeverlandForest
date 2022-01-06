@@ -22,13 +22,13 @@ public class WorldMapManager : MonoBehaviour
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMap = gameObject.AddComponent<WorldMap>();
         worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
-        if (loadData.Count.Equals(0))
+        if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행
         {
             StartCoroutine(worldMap.InitMap(() => {
                 NodeLinkToPlayer();
                 player.Init();
+                worldMapCamera.FollowPlayer();
             }));
-            Debug.Log("들어왔음");
         }
         else
         {

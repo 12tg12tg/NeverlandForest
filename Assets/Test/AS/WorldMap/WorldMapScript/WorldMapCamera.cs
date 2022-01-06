@@ -8,10 +8,12 @@ public class WorldMapCamera : MonoBehaviour
 
     private Coroutine coCameraMove;
     private Vector3 startPos;
+
     private readonly float startX = 0f;
     private readonly float distance = 30f;
     private readonly float maxDistance = 120f;
-    public bool isInit = false;
+
+    private static bool isInit = false;
 
     public void Awake()
     {
@@ -52,7 +54,13 @@ public class WorldMapCamera : MonoBehaviour
 
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
         var startPos = new Vector3(playerPos.position.x - 10f, transform.position.y, transform.position.z);
-        var endPos = Vars.UserData.WorldMapPlayerData.isClear ? new Vector3(10f, 0f, 0f) + startPos : Vector3.zero + startPos;
-        coCameraMove ??= StartCoroutine(Utility.CoTranslate(transform, startPos, endPos, 1f, () => coCameraMove = null));
+        var endPos = Vars.UserData.WorldMapPlayerData.isClear || !isInit ? new Vector3(distance / 2, 0f, 0f) + startPos : Vector3.zero + startPos;
+
+        coCameraMove ??= StartCoroutine(
+            Utility.CoTranslate(transform, startPos, endPos, 1f,
+            () => {
+                coCameraMove = null;
+                isInit = true;
+            }));
     }
 }

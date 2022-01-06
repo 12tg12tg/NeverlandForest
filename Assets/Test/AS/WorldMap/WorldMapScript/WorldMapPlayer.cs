@@ -54,7 +54,10 @@ public class WorldMapPlayer : MonoBehaviour
         if(Vars.UserData.WorldMapPlayerData == null)
         {
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            Load();
+            if (Vars.UserData.WorldMapPlayerData == null)
+                Init();
+            else
+                Load();
         }
         else if(Vars.UserData.WorldMapPlayerData.isClear)
             PlayerClearWorldMap();
