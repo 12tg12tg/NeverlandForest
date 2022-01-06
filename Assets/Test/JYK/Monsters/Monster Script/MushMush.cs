@@ -43,4 +43,12 @@ public class MushMush : MonsterUnit
     {
         animator.SetTrigger("Damaged");
     }
+    public override void TargetAttack()
+    {
+        throw new System.NotImplementedException();
+    }
+    public override void Move()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -51,6 +51,7 @@ public class PlayerAction : State<CharacterBattleState>
         {
             var monsterList = GetTargetList(playerController.curCommand.target);
             var targetList = monsterList.Cast<MonsterUnit>();
+
             // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
             foreach (var target in targetList)
             {
