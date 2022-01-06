@@ -17,8 +17,7 @@ public class MiniMapCamMove : MonoBehaviour
 
     void Update()
     {
-        
-        var curObj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomInfo.Pos.Equals(dungeonSystem.DungeonSystemData.curDungeonData.Pos));
+        var curObj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == dungeonSystem.DungeonSystemData.curDungeonData.roomIdx);
         if (curObj != null)
         {
             transform.position = new Vector3(curObj.gameObject.transform.position.x, curObj.gameObject.transform.position.y, -10f);

@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9000903173978576972
 Transform:
   m_ObjectHideFlags: 0
@@ -120,8 +120,8 @@ MonoBehaviour:
   evnetObjPos:
   - {fileID: 8264607837353382411}
   - {fileID: 2096102466845846310}
-  eventObjPrefab: {fileID: 4756389599436335105, guid: 7beb59a20f468f74296f229a0649f9ac, type: 3}
-  curRoomInfoList: []
+  eventObjList: []
+  dungeonSystem: {fileID: 0}
 --- !u!1 &2096102466845846310
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLastPos: 0
+  roomNumber: 0
 --- !u!1 &7612382067457934226
 GameObject:
   m_ObjectHideFlags: 0
@@ -289,6 +290,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLastPos: 0
+  roomNumber: 0
 --- !u!65 &1570017826852772247
 BoxCollider:
   m_ObjectHideFlags: 0
