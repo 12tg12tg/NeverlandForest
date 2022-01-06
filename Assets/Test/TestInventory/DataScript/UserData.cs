@@ -18,8 +18,8 @@ public class UserData
     // 던전맵 데이터, 세이브 로드
     public DungeonRoom[] DungeonMapData { get; set; }
     // 인게임 동작 나중에 위랑 하나로 합치는 정리 필요
-    public DungeonData CurAllDungeonData { get; set; } = new DungeonData();
-    public int dungeonStartIdx;
+    public Dictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new Dictionary<Vector2, DungeonData>();
+    public Vector2 curDungeonIndex;
 
     public Dictionary<Vector2, DungeonRoom[]> curLevelDungeonMaps = new Dictionary<Vector2, DungeonRoom[]>();
 

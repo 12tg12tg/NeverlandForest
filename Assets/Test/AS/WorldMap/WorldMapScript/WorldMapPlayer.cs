@@ -95,9 +95,11 @@ public class WorldMapPlayer : MonoBehaviour
 
         if (Vars.UserData.curLevelDungeonMaps.ContainsKey(goalIndex))
         {
+            Vars.UserData.curDungeonIndex = goalIndex;
             mapGenerator.DungeonGenerate(Vars.UserData.curLevelDungeonMaps[goalIndex],
                 () =>
                 {
+                    
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                     GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 }
@@ -105,8 +107,11 @@ public class WorldMapPlayer : MonoBehaviour
         }
         else
         {
+            Vars.UserData.curDungeonIndex = goalIndex;
+            Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
             mapGenerator.DungeonGenerate(null, () =>
             {
+               
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             }
