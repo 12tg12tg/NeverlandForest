@@ -17,6 +17,8 @@ public class WorldMapPlayer : MonoBehaviour
     public float distance;
     public Vector2 CurrentIndex => currentIndex;
 
+    private DunGeonMapGenerate mapGenerator;
+
     public void Init()
     {
         totalMap = new WorldMapNode[map.transform.childCount];
@@ -58,6 +60,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void PlayerWorldMap(Vector3 goal, Vector2 index)
     {
+        mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
         goalIndex = coMove == null ? index : goalIndex;
         goalPos = goal;
         startPos = transform.position;
@@ -81,8 +84,26 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        if(Vars.UserData.curLevelDungeonMaps.ContainsKey(goalIndex))
+        {
+            mapGenerator.DungeonGenerate(Vars.UserData.curLevelDungeonMaps[goalIndex],
+                () =>
+                {
+                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                }
+                );
+        }
+        else
+        {
+            mapGenerator.DungeonGenerate(null, () =>
+            {
+                coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            }
+            );
+            Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
+        }
     }
     public void PlayerClearWorldMap()
     {

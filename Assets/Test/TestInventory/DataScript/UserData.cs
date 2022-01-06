@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class UserData
 {
@@ -14,9 +15,13 @@ public class UserData
     public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
-    //Dungeon Info
+    // 던전맵 데이터, 세이브 로드
     public DungeonRoom[] DungeonMapData { get; set; }
+    // 인게임 동작 나중에 위랑 하나로 합치는 정리 필요
     public DungeonData CurAllDungeonData { get; set; } = new DungeonData();
+    public int dungeonStartIdx;
+
+    public Dictionary<Vector2, DungeonRoom[]> curLevelDungeonMaps = new Dictionary<Vector2, DungeonRoom[]>();
 
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
@@ -29,6 +34,8 @@ public class UserData
     public List<DataAllItem> HaveAllItemList { get; set; } = new List<DataAllItem>();
 
     public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
+
+
 
     public int maxStamina { get; set; } = 100;
     public int curStamina { get => baseStamina + hunger + tiredness; set { } }
