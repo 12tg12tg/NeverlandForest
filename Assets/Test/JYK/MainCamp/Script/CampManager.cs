@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class CampManager : MonoBehaviour
 {
+
     public enum CampEvent
     {
         StartCook,
@@ -43,6 +44,7 @@ public class CampManager : MonoBehaviour
     public void StartSleep(object[] vals)
     {
         if (vals.Length != 0) return;
+        ConsumeManager.RecoveryTiredness();
         Debug.Log($"Go Sleep ");
     }
     public void OpenDiary()
@@ -59,11 +61,12 @@ public class CampManager : MonoBehaviour
     }
     public void GoDungeon()
     {
-       SceneManager.LoadScene("2ENO_RandomMap");
+       SceneManager.LoadScene("AS_RandomMap");
     }
    
     public void OpenMiniMap()
     {
         Debug.Log($"Open MiniMap ");
     }
+   
 }

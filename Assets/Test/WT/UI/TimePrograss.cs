@@ -25,7 +25,7 @@ public class TimePrograss : MonoBehaviour
             progressIndicator.text = "นใ";
         }
 
-        currentValue = Vars.UserData.curIngameHour + (Vars.UserData.curIngameMinute / 60);
+        currentValue = Vars.UserData.CurIngameHour + (Vars.UserData.CurIngameMinute / 60);
         timeloadingBar.fillAmount = currentValue / 24;
     }
 }
