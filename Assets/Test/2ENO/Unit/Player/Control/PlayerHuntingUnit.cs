@@ -28,15 +28,16 @@ public class PlayerHuntingUnit : UnitBase
     //Vector2 index, Vector3 pos
     public void Move(Vector2 index, Vector3 pos, bool isOnBush)
     {
-        AnimationChange(true);
         // 플레이어가 이동하면 사냥 할 확률 증가(한칸 앞으로 이동 시 10프로, 은폐물에 숨었을 때 10프로)
         // 동물이 플레이어를 발견 할 확률 증가
         bool isForward = false;
-        // 현재 위치에서 뒤로 이동, 2칸 앞으로 이동, 대각선 2칸 이동 막음
+        // 현재 위치에서 뒤로 이동, 2칸 앞으로 이동, 같은 칸, 대각선 2칸 이동 막음
         if (index.y <= currentIndex.y - 1 ||
             index.y >= currentIndex.y + 2 ||
+            index.Equals(currentIndex) ||
             Mathf.Abs(index.x - currentIndex.x) > 1)
             return;
+        AnimationChange(true);
 
         // index의 y 값 비교를 통해서 앞으로 한칸 전진 했는지 판단 가능
         if (index.y.Equals(currentIndex.y + 1) && coMove == null)
@@ -51,15 +52,14 @@ public class PlayerHuntingUnit : UnitBase
         {
             EventBus<HuntingEvent>.Publish(HuntingEvent.PlayerMove, isForward, isOnBush);
         }
-        var newPos = pos/* + new Vector3(0f, 1f, 0f)*/;
 
         if (coMove == null)
         {
             PlayWalkAnimation();
-            currentIndex = index;   
+            currentIndex = index;
         }
 
-        coMove ??= StartCoroutine(Utility.CoTranslateLookFoward(transform, transform.position, newPos, 1f, () => AfterMove()));
+        coMove ??= StartCoroutine(Utility.CoTranslateLookFoward(transform, transform.position, pos, 1f, () => AfterMove()));
 
         EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape);
     }

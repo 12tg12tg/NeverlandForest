@@ -7,6 +7,8 @@ public class Animal : MonoBehaviour
 {
     public MeshRenderer icon;
     public GameObject resultPopUp;
+    public Color colorOrange;
+
     private int escapePercent;
     public int EscapePercent => escapePercent;
 
@@ -36,10 +38,10 @@ public class Animal : MonoBehaviour
             Debug.Log($"{rnd} 현재 확률: {escapePercent * 0.01f} 동물 도망 성공");
 
             resultPopUp.SetActive(true);
-            var tm = resultPopUp.transform.GetChild(0).GetComponent<TMP_Text>();
+            var tm = resultPopUp.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
             tm.text = "The Animal Run Away";
             
-            StartCoroutine(Utility.CoSceneChange("2ENO_RandomMap", 3f));
+            StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
         }
         else
         {
@@ -48,37 +50,16 @@ public class Animal : MonoBehaviour
     }
     public void EscapingPercentageUp(object[] vals)
     {
-        if (vals.Length != 1)
-            return;
-
-        if (!(bool)vals[0])
-            return;
-
-        escapePercent += 10;
+        escapePercent = vals.Length != 1 || !(bool)vals[0] ? escapePercent + 10 : escapePercent;
 
         IconColor();
-
-        if (escapePercent > 100) // 보정용.. 100 넘을 일이 없을듯?
-            escapePercent = 100;
     }
 
     private void IconColor()
     {
-        if (escapePercent < 15)
-        {
-            icon.material.color = Color.green;
-        }
-        else if (escapePercent < 35)
-        {
-            icon.material.color = Color.yellow;
-        }
-        else if (escapePercent < 55)
-        {
-            icon.material.color = new Color(255f / 255f, 110f / 255f, 0f);
-        }
-        else
-        {
-            icon.material.color = Color.red;
-        }
+        icon.material.color = 
+            escapePercent < 15 ? Color.green :
+            escapePercent < 35 ? Color.yellow :
+            escapePercent < 55 ? colorOrange : Color.red;
     }
 }

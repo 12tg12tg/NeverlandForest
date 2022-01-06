@@ -39,7 +39,7 @@ public class GenericWindow : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		Close();
+		Open();
 	}
 
 	public void OnNextWindow()

@@ -20,24 +20,27 @@ public enum DunGeonEvent
     SubStory = 0b_0001_0000,
     Count = 0b_0010_0000,
 }
+
 [Serializable]
 public class DungeonRoom
 {
+    // 방 생성 관련
     private bool isCheck;
     private Vector2 pos;
     private DunGeonRoomType roomType;
-
-    public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
     
-    public DungeonRoom nextRoom;
-    // 아직 미사용
-    public DungeonRoom beforeRoom;
-
     public int roomIdx;
     public int nextRoomIdx;
-    public int nextRoadCount = 0;
-    // 아직 미사용
     public int beforeRoomIdx;
+    public int roadCount = 0;
+
+
+    // < 이벤트 생성 관련 > - 이벤트 생성 매니저를 따로 만들어서 그곳에 타입, 이벤트 id 입력하면 그것에 맞는 이벤트 반환?
+    public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
+
+    // 현재 이벤트타입 리스트에 따라 생성되어질 오브젝트들 정보
+    public int gatheringCount = 1;
+    public List<EventData> eventObjDataList = new List<EventData>();
 
     public DunGeonRoomType RoomType
     {
@@ -73,16 +76,14 @@ public class DungeonRoom
                 break;
         }
         eventList.Add(eventType);
-
     }
-
-    public bool CheckEvent(DunGeonEvent evnetType)
+    public void UseEvent(DunGeonEvent evnetType)
     {
-
-        if (eventList.FindIndex(x => x == evnetType) != -1)
-            return true;
-
-        return false;
+        var index = eventList.FindIndex(x => x == evnetType);
+        if (index != -1)
+        {
+            eventList.RemoveAt(index);
+        }
     }
 }
 
@@ -96,33 +97,24 @@ public static class DunGeonRoomSetting
         var tempPercent = new List<int> { 20, 20, 20, 20, 20 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
-            for (int i = 0; i < rndEvnetCount; i++)
+            room.SetEvent(DunGeonEvent.Gathering);
+
+            var picEvent = EventPic(tempPercent);
+            while(picEvent == DunGeonEvent.Gathering)
             {
-                var picEvent = EventPic(tempPercent);
-                if (room.CheckEvent(picEvent))
-                {
-                    i--;
-                    continue;
-                }
-                room.SetEvent(picEvent);
+                picEvent = EventPic(tempPercent);
             }
+            room.SetEvent(picEvent);
+
         }
         else
         {
-            for (int i = 0; i < 1; i++)
+            var SubEvent = EventPic(tempPercent);
+            while (SubEvent == DunGeonEvent.Battle)
             {
-                var SubEvent = EventPic(tempPercent);
-                while (SubEvent == DunGeonEvent.Battle)
-                {
-                    SubEvent = EventPic(tempPercent);
-                }
-                if (room.CheckEvent(SubEvent))
-                {
-                    i--;
-                    continue;
-                }
-                room.SetEvent(SubEvent);
+                SubEvent = EventPic(tempPercent);
             }
+            room.SetEvent(SubEvent);
         }
     }
 
@@ -140,13 +132,13 @@ public static class DunGeonRoomSetting
         DunGeonEvent eventType = DunGeonEvent.Empty;
 
 
-        var rnd = UnityEngine.Random.Range(0, 130);
+        var rnd = UnityEngine.Random.Range(0, 120);
 
         // i는 이벤트enum 순회느낌, j는 확률 리스트 인덱스용
         for (int i = 1, j = 0; i != (int)DunGeonEvent.Count;)
         {
             if (j > eventP.Count) break;
-            // empty는 현재 약 30프로 확률
+            // empty는 현재 약 20프로 확률
             if (rnd > 100)
             {
                 eventType = DunGeonEvent.Empty;
@@ -163,54 +155,84 @@ public static class DunGeonRoomSetting
         return eventType;
     }
     // 다음방과 연결
-    public static void DungeonLink(DungeonRoom[] dungeonList)
+    public static void DungeonLink(DungeonRoom[] dungeonList, List<DungeonRoom> list)
     {
-        for (int i = 0; i < dungeonList.Length; i++)
+        int curIdx = 100;
+        while(dungeonList[curIdx].nextRoomIdx != -1)
         {
-            if(dungeonList[i].IsCheck)
-            {
-                var nextIdx = dungeonList[i].nextRoomIdx;
-                if (nextIdx != -1 && dungeonList[nextIdx].IsCheck == true)
-                {
-                    dungeonList[i].nextRoom = dungeonList[nextIdx];
-                }
-            }
+            list.Add(dungeonList[curIdx]);
+            curIdx = dungeonList[curIdx].nextRoomIdx;
         }
+        list.Add(dungeonList[curIdx]);
     }
     // 순서대로 연결된 던전방 리스트를 통해, 역순으로 이전방과 연결하기 ( 아직 미사용 )
-    public static void DungeonReverseLink(List<DungeonRoom> list)
-    {
-        for (int i = list.Count - 1; i >= 0; i--)
-        {
-            if (i == 0)
-                return;
-            list[i].beforeRoom = list[i - 1];
-            list[i].beforeRoomIdx = list[i - 1].roomIdx;
-        }
-    }
+    //public static void DungeonReverseLink(List<DungeonRoom> list)
+    //{
+    //    for (int i = list.Count - 1; i >= 0; i--)
+    //    {
+    //        if (i == 0)
+    //            return;
+    //        list[i].beforeRoom = list[i - 1];
+    //        list[i].beforeRoomIdx = list[i - 1].roomIdx;
+    //    }
+    //}
     // 시작방 입력받기, road개수 카운트, 생성된 던전맵을 순서대로 리스트에 담기
-    public static void DungeonRoadCount(DungeonRoom dungeonRoom, List<DungeonRoom> list)
+    public static void DungeonRoadCount(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
     {
-        int roadCount = 0;
-        while(dungeonRoom.nextRoomIdx != -1)
+        int curIdx = dungeonRoom.roomIdx;
+        while(dungeonArray[curIdx].nextRoomIdx != -1)
         {
-            if (dungeonRoom.RoomType == DunGeonRoomType.MainRoom)
+            int roadCount = 0;
+            int tempCurIdx = dungeonArray[curIdx].nextRoomIdx;
+            if (dungeonArray[curIdx].RoomType == DunGeonRoomType.MainRoom)
             {
-                var tempRoom = dungeonRoom.nextRoom;
-                while(tempRoom.RoomType != DunGeonRoomType.MainRoom)
+                while (dungeonArray[tempCurIdx].RoomType != DunGeonRoomType.MainRoom)
                 {
                     roadCount++;
-                    tempRoom = tempRoom.nextRoom;
+                    tempCurIdx = dungeonArray[tempCurIdx].nextRoomIdx;
                 }
-                dungeonRoom.nextRoadCount = roadCount;
-                roadCount = 0;
             }
-            list.Add(dungeonRoom);
-            dungeonRoom = dungeonRoom.nextRoom;
+            dungeonArray[curIdx].roadCount = roadCount;
+            curIdx = dungeonArray[curIdx].nextRoomIdx;
         }
-        list.Add(dungeonRoom);
+    }
+    // 시작방 입력받기, 메인방의 road개수를 참고로 이어져있는 서브방 road 개수 Set
+    public static void DungeonPathRoomCountSet(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
+    {
+        int roadCount = 0;
+        int curIdx = dungeonRoom.roomIdx;
+        while (dungeonArray[curIdx].nextRoomIdx != -1)
+        {
+            if (dungeonArray[curIdx].RoomType == DunGeonRoomType.MainRoom)
+            {
+                roadCount = dungeonArray[curIdx].roadCount;
+                curIdx = dungeonArray[curIdx].nextRoomIdx;
+                while (dungeonArray[curIdx].RoomType != DunGeonRoomType.MainRoom)
+                {
+                    dungeonArray[curIdx].roadCount = roadCount;
+                    curIdx = dungeonArray[curIdx].nextRoomIdx;
+                }
+            }
+        }
     }
 }
+//while(dungeonRoom.nextRoomIdx != -1)
+//{
+//    if (dungeonRoom.RoomType == DunGeonRoomType.MainRoom)
+//    {
+//        var tempRoom = dungeonRoom.nextRoom;
+//        while(tempRoom.RoomType != DunGeonRoomType.MainRoom)
+//        {
+//            roadCount++;
+//            tempRoom = tempRoom.nextRoom;
+//        }
+//        dungeonRoom.nextRoadCount = roadCount;
+//        roadCount = 0;
+//    }
+//    list.Add(dungeonRoom);
+//    dungeonRoom = dungeonRoom.nextRoom;
+//}
+//list.Add(dungeonRoom);
 
 
 //private DunGeonEvent eventCase;
@@ -234,3 +256,23 @@ public static class DunGeonRoomSetting
 //    return true;
 //}
 //return false;
+
+//for (int i = 0; i < rndEvnetCount; i++)
+//{
+//    var picEvent = EventPic(tempPercent);
+//    if (room.CheckEvent(picEvent))
+//    {
+//        i--;
+//        continue;
+//    }
+//    room.SetEvent(picEvent);
+//}
+
+//for (int i = 0; i < 1; i++)
+//{
+//    if (room.CheckEvent(SubEvent))
+//    {
+//        i--;
+//        continue;
+//    }
+//}

@@ -9,13 +9,21 @@ public class WorldMapPlayer : MonoBehaviour
     public GameObject map;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
-    private Vector2 currentIndex;
+
+    public Vector2 currentIndex;
     private Vector2 goalIndex;
-    private Vector3 currentPos;
+
     private Vector3 startPos;
+    private Vector3 currentPos;
     private Vector3 goalPos;
+
     public float distance;
+
+    public string sceneName;
+
     public Vector2 CurrentIndex => currentIndex;
+
+    private DunGeonMapGenerate mapGenerator;
 
     public void Init()
     {
@@ -34,12 +42,12 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
     public void Load()
     {
         var data = Vars.UserData.WorldMapPlayerData;
-        transform.position = data.goalPos;
+        transform.position = data.isClear ? data.goalPos : data.startPos;
         currentIndex = data.currentIndex;
     }
 
@@ -47,8 +55,11 @@ public class WorldMapPlayer : MonoBehaviour
     {
         if(Vars.UserData.WorldMapPlayerData == null)
         {
-            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            Load();
+            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            if (Vars.UserData.WorldMapPlayerData == null)
+                Init();
+            else
+                Load();
         }
         else if(Vars.UserData.WorldMapPlayerData.isClear)
             PlayerClearWorldMap();
@@ -58,6 +69,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void PlayerWorldMap(Vector3 goal, Vector2 index)
     {
+        mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
         goalIndex = coMove == null ? index : goalIndex;
         goalPos = goal;
         startPos = transform.position;
@@ -81,8 +93,31 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "2ENO_RandomMap", () => coMove = null));
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        if (Vars.UserData.curLevelDungeonMaps.ContainsKey(goalIndex))
+        {
+            Vars.UserData.curDungeonIndex = goalIndex;
+            mapGenerator.DungeonGenerate(Vars.UserData.curLevelDungeonMaps[goalIndex],
+                () =>
+                {
+                    
+                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                }
+                );
+        }
+        else
+        {
+            Vars.UserData.curDungeonIndex = goalIndex;
+            Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
+            mapGenerator.DungeonGenerate(null, () =>
+            {
+               
+                coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            }
+            );
+            Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
+        }
     }
     public void PlayerClearWorldMap()
     {
@@ -90,7 +125,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void PlayerRunWorldMap()
@@ -101,5 +136,6 @@ public class WorldMapPlayer : MonoBehaviour
         transform.position = data.currentPos;
 
         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => coMove = null));
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 }

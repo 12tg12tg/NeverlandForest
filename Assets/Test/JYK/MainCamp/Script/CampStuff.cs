@@ -18,18 +18,12 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     {
         EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartCook);
     }
-
-    public void StartEquipment()
+    public void StartGathering()
     {
-        EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartEquipment);
+        EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartGathering);
     }
-
-    public void StartInventory()
+    public void StartSleep()
     {
-        EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartInventory);
-    }
-    public void GoStage()
-    {
-        SceneManager.LoadScene("WorldMap");
+        EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartSleep);
     }
 }

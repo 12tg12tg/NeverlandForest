@@ -130,9 +130,4 @@ public class Utility
         }
         action?.Invoke();
     }
-
-    public static void DefineLayer(GameObject go, string name)
-    {
-        go.layer = LayerMask.NameToLayer(name);
-    }
 }

@@ -15,75 +15,27 @@ public enum TimeState
     NightTime,
     DayTime,
 }
-
-public enum StaminaState
+public enum GameState
 {
     None,
-    Full,
-    SoSo,
-    Bad,
-    Zero,
+    Playing,
+    GameOver
 }
+
 
 public static class ConsumeManager
 {
-    private static int maxStamina = 100;
-    private static int curStamina = maxStamina;
-    private static StaminaState curStaminaState = StaminaState.None;
-
-    private static int maxIngameHour = 24;
-    private static int curIngameHour = 0;
-    private static int maxIngameMinute = 60;
-    private static int curIngameMinute = 0;
-
     private static TimeState curTimeState = TimeState.None;
-
-    private static int date = 1;
-
-    public static int CurStamina
-    {
-        set => curStamina = value;
-        get => curStamina;
-    }
-    public static StaminaState CurStaminaState
-    {
-        set => curStaminaState = value;
-        get => curStaminaState;
-    }
-    public static int CurIngameHour
-    {
-        set => curIngameHour = value;
-        get => curIngameHour;
-    }
-    public static int CurIngameMinute
-    {
-        set => curIngameMinute = value;
-        get => curIngameMinute;
-    }
     public static TimeState CurTimeState
     {
         set => curTimeState = value;
         get => curTimeState;
     }
-
-    public static int Date
-    {
-        set => date = value;
-        get => date;
-    }
-
     public static void init()
     {
-        EventBus<DateEvent>.Subscribe(DateEvent.BlueMoon, BlueMoon);
-        EventBus<DateEvent>.Subscribe(DateEvent.WitchEffect, WitchEffect);
-
-        EventBus<TimeState>.Subscribe(TimeState.DayTime, DayTime);
-        EventBus<TimeState>.Subscribe(TimeState.NightTime, NightTime);
-
         StaminaStateChange();
         TimeStateChange();
     }
-
     public static void SaveConsumableData()
     {
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ConsumableData);
@@ -94,46 +46,76 @@ public static class ConsumeManager
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
     }
 
-    private static void StaminaStateChange()
+    public static void IncreaseSatiety(int hungercount) //포만감을 증가
+    {   
+        Vars.UserData.hunger += hungercount;
+
+        Vars.UserData.maxStamina += hungercount;
+        if (Vars.UserData.maxStamina >100)
+        {
+            Vars.UserData.maxStamina = 100;
+        }
+        if (Vars.UserData.hunger > 40)
+        {
+            //40은 임시로 정해둔 수치
+            Vars.UserData.hunger = 40;
+        }
+    }
+    public static void DiscreaseSatiety(int hungercount) //포만감을 감소
     {
-        if (curStamina <= 0)
+        Vars.UserData.hunger -= hungercount;
+        Vars.UserData.maxStamina -= hungercount;
+        if (Vars.UserData.hunger <0)
         {
-            // 매개변수로 수치 대신 그냥 상태 enum 넣어줘도 될지도..
-            if (curStaminaState != StaminaState.Zero)
+            Vars.UserData.hunger = 0;
+            if (Vars.UserData.maxStamina < 60)
             {
-                EventBus<StaminaState>.Publish(StaminaState.Zero, curStamina);
+                Vars.UserData.maxStamina = 60;
             }
-            curStaminaState = StaminaState.Zero;
         }
-        else if (curStamina < 25)
+    }
+    public static void  RecoverTiredness(int recoverTired) //피로도 회복
+    {
+        Vars.UserData.tiredness += recoverTired;
+        if (Vars.UserData.tiredness > 40)
         {
-            if (curStaminaState != StaminaState.Bad)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.Bad, curStamina);
-            }
-            curStaminaState = StaminaState.Bad;
+            Vars.UserData.tiredness = 40;
         }
-        else if (curStamina < 50)
+    }
+    public static void GettingTired(int gettingTired) //피로도 증가
+    {
+        Vars.UserData.tiredness -= gettingTired;
+        if (Vars.UserData.tiredness < 0)
         {
-            if (curStaminaState != StaminaState.SoSo)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.SoSo, curStamina);
-            }
-            curStaminaState = StaminaState.SoSo;
+            Vars.UserData.tiredness = 0;
         }
-        else if (curStamina <= 100)
+    }
+    public static void ReduceBaseStamina(int stamina) //기본스태미나 감소
+    {
+        Vars.UserData.baseStamina -= stamina;
+    }
+    public static void IncreaseBaseStamina(int stamina) //기본스태미나 회복
+    {
+        Vars.UserData.baseStamina -= stamina;
+    }
+    private static void StaminaStateChange()  //휴식을 취할때만 
+        //필요한것 , 소비되는 시간에 따라서 회복량이 달라진다고 했으니깐 매개변수로 시간을 받아야함.
+    {   
+
+        /*
+        if (curStamina ==0)
         {
-            if (curStaminaState != StaminaState.Full)
-            {
-                EventBus<StaminaState>.Publish(StaminaState.Full, curStamina);
-            }
-            curStaminaState = StaminaState.Full;
+            //eventbus에 게임오버를 보내주자.
+            //eventbus에 gamestate는 어디서 만들지? gameManger에 만들어져 있던가?
+            EventBus<GameState>.Publish(GameState.GameOver);
         }
+        */
     }
 
     private static void TimeStateChange()
-    {
-        if(curIngameHour <= 12)
+    {   
+        //현재 인호가 구현해둔 방식은 원 하나에 24시간을 들고있나봄.
+        if(Vars.UserData.curIngameHour <= 12)
         {
             if(curTimeState != TimeState.DayTime)
             {
@@ -141,7 +123,7 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.DayTime;
         }
-        else if(curIngameHour <= 24)
+        else if(Vars.UserData.curIngameHour <= 24)
         {
             if (curTimeState != TimeState.NightTime)
             {
@@ -151,35 +133,20 @@ public static class ConsumeManager
         }
     }
 
-    public static void StaminaUp(int staminaValue)
-    {
-        curStamina += staminaValue;
-        if (curStamina > maxStamina)
-            curStamina = maxStamina;
-        StaminaStateChange();
-    }
-    // 스테미너가 특정수치 이하가 되었을 때, 한번 메소드 호출 - 변한 상태가 각 개체에 계속 적용?
-    public static void StaminaConsume(int staminaValue)
-    {
-        curStamina -= staminaValue;
-        if (curStamina < 0)
-            curStamina = 0;
-        StaminaStateChange();
-    }
     public static void TimeUp(int hour, int minute)
     {
-        curIngameHour += hour;
-        curIngameMinute += minute;
+        Vars.UserData.curIngameHour += hour;
+        Vars.UserData.curIngameMinute += minute;
 
-        while(curIngameMinute >= maxIngameMinute)
+        while(Vars.UserData.curIngameMinute >= Vars.maxIngameMinute)
         {
-            curIngameMinute -= maxIngameMinute;
-            curIngameHour++;
+            Vars.UserData.curIngameMinute -= Vars.maxIngameMinute;
+            Vars.UserData.curIngameHour++;
         }
 
-        while(curIngameHour >= maxIngameHour)
+        while(Vars.UserData.curIngameHour >= Vars.maxIngameHour)
         {
-            curIngameHour -= maxIngameHour;
+            Vars.UserData.curIngameHour -= Vars.maxIngameHour;
             DateUp();
         }
 
@@ -188,36 +155,15 @@ public static class ConsumeManager
 
     public static void DateUp()
     {
-        date++;
-        if(date % 15 == 0)
+        Vars.UserData.date++;
+        if(Vars.UserData.date % 15 == 0)
         {
             EventBus<DateEvent>.Publish(DateEvent.BlueMoon);
         }
 
-        if(date > 2)
+        if(Vars.UserData.date > 2)
         {
             EventBus<DateEvent>.Publish(DateEvent.WitchEffect);
-        }
-    }
-  
-
-    // 이 아래 메소드들은 현재는 테스트 동작!
-
-    private static void StaminaDown(object[] vals)
-    {
-        if (vals.Length != 1) return;
-
-        if((int)vals[0] <= 0)
-        {
-            Debug.Log("ConsumeMgr : StaminaDown 실행, 0 이하입니다");
-        }
-        else if((int)vals[0] <= 25)
-        {
-            Debug.Log("ConsumeMgr : StaminaDown 실행, 25 이하입니다");
-        }
-        else if((int)vals[0] <= 50)
-        {
-            Debug.Log("ConsumeMgr : StaminaDown 실행, 50 이하입니다");
         }
     }
 
@@ -226,16 +172,30 @@ public static class ConsumeManager
         if (vals.Length != 0) return;
         Debug.Log("ConsumeMgr : 블루문 실행");
     }
-
     private static void WitchEffect(object[] vals)
     {
         if (vals.Length != 0) return;
         Debug.Log("ConsumeMgr : 마녀 이펙트 실행");
+    }
+    private static void DayTime(object[] vals)
+    {
+        if (vals.Length != 0) return;
+        Debug.Log("ConsumeMgr : DayTime 실행");
+    }
+    private static void NightTime(object[] vals)
+    {
+        if (vals.Length != 0) return;
+        Debug.Log("ConsumeMgr : NightTime 실행");
+    }
 
-        //curStaminaState = StaminaState.None;
-        //curStamina = maxStamina;
-        //worldTurn = 3;
-        //curIngameTime = maxIngameTime;
+    private static void Referece()
+    {
+        EventBus<DateEvent>.Subscribe(DateEvent.BlueMoon, BlueMoon);
+        EventBus<DateEvent>.Subscribe(DateEvent.WitchEffect, WitchEffect);
+
+        EventBus<TimeState>.Subscribe(TimeState.DayTime, DayTime);
+        EventBus<TimeState>.Subscribe(TimeState.NightTime, NightTime);
+
 
         EventBus<DateEvent>.Unsubscribe(DateEvent.BlueMoon, BlueMoon);
         EventBus<DateEvent>.Unsubscribe(DateEvent.WitchEffect, WitchEffect);
@@ -245,22 +205,5 @@ public static class ConsumeManager
         EventBus<DateEvent>.ResetEventBus();
     }
 
-    private static void DayTime(object[] vals)
-    {
-        if (vals.Length != 0) return;
-        Debug.Log("ConsumeMgr : DayTime 실행");
-    }
 
-    private static void NightTime(object[] vals)
-    {
-        if (vals.Length != 0) return;
-        Debug.Log("ConsumeMgr : NightTime 실행");
-    }
 }
-
-//private ConsumableData consumeData = new ConsumableData();
-
-//public ConsumableData ConsumeData
-//{
-//    get => consumeData;
-//}

@@ -18,13 +18,17 @@ public class WorldMapManager : MonoBehaviour
 
     private void Awake()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMap = gameObject.AddComponent<WorldMap>();
         worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
-        if (loadData.Count.Equals(0))
+        if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행
         {
-            StartCoroutine(worldMap.InitMap(Link));
+            StartCoroutine(worldMap.InitMap(() => {
+                NodeLinkToPlayer();
+                player.Init();
+                worldMapCamera.FollowPlayer();
+            }));
         }
         else
         {
@@ -33,13 +37,6 @@ public class WorldMapManager : MonoBehaviour
             player.ComeBackWorldMap();
             worldMapCamera.FollowPlayer();
         }
-    }
-
-    private void Link()
-    {
-        NodeLinkToPlayer();
-        player.Init();
-        worldMapCamera.Init();
     }
 
     private void NodeLinkToPlayer()
