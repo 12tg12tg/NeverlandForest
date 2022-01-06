@@ -13,9 +13,11 @@ public class BattleMonsterTurn : State<BattleState>
     public override void Init()
     {
         Debug.Log("Battle Monster Init");
+        manager.PrintMessage("몬스터 턴", 1f, null);
+
         manager.MonsterQueue.Clear();
-        manager.MonsterQueue.Enqueue(manager.monster[0]);
-        manager.MonsterQueue.Enqueue(manager.monster[1]);
+        //manager.MonsterQueue.Enqueue(manager.monster[0]);
+        //manager.MonsterQueue.Enqueue(manager.monster[1]);
 
         FSM.ChangeState(BattleState.Action);
     }

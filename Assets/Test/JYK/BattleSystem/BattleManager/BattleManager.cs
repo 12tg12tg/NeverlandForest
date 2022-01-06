@@ -6,6 +6,10 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
+public class MonsterCommand
+{
+
+}
 public class PlayerCommand
 {
     private bool isUpdate;
@@ -61,7 +65,7 @@ public class BattleManager : MonoBehaviour
     private MultiTouch multiTouch;
 
     //Unit
-    public List<TestMonster> monster = new List<TestMonster>();
+    public List<MonsterUnit> monster = new List<MonsterUnit>();
     public PlayerBattleController boy;
     public PlayerBattleController girl;
     private PlayerCommand boyInput;
@@ -85,7 +89,7 @@ public class BattleManager : MonoBehaviour
     //Vars
     private bool isDrag;
     private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
-    private Queue<TestMonster> monsterQueue = new Queue<TestMonster>();
+    private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
     private IEnumerable<Tiles> targetTiles;
     private bool isWaitingTileSelect;
 
@@ -93,7 +97,7 @@ public class BattleManager : MonoBehaviour
     public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
     public Queue<PlayerCommand> CommandQueue { get => comandQueue; }
-    public Queue<TestMonster> MonsterQueue { get => monsterQueue; }
+    public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
 
     private void Awake()
     {       

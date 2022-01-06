@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete("MonsterUnit을 사용하세요.")]
 public class TestMonster : UnitBase, IAttackable
 {
     public void OnAttacked(UnitBase attacker)

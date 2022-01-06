@@ -11,7 +11,7 @@ public class BattleAction : State<BattleState>
     }
 
     private PlayerCommand curCommand;
-    private TestMonster curMonster;
+    private MonsterCommand curMonster;
 
     bool onceTry = true;
     float timer = 0;

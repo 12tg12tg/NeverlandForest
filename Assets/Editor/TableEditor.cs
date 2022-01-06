@@ -6,7 +6,7 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable" };
+    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -60,6 +60,9 @@ public class TableEditor : EditorWindow
                 break;
             case "PlayerSkillTable":
                 ViewPlayerSkillData(tableList);
+                break;
+            case "MonsterTable":
+                ViewMonsterData(tableList);
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
@@ -132,6 +135,37 @@ public class TableEditor : EditorWindow
         consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));
     }
 
+    private void ViewMonsterData(List<Dictionary<string, string>> skillList)
+    {
+        var consumData = skillList[itemIndex];
+
+        var id = int.Parse(consumData["ID"]);
+        consumData["ID"] = EditorGUILayout.IntField("Id", id).ToString();
+
+        consumData["ICON_ID"] = EditorGUILayout.TextField("IconID", consumData["ICON_ID"]);
+
+        consumData["NAME"] = EditorGUILayout.TextField("Name", consumData["NAME"]);
+
+        var type = new string[] { "Near", "Far" };
+        int shapeIndex = ArrayUtility.IndexOf(type, consumData["TYPE"]);
+        EditorGUILayout.Popup("TableType", shapeIndex, type);
+        consumData["TYPE"] = type[shapeIndex];
+
+        var hp = int.Parse(consumData["HP"]);
+        consumData["HP"] = EditorGUILayout.IntField("HP", hp).ToString();
+
+        var atk = int.Parse(consumData["ATK"]);
+        consumData["ATK"] = EditorGUILayout.IntField("ATK", atk).ToString();
+
+        var sheild = int.Parse(consumData["SHEILD"]);
+        consumData["SHEILD"] = EditorGUILayout.IntField("SHEILD", sheild).ToString();
+
+        var speed = int.Parse(consumData["SPEED"]);
+        consumData["SPEED"] = EditorGUILayout.IntField("SPEED", speed).ToString();
+
+        GUI.skin.textField.wordWrap = true;
+        consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));
+    }
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)
     {
