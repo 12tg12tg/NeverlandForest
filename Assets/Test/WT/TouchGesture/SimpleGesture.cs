@@ -305,5 +305,9 @@ public class SimpleGesture : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+        if (GUILayout.Button("Cooking"))
+        {
+            SceneManager.LoadScene("Wt_Scene");
+        }
     }
 }
