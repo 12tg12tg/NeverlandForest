@@ -9,6 +9,7 @@ public class DungeonSystem : MonoBehaviour
     public RoomCtrl[] roomPrefab;
     public EventObject eventObjectPrefab;
     public GatheringObject gatheringObjPrefab;
+    public BattleObject battleObjPrefab;
     public TextMeshProUGUI text;
 
     public PlayerDungeonUnit dungeonPlayer;
@@ -55,24 +56,33 @@ public class DungeonSystem : MonoBehaviour
         {
             roomPrefab[i].gameObject.SetActive(false);
         }
+
+        if (Vars.UserData.CurAllDungeonData.Count <= 0)
+        {
+            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = 100;
+
+        }
+
         if (Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] != null)
         {
             dungeonSystemData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex];
-        }
-        else
-        {
-            Debug.Log("뭔가 오류! 확인요망");
-            return;
         }
 
         roomManager = new RoomManager();
         roomManager.text = text;
 
-        dungeonSystemData.dungeonRoomArray = Vars.UserData.DungeonMapData;
+        dungeonSystemData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
         dungeonSystemData.dungeonStartIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
+
+        if (dungeonSystemData.curDungeonData != null)
+            LoadEventData();
         RoomSetMethod();
         worldMap.InitWorldMiniMap();
     }
+
+   
+
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
     private void RoomSetMethod()
     {
@@ -105,8 +115,9 @@ public class DungeonSystem : MonoBehaviour
 
     // 방마다 위치해있는 트리거 발동할때 실행
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
-    {        
-        //ConsumeManager.TimeUp(1,0);
+    {
+        // 방 한칸 지날때마다 3시간씩 지남
+        ConsumeManager.TimeUp(0, 12);
         if (isRoomEnd)
         {
             foreach(var obj in eventObjInstanceList)
@@ -134,20 +145,17 @@ public class DungeonSystem : MonoBehaviour
 
 
             SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
-            //roomManager.ChangeRoomForward(isRoomEnd);
         }
         else
         {
             if(isGoForward)
             {
-                //roomManager.ChangeRoomForward(isRoomEnd);
                 beforeDungeonRoom = dungeonSystemData.curDungeonData;
                 dungeonSystemData.curDungeonData = roomManager.GetNextRoom(dungeonSystemData.curDungeonData);
                 SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
             }
             else
             {
-                //roomManager.ChangeRoomGoBack();
                 beforeDungeonRoom = dungeonSystemData.curDungeonData;
                 dungeonSystemData.curDungeonData = roomManager.GetBeforeRoom(dungeonSystemData.curDungeonData);
                 SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
@@ -156,7 +164,65 @@ public class DungeonSystem : MonoBehaviour
 
         Vars.UserData.DungeonMapData = dungeonSystemData.dungeonRoomArray;
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
+    public void LoadEventData()
+    {
+        var array = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
+        var curIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
+
+        while (array[curIdx].nextRoomIdx != -1)
+        {
+            EventDataInit(array[curIdx].eventObjDataList);
+            curIdx = array[curIdx].nextRoomIdx;
+        }
+
+        dungeonSystemData.curDungeonData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonSystemData.curDungeonData.roomIdx];
+    }
+    public void EventDataInit(List<EventData> eventList)
+    {
+        List<EventData> newList = new List<EventData>();
+        for (int i = 0; i < eventList.Count; i++)
+        {
+            switch (eventList[i].eventType)
+            {
+                case DunGeonEvent.Battle:
+                    var newData = new BattleData();
+                    newData.eventType = DunGeonEvent.Battle;
+                    newData.isCreate = eventList[i].isCreate;
+                    newData.eventBasePos = eventList[i].eventBasePos;
+                    newData.roomIndex = eventList[i].roomIndex;
+                    newData.objectPosition = eventList[i].objectPosition;
+                    newList.Add(newData);
+                    break;
+                case DunGeonEvent.Gathering:
+                    var newData2 = new GatheringData();
+                    newData2.eventType = DunGeonEvent.Gathering;
+                    newData2.isCreate = eventList[i].isCreate;
+                    newData2.eventBasePos = eventList[i].eventBasePos;
+                    newData2.roomIndex = eventList[i].roomIndex;
+                    newData2.objectPosition = eventList[i].objectPosition;
+                    newList.Add(newData2);
+                    break;
+                case DunGeonEvent.Hunt:
+                    var newData3 = new HuntingData();
+                    newData3.eventType = DunGeonEvent.Hunt;
+                    newData3.isCreate = eventList[i].isCreate;
+                    newData3.eventBasePos = eventList[i].eventBasePos;
+                    newData3.roomIndex = eventList[i].roomIndex;
+                    newData3.objectPosition = eventList[i].objectPosition;
+                    newList.Add(newData3);
+                    break;
+                case DunGeonEvent.RandomIncount:
+                    break;
+                case DunGeonEvent.SubStory:
+                    break;
+            }
+        }
+        eventList.Clear();
+        eventList.AddRange(newList);
+    }
+
     // 이벤트 오브젝트 클릭시, 실행
     public void EventObjectClickEvent(DunGeonEvent eventType, EventObject eventObject)
     {
@@ -257,7 +323,7 @@ public class DungeonSystem : MonoBehaviour
                         {
                             case DunGeonEvent.Battle:
                                 var createBt = eventObj as BattleData;
-                                var obj = createBt.CreateObj(eventObjectPrefab, this);
+                                var obj = createBt.CreateObj(battleObjPrefab, this);
                                 eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
@@ -289,7 +355,7 @@ public class DungeonSystem : MonoBehaviour
                     {
                         case DunGeonEvent.Battle:
                             var createBt = eventObj as BattleData;
-                            var obj = createBt.CreateObj(eventObjectPrefab, this);
+                            var obj = createBt.CreateObj(battleObjPrefab, this);
                             eventObjInstanceList.Add(obj.gameObject);
                             break;
                         case DunGeonEvent.Gathering:
@@ -497,5 +563,52 @@ public class DungeonSystem : MonoBehaviour
 
 //        }
 //        roomData = dungeonSystemData.dungeonRoomArray[roomData.nextRoomIdx];
+//    }
+//}
+
+//foreach (var data in array)
+//{
+//    if (data.IsCheck == true)
+//    {
+//        for (int i = 0; i < data.eventObjDataList.Count; i++)
+//        {
+//            switch (data.eventObjDataList[i].eventType)
+//            {
+//                case DunGeonEvent.Battle:
+//                    var newData = new BattleData();
+//                    newData.eventType = DunGeonEvent.Battle;
+//                    newData.isCreate = data.eventObjDataList[i].isCreate;
+//                    newData.eventBasePos = data.eventObjDataList[i].eventBasePos;
+//                    newData.roomIndex = data.eventObjDataList[i].roomIndex;
+//                    newData.objectPosition = data.eventObjDataList[i].objectPosition;
+//                    data.eventObjDataList.Remove(data.eventObjDataList[i]);
+//                    data.eventObjDataList.Add(newData);
+//                    break;
+//                case DunGeonEvent.Gathering:
+//                    var newData2 = new GatheringData();
+//                    newData2.eventType = DunGeonEvent.Battle;
+//                    newData2.isCreate = data.eventObjDataList[i].isCreate;
+//                    newData2.eventBasePos = data.eventObjDataList[i].eventBasePos;
+//                    newData2.roomIndex = data.eventObjDataList[i].roomIndex;
+//                    newData2.objectPosition = data.eventObjDataList[i].objectPosition;
+//                    data.eventObjDataList.Remove(data.eventObjDataList[i]);
+//                    data.eventObjDataList.Add(newData2);
+//                    break;
+//                case DunGeonEvent.Hunt:
+//                    var newData3 = new HuntingData();
+//                    newData3.eventType = DunGeonEvent.Battle;
+//                    newData3.isCreate = data.eventObjDataList[i].isCreate;
+//                    newData3.eventBasePos = data.eventObjDataList[i].eventBasePos;
+//                    newData3.roomIndex = data.eventObjDataList[i].roomIndex;
+//                    newData3.objectPosition = data.eventObjDataList[i].objectPosition;
+//                    data.eventObjDataList.Remove(data.eventObjDataList[i]);
+//                    data.eventObjDataList.Add(newData3);
+//                    break;
+//                case DunGeonEvent.RandomIncount:
+//                    break;
+//                case DunGeonEvent.SubStory:
+//                    break;
+//            }
+//        }
 //    }
 //}

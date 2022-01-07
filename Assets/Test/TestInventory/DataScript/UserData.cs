@@ -18,7 +18,7 @@ public class UserData
     // 던전맵 데이터, 세이브 로드
     public DungeonRoom[] DungeonMapData { get; set; }
     // 인게임 동작 나중에 위랑 하나로 합치는 정리 필요
-    public Dictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new Dictionary<Vector2, DungeonData>();
+    public SerializeDictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
     public Vector2 curDungeonIndex;
 
     public Dictionary<Vector2, DungeonRoom[]> curLevelDungeonMaps = new Dictionary<Vector2, DungeonRoom[]>();
@@ -46,7 +46,7 @@ public class UserData
 
     public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
 
-    public int date = 1;
+    public int date = 0;
     public float hunterHp = 100;
     public float herbalistHp = 100;
 }

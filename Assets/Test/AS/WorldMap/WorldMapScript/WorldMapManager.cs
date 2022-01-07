@@ -19,6 +19,7 @@ public class WorldMapManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMap = gameObject.AddComponent<WorldMap>();
         worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
