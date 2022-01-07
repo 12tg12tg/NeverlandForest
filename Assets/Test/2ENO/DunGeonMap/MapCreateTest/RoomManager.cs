@@ -77,18 +77,18 @@ public class RoomManager
     // 미니맵에 현재 있는 방 표시하기 위해
     public void SetCheckRoom(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
-        var obj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
-        var mesh = obj.gameObject.GetComponent<MeshRenderer>();
-        mesh.material.color = Color.blue;
+        //var obj = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
+        //var mesh = obj.gameObject.GetComponent<MeshRenderer>();
+        //mesh.material.color = Color.blue;
 
-        if (beforeRoom.IsCheck == true)
-        {
-            var obj2 = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
-            var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
+        //if (beforeRoom.IsCheck == true)
+        //{
+        //    var obj2 = dungeonSystem.DungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
+        //    var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
-            mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
-            new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
-        }
+        //    mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
+        //    new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
+        //}
     }
     public void ChangeRoomForward(bool isEnd)
     {

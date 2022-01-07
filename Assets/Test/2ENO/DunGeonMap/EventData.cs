@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class EventData
 {
     public DunGeonEvent eventType;
@@ -12,7 +13,7 @@ public class EventData
     // 이벤트를 생성한 방 정보, 오브젝트 생성시 이 정보를 넣고 삭제할때 그 방의 값에 적용하기위해
     public int roomIndex;
 }
-
+[System.Serializable]
 public class GatheringData : EventData
 {
     public int offSetBasePos;
@@ -39,7 +40,7 @@ public class GatheringData : EventData
         return gatheringObj;
     }
 }
-
+[System.Serializable]
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
@@ -64,10 +65,10 @@ public class HuntingData : EventData
         return huntingObj;
     }
 }
-
+[System.Serializable]
 public class BattleData : EventData
 {
-    public EventObject CreateObj(EventObject obj, DungeonSystem dgSystem)
+    public BattleObject CreateObj(BattleObject obj, DungeonSystem dgSystem)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -77,12 +78,11 @@ public class BattleData : EventData
         if (isCreate)
         {
             var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
-            battleObj2.Init(dgSystem, this, roomIndex);
             return battleObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z-3f);
         var battleObj = Object.Instantiate(obj, objPos, Quaternion.identity);
-        battleObj.Init(dgSystem, this, roomIndex);
+        //battleObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
         return battleObj;

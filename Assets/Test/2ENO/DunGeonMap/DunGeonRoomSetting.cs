@@ -32,14 +32,14 @@ public class DungeonRoom
     public int roomIdx;
     public int nextRoomIdx;
     public int beforeRoomIdx;
-    public int roadCount = 0;
+    public int roadCount;
 
 
     // < 이벤트 생성 관련 > - 이벤트 생성 매니저를 따로 만들어서 그곳에 타입, 이벤트 id 입력하면 그것에 맞는 이벤트 반환?
     public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
 
     // 현재 이벤트타입 리스트에 따라 생성되어질 오브젝트들 정보
-    public int gatheringCount = 1;
+    public int gatheringCount;
     public List<EventData> eventObjDataList = new List<EventData>();
 
     public DunGeonRoomType RoomType
@@ -93,8 +93,8 @@ public static class DunGeonRoomSetting
     {
         // 입력받은 방에 1~2개 사이의 이벤트를 넣어주고
         // 각 이벤트를 나올수 있는 이벤트 타입중 확률적으로 1개 골라서 넣어준다
-        var rndEvnetCount = UnityEngine.Random.Range(1, 3);
-        var tempPercent = new List<int> { 20, 20, 20, 20, 20 };
+
+        var tempPercent = new List<int> { 30, 40, 30, 5, 5 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
             room.SetEvent(DunGeonEvent.Gathering);
@@ -105,7 +105,6 @@ public static class DunGeonRoomSetting
                 picEvent = EventPic(tempPercent);
             }
             room.SetEvent(picEvent);
-
         }
         else
         {
@@ -132,7 +131,7 @@ public static class DunGeonRoomSetting
         DunGeonEvent eventType = DunGeonEvent.Empty;
 
 
-        var rnd = UnityEngine.Random.Range(0, 120);
+        var rnd = UnityEngine.Random.Range(0, 110);
 
         // i는 이벤트enum 순회느낌, j는 확률 리스트 인덱스용
         for (int i = 1, j = 0; i != (int)DunGeonEvent.Count;)
@@ -165,17 +164,7 @@ public static class DunGeonRoomSetting
         }
         list.Add(dungeonList[curIdx]);
     }
-    // 순서대로 연결된 던전방 리스트를 통해, 역순으로 이전방과 연결하기 ( 아직 미사용 )
-    //public static void DungeonReverseLink(List<DungeonRoom> list)
-    //{
-    //    for (int i = list.Count - 1; i >= 0; i--)
-    //    {
-    //        if (i == 0)
-    //            return;
-    //        list[i].beforeRoom = list[i - 1];
-    //        list[i].beforeRoomIdx = list[i - 1].roomIdx;
-    //    }
-    //}
+
     // 시작방 입력받기, road개수 카운트, 생성된 던전맵을 순서대로 리스트에 담기
     public static void DungeonRoadCount(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
     {

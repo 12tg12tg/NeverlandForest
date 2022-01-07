@@ -79,9 +79,47 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveDungeonMap()
     {
         dungeonMapData = new DungeonMapSaveData_0();
-        dungeonMapData.dungeonMap = Vars.UserData.DungeonMapData;
+        var list = new List<DungeonRoom>();
+        var pList = new List<PlayerDungeonUnitData>();
+        var iList = new List<Vector2>();
+        var rList = new List<DungeonRoom[]>();
+        foreach (var data in Vars.UserData.CurAllDungeonData)
+        {
+            list.Add(data.Value.curDungeonData);
+            pList.Add(data.Value.curPlayerData);
+            iList.Add(data.Key);
+            rList.Add(data.Value.dungeonRoomArray);
+        }
+        dungeonMapData.curDungeonData = list;
+        dungeonMapData.curPlayerData = pList;
+        dungeonMapData.dungeonIndex = iList;
+        dungeonMapData.dungeonRoomArray = rList;
+        dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
+
+
+
+        dungeonMapData.dungeonRoomList = ArrayConvertList(Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray);
+        // = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curDungeonData;
+        //dungeonMapData.curPlayerData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curPlayerData;
+        //dungeonMapData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
+        //dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
+    private List<DungeonRoom> ArrayConvertList(DungeonRoom[] array)
+    {
+        List<DungeonRoom> list = new List<DungeonRoom>();
+        int curIdx = 100;
+        while(array[curIdx].nextRoomIdx != -1)
+        {
+            list.Add(array[curIdx]);
+            curIdx = array[curIdx].nextRoomIdx;
+        }
+        list.Add(array[curIdx]);
+
+        return list;
+    }
+
+
     private void SaveRecipe()
     {
         recipeData = new RecipeSaveData_0();
@@ -144,7 +182,22 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
         if (dungeonMapData != null)
         {
-            Vars.UserData.DungeonMapData = dungeonMapData.dungeonMap;
+            for (int i = 0; i < dungeonMapData.dungeonIndex.Count; i++)
+            {
+                var dungeonData = new DungeonData();
+                dungeonData.dungeonRoomArray = dungeonMapData.dungeonRoomArray[i];
+                dungeonData.curDungeonData = dungeonMapData.curDungeonData[i];
+                dungeonData.curPlayerData = dungeonMapData.curPlayerData[i];
+
+                if(!Vars.UserData.CurAllDungeonData.ContainsKey(dungeonMapData.dungeonIndex[i]))
+                {
+                    Vars.UserData.CurAllDungeonData.Add(dungeonMapData.dungeonIndex[i], dungeonData);
+                }
+               
+            }
+            Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
+            Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
+            Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
         }
     }
     private void LoadWorldMapNode()

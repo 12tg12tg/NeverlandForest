@@ -338,7 +338,7 @@ public class WorldMap : MonoBehaviour
     }
     public void FogComing()
     {
-        Vars.UserData.date++;
+        //Vars.UserData.date++;
         var date = Vars.UserData.date;
         if (date == 3)
             Fog(date);

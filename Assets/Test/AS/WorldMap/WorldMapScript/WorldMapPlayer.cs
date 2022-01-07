@@ -93,10 +93,10 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
-        if (Vars.UserData.curLevelDungeonMaps.ContainsKey(goalIndex))
+        if (Vars.UserData.CurAllDungeonData.ContainsKey(goalIndex))
         {
             Vars.UserData.curDungeonIndex = goalIndex;
-            mapGenerator.DungeonGenerate(Vars.UserData.curLevelDungeonMaps[goalIndex],
+            mapGenerator.DungeonGenerate(Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
                 {
                     
@@ -116,8 +116,9 @@ public class WorldMapPlayer : MonoBehaviour
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             }
             );
-            Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
+            //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void PlayerClearWorldMap()
     {
