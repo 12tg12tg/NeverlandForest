@@ -49,5 +49,4 @@ public class UserData
     public int date = 1;
     public float hunterHp = 100;
     public float herbalistHp = 100;
-
 }

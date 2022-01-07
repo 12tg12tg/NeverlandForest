@@ -25,4 +25,11 @@ public class ChangeCursor : MonoBehaviour
         result.Apply();
         return result;
     }
+
+    public void OnDisable()
+    {
+        cursorImg = null;
+        Cursor.SetCursor(cursorImg, Vector2.zero, CursorMode.ForceSoftware);
+    }
+
 }
