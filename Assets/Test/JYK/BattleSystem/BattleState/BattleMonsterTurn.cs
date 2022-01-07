@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
+
 public class BattleMonsterTurn : State<BattleState>
 {
     private BattleManager manager;
@@ -13,21 +15,27 @@ public class BattleMonsterTurn : State<BattleState>
 
     public override void Init()
     {
-        Debug.Log("Battle Monster Init");
-        manager.PrintMessage("몬스터 턴", 1f, null);
-
-        manager.MonsterQueue.Clear();
-        
-
-        foreach (var monster in manager.monster)
+        var list = manager.monster.Where(n => n.State != MonsterState.Dead).ToList();
+        if (list.Count == 0)
         {
-            var randomTarget = Random.Range(0, 2);
-            var targetPos = randomTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
-            var command = monster.SetActionCommand(targetPos);
-            manager.MonsterQueue.Enqueue(command);
+            manager.PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
         }
+        else
+        {
+            manager.PrintMessage("몬스터 턴", 1f, null);
 
-        manager.MonsterQueue.OrderByDescending(x => x.Ordering);
+            manager.MonsterQueue.Clear();
+
+
+            foreach (var monster in list)
+            {
+                var command = monster.SetActionCommand();
+                if (command != null)
+                    manager.MonsterQueue.Enqueue(command);
+            }
+
+            manager.MonsterQueue.OrderByDescending(x => x.Ordering);
+        }
     }
 
     public override void Release()

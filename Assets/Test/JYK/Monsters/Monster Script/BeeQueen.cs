@@ -23,7 +23,7 @@ public class BeeQueen : MonsterUnit
         switch (rand)
         {
             case 0:
-                animator.SetTrigger("Jap");
+                animator.SetTrigger("Jab");
                 break;
             //case 1:
             //    animator.SetTrigger("Sting");

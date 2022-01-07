@@ -31,6 +31,7 @@ public class PlayerAction : State<CharacterBattleState>
             attackAnimationName = "WTD_AttackA3";
         }
         playerAnimation.SetTrigger("Attack");
+        TileMaker.Instance.GetTile(playerController.curCommand.target).CancleConfirmTarget(); //발판색삭제
     }
     public override void Release()
     {
@@ -42,7 +43,7 @@ public class PlayerAction : State<CharacterBattleState>
         // 공격애니메이션 종료시 공격이 종료됬다는 것을 알려줌
 
         if (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName(attackAnimationName) &&
-            playerAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f)
+            playerAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.6f)
         {
             isAttackMotionEnd = true;
         }
@@ -55,6 +56,7 @@ public class PlayerAction : State<CharacterBattleState>
             // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
             foreach (var target in targetList)
             {
+                target.PlayHitAnimation();
                 target.OnAttacked(playerController.curCommand);
             }
 

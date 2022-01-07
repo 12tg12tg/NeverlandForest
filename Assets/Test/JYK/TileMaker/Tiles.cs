@@ -16,7 +16,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public MeshRenderer edge;
 
     //Property
-    public Vector3 WolrdPos { get => transform.position; }
+    public Vector3 WorldPos { get => transform.position; }
     public bool HaveUnit { get => units.Count > 0; }
     public bool CanStand { get => units.Count < 2; }
 
@@ -33,6 +33,17 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     }
 
     //Move
+    public int MaxMovableRange()
+    {
+        //몬스터가 이동가능한 최대 범위를 반환함. (최대 3 제한)
+
+        int distanceToPlayer = (int)index.y - 0;
+        int max = distanceToPlayer - 1;
+        max = max > 3 ? 3 : max;
+        return max; //플레이어 타일에는 올라설 수 없다.
+    }
+
+    [System.Obsolete("당분간 쓸일 없을듯")]
     public bool TryGetFowardTile(out Tiles tile, int distance)
     {
         var dest = index;
@@ -108,11 +119,12 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         }
         this.confirmColor = color;
     }
-
+    
     public void CancleConfirmTarget()
     {
         affectedPlayer = PlayerType.None;
         isConfirm = false;
+        ResetHighlightExceptConfirm();
     }
 
     public void SetMiddleState()
@@ -126,6 +138,11 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             HighlightCanConsumeSign();
         if(isConfirm)
             ResetHighlightExceptConfirm();
+    }
+
+    public void RemoveUnit(UnitBase unit)
+    {
+        units.Remove(unit);
     }
 
     //Drag Drop

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BattleState
 {
-    Start, Player, Monster, Action, End,
+    Start, Player, Monster, Action, Settlement, End,
 }
 
 public class BattleFSM : FSM<BattleState>
@@ -13,10 +13,11 @@ public class BattleFSM : FSM<BattleState>
 
     private void Start()
     {
-        AddState(BattleState.Action, new BattleAction(manager));
+        AddState(BattleState.Start, new BattleStart(manager));
         AddState(BattleState.Player, new BattlePlayerTurn(manager));
         AddState(BattleState.Monster, new BattleMonsterTurn(manager));
-        AddState(BattleState.Start, new BattleStart(manager));
+        AddState(BattleState.Action, new BattleAction(manager));
+        AddState(BattleState.Settlement, new BattleSettlement(manager));
         AddState(BattleState.End, new BattleEnd(manager));
         SetState(BattleState.Start);
     }

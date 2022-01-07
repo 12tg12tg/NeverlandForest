@@ -11,14 +11,10 @@ public class BattleAction : State<BattleState>
     }
 
     private PlayerCommand curCommand;
-    private MonsterCommand curMonster;
+    private MonsterCommand curMonsterCommand;
 
-    bool onceTry = true;
-    float timer = 0;
     public override void Init()
     {
-        Debug.Log("Battle Action Init");
-
         if (FSM.preState == BattleState.Player)
         {
             curCommand = manager.CommandQueue.Dequeue();
@@ -27,16 +23,16 @@ public class BattleAction : State<BattleState>
         }
         else if (FSM.preState == BattleState.Monster)
         {
-            curMonster = manager.MonsterQueue.Dequeue();
-            switch (curMonster.actionType)
+            curMonsterCommand = manager.MonsterQueue.Dequeue();
+            switch (curMonsterCommand.actionType)
             {
                 case MonsterActionType.None:
                     break;
                 case MonsterActionType.Attack:
-                    curMonster.attacker.PlayAttackAnimation();
+                    curMonsterCommand.attacker.PlayAttackAnimation();
                     break;
                 case MonsterActionType.Move:
-                    curMonster.attacker.Move();
+                    curMonsterCommand.attacker.Move();
                     break;
             }
         }
@@ -64,24 +60,24 @@ public class BattleAction : State<BattleState>
         }
         else if (FSM.preState == BattleState.Monster)
         {
-            if(curMonster.attacker.State == MonsterState.Idle)
+            if(curMonsterCommand.attacker.State == MonsterState.Idle)
             {
                 if(manager.MonsterQueue.Count <= 0)
                 {
-                    FSM.ChangeState(BattleState.Player);
+                    FSM.ChangeState(BattleState.Settlement);
                     return;
                 }
 
-                curMonster = manager.MonsterQueue.Dequeue();
-                switch (curMonster.actionType)
+                curMonsterCommand = manager.MonsterQueue.Dequeue();
+                switch (curMonsterCommand.actionType)
                 {
                     case MonsterActionType.None:
                         break;
                     case MonsterActionType.Attack:
-                        curMonster.attacker.PlayAttackAnimation();
+                        curMonsterCommand.attacker.PlayAttackAnimation();
                         break;
                     case MonsterActionType.Move:
-                        curMonster.attacker.Move();
+                        curMonsterCommand.attacker.Move();
                         break;
                 }
             }
@@ -101,13 +97,6 @@ public class BattleAction : State<BattleState>
 
             //        }
             //    }
-            timer += Time.deltaTime;
-            if(timer > 3f)
-            {
-                timer = 0f;
-                FSM.ChangeState(BattleState.Player);
-                return;
-            }
         }
     }
 

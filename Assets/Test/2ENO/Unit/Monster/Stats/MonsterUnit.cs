@@ -5,7 +5,7 @@ using System.Linq;
 
 public enum MonsterState
 {
-    Idle, Attack, Move
+    Idle, Attack, Move, DoSomething, Dead
 }
 
 public abstract class MonsterUnit : UnitBase, IAttackable
@@ -15,7 +15,8 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
-    public MonsterCommand curCommand;
+    public MonsterCommand command;
+    private BattleManager manager;
 
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
@@ -25,16 +26,21 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
 
-
+    // IAttackable
     public void OnAttacked(BattleCommand attacker)
     {
         var playerStats = attacker as PlayerCommand;
         var damage = playerStats.skill.SkillTableElem.damage;
-        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다.");
+        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다. {Hp + damage} -> {Hp}");
         Hp -= damage;
-        Debug.Log($"{Hp + damage} -> {Hp}");
+        if (Hp <= 0)
+        {
+            PlayDeadAnimation();
+            State = MonsterState.Dead;
+        }
     }
 
+    // 초기화
     public void Init(MonsterTableElem elem)
     {
         Hp = elem.hp;
@@ -42,61 +48,96 @@ public abstract class MonsterUnit : UnitBase, IAttackable
         sheild = elem.sheild;
         speed = elem.speed;
         type = elem.type;
+        manager ??= BattleManager.Instance;
+        command ??= new MonsterCommand(this);
     }
-    /*행동결정함수 반환값은 MonsterCommand*/
-
-    public MonsterCommand SetActionCommand(Vector2 targetPos)
+    private void EraseThis()
     {
-        var command = new MonsterCommand(this);
-        switch (type)
+        CurTile.RemoveUnit(this);
+        manager.monster.Remove(this);
+    }
+
+
+    // Action
+    private bool CheckCanAttackPlayer()
+    {
+        //몬스터 사거리 내에 플레이어가 있는지 판단.
+        var range = (int)type + 1;
+        var dist = Pos.y;
+        return dist <= range;
+    }
+    public MonsterCommand SetActionCommand()
+    {
+        command.Clear();
+        if (State == MonsterState.Dead)
+            return null;
+
+        if (CheckCanAttackPlayer())
         {
-            case MonsterType.Near:
-                if(targetPos.y + 1 < Pos.y)
-                    command.actionType = MonsterActionType.Move;
-                else
-                    command.actionType = MonsterActionType.Attack;
-                break;
-            case MonsterType.Far:
-                if (targetPos.y + 2 < Pos.y)
-                    command.actionType = MonsterActionType.Move;
-                else
-                    command.actionType = MonsterActionType.Attack;
-                break;
+            command.actionType = MonsterActionType.Attack;
+            var randTarget = Random.Range(0, 2);
+            command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
         }
-        if (IsBind)
-            command.actionType = MonsterActionType.None;
-        command.target = targetPos;
-        curCommand = command;
+        else if(IsBind)
+        {
+            command.actionType = MonsterActionType.None;         
+        }
+        else
+        {
+            var movableTiles = TileMaker.Instance.GetMovableTilesInSameRow(CurTile);
+            int countInRow = movableTiles.Length;
+            if (countInRow != 0)
+            {
+                var rand = Random.Range(0, countInRow);
+                command.actionType = MonsterActionType.Move;
+                command.target = movableTiles[rand].index;
+            }
+            else
+            {
+                var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
+                int count = movableTilesOtherRow.Length;
+                if(count != 0)
+                {
+                    var rand = Random.Range(0, count);
+                    command.actionType = MonsterActionType.Move;
+                    command.target = movableTilesOtherRow[rand].index;
+                }
+                else
+                {
+                    command.actionType = MonsterActionType.None;
+                }
+            }
+        }
+        State = MonsterState.DoSomething;
         return command;
     }
+    public void Move()
+    {
+        BattleManager.Instance.PlaceUnitOnTile(command.target, this, true, () => State = MonsterState.Idle);
+    }
 
+    // Animation
     public abstract void PlayAttackAnimation();
     public abstract void PlayDeadAnimation();
     public abstract void PlayHitAnimation();
-    public void Move()
-    {
-        State = MonsterState.Move;
-        var moveCount = Random.Range(1, 4);
-        Tiles fowardTile = null;
-        int count = 0;
-        while (!CurTile.TryGetFowardTile(out fowardTile, moveCount) && count < 200)
-        {
-            count++;
-            moveCount = Random.Range(1, 4);
-        }
-        Debug.Log(count);
-        BattleManager.Instance.PlaceUnitOnTile(fowardTile.index, this, () => State = MonsterState.Idle, true);
-    }
-    // 공격 애니메이션 끝날때 태그 실행
+
+
+    // Animation Tag Function
     public void TargetAttack()
     {
-        var list = TileMaker.Instance.UnitOnTile(curCommand.target);
-        var targetList = list.Cast<PlayerBattleController>();
-        foreach (var target in targetList)
+        var list = TileMaker.Instance.GetUnitsOnTile(command.target);
+        foreach (var target in list)
         {
-            target.Stats.OnAttacked(curCommand);
+            var player = target as PlayerStats;
+            player.OnAttacked(command);
         }
         State = MonsterState.Idle;
     }
-
+    public void StartSinking()
+    {
+        EraseThis();
+        var dest = transform.position;
+        dest.y -= 3f;
+        StartCoroutine(Utility.CoTranslate(transform, transform.position, dest, 1f, () => gameObject.SetActive(false)));
+    }
 }

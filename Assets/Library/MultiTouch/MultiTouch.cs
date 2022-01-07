@@ -21,7 +21,7 @@ public class MultiTouch : Singleton<MultiTouch>
     public float minZoomInch = 0.2f;
     public float maxZoomInch = 0.5f;
 
-    public int touchCount;
+    private int touchCount;
     public int TouchCount => touchCount;
     //public Vector2 TapPosition { get => PrimaryPos; } 
 

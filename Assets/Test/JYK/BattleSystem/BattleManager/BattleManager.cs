@@ -19,7 +19,11 @@ public class MonsterCommand : BattleCommand
         attacker = mUnit;
         Ordering = mUnit.Speed;
     }
-
+    public void Clear()
+    {
+        target = Vector2.zero;
+        actionType = MonsterActionType.None;
+    }
 }
 public class PlayerCommand : BattleCommand
 {
@@ -99,6 +103,7 @@ public class BattleManager : MonoBehaviour
     public UserInputPanel userInputPanel;
 
     //Vars
+    private int turn;
     private bool isDrag;
     private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
     private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
@@ -106,6 +111,7 @@ public class BattleManager : MonoBehaviour
     private bool isWaitingTileSelect;
 
     //Property
+    public int Turn { get => turn; set => turn = value; }
     public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
     public Queue<PlayerCommand> CommandQueue { get => comandQueue; }
@@ -116,28 +122,15 @@ public class BattleManager : MonoBehaviour
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);
+
+        //스킬목록 전달받기
+        TempInit();
     }
 
     private void Start()
     {
         //Multitouch 활성화
         multiTouch = MultiTouch.Instance;
-
-        //스킬목록 전달받기
-        Init();
-
-        //플레이어 배치
-        PlaceUnitOnTile(new Vector2(0, 0), girl.Stats);
-        PlaceUnitOnTile(new Vector2(1, 0), boy.Stats);
-
-        //몬스터 (랜덤뽑기) & 배치
-        PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
-        PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
-        PlaceUnitOnTile(new Vector2(1, 6), monster[2]);
-
-        //스킬창 Init
-        hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
-        herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
     }
 
 
@@ -148,13 +141,13 @@ public class BattleManager : MonoBehaviour
             dragSlot.transform.position = multiTouch.TouchPos;
         }
 
-        Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
+        //Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
     //초기화
-    public void Init()
+    public void TempInit()
     {
-        /*플레이어 스킬 목록 전달받기*/
+        /*임시 - 플레이어 스킬 목록 전달받기*/
         var boy = Vars.BoySkillList;
         var girl = Vars.GirlSkillList;
 
@@ -185,11 +178,28 @@ public class BattleManager : MonoBehaviour
         skill = DataTableManager.GetTable<PlayerSkillTable>().GetData<PlayerSkillTableElem>("6");
         data = new DataPlayerSkill(skill);
         girl.Add(data);
-
-        //몬스터 리스트 전달받기
+    }
+    
+    public void Init()
+    {
+        // Turn
+        turn = 1;
 
         //플레이어 스탯 전달받기
-            // Vars 전역 저장소에서 불러오기.
+        // Vars 전역 저장소에서 불러오기.
+
+        //플레이어 배치
+        PlaceUnitOnTile(new Vector2(0, 0), girl.Stats);
+        PlaceUnitOnTile(new Vector2(1, 0), boy.Stats);
+
+        //몬스터 (랜덤뽑기) & 배치
+        PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
+        PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
+        PlaceUnitOnTile(new Vector2(1, 6), monster[2]);
+
+        //스킬창 Init
+        hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
+        herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
     }    
 
     //UI
@@ -246,41 +256,21 @@ public class BattleManager : MonoBehaviour
     }
 
     //Tile
-    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, bool isAnimation = false)
+    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, bool isCoroutine = false, UnityAction action = null)
     {
-        var tile = tileMaker.GetTile(tilePos);
-        if(tile.CanStand)
-        {
-            tile.units.Add(unit);
-            unit.Pos = tilePos;
+        var preTile = unit.CurTile;
+        preTile.RemoveUnit(unit);
 
-            var dest = tile.WolrdPos;
-            dest.y = unit.transform.position.y;
-
-            if (isAnimation)
-            {
-                StartCoroutine(
-                    Utility.CoTranslate(unit.transform, unit.transform.position, dest, 0.7f));
-            }
-            else
-            {
-                unit.transform.position = dest;
-            }
-        }  
-    }
-
-    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, UnityAction action, bool isAnimation = false)
-    {
         var tile = tileMaker.GetTile(tilePos);
         if (tile.CanStand)
         {
             tile.units.Add(unit);
             unit.Pos = tilePos;
 
-            var dest = tile.WolrdPos;
+            var dest = tile.WorldPos;
             dest.y = unit.transform.position.y;
 
-            if (isAnimation)
+            if (isCoroutine)
             {
                 StartCoroutine(
                     Utility.CoTranslate(unit.transform, unit.transform.position, dest, 0.7f, action)) ;
@@ -290,8 +280,11 @@ public class BattleManager : MonoBehaviour
                 unit.transform.position = dest;
             }
         }
+        else
+        {
+            Debug.LogError("분명 미리 확인했을텐데, 이동시킬 타일이 CanStand에 위배됨");
+        }
     }
-
 
     public void DisplayMonsterTile()
     {
@@ -472,19 +465,19 @@ public class BattleManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if(GUILayout.Button("Boy Clicked"))
-        {
-            OpenSkillUI(PlayerType.Boy);
-        }
-        if (GUILayout.Button("Girl Clicked"))
-        {
-            OpenSkillUI(PlayerType.Girl);
-        }
-        if(GUILayout.Button("Who First"))
-        {
-            Debug.Log($"Boy : {boyInput.IsFirst} / {boyInput.IsSecond}");
-            Debug.Log($"Girl : {girlInput.IsFirst} / {girlInput.IsSecond}");
-        }
+        //if(GUILayout.Button("Boy Clicked"))
+        //{
+        //    OpenSkillUI(PlayerType.Boy);
+        //}
+        //if (GUILayout.Button("Girl Clicked"))
+        //{
+        //    OpenSkillUI(PlayerType.Girl);
+        //}
+        //if(GUILayout.Button("Who First"))
+        //{
+        //    Debug.Log($"Boy : {boyInput.IsFirst} / {boyInput.IsSecond}");
+        //    Debug.Log($"Girl : {girlInput.IsFirst} / {girlInput.IsSecond}");
+        //}
         //if(GUILayout.Button("Move 1 Foward"))
         //{
         //    var monster0 = monster[0];

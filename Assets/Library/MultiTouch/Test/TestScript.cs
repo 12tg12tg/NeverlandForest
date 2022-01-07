@@ -15,6 +15,8 @@ public class TestScript : MonoBehaviour
     public MeshRenderer SwipeDown;
     public MeshRenderer SwipeLeft;
     public MeshRenderer SwipeRight;
+    public MeshRenderer touch1;
+    public MeshRenderer touch2;
 
     private void Start()
     {
@@ -89,6 +91,19 @@ public class TestScript : MonoBehaviour
         {
             transform.Rotate(0f, 0f, multiTouch.RotateAngle);
         }
+
+        if(multiTouch.TouchCount == 1)
+        {
+            touch1.material.color = Color.red;
+            StartCoroutine(CoResetColor(touch1));
+        }
+
+        if (multiTouch.TouchCount == 2)
+        {
+            touch2.material.color = Color.red;
+            StartCoroutine(CoResetColor(touch2));
+        }
+
     }
 
     private IEnumerator CoResetColor(MeshRenderer renderer)
