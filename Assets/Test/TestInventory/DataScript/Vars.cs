@@ -10,7 +10,7 @@ public static class Vars
 
     public static int maxIngameHour = 24;
     public static int maxIngameMinute = 60;
-    public static int maxStamina =100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
+    public static int maxStamina = 100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
     public static float hunterMaxHp = 100;
     public static float herbalistMaxHp = 100;
     public static int LanternMaxCount = 18;
@@ -55,13 +55,13 @@ public static class Vars
                 }
 
                 // 인벤토리에서 테스트로 사용할 아이템 리스트
-                int tempItemNum = 2;
-                for (int i = 0; i < 2; i++)
+                int tempItemNum = 3;
+                for (int i = 0; i < 11; i++)
                 {
                     var newItem = new DataAllItem();
                     newItem.itemId = tempItemNum;
                     newItem.LimitCount = Random.Range(5, 6);
-                    newItem.OwnCount = 27;
+                    newItem.OwnCount = Random.Range(1, 7);
                     var stringId = $"{tempItemNum}";
                     newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
                     userData.HaveAllItemList.Add(newItem);

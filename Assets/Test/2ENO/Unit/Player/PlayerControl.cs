@@ -39,7 +39,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
 }
 
     //// ¿€µø x
-    //public void OnPlayerMove(InputAction.CallbackContext context)
+    //public void OnPlayerMove(Input
+    //.CallbackContext context)
     //{
     //    Debug.Log(context.ReadValue<Vector2>());
     //}

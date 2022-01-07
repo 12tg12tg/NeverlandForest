@@ -7,9 +7,9 @@ using UnityEngine.UI;
 
 public class SwipeSomething : MonoBehaviour
 {
-    public TMP_Text tmp;
     public RectTransform canvas;
     public GameObject inventory;
+    public GameObject panel;
     public GameObject bar;
     private RectTransform inven;
 
@@ -46,6 +46,8 @@ public class SwipeSomething : MonoBehaviour
                 if (pos.y <= -dragDistance && !inven.gameObject.activeSelf)
                 {
                     bar.SetActive(false);
+                    inventory.SetActive(true);
+                    panel.SetActive(true);
                     inven.gameObject.SetActive(true);
                     var screenPos = Camera.main.ViewportToScreenPoint(new Vector3(0.5f, 0f, 0f));
                     screenPos.y -= inven.rect.height / 4;
@@ -62,6 +64,8 @@ public class SwipeSomething : MonoBehaviour
             else
             {
                 inven.gameObject.SetActive(false);
+                inventory.SetActive(false);
+                panel.SetActive(false);
                 bar.SetActive(true);
             }
 
