@@ -101,7 +101,7 @@ public class InventoryItemView : MonoBehaviour
             item.gameObject.SetActive(false);
         }
 
-        for(var i = 0; i< itemList.Count; i++)
+        for (var i = 0; i < itemList.Count; i++)
         {
             itemGoList[i].gameObject.SetActive(true);
             itemGoList[i].Init(itemList[i]);
@@ -131,11 +131,11 @@ public class InventoryItemView : MonoBehaviour
     {
         var index = itemDataList.FindLastIndex(x => x.itemId == item.itemId);
 
-        if(index != -1)
+        if (index != -1)
         {
             itemDataList[index].OwnCount -= item.OwnCount;
 
-            if(itemDataList[index].OwnCount <= 0)
+            if (itemDataList[index].OwnCount <= 0)
             {
                 itemDataList.RemoveAt(index);
                 invenCtrl.UserDataItemRemove(item);
@@ -236,6 +236,4 @@ public class InventoryItemView : MonoBehaviour
         SortItemList();
         SetAllItems(divideItemList);
     }
-
-
 }

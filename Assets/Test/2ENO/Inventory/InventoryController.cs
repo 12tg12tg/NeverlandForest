@@ -49,7 +49,7 @@ public class InventoryController : GenericWindow
 
     public void UserDataUpdate(List<DataAllItem> dataItem)
     {
-        for (int i=0; i< dataItem.Count; i++)
+        for (int i = 0; i < dataItem.Count; i++)
         {
             if (!Vars.UserData.HaveAllItemList2.ContainsKey(dataItem[i].ItemTableElem.name))
             {
@@ -102,4 +102,8 @@ public class InventoryController : GenericWindow
             DeleteItem(newItem);
         }
     }
+
+    
+    
+    
 }

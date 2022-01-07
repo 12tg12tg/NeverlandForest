@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
+
 public enum HuntingEvent
 {
     PlayerMove,
@@ -11,6 +13,7 @@ public class HuntingSystem : MonoBehaviour
 {
     public PlayerHuntingUnit playerUnit;
     public HuntTilesMaker tileMaker;
+    public Image getItemImage;
     private HuntTile[] tiles;
 
     private int huntPercent;
@@ -19,9 +22,7 @@ public class HuntingSystem : MonoBehaviour
 
     public Animal animal;
     public TMP_Text text;
-
     public TMP_Text result;
-
     private void Start()
     {
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.PlayerMove, OnBush);
@@ -74,6 +75,7 @@ public class HuntingSystem : MonoBehaviour
         {
             Debug.Log("¼º°ø");
             result.text = "Hunting Success";
+            GetItem();
         }
         else
         {
@@ -87,5 +89,27 @@ public class HuntingSystem : MonoBehaviour
     {
         huntPercent = (bool)vals[0] && vals.Length.Equals(2) ? huntPercent + 10 : huntPercent;
         HuntPercentagePrint();
+    }
+
+
+    private void GetItem()
+    {
+        var newItem = new DataAllItem();
+        var tempItemNum = newItem.itemId = 5;
+        newItem.LimitCount = 3;
+        newItem.OwnCount = Random.Range(1, 5);
+        var stringId = $"{tempItemNum}";
+        var item = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(stringId);
+        newItem.itemTableElem = item;
+        getItemImage.sprite = item.IconSprite;
+
+        if (!Vars.UserData.HaveAllItemList2.ContainsKey(item.name))
+        {
+            Vars.UserData.HaveAllItemList2.Add(item.name, newItem);
+        }
+        else
+        {
+            Vars.UserData.HaveAllItemList2[newItem.ItemTableElem.name].OwnCount += newItem.OwnCount;
+        }
     }
 }
