@@ -82,7 +82,7 @@ public class BattleData : EventData
         }
         var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z-3f);
         var battleObj = Object.Instantiate(obj, objPos, Quaternion.identity);
-        //battleObj.Init(dgSystem, this, roomIndex);
+        battleObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
         return battleObj;

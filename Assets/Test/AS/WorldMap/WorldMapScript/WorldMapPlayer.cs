@@ -123,7 +123,7 @@ public class WorldMapPlayer : MonoBehaviour
             );
             //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void PlayerClearWorldMap()
     {

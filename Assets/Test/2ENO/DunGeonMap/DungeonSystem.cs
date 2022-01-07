@@ -59,7 +59,7 @@ public class DungeonSystem : MonoBehaviour
 
         if (Vars.UserData.CurAllDungeonData.Count <= 0)
         {
-            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            //GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
             Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = 100;
 
         }
@@ -129,10 +129,11 @@ public class DungeonSystem : MonoBehaviour
             if(dungeonSystemData.curDungeonData.nextRoomIdx == -1)
             {
                 Vars.UserData.WorldMapPlayerData.isClear = true;
-                SceneManager.LoadScene("WorldMap");
                 Vars.UserData.curDungeonIndex = Vector2.zero;
                 Vars.UserData.CurAllDungeonData.Clear();
                 Vars.UserData.curLevelDungeonMaps.Clear();
+                //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+                SceneManager.LoadScene("WorldMap");
                 return;
             }
 
@@ -145,6 +146,7 @@ public class DungeonSystem : MonoBehaviour
 
 
             SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
+
         }
         else
         {
@@ -164,7 +166,7 @@ public class DungeonSystem : MonoBehaviour
 
         Vars.UserData.DungeonMapData = dungeonSystemData.dungeonRoomArray;
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void LoadEventData()
     {
@@ -239,6 +241,7 @@ public class DungeonSystem : MonoBehaviour
                 break;
             case DunGeonEvent.Hunt:
                 Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+                //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("Hunting");
                 break;
             case DunGeonEvent.RandomIncount:
