@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public struct Edge
 {
@@ -87,7 +88,7 @@ public class WorldMap : MonoBehaviour
         Fog(Vars.UserData.date);
     }
 
-    public IEnumerator InitMap(System.Action action)
+    public IEnumerator InitMap(UnityAction action)
     {
         while (!isAllLinked)
         {

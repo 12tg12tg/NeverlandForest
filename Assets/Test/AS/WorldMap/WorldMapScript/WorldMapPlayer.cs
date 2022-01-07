@@ -6,7 +6,7 @@ using System;
 [Serializable]
 public class WorldMapPlayer : MonoBehaviour
 {
-    public GameObject map;
+    public WorldMapManager map;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
 
@@ -18,7 +18,6 @@ public class WorldMapPlayer : MonoBehaviour
     private Vector3 goalPos;
 
     public float distance;
-
     public string sceneName;
 
     public Vector2 CurrentIndex => currentIndex;
@@ -27,16 +26,9 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Init()
     {
-        totalMap = new WorldMapNode[map.transform.childCount];
-        
-        for (int i = 0; i < map.transform.childCount; i++)
-        {
-            totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
-        }
-        totalMap.OrderBy(n => n.level);
+        TotalMapInit();
         currentIndex = totalMap[0].index;
-
-        transform.position = totalMap[0].transform.position + new Vector3(0f, 1.5f, 0f);
+        transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
 
         var data = new WorldMapPlayerData();
         data.startPos = data.currentPos = transform.position;
@@ -44,6 +36,17 @@ public class WorldMapPlayer : MonoBehaviour
         Vars.UserData.WorldMapPlayerData = data;
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
+
+    private void TotalMapInit()
+    {
+        totalMap = new WorldMapNode[map.transform.childCount];
+        for (int i = 0; i < map.transform.childCount; i++)
+        {
+            totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
+        }
+        totalMap.OrderBy(n => n.level);
+    }
+
     public void Load()
     {
         var data = Vars.UserData.WorldMapPlayerData;
@@ -53,7 +56,8 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void ComeBackWorldMap()
     {
-        if(Vars.UserData.WorldMapPlayerData == null)
+        TotalMapInit();
+        if (Vars.UserData.WorldMapPlayerData == null)
         {
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
             if (Vars.UserData.WorldMapPlayerData == null)
@@ -67,10 +71,13 @@ public class WorldMapPlayer : MonoBehaviour
             PlayerRunWorldMap();
     }
 
-    public void PlayerWorldMap(Vector3 goal, Vector2 index)
+    public void PlayerWorldMap(WorldMapNode node)
     {
+        var goal = node.transform.position + new Vector3(0f, 0.5f, 0f);
+        transform.LookAt(node.transform);
+        GetComponent<Animator>().SetTrigger("Walk");
         mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
-        goalIndex = coMove == null ? index : goalIndex;
+        goalIndex = coMove == null ? node.index : goalIndex;
         goalPos = goal;
         startPos = transform.position;
         var x = transform.position.x + (Mathf.Abs(goal.x - transform.position.x) * distance);
@@ -99,7 +106,6 @@ public class WorldMapPlayer : MonoBehaviour
             mapGenerator.DungeonGenerate(Vars.UserData.curLevelDungeonMaps[goalIndex],
                 () =>
                 {
-                    
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                     GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 }
@@ -111,7 +117,6 @@ public class WorldMapPlayer : MonoBehaviour
             Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
             mapGenerator.DungeonGenerate(null, () =>
             {
-               
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             }
@@ -121,21 +126,52 @@ public class WorldMapPlayer : MonoBehaviour
     }
     public void PlayerClearWorldMap()
     {
+        var ani = GetComponent<Animator>();
+        ani.SetTrigger("Walk");
         var data = Vars.UserData.WorldMapPlayerData;
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => coMove = null));
+
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => { 
+            coMove = null; 
+            ani.SetTrigger("Idle");
+            transform.eulerAngles = new Vector3(0f, 90f, 0f);
+        }));
+
+        for (int i = 0; i < totalMap.Length; i++)
+        {
+            if (totalMap[i].index.Equals(data.goalIndex))
+            {
+                transform.LookAt(totalMap[i].transform);
+                break;
+            }
+        }
+
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void PlayerRunWorldMap()
     {
+        var ani = GetComponent<Animator>();
+        ani.SetTrigger("Walk");
         var data = Vars.UserData.WorldMapPlayerData;
-
         currentIndex = data.currentIndex;
         transform.position = data.currentPos;
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => { 
+            coMove = null; 
+            ani.SetTrigger("Idle");
+            transform.eulerAngles = new Vector3(0f, 90f, 0f);
+        }));
 
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => coMove = null));
+        for (int i = 0; i < totalMap.Length; i++)
+        {
+            if (totalMap[i].index.Equals(data.currentIndex))
+            {
+                transform.LookAt(totalMap[i].transform);
+                break;
+            }
+        }
+
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 }

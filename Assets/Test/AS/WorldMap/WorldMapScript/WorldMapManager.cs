@@ -16,7 +16,7 @@ public class WorldMapManager : MonoBehaviour
 
     private WorldMap worldMap;
 
-    private void Awake()
+    private void Start()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
         var loadData = Vars.UserData.WorldMapNodeStruct;
@@ -55,8 +55,7 @@ public class WorldMapManager : MonoBehaviour
                     {
                         if (x.Parent[i].index.Equals(player.CurrentIndex))
                         {
-                            var pos = x.transform.position + new Vector3(0f, 1.5f, 0f);
-                            player.PlayerWorldMap(pos, x.index);
+                            player.PlayerWorldMap(x);
                             return;
                         }
                     }

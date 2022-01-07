@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public enum Difficulty
@@ -13,7 +14,7 @@ public enum Difficulty
 [Serializable]
 public class WorldMapNode : MonoBehaviour, IPointerClickHandler
 {
-    public event Action<WorldMapNode> OnClick; // 얘는 대문자로 사용해야 한다고 함
+    public event UnityAction<WorldMapNode> OnClick; // 얘는 대문자로 사용해야 한다고 함
 
     public List<WorldMapNode> Children { get; set; } = new List<WorldMapNode>();
     public List<WorldMapNode> Parent { get; set; } = new List<WorldMapNode>();
