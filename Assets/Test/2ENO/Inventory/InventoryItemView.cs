@@ -60,11 +60,11 @@ public class InventoryItemView : MonoBehaviour
             dataAllDivideItemList.Add(new DataAllItem(newItem));
         }
 
+        // TODO: while문으로 바꾸고싶은데 일단 for문의 최대치가 증가하는 이상한 느낌으로 동작중..
         for (int i = 0; i < dataAllDivideItemList.Count; i++)
         {
             if(dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
             {
-                // 생성자에서 분할 작업 나눠가짐
                 var divideItem = DivideCreate(dataAllDivideItemList[i]);
                 if (divideItem == null)
                     break;

@@ -44,7 +44,7 @@ public class GatheringData : EventData
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
-    public EventObject Createobj(EventObject obj, DungeonSystem dgSystem)
+    public HuntingObject Createobj(HuntingObject obj, DungeonSystem dgSystem)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -57,7 +57,7 @@ public class HuntingData : EventData
             huntingObj2.Init(dgSystem, this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z - 2);
+        var objPos = new Vector3(eventBasePos.x, eventBasePos.y + 1f, eventBasePos.z - 1.5f);
         var huntingObj = Object.Instantiate(obj, objPos,Quaternion.identity);
         huntingObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
@@ -81,7 +81,7 @@ public class BattleData : EventData
             battleObj2.Init(dgSystem, this, roomIndex);
             return battleObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z-3f);
+        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + 5f);
         var battleObj = Object.Instantiate(obj, objPos, Quaternion.identity);
         battleObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;

@@ -229,8 +229,14 @@ public class DunGeonMapGenerate : MonoBehaviour
             var nextId = NextRoomId(curIdx, curDir);
             
             dungeonRoomArray[curIdx].nextRoomIdx = nextId;
+            // 付瘤阜 规
             if (remainMainRoom <= 0)
+            {
                 dungeonRoomArray[curIdx].nextRoomIdx = -1;
+                dungeonRoomArray[curIdx].eventList.Clear();
+                dungeonRoomArray[curIdx].eventList.Add(DunGeonEvent.Battle);
+                return;
+            }
             TestMapSet(nextId, curIdx, curDir, rndCount);
         }
         // 辨规 积己
