@@ -109,6 +109,7 @@ public class BattleManager : MonoBehaviour
     private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
     private IEnumerable<Tiles> targetTiles;
     private bool isWaitingTileSelect;
+    private const float monsterSpeed = 10f;
 
     //Property
     public int Turn { get => turn; set => turn = value; }
@@ -189,13 +190,13 @@ public class BattleManager : MonoBehaviour
         // Vars 전역 저장소에서 불러오기.
 
         //플레이어 배치
-        PlaceUnitOnTile(new Vector2(0, 0), girl.Stats);
-        PlaceUnitOnTile(new Vector2(1, 0), boy.Stats);
+        SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+        SetUnitOnTile(new Vector2(1, 0), boy.Stats);
 
         //몬스터 (랜덤뽑기) & 배치
-        PlaceUnitOnTile(new Vector2(0, 6), monster[0]);
-        PlaceUnitOnTile(new Vector2(2, 6), monster[1]);
-        PlaceUnitOnTile(new Vector2(1, 6), monster[2]);
+        SetUnitOnTile(new Vector2(0, 6), monster[0]);
+        SetUnitOnTile(new Vector2(2, 6), monster[1]);
+        SetUnitOnTile(new Vector2(1, 6), monster[2]);
 
         //스킬창 Init
         hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
@@ -256,7 +257,18 @@ public class BattleManager : MonoBehaviour
     }
 
     //Tile
-    public void PlaceUnitOnTile(Vector2 tilePos, UnitBase unit, bool isCoroutine = false, UnityAction action = null)
+    public void SetUnitOnTile(Vector2 tilePos, UnitBase unit)
+    {
+        var tile = tileMaker.GetTile(tilePos);
+
+        tile.units.Add(unit);
+        unit.Pos = tilePos;
+
+        var dest = tile.WorldPos;
+        dest.y = unit.transform.position.y;
+        unit.transform.position = dest;
+    }
+    public IEnumerator MoveUnitOnTile(Vector2 tilePos, UnitBase unit, UnityAction action = null)
     {
         var preTile = unit.CurTile;
         preTile.RemoveUnit(unit);
@@ -270,15 +282,19 @@ public class BattleManager : MonoBehaviour
             var dest = tile.WorldPos;
             dest.y = unit.transform.position.y;
 
-            if (isCoroutine)
-            {
-                StartCoroutine(
-                    Utility.CoTranslate(unit.transform, unit.transform.position, dest, 0.7f, action)) ;
-            }
-            else
-            {
-                unit.transform.position = dest;
-            }
+            var startRot = Quaternion.LookRotation(unit.transform.forward);
+            var destRot = Quaternion.LookRotation(dest - unit.transform.position);
+
+            if(Quaternion.Angle(startRot, destRot) > 0f)
+                yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.5f));
+
+            yield return new WaitForSeconds(0.3f);
+            yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, monsterSpeed, 0.3f));
+
+            if (Quaternion.Angle(startRot, destRot) > 0f)
+                yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.5f));
+
+            action?.Invoke();
         }
         else
         {
@@ -465,6 +481,10 @@ public class BattleManager : MonoBehaviour
 
     private void OnGUI()
     {
+        if (GUILayout.Button("Boy Clicked"))
+        {
+            StartCoroutine(BattleManager.Instance.MoveUnitOnTile(new Vector2(1, 0), monster[0]));
+        }
         //if(GUILayout.Button("Boy Clicked"))
         //{
         //    OpenSkillUI(PlayerType.Boy);

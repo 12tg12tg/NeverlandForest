@@ -17,6 +17,9 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     protected MonsterTableElem baseElem;
     public MonsterCommand command;
     private BattleManager manager;
+    private bool isActionDone;
+    private float delayTimer;
+    private const float actionDelay = 0.5f;
 
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
@@ -25,6 +28,21 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
+
+    // Update
+    private void Update()
+    {
+        if(isActionDone)
+        {
+            delayTimer += Time.deltaTime;
+            if(delayTimer > actionDelay)
+            {
+                delayTimer = 0f;
+                isActionDone = false;
+                State = MonsterState.Idle; // 이 몬스터의 액션 끝을 알리는 조건.
+            }
+        }
+    }
 
     // IAttackable
     public void OnAttacked(BattleCommand attacker)
@@ -61,29 +79,37 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     // Action
     private bool CheckCanAttackPlayer()
     {
-        //몬스터 사거리 내에 플레이어가 있는지 판단.
+        // 몬스터 사거리 내에 플레이어가 있는지 판단.
         var range = (int)type + 1;
         var dist = Pos.y;
         return dist <= range;
+        // 나중에 플레이어가 쓰러져있는지 아닌지도 확인.
     }
     public MonsterCommand SetActionCommand()
     {
+        // 1. 이전 커맨드 지우기
         command.Clear();
+
+        // 2. 죽었는지 먼저 확인
         if (State == MonsterState.Dead)
             return null;
 
+        // 3. 공격할 대상이 사거리내에 있는지 확인. 있다면 랜덤 대상 지정.
         if (CheckCanAttackPlayer())
         {
             command.actionType = MonsterActionType.Attack;
             var randTarget = Random.Range(0, 2);
             command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
         }
+        // 4. 속박 상태인지 확인
         else if(IsBind)
         {
             command.actionType = MonsterActionType.None;         
         }
+        // 5. 움직일 대상 타일 찾기
         else
         {
+            // 같은 행에서 먼저 확인
             var movableTiles = TileMaker.Instance.GetMovableTilesInSameRow(CurTile);
             int countInRow = movableTiles.Length;
             if (countInRow != 0)
@@ -94,6 +120,7 @@ public abstract class MonsterUnit : UnitBase, IAttackable
             }
             else
             {
+                // 다른 행에서도 확인
                 var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
                 int count = movableTilesOtherRow.Length;
                 if(count != 0)
@@ -113,7 +140,7 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     }
     public void Move()
     {
-        BattleManager.Instance.PlaceUnitOnTile(command.target, this, true, () => State = MonsterState.Idle);
+        StartCoroutine(BattleManager.Instance.MoveUnitOnTile(command.target, this, () => isActionDone = true));
     }
 
     // Animation
@@ -131,7 +158,7 @@ public abstract class MonsterUnit : UnitBase, IAttackable
             var player = target as PlayerStats;
             player.OnAttacked(command);
         }
-        State = MonsterState.Idle;
+        isActionDone = true;
     }
     public void StartSinking()
     {

@@ -5,12 +5,15 @@ using System.Linq;
 // 공격 전 상태
 public class PlayerAction : State<CharacterBattleState>
 {
-    PlayerBattleController playerController;
-    Animator playerAnimation;
+    // Component
+    private PlayerBattleController playerController;
+    private Animator playerAnimation;
 
+    // Vars
     private string attackAnimationName;
     private bool isAttackMotionEnd = false;
 
+    // 생성
     public PlayerAction(PlayerBattleController controller, Animator playerAnimation)
     {
         this.playerController = controller;
@@ -33,10 +36,12 @@ public class PlayerAction : State<CharacterBattleState>
         playerAnimation.SetTrigger("Attack");
         TileMaker.Instance.GetTile(playerController.curCommand.target).CancleConfirmTarget(); //발판색삭제
     }
+
     public override void Release()
     {
         // 공격 이 종료된 시점 해야할 것들
     }
+
     public override void Update()
     {
         // 공격 하는순간을 기다렸다가 공격하면 몇초간 공격 애니메이션 실행,
@@ -74,28 +79,8 @@ public class PlayerAction : State<CharacterBattleState>
     public override void FixedUpdate()
     {
     }
+
     public override void LateUpdate()
     {
     }
 }
-
-//private IEnumerator CoAttackAction()
-//{
-//    //playerAnimation.SetTrigger()
-
-//    // 공격 애니메이션 모션이 종료될때 
-//    while (playerAnimation.GetCurrentAnimatorStateInfo(0).IsName("WTD_AttackA3") &&
-//        playerAnimation.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-//    {
-//        yield return null;
-//    }
-//    var targetList = GetTargetList(playerUnit.curCommand.target);
-
-//    // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked 역시 코루틴 등의 동작이 필요할경우 기다렸다 콜백으로 다음 진행?
-//    foreach(var target in targetList)
-//    {
-
-//    }
-
-//    FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀의 코루틴에서 체크하다가 역시 종료되서 다음진행
-//}
