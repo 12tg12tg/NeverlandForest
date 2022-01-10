@@ -202,6 +202,14 @@ public static class ConsumeManager
     {
         Vars.UserData.CurIngameHour += hour;
         Vars.UserData.CurIngameMinute += minute;
+
+        var consumeTotalMinute = 60 * hour + minute;
+        var consumeStamina = consumeTotalMinute / 30;
+        //var consumeStaminamod = consumeTotalMinute % 30; 
+        //30분당 스태미나 1(n)소비 인데 어떻게해야 깔끔하게 정리 할 수 있을까
+        GettingTired(consumeStamina);
+        //GettingTired(consumeStaminamod);
+
         while(Vars.UserData.CurIngameMinute >= Vars.maxIngameMinute)
         {
             Vars.UserData.CurIngameMinute -= Vars.maxIngameMinute;

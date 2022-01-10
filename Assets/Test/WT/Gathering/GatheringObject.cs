@@ -6,7 +6,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
     public EventData data;
     public int roomIndex;
     public DungeonSystem dungeonSystem;
-    private ConsumableTable consumableTable;
+    private AllItemDataTable allitemTable;
 
     public enum GatheringObjectType
     {
@@ -16,15 +16,15 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         Mushroom, //버섯
     }
     public GatheringObjectType objectType = GatheringObjectType.Tree; //원래는 excel같은곳에서 받아와야한다.
-    public ConsumableTable ConsumableTable
+    public AllItemDataTable AllItemTable
     {
         get
         {
-            return consumableTable;
+            return allitemTable;
         }
     }
-    public DataConsumable item;
-    private List<DataConsumable> userconsume;
+    public DataAllItem item;
+    private List<DataAllItem> allitemlist;
     private Vector3 weedPos;
    
     public GatheringSystem gathering;
@@ -51,7 +51,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
         dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
         dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
     public void Init()
     {
@@ -61,16 +61,17 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         var newweedPos = new Vector3(weedPos.x, weedPos.y, weedPos.z - 2f);
         weedPos = newweedPos;
 
-        consumableTable = DataTableManager.GetTable<ConsumableTable>();
-        userconsume = Vars.UserData.ConsumableItemList;
-
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
+        var newItem = new DataAllItem();
         rand = Random.Range(1, 4);
-        id = $"CON_000{rand}";
-        item = new DataConsumable();
-        item.itemId = rand;
-        item.dataType = DataType.Consume;
-        item.itemTableElem = consumableTable.GetData<ConsumableTableElem>(id);
+        newItem.itemId = rand;
+        newItem.LimitCount = 5;
+        newItem.OwnCount = Random.Range(1, 3);
+        var stringId = $"{rand}";
+        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
+
+        item = newItem;
     }
     public void Init(GatheringSystem system, EventData dt, DungeonSystem dgSystem, int thisRoomIdx)
     {
@@ -85,26 +86,17 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         var newweedPos = new Vector3(weedPos.x, weedPos.y, weedPos.z - 2f);
         weedPos = newweedPos;
 
-        consumableTable = DataTableManager.GetTable<ConsumableTable>();
-        userconsume = Vars.UserData.ConsumableItemList;
-
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
+        var newItem = new DataAllItem();
         rand = Random.Range(1, 4);
-        id = $"CON_000{rand}";
-        item = new DataConsumable();
-        item.itemId = rand;
-        item.dataType = DataType.Consume;
-        item.itemTableElem = consumableTable.GetData<ConsumableTableElem>(id);
-    }
-    private void Awake()
-    {
-       
+        newItem.itemId = rand;
+        newItem.LimitCount = 5;
+        newItem.OwnCount = Random.Range(1, 3);
+        var stringId = $"{rand}";
+        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
+        item = newItem;
 
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-      
     }
     public void Appear()
     {
