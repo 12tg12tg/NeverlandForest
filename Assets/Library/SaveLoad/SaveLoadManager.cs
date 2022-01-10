@@ -98,13 +98,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             //rList.Add(data.Value.dungeonRoomArray);
             rList2.Add(data.Value.dungeonRoomList);
         }
-        //dungeonMapData.curDungeonData = list;
         dungeonMapData.curPlayerData = pList;
         dungeonMapData.dungeonIndex = iList;
         //dungeonMapData.dungeonRoomArray = rList;
         dungeonMapData.dungeonRoomList = rList2;
         dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
 
+        dungeonMapData.curDungeonRoomData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
 
@@ -208,6 +208,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                
             }
             Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
+            Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData = dungeonMapData.curDungeonRoomData;
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }
     }

@@ -11,22 +11,21 @@ public class DungeonData
 
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
 
-    public DungeonRoom curDungeonData;
-    public RoomCtrl curRoomData;
+    public DungeonRoom curDungeonRoomData;
+    public RoomCtrl curRoomInstanceData;
     public PlayerDungeonUnitData curPlayerData = new PlayerDungeonUnitData();
 }
 
 public class DungeonMapSaveData_0 : SaveDataBase
 {
     public List<List<DungeonRoom>> dungeonRoomList;
-    //public List<DungeonRoom> curDungeonData;
     public List<PlayerDungeonUnitData> curPlayerData;
     public List<Vector2> dungeonIndex;
     public Vector2 curDungeonIndex;
+    public DungeonRoom curDungeonRoomData;
     
     public override SaveDataBase VersionUp()
     {
-        
         return new DungeonMapSaveData_0();
     }
 }
