@@ -43,7 +43,7 @@ public class SwipeSomething : MonoBehaviour
             {
                 var pos = Camera.main.ScreenToViewportPoint(MultiTouch.Instance.PrimaryStartPos - MultiTouch.Instance.PrimaryPos);
 
-                if (pos.y <= -dragDistance && !inven.gameObject.activeSelf)
+                if (pos.y <= -dragDistance && !inven.gameObject.activeInHierarchy)
                 {
                     bar.SetActive(false);
                     inventory.SetActive(true);
@@ -57,7 +57,7 @@ public class SwipeSomething : MonoBehaviour
                 inven.position = new Vector3(0f, -pos.y, 0f) * power + this.startPos;
             }
         }
-        else if(inven.gameObject.activeSelf)
+        else if(inven.gameObject.activeInHierarchy)
         {
             if (inven.localPosition.y > -openDistance)
                 inven.localPosition = Vector3.zero;

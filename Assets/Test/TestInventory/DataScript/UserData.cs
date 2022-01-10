@@ -32,8 +32,8 @@ public class UserData
     public int ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
     public int Hunger { get; set; } = 70;
     // public int Tiredness { get=> Vars.maxStamina - Tired; set { } }
-    public int Tiredness { get; set; } 
-    public int CurStamina { get =>Tiredness; set { } }
+    public float Tiredness { get; set; } = 100;
+    public float CurStamina { get =>Tiredness; set { } }
     public int CurIngameHour { get; set; } = 0;
     public int CurIngameMinute { get; set; } = 0;
     public int LanternCount = 18;
