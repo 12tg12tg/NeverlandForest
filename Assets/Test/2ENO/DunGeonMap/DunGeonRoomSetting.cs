@@ -165,7 +165,7 @@ public static class DunGeonRoomSetting
         list.Add(dungeonList[curIdx]);
     }
 
-    // 시작방 입력받기, road개수 카운트, 생성된 던전맵을 순서대로 리스트에 담기
+    // 시작방 입력받기, road개수 카운트 (메인방만!), 생성된 던전맵을 순서대로 리스트에 담기
     public static void DungeonRoadCount(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
     {
         int curIdx = dungeonRoom.roomIdx;
@@ -188,7 +188,7 @@ public static class DunGeonRoomSetting
     // 시작방 입력받기, 메인방의 road개수를 참고로 이어져있는 서브방 road 개수 Set
     public static void DungeonPathRoomCountSet(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
     {
-        int roadCount = 0;
+        int roadCount;
         int curIdx = dungeonRoom.roomIdx;
         while (dungeonArray[curIdx].nextRoomIdx != -1)
         {

@@ -100,10 +100,12 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
+        // 이미 맵이 만들어 졌을때
         if (Vars.UserData.CurAllDungeonData.ContainsKey(goalIndex))
         {
             Vars.UserData.curDungeonIndex = goalIndex;
-            mapGenerator.DungeonGenerate(Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
+            Vars.UserData.dungeonReStart = true;
+            mapGenerator.DungeonGenerate(node.difficulty ,Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
                 {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
@@ -111,11 +113,13 @@ public class WorldMapPlayer : MonoBehaviour
                 }
                 );
         }
+        // 처음 만들떄
         else
         {
             Vars.UserData.curDungeonIndex = goalIndex;
+            Vars.UserData.dungeonReStart = true;
             Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
-            mapGenerator.DungeonGenerate(null, () =>
+            mapGenerator.DungeonGenerate(node.difficulty, null, () =>
             {
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
@@ -123,7 +127,6 @@ public class WorldMapPlayer : MonoBehaviour
             );
             //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void PlayerClearWorldMap()
     {

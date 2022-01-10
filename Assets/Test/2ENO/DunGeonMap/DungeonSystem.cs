@@ -35,6 +35,9 @@ public class DungeonSystem : MonoBehaviour
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     public WorldMap worldMap;
 
+    // Vars 계속 쓰기 싫어서 간편화할 변수들
+    private Vector2 curDungeonIndex;
+
     public void OnGUI()
     {
         if(GUILayout.Button("Clear"))
@@ -56,51 +59,59 @@ public class DungeonSystem : MonoBehaviour
         {
             roomPrefab[i].gameObject.SetActive(false);
         }
+        curDungeonIndex = Vars.UserData.curDungeonIndex;
 
+        // 현재 불러올 맵 데이터가 없을 때
         if (Vars.UserData.CurAllDungeonData.Count <= 0)
         {
-            //GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-            Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = 100;
-
+            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            curDungeonIndex = Vars.UserData.curDungeonIndex;
+            Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonStartIdx = 100;
         }
-
-        if (Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] != null)
+        // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
+        if(Vars.UserData.dungeonReStart)
         {
-            dungeonSystemData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex];
+            Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonData = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray[Vars.UserData.dungeonStartIdx];
+            Vars.UserData.dungeonReStart = false;
+        }
+        if (Vars.UserData.CurAllDungeonData[curDungeonIndex] != null)
+        {
+            dungeonSystemData = Vars.UserData.CurAllDungeonData[curDungeonIndex];
         }
 
         roomManager = new RoomManager();
         roomManager.text = text;
 
-        dungeonSystemData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-        dungeonSystemData.dungeonStartIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
+        //dungeonSystemData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
+        //dungeonSystemData.dungeonStartIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
+
 
         if (dungeonSystemData.curDungeonData != null)
-            LoadEventData();
-        RoomSetMethod();
+            ConvertEventDataType();
+        DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
     }
 
    
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
-    private void RoomSetMethod()
+    private void DungeonRoomSetting()
     {
-        CreateMapObject();
+        CreateMiniMapObject();
         dungeonPlayer.gameObject.SetActive(true);
         roomManager.init(DungeonSystemData, this);
         if(dungeonSystemData.curDungeonData != null)
         {
-            RoomPrefabSet(dungeonSystemData.curDungeonData);
+            RoomPrefabSetting(dungeonSystemData.curDungeonData);
         }
         else
         {
-            RoomPrefabSet(dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx]);
+            RoomPrefabSetting(dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx]);
             dungeonSystemData.curDungeonData = dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx];
         }
 
         EventObjectCreate(dungeonSystemData.curDungeonData);
-        SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
+        CurrentRoomInMinimap(dungeonSystemData.curDungeonData, beforeDungeonRoom);
 
 
         if (dungeonSystemData.curPlayerData == null)
@@ -131,7 +142,6 @@ public class DungeonSystem : MonoBehaviour
                 Vars.UserData.WorldMapPlayerData.isClear = true;
                 Vars.UserData.curDungeonIndex = Vector2.zero;
                 Vars.UserData.CurAllDungeonData.Clear();
-                Vars.UserData.curLevelDungeonMaps.Clear();
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("WorldMap");
                 return;
@@ -140,12 +150,12 @@ public class DungeonSystem : MonoBehaviour
             beforeDungeonRoom = dungeonSystemData.curDungeonData;
             dungeonSystemData.curDungeonData = roomManager.GetNextRoom(dungeonSystemData.curDungeonData);
 
-            RoomPrefabSet(dungeonSystemData.curDungeonData);
+            RoomPrefabSetting(dungeonSystemData.curDungeonData);
             EventObjectCreate(dungeonSystemData.curDungeonData);
             dungeonPlayer.transform.position = dungeonSystemData.curRoomData.spawnPos.transform.position;
 
 
-            SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
+            CurrentRoomInMinimap(dungeonSystemData.curDungeonData, beforeDungeonRoom);
 
         }
         else
@@ -154,21 +164,20 @@ public class DungeonSystem : MonoBehaviour
             {
                 beforeDungeonRoom = dungeonSystemData.curDungeonData;
                 dungeonSystemData.curDungeonData = roomManager.GetNextRoom(dungeonSystemData.curDungeonData);
-                SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
+                CurrentRoomInMinimap(dungeonSystemData.curDungeonData, beforeDungeonRoom);
             }
             else
             {
                 beforeDungeonRoom = dungeonSystemData.curDungeonData;
                 dungeonSystemData.curDungeonData = roomManager.GetBeforeRoom(dungeonSystemData.curDungeonData);
-                SetCheckRoom(dungeonSystemData.curDungeonData, beforeDungeonRoom);
+                CurrentRoomInMinimap(dungeonSystemData.curDungeonData, beforeDungeonRoom);
             }
         }
 
-        Vars.UserData.DungeonMapData = dungeonSystemData.dungeonRoomArray;
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
-    public void LoadEventData()
+    public void ConvertEventDataType()
     {
         var array = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
         var curIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
@@ -253,7 +262,7 @@ public class DungeonSystem : MonoBehaviour
         }
     }
 
-    public void RoomPrefabSet(DungeonRoom roomData)
+    public void RoomPrefabSetting(DungeonRoom roomData)
     {
         for (int i = 0; i < roomPrefab.Length; i++)
         {
@@ -381,7 +390,7 @@ public class DungeonSystem : MonoBehaviour
         }
     }
 
-    public void SetCheckRoom(DungeonRoom curRoom, DungeonRoom beforeRoom)
+    public void CurrentRoomInMinimap(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
         var obj = dungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
         var mesh = obj.gameObject.GetComponent<MeshRenderer>();
@@ -399,7 +408,7 @@ public class DungeonSystem : MonoBehaviour
         }
     }
 
-    public void CreateMapObject()
+    public void CreateMiniMapObject()
     {
         int curIdx = dungeonSystemData.dungeonStartIdx;
         while (dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx != -1)
@@ -410,7 +419,6 @@ public class DungeonSystem : MonoBehaviour
                 var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
                      , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
-                //objectInfo.text.SetText(GetText(room));
                 objectInfo.roomIdx = room.roomIdx;
                 dungeonRoomObjectList.Add(obj);
             }
@@ -419,7 +427,6 @@ public class DungeonSystem : MonoBehaviour
                 var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
                 , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
-                //objectInfo.text.SetText(GetText(room));
                 objectInfo.roomIdx = room.roomIdx;
                 dungeonRoomObjectList.Add(obj);
             }
