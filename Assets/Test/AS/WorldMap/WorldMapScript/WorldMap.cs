@@ -41,7 +41,6 @@ public struct Edge
         return p1 * p2 < 0 && p3 * p4 < 0;
     }
 }
-
 public class WorldMap : MonoBehaviour
 {
     public GameObject nodePrefab;
@@ -74,7 +73,7 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
-        Fog(Vars.UserData.date);
+        Fog(3);
     }
 
     public void InitWorldMiniMap()
@@ -114,16 +113,16 @@ public class WorldMap : MonoBehaviour
         for (int i = 1; i < column - 1; i++)
         {
             var selectNode = Random.Range(0, row);
-            InitNode(out maps[selectNode, i], new Vector2(selectNode, i), Random.Range(0, 3));
+            InitNode(out maps[selectNode, i], new Vector2(selectNode, i));
         }
-        InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1), Random.Range(0, 3));
+        InitNode(out maps[startEnd, column - 1], new Vector2(startEnd, column - 1));
 
         var startNextOther = Random.Range(0, row);
         while (maps[startNextOther, 1] != null)
         {
             startNextOther = Random.Range(0, row);
         }
-        InitNode(out maps[startNextOther, 1], new Vector2(startNextOther, 1), Random.Range(0, 3));
+        InitNode(out maps[startNextOther, 1], new Vector2(startNextOther, 1));
 
         for (int i = 2; i < column - 2; i++) // °¡¿îµ¥ ¸Ê
         {
@@ -134,7 +133,7 @@ public class WorldMap : MonoBehaviour
                 {
                     rnd = Random.Range(0, row);
                 }
-                InitNode(out maps[rnd, i], new Vector2(rnd, i), Random.Range(0, 3));
+                InitNode(out maps[rnd, i], new Vector2(rnd, i));
             }
         }
 
@@ -143,7 +142,7 @@ public class WorldMap : MonoBehaviour
         {
             endBeforeOther = Random.Range(0, row);
         }
-        InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2), Random.Range(0, 3));
+        InitNode(out maps[endBeforeOther, column - 2], new Vector2(endBeforeOther, column - 2));
     }
     
     private void MapRandomLink()
@@ -158,17 +157,17 @@ public class WorldMap : MonoBehaviour
                     continue;
                 maps[j, i].level = i;
 
-                var rndRange = Random.Range(0f, 1f) >= 0.8f ?       // ·£´ý °Å¸®
-                    (Random.Range(0f, 1f) >= 0.3f ? 2 : 3) : 1;
-                var rndLine = Random.Range(0f, 1f) >= 0.1f ?        // ·£´ý ¿¬°á ¼±
-                    (Random.Range(0f, 1f) >= 0.3f ? 2 : 3) : 1;
+                var rndRange = Random.Range(0f, 1f) > 0.1f ?       // ·£´ý °Å¸®
+                    (Random.Range(0f, 1f) > 0.8f ? 2 : 3) : 1;
+                var rndLine = Random.Range(0f, 1f) > 0.3f ?        // ·£´ý ¿¬°á ¼±
+                    (Random.Range(0f, 1f) > 0.3f ? 2 : 3) : 1;
 
                 if (i == 0 && rndLine < 2)
                     rndLine = Random.Range(0f, 1f) >= 0.5f ? 2 : 3;
                 
                 list.Clear();
                 FindNode(list, i, i + rndRange);
-
+                Utility.Shuffle(list);
                 for (int k = 0; k < list.Count; k++)
                 {
                     if (maps[j, i].Children.Count >= rndLine)
@@ -199,6 +198,8 @@ public class WorldMap : MonoBehaviour
                         edges.Add(edge);
                         maps[j, i].Children.Add(list[k]);
                         list[k].Parent.Add(maps[j, i]);
+                        list[k].difficulty = (Difficulty)(list[k].index.y - maps[j, i].index.y);
+                        ColorChange(list[k]);
                     }
                 }
             }
@@ -325,10 +326,10 @@ public class WorldMap : MonoBehaviour
         {
             if (i.Equals(3))
             {
-                fogPrefab = Instantiate(fogPrefab); // »ý¼ºÇÏ°Ô²û
+                fogPrefab = Instantiate(fogPrefab);
                 fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
-                var scaleX = (fogPrefab.transform.localScale.x * 10f) - (posY / 2);
-                fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(scaleX, 0f, 0f);
+                var posX = (fogPrefab.transform.localScale.x * 10f) - (posY / 2);
+                fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(posX, 0f, 0f);
             }
             else
             {
@@ -339,7 +340,6 @@ public class WorldMap : MonoBehaviour
     }
     public void FogComing()
     {
-        //Vars.UserData.date++;
         var date = Vars.UserData.date;
         if (date == 3)
             Fog(date);
@@ -349,15 +349,6 @@ public class WorldMap : MonoBehaviour
             fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
         }
         beforeDate = Vars.UserData.date;
-    }
-    private void InitNode(out WorldMapNode node, Vector2 index, int difficulty)
-    {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
-        go.transform.SetParent(gameObject.transform);
-        node = go.AddComponent<WorldMapNode>();
-        node.difficulty = (Difficulty)difficulty;
-        ColorChange(node);
-        node.index = index;
     }
 
     private void InitNode(out WorldMapNode node, Vector2 index)
@@ -418,7 +409,7 @@ public class WorldMap : MonoBehaviour
                 if ((i < column - 1 && maps[j, i].Children.Count == 0) ||
                     (i > 0 && maps[j, i].Parent.Count == 0))
                 {
-                    Debug.Log("asd");
+                    Debug.Log("¿¬°á ¾ÈµÇ¾î ÀÖÀ½");
                     return false;
                 }
             }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public enum Difficulty
 {
-    easy,
+    easy = 1,
     normal,
     hard,
 }

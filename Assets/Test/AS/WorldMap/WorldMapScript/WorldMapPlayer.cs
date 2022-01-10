@@ -81,16 +81,9 @@ public class WorldMapPlayer : MonoBehaviour
         goalPos = goal;
         startPos = transform.position;
         var x = transform.position.x + (Mathf.Abs(goal.x - transform.position.x) * distance);
-        var z = goal.z;
 
-        if(transform.position.z > goal.z)
-        {
-            z = transform.position.z - (Mathf.Abs(goal.z - transform.position.z) * distance);
-        }
-        else if (transform.position.z < goal.z)
-        {
-            z = transform.position.z + (Mathf.Abs(goal.z - transform.position.z) * distance);
-        }
+        var z = transform.position.z > goal.z ? transform.position.z - (Mathf.Abs(goal.z - transform.position.z) * distance) :
+                transform.position.z < goal.z ? transform.position.z + (Mathf.Abs(goal.z - transform.position.z) * distance) : goal.z;
 
         currentPos = goal = new Vector3(x, goal.y, z);
 
@@ -104,23 +97,19 @@ public class WorldMapPlayer : MonoBehaviour
         {
             Vars.UserData.curDungeonIndex = goalIndex;
             mapGenerator.DungeonGenerate(Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
-                () =>
-                {
+                () => {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                     GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-                }
-                );
+                });
         }
         else
         {
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
-            mapGenerator.DungeonGenerate(null, () =>
-            {
+            mapGenerator.DungeonGenerate(null, () => {
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            }
-            );
+            });
             //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
@@ -174,5 +163,10 @@ public class WorldMapPlayer : MonoBehaviour
         }
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+    }
+
+    private void PlayerDeathChack()
+    {
+
     }
 }
