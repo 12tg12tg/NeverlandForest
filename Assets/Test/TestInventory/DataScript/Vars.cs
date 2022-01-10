@@ -64,7 +64,6 @@ public static class Vars
                     newItem.OwnCount = Random.Range(1, 7);
                     var stringId = $"{tempItemNum}";
                     newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
-                    userData.HaveAllItemList.Add(newItem);
                     if (!userData.HaveAllItemList2.ContainsKey(newItem.ItemTableElem.name))
                     {
                         userData.HaveAllItemList2.Add(newItem.ItemTableElem.name, newItem);

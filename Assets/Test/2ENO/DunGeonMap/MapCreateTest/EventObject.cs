@@ -87,20 +87,20 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
         Destroy(gameObject);
         //EventBus<DungeonMap>.Publish(DungeonMap.EventObjectClick, eventType, transform.position);
       
-        switch (eventType)
-        {
-            case DunGeonEvent.Gathering:
-                break;
-            case DunGeonEvent.Empty:
-            case DunGeonEvent.Battle:
-            case DunGeonEvent.Hunt:
-            case DunGeonEvent.RandomIncount:
-            case DunGeonEvent.SubStory:
-            case DunGeonEvent.Count:
-                dungeonSystem.EventObjectClickEvent(eventType, this);
-                break;
-            default:
-                break;
-        }
+        //switch (eventType)
+        //{
+        //    case DunGeonEvent.Gathering:
+        //        break;
+        //    case DunGeonEvent.Empty:
+        //    case DunGeonEvent.Battle:
+        //    case DunGeonEvent.Hunt:
+        //    case DunGeonEvent.RandomIncount:
+        //    case DunGeonEvent.SubStory:
+        //    case DunGeonEvent.Count:
+        //        dungeonSystem.EventObjectClickEvent(eventType, this);
+        //        break;
+        //    default:
+        //        break;
+        //}
     }
 }
