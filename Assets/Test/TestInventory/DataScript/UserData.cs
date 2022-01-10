@@ -16,12 +16,10 @@ public class UserData
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
     // 던전맵 데이터, 세이브 로드
-    public DungeonRoom[] DungeonMapData { get; set; }
-    // 인게임 동작 나중에 위랑 하나로 합치는 정리 필요
     public SerializeDictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
     public Vector2 curDungeonIndex;
-
-    public Dictionary<Vector2, DungeonRoom[]> curLevelDungeonMaps = new Dictionary<Vector2, DungeonRoom[]>();
+    public int dungeonStartIdx;
+    public bool dungeonReStart;
 
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
