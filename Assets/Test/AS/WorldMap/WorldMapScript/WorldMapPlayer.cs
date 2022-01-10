@@ -65,7 +65,7 @@ public class WorldMapPlayer : MonoBehaviour
             else
                 Load();
         }
-        else if(Vars.UserData.WorldMapPlayerData.isClear)
+        else if (Vars.UserData.WorldMapPlayerData.isClear)
             PlayerClearWorldMap();
         else
             PlayerRunWorldMap();
@@ -93,26 +93,31 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
+        // 이미 맵이 만들어 졌을때
         if (Vars.UserData.CurAllDungeonData.ContainsKey(goalIndex))
         {
             Vars.UserData.curDungeonIndex = goalIndex;
-            mapGenerator.DungeonGenerate(Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
-                () => {
+            Vars.UserData.dungeonReStart = true;
+            mapGenerator.DungeonGenerate(node.difficulty, Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
+                () =>
+                {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                     GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 });
         }
+        // 처음 만들떄
         else
         {
             Vars.UserData.curDungeonIndex = goalIndex;
+            Vars.UserData.dungeonReStart = true;
             Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
-            mapGenerator.DungeonGenerate(null, () => {
+            mapGenerator.DungeonGenerate(node.difficulty, null, () =>
+            {
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             });
             //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void PlayerClearWorldMap()
     {
@@ -122,8 +127,9 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentIndex = currentIndex = data.goalIndex;
         transform.position = data.currentPos;
 
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () => { 
-            coMove = null; 
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.goalPos, 1f, () =>
+        {
+            coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }));
@@ -147,8 +153,9 @@ public class WorldMapPlayer : MonoBehaviour
         var data = Vars.UserData.WorldMapPlayerData;
         currentIndex = data.currentIndex;
         transform.position = data.currentPos;
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => { 
-            coMove = null; 
+        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () =>
+        {
+            coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
         }));

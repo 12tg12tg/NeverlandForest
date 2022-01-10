@@ -36,21 +36,34 @@ public class DunGeonMapGenerate : MonoBehaviour
         //    dungeonSystem = system;
     }
 
-    public void DungeonGenerate(DungeonRoom[] mapArrayData, UnityAction action)
+    public void DungeonGenerate(Difficulty difficulty , DungeonRoom[] mapArrayData, UnityAction action)
     {
+        switch (difficulty)
+        {
+            case Difficulty.easy:
+                roomCount = 4;
+                break;
+            case Difficulty.normal:
+                roomCount = 6;
+                break;
+            case Difficulty.hard:
+                roomCount = 8;
+                break;
+        }
+        Vars.UserData.dungeonStartIdx = startIdx;
         if(mapArrayData == null)
         {
             StartCoroutine(MapCorutine(action));
-
         }
         else
         {
             dungeonRoomArray = mapArrayData;
             action?.Invoke();
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         }
-        Vars.UserData.DungeonMapData = dungeonRoomArray;
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = startIdx;
+
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
@@ -131,6 +144,8 @@ public class DunGeonMapGenerate : MonoBehaviour
         DungeonEventGenerate(dungeonRoomArray);
 
         action?.Invoke();
+
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     //public void OnGUI()
     //{
@@ -204,6 +219,8 @@ public class DunGeonMapGenerate : MonoBehaviour
             while (rnd == (int)oppsiteDir(lastDir)) // 왔던곳 되돌아가는 방향은 그냥 여기서 예외처리
             {
                 rnd = Random.Range(0, (int)DirectionInho.Count);
+                if (rnd == 1) // 왼쪽방향도 그냥 예외처리
+                    rnd = (int)oppsiteDir(lastDir);
             }
             var curDir = (DirectionInho)rnd;
             // 랜덤 길방 개수 생성
@@ -237,6 +254,8 @@ public class DunGeonMapGenerate : MonoBehaviour
                 while (rnd == (int)oppsiteDir(lastDir))
                 {
                     rnd = Random.Range(0, (int)DirectionInho.Count);
+                    if (rnd == 1) // 왼쪽방향도 그냥 예외처리
+                        rnd = (int)oppsiteDir(lastDir);
                 }
                 curDir = (DirectionInho)rnd;
                 nextId = NextRoomId(curIdx, curDir);
@@ -260,8 +279,7 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public DirectionInho oppsiteDir(DirectionInho dir)
     {
-        var direction = DirectionInho.Count;
-
+        var direction = dir;
         switch (direction)
         {
             case DirectionInho.Right:
