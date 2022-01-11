@@ -156,7 +156,6 @@ public class WorldMapPlayer : MonoBehaviour
             }
         }
     }
-
     private void PlayerRunWorldMap()
     {
         var ani = GetComponent<Animator>();
@@ -172,25 +171,7 @@ public class WorldMapPlayer : MonoBehaviour
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             PlayerDeathChack();
         }));
-        }
-
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
-
-    public void PlayerRunWorldMap()
-    {
-        var ani = GetComponent<Animator>();
-        ani.SetTrigger("Walk");
-        var data = Vars.UserData.WorldMapPlayerData;
-        currentIndex = data.currentIndex;
-        transform.position = data.currentPos;
-        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, data.startPos, 0.5f, () => { 
-            coMove = null; 
-            ani.SetTrigger("Idle");
-            transform.eulerAngles = new Vector3(0f, 90f, 0f);
-        }));
-    }
-
     private void PlayerDeathChack() // 안개에 닿았을 때
     {
         var y = (int)currentIndex.y;

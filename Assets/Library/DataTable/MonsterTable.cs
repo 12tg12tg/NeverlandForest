@@ -33,8 +33,8 @@ public class MonsterTableElem : DataTableElemBase
         hp = int.Parse(data["HP"]);
         atk = int.Parse(data["ATK"]);
         sheild = int.Parse(data["SHEILD"]);
-        speed = int.Parse(data["SPEED"]);
-        description = data["DESC"];
+        //speed = int.Parse(data["SPEED"]);
+        //description = data["DESC"];
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
 }
