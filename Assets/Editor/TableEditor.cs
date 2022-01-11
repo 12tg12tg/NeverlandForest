@@ -146,13 +146,20 @@ public class TableEditor : EditorWindow
 
         consumData["NAME"] = EditorGUILayout.TextField("Name", consumData["NAME"]);
 
+        consumData["LOCAL_ID"] = EditorGUILayout.TextField("Localization ID", consumData["LOCAL_ID"]);
+
+        var grade = new string[] { "Normal", "Epic", "Elite" };
+        int gradeIndex = ArrayUtility.IndexOf(grade, consumData["GRADE"]);
+        EditorGUILayout.Popup("Grade", gradeIndex, grade);
+        consumData["GRADE"] = grade[gradeIndex];
+
+        var group = int.Parse(consumData["GROUP"]);
+        consumData["GROUP"] = EditorGUILayout.IntField("Group", group).ToString();
+
         var type = new string[] { "Near", "Far" };
         int shapeIndex = ArrayUtility.IndexOf(type, consumData["TYPE"]);
         EditorGUILayout.Popup("TableType", shapeIndex, type);
         consumData["TYPE"] = type[shapeIndex];
-
-        var hp = int.Parse(consumData["HP"]);
-        consumData["HP"] = EditorGUILayout.IntField("HP", hp).ToString();
 
         var atk = int.Parse(consumData["ATK"]);
         consumData["ATK"] = EditorGUILayout.IntField("ATK", atk).ToString();
@@ -160,11 +167,14 @@ public class TableEditor : EditorWindow
         var sheild = int.Parse(consumData["SHEILD"]);
         consumData["SHEILD"] = EditorGUILayout.IntField("SHEILD", sheild).ToString();
 
-        var speed = int.Parse(consumData["SPEED"]);
-        consumData["SPEED"] = EditorGUILayout.IntField("SPEED", speed).ToString();
+        var hp = int.Parse(consumData["HP"]);
+        consumData["HP"] = EditorGUILayout.IntField("HP", hp).ToString();
 
-        GUI.skin.textField.wordWrap = true;
-        consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));
+        var speedMin = int.Parse(consumData["SPEED_MIN"]);
+        consumData["SPEED_MIN"] = EditorGUILayout.IntField("Speed_Min", speedMin).ToString();
+
+        var speedMax = int.Parse(consumData["SPEED_MAX"]);
+        consumData["SPEED_MAX"] = EditorGUILayout.IntField("Speed_Max", speedMax).ToString();
     }
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)
