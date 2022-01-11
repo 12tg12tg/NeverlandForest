@@ -20,8 +20,7 @@ public class PlayerIdle : State<CharacterBattleState>, IAttackable
     }
     public override void Init()
     {
-        // 공격을 마쳣을때 이 상태가 된다.
-        playerAnimation.SetTrigger("Idle");
+
     }
     public override void Release()
     {

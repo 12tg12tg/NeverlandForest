@@ -22,7 +22,7 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
     private List<UnitBase> targetUnit;
 
     // Component
-    private PlayerStats stats; 
+    public PlayerStats stats; 
     public PlayerBattleFSM FSM;
 
     // Vars
@@ -31,17 +31,6 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
 
     // Property
     public PlayerStats Stats { get => stats; }
-
-    private void Awake()
-    {
-        FSM = gameObject.GetComponent<PlayerBattleFSM>();
-        stats = gameObject.GetComponent<PlayerStats>();
-    }
-
-    private void Start()
-    {
-        manager = BattleManager.Instance;
-    }
 
     public void TurnInit(PlayerCommand command)
     {
