@@ -111,7 +111,8 @@ public class WorldMapPlayer : MonoBehaviour
         {
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.dungeonReStart = true;
-            mapGenerator.DungeonGenerate(node.difficulty, Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
+            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
+            mapGenerator.DungeonGenerate(range, Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
                 {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
@@ -124,7 +125,8 @@ public class WorldMapPlayer : MonoBehaviour
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.dungeonReStart = true;
             Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
-            mapGenerator.DungeonGenerate(node.difficulty, null, () =>
+            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
+            mapGenerator.DungeonGenerate(range, null, () =>
             {
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);

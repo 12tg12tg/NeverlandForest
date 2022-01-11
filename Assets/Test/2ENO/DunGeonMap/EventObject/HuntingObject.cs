@@ -28,7 +28,7 @@ public class HuntingObject : MonoBehaviour, IPointerClickHandler
         dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
         dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
 
-        SceneManager.LoadScene("Hunting");
+        SceneManager.LoadScene("AS_Hunting");
         Destroy(gameObject);
     }
 }

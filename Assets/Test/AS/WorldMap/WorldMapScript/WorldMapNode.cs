@@ -4,22 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public enum Difficulty
-{
-    easy = 1,
-    normal,
-    hard,
-}
-
 [Serializable]
 public class WorldMapNode : MonoBehaviour, IPointerClickHandler
 {
     public event UnityAction<WorldMapNode> OnClick; // 얘는 대문자로 사용해야 한다고 함
-
     public List<WorldMapNode> Children { get; set; } = new List<WorldMapNode>();
     public List<WorldMapNode> Parent { get; set; } = new List<WorldMapNode>();
 
-    public Difficulty difficulty;
     public Vector2 index;
     public int level;
 

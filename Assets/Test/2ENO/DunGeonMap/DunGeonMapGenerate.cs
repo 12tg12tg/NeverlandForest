@@ -36,17 +36,18 @@ public class DunGeonMapGenerate : MonoBehaviour
         //    dungeonSystem = system;
     }
 
-    public void DungeonGenerate(Difficulty difficulty , DungeonRoom[] mapArrayData, UnityAction action)
+    public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {
-        switch (difficulty)
+        Debug.Log(range);
+        switch (range)
         {
-            case Difficulty.easy:
+            case 1:
                 roomCount = 4;
                 break;
-            case Difficulty.normal:
+            case 2:
                 roomCount = 6;
                 break;
-            case Difficulty.hard:
+            case 3:
                 roomCount = 8;
                 break;
         }
