@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7037607110969644931}
   - component: {fileID: 5097692272969222511}
   - component: {fileID: 2691288415689645161}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 5890061925157980097}
   - component: {fileID: 2648536484572839898}
   - component: {fileID: 6028506201022931724}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MainCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -234,9 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 2691288415689645161}
-  roomInfo:
-    nextRoomIdx: 0
-    nextRoadCount: 0
+  roomIdx: 0
 --- !u!65 &6028506201022931724
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -262,7 +260,7 @@ GameObject:
   - component: {fileID: 1389598801716798432}
   - component: {fileID: 8156101200653094295}
   - component: {fileID: 1461462243752535328}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}

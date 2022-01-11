@@ -20,7 +20,7 @@ public class UserData
     public Vector2 curDungeonIndex;
     public int dungeonStartIdx;
     public bool dungeonReStart;
-
+    public int currentDundeonRoomIndex;
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
 
@@ -37,7 +37,7 @@ public class UserData
     public int CurIngameHour { get; set; } = 0;
     public int CurIngameMinute { get; set; } = 0;
     public int LanternCount = 18;
-
+    
     // 위랑 사실 비슷한 내용인데 보는쪽 가독성을 위해 따로 이름 지어서 만듬, 인벤토리에 사용
     public Dictionary<string, DataAllItem> HaveAllItemList2 { get; set; } = new Dictionary<string, DataAllItem>();
 

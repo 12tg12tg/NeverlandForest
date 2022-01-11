@@ -102,18 +102,30 @@ public class UICookInventoryList : MonoBehaviour
 
     public void RemoveFireIcon()
     {
-        Fire.sprite = null;
-        FireObject = null;
+        if (ResultObject== null)
+        {
+            Fire.sprite = null;
+            FireObject = null;
+        }
+      
     }
     public void RemoveCondimetnIcon()
     {
-        Condiment.sprite = null;
-        CondimentObject = null;
+        if (ResultObject == null)
+        {
+            Condiment.sprite = null;
+            CondimentObject = null;
+        }
+       
     }
     public void RemoveMaterialIcon()
     {
-        Material.sprite = null;
-        MaterialObject = null;
+        if (ResultObject == null)
+        {
+            Material.sprite = null;
+            MaterialObject = null;
+        }
+      
     }
     public void GetResultIcon()
     {

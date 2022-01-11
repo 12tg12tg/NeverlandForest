@@ -42,5 +42,21 @@ public class StaminaBar : MonoBehaviour
             ConsumeManager.GetthingHunger(5); //최대치 감소
             ChangeableStaminaChange();
         }
+        if (GUILayout.Button("BlightUp"))
+        {
+            ConsumeManager.CurLanternState++;
+            if (ConsumeManager.CurLanternState ==0)
+            {
+                ConsumeManager.CurLanternState = LanternState.Level4;
+            }
+        }
+        if (GUILayout.Button("BlightDown"))
+        {
+            ConsumeManager.CurLanternState--;
+            if (ConsumeManager.CurLanternState == LanternState.Level4)
+            {
+                ConsumeManager.CurLanternState = LanternState.None;
+            }
+        }
     }
 }
