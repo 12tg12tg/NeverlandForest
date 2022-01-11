@@ -6,8 +6,7 @@ using UnityEngine;
 public class HuntTilesMaker : MonoBehaviour
 {
     public PlayerHuntingUnit player;
-    public GameObject cloak;
-    public GameObject blue;
+    public GameObject bush;
 
     public GameObject wholeTile;
     public Material material;
@@ -52,7 +51,6 @@ public class HuntTilesMaker : MonoBehaviour
                 Vector3 offset = new Vector3(x, startPos.y, z);
                 var go = CreateTileQuad(new Vector2(i, j), tileWidth, tileHeight);
                 go.transform.position = offset;
-               
             }
         }
     }
@@ -76,8 +74,8 @@ public class HuntTilesMaker : MonoBehaviour
         {
             if(randomBush[bushIndex - 1].Equals((int)index.x))
             {
-                var go = Instantiate(cloak, tile.transform);
-                tile.cloak = go.GetComponent<Bush>();
+                var go = Instantiate(bush, tile.transform);
+                tile.bush = go.GetComponent<Bush>();
             }
         }
 

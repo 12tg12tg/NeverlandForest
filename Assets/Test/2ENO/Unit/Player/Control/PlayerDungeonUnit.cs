@@ -67,14 +67,14 @@ public class PlayerDungeonUnit : UnitBase
             // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
             var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
             var playerXPos = Camera.main.WorldToViewportPoint(transform.localPosition).x;
-            if (playerXPos < touchXPos)
+            if (playerXPos + 0.05f < touchXPos)
             {
                 var pos = speed * Time.deltaTime * Vector3.forward;
                 transform.position += pos;
                 transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
                 isMove = true;
             }
-            else if (playerXPos > touchXPos)
+            else if (playerXPos - 0.05f > touchXPos)
             {
                 var pos = speed * Time.deltaTime * -Vector3.forward;
                 transform.position += pos;

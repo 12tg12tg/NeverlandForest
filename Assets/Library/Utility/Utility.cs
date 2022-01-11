@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.IO;
 
 public class Utility
 {
@@ -73,6 +74,19 @@ public class Utility
         SceneManager.LoadScene(SceneName);
     }
 
+    public static IEnumerator CoSceneChange(int scene, float timer, UnityAction action)
+    {
+        var time = 0f;
+        while (timer > time)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        action?.Invoke();
+        SceneManager.LoadScene(scene);
+    }
+
+
     public static List<T> Shuffle<T>(List<T> list)
     {
         for (int i = list.Count - 1; i > 0; i--)
@@ -129,5 +143,11 @@ public class Utility
             yield return null;
         }
         action?.Invoke();
+    }
+    public static void DeleteSaveData(SaveDataName typeName)
+    {
+        var path = Path.Combine(Application.persistentDataPath, typeName.ToString() + ".json");
+        if (File.Exists(path))
+            File.Delete(path);
     }
 }

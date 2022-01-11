@@ -3,7 +3,7 @@ using UnityEngine;
 
 public struct MapNodeStruct_0
 {
-    public Difficulty difficulty;
+    //public Difficulty difficulty;
     public Vector2 index;
     public int level;
     public List<Vector2> children;

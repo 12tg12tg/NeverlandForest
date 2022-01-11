@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -73,7 +74,7 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
-        Fog(3);
+        Fog(Vars.UserData.date);
     }
 
     public void InitWorldMiniMap()
@@ -84,6 +85,7 @@ public class WorldMap : MonoBehaviour
         var layerName = "WorldMap";
         Load(loadData, layerName);
         PaintLink(layerName);
+        //Vars.UserData.date = 3;
         Fog(Vars.UserData.date);
     }
 
@@ -126,6 +128,7 @@ public class WorldMap : MonoBehaviour
 
         for (int i = 2; i < column - 2; i++) // °¡¿îµ¥ ¸Ê
         {
+            var rndNode = Random.Range(0f, 1f) > 0.5f ? Random.Range(0f, 1f) > 0.5f ? 1 : 2 : 0; // 0 50% 1 25% 2 25%
             for (int j = 0; j < Random.Range(0, 3); j++)
             {
                 var rnd = Random.Range(0, row);
@@ -198,8 +201,8 @@ public class WorldMap : MonoBehaviour
                         edges.Add(edge);
                         maps[j, i].Children.Add(list[k]);
                         list[k].Parent.Add(maps[j, i]);
-                        list[k].difficulty = (Difficulty)(list[k].index.y - maps[j, i].index.y);
-                        ColorChange(list[k]);
+                        //list[k].difficulty = (Difficulty)(list[k].index.y - maps[j, i].index.y);
+                        //ColorChange(list[k]);
                     }
                 }
             }
@@ -329,7 +332,11 @@ public class WorldMap : MonoBehaviour
                 fogPrefab = Instantiate(fogPrefab);
                 fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
                 var posX = (fogPrefab.transform.localScale.x * 10f) - (posY / 2);
-                fogPrefab.transform.position = transform.GetChild(0).position - new Vector3(posX, 0f, 0f);
+                var endPos = transform.GetChild(0).position - new Vector3(posX, 0f, 0f);
+                fogPrefab.transform.position = endPos;
+                //fogPrefab.transform.position = endPos - new Vector3(posY, 0f, 0f);
+                //StartCoroutine(Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, endPos, 1f));
+                
             }
             else
             {
@@ -361,7 +368,7 @@ public class WorldMap : MonoBehaviour
 
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 200f, 0f, index.x * posX + 200f), Quaternion.identity);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 100f, 0f, index.x * posX + 200f), Quaternion.identity);
         go.layer = LayerMask.NameToLayer(LayerName);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
@@ -435,7 +442,7 @@ public class WorldMap : MonoBehaviour
                 var data = new MapNodeStruct_0();
                 data.index = maps[j, i].index;
                 data.level = maps[j, i].level;
-                data.difficulty = maps[j, i].difficulty;
+                //data.difficulty = maps[j, i].difficulty;
                 data.children = new List<Vector2>();
                 data.parent = new List<Vector2>();
                 for (int k = 0; k < maps[j, i].Children.Count; k++)
@@ -485,8 +492,8 @@ public class WorldMap : MonoBehaviour
                 {
                     if (loadData[k].index.Equals(index))
                     {
-                        maps[j, i].difficulty = loadData[k].difficulty;
-                        ColorChange(maps[j, i]);
+                        //maps[j, i].difficulty = loadData[k].difficulty;
+                        //ColorChange(maps[j, i]);
                         var children = loadData[k].children;
                         var parent = loadData[k].parent;
                         for (int h = 0; h < children.Count; h++)

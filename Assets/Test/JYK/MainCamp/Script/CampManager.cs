@@ -57,7 +57,7 @@ public class CampManager : MonoBehaviour
     }
     public void GoWorldMap()
     {
-        SceneManager.LoadScene("WorldMap");
+        SceneManager.LoadScene("AS_WorldMap");
     }
     public void GoDungeon()
     {

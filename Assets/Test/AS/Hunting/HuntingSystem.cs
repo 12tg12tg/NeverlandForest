@@ -23,6 +23,8 @@ public class HuntingSystem : MonoBehaviour
     public Animal animal;
     public TMP_Text text;
     public TMP_Text result;
+
+    public WorldMap worldMap;
     private void Start()
     {
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.PlayerMove, OnBush);
@@ -42,12 +44,16 @@ public class HuntingSystem : MonoBehaviour
 
         for (int i = 0; i < tiles.Length; i++)
         {
-            if (tiles[i].index.Equals(playerUnit.CurrentIndex)) // 비효율인듯..
+            if (tiles[i].index.Equals(playerUnit.CurrentIndex))
             {
-                playerUnit.gameObject.transform.position = tiles[i].transform.position/* + new Vector3(0f, 1f, 0f)*/;
+                playerUnit.transform.position = tiles[i].transform.position;
             }
         }
         HuntPercentagePrint();
+        if (worldMap != null)
+        {
+            worldMap.InitWorldMiniMap(); 
+        }
     }
     private void OnDestroy()
     {

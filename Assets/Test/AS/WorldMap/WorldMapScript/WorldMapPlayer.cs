@@ -1,7 +1,8 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public class WorldMapPlayer : MonoBehaviour
@@ -39,6 +40,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     private void TotalMapInit()
     {
+        // totalMap 연결
         totalMap = new WorldMapNode[map.transform.childCount];
         for (int i = 0; i < map.transform.childCount; i++)
         {
@@ -57,18 +59,29 @@ public class WorldMapPlayer : MonoBehaviour
     public void ComeBackWorldMap()
     {
         TotalMapInit();
-        if (Vars.UserData.WorldMapPlayerData == null)
+
+        var data = Vars.UserData.WorldMapPlayerData;
+        if (data == null) // 게임을 처음 켰을 때
         {
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            if (Vars.UserData.WorldMapPlayerData == null)
-                Init();
+            data = Vars.UserData.WorldMapPlayerData;
+            if (data == null) 
+            {
+                Init(); // 플레이어가 죽어서 플레이어 데이터 초기화 됐을 때
+            }
             else
+            {
                 Load();
+            }
         }
-        else if (Vars.UserData.WorldMapPlayerData.isClear)
+        else if (data.isClear)
+        {
             PlayerClearWorldMap();
+        }
         else
+        {
             PlayerRunWorldMap();
+        }
     }
 
     public void PlayerWorldMap(WorldMapNode node)
@@ -116,10 +129,9 @@ public class WorldMapPlayer : MonoBehaviour
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             });
-            //Vars.UserData.curLevelDungeonMaps.Add(goalIndex, mapGenerator.dungeonRoomArray);
         }
     }
-    public void PlayerClearWorldMap()
+    private void PlayerClearWorldMap()
     {
         var ani = GetComponent<Animator>();
         ani.SetTrigger("Walk");
@@ -132,6 +144,8 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            PlayerDeathChack();
         }));
 
         for (int i = 0; i < totalMap.Length; i++)
@@ -143,10 +157,9 @@ public class WorldMapPlayer : MonoBehaviour
             }
         }
 
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
-    public void PlayerRunWorldMap()
+    private void PlayerRunWorldMap()
     {
         var ani = GetComponent<Animator>();
         ani.SetTrigger("Walk");
@@ -158,6 +171,8 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            PlayerDeathChack();
         }));
 
         for (int i = 0; i < totalMap.Length; i++)
@@ -169,11 +184,23 @@ public class WorldMapPlayer : MonoBehaviour
             }
         }
 
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
-    private void PlayerDeathChack()
+    private void PlayerDeathChack() // 안개에 닿았을 때
     {
-
+        var y = (int)currentIndex.y;
+        if (y <= Vars.UserData.date - 3)
+        {
+            var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
+            {
+                Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
+                Utility.DeleteSaveData(SaveDataName.TextWorldMapNodePath);
+                Debug.Log("사망");
+                Vars.UserData.WorldMapNodeStruct = new List<MapNodeStruct_0>();
+                Vars.UserData.WorldMapPlayerData = default;
+                Vars.UserData.date = 0;
+            });
+            StartCoroutine(coScene);
+        }
     }
 }

@@ -40,15 +40,17 @@ public class DungeonSystem : MonoBehaviour
 
     public void OnGUI()
     {
-        if(GUILayout.Button("Clear"))
+        if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = true;
-            SceneManager.LoadScene("WorldMap");
+            SceneManager.LoadScene("AS_WorldMap");
+            Vars.UserData.date++;
         }
-        if(GUILayout.Button("Run"))
+        if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = false;
-            SceneManager.LoadScene("WorldMap");
+            SceneManager.LoadScene("AS_WorldMap");
+            Vars.UserData.date++;
         }
     }
 
@@ -143,7 +145,7 @@ public class DungeonSystem : MonoBehaviour
                 Vars.UserData.curDungeonIndex = Vector2.zero;
                 Vars.UserData.CurAllDungeonData.Clear();
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-                SceneManager.LoadScene("WorldMap");
+                SceneManager.LoadScene("AS_WorldMap");
                 return;
             }
 
@@ -251,7 +253,7 @@ public class DungeonSystem : MonoBehaviour
             case DunGeonEvent.Hunt:
                 Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-                SceneManager.LoadScene("Hunting");
+                SceneManager.LoadScene("AS_Hunting");
                 break;
             case DunGeonEvent.RandomIncount:
                 break;

@@ -6,21 +6,15 @@ using TMPro;
 public class PlayerHuntingUnit : UnitBase
 {
     private Coroutine coMove;
-    private PlayerStats playerStat;
 
     private Animator playerAnimation;
 
     private Vector2 currentIndex;
-    public Vector2 CurrentIndex
-    {
-        get => currentIndex;
-    }
-
+    public Vector2 CurrentIndex => currentIndex;
 
     private void Start()
     {
         playerAnimation = gameObject.GetComponent<Animator>();
-        playerStat = gameObject.GetComponent<PlayerStats>();
 
         currentIndex = Vector2.right; // 인덱스 1,0 이라는 의미.. 최초 시작 왼쪽 가운데
     }

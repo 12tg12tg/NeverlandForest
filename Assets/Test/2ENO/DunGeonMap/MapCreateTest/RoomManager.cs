@@ -101,7 +101,7 @@ public class RoomManager
                 if(curDungeonInfo.nextRoomIdx == -1)
                 {
                     Vars.UserData.WorldMapPlayerData.isClear = true;
-                    SceneManager.LoadScene("WorldMap");
+                    SceneManager.LoadScene("AS_WorldMap");
                     return;
                 }
                 //SetCurRoad(curDungeonInfo);
