@@ -22,7 +22,7 @@ public class DungeonMapSaveData_0 : SaveDataBase
     public List<PlayerDungeonUnitData> curPlayerData;
     public List<Vector2> dungeonIndex;
     public Vector2 curDungeonIndex;
-    public DungeonRoom curDungeonRoomData;
+    public int curDungeonRoomIndex;
     
     public override SaveDataBase VersionUp()
     {

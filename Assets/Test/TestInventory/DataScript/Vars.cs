@@ -62,21 +62,23 @@ public static class Vars
                     newItem.itemId = tempItemNum;
                     newItem.LimitCount = Random.Range(5, 6);
                     newItem.OwnCount = Random.Range(1, 7);
+                    newItem.dataType = DataType.AllItem;
                     var stringId = $"{tempItemNum}";
                     newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
-                    userData.HaveAllItemList.Add(newItem);
-                    if (!userData.HaveAllItemList2.ContainsKey(newItem.ItemTableElem.name))
-                    {
-                        userData.HaveAllItemList2.Add(newItem.ItemTableElem.name, newItem);
-                    }
-                    else
-                    {
-                        userData.HaveAllItemList2[newItem.ItemTableElem.name].OwnCount++;
-                    }
                     tempItemNum += 1;
+
+                    userData.AddItemData(newItem);
                 }
             }
             return userData;
         }
     }
 }
+//if (!userData.HaveAllItemList2.ContainsKey(newItem.ItemTableElem.name))
+//{
+//    userData.HaveAllItemList2.Add(newItem.ItemTableElem.name, newItem);
+//}
+//else
+//{
+//    userData.HaveAllItemList2[newItem.ItemTableElem.name].OwnCount++;
+//}

@@ -1,26 +1,28 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 // 퍼사드 느낌
 public class DungeonSystem : MonoBehaviour
 {
+    RoomManager roomManager;
+    private List<GameObject> eventObjInstanceList = new List<GameObject>();
+    private DungeonRoom beforeDungeonRoom;
+
+    [Header("Prefab, Instance")]
     public RoomCtrl[] roomPrefab;
     public EventObject eventObjectPrefab;
     public GatheringObject gatheringObjPrefab;
     public BattleObject battleObjPrefab;
-    public TextMeshProUGUI text;
+    public HuntingObject huntingObjPrefab;
+    //public TextMeshProUGUI text;
 
+    [Header("Player, System")]
     public PlayerDungeonUnit dungeonPlayer;
     public GatheringSystem gatheringSystem;
 
-    //DunGeonMapGenerate dungeonGenerator;
-    RoomManager roomManager;
-
-    public List<GameObject> eventObjInstanceList = new List<GameObject>();
-
-    private DungeonRoom beforeDungeonRoom;
 
     // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
     private DungeonData dungeonSystemData = new ();
@@ -29,15 +31,17 @@ public class DungeonSystem : MonoBehaviour
         get => dungeonSystemData;
     }
     // 던전맵 생성기에서 옮겨와야 되는 기능들
+    [Header("Map Generate")]
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     public WorldMap worldMap;
+    [Header("ETC")]
+    public Button campButton;
 
     // Vars 계속 쓰기 싫어서 간편화할 변수들
     private Vector2 curDungeonIndex;
-
     public void OnGUI()
     {
         if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
@@ -82,19 +86,13 @@ public class DungeonSystem : MonoBehaviour
         }
 
         roomManager = new RoomManager();
-        roomManager.text = text;
-
-        //dungeonSystemData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-        //dungeonSystemData.dungeonStartIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
-
+        //roomManager.text = text;
 
         //if (dungeonSystemData.curDungeonData != null)
         ConvertEventDataType();
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
     }
-
-   
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
     private void DungeonRoomSetting()
@@ -124,6 +122,11 @@ public class DungeonSystem : MonoBehaviour
         {
             dungeonPlayer.SetPlayerData(dungeonSystemData.curPlayerData);
         }
+
+        if (dungeonSystemData.curDungeonRoomData.RoomType == DunGeonRoomType.MainRoom)
+            campButton.interactable = true;
+        else
+            campButton.interactable = false;
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행
@@ -148,7 +151,6 @@ public class DungeonSystem : MonoBehaviour
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
             }
-
             beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
             dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
 
@@ -156,9 +158,11 @@ public class DungeonSystem : MonoBehaviour
             EventObjectCreate(dungeonSystemData.curDungeonRoomData);
             dungeonPlayer.transform.position = dungeonSystemData.curRoomInstanceData.spawnPos.transform.position;
 
-
             CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
-
+            if (dungeonSystemData.curDungeonRoomData.RoomType == DunGeonRoomType.MainRoom)
+                campButton.interactable = true;
+            else
+                campButton.interactable = false;
         }
         else
         {
@@ -177,6 +181,8 @@ public class DungeonSystem : MonoBehaviour
         }
 
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
+        // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void ConvertEventDataType()
@@ -234,34 +240,6 @@ public class DungeonSystem : MonoBehaviour
         }
         eventList.Clear();
         eventList.AddRange(newList);
-    }
-
-    // 이벤트 오브젝트 클릭시, 실행
-    public void EventObjectClickEvent(DunGeonEvent eventType, EventObject eventObject)
-    {
-        dungeonSystemData.curPlayerData.SetUnitData(dungeonPlayer);
-
-        switch (eventType)
-        {
-            case DunGeonEvent.Empty:
-                break;
-            case DunGeonEvent.Battle:
-                break;
-            case DunGeonEvent.Gathering:
-                gatheringSystem.GoGatheringObject(eventObject.gameObject.transform.position);
-                break;
-            case DunGeonEvent.Hunt:
-                Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
-                //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-                SceneManager.LoadScene("AS_Hunting");
-                break;
-            case DunGeonEvent.RandomIncount:
-                break;
-            case DunGeonEvent.SubStory:
-                break;
-            case DunGeonEvent.Count:
-                break;
-        }
     }
 
     public void RoomPrefabSetting(DungeonRoom roomData)
@@ -336,9 +314,9 @@ public class DungeonSystem : MonoBehaviour
                         switch (eventObj.eventType)
                         {
                             case DunGeonEvent.Battle:
-                                var createBt = eventObj as BattleData;
-                                var obj = createBt.CreateObj(battleObjPrefab, this);
-                                eventObjInstanceList.Add(obj.gameObject);
+                                //var createBt = eventObj as BattleData;
+                                //var obj = createBt.CreateObj(battleObjPrefab, this);
+                                //eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
                                 var createGt = eventObj as GatheringData;
@@ -347,7 +325,7 @@ public class DungeonSystem : MonoBehaviour
                                 break;
                             case DunGeonEvent.Hunt:
                                 var createHt = eventObj as HuntingData;
-                                var obj3 = createHt.Createobj(eventObjectPrefab, this);
+                                var obj3 = createHt.Createobj(huntingObjPrefab, this);
                                 eventObjInstanceList.Add(obj3.gameObject);
                                 break;
                             case DunGeonEvent.RandomIncount:
@@ -368,9 +346,9 @@ public class DungeonSystem : MonoBehaviour
                     switch (eventObj.eventType)
                     {
                         case DunGeonEvent.Battle:
-                            var createBt = eventObj as BattleData;
-                            var obj = createBt.CreateObj(battleObjPrefab, this);
-                            eventObjInstanceList.Add(obj.gameObject);
+                            //var createBt = eventObj as BattleData;
+                            //var obj = createBt.CreateObj(battleObjPrefab, this);
+                            //eventObjInstanceList.Add(obj.gameObject);
                             break;
                         case DunGeonEvent.Gathering:
                             var createGt = eventObj as GatheringData;
@@ -379,7 +357,7 @@ public class DungeonSystem : MonoBehaviour
                             break;
                         case DunGeonEvent.Hunt:
                             var createHt = eventObj as HuntingData;
-                            var obj3 = createHt.Createobj(eventObjectPrefab, this);
+                            var obj3 = createHt.Createobj(huntingObjPrefab, this);
                             eventObjInstanceList.Add(obj3.gameObject);
                             break;
                         case DunGeonEvent.RandomIncount:
@@ -444,15 +422,6 @@ public class DungeonSystem : MonoBehaviour
         mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
         dungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
     }
-
-
-    //public void GatheringEventObject(List<int> gatheringEvent)
-    //{
-    //    for (int i = 0; i < gatheringEvent.Count; i++)
-    //    {
-
-    //    }
-    //}
 }
 //switch(roomData.roadCount)
 //{
@@ -622,5 +591,33 @@ public class DungeonSystem : MonoBehaviour
 //                    break;
 //            }
 //        }
+//    }
+//}
+
+//// 이벤트 오브젝트 클릭시, 실행
+//public void EventObjectClickEvent(DunGeonEvent eventType, EventObject eventObject)
+//{
+//    dungeonSystemData.curPlayerData.SetUnitData(dungeonPlayer);
+
+//    switch (eventType)
+//    {
+//        case DunGeonEvent.Empty:
+//            break;
+//        case DunGeonEvent.Battle:
+//            break;
+//        case DunGeonEvent.Gathering:
+//            gatheringSystem.GoGatheringObject(eventObject.gameObject.transform.position);
+//            break;
+//        case DunGeonEvent.Hunt:
+//            Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+//            //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+//            SceneManager.LoadScene("Hunting");
+//            break;
+//        case DunGeonEvent.RandomIncount:
+//            break;
+//        case DunGeonEvent.SubStory:
+//            break;
+//        case DunGeonEvent.Count:
+//            break;
 //    }
 //}

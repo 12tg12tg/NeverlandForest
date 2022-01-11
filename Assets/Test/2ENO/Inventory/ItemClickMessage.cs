@@ -11,7 +11,7 @@ public class ItemClickMessage : GenericWindow
     public Image itemImg;
     public RectTransform buttonPanel;
     public InventoryController invenCtrl;
-    private DataAllItem itemInfo;
+    private DataItem itemInfo;
 
     new void Awake()
     {
@@ -20,7 +20,7 @@ public class ItemClickMessage : GenericWindow
         buttons[2].GetComponentInChildren<TextMeshProUGUI>().text = "취소";
 
         buttons[0].onClick.AddListener(() => OnClickItemUse());
-        buttons[1].onClick.AddListener(() => OnClickItemUse());
+        buttons[1].onClick.AddListener(() => OnClickItemRemove());
         buttons[2].onClick.AddListener(() => Close());
         for (int i = 0; i < buttons.Length; i++)
         {
@@ -39,31 +39,50 @@ public class ItemClickMessage : GenericWindow
         base.Close();
     }
 
-    public void Init(DataAllItem item)
+    public void Init(DataItem item)
     {
         itemInfo = item;
-        itemImg.sprite = itemInfo.ItemTableElem.IconSprite;
-        buttons[0].gameObject.SetActive(false);
-        buttons[1].gameObject.SetActive(false);
-        buttons[2].gameObject.SetActive(false);
+        switch (itemInfo.dataType)
+        {
+            case DataType.Default:
+                break;
+            case DataType.Consume:
+                break;
+            case DataType.AllItem:
+                var allItem = new DataAllItem(itemInfo);
+                itemImg.sprite = allItem.ItemTableElem.IconSprite;
+                buttons[0].gameObject.SetActive(false);
+                buttons[1].gameObject.SetActive(false);
+                buttons[2].gameObject.SetActive(false);
 
-        if (itemInfo.ItemTableElem.type == "FOOD")
-        {
-            buttons[0].gameObject.SetActive(true);
-            buttons[1].gameObject.SetActive(true);
-            buttons[2].gameObject.SetActive(true);
-        }
-        else
-        {
-            buttons[1].gameObject.SetActive(true);
-            buttons[2].gameObject.SetActive(true);
+                if (allItem.ItemTableElem.type == "FOOD")
+                {
+                    buttons[0].gameObject.SetActive(true);
+                    buttons[1].gameObject.SetActive(true);
+                    buttons[2].gameObject.SetActive(true);
+                }
+                else
+                {
+                    buttons[1].gameObject.SetActive(true);
+                    buttons[2].gameObject.SetActive(true);
+                }
+                break;
         }
     }
 
     private void OnClickItemUse()
     {
+        // 일단 1개씩
         itemInfo.OwnCount = 1;
-        invenCtrl.DeleteItem(itemInfo);
+        // TODO : 나중에 기능 구현하기
+        Debug.Log("아이템 사용!");
+    }
+
+    private void OnClickItemRemove()
+    {
+        itemInfo.OwnCount = 1;
+        Debug.Log("아이템 버리기!");
+        Vars.UserData.RemoveItemData(itemInfo);
     }
 
 }

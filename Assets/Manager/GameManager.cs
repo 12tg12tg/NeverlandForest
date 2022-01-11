@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private MultiTouch mt;
     private SaveLoadManager sm;
 
+
     public static GameManager Manager => gm;
     public MultiTouch MultiTouch => mt;
     public SaveLoadManager SaveLoad => sm;
