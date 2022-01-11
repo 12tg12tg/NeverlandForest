@@ -63,6 +63,18 @@ public class Utility
         transform.localPosition = end;
         action?.Invoke();
     }
+    public static IEnumerator CoTranslate(Transform transform, Vector3 dest, float speed, float minDist, UnityAction action = null)
+    {
+        var foward = transform.forward;
+        while (Vector3.Distance(transform.position, dest) > minDist)
+        {
+            transform.position += foward * speed * Time.deltaTime;
+            yield return null;
+        }
+        transform.position = dest;
+        action?.Invoke();
+    }
+
     public static IEnumerator CoSceneChange(string SceneName, float timer)
     {
         var time = 0f;

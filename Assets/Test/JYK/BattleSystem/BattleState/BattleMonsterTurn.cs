@@ -15,6 +15,7 @@ public class BattleMonsterTurn : State<BattleState>
 
     public override void Init()
     {
+        // 1. 행동할 몬스터가 있는지 확인
         var list = manager.monster.Where(n => n.State != MonsterState.Dead).ToList();
         if (list.Count == 0)
         {
@@ -25,7 +26,6 @@ public class BattleMonsterTurn : State<BattleState>
             manager.PrintMessage("몬스터 턴", 1f, null);
 
             manager.MonsterQueue.Clear();
-
 
             foreach (var monster in list)
             {

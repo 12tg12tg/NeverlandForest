@@ -265,17 +265,10 @@ public class TileMaker : MonoBehaviour
 
     internal void AffectedTileCancle(PlayerType type)
     {
-        tileList.Where(n => n.affectedPlayer == type).ToList().ForEach(n => n.CancleConfirmTarget());
-    }
-
-    public void SetAllTileHardClear(PlayerType type)
-    {
-        tileList.Where((n) => n.affectedPlayer == type).ToList().ForEach((n) => n.Clear());
-    }
-
-    public bool IsObstacleTile(Vector2 position)
-    {
-        return allTiles[(int)position.x, (int)position.y].isObstacle;
+        if(type == PlayerType.Boy)
+            tileList.Where(n => n.affectedByBoy).ToList().ForEach(n => n.CancleConfirmTarget(type));
+        else
+            tileList.Where(n => n.affectedByGirl).ToList().ForEach(n => n.CancleConfirmTarget(type));
     }
 
     private bool IsValidTile(Vector2 tilePos)

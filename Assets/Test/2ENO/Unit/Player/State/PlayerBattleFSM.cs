@@ -11,24 +11,21 @@ public enum CharacterBattleState
 
 public class PlayerBattleFSM : FSM<CharacterBattleState>
 {
-    private Animator playerAnimation;
-    private PlayerBattleController playerUnit;
-
-    private void Awake()
-    {
-        playerUnit = gameObject.GetComponent<PlayerBattleController>();
-        playerAnimation = gameObject.GetComponent<Animator>();
-    }
+    public AnimationFunc aniFunc;
+    public Animator animator;
+    public PlayerBattleController controller;
 
     private void Start()
     {
-        var attackReady = new PlayerAction(playerUnit, playerAnimation);
-        var idleState = new PlayerIdle(playerUnit, playerAnimation);
-        var deathState = new PlayerDeath(playerUnit, playerAnimation);
+        var attackReady = new PlayerAction(controller, animator);
+        var idleState = new PlayerIdle(controller, animator);
+        var deathState = new PlayerDeath(controller, animator);
 
         AddState(CharacterBattleState.Action, attackReady);
         AddState(CharacterBattleState.Idle, idleState);
         AddState(CharacterBattleState.Death, deathState);
+
+        aniFunc.actionState = attackReady;
     }
 
     public override void Update()

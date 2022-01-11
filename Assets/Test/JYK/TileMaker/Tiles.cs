@@ -23,13 +23,17 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Vars
     private bool isHighlightAttack;
     private bool isHighlightConsume;
-    private bool isConfirm;
     private Color confirmColor;
-    public PlayerType affectedPlayer;
+    private Color boyColor;
+    private Color girlColor;
+    public bool affectedByBoy;
+    public bool affectedByGirl;
 
     private void Start()
     {
         tileMaker = TileMaker.Instance;
+        ColorUtility.TryParseHtmlString("#42C0FF", out boyColor);
+        ColorUtility.TryParseHtmlString("#FFCC42", out girlColor);
     }
 
     //Move
@@ -67,13 +71,13 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public void Clear()
     {
         //완전 초기화. 어떤 하이라이트도 없음.
-        isConfirm = false;
+        affectedByBoy = false;
+        affectedByGirl = false;
         isHighlightAttack = false;
         isHighlightConsume = false;
         ren.material.color = tileMaker.noneColor;
         center.material.color = tileMaker.noneColor;
         edge.material.color = tileMaker.noneColor;
-        affectedPlayer = PlayerType.None;
     }
 
     public void HighlightSkillRange()
@@ -99,31 +103,46 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         isHighlightConsume = false;
         center.material.color = tileMaker.noneColor;
         edge.material.color = tileMaker.noneColor;
-        if (isConfirm)
+        if (affectedByBoy || affectedByGirl)
             center.material.color = confirmColor;
+    }
+
+    private void ReCalculateAffectedColor()
+    {
+        Color color = Color.clear;
+        if (affectedByBoy)
+            color += boyColor;
+        if (affectedByGirl)
+            color += girlColor;
+        this.confirmColor = color;
     }
 
     public void ConfirmAsTarget(PlayerType who)
     {
-        isConfirm = true;
-        Color color;
         if (who == PlayerType.Boy)
         {
-            ColorUtility.TryParseHtmlString("#42C0FF", out color);
-            affectedPlayer = PlayerType.Boy;
+            affectedByBoy = true;
         }
         else
         {
-            ColorUtility.TryParseHtmlString("#FFCC42", out color);
-            affectedPlayer = PlayerType.Girl;
+            affectedByGirl = true;
         }
-        this.confirmColor = color;
+
+        ReCalculateAffectedColor();
     }
     
-    public void CancleConfirmTarget()
+    public void CancleConfirmTarget(PlayerType type)
     {
-        affectedPlayer = PlayerType.None;
-        isConfirm = false;
+        if(type == PlayerType.Boy)
+        {
+            affectedByBoy = false;
+        }
+        else
+        {
+            affectedByGirl = false;
+        }
+
+        ReCalculateAffectedColor();
         ResetHighlightExceptConfirm();
     }
 
@@ -136,7 +155,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             HighlightCanAttackSign();
         if (isHighlightConsume)
             HighlightCanConsumeSign();
-        if(isConfirm)
+        if (affectedByBoy || affectedByGirl)
             ResetHighlightExceptConfirm();
     }
 

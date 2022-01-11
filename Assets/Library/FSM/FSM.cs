@@ -43,4 +43,8 @@ public class FSM<T> : MonoBehaviour
         curState = state;
         stateList[state].Init();
     }
+    public State<T> GetState(T state)
+    {
+        return stateList[state];
+    }
 }
