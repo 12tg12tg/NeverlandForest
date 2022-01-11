@@ -103,7 +103,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         //dungeonMapData.dungeonRoomArray = rList;
         dungeonMapData.dungeonRoomList = rList2;
         dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
-
         dungeonMapData.curDungeonRoomIndex = Vars.UserData.curDungeonRoomIdx;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }

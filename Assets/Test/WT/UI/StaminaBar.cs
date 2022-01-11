@@ -7,28 +7,18 @@ public class StaminaBar : MonoBehaviour
     public RectTransform sliderRect;
     public void Start()
     {
-        /*  Debug.Log($"Vars.UserData.CurStamina{Vars.UserData.CurStamina}");
-          Debug.Log($"Vars.maxStamina;{Vars.maxStamina}");
-        */
-        Vars.UserData.Tiredness = 100;
         ChangeableStaminaChange();
     }
     void Update()
     {
         slider.value = (float)Vars.UserData.CurStamina / (float)Vars.maxStamina;
-       
     }
     private void ChangeableStaminaChange()
     {
         Vector3 temp = sliderRect.localScale;
         var changeValue = ((float)Vars.UserData.ChangeableMaxStamina / (float)Vars.maxStamina);
-        Debug.Log(changeValue);
         temp.x =changeValue;
         sliderRect.localScale = temp;
-        Debug.Log(sliderRect.localScale);
-        Debug.Log($"CurStamina {Vars.UserData.CurStamina}");
-        Debug.Log($"Hunger {Vars.UserData.Hunger}");
-        Debug.Log(slider.value);
     }
 
     public void OnGUI()
@@ -51,6 +41,22 @@ public class StaminaBar : MonoBehaviour
         {
             ConsumeManager.GetthingHunger(5); //최대치 감소
             ChangeableStaminaChange();
+        }
+        if (GUILayout.Button("BlightUp"))
+        {
+            ConsumeManager.CurLanternState++;
+            if (ConsumeManager.CurLanternState ==0)
+            {
+                ConsumeManager.CurLanternState = LanternState.Level4;
+            }
+        }
+        if (GUILayout.Button("BlightDown"))
+        {
+            ConsumeManager.CurLanternState--;
+            if (ConsumeManager.CurLanternState == LanternState.Level4)
+            {
+                ConsumeManager.CurLanternState = LanternState.None;
+            }
         }
     }
 }

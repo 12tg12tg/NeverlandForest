@@ -145,6 +145,7 @@ public class Utility
     {
         Debug.Log(transform.gameObject.name, transform.gameObject);
         float timer = 0f;
+        end.y = 0;
         var dir = Vector3.Normalize(end - start);
         transform.rotation = Quaternion.LookRotation(dir);
         while (timer < time)

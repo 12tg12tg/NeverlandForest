@@ -35,7 +35,6 @@ public class SwipeSomething : MonoBehaviour
     public void Bar()
     {
         var startPos = Camera.main.ScreenToViewportPoint(MultiTouch.Instance.PrimaryStartPos);
-        //Debug.Log(startPos);
         if (MultiTouch.Instance.TouchCount > 0 && startPos.x >= 0.4f && startPos.x <= 0.6f &&
                 startPos.y <= 0.04f)
         {
@@ -64,7 +63,6 @@ public class SwipeSomething : MonoBehaviour
                 panel.SetActive(false);
                 bar.SetActive(true);
             }
-
             this.startPos = inven.position;
             MultiTouch.Instance.PrimaryStartPos = Vector2.zero;
         }

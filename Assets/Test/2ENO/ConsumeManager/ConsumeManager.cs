@@ -87,7 +87,7 @@ public static class ConsumeManager
             var recoverValue = Vars.UserData.ChangeableMaxStamina - Vars.UserData.Tiredness;
             if (Vars.UserData.ChangeableMaxStamina > Vars.UserData.Tiredness)
             {
-                TimeUp(recoverValue * 6);
+                TimeUp((int)recoverValue * 6);
             }
             Vars.UserData.Tiredness = Vars.UserData.ChangeableMaxStamina; // 회복
             if (Vars.UserData.Tiredness > Vars.UserData.ChangeableMaxStamina)
@@ -98,7 +98,7 @@ public static class ConsumeManager
             CurStaminaChange();
         }
     }
-    public static void GettingTired(int gettingTired) //피로도 증가
+    public static void GettingTired(float gettingTired) //피로도 증가
     {
         Vars.UserData.Tiredness -= gettingTired;
         if (Vars.UserData.Tiredness < 0)
@@ -202,6 +202,14 @@ public static class ConsumeManager
     {
         Vars.UserData.CurIngameHour += hour;
         Vars.UserData.CurIngameMinute += minute;
+
+        float consumeTotalMinute = 60 * hour + minute;
+        float consumeStamina = consumeTotalMinute / 30;
+        //30분당 스태미나 1(n)소비 인데 어떻게해야 깔끔하게 정리 할 수 있을까
+        Debug.Log($"consumeTotalMinute {consumeTotalMinute}");
+        Debug.Log($"consumeStamina {consumeStamina}");
+        GettingTired(consumeStamina);
+      
         while(Vars.UserData.CurIngameMinute >= Vars.maxIngameMinute)
         {
             Vars.UserData.CurIngameMinute -= Vars.maxIngameMinute;
@@ -214,6 +222,23 @@ public static class ConsumeManager
         }
         TimeStateChange();
     }
+    public static void RecoveryTimeUp(int minute, int hour=0)
+    {
+        Vars.UserData.CurIngameHour += hour;
+        Vars.UserData.CurIngameMinute += minute;
+        while (Vars.UserData.CurIngameMinute >= Vars.maxIngameMinute)
+        {
+            Vars.UserData.CurIngameMinute -= Vars.maxIngameMinute;
+            Vars.UserData.CurIngameHour++;
+        }
+        while (Vars.UserData.CurIngameHour >= Vars.maxIngameHour)
+        {
+            Vars.UserData.CurIngameHour -= Vars.maxIngameHour;
+            DateUp();
+        }
+        TimeStateChange();
+    }
+
     public static void DateUp()
     {
         Vars.UserData.date++;

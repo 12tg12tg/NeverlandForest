@@ -22,7 +22,7 @@ public class UserData
     public int curDungeonRoomIdx;
     public int dungeonStartIdx;
     public bool dungeonReStart;
-
+    public int currentDundeonRoomIndex;
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
 
@@ -33,12 +33,14 @@ public class UserData
     //피로도는 실질적으로 줄어드는 수치
     public int ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
     public int Hunger { get; set; } = 70;
-    // public int Tiredness { get=> Vars.maxStamina - Tired; set { } }
-    public int Tiredness { get; set; } 
-    public int CurStamina { get =>Tiredness; set { } }
     public int CurIngameHour { get; set; } = 0;
     public int CurIngameMinute { get; set; } = 0;
-    public int LanternCount = 18;
+    public int LanternCount { get; set; } = 18;
+    public int date = 0;
+    public float Tiredness { get; set; } = 100;
+    public float CurStamina { get =>Tiredness; set { } }
+    public float hunterHp = 100;
+    public float herbalistHp = 100;
 
     // 인벤토리에 사용
     public int maxInventoryItemCount = 21;
@@ -171,19 +173,5 @@ public class UserData
             Debug.Log("아이템 감소됨");
         }
     }
-
     // DataItem 으로 그리고 List로 다시 변환해서 사용해보기
-    public int date = 0;
-    public float hunterHp = 100;
-    public float herbalistHp = 100;
 }
-
-//switch (newItem.dataType)
-//{
-//    case DataType.Default:
-//        break;
-//    case DataType.Consume:
-//        break;
-//    case DataType.AllItem:
-//        break;
-//}
