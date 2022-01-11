@@ -72,10 +72,11 @@ public class DungeonSystem : MonoBehaviour
         {
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
             curDungeonIndex = Vars.UserData.curDungeonIndex;
-            Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonStartIdx = 100;
+            Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray[Vars.UserData.curDungeonRoomIdx];
         }
+        Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonStartIdx = 100;
         // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
-        if(Vars.UserData.dungeonReStart)
+        if (Vars.UserData.dungeonReStart)
         {
             Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray[Vars.UserData.dungeonStartIdx];
             Vars.UserData.dungeonReStart = false;
@@ -133,7 +134,7 @@ public class DungeonSystem : MonoBehaviour
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
         // 방 한칸 지날때마다 3시간씩 지남
-        ConsumeManager.TimeUp(0, 12);
+        ConsumeManager.TimeUp(0, 3);
         if (isRoomEnd)
         {
             foreach(var obj in eventObjInstanceList)
@@ -419,7 +420,7 @@ public class DungeonSystem : MonoBehaviour
         objectInfo2.roomIdx = lastRoom.roomIdx;
         dungeonRoomObjectList.Add(lastObj);
 
-        mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
+        mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 3000f, 0f);
         dungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
     }
 }
