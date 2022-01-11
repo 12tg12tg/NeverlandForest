@@ -11,12 +11,12 @@ public class StaminaBar : MonoBehaviour
     }
     void Update()
     {
-        slider.value = (float)Vars.UserData.CurStamina / (float)Vars.maxStamina;
+        slider.value = (float)Vars.UserData.uData.CurStamina / (float)Vars.maxStamina;
     }
     private void ChangeableStaminaChange()
     {
         Vector3 temp = sliderRect.localScale;
-        var changeValue = ((float)Vars.UserData.ChangeableMaxStamina / (float)Vars.maxStamina);
+        var changeValue = ((float)Vars.UserData.uData.ChangeableMaxStamina / (float)Vars.maxStamina);
         temp.x =changeValue;
         sliderRect.localScale = temp;
     }
@@ -30,7 +30,7 @@ public class StaminaBar : MonoBehaviour
         if (GUILayout.Button("GettingTired"))
         {
             ConsumeManager.GettingTired(5);
-            Debug.Log($"CurStamina {Vars.UserData.CurStamina}");
+            Debug.Log($"CurStamina {Vars.UserData.uData.CurStamina}");
         }
         if (GUILayout.Button("eat Food"))
         {

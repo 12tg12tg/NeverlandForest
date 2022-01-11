@@ -10,7 +10,7 @@ public class LanternBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        slider.value = Vars.UserData.LanternCount / Vars.LanternMaxCount;
+        slider.value = Vars.UserData.uData.LanternCount / Vars.lanternMaxCount;
 
         if (ConsumeManager.CurLanternState== LanternState.Level4)
         {

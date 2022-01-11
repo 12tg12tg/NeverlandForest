@@ -74,7 +74,7 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
-        Fog(Vars.UserData.date);
+        Fog(Vars.UserData.uData.Date);
     }
 
     public void InitWorldMiniMap()
@@ -86,7 +86,7 @@ public class WorldMap : MonoBehaviour
         Load(loadData, layerName);
         PaintLink(layerName);
         //Vars.UserData.date = 3;
-        Fog(Vars.UserData.date);
+        Fog(Vars.UserData.uData.Date);
     }
 
     public IEnumerator InitMap(UnityAction action)
@@ -347,7 +347,7 @@ public class WorldMap : MonoBehaviour
     }
     public void FogComing()
     {
-        var date = Vars.UserData.date;
+        var date = Vars.UserData.uData.Date;
         if (date == 3)
             Fog(date);
 
@@ -355,7 +355,7 @@ public class WorldMap : MonoBehaviour
         {
             fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
         }
-        beforeDate = Vars.UserData.date;
+        beforeDate = Vars.UserData.uData.Date;
     }
 
     private void InitNode(out WorldMapNode node, Vector2 index)

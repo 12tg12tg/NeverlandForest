@@ -330,10 +330,9 @@ public class GatheringSystem : MonoBehaviour
         GatheringTreeByTool();
 
         var item = curSelectedObj.item;
-        var itemid = item.ItemTableElem.id;
         if (item != null)
         {
-            Vars.UserData.HaveAllItemList2.Add(itemid,item);
+            Vars.UserData.AddItemData(item);
         }
         womenplayer.IsCoMove = true;
         if (coWomenMove == null)
@@ -408,10 +407,9 @@ public class GatheringSystem : MonoBehaviour
         //}
         GatheringTreeByHand();
         var item = curSelectedObj.item;
-        var itemid = item.ItemTableElem.id;
         if (item != null)
         {
-            Vars.UserData.HaveAllItemList2.Add(itemid, item);
+            Vars.UserData.AddItemData(item);
         }
         womenplayer.IsCoMove = true;
         if (coWomenMove == null)

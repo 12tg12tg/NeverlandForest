@@ -12,12 +12,12 @@ public static class Vars
     public static List<DataPlayerSkill> GirlSkillList { get; set; } = new List<DataPlayerSkill>();
 
     // Vars
-    public static int maxIngameHour = 24;
-    public static int maxIngameMinute = 60;
-    public static int maxStamina = 100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
-    public static float hunterMaxHp = 100;
-    public static float herbalistMaxHp = 100;
-    public static int LanternMaxCount = 18;
+    public static readonly int maxIngameHour = 24;
+    public static readonly int maxIngameMinute = 60;
+    public static readonly int maxStamina = 100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
+    public static readonly float hunterMaxHp = 100;
+    public static readonly float herbalistMaxHp = 100;
+    public static readonly int lanternMaxCount = 18;
 
     // Localization
     public static Localization localization = Localization.Korean;

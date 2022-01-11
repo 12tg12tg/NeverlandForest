@@ -48,13 +48,13 @@ public class DungeonSystem : MonoBehaviour
         {
             Vars.UserData.WorldMapPlayerData.isClear = true;
             SceneManager.LoadScene("AS_WorldMap");
-            Vars.UserData.date++;
+            Vars.UserData.uData.Date++;
         }
         if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = false;
             SceneManager.LoadScene("AS_WorldMap");
-            Vars.UserData.date++;
+            Vars.UserData.uData.Date++;
         }
     }
 

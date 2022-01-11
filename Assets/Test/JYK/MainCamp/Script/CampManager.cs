@@ -34,14 +34,14 @@ public class CampManager : MonoBehaviour
     }
     public void Update()
     {
-        changeminimapCameraState();
+        ChangeminimapCameraState();
     }
-    public void changeminimapCameraState()
+    public void ChangeminimapCameraState()
     {
         if (isminimap)
-            minimapPanel.gameObject.SetActive(true);
+            minimapPanel.SetActive(true);
         else
-            minimapPanel.gameObject.SetActive(false);
+            minimapPanel.SetActive(false);
     }
     public void OpenCookScene(object[] vals)
     {

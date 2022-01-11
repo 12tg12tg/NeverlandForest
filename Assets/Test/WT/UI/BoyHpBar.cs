@@ -13,6 +13,6 @@ public class BoyHpBar : MonoBehaviour
     }
     void Update()
     {
-        slider.value = Vars.UserData.hunterHp / Vars.hunterMaxHp;
+        slider.value = Vars.UserData.uData.HunterHp / Vars.hunterMaxHp;
     }
 }

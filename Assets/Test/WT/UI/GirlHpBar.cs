@@ -13,6 +13,6 @@ public class GirlHpBar : MonoBehaviour
     }
     void Update()
     {
-        slider.value = Vars.UserData.herbalistHp / Vars.herbalistMaxHp;
+        slider.value = Vars.UserData.uData.HerbalistHp / Vars.herbalistMaxHp;
     }
 }

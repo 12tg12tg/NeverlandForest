@@ -63,18 +63,18 @@ public static class ConsumeManager
 
     public static void GetthingHunger(int hungercount) //굶주림 증가 -> 자연소비로 해야됨.
     {
-        if (Vars.UserData.ChangeableMaxStamina >0)
+        if (Vars.UserData.uData.ChangeableMaxStamina >0)
         {
-            Vars.UserData.Hunger += hungercount;
+            Vars.UserData.uData.Hunger += hungercount;
             ChangeableMaxStaminChange();
         }
     }
     public static void RecoveryHunger(int hungercount) //굶주림 감소 -> 스태미너의 최대치를 결정함
     {
-        Vars.UserData.Hunger -= hungercount;
-        if (Vars.UserData.Hunger<0)
+        Vars.UserData.uData.Hunger -= hungercount;
+        if (Vars.UserData.uData.Hunger<0)
         {
-            Vars.UserData.Hunger = 0;
+            Vars.UserData.uData.Hunger = 0;
         }
         ChangeableMaxStaminChange();
     }
@@ -82,17 +82,17 @@ public static class ConsumeManager
     {
         // 회복할수 있는 최대치 까지 회복 시키는 거기때문에 매개변수는 받을필요가 없을 것 같고
         // 회복된 수치에 비례해서 시간을 소비하는 개념으로 가야될것 같다.
-        if (Vars.UserData.CurStamina<Vars.UserData.ChangeableMaxStamina )
+        if (Vars.UserData.uData.CurStamina <Vars.UserData.uData.ChangeableMaxStamina )
         {
-            var recoverValue = Vars.UserData.ChangeableMaxStamina - Vars.UserData.Tiredness;
-            if (Vars.UserData.ChangeableMaxStamina > Vars.UserData.Tiredness)
+            var recoverValue = Vars.UserData.uData.ChangeableMaxStamina - Vars.UserData.uData.Tiredness;
+            if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
             {
                 TimeUp((int)recoverValue * 6);
             }
-            Vars.UserData.Tiredness = Vars.UserData.ChangeableMaxStamina; // 회복
-            if (Vars.UserData.Tiredness > Vars.UserData.ChangeableMaxStamina)
+            Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina; // 회복
+            if (Vars.UserData.uData.Tiredness > Vars.UserData.uData.ChangeableMaxStamina)
             {
-                Vars.UserData.Tiredness = Vars.UserData.ChangeableMaxStamina;
+                Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
             }
             //스태미나 10회복당 1시간 개념이였으니깐 1회복당 6분의 개념
             CurStaminaChange();
@@ -100,10 +100,10 @@ public static class ConsumeManager
     }
     public static void GettingTired(float gettingTired) //피로도 증가
     {
-        Vars.UserData.Tiredness -= gettingTired;
-        if (Vars.UserData.Tiredness < 0)
+        Vars.UserData.uData.Tiredness -= gettingTired;
+        if (Vars.UserData.uData.Tiredness < 0)
         {
-            Vars.UserData.Tiredness = 0;
+            Vars.UserData.uData.Tiredness = 0;
             //eventbus에 게임오버를 보내주자.
             //eventbus에 gamestate는 어디서 만들지? gameManger에 만들어져 있던가?
             EventBus<GameState>.Publish(GameState.GameOver);
@@ -112,49 +112,49 @@ public static class ConsumeManager
     }
     private static void ChangeableMaxStaminChange()
     {
-        Vars.UserData.ChangeableMaxStamina = Vars.maxStamina - Vars.UserData.Hunger;
+        Vars.UserData.uData.ChangeableMaxStamina = Vars.maxStamina - Vars.UserData.uData.Hunger;
     }
     private static void TirednessChange()
     {
-        Vars.UserData.Tiredness = Vars.UserData.ChangeableMaxStamina;
+        Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
     }
     private static void CurStaminaChange()
     {
-        Vars.UserData.CurStamina = Vars.UserData.Tiredness;
+        Vars.UserData.uData.CurStamina = Vars.UserData.uData.Tiredness;
     }
     private static void FullingLantern(int oil)
     {
-        Vars.UserData.LanternCount += oil;
+        Vars.UserData.uData.LanternCount += oil;
         LanternStateChange();
     }
     private static void RecoverHp(PlayerType type,float recovery)
     {
         if (type == PlayerType.Boy)
         {
-            Vars.UserData.hunterHp += recovery;
-            if (Vars.UserData.hunterHp>Vars.hunterMaxHp)
+            Vars.UserData.uData.HunterHp += recovery;
+            if (Vars.UserData.uData.HunterHp >Vars.hunterMaxHp)
             {
-                Vars.UserData.hunterHp = Vars.hunterMaxHp;
+                Vars.UserData.uData.HunterHp = Vars.hunterMaxHp;
             }
         }
         else if (type == PlayerType.Girl)
         {
-            Vars.UserData.herbalistHp += recovery;
-            if (Vars.UserData.herbalistHp > Vars.herbalistMaxHp)
+            Vars.UserData.uData.HerbalistHp += recovery;
+            if (Vars.UserData.uData.HerbalistHp > Vars.herbalistMaxHp)
             {
-                Vars.UserData.herbalistHp = Vars.herbalistMaxHp;
+                Vars.UserData.uData.HerbalistHp = Vars.herbalistMaxHp;
             }
         }
     }
     private static void ConsumeLantern(int oil)
     {   
         // 사용하는 아이템에 따라서 oil의 수치값을 정해주면될것같다.
-        Vars.UserData.LanternCount -= oil;
+        Vars.UserData.uData.LanternCount -= oil;
         LanternStateChange();
     }
     private static void LanternStateChange()
     {
-        var count = Vars.UserData.LanternCount;
+        var count = Vars.UserData.uData.LanternCount;
         if (count <= 17 &&count>14) //15,16,17
         {
             curLanternState = LanternState.Level4;
@@ -179,7 +179,7 @@ public static class ConsumeManager
     private static void TimeStateChange()
     {   
         //현재 인호가 구현해둔 방식은 원 하나에 24시간을 들고있나봄.
-        if(Vars.UserData.CurIngameHour <= 12)
+        if(Vars.UserData.uData.CurIngameHour <= 12)
         {
             if(curTimeState != TimeState.DayTime)
             {
@@ -187,7 +187,7 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.DayTime;
         }
-        else if(Vars.UserData.CurIngameHour <= 24)
+        else if(Vars.UserData.uData.CurIngameHour <= 24)
         {
             if (curTimeState != TimeState.NightTime)
             {
@@ -200,8 +200,8 @@ public static class ConsumeManager
     public static void TimeUp(int minute, int hour=0)
     //시간보다는 분을 더 자주쓸거같아서 hour은 디폴트 매개변수로 두었습니당!
     {
-        Vars.UserData.CurIngameHour += hour;
-        Vars.UserData.CurIngameMinute += minute;
+        Vars.UserData.uData.CurIngameHour += hour;
+        Vars.UserData.uData.CurIngameMinute += minute;
 
         float consumeTotalMinute = 60 * hour + minute;
         float consumeStamina = consumeTotalMinute / 30;
@@ -210,30 +210,30 @@ public static class ConsumeManager
         Debug.Log($"consumeStamina {consumeStamina}");
         GettingTired(consumeStamina);
       
-        while(Vars.UserData.CurIngameMinute >= Vars.maxIngameMinute)
+        while(Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
         {
-            Vars.UserData.CurIngameMinute -= Vars.maxIngameMinute;
-            Vars.UserData.CurIngameHour++;
+            Vars.UserData.uData.CurIngameMinute -= Vars.maxIngameMinute;
+            Vars.UserData.uData.CurIngameHour++;
         }
-        while(Vars.UserData.CurIngameHour >= Vars.maxIngameHour)
+        while(Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
         {
-            Vars.UserData.CurIngameHour -= Vars.maxIngameHour;
+            Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
             DateUp();
         }
         TimeStateChange();
     }
     public static void RecoveryTimeUp(int minute, int hour=0)
     {
-        Vars.UserData.CurIngameHour += hour;
-        Vars.UserData.CurIngameMinute += minute;
-        while (Vars.UserData.CurIngameMinute >= Vars.maxIngameMinute)
+        Vars.UserData.uData.CurIngameHour += hour;
+        Vars.UserData.uData.CurIngameMinute += minute;
+        while (Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
         {
-            Vars.UserData.CurIngameMinute -= Vars.maxIngameMinute;
-            Vars.UserData.CurIngameHour++;
+            Vars.UserData.uData.CurIngameMinute -= Vars.maxIngameMinute;
+            Vars.UserData.uData.CurIngameHour++;
         }
-        while (Vars.UserData.CurIngameHour >= Vars.maxIngameHour)
+        while (Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
         {
-            Vars.UserData.CurIngameHour -= Vars.maxIngameHour;
+            Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
             DateUp();
         }
         TimeStateChange();
@@ -241,13 +241,13 @@ public static class ConsumeManager
 
     public static void DateUp()
     {
-        Vars.UserData.date++;
-        if(Vars.UserData.date % 15 == 0)
+        Vars.UserData.uData.Date++;
+        if(Vars.UserData.uData.Date % 15 == 0)
         {
             EventBus<DateEvent>.Publish(DateEvent.BlueMoon);
         }
 
-        if(Vars.UserData.date > 2)
+        if(Vars.UserData.uData.Date > 2)
         {
             EventBus<DateEvent>.Publish(DateEvent.WitchEffect);
         }

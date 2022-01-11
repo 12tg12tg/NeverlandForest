@@ -6,6 +6,7 @@ public enum SaveDataName
     BackUp,
     TextWorldMapNodePath,
     TextWorldMapPlayerDataPath,
+    TextDungeonMapPath,
 }
 
 public class SaveDataDelete : MonoBehaviour

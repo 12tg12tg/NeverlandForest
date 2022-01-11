@@ -141,8 +141,8 @@ public class Combination : MonoBehaviour
             Debug.Log("이미 해당 레시피가 존재함");
         }
         Debug.Log($"{result}번째 아이템 {item.name} 가 나왔습니다");
-        Debug.Log(Vars.UserData.CurIngameHour);
-        Debug.Log(Vars.UserData.CurIngameMinute);
+        Debug.Log(Vars.UserData.uData.CurIngameHour);
+        Debug.Log(Vars.UserData.uData.CurIngameMinute);
         CookingStart = false;
     }
 

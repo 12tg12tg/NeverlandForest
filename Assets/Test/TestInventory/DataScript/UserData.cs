@@ -31,22 +31,13 @@ public class UserData
 
     //ConsumeManager
     //피로도는 실질적으로 줄어드는 수치
-    public int ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
-    public int Hunger { get; set; } = 70;
-    public int CurIngameHour { get; set; } = 0;
-    public int CurIngameMinute { get; set; } = 0;
-    public int LanternCount { get; set; } = 18;
-    public int date = 0;
-    public float Tiredness { get; set; } = 100;
-    public float CurStamina { get =>Tiredness; set { } }
-    public float hunterHp = 100;
-    public float herbalistHp = 100;
+    public CostData uData = new CostData();
 
     // 인벤토리에 사용
     public int maxInventoryItemCount = 21;
     private readonly List<DataItem> haveAllItemList = new List<DataItem>();
     public ReadOnlyCollection<DataItem> HaveAllItemList => haveAllItemList.AsReadOnly();
-    
+
     public void AddItemData(DataItem newItem)
     {
         // 칸 하나를 전부 차지한 경우의 개수

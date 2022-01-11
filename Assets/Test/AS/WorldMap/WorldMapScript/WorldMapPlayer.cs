@@ -175,7 +175,7 @@ public class WorldMapPlayer : MonoBehaviour
     private void PlayerDeathChack() // ¾È°³¿¡ ´ê¾ÒÀ» ¶§
     {
         var y = (int)currentIndex.y;
-        if (y <= Vars.UserData.date - 3)
+        if (y <= Vars.UserData.uData.Date - 3)
         {
             var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
             {
@@ -184,7 +184,7 @@ public class WorldMapPlayer : MonoBehaviour
                 Debug.Log("»ç¸Á");
                 Vars.UserData.WorldMapNodeStruct = new List<MapNodeStruct_0>();
                 Vars.UserData.WorldMapPlayerData = default;
-                Vars.UserData.date = 0;
+                Vars.UserData.uData.Date = 0;
             });
             StartCoroutine(coScene);
         }
