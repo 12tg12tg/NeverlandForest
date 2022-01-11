@@ -103,13 +103,14 @@ public class HuntingSystem : MonoBehaviour
         newItem.itemTableElem = item;
         getItemImage.sprite = item.IconSprite;
 
-        if (!Vars.UserData.HaveAllItemList2.ContainsKey(item.name))
-        {
-            Vars.UserData.HaveAllItemList2.Add(item.name, newItem);
-        }
-        else
-        {
-            Vars.UserData.HaveAllItemList2[newItem.ItemTableElem.name].OwnCount += newItem.OwnCount;
-        }
+        Vars.UserData.AddItemData(newItem);
+        //if (!Vars.UserData.HaveAllItemList2.ContainsKey(item.name))
+        //{
+        //    Vars.UserData.HaveAllItemList2.Add(item.name, newItem);
+        //}
+        //else
+        //{
+        //    Vars.UserData.HaveAllItemList2[newItem.ItemTableElem.name].OwnCount += newItem.OwnCount;
+        //}
     }
 }

@@ -9,69 +9,38 @@ public class InventoryController : GenericWindow
     [Space(3)]
     public InventoryItemView itemViewUI;
     public ItemClickMessage itemMessageUI;
-    public void Start()
+    public GetItemView itemGetUI;
+    public void OnEnable()
     {
         SetInventoryType();
         itemMessageUI.Close();
     }
 
     public void SetInventoryType()
-    {
-
-        List<DataAllItem> list = new List<DataAllItem>();
-        //list = Vars.UserData.HaveAllItemList2.Cast<DataItem>().ToList();
-
-        foreach (var item in Vars.UserData.HaveAllItemList2)
-        {
-            list.Add(item.Value);
-        }
-
+    { 
+        var list = Vars.UserData.HaveAllItemList.ToList();
         itemViewUI.Init(list);
     }
 
-    public void OpenMessageWindow(DataAllItem item)
+    public void OpenClickMessageWindow(DataItem item)
     {
         itemMessageUI.Close();
         itemMessageUI.Open();
-        //manager.Open(1, true);
         itemMessageUI.Init(item);
+        //manager.Open(1, true);
     }
 
-    public void GetItem(List<DataAllItem> items)
+    public void OpenChoiceMessageWindow(List<DataItem> itemList)
     {
-        itemViewUI.GetItemExcute(items);
+        itemGetUI.Close();
+        itemGetUI.Open();
+        itemGetUI.Init(itemList);
     }
 
-    public void DeleteItem(DataAllItem item)
-    {
-        itemViewUI.DeleteItemExcute(item);
-    }
 
-    public void UserDataUpdate(List<DataAllItem> dataItem)
-    {
-        for (int i = 0; i < dataItem.Count; i++)
-        {
-            if (!Vars.UserData.HaveAllItemList2.ContainsKey(dataItem[i].ItemTableElem.name))
-            {
-                Vars.UserData.HaveAllItemList2.Add(dataItem[i].ItemTableElem.name, dataItem[i]);
-            }
-            else
-            {
-                Vars.UserData.HaveAllItemList2[dataItem[i].ItemTableElem.name].OwnCount = dataItem[i].OwnCount;
-            }
-        }
-    }
-    public void UserDataItemRemove(DataAllItem item)
-    {
-        if (Vars.UserData.HaveAllItemList2.ContainsKey(item.ItemTableElem.name))
-        {
-            Vars.UserData.HaveAllItemList2.Remove(item.ItemTableElem.name);
-        }
-    }
 
     private void OnGUI()
     {
-        
         if (GUILayout.Button("ItemGet"))
         {
             var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
@@ -81,12 +50,12 @@ public class InventoryController : GenericWindow
             newItem.itemId = int.Parse(stringId);
             newItem.OwnCount = 13;
             newItem.LimitCount = 5;
+            newItem.dataType = DataType.AllItem;
 
-            var itemList = new List<DataAllItem>();
-            itemList.Add(newItem);
+            Vars.UserData.AddItemData(newItem);
 
-            GetItem(itemList);
-            // È¹µæ °¡´ÉÇÑ Ã¢ ¶ç¿ì±â
+            var list = Vars.UserData.HaveAllItemList.ToList();
+            itemViewUI.Init(list);
         }
 
         if(GUILayout.Button("DeleteItem"))
@@ -98,12 +67,51 @@ public class InventoryController : GenericWindow
             newItem.itemId = int.Parse(stringId);
             newItem.OwnCount = 6;
             newItem.LimitCount = 5;
+            newItem.dataType = DataType.AllItem;
 
-            DeleteItem(newItem);
+            Vars.UserData.RemoveItemData(newItem);
+
+            var list = Vars.UserData.HaveAllItemList.ToList();
+            itemViewUI.Init(list);
         }
     }
-
-    
-    
-    
 }
+//List<DataAllItem> list = new List<DataAllItem>();
+//foreach (var item in Vars.UserData.HaveAllItemList)
+//{
+//    list.Add(item);
+//}
+
+
+//public void GetItem(List<DataAllItem> items)
+//{
+//    itemViewUI.GetItemExcute(items);
+//}
+
+//public void DeleteItem(DataAllItem item)
+//{
+//    itemViewUI.DeleteItemExcute(item);
+//}
+
+//public void UserDataUpdate(List<DataAllItem> dataItem)
+//{
+//    for (int i = 0; i < dataItem.Count; i++)
+//    {
+//        if (!Vars.UserData.HaveAllItemList2.ContainsKey(dataItem[i].ItemTableElem.name))
+//        {
+//            Vars.UserData.HaveAllItemList2.Add(dataItem[i].ItemTableElem.name, dataItem[i]);
+//        }
+//        else
+//        {
+//            Vars.UserData.HaveAllItemList2[dataItem[i].ItemTableElem.name].OwnCount = dataItem[i].OwnCount;
+//        }
+//    }
+//}
+
+//public void UserDataItemRemove(DataAllItem item)
+//{
+//    if (Vars.UserData.HaveAllItemList2.ContainsKey(item.ItemTableElem.name))
+//    {
+//        Vars.UserData.HaveAllItemList2.Remove(item.ItemTableElem.name);
+//    }
+//}

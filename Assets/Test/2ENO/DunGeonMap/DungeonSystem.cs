@@ -179,6 +179,8 @@ public class DungeonSystem : MonoBehaviour
         }
 
         Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
+        // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void ConvertEventDataType()

@@ -76,7 +76,7 @@ public class BattleSkillInfo : MonoBehaviour
         iconName.text = elem.name;
 
         sb.Clear();
-        var count = item.count;
+        var count = item.OwnCount;
         sb.Append($"보유 수량 : {count}\n");
         sb.Append($"{elem.description}");
         description.text = sb.ToString();

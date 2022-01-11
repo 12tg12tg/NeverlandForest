@@ -14,11 +14,8 @@ public class InventoryItemView : MonoBehaviour
 
     public const int MaxItemCount = 21;
     private List<InventoryItem> itemGoList = new List<InventoryItem>();
-    private List<DataAllItem> itemDataList = new List<DataAllItem>();
-    private List<DataAllItem> divideItemList = new List<DataAllItem>();
-
-    private List<DataAllItem> getItemDataList = new List<DataAllItem>();
-
+    private List<DataItem> itemDataList = new List<DataItem>();
+    private List<DataItem> divideItemList = new List<DataItem>();
 
     //private DataCharacter selectedCharacter;
     private int selectedSlot = -1;
@@ -37,9 +34,7 @@ public class InventoryItemView : MonoBehaviour
             button.onClick.AddListener(() => OnItemClickEvent(item.Slot));
         }
     }
-
- 
-    public void Init(List<DataAllItem> itemDataList)
+    public void Init(List<DataItem> itemDataList)
     {
         this.itemDataList = itemDataList;
         // 초기화    // 칸 합치기 기능 포함
@@ -48,16 +43,25 @@ public class InventoryItemView : MonoBehaviour
         SortItemList();
         SetAllItems(divideItemList);
     }
-
-
-    //Init 초기화 느낌 1회성
-    public void InitDivideItemList(List<DataAllItem> itemDataList)
+    //Init, 초기화 느낌 1회성
+    public void InitDivideItemList(List<DataItem> itemDataList)
     {
-        var dataAllDivideItemList = new List<DataAllItem>();
+        var dataAllDivideItemList = new List<DataItem>();
         for (int i = 0; i < itemDataList.Count; i++)
         {
             var newItem = itemDataList[i];
-            dataAllDivideItemList.Add(new DataAllItem(newItem));
+
+            switch (newItem.dataType)
+            {
+                case DataType.Default:
+                    break;
+                case DataType.Consume:
+                    dataAllDivideItemList.Add(new DataAllItem(newItem));
+                    break;
+                case DataType.AllItem:
+                    dataAllDivideItemList.Add(new DataAllItem(newItem));
+                    break;
+            }
         }
 
         // TODO: while문으로 바꾸고싶은데 일단 for문의 최대치가 증가하는 이상한 느낌으로 동작중..
@@ -66,18 +70,28 @@ public class InventoryItemView : MonoBehaviour
             if(dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
             {
                 var divideItem = DivideCreate(dataAllDivideItemList[i]);
-                if (divideItem == null)
-                    break;
-                dataAllDivideItemList.Add(divideItem);
+                if (divideItem != null)
+                    dataAllDivideItemList.Add(divideItem);
             }
         }
-
         divideItemList = dataAllDivideItemList;
     }
 
-    public DataAllItem DivideCreate(DataAllItem item)
+    public DataItem DivideCreate(DataItem item)
     {
-        var newItem = new DataAllItem();
+        DataItem newItem = null;
+        switch (item.dataType)
+        {
+            case DataType.Default:
+                break;
+            case DataType.Consume:
+                newItem = new DataConsumable(item);
+                break;
+            case DataType.AllItem:
+                // TODO: DataAllItem을 DataItem으로 초기화 하는 파트 나중에 고유 값 생기면 초기화 생성자에서 item을 as DataAllItem으로 변환해서 해보기?
+                newItem = new DataAllItem(item);
+                break;
+        }
         // 한도치 계산해서 분할 복사, 원본역시 분할된 만큼 소유개수 줄음
         if (item.OwnCount > item.LimitCount)
         {
@@ -94,7 +108,8 @@ public class InventoryItemView : MonoBehaviour
         return newItem;
     }
 
-    public void SetAllItems(List<DataAllItem> itemList)
+
+    public void SetAllItems(List<DataItem> itemList)
     {
         foreach (var item in itemGoList)
         {
@@ -104,7 +119,20 @@ public class InventoryItemView : MonoBehaviour
         for (var i = 0; i < itemList.Count; i++)
         {
             itemGoList[i].gameObject.SetActive(true);
-            itemGoList[i].Init(itemList[i]);
+            switch (itemList[i].dataType)
+            {
+                case DataType.Default:
+                    break;
+                case DataType.Consume:
+                    var conItem = new DataConsumable(itemList[i]);
+                    itemGoList[i].Init(conItem);
+
+                    break;
+                case DataType.AllItem:
+                    var allItem = new DataAllItem(itemList[i]);
+                    itemGoList[i].Init(allItem);
+                    break;
+            }
         }
 
         if (this.itemDataList.Count > 0)
@@ -112,14 +140,21 @@ public class InventoryItemView : MonoBehaviour
             selectedSlot = 0;
             EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
         }
-
-        invenCtrl.UserDataUpdate(itemDataList);
     }
 
     private void OnItemClickEvent(int slot)
     {
-        var item = itemGoList[slot].DataItem as DataAllItem;
-        invenCtrl.OpenMessageWindow(item);
+        switch (itemGoList[slot].DataItem.dataType)
+        {
+            case DataType.Default:
+                break;
+            case DataType.Consume:
+                break;
+            case DataType.AllItem:
+                var item = itemGoList[slot].DataItem as DataAllItem;
+                invenCtrl.OpenClickMessageWindow(item);
+                break;
+        }
     }
 
     public void SortItemList()
@@ -127,113 +162,114 @@ public class InventoryItemView : MonoBehaviour
         divideItemList.Sort((lhs, rhs) => lhs.itemId.CompareTo(rhs.itemId));
     }
 
-    public void DeleteItemExcute(DataAllItem item)
-    {
-        var index = itemDataList.FindLastIndex(x => x.itemId == item.itemId);
+    //public void DeleteItemExcute(DataAllItem item)
+    //{
+    //    var index = itemDataList.FindLastIndex(x => x.itemId == item.itemId);
 
-        if (index != -1)
-        {
-            itemDataList[index].OwnCount -= item.OwnCount;
+    //    if (index != -1)
+    //    {
+    //        itemDataList[index].OwnCount -= item.OwnCount;
 
-            if (itemDataList[index].OwnCount <= 0)
-            {
-                itemDataList.RemoveAt(index);
-                invenCtrl.UserDataItemRemove(item);
-            }
+    //        if (itemDataList[index].OwnCount <= 0)
+    //        {
+    //            itemDataList.RemoveAt(index);
+    //            invenCtrl.UserDataItemRemove(item);
+    //        }
 
-            InitDivideItemList(itemDataList);
-            SortItemList();
-            SetAllItems(divideItemList);
-            Debug.Log("아이템 삭제완료");
-        }
-    }
+    //        InitDivideItemList(itemDataList);
+    //        SortItemList();
+    //        SetAllItems(divideItemList);
+    //        Debug.Log("아이템 삭제완료");
+    //    }
+    //}
 
-    public void GetItemExcute(List<DataAllItem> itemList)
-    {
-        getItemDataList = itemList;
-        // 인벤토리 남은 칸 계산
-        int space = MaxItemCount - divideItemList.Count;
+    //public void GetItemExcute(List<DataAllItem> itemList)
+    //{
+    //    getItemDataList = itemList;
+    //    // 인벤토리 남은 칸 계산
+    //    int space = MaxItemCount - divideItemList.Count;
 
-        // 얻은 아이템데이터를 분할해서 리스트화
-        for(int i = 0; i < getItemDataList.Count; i++)
-        {
-            var divideitem = DivideCreate(getItemDataList[i]);
-            if (divideitem == null)
-                break;
-            getItemDataList.Add(divideitem);
-        }
-        // 남은 칸 만큼 채워넣고, 못채워넣은 데이터는 리스트에 남아있다
-        int count = 0;
-        while(space > 0)
-        {
-            var divideIndex = divideItemList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
-            var itemIndex = itemDataList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
-            if (divideIndex == -1)
-            {
-                // 두가지 새로운 아이템을 각 list에 넣는데 그냥 넣으면 같은 데이터 참조로 각 리스트 데이터 수정이 서로에게 적용됨
-                var newItem = new DataAllItem(getItemDataList[0]);
-                var newItem2 = new DataAllItem(getItemDataList[0]);
-                divideItemList.Add(newItem);
-                itemDataList.Add(newItem2);
-            }
-            else if (divideItemList[divideIndex].LimitCount == divideItemList[divideIndex].OwnCount)
-            {
-                divideItemList.Add(getItemDataList[0]);
-                itemDataList[itemIndex].OwnCount += getItemDataList[0].OwnCount;
-            }
-            else
-            {
-                itemDataList[itemIndex].OwnCount += getItemDataList[0].OwnCount;
-                var spaceCount = (divideItemList[divideIndex].LimitCount - divideItemList[divideIndex].OwnCount);
-                if (spaceCount > getItemDataList[0].OwnCount)
-                {
-                    divideItemList[divideIndex].OwnCount += getItemDataList[0].OwnCount;
-                    // 이부분은 남은공간을 쓰지 않는 부분이기때문에 space값에 변동없도록 처리
-                    space++;
-                }
-                else
-                {
-                    divideItemList[divideIndex].OwnCount = divideItemList[divideIndex].LimitCount;
-                    getItemDataList[0].OwnCount -= spaceCount;
-                    divideItemList.Add(getItemDataList[0]);
-                }
-            }
-            space--;
-            getItemDataList.Remove(getItemDataList[0]);
-            if (getItemDataList.Count <= 0)
-                break;
-            count++;
-        }
-        // 남은공간 0일때, 만약 칸 아이템 빈 개수가 있을때 마저 채워넣기
-        if(space == 0)
-        {
-            var divideIndex = divideItemList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
-            if(divideIndex != -1)
-            {
-                var spaceCount = (divideItemList[divideIndex].LimitCount - divideItemList[divideIndex].OwnCount);
-                if (spaceCount > getItemDataList[0].OwnCount)
-                {
-                    divideItemList[divideIndex].OwnCount += getItemDataList[0].OwnCount;
-                    getItemDataList.Remove(getItemDataList[0]);
-                }
-                else
-                {
-                    divideItemList[divideIndex].OwnCount = divideItemList[divideIndex].LimitCount;
-                    getItemDataList[0].OwnCount -= spaceCount;
-                }
-            }
-        }
+    //    // 얻은 아이템데이터를 분할해서 리스트화
+    //    // TODO: while문으로 바꾸고싶은데 일단 for문의 최대치가 증가하는 이상한 느낌으로 동작중..
+    //    for (int i = 0; i < getItemDataList.Count; i++)
+    //    {
+    //        var divideitem = DivideCreate(getItemDataList[i]);
+    //        if (divideitem == null)
+    //            break;
+    //        getItemDataList.Add(divideitem);
+    //    }
+    //    // 남은 칸 만큼 채워넣고, 못채워넣은 데이터는 리스트에 남아있다
+    //    int count = 0;
+    //    while(space > 0)
+    //    {
+    //        var divideIndex = divideItemList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
+    //        var itemIndex = itemDataList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
+    //        if (divideIndex == -1)
+    //        {
+    //            // 두가지 새로운 아이템을 각 list에 넣는데 그냥 넣으면 같은 데이터 참조로 각 리스트 데이터 수정이 서로에게 적용됨
+    //            var newItem = new DataAllItem(getItemDataList[0]);
+    //            var newItem2 = new DataAllItem(getItemDataList[0]);
+    //            divideItemList.Add(newItem);
+    //            itemDataList.Add(newItem2);
+    //        }
+    //        else if (divideItemList[divideIndex].LimitCount == divideItemList[divideIndex].OwnCount)
+    //        {
+    //            divideItemList.Add(getItemDataList[0]);
+    //            itemDataList[itemIndex].OwnCount += getItemDataList[0].OwnCount;
+    //        }
+    //        else
+    //        {
+    //            itemDataList[itemIndex].OwnCount += getItemDataList[0].OwnCount;
+    //            var spaceCount = (divideItemList[divideIndex].LimitCount - divideItemList[divideIndex].OwnCount);
+    //            if (spaceCount > getItemDataList[0].OwnCount)
+    //            {
+    //                divideItemList[divideIndex].OwnCount += getItemDataList[0].OwnCount;
+    //                // 이부분은 남은공간을 쓰지 않는 부분이기때문에 space값에 변동없도록 처리
+    //                space++;
+    //            }
+    //            else
+    //            {
+    //                divideItemList[divideIndex].OwnCount = divideItemList[divideIndex].LimitCount;
+    //                getItemDataList[0].OwnCount -= spaceCount;
+    //                divideItemList.Add(getItemDataList[0]);
+    //            }
+    //        }
+    //        space--;
+    //        getItemDataList.Remove(getItemDataList[0]);
+    //        if (getItemDataList.Count <= 0)
+    //            break;
+    //        count++;
+    //    }
+    //    // 남은공간 0일때, 만약 칸 아이템 빈 개수가 있을때 마저 채워넣기
+    //    if(space == 0)
+    //    {
+    //        var divideIndex = divideItemList.FindLastIndex(x => x.itemId == getItemDataList[0].itemId);
+    //        if(divideIndex != -1)
+    //        {
+    //            var spaceCount = (divideItemList[divideIndex].LimitCount - divideItemList[divideIndex].OwnCount);
+    //            if (spaceCount > getItemDataList[0].OwnCount)
+    //            {
+    //                divideItemList[divideIndex].OwnCount += getItemDataList[0].OwnCount;
+    //                getItemDataList.Remove(getItemDataList[0]);
+    //            }
+    //            else
+    //            {
+    //                divideItemList[divideIndex].OwnCount = divideItemList[divideIndex].LimitCount;
+    //                getItemDataList[0].OwnCount -= spaceCount;
+    //            }
+    //        }
+    //    }
 
-        if(getItemDataList.Count > 0)
-        {
-            Debug.Log("못 담은 아이템이 아직 잇음");
-        }
-        else
-        {
-            Debug.Log("아이템 획득 완료");
-        }
+    //    if(getItemDataList.Count > 0)
+    //    {
+    //        Debug.Log("못 담은 아이템이 아직 잇음");
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("아이템 획득 완료");
+    //    }
 
-        SortItemList();
-        SetAllItems(divideItemList);
-    }
+    //    SortItemList();
+    //    SetAllItems(divideItemList);
+    //}
 }

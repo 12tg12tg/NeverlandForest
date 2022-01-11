@@ -26,17 +26,15 @@ public class InventoryItem : MonoBehaviour
         count.text = data.OwnCount.ToString();
     }
 
-    //public void Init(DataCunsumable data)
-    //{
-    //    dataItem = data;
-    //    ItemTableElem elem = data.ItemTableElem;
+    public void Init(DataConsumable data)
+    {
+        dataItem = data;
+        ConsumableTableElem elem = data.ItemTableElem;
 
-    //    icon.sprite = elem.IconSprite;
-    //    text.text = elem.name;
-
-    //    number.gameObject.SetActive(true);
-    //    number.text = data.count.ToString();
-    //}
+        icon.sprite = elem.IconSprite;
+        count.text = data.OwnCount.ToString();
+        itemName.name = elem.name;
+    }
 
     //public void Init(DataWeapon data)
     //{
