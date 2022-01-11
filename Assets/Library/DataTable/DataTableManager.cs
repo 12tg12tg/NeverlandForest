@@ -39,6 +39,10 @@ public static class DataTableManager
         var monsterTable = new MonsterTable();
         monsterTable.Load();
         tables.Add(typeof(MonsterTable), monsterTable);
+
+        var localizationTable = new LocalizationTable();
+        localizationTable.Load();
+        tables.Add(typeof(LocalizationTable), localizationTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase

@@ -2,18 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Localization { Korean, English }
+
+
 public static class Vars
 {
-    //Skill Info
+    // Skill Info
     public static List<DataPlayerSkill> BoySkillList { get; set; } = new List<DataPlayerSkill>();
     public static List<DataPlayerSkill> GirlSkillList { get; set; } = new List<DataPlayerSkill>();
 
+    // Vars
     public static int maxIngameHour = 24;
     public static int maxIngameMinute = 60;
     public static int maxStamina = 100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
     public static float hunterMaxHp = 100;
     public static float herbalistMaxHp = 100;
     public static int LanternMaxCount = 18;
+
+    // Localization
+    public static Localization localization = Localization.Korean;
+
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     !!  게임에서 사용되는 공통 변수들  !!

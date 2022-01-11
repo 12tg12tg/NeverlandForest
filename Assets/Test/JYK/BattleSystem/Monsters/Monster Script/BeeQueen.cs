@@ -14,7 +14,7 @@ public class BeeQueen : MonsterUnit
     {
         baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>("2");
         Init(baseElem);
-        Debug.Log($"{baseElem.name}이 태어나다.");
+        Debug.Log($"{baseElem.Name}이 태어나다.");
     }
 
     public override void PlayAttackAnimation()
