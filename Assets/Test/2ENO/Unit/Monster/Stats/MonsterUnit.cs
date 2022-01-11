@@ -23,7 +23,7 @@ public abstract class MonsterUnit : UnitBase, IAttackable
 
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
-    public int Speed { get => speed; set => speed = value; }
+    public int Speed { get => BaseElem.Speed; } // 랜덤을 최소 < 속도 < 최대 내에서 뽑아주는 프로퍼티임.
     public bool IsBind { get; set; }
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
@@ -64,7 +64,6 @@ public abstract class MonsterUnit : UnitBase, IAttackable
         Hp = elem.hp;
         Atk = elem.atk;
         sheild = elem.sheild;
-        speed = elem.speed;
         type = elem.type;
         manager ??= BattleManager.Instance;
         command ??= new MonsterCommand(this);

@@ -6,7 +6,7 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable" };
+    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -63,6 +63,9 @@ public class TableEditor : EditorWindow
                 break;
             case "MonsterTable":
                 ViewMonsterData(tableList);
+                break;
+            case "LocalizationTable":
+                ViewLocalizationData(tableList);
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
@@ -135,9 +138,9 @@ public class TableEditor : EditorWindow
         consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));
     }
 
-    private void ViewMonsterData(List<Dictionary<string, string>> skillList)
+    private void ViewMonsterData(List<Dictionary<string, string>> monsterList)
     {
-        var consumData = skillList[itemIndex];
+        var consumData = monsterList[itemIndex];
 
         var id = int.Parse(consumData["ID"]);
         consumData["ID"] = EditorGUILayout.IntField("Id", id).ToString();
@@ -165,7 +168,7 @@ public class TableEditor : EditorWindow
         consumData["ATK"] = EditorGUILayout.IntField("ATK", atk).ToString();
 
         var sheild = int.Parse(consumData["SHEILD"]);
-        consumData["SHEILD"] = EditorGUILayout.IntField("SHEILD", sheild).ToString();
+        consumData["SHEILD"] = EditorGUILayout.IntField("Sheild", sheild).ToString();
 
         var hp = int.Parse(consumData["HP"]);
         consumData["HP"] = EditorGUILayout.IntField("HP", hp).ToString();
@@ -175,6 +178,18 @@ public class TableEditor : EditorWindow
 
         var speedMax = int.Parse(consumData["SPEED_MAX"]);
         consumData["SPEED_MAX"] = EditorGUILayout.IntField("Speed_Max", speedMax).ToString();
+    } 
+    
+    private void ViewLocalizationData(List<Dictionary<string, string>> localizationList)
+    {
+        var consumData = localizationList[itemIndex];
+
+        consumData["ID"] = EditorGUILayout.TextField("ID", consumData["ID"]);
+
+        consumData["KOR"] = EditorGUILayout.TextField("Korean", consumData["KOR"]);
+
+        consumData["ENG"] = EditorGUILayout.TextField("English", consumData["ENG"]);
+   
     }
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)
