@@ -10,7 +10,14 @@ public class InventoryController : GenericWindow
     public InventoryItemView itemViewUI;
     public ItemClickMessage itemMessageUI;
     public GetItemView itemGetUI;
-    public void OnEnable()
+    
+    new private void Awake()
+    {
+        Debug.Log("Awake");
+        Init();
+    }
+
+    public void Init()
     {
         SetInventoryType();
         itemMessageUI.Close();

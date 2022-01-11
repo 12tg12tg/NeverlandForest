@@ -20,7 +20,6 @@ public class InventoryItemView : MonoBehaviour
     //private DataCharacter selectedCharacter;
     private int selectedSlot = -1;
 
-
     private void Awake()
     {
         for (var i = 0; i < MaxItemCount; ++i)
@@ -34,6 +33,7 @@ public class InventoryItemView : MonoBehaviour
             button.onClick.AddListener(() => OnItemClickEvent(item.Slot));
         }
     }
+
     public void Init(List<DataItem> itemDataList)
     {
         this.itemDataList = itemDataList;
