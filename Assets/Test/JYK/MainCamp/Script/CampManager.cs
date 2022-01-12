@@ -11,7 +11,9 @@ public class CampManager : MonoBehaviour
 
     public Camera campminimapCamera;
     public GameObject minimapPanel;
+    public GameObject diaryRecipePanel;
     private bool isminimap = false;
+    private bool isdiary = false;
     public enum CampEvent
     {
         StartCook,
@@ -42,6 +44,10 @@ public class CampManager : MonoBehaviour
             minimapPanel.SetActive(true);
         else
             minimapPanel.SetActive(false);
+        if (isdiary)
+            diaryRecipePanel.SetActive(true);
+        else
+            diaryRecipePanel.SetActive(false);
     }
     public void OpenCookScene(object[] vals)
     {
@@ -65,7 +71,7 @@ public class CampManager : MonoBehaviour
     }
     public void OpenDiary()
     {
-        Debug.Log($"Open Diary window");
+        isdiary = !isdiary;
     }
     public void OpenInventory()
     {
