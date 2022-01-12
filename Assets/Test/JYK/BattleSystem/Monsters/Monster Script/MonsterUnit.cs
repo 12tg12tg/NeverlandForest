@@ -8,8 +8,11 @@ public enum MonsterState
     Idle, Attack, Move, DoSomething, Dead
 }
 
-public abstract class MonsterUnit : UnitBase, IAttackable
+public class MonsterUnit : UnitBase, IAttackable
 {
+    // Component
+    private Animator animator;
+
     // Vars
     private int sheild;
     private int speed;
@@ -20,6 +23,8 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     private bool isActionDone;
     private float delayTimer;
     private const float actionDelay = 0.5f;
+    [Header("반드시 테이블에서의 몬스터 아이디 입력")]
+    public string monsterID;
 
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
@@ -28,6 +33,20 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
+
+    // Start & Awake
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
+        Init(baseElem);
+        Debug.Log($"{baseElem.Name}이 태어나다.");
+        State = MonsterState.Idle;
+    }
 
     // Update
     private void Update()
@@ -139,13 +158,33 @@ public abstract class MonsterUnit : UnitBase, IAttackable
     }
     public void Move()
     {
-        StartCoroutine(BattleManager.Instance.MoveUnitOnTile(command.target, this, () => isActionDone = true));
+        PlayMoveAnimation();
+        StartCoroutine(BattleManager.Instance.MoveUnitOnTile(command.target, this, 
+            () => { isActionDone = true; PlayIdleAnimation(); }));
     }
 
     // Animation
-    public abstract void PlayAttackAnimation();
-    public abstract void PlayDeadAnimation();
-    public abstract void PlayHitAnimation();
+    public void PlayAttackAnimation()
+    {
+        State = MonsterState.Attack;
+        animator.SetTrigger("Attack");
+    }
+    public void PlayDeadAnimation()
+    {
+        animator.SetTrigger("Die");
+    }
+    public void PlayHitAnimation()
+    {
+        animator.SetTrigger("Damaged");
+    }
+    public void PlayMoveAnimation()
+    {
+        animator.SetTrigger("Move");
+    }
+    public void PlayIdleAnimation()
+    {
+        animator.SetTrigger("Idle");
+    }
 
 
     // Animation Tag Function
