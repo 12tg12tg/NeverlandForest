@@ -13,7 +13,6 @@ public class HuntTile : MonoBehaviour, IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         player.Move(index, transform.position, bush != null);
-
         ren.enabled = true;
     }
 }

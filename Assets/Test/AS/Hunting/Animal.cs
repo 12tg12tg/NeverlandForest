@@ -1,11 +1,13 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.Events;
 
 public class Animal : MonoBehaviour
 {
     public MeshRenderer icon;
+    public Animator animator;
     public GameObject resultPopUp;
     public Color colorOrange;
 
@@ -16,14 +18,14 @@ public class Animal : MonoBehaviour
     {
         icon.gameObject.transform.position = gameObject.transform.position + new Vector3(0f, 2f, 0f);
         icon.material.color = Color.green;
-        EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, Escaping);
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, EscapingPercentageUp);
+        EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, Escaping);
     }
 
     private void OnDestroy()
     {
-        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.AnimalEscape, Escaping);
         EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.AnimalEscape, EscapingPercentageUp);
+        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.AnimalEscape, Escaping);
     }
 
     public void Escaping(object[] vals)
@@ -51,8 +53,9 @@ public class Animal : MonoBehaviour
     public void EscapingPercentageUp(object[] vals)
     {
         escapePercent = vals.Length != 1 || !(bool)vals[0] ? escapePercent + 10 : escapePercent;
-
         IconColor();
+        if(escapePercent >= 20)
+            animator.SetTrigger("Turn");
     }
 
     private void IconColor()
@@ -61,5 +64,32 @@ public class Animal : MonoBehaviour
             escapePercent < 15 ? Color.green :
             escapePercent < 35 ? Color.yellow :
             escapePercent < 55 ? colorOrange : Color.red;
+    }
+
+    public void AnimalMove(bool isDead, UnityAction action)
+    {
+        var dest = isDead ? transform.position - new Vector3(0f, 3f, 0f) : transform.position + new Vector3(5f, 0f, 0f);
+        StartCoroutine(Utility.CoTranslate(transform, transform.position, dest, 1f, () => {
+            gameObject.SetActive(false);
+            action?.Invoke();
+        }));
+    }
+
+    public void AnimalDead()
+    {
+        animator.SetTrigger("Die");
+    }
+    public void AnimalRunAway()
+    {
+        animator.SetTrigger("Run");
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Arrow"))
+        {
+            other.gameObject.SetActive(false);
+            EventBus<HuntingEvent>.Publish(HuntingEvent.Hunting);
+        }
     }
 }
