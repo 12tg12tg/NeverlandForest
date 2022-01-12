@@ -109,7 +109,7 @@ public class Utility
             list[i] = list[rnd];
             list[rnd] = temp;    
         }
-        return list;
+        return list; /*반환하지 않아도 되긴 합니다.*/
     }
 
     public static void ChildrenDestroy(GameObject gameObject)

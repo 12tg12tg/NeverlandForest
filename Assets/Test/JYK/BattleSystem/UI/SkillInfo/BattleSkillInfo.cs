@@ -17,7 +17,7 @@ public class BattleSkillInfo : MonoBehaviour
     private BattleManager manager;
 
     //GmaeObject
-    private ActionType curInfoType;
+    public ActionType curInfoType;
     public Image iconImg;
     public TextMeshProUGUI iconName;
     public TextMeshProUGUI description;

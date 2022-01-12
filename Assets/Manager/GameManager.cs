@@ -8,7 +8,6 @@ public class GameManager : MonoBehaviour
     private MultiTouch mt;
     private SaveLoadManager sm;
 
-
     public static GameManager Manager => gm;
     public MultiTouch MultiTouch => mt;
     public SaveLoadManager SaveLoad => sm;
@@ -19,5 +18,9 @@ public class GameManager : MonoBehaviour
 
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
+
+        DontDestroyOnLoad(this);
+
+        MonsterPool.Instance.Init();
     }
 }

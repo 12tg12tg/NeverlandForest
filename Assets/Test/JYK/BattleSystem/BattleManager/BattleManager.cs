@@ -4,70 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
-using NewTouch = UnityEngine.InputSystem.EnhancedTouch.Touch;
-
-public class BattleCommand { }
-public class MonsterCommand : BattleCommand
-{
-    public MonsterUnit attacker;
-    public Vector2 target;
-    public MonsterActionType actionType;
-    public int Ordering { get; set; }
-
-    public MonsterCommand(MonsterUnit mUnit)
-    {
-        attacker = mUnit;
-        Ordering = mUnit.Speed;
-    }
-    public void Clear()
-    {
-        target = Vector2.zero;
-        actionType = MonsterActionType.None;
-    }
-}
-public class PlayerCommand : BattleCommand
-{
-    private bool isUpdate;
-    public PlayerBattleController attacker;
-    public Vector2 target;
-    public DataPlayerSkill skill;
-    public DataConsumable item;
-    public ActionType actionType;
-    public PlayerType type;
-    public PlayerCommand(PlayerBattleController pUnit, PlayerType type)
-    {
-        attacker = pUnit;
-        this.type = type;
-    }
-    public bool IsUpdated { get => isUpdate; }
-    public bool IsFirst { get; set; }
-    public bool IsSecond { get => isUpdate ? !IsFirst : false; }
-    public void Clear()
-    {
-        isUpdate = false;
-        target = Vector2.zero;
-        skill = null;
-        item = null;
-    }
-    public void Create(Vector2 target, DataPlayerSkill skill)
-    {
-        if (isUpdate)
-            Clear();
-        this.target = target;
-        this.skill = skill;
-        isUpdate = true;
-        actionType = ActionType.Skill;
-    }
-    public void Create(Vector2 target, DataConsumable item)
-    {
-        if (isUpdate)
-            Clear();
-        this.target = target;
-        this.item = item;
-        isUpdate = true;
-        actionType = ActionType.Item;
-    }
-}
 
 public enum MonsterActionType { None, Attack, Move }
 public enum PlayerType { None, Boy, Girl }
@@ -82,6 +18,9 @@ public class BattleManager : MonoBehaviour
 
     //Unit
     public List<MonsterUnit> monster = new List<MonsterUnit>();
+    private Queue<MonsterUnit> wave1 = new Queue<MonsterUnit>();
+    private Queue<MonsterUnit> wave2 = new Queue<MonsterUnit>();
+    private Queue<MonsterUnit> wave3 = new Queue<MonsterUnit>();
     public PlayerBattleController boy;
     public PlayerBattleController girl;
     private PlayerCommand boyInput;
@@ -104,6 +43,9 @@ public class BattleManager : MonoBehaviour
 
     //Vars
     private int turn;
+    private int curGroup;
+    private int totlaWave, curWave;
+    private const int middleOfStage = 4;
     private bool isDrag;
     private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
     private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
@@ -180,28 +122,195 @@ public class BattleManager : MonoBehaviour
         data = new DataPlayerSkill(skill);
         girl.Add(data);
     }
-    
-    public void Init()
-    {
-        // Turn
-        turn = 1;
 
-        //플레이어 스탯 전달받기
+    public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    {
+        // 1. Grade & Wave
+        //  마지막방전투인지 일반전투인지를 판단하고,
+        //  중반이 지나갔는지 아닌지를 판단하고,
+        if (isBlueMoonBattle)
+        {
+            curGroup = 6;
+            totlaWave = 3;
+        }
+        else if (isEndOfDeongun)
+        {
+            curGroup = Random.Range(4, 6);
+            totlaWave = 3;
+        }
+        else
+        {
+            totlaWave = Random.Range(2, 4);
+
+            var curCol = Vars.UserData.WorldMapPlayerData.currentIndex.y + 1; //1 ~ 9
+            bool afterMiddle = curCol >= middleOfStage;
+
+            if(!afterMiddle)
+            {
+                curGroup = Random.Range(0, 2);
+            }
+            else
+            {
+                curGroup = Random.Range(0, 4);
+            }
+        }
+
+        // 2. 변수 초기화
+        turn = 1;
+        curWave = 1;
+
+        // 3. 몬스터 (랜덤뽑기) & 배치
+        monster.Clear();
+        wave1.Clear();
+        wave2.Clear();
+        wave3.Clear();
+
+        var monsterElems = DataTableManager.GetTable<MonsterTable>().data.Values;
+        var groups = (from n in monsterElems
+                     where (n as MonsterTableElem).@group == curGroup
+                     select int.Parse(n.id)).ToList();
+
+        void EnqueueMonster(Queue<MonsterUnit> queue, int id)
+        {
+            var tag = (MonsterPoolTag)id;
+            var go = MonsterPool.Instance.GetObject(tag);
+            var unitSc = go.GetComponent<MonsterUnit>();
+            queue.Enqueue(unitSc);
+        }
+
+        if (isBlueMoonBattle || isEndOfDeongun)
+        {
+            if (groups.Count != 3)
+                Debug.LogError($"보스전에 몬스터 후보가 {groups.Count}마리");
+
+            // 보스전 - Wave2
+            var bossIndex = groups.Max();
+            groups.Remove(bossIndex);
+
+            for (int i = 0; i < 2; i++)
+            {
+                var rand = Random.Range(0, groups.Count);
+                EnqueueMonster(wave2, groups[rand]);
+            }
+            EnqueueMonster(wave2, bossIndex);
+
+            // Wave1, Wave3
+            Queue<MonsterUnit> temp = null;
+            for (int i = 0; i < 2; i++)
+            {
+                if (i == 0)
+                    temp = wave1;
+                else
+                    temp = wave3;
+
+                int monsterInWave = Random.Range(2, 4);
+                for (int k = 0; k < monsterInWave; k++)
+                {
+                    var rand = Random.Range(0, groups.Count);
+                    EnqueueMonster(temp, groups[rand]);
+                }
+            }
+        }
+        else
+        {
+            // 일반 배틀
+            int randWaveCount = Random.Range(2, 4);
+            Queue<MonsterUnit> temp = null;
+            for (int i = 0; i < curWave; i++)
+            {
+                if(i == 0)
+                    temp = wave1;
+                else if(i == 1)
+                    temp = wave2;
+                else
+                    temp = wave3;
+
+                int monsterInWave = Random.Range(2, 4);
+                for (int k = 0; k < monsterInWave; k++)
+                {
+                    var rand = Random.Range(0, groups.Count);
+                    EnqueueMonster(temp, groups[rand]);
+                }
+            }
+        }
+
+        StartWave(1);
+
+        // 플레이어 스탯 전달받기
         // Vars 전역 저장소에서 불러오기.
+        boy.stats.Hp = (int)Vars.UserData.uData.HunterHp;
+        girl.stats.Hp = (int)Vars.UserData.uData.HerbalistHp;
 
         //플레이어 배치
         SetUnitOnTile(new Vector2(0, 0), girl.Stats);
         SetUnitOnTile(new Vector2(1, 0), boy.Stats);
 
-        //몬스터 (랜덤뽑기) & 배치
-        SetUnitOnTile(new Vector2(0, 6), monster[0]);
-        SetUnitOnTile(new Vector2(2, 6), monster[1]);
-        SetUnitOnTile(new Vector2(1, 6), monster[2]);
-
         //스킬창 Init
         hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
         herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
+
+        //배틀상태 Start
+        FSM.ChangeState(BattleState.Start);
     }    
+
+    public bool IsReadyToNextWave()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            var tile = tileMaker.GetTile(new Vector2(i, 6));
+            if (!tile.CanStand)
+                return false;
+        }
+        return true;
+    } //마지막 열에 몬스터 한마리씩 설 자리가 있다면 true 반환.
+
+    public void StartWave(int wave)
+    {
+        Queue<MonsterUnit> temp = null;
+        if(wave == 1)
+            temp = wave1;
+        else if(wave == 2)
+            temp = wave2;
+        else
+            temp = wave3;
+
+        if (temp.Count == 3) // 세마리라면 마지막 몹을 중앙에.
+        {
+            int i = 0;
+            while (temp.Count != 0)
+            {
+                var unitSc = temp.Dequeue();
+                monster.Add(unitSc);
+                if (i == 0)
+                    SetUnitOnTile(new Vector2(0, 6), unitSc);
+                else if(i==1)
+                    SetUnitOnTile(new Vector2(2, 6), unitSc);
+                else
+                    SetUnitOnTile(new Vector2(1, 6), unitSc);
+                i++;
+            }
+        }
+        else // 두마리라면 뽑아서 아무데나 안겹치게.
+        {
+            int randException = Random.Range(0, 3); // 0 || 1 || 2
+            int[] indexArr = null;
+            if (randException == 0)
+                indexArr = new int[] { 1, 2 };
+            else if (randException == 1)
+                indexArr = new int[] { 0, 2 };
+            else
+                indexArr = new int[] { 0, 1 };
+
+            int i = 0;
+            while (temp.Count != 0)
+            {
+                var unitSc = temp.Dequeue();
+                monster.Add(unitSc);
+                SetUnitOnTile(new Vector2(indexArr[i], 6), unitSc);
+                i++;
+            }
+        }
+    } //웨이브 인덱스에 맞게 몬스터 추가.
 
     //UI
     public void PrintMessage(string message, float time, UnityAction action)
@@ -268,6 +377,7 @@ public class BattleManager : MonoBehaviour
         dest.y = unit.transform.position.y;
         unit.transform.position = dest;
     }
+
     public IEnumerator MoveUnitOnTile(Vector2 tilePos, UnitBase unit, UnityAction action = null)
     {
         var preTile = unit.CurTile;
@@ -481,10 +591,33 @@ public class BattleManager : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUILayout.Button("Boy Clicked"))
+        if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
         {
-            StartCoroutine(BattleManager.Instance.MoveUnitOnTile(new Vector2(1, 0), monster[0]));
+            Init(false);
         }
+        if (GUILayout.Button("블루문X, 마지막전투O", GUILayout.Width(200f), GUILayout.Height(100f)))
+        {
+            Init(false, true);
+        }
+        if (GUILayout.Button("블루문O, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
+        {
+            Init(true);
+        }
+        //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
+        //{
+        //    List<int> list = new List<int>(new int[] { 0, 1, 2, 3, 4, 5 });
+        //    Utility.Shuffle(list);
+        //    string str = "";
+        //    foreach (var item in list)
+        //    {
+        //        str += item + ", ";
+        //    }
+        //    Debug.Log(str);
+        //}
+        //if (GUILayout.Button("Move Monster"))
+        //{
+        //    StartCoroutine(BattleManager.Instance.MoveUnitOnTile(new Vector2(1, 0), monster[0]));
+        //}
         //if(GUILayout.Button("Boy Clicked"))
         //{
         //    OpenSkillUI(PlayerType.Boy);

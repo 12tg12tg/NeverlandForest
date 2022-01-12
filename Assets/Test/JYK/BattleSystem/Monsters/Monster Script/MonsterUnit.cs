@@ -203,6 +203,10 @@ public class MonsterUnit : UnitBase, IAttackable
         EraseThis();
         var dest = transform.position;
         dest.y -= 3f;
-        StartCoroutine(Utility.CoTranslate(transform, transform.position, dest, 1f, () => gameObject.SetActive(false)));
+        StartCoroutine(Utility.CoTranslate(transform, transform.position, dest, 1f, 
+            () => { 
+                int id = int.Parse(baseElem.id);
+                MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
+            }));
     }
 }

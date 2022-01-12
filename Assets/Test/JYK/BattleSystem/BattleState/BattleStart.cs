@@ -16,7 +16,6 @@ public class BattleStart : State<BattleState>
     public override void Init()
     {
         isMessageEnd = false;
-        manager.Init();
         manager.PrintMessage("전투시작", startDelay, () => isMessageEnd = true);
     }
 

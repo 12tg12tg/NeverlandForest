@@ -62,7 +62,7 @@ public class MonsterTableElem : DataTableElemBase
 public class MonsterTable : DataTableBase
 {
     public MonsterTable() => csvFilePath = "MonsterTable";
-
+    public List<SerializeDictionary<string, string>> allMonster;
     public override void Load()
     {
         data.Clear();
