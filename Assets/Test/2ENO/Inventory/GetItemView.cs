@@ -33,8 +33,21 @@ public class GetItemView : GenericWindow
         }
     }
 
-    public void Init(List<DataItem> itemDataList)
+    public void Init(List<DataItem> itemList)
     {
+        itemDataList = itemList;
+        List<int> zeroItemIndexList = new List<int>();
+
+        for (int i = 0; i < itemDataList.Count; i++)
+        {
+            if(itemDataList[i].OwnCount <= 0)
+                zeroItemIndexList.Add(i);
+        }
+        for (int i = zeroItemIndexList.Count - 1; i >= 0; i--)
+        {
+            itemDataList.RemoveAt(zeroItemIndexList[i]);
+        }
+
         SetAllItems(itemDataList);
     }
 
@@ -71,19 +84,45 @@ public class GetItemView : GenericWindow
         }
     }
 
+    public void AllItemGet()
+    {
+        int overItemCount = 0;
+        foreach(var item in itemDataList)
+        {
+            if(!Vars.UserData.AddItemData(item))
+            {
+                overItemCount++;
+            }
+        }
+        invenCtrl.Init();
+        Init(itemDataList);
+
+        if (overItemCount > 0)
+            Debug.Log("¿œ∫Œ æ∆¿Ã≈€ »πµÊ πÃøœ∑·");
+        else
+            Debug.Log("∏µÁ æ∆¿Ã≈€ »πµÊ øœ∑·");
+    }
+
     private void OnItemClickEvent(int slot)
     {
-        switch (itemGoList[slot].DataItem.dataType)
-        {
-            case DataType.Default:
-                break;
-            case DataType.Consume:
-                var consumItem = itemGoList[slot].DataItem as DataConsumable;
-                break;
-            case DataType.AllItem:
-                var allItem = itemGoList[slot].DataItem as DataAllItem;
-                //invenCtrl.OpenClickMessageWindow(item);
-                break;
-        }
+        var slotItem = itemDataList.Find(x => (x.itemId == itemGoList[slot].DataItem.itemId) && (x.dataType == itemGoList[slot].DataItem.dataType));
+
+        if (!Vars.UserData.AddItemData(slotItem))
+            Debug.Log("¿œ∫Œ æ∆¿Ã≈€ »πµÊ πÃøœ∑·");
+        invenCtrl.Init();
+        Init(itemDataList);
     }
 }
+
+//switch (itemGoList[slot].DataItem.dataType)
+//{
+//    case DataType.Default:
+//        break;
+//    case DataType.Consume:
+//       
+//        break;
+//    case DataType.AllItem:
+//        var allItem = itemGoList[slot].DataItem as DataAllItem;
+//        //invenCtrl.OpenClickMessageWindow(item);
+//        break;
+//}

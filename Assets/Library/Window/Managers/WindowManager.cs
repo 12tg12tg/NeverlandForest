@@ -40,7 +40,7 @@ public class WindowManager : MonoBehaviour
 
 		return GetWindow(currentWindowID);
 	}
-	void Start()
+	void Awake()
 	{
 		GenericWindow.manager = this;
 		Open(defaultWindowID,true);

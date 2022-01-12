@@ -10,17 +10,22 @@ public class InventoryController : GenericWindow
     public InventoryItemView itemViewUI;
     public ItemClickMessage itemMessageUI;
     public GetItemView itemGetUI;
-    
-    new private void Awake()
+
+    public void Start()
     {
         Debug.Log("Awake");
+        manager.Open(0);
+        var rt = gameObject.GetComponent<RectTransform>();
+        rt.position = new Vector3(1300f, 400f, 0f);
+
         Init();
     }
 
     public void Init()
     {
         SetInventoryType();
-        itemMessageUI.Close();
+        //itemMessageUI.Close();
+        //itemGetUI.Close();
     }
 
     public void SetInventoryType()
@@ -39,6 +44,7 @@ public class InventoryController : GenericWindow
 
     public void OpenChoiceMessageWindow(List<DataItem> itemList)
     {
+        
         itemGetUI.Close();
         itemGetUI.Open();
         itemGetUI.Init(itemList);
@@ -50,6 +56,7 @@ public class InventoryController : GenericWindow
     {
         if (GUILayout.Button("ItemGet"))
         {
+            var getItemList = new List<DataItem>();
             var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
             var stringId = "7";
             var newItem = new DataAllItem();
@@ -59,10 +66,18 @@ public class InventoryController : GenericWindow
             newItem.LimitCount = 5;
             newItem.dataType = DataType.AllItem;
 
-            Vars.UserData.AddItemData(newItem);
+            var stringId2 = "6";
+            var newItem2 = new DataAllItem();
+            newItem2.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId2);
+            newItem2.itemId = int.Parse(stringId2);
+            newItem2.OwnCount = 7;
+            newItem2.LimitCount = 5;
+            newItem2.dataType = DataType.AllItem;
 
-            var list = Vars.UserData.HaveAllItemList.ToList();
-            itemViewUI.Init(list);
+            getItemList.Add(newItem);
+            getItemList.Add(newItem2);
+
+            OpenChoiceMessageWindow(getItemList);
         }
 
         if(GUILayout.Button("DeleteItem"))
