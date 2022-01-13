@@ -6,10 +6,15 @@ public class StaminaBar : MonoBehaviour
     public Slider slider;
     public RectTransform sliderRect;
     public Slider laternSlider;
+    public CampManager campManager;
+
+
     public void Start()
     {
         ChangeableStaminaChange();
-        ConsumeManager.CostDataReset();
+        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
+        Debug.Log($"Vars.UserData.uData.CurIngameMinute{Vars.UserData.uData.CurIngameMinute}");
+
     }
     void Update()
     {
@@ -19,7 +24,7 @@ public class StaminaBar : MonoBehaviour
     {
         Vector3 temp = sliderRect.localScale;
         var changeValue = ((float)Vars.UserData.uData.ChangeableMaxStamina / (float)Vars.maxStamina);
-        temp.x =changeValue;
+        temp.x = changeValue;
         sliderRect.localScale = temp;
     }
 
@@ -65,6 +70,14 @@ public class StaminaBar : MonoBehaviour
         if (GUILayout.Button("OilDown"))
         {
             ConsumeManager.ConsumeLantern(1);
+        }
+        if (GUILayout.Button("BlueMoonObj_OnOff"))
+        {
+            campManager.OnOffBluemoonObject();
+        }
+        if (GUILayout.Button("DayNightChange"))
+        {
+            ConsumeManager.TimeUp(0, 13);
         }
     }
 }

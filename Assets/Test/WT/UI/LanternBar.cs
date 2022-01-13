@@ -11,19 +11,19 @@ public class LanternBar : MonoBehaviour
     void Update()
     {
         slider.value = Vars.UserData.uData.LanternCount / Vars.lanternMaxCount;
-        if (ConsumeManager.CurLanternState== LanternState.Level4)
+        if (Vars.UserData.uData.lanternState== LanternState.Level4)
         {
             blight.value = 1f;
         }
-        else if(ConsumeManager.CurLanternState == LanternState.Level3)
+        else if(Vars.UserData.uData.lanternState == LanternState.Level3)
         {
             blight.value = 0.75f;
         }
-        else if (ConsumeManager.CurLanternState == LanternState.Level2)
+        else if (Vars.UserData.uData.lanternState == LanternState.Level2)
         {
             blight.value = 0.5f;
         }
-        else if (ConsumeManager.CurLanternState == LanternState.Level1)
+        else if (Vars.UserData.uData.lanternState == LanternState.Level1)
         {
             blight.value = 0.25f;
         }

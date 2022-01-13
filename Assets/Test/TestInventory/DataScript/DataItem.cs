@@ -3,6 +3,7 @@ public enum DataType
     Default,
     Consume,
     AllItem,
+    Material,
 }
 public abstract class DataItem
 {
@@ -22,11 +23,30 @@ public abstract class DataItem
         this.LimitCount = item.LimitCount;
     }
 
-    public int InvenFullCount => (OwnCount / LimitCount);
-
-    public int InvenRemainCount => (OwnCount % LimitCount);
-
-
-
+    
+    public int InvenFullCount
+    {
+        get
+        {
+            if (OwnCount == 0 || LimitCount == 0)
+                return 0;
+            else
+            {
+                return (OwnCount / LimitCount);
+            }
+        }
+    }
+    public int InvenRemainCount
+    {
+        get
+        {
+            if (OwnCount == 0 || LimitCount ==0)
+                return 0;
+            else
+            {
+                return (OwnCount % LimitCount);
+            }
+        }
+    }
     //public abstract DataTableElemBase ItemTableElem { get; }
 }

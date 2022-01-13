@@ -45,6 +45,8 @@ public static class ConsumeManager
         set => curLanternState = value;
         get => curLanternState;
     }
+    
+
     public static void init()
     {
         TimeStateChange();
@@ -97,6 +99,8 @@ public static class ConsumeManager
             //스태미나 10회복당 1시간 개념이였으니깐 1회복당 6분의 개념
             CurStaminaChange();
         }
+        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
+        Debug.Log($"Vars.UserData.uData.CurIngameMinute{Vars.UserData.uData.CurIngameMinute}");
     }
     public static void GettingTired(float gettingTired) //피로도 증가
     {
@@ -124,10 +128,12 @@ public static class ConsumeManager
     }
     public static void FullingLantern(int oil)
     {
-        Vars.UserData.uData.LanternCount += oil;
-        Debug.Log($"  Vars.UserData.uData.LanternCount{  Vars.UserData.uData.LanternCount}");
-        Debug.Log($"   Vars.lanternMaxCount{  Vars.lanternMaxCount}");
-        LanternStateChange();
+        if (Vars.UserData.uData.LanternCount<18)
+        {
+            Vars.UserData.uData.LanternCount += oil;
+            LanternStateChange();
+        }
+       
     }
     private static void RecoverHp(PlayerType type,float recovery)
     {
@@ -149,19 +155,63 @@ public static class ConsumeManager
         }
     }
     public static void ConsumeLantern(int oil)
-    {   
-        // 사용하는 아이템에 따라서 oil의 수치값을 정해주면될것같다.
-        Vars.UserData.uData.LanternCount -= oil;
-        LanternStateChange();
+    {
+        if (Vars.UserData.uData.LanternCount>0)
+        {
+            Vars.UserData.uData.LanternCount -= oil;
+            LanternStateChange();
+        }
     }
     private static void LanternStateChange()
     {
         var count = Vars.UserData.uData.LanternCount;
-        if (count <= 17 &&count>14) //15,16,17
+
+        switch (curTimeState)
+        {
+            case TimeState.None:
+                break;
+            case TimeState.NightTime:
+                SetNightLaternState(count);
+                break;
+            case TimeState.DayTime:
+                SetDayLaternState(count);
+                break;
+            default:
+                break;
+        }
+        Vars.UserData.uData.lanternState = curLanternState;
+    }
+
+    private static void SetDayLaternState(float count)
+    {
+        if (count <= 17 && count > 14) //15,16,17
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count<=14 && count>10)//11,12,13,14
+        else if (count <= 14 && count > 10)//11,12,13,14
+        {
+            curLanternState = LanternState.Level4;
+        }
+        else if (count <= 10 && count > 5)//6,7,8,9,10
+        {
+            curLanternState = LanternState.Level3;
+        }
+        else if (count <= 5 && count > 0)//1,2,3,4,5
+        {
+            curLanternState = LanternState.Level2;
+        }
+        else if (count == 0)
+        {
+            curLanternState = LanternState.Level1;
+        }
+    }
+    private static void SetNightLaternState(float count)
+    {
+        if (count <= 17 && count > 14) //15,16,17
+        {
+            curLanternState = LanternState.Level4;
+        }
+        else if (count <= 14 && count > 10)//11,12,13,14
         {
             curLanternState = LanternState.Level3;
         }
@@ -173,14 +223,13 @@ public static class ConsumeManager
         {
             curLanternState = LanternState.Level1;
         }
-        else //0
+        else if (count == 0)
         {
             curLanternState = LanternState.None;
         }
     }
     private static void TimeStateChange()
     {   
-        //현재 인호가 구현해둔 방식은 원 하나에 24시간을 들고있나봄.
         if(Vars.UserData.uData.CurIngameHour <= 12)
         {
             if(curTimeState != TimeState.DayTime)
@@ -222,6 +271,7 @@ public static class ConsumeManager
             Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
             DateUp();
         }
+        CampManager.Instance.ChangeDay();
         TimeStateChange();
     }
     public static void RecoveryTimeUp(int minute, int hour=0)
@@ -240,7 +290,6 @@ public static class ConsumeManager
         }
         TimeStateChange();
     }
-
     public static void DateUp()
     {
         Vars.UserData.uData.Date++;

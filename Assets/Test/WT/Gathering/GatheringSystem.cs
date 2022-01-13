@@ -19,7 +19,6 @@ public class GatheringSystem : MonoBehaviour
     public int testLanternLight = 0;
     private Animator playerAnimation;
     public InventoryController inventoryController;
-    
 
     public enum GatheringType
     {
@@ -27,7 +26,6 @@ public class GatheringSystem : MonoBehaviour
         Path
     }
     public GatheringType curgatheringType = GatheringType.MainDunguen;
-
 
     private Coroutine coWomenMove;
     public Coroutine CoWomenMove => coWomenMove;
@@ -336,7 +334,6 @@ public class GatheringSystem : MonoBehaviour
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
-            item.OwnCount = 10;
             list.Add(item);
             inventoryController.OpenChoiceMessageWindow(list);
         }
@@ -418,7 +415,6 @@ public class GatheringSystem : MonoBehaviour
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
-            item.OwnCount = 10;
             list.Add(item);
           
             inventoryController.OpenChoiceMessageWindow(list);

@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 public class CampManager : MonoBehaviour
 {
+
+    private static CampManager instance;
+    public static CampManager Instance => instance;
+
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
     public GameObject mapPos;
@@ -14,29 +19,45 @@ public class CampManager : MonoBehaviour
     public GameObject diaryRecipePanel;
     private bool isminimap = false;
     private bool isdiary = false;
+    private bool isBlueMoon = false;
+    public GameObject bluemoonObject;
+    public TextMeshProUGUI Days;
     public enum CampEvent
     {
         StartCook,
         StartGathering,
         StartSleep,
+        StartBlueMoon,
     }
     public void OnEnable()
     {
         EventBus<CampEvent>.Subscribe(CampEvent.StartCook, OpenCookScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartGathering, OpenGatheringScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartSleep, StartSleep);
-        
+        EventBus<CampEvent>.Subscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
+    }
+    public void Awake()
+    {
+        instance = this;
     }
     private void OnDisable()
     {
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartCook, OpenCookScene);
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartGathering, OpenGatheringScene);
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartSleep, StartSleep);
+        EventBus<CampEvent>.Unsubscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
+
         EventBus<CampEvent>.ResetEventBus();
     }
     public void Update()
     {
         ChangeminimapCameraState();
+       // ChangeDay();
+    }
+
+    public void ChangeDay()
+    {
+        Days.text = Vars.UserData.uData.Date.ToString()+"¿œ";
     }
     public void ChangeminimapCameraState()
     {
@@ -59,15 +80,17 @@ public class CampManager : MonoBehaviour
     public void OpenGatheringScene(object[] vals)
     {
         if (vals.Length != 0) return;
-        //SceneManager.LoadScene("WorldMap");
         Debug.Log($"Open OpenGathering Scene");
     }
-
+    public void OpenBlueMoonScene(object[] vals)
+    {
+        if (vals.Length != 0) return;
+        Debug.Log($"Open Open BlueMoon Scene ");
+    }
     public void StartSleep(object[] vals)
     {
         if (vals.Length != 0) return;
         ConsumeManager.RecoveryTiredness();
-        Debug.Log($"Go Sleep ");
     }
     public void OpenDiary()
     {
@@ -102,7 +125,7 @@ public class CampManager : MonoBehaviour
         var x = (first.position.x + last.position.x) / 2;
 
         campminimapCamera.transform.position = new Vector3(x ,mapPos.transform.position.y+10f, -47f);
-
+        ChangeDay();
     }
     public void CreateMiniMapObject()
     {
@@ -148,4 +171,18 @@ public class CampManager : MonoBehaviour
         objectInfo2.roomIdx = lastRoom.roomIdx;
         mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
     }
+
+    public void OnOffBluemoonObject()
+    {
+        isBlueMoon = !isBlueMoon;
+        if (isBlueMoon)
+        {
+            bluemoonObject.SetActive(true);
+        }
+        else
+        {
+            bluemoonObject.SetActive(false);
+        }
+    }
+
 }

@@ -140,6 +140,10 @@ public class UserData
                             var getItem = new DataAllItem(newItem);
                             haveAllItemList.Add(getItem);
                             break;
+                        case DataType.Material:
+                            var getmaterialItem = new DataMaterial(newItem);
+                            haveAllItemList.Add(getmaterialItem);
+                            break;
                     }
 
                     var newItemSpare = (newItem.InvenRemainCount == 0) ? 0 : 1;

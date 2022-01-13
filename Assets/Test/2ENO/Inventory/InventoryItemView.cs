@@ -56,10 +56,13 @@ public class InventoryItemView : MonoBehaviour
                 case DataType.Default:
                     break;
                 case DataType.Consume:
-                    dataAllDivideItemList.Add(new DataAllItem(newItem));
+                    dataAllDivideItemList.Add(new DataConsumable(newItem));
                     break;
                 case DataType.AllItem:
                     dataAllDivideItemList.Add(new DataAllItem(newItem));
+                    break;
+                case DataType.Material:
+                    dataAllDivideItemList.Add(new DataMaterial(newItem));
                     break;
             }
         }
@@ -90,6 +93,9 @@ public class InventoryItemView : MonoBehaviour
             case DataType.AllItem:
                 // TODO: DataAllItem을 DataItem으로 초기화 하는 파트 나중에 고유 값 생기면 초기화 생성자에서 item을 as DataAllItem으로 변환해서 해보기?
                 newItem = new DataAllItem(item);
+                break;
+            case DataType.Material:
+                newItem = new DataMaterial(item);
                 break;
         }
         // 한도치 계산해서 분할 복사, 원본역시 분할된 만큼 소유개수 줄음
@@ -131,6 +137,10 @@ public class InventoryItemView : MonoBehaviour
                 case DataType.AllItem:
                     var allItem = new DataAllItem(itemList[i]);
                     itemGoList[i].Init(allItem);
+                    break;
+                case DataType.Material:
+                    var materialitem = new DataMaterial(itemList[i]);
+                    itemGoList[i].Init(materialitem);
                     break;
             }
         }

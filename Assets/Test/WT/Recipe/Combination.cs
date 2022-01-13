@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,7 @@ public class Combination : MonoBehaviour
     private bool CookingStart = false;
     private int makeTime_Hour = 0;
     private int makeTime_Minute = 0;
+    public InventoryController inventoryController;
 
     public void Start()
     {
@@ -87,11 +89,18 @@ public class Combination : MonoBehaviour
                 makeTime_Hour = hour;
                 makeTime_Minute = minute;
 
-
                 var allitem = DataTableManager.GetTable<AllItemDataTable>();
                 item = allitem.GetData<AllItemTableElem>(result);
                 inventory.result.sprite = item.IconSprite;
                 inventory.resultObject = inventory.itemGoList[int.Parse(result)];
+
+                inventory.resultObject.DataItem.dataType = DataType.Material;
+                inventory.resultObject.DataItem.OwnCount = Random.Range(1, 3);
+                inventory.resultObject.DataItem.LimitCount = 5;
+
+                var list = new List<DataItem>();
+                list.Add(inventory.resultObject.DataItem);
+                inventoryController.OpenChoiceMessageWindow(list);
 
                 CheckCombination.gameObject.SetActive(false); // ÆË¾÷Ã¢ ²ô°í
             }
@@ -110,10 +119,6 @@ public class Combination : MonoBehaviour
     private void MakeCook()
     {
         ConsumeManager.TimeUp(makeTime_Minute, makeTime_Hour);
-
-        Debug.Log($"makeTime_Hour{makeTime_Hour}");
-        Debug.Log($"makeTime_Minute{makeTime_Minute}");
-
         var RecipeId = recipeTable.GetRecipeId(result);
         var userData = Vars.UserData.HaveRecipeIDList;
 
