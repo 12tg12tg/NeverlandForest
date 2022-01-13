@@ -12,7 +12,7 @@ public class DungeonData
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
 
     public DungeonRoom curDungeonRoomData;
-    public RoomCtrl curRoomInstanceData;
+    //public RoomCtrl curRoomInstanceData;
     public PlayerDungeonUnitData curPlayerData = new PlayerDungeonUnitData();
 }
 

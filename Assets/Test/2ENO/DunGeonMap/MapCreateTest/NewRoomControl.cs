@@ -6,6 +6,7 @@ public class NewRoomControl : MonoBehaviour
 {
     public Vector3 spawnPos;
     public List<Vector3> objPosList = new List<Vector3>();
+    private DungeonSystem dungeonSystem;
 
     //public GameObject spawnObj;
     //public List<GameObject> eventPosObjList = new List<GameObject>();
@@ -20,23 +21,15 @@ public class NewRoomControl : MonoBehaviour
 
     void Awake()
     {
-        //var childEnd = gameObject.GetComponentsInChildren<EndPos>();
-        //for (int i = 0; i < childEnd.Length; i++)
-        //{
-        //    childEnd[i].roomNumber = i + 1;
-        //    if (i == childEnd.Length - 1)
-        //    {
-        //        childEnd[i].isLastPos = true;
-        //    }
-        //}
+        dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
     }
 
-    public void RoomPrefabSet(DungeonRoom curDungeonData)
+    public void RoomPrefabSet(DungeonRoom curDungeonRoom)
     {
-        var roadCount = curDungeonData.roadCount;
+        var roadCount = curDungeonRoom.roadCount;
         var roadNumList = RoomListSet(roadCount);
 
-        if (curDungeonData.RoomType == DunGeonRoomType.MainRoom)
+        if (curDungeonRoom.RoomType == DunGeonRoomType.MainRoom)
             roadCount = 1;
 
         if (pool.Count <= 0)
@@ -54,6 +47,7 @@ public class NewRoomControl : MonoBehaviour
         // 방 세팅전 초기화
         foreach (var room in roomList)
         {
+            objPosList.Clear();
             room.isActive = false;
             room.gameObject.SetActive(false);
         }
@@ -97,12 +91,31 @@ public class NewRoomControl : MonoBehaviour
             }
         }
         // 방 프리팹 세팅 완료
+        for (int i = roomList.Count - 1; i >= 0; i--)
+        {
+            roomList[i].transform.SetAsFirstSibling();
+        }
         RoomEndPosAndNumberSet();
+        for (int i = 0; i < objPosList.Count; i++)
+        {
+            foreach (var obj in curDungeonRoom.eventObjDataList)
+            {
+                obj.eventBasePos = objPosList[i];
+            }
+            // TODO : 길어지는 코드 깔금하게 정리필요
+            curDungeonRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curDungeonRoom.nextRoomIdx];
+        }
+        //dungeonSystem.DungeonSystemData.curRoomInstanceData = 
     }
     // 각 방 넘버링 및 마지막방 체크
     private void RoomEndPosAndNumberSet()
     {
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
+        for (int i = 0; i < childEnd.Length; i++)
+        {
+            childEnd[i].isLastPos = false;
+        }
+
         for (int i = 0; i < childEnd.Length; i++)
         {
             childEnd[i].roomNumber = i + 1;
@@ -126,13 +139,13 @@ public class NewRoomControl : MonoBehaviour
     private List<int> RoomListSet(int roadCount)
     {
         List<int> prefabNumberList = new List<int>();
-        // 지금은 0 ~ 4 넘버 프리팹 존재하니 이 사이에서 숫자 뽑음
+        // 지금은 0 ~ 2 넘버 프리팹 3개 - 존재하니 이 사이에서 숫자 뽑음
         // 연속해서 이어지지만 않으면 중복도 상관 x
         // 검사 : 이전과 현재 비교
 
         for (int i = 0; i < roadCount; i++)
         {
-            var randumNum = Random.Range(0, 5);
+            var randumNum = Random.Range(0, 3);
             if(prefabNumberList.Count <= 0)
                 prefabNumberList.Add(randumNum);
             else
@@ -224,3 +237,13 @@ public class NewRoomControl : MonoBehaviour
 //        prefab.transform.position = newPosition;
 //        roomList.Add(prefab);
 //    }
+
+//var childEnd = gameObject.GetComponentsInChildren<EndPos>();
+//for (int i = 0; i < childEnd.Length; i++)
+//{
+//    childEnd[i].roomNumber = i + 1;
+//    if (i == childEnd.Length - 1)
+//    {
+//        childEnd[i].isLastPos = true;
+//    }
+//}

@@ -14,7 +14,6 @@ public class EndPos : MonoBehaviour
     private void OnEnable()
     {
         dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
-
     }
 
     private void OnTriggerEnter(Collider other)
