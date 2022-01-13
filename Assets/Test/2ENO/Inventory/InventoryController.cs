@@ -44,7 +44,7 @@ public class InventoryController : GenericWindow
 
     public void OpenChoiceMessageWindow(List<DataItem> itemList)
     {
-        
+        Open();
         itemGetUI.Close();
         itemGetUI.Open();
         itemGetUI.Init(itemList);

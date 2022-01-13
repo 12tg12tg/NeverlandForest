@@ -18,6 +18,8 @@ public class GatheringSystem : MonoBehaviour
 
     public int testLanternLight = 0;
     private Animator playerAnimation;
+    public InventoryController inventoryController;
+    
 
     public enum GatheringType
     {
@@ -330,9 +332,13 @@ public class GatheringSystem : MonoBehaviour
         GatheringTreeByTool();
 
         var item = curSelectedObj.item;
+        var list = new List<DataItem>();
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
+            item.OwnCount = 10;
+            list.Add(item);
+            inventoryController.OpenChoiceMessageWindow(list);
         }
         womenplayer.IsCoMove = true;
         if (coWomenMove == null)
@@ -407,9 +413,16 @@ public class GatheringSystem : MonoBehaviour
         //}
         GatheringTreeByHand();
         var item = curSelectedObj.item;
+        var list = new List<DataItem>();
+
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
+            item.OwnCount = 10;
+            list.Add(item);
+          
+            inventoryController.OpenChoiceMessageWindow(list);
+
         }
         womenplayer.IsCoMove = true;
         if (coWomenMove == null)

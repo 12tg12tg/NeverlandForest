@@ -87,6 +87,7 @@ public class Combination : MonoBehaviour
                 makeTime_Hour = hour;
                 makeTime_Minute = minute;
 
+
                 var allitem = DataTableManager.GetTable<AllItemDataTable>();
                 item = allitem.GetData<AllItemTableElem>(result);
                 inventory.result.sprite = item.IconSprite;
@@ -109,7 +110,10 @@ public class Combination : MonoBehaviour
     private void MakeCook()
     {
         ConsumeManager.TimeUp(makeTime_Minute, makeTime_Hour);
-     
+
+        Debug.Log($"makeTime_Hour{makeTime_Hour}");
+        Debug.Log($"makeTime_Minute{makeTime_Minute}");
+
         var RecipeId = recipeTable.GetRecipeId(result);
         var userData = Vars.UserData.HaveRecipeIDList;
 
