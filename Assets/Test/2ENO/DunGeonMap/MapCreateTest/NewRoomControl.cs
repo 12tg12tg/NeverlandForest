@@ -27,10 +27,10 @@ public class NewRoomControl : MonoBehaviour
     public void RoomPrefabSet(DungeonRoom curDungeonRoom)
     {
         var roadCount = curDungeonRoom.roadCount;
-        var roadNumList = RoomListSet(roadCount);
-
         if (curDungeonRoom.RoomType == DunGeonRoomType.MainRoom)
             roadCount = 1;
+
+        var roadNumList = RoomListSet(roadCount);
 
         if (pool.Count <= 0)
         {
@@ -102,7 +102,9 @@ public class NewRoomControl : MonoBehaviour
             {
                 obj.eventBasePos = objPosList[i];
             }
-            // TODO : 길어지는 코드 깔금하게 정리필요
+            // TODO : 옆으로 길어지는 코드 깔금하게 정리필요
+            if (curDungeonRoom.nextRoomIdx == -1)
+                break;
             curDungeonRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curDungeonRoom.nextRoomIdx];
         }
         //dungeonSystem.DungeonSystemData.curRoomInstanceData = 

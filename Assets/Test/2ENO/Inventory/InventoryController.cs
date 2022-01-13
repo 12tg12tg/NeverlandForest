@@ -14,18 +14,28 @@ public class InventoryController : GenericWindow
     public void Start()
     {
         Debug.Log("Awake");
-        manager.Open(0);
+        Close();
         var rt = gameObject.GetComponent<RectTransform>();
         rt.position = new Vector3(1300f, 400f, 0f);
 
         Init();
     }
+    public override void Open()
+    {
+        base.Open();
+        itemMessageUI.Close();
+        itemGetUI.Close();
+    }
+    public override void Close()
+    {
+        base.Close();
+        itemMessageUI.Close();
+        itemGetUI.Close();
+    }
 
     public void Init()
     {
         SetInventoryType();
-        //itemMessageUI.Close();
-        //itemGetUI.Close();
     }
 
     public void SetInventoryType()
@@ -36,7 +46,7 @@ public class InventoryController : GenericWindow
 
     public void OpenClickMessageWindow(DataItem item)
     {
-        itemMessageUI.Close();
+        Open();
         itemMessageUI.Open();
         itemMessageUI.Init(item);
         //manager.Open(1, true);
@@ -44,13 +54,10 @@ public class InventoryController : GenericWindow
 
     public void OpenChoiceMessageWindow(List<DataItem> itemList)
     {
-        
-        itemGetUI.Close();
+        Open();
         itemGetUI.Open();
         itemGetUI.Init(itemList);
     }
-
-
 
     private void OnGUI()
     {

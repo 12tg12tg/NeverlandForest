@@ -19,6 +19,8 @@ public class GatheringSystem : MonoBehaviour
     public int testLanternLight = 0;
     private Animator playerAnimation;
 
+    public InventoryController inventoryController;
+
     public enum GatheringType
     {
         MainDunguen,
@@ -332,7 +334,10 @@ public class GatheringSystem : MonoBehaviour
         var item = curSelectedObj.item;
         if (item != null)
         {
-            Vars.UserData.AddItemData(item);
+            var list = new List<DataItem>();
+            list.Add(item);
+            //Vars.UserData.AddItemData(item);
+            inventoryController.OpenChoiceMessageWindow(list);
         }
         womenplayer.IsCoMove = true;
         if (coWomenMove == null)
