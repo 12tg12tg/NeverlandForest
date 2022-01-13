@@ -15,9 +15,7 @@ public class InventoryController : GenericWindow
     {
         Debug.Log("Awake");
         Close();
-        var rt = gameObject.GetComponent<RectTransform>();
-        rt.position = new Vector3(1300f, 400f, 0f);
-
+      
         Init();
     }
     public override void Open()
