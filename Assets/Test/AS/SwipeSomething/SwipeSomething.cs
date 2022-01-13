@@ -29,7 +29,7 @@ public class SwipeSomething : MonoBehaviour
     }
     private void Update()
     {
-        Bar();
+        //Bar();
     }
     
     public void Bar()

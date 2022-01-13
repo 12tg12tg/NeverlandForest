@@ -510,19 +510,5 @@ public class WorldMap : MonoBehaviour
         }
 
     }
-    private void ColorChange(WorldMapNode node)
-    {
-        switch (node.difficulty)
-        {
-            case Difficulty.easy:
-                break;
-            case Difficulty.normal:
-                node.gameObject.GetComponent<MeshRenderer>().material.color = Color.blue;
-                break;
-            case Difficulty.hard:
-                node.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
-                break;
-        }
-    }
 }
 

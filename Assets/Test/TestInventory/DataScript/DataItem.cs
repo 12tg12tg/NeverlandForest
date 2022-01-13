@@ -22,9 +22,9 @@ public abstract class DataItem
         this.LimitCount = item.LimitCount;
     }
 
-    public int FullSpace => (OwnCount / LimitCount);
+    public int InvenFullCount => (OwnCount / LimitCount);
 
-    public int SpareCount => (OwnCount % LimitCount);
+    public int InvenRemainCount => (OwnCount % LimitCount);
 
 
 

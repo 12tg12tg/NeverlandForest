@@ -14,7 +14,7 @@ public class RoomCtrl : MonoBehaviour
 
     public DungeonSystem dungeonSystem;
 
-    private void OnEnable()
+    private void Awake()
     {
         dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
@@ -33,6 +33,9 @@ public class RoomCtrl : MonoBehaviour
             objPosList.Add(evnetObjPos[i].transform.position);
         }
     }
+    //private void OnEnable()
+    //{
+    //}
     // 오브젝트 위치 랜덤 배치시, 겹치는거 방지 지금은 일단 안씀
     public bool PositionCheck(Vector3 pos)
     {
