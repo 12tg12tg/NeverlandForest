@@ -20,7 +20,11 @@ public class BattleSettlement : State<BattleState>
         //몇턴.
         manager.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
         {
-            manager.Turn++;
+            var turn = ++manager.Turn;
+
+            // 웨이브 업데이트 ( 알아서 조건 확인 후웨이브 업데이트 함. )
+            manager.UpdateWave();
+
             manager.PrintMessage($"{manager.Turn}턴 시작", 0.8f, () => FSM.ChangeState(BattleState.Player));
         });
 

@@ -40,11 +40,12 @@ public class BattleManager : MonoBehaviour
     public BattleFSM FSM;
     public GameObject playerTurnUI;
     public UserInputPanel userInputPanel;
+    public SkillSelectUI trapUI;
 
     //Vars
     private int turn;
     private int curGroup;
-    private int totlaWave, curWave;
+    private int totlaWave, curWave, preWaveTurn;
     private const int middleOfStage = 4;
     private bool isDrag;
     private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
@@ -61,7 +62,7 @@ public class BattleManager : MonoBehaviour
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
 
     private void Awake()
-    {       
+    {
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);
@@ -79,7 +80,7 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
-        if(isDrag)
+        if (isDrag)
         {
             dragSlot.transform.position = multiTouch.TouchPos;
         }
@@ -145,7 +146,7 @@ public class BattleManager : MonoBehaviour
             var curCol = Vars.UserData.WorldMapPlayerData.currentIndex.y + 1; //1 ~ 9
             bool afterMiddle = curCol >= middleOfStage;
 
-            if(!afterMiddle)
+            if (!afterMiddle)
             {
                 curGroup = Random.Range(0, 2);
             }
@@ -157,7 +158,8 @@ public class BattleManager : MonoBehaviour
 
         // 2. 변수 초기화
         turn = 1;
-        curWave = 1;
+        preWaveTurn = 1;
+        curWave = 0;
 
         // 3. 몬스터 (랜덤뽑기) & 배치
         monster.Clear();
@@ -167,10 +169,10 @@ public class BattleManager : MonoBehaviour
 
         var monsterElems = DataTableManager.GetTable<MonsterTable>().data.Values;
         var groups = (from n in monsterElems
-                     where (n as MonsterTableElem).@group == curGroup
-                     select int.Parse(n.id)).ToList();
+                      where (n as MonsterTableElem).@group == curGroup
+                      select int.Parse(n.id)).ToList();
 
-        void EnqueueMonster(Queue<MonsterUnit> queue, int id)
+        void EnqueueMonster(Queue<MonsterUnit> queue, int id) // 지역 메소드
         {
             var tag = (MonsterPoolTag)id;
             var go = MonsterPool.Instance.GetObject(tag);
@@ -187,15 +189,14 @@ public class BattleManager : MonoBehaviour
             var bossIndex = groups.Max();
             groups.Remove(bossIndex);
 
-            for (int i = 0; i < 2; i++)
-            {
-                var rand = Random.Range(0, groups.Count);
-                EnqueueMonster(wave2, groups[rand]);
-            }
-            EnqueueMonster(wave2, bossIndex);
+            var rand = Random.Range(0, groups.Count);
+            EnqueueMonster(wave2, groups[rand]);
+            EnqueueMonster(wave2, bossIndex);       // 보스 중앙
+            rand = Random.Range(0, groups.Count);
+            EnqueueMonster(wave2, groups[rand]);
 
             // Wave1, Wave3
-            Queue<MonsterUnit> temp = null;
+            Queue<MonsterUnit> temp;
             for (int i = 0; i < 2; i++)
             {
                 if (i == 0)
@@ -206,7 +207,7 @@ public class BattleManager : MonoBehaviour
                 int monsterInWave = Random.Range(2, 4);
                 for (int k = 0; k < monsterInWave; k++)
                 {
-                    var rand = Random.Range(0, groups.Count);
+                    rand = Random.Range(0, groups.Count);
                     EnqueueMonster(temp, groups[rand]);
                 }
             }
@@ -218,9 +219,9 @@ public class BattleManager : MonoBehaviour
             Queue<MonsterUnit> temp = null;
             for (int i = 0; i < curWave; i++)
             {
-                if(i == 0)
+                if (i == 0)
                     temp = wave1;
-                else if(i == 1)
+                else if (i == 1)
                     temp = wave2;
                 else
                     temp = wave3;
@@ -234,7 +235,10 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        StartWave(1);
+        SetWavePosition(wave1);
+        SetWavePosition(wave2);
+        SetWavePosition(wave3);
+        //StartWave(1);
 
         // 플레이어 스탯 전달받기
         // Vars 전역 저장소에서 불러오기.
@@ -248,11 +252,14 @@ public class BattleManager : MonoBehaviour
         //스킬창 Init
         hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
         herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
+        trapUI.Init(PlayerType.None, this, Vars.GirlSkillList, null);
 
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
-    }    
+    }
 
+
+    //Wave
     public bool IsReadyToNextWave()
     {
         for (int i = 0; i < 3; i++)
@@ -267,9 +274,9 @@ public class BattleManager : MonoBehaviour
     public void StartWave(int wave)
     {
         Queue<MonsterUnit> temp = null;
-        if(wave == 1)
+        if (wave == 1)
             temp = wave1;
-        else if(wave == 2)
+        else if (wave == 2)
             temp = wave2;
         else
             temp = wave3;
@@ -281,12 +288,9 @@ public class BattleManager : MonoBehaviour
             {
                 var unitSc = temp.Dequeue();
                 monster.Add(unitSc);
-                if (i == 0)
-                    SetUnitOnTile(new Vector2(0, 6), unitSc);
-                else if(i==1)
-                    SetUnitOnTile(new Vector2(2, 6), unitSc);
-                else
-                    SetUnitOnTile(new Vector2(1, 6), unitSc);
+                var tempForCoroutine = unitSc;
+                unitSc.PlayMoveAnimation();
+                StartCoroutine(MoveUnitOnTile(new Vector2(i, 6), unitSc, tempForCoroutine.PlayIdleAnimation));
                 i++;
             }
         }
@@ -306,11 +310,100 @@ public class BattleManager : MonoBehaviour
             {
                 var unitSc = temp.Dequeue();
                 monster.Add(unitSc);
-                SetUnitOnTile(new Vector2(indexArr[i], 6), unitSc);
+                var tempForCoroutine = unitSc;
+                unitSc.PlayMoveAnimation();
+                StartCoroutine(MoveUnitOnTile(new Vector2(indexArr[i], 6), unitSc, tempForCoroutine.PlayIdleAnimation));
                 i++;
             }
         }
-    } //웨이브 인덱스에 맞게 몬스터 추가.
+    } //매개변수 웨이브를 전투에 입장시키기.
+
+    public void SetWavePosition(Queue<MonsterUnit> waveQueue, bool useCoroutine = false)
+    {
+        if (waveQueue.Count == 0)
+            return;
+
+        int wave;
+        if (waveQueue == wave1)
+            wave = 1;
+        else if (waveQueue == wave2)
+            wave = 2;
+        else
+            wave = 3;
+
+        int count = waveQueue.Count;
+        var remainWave = wave - curWave;
+        MonsterUnit temp;
+
+        var basePos = tileMaker.GetTile(new Vector2(0, 6)).transform.position;
+        var leftPos = tileMaker.GetTile(new Vector2(0, 5)).transform.position;
+        var upPos = tileMaker.GetTile(new Vector2(1, 6)).transform.position;
+        var spacingX = basePos.x - leftPos.x;
+        var spacingZ = upPos.z - basePos.z;
+
+        if (count == 2)
+            basePos += new Vector3(0f, 0f, spacingZ / 2);
+
+        for (int i = 0; i < count; i++)
+        {
+            temp = waveQueue.Dequeue();
+
+            var curPos = temp.transform.position;
+            var newPos = basePos + new Vector3(spacingX * remainWave, 0f, i * spacingZ);
+            if (!useCoroutine)
+                temp.transform.position = newPos;
+            else
+            {
+                var tempForCoroutine = temp;
+                temp.PlayMoveAnimation();
+                StartCoroutine(Utility.CoTranslate(temp.transform, curPos, newPos, 1f, tempForCoroutine.PlayIdleAnimation));
+            }
+            waveQueue.Enqueue(temp);
+        }
+    }
+
+    public void UpdateWave() //조건 확인
+    {
+        if (curWave == 3)
+            return;
+        if (!IsReadyToNextWave())
+            return;
+        if (turn != 1 && turn - preWaveTurn < 2)
+            return;
+        else
+            preWaveTurn = turn;
+
+        curWave++;
+        if(curWave == 1)
+        {
+            StartWave(1);
+            SetWavePosition(wave2, true);
+            SetWavePosition(wave3, true);
+        }
+        else if(curWave == 2)
+        {
+            StartWave(2);
+            SetWavePosition(wave3, true);
+        }
+        else if(curWave == 3)
+        {
+            StartWave(3);
+        }
+    }
+
+    //Battle Ready
+    public void ActivateTrapSetUI()
+    {
+        trapUI.gameObject.SetActive(true);
+    }
+
+    public void TrapSettingDone()
+    {
+        var startState = FSM.GetState(BattleState.Start) as BattleStart;
+        startState.IsTrapDone = true;
+        trapUI.Close();
+    }
+
 
     //UI
     public void PrintMessage(string message, float time, UnityAction action)
@@ -350,7 +443,7 @@ public class BattleManager : MonoBehaviour
         dragSlot.gameObject.SetActive(false);
         isDrag = false;
     }
-    
+
     public void OpenSkillInfo(SkillButton clickedButton, DataPlayerSkill skill, Vector2 pos)
     {
         CurClickedButton = clickedButton;
@@ -394,8 +487,8 @@ public class BattleManager : MonoBehaviour
 
             var startRot = Quaternion.LookRotation(unit.transform.forward);
             var destRot = Quaternion.LookRotation(dest - unit.transform.position);
-
-            if(Quaternion.Angle(startRot, destRot) > 0f)
+            Debug.Log(Quaternion.Angle(startRot, destRot));
+            if (Quaternion.Angle(startRot, destRot) > 0f)
                 yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.5f));
 
             yield return new WaitForSeconds(0.3f);
@@ -486,7 +579,7 @@ public class BattleManager : MonoBehaviour
 
         command.Create(target, skill);
 
-        if(!another.IsUpdated)
+        if (!another.IsUpdated)
         {
             userInputPanel.Init(command, null);
         }
@@ -575,7 +668,7 @@ public class BattleManager : MonoBehaviour
 
     public void CommandArrangeSwap()
     {
-        if(boyInput.IsFirst)
+        if (boyInput.IsFirst)
         {
             boyInput.IsFirst = false;
             girlInput.IsFirst = true;
@@ -602,6 +695,10 @@ public class BattleManager : MonoBehaviour
         if (GUILayout.Button("블루문O, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
         {
             Init(true);
+        }
+        if (GUILayout.Button("Wave Update", GUILayout.Width(200f), GUILayout.Height(100f)))
+        {
+            UpdateWave();
         }
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
         //{

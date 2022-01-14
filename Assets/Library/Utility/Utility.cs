@@ -19,6 +19,7 @@ public class Utility
             timer += Time.deltaTime;
             yield return null;
         }
+        transform.rotation = end;
     }
 
     public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
