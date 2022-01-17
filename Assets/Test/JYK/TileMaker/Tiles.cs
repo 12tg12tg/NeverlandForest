@@ -16,9 +16,15 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public MeshRenderer edge;
 
     //Property
-    public Vector3 WorldPos { get => transform.position; }
+    public Vector3 CenterPos { get => transform.position; }
     public bool HaveUnit { get => units.Count > 0; }
     public bool CanStand { get => units.Count < 2; }
+    public Vector3 FrontPos { get; private set; }
+    public Vector3 BehindPos { get; private set; }
+    public float Width { get; private set; }
+    public float Height { get; private set; }
+    public MonsterUnit FrontMonster { get => units[0] as MonsterUnit; }
+    public MonsterUnit BehindMonster { get => units[1] as MonsterUnit; }
 
     //Vars
     private bool isHighlightAttack;
@@ -34,6 +40,15 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         tileMaker = TileMaker.Instance;
         ColorUtility.TryParseHtmlString("#42C0FF", out boyColor);
         ColorUtility.TryParseHtmlString("#FFCC42", out girlColor);
+        var bound = GetComponent<MeshRenderer>().bounds;
+        Width = bound.size.x;
+        Height = bound.size.z;
+        var leftTop = CenterPos + new Vector3(-Width/2, 0f, Height/2);
+        var rightTop = CenterPos + new Vector3(Width/2, 0f, Height/2);
+        var leftBottom = CenterPos + new Vector3(-Width / 2, 0f, -Height/2);
+        var rightBottom = CenterPos + new Vector3(Width / 2, 0f, -Height/2);
+        FrontPos = (leftTop + rightTop + leftBottom) / 3;
+        BehindPos = (leftBottom + rightTop + rightBottom) / 3;
     }
 
     //Move
@@ -66,6 +81,43 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             return true;
         }
     }
+
+    //Half Tile
+    private void MoveUnitFront(UnitBase unit)
+    {
+        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, FrontPos, 0.3f));
+    }
+
+    private void MoveUnitBehind(UnitBase unit)
+    {
+        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, BehindPos, 0.3f));
+    }
+
+    private void PutSecondUnit(UnitBase unit)
+    {
+
+    }
+
+    public void PutMonster(MonsterUnit monster)
+    {
+        if (units.Count == 0)
+        {
+            units.Add(monster);
+            monster.Pos = index;
+        }
+        else if (units.Count == 1)
+        {
+            units.Add(monster);
+            monster.Pos = index;
+            MoveUnitFront(units[0]);
+            MoveUnitBehind(units[1]);
+        }
+        else
+        {
+            Debug.LogError("Tile has monster more than 2.");
+        }
+    }
+
 
     //Highlight
     public void Clear()
@@ -206,6 +258,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             //  1) 범위 계산 후 타일 리스트를 만들어서.
             //  2) tile.Confirm(color) 함수 호출하기.
             //  3) affectedPlayer 설정하기.
+
         }
 
         if (actionType == ActionType.Skill)

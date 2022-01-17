@@ -466,7 +466,7 @@ public class BattleManager : MonoBehaviour
         tile.units.Add(unit);
         unit.Pos = tilePos;
 
-        var dest = tile.WorldPos;
+        var dest = tile.CenterPos;
         dest.y = unit.transform.position.y;
         unit.transform.position = dest;
     }
@@ -482,7 +482,7 @@ public class BattleManager : MonoBehaviour
             tile.units.Add(unit);
             unit.Pos = tilePos;
 
-            var dest = tile.WorldPos;
+            var dest = tile.CenterPos;
             dest.y = unit.transform.position.y;
 
             var startRot = Quaternion.LookRotation(unit.transform.forward);
