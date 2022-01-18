@@ -80,30 +80,33 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     {
         dungeonMapData = new DungeonMapSaveData_0();
         //var list = new List<DungeonRoom>();
-        var pList = new List<PlayerDungeonUnitData>();
-        var iList = new List<Vector2>();
         //var rList = new List<DungeonRoom[]>();
+        var pList = new List<PlayerDungeonUnitData>();
+        var pList2 = new List<PlayerDungeonUnitData>();
+        var iList = new List<Vector2>();
         var rList2 = new List<List<DungeonRoom>>();
 
-        foreach (var data in Vars.UserData.CurAllDungeonData)
+        foreach (var data in Vars.UserData.AllDungeonData)
         {
             data.Value.dungeonRoomList = ArrayConvertList(data.Value.dungeonRoomArray);
         }
 
-        foreach (var data in Vars.UserData.CurAllDungeonData)
+        foreach (var data in Vars.UserData.AllDungeonData)
         {
             //list.Add(data.Value.curDungeonData);
-            pList.Add(data.Value.curPlayerData);
-            iList.Add(data.Key);
             //rList.Add(data.Value.dungeonRoomArray);
+            pList.Add(data.Value.curPlayerGirlData);
+            pList2.Add(data.Value.curPlayerBoyData);
+            iList.Add(data.Key);
             rList2.Add(data.Value.dungeonRoomList);
         }
-        dungeonMapData.curPlayerData = pList;
-        dungeonMapData.dungeonIndex = iList;
         //dungeonMapData.dungeonRoomArray = rList;
+        dungeonMapData.curPlayerGirlData = pList;
+        dungeonMapData.curPlayerBoyData = pList2;
+        dungeonMapData.dungeonIndex = iList;
         dungeonMapData.dungeonRoomList = rList2;
         dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
-        dungeonMapData.curDungeonRoomIndex = Vars.UserData.curDungeonRoomIdx;
+        dungeonMapData.curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
 
@@ -193,21 +196,23 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         {
             for (int i = 0; i < dungeonMapData.dungeonIndex.Count; i++)
             {
+                //dungeonData.curDungeonData = dungeonMapData.curDungeonData[i];
                 var dungeonData = new DungeonData();
                 dungeonData.dungeonRoomList = dungeonMapData.dungeonRoomList[i];
-                //dungeonData.curDungeonData = dungeonMapData.curDungeonData[i];
-                dungeonData.curPlayerData = dungeonMapData.curPlayerData[i];
+                dungeonData.curPlayerGirlData = dungeonMapData.curPlayerGirlData[i];
+                dungeonData.curPlayerBoyData = dungeonMapData.curPlayerBoyData[i];
 
                 ListConvertArray(dungeonMapData.dungeonRoomList[i], dungeonData.dungeonRoomArray);
 
-                if(!Vars.UserData.CurAllDungeonData.ContainsKey(dungeonMapData.dungeonIndex[i]))
+                if(!Vars.UserData.AllDungeonData.ContainsKey(dungeonMapData.dungeonIndex[i]))
                 {
-                    Vars.UserData.CurAllDungeonData.Add(dungeonMapData.dungeonIndex[i], dungeonData);
+                    Vars.UserData.AllDungeonData.Add(dungeonMapData.dungeonIndex[i], dungeonData);
                 }
-               
             }
             Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
-            Vars.UserData.curDungeonRoomIdx = dungeonMapData.curDungeonRoomIndex;
+            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData = 
+                Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonMapData.curDungeonRoomIndex];
+
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }
     }

@@ -7,25 +7,9 @@ using UnityEngine.SceneManagement;
 // 퍼사드 느낌
 public class DungeonSystem : MonoBehaviour
 {
-    RoomManager roomManager;
+    RoomTool roomManager;
     private List<GameObject> eventObjInstanceList = new List<GameObject>();
     private DungeonRoom beforeDungeonRoom;
-
-    [Header("Prefab, Instance")]
-    //public RoomCtrl[] roomPrefab;
-
-    public NewRoomControl roomGenerate;
-
-    public EventObject eventObjectPrefab;
-    public GatheringObject gatheringObjPrefab;
-    public BattleObject battleObjPrefab;
-    public HuntingObject huntingObjPrefab;
-    //public TextMeshProUGUI text;
-
-    [Header("Player, System")]
-    public PlayerDungeonUnit dungeonPlayer;
-    public GatheringSystem gatheringSystem;
-
 
     // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
     private DungeonData dungeonSystemData = new ();
@@ -33,6 +17,19 @@ public class DungeonSystem : MonoBehaviour
     {
         get => dungeonSystemData;
     }
+
+    [Header("Prefab, Instance")]
+    public NewRoomControl roomGenerate;
+
+    public GatheringObject gatheringObjPrefab;
+    public BattleObject battleObjPrefab;
+    public HuntingObject huntingObjPrefab;
+
+    [Header("Player, System")]
+    public PlayerDungeonUnit dungeonPlayerGirl;
+    public PlayerDungeonUnit dungeonPlayerBoy;
+    public GatheringSystem gatheringSystem;
+
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     [Header("Map Generate")]
     public RoomObject mainRoomPrefab;
@@ -40,11 +37,14 @@ public class DungeonSystem : MonoBehaviour
     public GameObject mapPos;
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     public WorldMap worldMap;
+
     [Header("ETC")]
     public Button campButton;
 
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
+    private int startIndex;
+    private int curDungeonRoomIndex;
     public void OnGUI()
     {
         if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
@@ -63,46 +63,49 @@ public class DungeonSystem : MonoBehaviour
 
     void Start()
     {
-        dungeonPlayer.gameObject.SetActive(false);
-        //for (int i = 0; i < roomPrefab.Length; i++)
-        //{
-        //    roomPrefab[i].gameObject.SetActive(false);
-        //}
-        curDungeonIndex = Vars.UserData.curDungeonIndex;
-
         // 현재 불러올 맵 데이터가 없을 때
-        if (Vars.UserData.CurAllDungeonData.Count <= 0)
-        {
+        if (Vars.UserData.AllDungeonData.Count <= 0)
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-            curDungeonIndex = Vars.UserData.curDungeonIndex;
-            Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray[Vars.UserData.curDungeonRoomIdx];
+
+        dungeonPlayerGirl.gameObject.SetActive(false);
+        dungeonPlayerBoy.gameObject.SetActive(false);
+
+        curDungeonIndex = Vars.UserData.curDungeonIndex;
+        startIndex = Vars.UserData.dungeonStartIdx;
+        if(Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
+        {
+            Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
         }
-        Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonStartIdx = 100;
+
         // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
         if (Vars.UserData.dungeonReStart)
         {
-            Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray[Vars.UserData.dungeonStartIdx];
+            Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
             Vars.UserData.dungeonReStart = false;
         }
-        if (Vars.UserData.CurAllDungeonData[curDungeonIndex] != null)
+        if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
         {
-            dungeonSystemData = Vars.UserData.CurAllDungeonData[curDungeonIndex];
+            dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
         }
 
-        roomManager = new RoomManager();
+        roomManager = new RoomTool();
         //roomManager.text = text;
 
         //if (dungeonSystemData.curDungeonData != null)
         ConvertEventDataType();
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
+
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
 
-    // 던전맵이 완성된 후에 정보를 토대로 방 세팅, 콜백 메소드로 실행
+    // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
     {
         CreateMiniMapObject();
-        dungeonPlayer.gameObject.SetActive(true);
+        dungeonPlayerGirl.gameObject.SetActive(true);
+        dungeonPlayerBoy.gameObject.SetActive(true);
+
         roomManager.init(DungeonSystemData, this);
         if(dungeonSystemData.curDungeonRoomData != null)
         {
@@ -112,21 +115,28 @@ public class DungeonSystem : MonoBehaviour
         else
         {
             //RoomPrefabSetting(dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx]);
-            roomGenerate.RoomPrefabSet(dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx]);
-            dungeonSystemData.curDungeonRoomData = dungeonSystemData.dungeonRoomArray[dungeonSystemData.dungeonStartIdx];
+            roomGenerate.RoomPrefabSet(dungeonSystemData.dungeonRoomArray[startIndex]);
+            dungeonSystemData.curDungeonRoomData = dungeonSystemData.dungeonRoomArray[startIndex];
         }
 
         EventObjectCreate(dungeonSystemData.curDungeonRoomData);
         CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
 
-
-        if (dungeonSystemData.curPlayerData == null)
+        if (dungeonSystemData.curPlayerGirlData.curRoomNumber == -1)
         {
-            dungeonPlayer.transform.position = roomGenerate.spawnPos;
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            dungeonPlayerGirl.transform.position = newPos2;
+            dungeonPlayerBoy.transform.position = newPos1;
         }
         else
         {
-            dungeonPlayer.SetPlayerData(dungeonSystemData.curPlayerData);
+            dungeonPlayerGirl.SetPlayerData(dungeonSystemData.curPlayerGirlData);
+            dungeonPlayerBoy.SetPlayerData(dungeonSystemData.curPlayerBoyData);
+            //var newPos1 = new Vector3(roomGenerate.spawnPos.x - 2f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            //var newPos2 = new Vector3(roomGenerate.spawnPos.x + 2f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            //dungeonPlayerGirl.transform.position = newPos2;
+            //dungeonPlayerBoy.transform.position = newPos1;
         }
 
         if (dungeonSystemData.curDungeonRoomData.RoomType == DunGeonRoomType.MainRoom)
@@ -152,7 +162,7 @@ public class DungeonSystem : MonoBehaviour
             {
                 Vars.UserData.WorldMapPlayerData.isClear = true;
                 Vars.UserData.curDungeonIndex = Vector2.zero;
-                Vars.UserData.CurAllDungeonData.Clear();
+                Vars.UserData.AllDungeonData.Clear();
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
@@ -161,9 +171,15 @@ public class DungeonSystem : MonoBehaviour
             dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
 
             roomGenerate.RoomPrefabSet(dungeonSystemData.curDungeonRoomData);
-            //RoomPrefabSetting(dungeonSystemData.curDungeonRoomData);
             EventObjectCreate(dungeonSystemData.curDungeonRoomData);
-            dungeonPlayer.transform.position = roomGenerate.spawnPos;
+
+            //dungeonPlayerGirl.transform.position = roomGenerate.spawnPos;
+            //dungeonPlayerBoy.transform.position = roomGenerate.spawnPos;
+
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            dungeonPlayerGirl.transform.position = newPos2;
+            dungeonPlayerBoy.transform.position = newPos1;
 
             CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
             if (dungeonSystemData.curDungeonRoomData.RoomType == DunGeonRoomType.MainRoom)
@@ -187,15 +203,17 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
-        Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
-        Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
+        
+
+        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        //Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void ConvertEventDataType()
     {
-        var array = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonRoomArray;
-        var curIdx = Vars.UserData.CurAllDungeonData[curDungeonIndex].dungeonStartIdx;
+        var array = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray;
+        var curIdx = startIndex;
 
         while (array[curIdx].nextRoomIdx != -1)
         {
@@ -203,7 +221,7 @@ public class DungeonSystem : MonoBehaviour
             curIdx = array[curIdx].nextRoomIdx;
         }
 
-        dungeonSystemData.curDungeonRoomData = Vars.UserData.CurAllDungeonData[curDungeonIndex].curDungeonRoomData;
+        dungeonSystemData.curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData;
     }
     public void EventDataInit(List<EventData> eventList)
     {
@@ -248,64 +266,6 @@ public class DungeonSystem : MonoBehaviour
         eventList.Clear();
         eventList.AddRange(newList);
     }
-
-    //public void RoomPrefabSetting(DungeonRoom roomData)
-    //{
-    //    for (int i = 0; i < roomPrefab.Length; i++)
-    //    {
-    //        roomPrefab[i].gameObject.SetActive(false);
-    //    }
-    //    if (roomData.RoomType == DunGeonRoomType.MainRoom)
-    //    {
-    //        // 메인방 프리팹 생성, 및 현재 방 이벤트 데이터들에 basePos 세팅
-    //        roomPrefab[0].gameObject.SetActive(true);
-    //        foreach(var obj in roomData.eventObjDataList)
-    //        {
-    //            obj.eventBasePos = roomPrefab[0].objPosList[0];
-    //        }
-    //        dungeonSystemData.curRoomInstanceData = roomPrefab[0];
-    //    }
-    //    else
-    //    {
-    //        // 2개 프리팹부터 5개 프리팹까지 순회
-    //        for (int i = 1; i < roomPrefab.Length; i++)
-    //        {
-    //            // 현재 방의 길방 수와 프리팹을 매칭
-    //            if(roomData.roadCount - 1 == i)
-    //            {
-    //                roomPrefab[i].gameObject.SetActive(true);
-    //                DungeonRoom curRoom = roomData;
-    //                // 각 길방의 오브젝트 포지션을 해당 방 데이터에 담는다
-    //                for (int j = 0; j < roomPrefab[i].objPosList.Count; j++)
-    //                {
-    //                    foreach(var obj in curRoom.eventObjDataList)
-    //                    {
-    //                        obj.eventBasePos = roomPrefab[i].objPosList[j];
-    //                    }
-    //                    curRoom = roomManager.GetNextRoom(curRoom);
-    //                }
-    //                dungeonSystemData.curRoomInstanceData = roomPrefab[i];
-    //            }
-    //        }
-    //    }
-    //}
-
-    // 현재 방 정보만 가지고 모두 생성 가능하게 만들기 일단 보류
-    //public void RoomCreate(DungeonRoom roomData)
-    //{
-    //    if(roomData.RoomType == DunGeonRoomType.MainRoom)
-    //    {
-    //        // 메인방 프리팹 생성
-    //    }
-    //    else
-    //    {
-    //        if (dungeonSystemData.dungeonRoomArray[roomData.beforeRoomIdx].RoomType == DunGeonRoomType.SubRoom)
-    //            return;
-    //        // 길방 프리팹 생성 -> 연결된 모든 길
-    //        //int curIdx = roomData.roomIdx;
-    //        //while (dungeonSystemData.dungeonRoomArray[curIdx])
-    //    }
-    //}
 
     // 현재 방 정보만 가지고 이벤트 오브젝트 생성
     public void EventObjectCreate(DungeonRoom roomData)
@@ -379,7 +339,7 @@ public class DungeonSystem : MonoBehaviour
 
     public void CurrentRoomInMinimap(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
-        var obj = dungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
+        var obj = dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
         var mesh = obj.gameObject.GetComponent<MeshRenderer>();
         mesh.material.color = Color.blue;
 
@@ -387,7 +347,7 @@ public class DungeonSystem : MonoBehaviour
             return;
         if (beforeRoom.IsCheck == true)
         {
-            var obj2 = dungeonSystemData.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
+            var obj2 = dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
             var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
             mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
@@ -397,7 +357,7 @@ public class DungeonSystem : MonoBehaviour
 
     public void CreateMiniMapObject()
     {
-        int curIdx = dungeonSystemData.dungeonStartIdx;
+        int curIdx = startIndex;
         while (dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx != -1)
         {
             var room = dungeonSystemData.dungeonRoomArray[curIdx];
@@ -427,7 +387,6 @@ public class DungeonSystem : MonoBehaviour
         dungeonRoomObjectList.Add(lastObj);
 
         mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 3000f, 0f);
-        dungeonSystemData.dungeonRoomObjectList = dungeonRoomObjectList;
     }
 }
 //switch(roomData.roadCount)
@@ -626,5 +585,63 @@ public class DungeonSystem : MonoBehaviour
 //            break;
 //        case DunGeonEvent.Count:
 //            break;
+//    }
+//}
+
+//public void RoomPrefabSetting(DungeonRoom roomData)
+//{
+//    for (int i = 0; i < roomPrefab.Length; i++)
+//    {
+//        roomPrefab[i].gameObject.SetActive(false);
+//    }
+//    if (roomData.RoomType == DunGeonRoomType.MainRoom)
+//    {
+//        // 메인방 프리팹 생성, 및 현재 방 이벤트 데이터들에 basePos 세팅
+//        roomPrefab[0].gameObject.SetActive(true);
+//        foreach(var obj in roomData.eventObjDataList)
+//        {
+//            obj.eventBasePos = roomPrefab[0].objPosList[0];
+//        }
+//        dungeonSystemData.curRoomInstanceData = roomPrefab[0];
+//    }
+//    else
+//    {
+//        // 2개 프리팹부터 5개 프리팹까지 순회
+//        for (int i = 1; i < roomPrefab.Length; i++)
+//        {
+//            // 현재 방의 길방 수와 프리팹을 매칭
+//            if(roomData.roadCount - 1 == i)
+//            {
+//                roomPrefab[i].gameObject.SetActive(true);
+//                DungeonRoom curRoom = roomData;
+//                // 각 길방의 오브젝트 포지션을 해당 방 데이터에 담는다
+//                for (int j = 0; j < roomPrefab[i].objPosList.Count; j++)
+//                {
+//                    foreach(var obj in curRoom.eventObjDataList)
+//                    {
+//                        obj.eventBasePos = roomPrefab[i].objPosList[j];
+//                    }
+//                    curRoom = roomManager.GetNextRoom(curRoom);
+//                }
+//                dungeonSystemData.curRoomInstanceData = roomPrefab[i];
+//            }
+//        }
+//    }
+//}
+
+// 현재 방 정보만 가지고 모두 생성 가능하게 만들기 일단 보류
+//public void RoomCreate(DungeonRoom roomData)
+//{
+//    if(roomData.RoomType == DunGeonRoomType.MainRoom)
+//    {
+//        // 메인방 프리팹 생성
+//    }
+//    else
+//    {
+//        if (dungeonSystemData.dungeonRoomArray[roomData.beforeRoomIdx].RoomType == DunGeonRoomType.SubRoom)
+//            return;
+//        // 길방 프리팹 생성 -> 연결된 모든 길
+//        //int curIdx = roomData.roomIdx;
+//        //while (dungeonSystemData.dungeonRoomArray[curIdx])
 //    }
 //}

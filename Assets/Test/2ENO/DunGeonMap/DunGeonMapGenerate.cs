@@ -17,7 +17,7 @@ public enum DirectionInho
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
-    private int startIdx = 100;
+    //private int startIdx = 100;
     private int col = 20;
 
     private int roomCount = 4;
@@ -51,7 +51,6 @@ public class DunGeonMapGenerate : MonoBehaviour
                 roomCount = 8;
                 break;
         }
-        Vars.UserData.dungeonStartIdx = startIdx;
         if(mapArrayData == null)
         {
             StartCoroutine(MapCorutine(action));
@@ -60,15 +59,15 @@ public class DunGeonMapGenerate : MonoBehaviour
         {
             dungeonRoomArray = mapArrayData;
             action?.Invoke();
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         }
-        Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
-        Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = startIdx;
+        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
+        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = startIdx;
 
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
-        int curIdx = startIdx;
+        int curIdx = Vars.UserData.dungeonStartIdx;
         while(dungeonArray[curIdx].nextRoomIdx != -1)
         {
             // 현재방의 이벤트 리스트 (1개~2개) 돌면서 이벤트 오브젝트 정보 셋
@@ -137,16 +136,19 @@ public class DunGeonMapGenerate : MonoBehaviour
         {
             // 다시 초기화
             MapInit();
-            TestMapSet(startIdx, -1, DirectionInho.Right, 0);
+            TestMapSet(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
             yield return null;
         }
-        DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[startIdx], dungeonRoomArray);
-        DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[startIdx], dungeonRoomArray);
+        DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
+        DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DungeonEventGenerate(dungeonRoomArray);
 
         action?.Invoke();
+        
+        //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
+        //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData = dungeonRoomArray[Vars.UserData.dungeonStartIdx];
 
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     //public void OnGUI()
     //{

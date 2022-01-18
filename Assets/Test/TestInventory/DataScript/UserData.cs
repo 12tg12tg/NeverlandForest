@@ -17,12 +17,11 @@ public class UserData
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
     // 던전맵 데이터, 세이브 로드
-    public SerializeDictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
+    public SerializeDictionary<Vector2, DungeonData> AllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
     public Vector2 curDungeonIndex;
-    public int curDungeonRoomIdx;
-    public int dungeonStartIdx;
+    public int dungeonStartIdx = 100;
     public bool dungeonReStart;
-    public int currentDundeonRoomIndex;
+
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
 

@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class DungeonData
 {
-    public int dungeonStartIdx = -1;
+    //public RoomCtrl curRoomInstanceData;
+    //public int dungeonStartIdx = -1;
+    //public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     // 현재 던전크기 지정은 고정수치로 하는 느낌..
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
     public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
 
-    public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
-
     public DungeonRoom curDungeonRoomData;
-    //public RoomCtrl curRoomInstanceData;
-    public PlayerDungeonUnitData curPlayerData = new PlayerDungeonUnitData();
+    public PlayerDungeonUnitData curPlayerGirlData = new PlayerDungeonUnitData();
+    public PlayerDungeonUnitData curPlayerBoyData = new PlayerDungeonUnitData();
 }
 
 public class DungeonMapSaveData_0 : SaveDataBase
 {
     public List<List<DungeonRoom>> dungeonRoomList;
-    public List<PlayerDungeonUnitData> curPlayerData;
+    public List<PlayerDungeonUnitData> curPlayerGirlData;
+    public List<PlayerDungeonUnitData> curPlayerBoyData;
     public List<Vector2> dungeonIndex;
     public Vector2 curDungeonIndex;
     public int curDungeonRoomIndex;

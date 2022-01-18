@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 [Serializable]
 public class PlayerDungeonUnitData
 {
-    public int curRoomNumber = 0;
+    public int curRoomNumber = -1;
     public Vector3 curPlayerPosition;
     public void SetUnitData(PlayerDungeonUnit unitData)
     {
@@ -26,9 +26,17 @@ public class PlayerDungeonUnit : UnitBase
     private float speed = 7f;
 
     private int curRoomNumber = 0;
+
+    public MoveTest playerMove;
+    public bool isGatheringEnd;
+
     public bool IsCoMove
     {
-        set => isCoMove = value;
+        set
+        { 
+            isCoMove = value;
+            playerMove.isCoMove = value;
+        }
         get => isCoMove;
     }
     public int CurRoomNumber
@@ -55,39 +63,41 @@ public class PlayerDungeonUnit : UnitBase
 
     private void Update()
     {
-        // 레이캐스트 필요
-        // UI가 아닐 때 동작하게끔 만들어야함
-        // 첫 터치 기준으로만 잡음
-        var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        if (!isCoMove && multiTouch.TouchCount > 0 && isRayCol)
-        {
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-            isMove = false;
-            // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
-            var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
-            var playerXPos = Camera.main.WorldToViewportPoint(transform.localPosition).x;
-            if (playerXPos + 0.05f < touchXPos)
-            {
-                var pos = speed * Time.deltaTime * Vector3.forward;
-                transform.position += pos;
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-                isMove = true;
-            }
-            else if (playerXPos - 0.05f > touchXPos)
-            {
-                var pos = speed * Time.deltaTime * -Vector3.forward;
-                transform.position += pos;
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
-                isMove = true;
-            }
-            AnimationChange(isMove);
-        }
+        //// 레이캐스트 필요
+        //// UI가 아닐 때 동작하게끔 만들어야함
+        //// 첫 터치 기준으로만 잡음
+        //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
+        //if (!isCoMove && multiTouch.TouchCount > 0 && isRayCol)
+        //{
+        //    if (EventSystem.current.IsPointerOverGameObject())
+        //        return;
+        //    isMove = false;
+        //    // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
+        //    var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
+        //    var playerXPos = Camera.main.WorldToViewportPoint(transform.localPosition).x;
+        //    if (playerXPos + 0.05f < touchXPos)
+        //    {
+        //        var pos = speed * Time.deltaTime * Vector3.forward;
+        //        transform.position += pos;
+        //        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        //        isMove = true;
+        //    }
+        //    else if (playerXPos - 0.05f > touchXPos)
+        //    {
+        //        var pos = speed * Time.deltaTime * -Vector3.forward;
+        //        transform.position += pos;
+        //        transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+        //        isMove = true;
+        //    }
+        //    AnimationChange(isMove);
+        //}
     }
 
     public void CoMoveStop()
     {
         isCoMove = false;
+        playerMove.isCoMove = false;
+        isGatheringEnd = false;
     }
 
     public void AnimationChange(bool isMove)
@@ -112,5 +122,9 @@ public class PlayerDungeonUnit : UnitBase
             return;
         curAnimation = PlayerMoveAnimation.Idle;
         playerAnimation.SetTrigger("Idle");
+    }
+    private void PlayGatherAniEnd()
+    {
+        isGatheringEnd = true;
     }
 }
