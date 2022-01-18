@@ -7,6 +7,7 @@ public class HuntTilesMaker : MonoBehaviour
 {
     public PlayerHuntingUnit player;
     public GameObject bush;
+    public Material[] bushMaterials;
 
     public GameObject wholeTile;
     public Material material;
@@ -64,6 +65,7 @@ public class HuntTilesMaker : MonoBehaviour
         MeshFilter mf = plane.AddComponent<MeshFilter>();
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<HuntTile>();
+        tile.materials = bushMaterials;
         tile.player = player;
         tile.index = index;
         tile.ren = ren;
@@ -84,6 +86,7 @@ public class HuntTilesMaker : MonoBehaviour
         var mesh = new Mesh();
         mf.mesh = mesh;
         ren.material = material;
+        meshCol.isTrigger = meshCol.convex = true;
         meshCol.sharedMesh = mesh;
 
         var vertices  = new Vector3[4];
