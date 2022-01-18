@@ -68,11 +68,14 @@ public class GetItemView : GenericWindow
                 case DataType.Consume:
                     var conItem = new DataConsumable(itemList[i]);
                     itemGoList[i].Init(conItem);
-
                     break;
                 case DataType.AllItem:
                     var allItem = new DataAllItem(itemList[i]);
                     itemGoList[i].Init(allItem);
+                    break;
+                case DataType.Material:
+                    var materialitem = new DataAllItem(itemList[i]);
+                    itemGoList[i].Init(materialitem);
                     break;
             }
         }

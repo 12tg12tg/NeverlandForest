@@ -22,7 +22,6 @@ public class GatheringSystem : MonoBehaviour
     private Animator playerAnimation;
     private Animator playerAnimationBoy;
     public InventoryController inventoryController;
-    
 
     public enum GatheringType
     {
@@ -343,7 +342,6 @@ public class GatheringSystem : MonoBehaviour
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
-            item.OwnCount = 10;
             list.Add(item);
             inventoryController.OpenChoiceMessageWindow(list);
         }
@@ -451,6 +449,9 @@ public class GatheringSystem : MonoBehaviour
         //Debug.Log("ÆË¾÷²¯´Ù");
         //gatheringToolPanel.SetActive(false);
         //Destroy(curSelectedObj);
+        Vars.UserData.AddItemData(item);
+        list.Add(item);
+        inventoryController.OpenChoiceMessageWindow(list);
 
     }
     // Ãß°¡ÇÔ

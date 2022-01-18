@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,6 +22,7 @@ public class Combination : MonoBehaviour
     private bool CookingStart = false;
     private int makeTime_Hour = 0;
     private int makeTime_Minute = 0;
+    public InventoryController inventoryController;
 
     public void Start()
     {
@@ -42,6 +44,9 @@ public class Combination : MonoBehaviour
                 condiment = inventory.condimentObject.DataItem.ItemTableElem.id;
             if (inventory.materialObject != null)
                 material = inventory.materialObject.DataItem.ItemTableElem.id;
+
+           
+
             if (fire != null && condiment != null && material != null)
             {
                 //CheckCombinationText.text = "제작 시간은 2:00:00 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
@@ -80,19 +85,38 @@ public class Combination : MonoBehaviour
             //와이파이로 연결 되어 있을 때의 행동 (그냥 인터넷이 연결되어있을 때)
             if (recipeTable.IsCombine(condiment, material, out result, fire))
             {
-                CookingStart = true;
-
+             
                 var hour = int.Parse(time[0]);
                 var minute = int.Parse(time[1]);
                 makeTime_Hour = hour;
                 makeTime_Minute = minute;
+                var makeTime = 60 * hour + minute;
+                var bonFireTime = Vars.UserData.uData.BonfireHour * 60;
 
+                if (bonFireTime > makeTime)
+                {
+                    CookingStart = true;
+                    var allitem = DataTableManager.GetTable<AllItemDataTable>();
+                    item = allitem.GetData<AllItemTableElem>(result);
+                    inventory.result.sprite = item.IconSprite;
+                    inventory.resultObject = inventory.itemGoList[int.Parse(result)];
 
-                var allitem = DataTableManager.GetTable<AllItemDataTable>();
-                item = allitem.GetData<AllItemTableElem>(result);
-                inventory.result.sprite = item.IconSprite;
-                inventory.resultObject = inventory.itemGoList[int.Parse(result)];
+                    inventory.resultObject.DataItem.dataType = DataType.Material;
+                    inventory.resultObject.DataItem.OwnCount = Random.Range(1, 3);
+                    inventory.resultObject.DataItem.LimitCount = 5;
 
+                    var list = new List<DataItem>();
+                    list.Add(inventory.resultObject.DataItem);
+                    inventoryController.OpenChoiceMessageWindow(list);
+                    bonFireTime -= makeTime;
+                    Vars.UserData.uData.BonfireHour = bonFireTime / 60;
+                }
+                else
+                {
+                    Debug.Log("현재 모닥불의 시간이 부족합니다.");
+                }
+            
+                CampManager.Instance.ChangeBonTime();
                 CheckCombination.gameObject.SetActive(false); // 팝업창 끄고
             }
             else
@@ -110,10 +134,6 @@ public class Combination : MonoBehaviour
     private void MakeCook()
     {
         ConsumeManager.TimeUp(makeTime_Minute, makeTime_Hour);
-
-        Debug.Log($"makeTime_Hour{makeTime_Hour}");
-        Debug.Log($"makeTime_Minute{makeTime_Minute}");
-
         var RecipeId = recipeTable.GetRecipeId(result);
         var userData = Vars.UserData.HaveRecipeIDList;
 

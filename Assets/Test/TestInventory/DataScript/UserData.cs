@@ -36,7 +36,6 @@ public class UserData
     public int maxInventoryItemCount = 21;
     private readonly List<DataItem> haveAllItemList = new List<DataItem>();
     public ReadOnlyCollection<DataItem> HaveAllItemList => haveAllItemList.AsReadOnly();
-
     public bool AddItemData(DataItem newItem)
     {
         // 칸 하나를 전부 차지한 경우의 개수
@@ -138,6 +137,10 @@ public class UserData
                         case DataType.AllItem:
                             var getItem = new DataAllItem(newItem);
                             haveAllItemList.Add(getItem);
+                            break;
+                        case DataType.Material:
+                            var getmaterialItem = new DataMaterial(newItem);
+                            haveAllItemList.Add(getmaterialItem);
                             break;
                     }
 
