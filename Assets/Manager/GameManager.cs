@@ -21,6 +21,6 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this);
 
-        MonsterPool.Instance.Init();
+        //MonsterPool.Instance.Init();
     }
 }

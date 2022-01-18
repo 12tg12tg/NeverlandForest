@@ -149,7 +149,7 @@ public class DungeonSystem : MonoBehaviour
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
         // 방 한칸 지날때마다 3시간씩 지남
-        ConsumeManager.TimeUp(0, 3);
+        //ConsumeManager.TimeUp(0, 3);
         if (isRoomEnd)
         {
             foreach(var obj in eventObjInstanceList)
