@@ -7,14 +7,10 @@ public class StaminaBar : MonoBehaviour
     public RectTransform sliderRect;
     public Slider laternSlider;
     public CampManager campManager;
-
-
     public void Start()
     {
         ChangeableStaminaChange();
-        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
-        Debug.Log($"Vars.UserData.uData.CurIngameMinute{Vars.UserData.uData.CurIngameMinute}");
-
+        ConsumeManager.init();
     }
     void Update()
     {
@@ -78,6 +74,14 @@ public class StaminaBar : MonoBehaviour
         if (GUILayout.Button("DayNightChange"))
         {
             ConsumeManager.TimeUp(0, 13);
+        }
+        if (GUILayout.Button("BonFireUp"))
+        {
+            ConsumeManager.RecoveryBonFire(0, 1);
+        }
+        if (GUILayout.Button("BonFireDown"))
+        {
+            ConsumeManager.ConsumeBonfireTime(0, 1);
         }
     }
 }

@@ -33,8 +33,8 @@ public enum LanternState
 
 public static class ConsumeManager
 {
-    private static TimeState curTimeState = TimeState.None;
-    private static LanternState curLanternState = LanternState.Level4;
+    private static TimeState curTimeState;
+    private static LanternState curLanternState;
     public static TimeState CurTimeState
     {
         set => curTimeState = value;
@@ -84,23 +84,39 @@ public static class ConsumeManager
     {
         // 회복할수 있는 최대치 까지 회복 시키는 거기때문에 매개변수는 받을필요가 없을 것 같고
         // 회복된 수치에 비례해서 시간을 소비하는 개념으로 가야될것 같다.
-        if (Vars.UserData.uData.CurStamina <Vars.UserData.uData.ChangeableMaxStamina )
+
+        var time = CampManager.Instance.RecoverySleepTime;
+        var rimittime = Vars.UserData.uData.BonfireHour *60;
+        Debug.Log($"time{time}");
+        Debug.Log($"rimittime{rimittime}");
+
+        if (rimittime>=time)
         {
-            var recoverValue = Vars.UserData.uData.ChangeableMaxStamina - Vars.UserData.uData.Tiredness;
-            if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
+            if (Vars.UserData.uData.CurStamina < Vars.UserData.uData.ChangeableMaxStamina)
             {
-                TimeUp((int)recoverValue * 6);
+                var recoverValue = Vars.UserData.uData.ChangeableMaxStamina - Vars.UserData.uData.Tiredness;
+                var afterValue = Vars.UserData.uData.ChangeableMaxStamina / 10; // 30분당 이만큼 
+                var finalValue = time / 30 * afterValue;
+                if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
+                {
+                    //TimeUp((int)recoverValue * 6); //기존 충전량
+                    TimeUp(time); //변경된 충전량
+                    Debug.Log($"finalvalue{time}");
+                }
+                //Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina; // 회복기존꺼
+                Vars.UserData.uData.Tiredness += finalValue; // 회복변경된거
+                if (Vars.UserData.uData.Tiredness > Vars.UserData.uData.ChangeableMaxStamina)
+                {
+                    Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
+                }
+                //스태미나 10회복당 1시간 개념이였으니깐 1회복당 6분의 개념
+                CurStaminaChange();
             }
-            Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina; // 회복
-            if (Vars.UserData.uData.Tiredness > Vars.UserData.uData.ChangeableMaxStamina)
-            {
-                Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
-            }
-            //스태미나 10회복당 1시간 개념이였으니깐 1회복당 6분의 개념
-            CurStaminaChange();
         }
-        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
-        Debug.Log($"Vars.UserData.uData.CurIngameMinute{Vars.UserData.uData.CurIngameMinute}");
+        else
+        {
+            Debug.Log("모닥불의 시간이 부족합니다");
+        }
     }
     public static void GettingTired(float gettingTired) //피로도 증가
     {
@@ -165,7 +181,7 @@ public static class ConsumeManager
     private static void LanternStateChange()
     {
         var count = Vars.UserData.uData.LanternCount;
-
+        TimeStateChange();
         switch (curTimeState)
         {
             case TimeState.None:
@@ -246,9 +262,10 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.NightTime;
         }
+        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
     }
 
-    public static void TimeUp(int minute, int hour=0)
+    public static void TimeUp(float minute, float hour=0)
     //시간보다는 분을 더 자주쓸거같아서 hour은 디폴트 매개변수로 두었습니당!
     {
         Vars.UserData.uData.CurIngameHour += hour;
@@ -302,6 +319,29 @@ public static class ConsumeManager
         {
             EventBus<DateEvent>.Publish(DateEvent.WitchEffect);
         }
+    }
+    public static void ConsumeBonfireTime(float minute, float hour =0)
+    {
+        var totalTime = Vars.UserData.uData.BonfireHour * 60; // 분단위로 계산
+
+        totalTime -= minute;
+        totalTime -= 60 * hour;
+        if (totalTime<0)
+        {
+            totalTime = 0;
+        }
+        Vars.UserData.uData.BonfireHour = totalTime/60;
+        CampManager.Instance.ChangeBonTime();
+    }
+
+    public static void RecoveryBonFire(float minute, float hour = 0)
+    {
+        var totalTime = Vars.UserData.uData.BonfireHour * 60; // 분단위로 계산
+        totalTime += minute;
+        totalTime += 60 * hour;
+        Vars.UserData.uData.BonfireHour = totalTime / 60;
+        CampManager.Instance.ChangeBonTime();
+
     }
 
     private static void BlueMoon(object[] vals)

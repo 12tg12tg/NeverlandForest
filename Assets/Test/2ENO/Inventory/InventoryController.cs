@@ -14,8 +14,6 @@ public class InventoryController : GenericWindow
     public void Start()
     {
         Debug.Log("Awake");
-        Close();
-      
         Init();
     }
     public override void Open()
