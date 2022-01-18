@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6348696052922820171
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 565741348397833938}
+  - component: {fileID: 6622130764036362300}
+  m_Layer: 0
+  m_Name: MonsterPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &565741348397833938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6348696052922820171}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9076151087642714307}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6622130764036362300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6348696052922820171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 860473aa35efb624d9ed0feaeb83c7f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 4480251189080331264, guid: f1bb2c1e661003a4a994c7c045018619, type: 3}
+  - {fileID: 8666222085425565636, guid: f9fabff84ad6dc04abe651e2e638bdab, type: 3}
+  - {fileID: 1210038090024910259, guid: 16e54916a5494a941b734c2ace830400, type: 3}
+  - {fileID: 3491765107648122082, guid: 3b301f52470900e4fa0cac25b84401f2, type: 3}
+  - {fileID: 8672787908860700878, guid: a18ffad07713e80489020ee4a8462e89, type: 3}
+  - {fileID: 9220383817017189135, guid: 8218b17dd41ab6b49a7e446d95016532, type: 3}
+  - {fileID: 1162074717683033587, guid: fdb2e1ae41d7fe34da708157b12e671c, type: 3}
+  - {fileID: 6328325485107444708, guid: 645ece2a218dab4438ac7ae327c42f49, type: 3}
+  - {fileID: 7610133508913661007, guid: 786c3a4336ae3ae48b0d61b4183c6478, type: 3}
+  - {fileID: 3118294153675456976, guid: 202cb57dc35002b4482d2939fb727813, type: 3}
+  - {fileID: 1734572081990470152, guid: f541509dbc1c91641bbfdff3d0636d01, type: 3}
+  - {fileID: 4524045572467879168, guid: d3a77ffafa4a3cb4181a33d3f4afb82b, type: 3}
+  - {fileID: 2143963233178108554, guid: a7aea96ffc9b10f48a83bc87055dbfb2, type: 3}
+  - {fileID: 2611149553095981223, guid: 6993ff2ded8628047889664ab98f6ac1, type: 3}
+  - {fileID: 6077542232430978654, guid: 86bc02ff16fbd9341b87fa6e6d3a732d, type: 3}
+  - {fileID: 5422105821256165485, guid: 02fc3d9096378e94eb3938ee1a8514c3, type: 3}
+  - {fileID: 4371139979578960710, guid: 2efa6be595d09d54593473cf22c71da4, type: 3}
 --- !u!1 &9076151087642714304
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,7 +90,8 @@ Transform:
   m_LocalPosition: {x: 14.252484, y: -10.944881, z: 29.970924}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 565741348397833938}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -19,7 +19,7 @@ public class BattleFSM : FSM<BattleState>
         AddState(BattleState.Action, new BattleAction(manager));
         AddState(BattleState.Settlement, new BattleSettlement(manager));
         AddState(BattleState.End, new BattleEnd(manager));
-        SetState(BattleState.Start);
+        SetState(BattleState.End);
     }
 
     public override void Update()

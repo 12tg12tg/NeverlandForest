@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[System.Obsolete("사용하지 않게된 UI.")]
 public class InputPairImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public CanvasGroup cg;
@@ -99,7 +100,7 @@ public class InputPairImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         if(sibilingIndex != sibilingIndexAfterDrag)
         {
             panel.Swap();
-            BattleManager.Instance.CommandArrangeSwap();
+            //BattleManager.Instance.CommandArrangeSwap();
         }
     }
 }

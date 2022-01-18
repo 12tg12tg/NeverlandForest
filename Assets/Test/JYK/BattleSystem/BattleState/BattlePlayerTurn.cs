@@ -13,7 +13,6 @@ public class BattlePlayerTurn : State<BattleState>
     private float messageTime = 2f;
     private bool isMessageOff;
 
-
     public override void Init()
     {
         isMessageOff = false;
@@ -21,13 +20,11 @@ public class BattlePlayerTurn : State<BattleState>
         manager.PrintMessage("플레이어 턴", messageTime, () =>
         {
             isMessageOff = true;
-            manager.playerTurnUI.SetActive(true);
         });
     }
 
     public override void Release()
     {
-        manager.playerTurnUI.SetActive(false);
     }
 
     public override void Update()
@@ -35,7 +32,7 @@ public class BattlePlayerTurn : State<BattleState>
         if (!isMessageOff)
             return;
 
-        //플레이어 클릭 대기
+        
 
     }
 

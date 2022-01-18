@@ -7,7 +7,7 @@ public class TileMaker : MonoBehaviour
 {
     public enum PlaneType
     {
-        Base, Center, Edge, Count
+        Base, Center, Edge, Front, Behind, FrontEdge, BehindEdge, Count
     }
 
     private static TileMaker instance;
@@ -21,8 +21,13 @@ public class TileMaker : MonoBehaviour
     public Material baseMaterial;
     public Material centerMaterial;
     public Material edgeMaterial;
+    public Material frontMaterial;
+    public Material behindMaterial;
+    public Material frontEdgeMaterial;
+    public Material behindEdgeMaterial;
 
     //Property
+    public HalfTile LastHalfTile { get; set; }
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
 
@@ -37,6 +42,10 @@ public class TileMaker : MonoBehaviour
     public float spacing = 1f;
     private Tiles[,] allTiles;
     private List<Tiles> tileList = new List<Tiles>();
+    private Dictionary<int, int> lanternToCol = new Dictionary<int, int>()
+    {
+        { 0, 0 }, { 1, 2 }, { 2, 4 }, { 3, 5 }, { 4, 6 }
+    };
 
     private void Awake()
     {
@@ -44,6 +53,7 @@ public class TileMaker : MonoBehaviour
         MakeTiles();
     }
 
+    // 생성
     private void MakeTiles()
     {
         allTiles = new Tiles[row, col];
@@ -108,6 +118,18 @@ public class TileMaker : MonoBehaviour
                 case PlaneType.Edge:
                     parent.edge = child.GetComponent<MeshRenderer>();
                     break;
+                case PlaneType.Front:
+                    parent.front = child.GetComponent<MeshRenderer>();
+                    break;
+                case PlaneType.Behind:
+                    parent.behind = child.GetComponent<MeshRenderer>();
+                    break;
+                case PlaneType.FrontEdge:
+                    parent.frontEdge = child.GetComponent<MeshRenderer>();
+                    break;
+                case PlaneType.BehindEdge:
+                    parent.behindEdge = child.GetComponent<MeshRenderer>();
+                    break;
             }
         }
     }
@@ -152,6 +174,30 @@ public class TileMaker : MonoBehaviour
             case PlaneType.Edge:
                 material = edgeMaterial;
                 plane.transform.position += new Vector3(0f, 0.01f, 0f);
+                break;
+
+            case PlaneType.Front:
+                width *= reductionRatio;
+                height *= reductionRatio;
+                material = frontMaterial;
+                plane.transform.position += new Vector3(0f, 0.015f, 0f);
+                break;
+
+            case PlaneType.Behind:
+                width *= reductionRatio;
+                height *= reductionRatio;
+                material = behindMaterial;
+                plane.transform.position += new Vector3(0f, 0.015f, 0f);
+                break;
+
+            case PlaneType.FrontEdge:
+                material = frontEdgeMaterial;
+                plane.transform.position += new Vector3(0f, 0.02f, 0f);
+                break;
+
+            case PlaneType.BehindEdge:
+                material = behindEdgeMaterial;
+                plane.transform.position += new Vector3(0f, 0.02f, 0f);
                 break;
         }
 
@@ -202,6 +248,7 @@ public class TileMaker : MonoBehaviour
     }
 
 
+    // 타일 반환
     public Tiles GetTile(Vector2 position)
     {
         if (IsValidTile(position))
@@ -249,6 +296,26 @@ public class TileMaker : MonoBehaviour
         return list;
     }
 
+    public IEnumerable<Tiles> GetSkillRangedTiles(Vector2 choicesTile, SkillRangeType rangeType)
+    {
+        switch (rangeType)
+        {
+            case SkillRangeType.One:
+            case SkillRangeType.Tile:
+                return from n in tileList where n == GetTile(choicesTile) select n;
+            case SkillRangeType.Line:
+                int col = (int)choicesTile.y;
+                return from n in tileList where (int)n.index.y == col select n;
+            case SkillRangeType.Lantern:
+                int currentLantern = 4;
+                var maxCol = lanternToCol[currentLantern];
+                return from n in tileList where (int)n.index.y != 0 && (int)n.index.y <= maxCol select n;
+            default:
+                return null;
+        }
+    }    
+
+    // 타일 속성 변경
     public void SetAllTileMiddleState()
     {
         var count = tileList.Count;
@@ -266,9 +333,9 @@ public class TileMaker : MonoBehaviour
     internal void AffectedTileCancle(PlayerType type)
     {
         if(type == PlayerType.Boy)
-            tileList.Where(n => n.affectedByBoy).ToList().ForEach(n => n.CancleConfirmTarget(type));
+            tileList.Where(n => n.affectedByBoy.isAffected).ToList().ForEach(n => n.CancleConfirmTarget(type));
         else
-            tileList.Where(n => n.affectedByGirl).ToList().ForEach(n => n.CancleConfirmTarget(type));
+            tileList.Where(n => n.affectedByGirl.isAffected).ToList().ForEach(n => n.CancleConfirmTarget(type));
     }
 
     private bool IsValidTile(Vector2 tilePos)
@@ -278,6 +345,7 @@ public class TileMaker : MonoBehaviour
         return 0 <= x && x < row && y >= 0 && y < col;
     }
 
+    // 유닛반환
     public List<UnitBase> GetUnitsOnTile(Vector2 pos)
     {
         var tile = GetTile(pos);

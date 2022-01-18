@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Obsolete("사용하지 않게된 UI.")]
 public class UserInputPanel : MonoBehaviour
 {
     public InputPairImage firstInput;

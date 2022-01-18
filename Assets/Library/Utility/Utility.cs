@@ -19,6 +19,7 @@ public class Utility
             timer += Time.deltaTime;
             yield return null;
         }
+        transform.rotation = end;
     }
 
     public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
@@ -109,7 +110,7 @@ public class Utility
             list[i] = list[rnd];
             list[rnd] = temp;    
         }
-        return list;
+        return list; /*반환하지 않아도 되긴 합니다.*/
     }
 
     public static void ChildrenDestroy(GameObject gameObject)

@@ -96,7 +96,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
         var tileMaker = TileMaker.Instance;
         if (isDragOnTile)
         {
-            if (true /*단일 타겟 스킬인지 확인*/)
+            if (skill.SkillTableElem.rangeType == SkillRangeType.One)
             {
                 //단일 타겟이라면 유효성 검사
                 if (!manager.IsVaildTargetTile(tileMaker.LastDropTile))
@@ -108,7 +108,7 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler, IDragHandler, IE
                 else
                 {
                     tileMaker.AffectedTileCancle(groupUI.type);
-                    tileMaker.LastDropTile.ConfirmAsTarget(groupUI.type);
+                    tileMaker.LastDropTile.ConfirmAsTarget(groupUI.type, eventData.pointerCurrentRaycast.worldPosition, skill.SkillTableElem.rangeType);
                 }
             }
             else

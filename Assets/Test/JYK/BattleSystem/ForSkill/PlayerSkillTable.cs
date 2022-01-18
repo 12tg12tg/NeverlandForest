@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[Obsolete("SkillRangeType을 사용하세요.")]
 public enum SkillRangeShape
 {
     One, Six, Eight, Nine, Cross, X
 }
+
+public enum SkillRangeType { One, Tile, Line, Lantern }
 
 [Serializable]
 public class PlayerSkillTableElem : DataTableElemBase
@@ -16,7 +19,8 @@ public class PlayerSkillTableElem : DataTableElemBase
     public int count;
     public int damage;
     public bool isSideEffect;
-    public SkillRangeShape rangeShape;
+    [Obsolete("rangeType을 사용하세요.")] public SkillRangeShape rangeShape;
+    public SkillRangeType rangeType;
     public int additionalRange;
     public string description;
 
@@ -25,6 +29,7 @@ public class PlayerSkillTableElem : DataTableElemBase
     {
         get { return iconSprite; }
     }
+
     public PlayerSkillTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];

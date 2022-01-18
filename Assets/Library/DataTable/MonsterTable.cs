@@ -20,6 +20,7 @@ public class MonsterTableElem : DataTableElemBase
     public int sheild;
     private int minSpeed;
     private int maxSpeed;
+    public int dodge;
     public string description;
     private Sprite iconSprite;
 
@@ -54,6 +55,7 @@ public class MonsterTableElem : DataTableElemBase
         hp = int.Parse(data["HP"]);
         minSpeed = int.Parse(data["SPEED_MIN"]);
         maxSpeed = int.Parse(data["SPEED_MAX"]);
+        dodge = int.Parse(data["DODGE"]);
         iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
     }
 }
@@ -62,7 +64,7 @@ public class MonsterTableElem : DataTableElemBase
 public class MonsterTable : DataTableBase
 {
     public MonsterTable() => csvFilePath = "MonsterTable";
-
+    public List<SerializeDictionary<string, string>> allMonster;
     public override void Load()
     {
         data.Clear();
