@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum HalfTile { Front, Behind }
+public class AffectedInfo
+{
+    public bool isAffected;
+    public PlayerType player; // 누구의 스킬이 영향을 주는가 -> 색 결정
+    public SkillRangeType skillRange; // 어떤 범위의 스킬인가 -> Half 인지 Full 인지 결정
+    public HalfTile half; // 앞/뒤 -> 어느 타일을 칠해야하는가
+}
+
+
 public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 {
     public MeshRenderer ren;
@@ -14,6 +24,10 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     private TileMaker tileMaker;
     public MeshRenderer center;
     public MeshRenderer edge;
+    public MeshRenderer frontEdge;
+    public MeshRenderer front;
+    public MeshRenderer behindEdge;
+    public MeshRenderer behind;
 
     //Property
     public Vector3 CenterPos { get => transform.position; }
@@ -32,8 +46,8 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     private Color confirmColor;
     private Color boyColor;
     private Color girlColor;
-    public bool affectedByBoy;
-    public bool affectedByGirl;
+    public AffectedInfo affectedByBoy = new AffectedInfo();
+    public AffectedInfo affectedByGirl = new AffectedInfo();
 
     private void Start()
     {
@@ -49,6 +63,9 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         var rightBottom = CenterPos + new Vector3(Width / 2, 0f, -Height/2);
         FrontPos = (leftTop + rightTop + leftBottom) / 3;
         BehindPos = (leftBottom + rightTop + rightBottom) / 3;
+
+        affectedByBoy.player = PlayerType.Boy;
+        affectedByGirl.player = PlayerType.Girl;
     }
 
     //Move
@@ -83,6 +100,10 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     }
 
     //Half Tile
+    private void MoveUnitCenter(UnitBase unit)
+    {
+        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, CenterPos, 0.3f));
+    }
     private void MoveUnitFront(UnitBase unit)
     {
         StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, FrontPos, 0.3f));
@@ -96,6 +117,16 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     private void PutSecondUnit(UnitBase unit)
     {
 
+    }
+
+    public HalfTile WhichPartOfTile(Vector3 touchPos)
+    {
+        float x = touchPos.x;
+        float touchY = touchPos.z;
+
+        float slopeY = (x - CenterPos.x) * Height / Width + CenterPos.z;
+
+        return (touchY > slopeY) ? HalfTile.Front : HalfTile.Behind;
     }
 
     public void PutMonster(MonsterUnit monster)
@@ -123,8 +154,8 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public void Clear()
     {
         //완전 초기화. 어떤 하이라이트도 없음.
-        affectedByBoy = false;
-        affectedByGirl = false;
+        affectedByBoy.isAffected = false;
+        affectedByGirl.isAffected = false;
         isHighlightAttack = false;
         isHighlightConsume = false;
         ren.material.color = tileMaker.noneColor;
@@ -134,17 +165,26 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     public void HighlightSkillRange()
     {
+        // For Drag
         center.material.color = tileMaker.blueColor;
     }
 
     public void HighlightCanAttackSign()
     {
+        // Both drag and click
         isHighlightAttack = true;
-        edge.material.color = tileMaker.targetColor;
+        if(units.Count == 1)
+            edge.material.color = tileMaker.targetColor;
+        else
+        {
+            frontEdge.material.color = tileMaker.targetColor;
+            behindEdge.material.color = tileMaker.targetColor;
+        }
     }
 
     public void HighlightCanConsumeSign()
     {
+        // Both drag and click
         isHighlightConsume = true;
         edge.material.color = tileMaker.consumeColor;
     }
@@ -153,48 +193,88 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     {       
         isHighlightAttack = false;
         isHighlightConsume = false;
+
         center.material.color = tileMaker.noneColor;
+        front.material.color = tileMaker.noneColor;
+        behind.material.color = tileMaker.noneColor;
         edge.material.color = tileMaker.noneColor;
-        if (affectedByBoy || affectedByGirl)
-            center.material.color = confirmColor;
-    }
+        frontEdge.material.color = tileMaker.noneColor;
+        behindEdge.material.color = tileMaker.noneColor;
 
-    private void ReCalculateAffectedColor()
-    {
-        Color color = Color.clear;
-        if (affectedByBoy)
-            color += boyColor;
-        if (affectedByGirl)
-            color += girlColor;
-        this.confirmColor = color;
-    }
-
-    public void ConfirmAsTarget(PlayerType who)
-    {
-        if (who == PlayerType.Boy)
+        AffectedInfo curInfo = null;
+        Color selectedColor = Color.clear;
+        if (affectedByBoy.isAffected)
         {
-            affectedByBoy = true;
+            curInfo = affectedByBoy;
+            selectedColor = boyColor;
+        }
+        if (affectedByGirl.isAffected)
+        {
+            curInfo = affectedByGirl;
+            selectedColor = girlColor;
+        }
+        if (!affectedByBoy.isAffected && !affectedByGirl.isAffected)
+            return; // 선택되지 않은 타일이라면 종료.
+
+        // 둘 중 하나라도 선택되어있다면, 새롭게 색칠.
+        if(units.Count == 2)
+        {
+            bool isOneTargetSkill = curInfo.skillRange == SkillRangeType.One;
+            if (isOneTargetSkill)
+            {
+                if (curInfo.half == HalfTile.Front)
+                {
+                    front.material.color = selectedColor;
+                }
+                else
+                {
+                    behind.material.color = selectedColor;
+                }
+            }
         }
         else
         {
-            affectedByGirl = true;
+            center.material.color = selectedColor;
         }
+    }
 
-        ReCalculateAffectedColor();
+    /*
+    private void ReCalculateAffectedColor()
+    {
+        Color color = Color.clear;
+        if (affectedByBoy.isAffected)
+            color += boyColor;
+        if (affectedByGirl.isAffected)
+            color += girlColor;
+        this.confirmColor = color;
+    }
+    */ // (삭제됨) 색 더하기 함수. 공격 즉시 시행으로 바뀌면서 필요 없어짐.
+
+    public void ConfirmAsTarget(PlayerType player, Vector3 touchPos, SkillRangeType skillType)
+    {
+        // 넘어온 정보를 바탕으로 AffectedInfo 재구성.
+        AffectedInfo info;
+        if (player == PlayerType.Boy)
+            info = affectedByBoy;
+        else
+            info = affectedByGirl;       
+
+        info.isAffected = true;
+        info.half = WhichPartOfTile(touchPos);
+        info.skillRange = skillType;
     }
     
     public void CancleConfirmTarget(PlayerType type)
     {
         if(type == PlayerType.Boy)
         {
-            affectedByBoy = false;
+            affectedByBoy.isAffected = false;
         }
         else
         {
-            affectedByGirl = false;
+            affectedByGirl.isAffected = false;
         }
 
-        ReCalculateAffectedColor();
         ResetHighlightExceptConfirm();
     }
 
@@ -207,7 +287,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             HighlightCanAttackSign();
         if (isHighlightConsume)
             HighlightCanConsumeSign();
-        if (affectedByBoy || affectedByGirl)
+        if (affectedByBoy.isAffected || affectedByGirl.isAffected)
             ResetHighlightExceptConfirm();
     }
 
@@ -219,8 +299,9 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Drag Drop
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log($"Pointer is drop here to {index} Tile! ");
+        //Debug.Log($"Pointer is drop here to {eventData.pointerCurrentRaycast.worldPosition} Tile! ");
         TileMaker.Instance.LastDropPos = index;
+        TileMaker.Instance.LastHalfTile = WhichPartOfTile(eventData.pointerCurrentRaycast.worldPosition);
     }
 
     //Click
@@ -237,7 +318,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         var actionType = button.CurState;
 
-        if (true /*단일 타겟 스킬인지 확인*/)
+        if (skill.SkillTableElem.rangeType == SkillRangeType.One)
         {
             //단일 타겟이라면 유효성 검사
             if (!BattleManager.Instance.IsVaildTargetTile(this))
@@ -248,7 +329,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             else
             {
                 tileMaker.AffectedTileCancle(button.groupUI.type);
-                ConfirmAsTarget(button.groupUI.type);
+                ConfirmAsTarget(button.groupUI.type, eventData.pointerCurrentRaycast.worldPosition, skill.SkillTableElem.rangeType);
             }
         }
         else

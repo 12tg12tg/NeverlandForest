@@ -17,9 +17,9 @@ public class BattleAction : State<BattleState>
     {
         if (FSM.preState == BattleState.Player)
         {
-            curCommand = manager.CommandQueue.Dequeue();
-            // 커맨드 큐에 있는 명령들을 모두 실행시킨 후에 상태 변경
-            curCommand.attacker.TurnInit(curCommand);
+            //curCommand = manager.CommandQueue.Dequeue();
+            //// 커맨드 큐에 있는 명령들을 모두 실행시킨 후에 상태 변경
+            //curCommand.attacker.TurnInit(curCommand);
         }
         else if (FSM.preState == BattleState.Monster)
         {
@@ -46,17 +46,17 @@ public class BattleAction : State<BattleState>
     {
         if (FSM.preState == BattleState.Player)
         {
-            if (curCommand.attacker.FSM.curState == CharacterBattleState.Idle)
-            {
-                if (manager.CommandQueue.Count <= 0)
-                {
-                    FSM.ChangeState(BattleState.Monster);
-                    return;
-                }
-                curCommand = manager.CommandQueue.Dequeue();
-                curCommand.attacker.TurnInit(curCommand);
+            //if (curCommand.attacker.FSM.curState == CharacterBattleState.Idle)
+            //{
+            //    if (manager.CommandQueue.Count <= 0)
+            //    {
+            //        FSM.ChangeState(BattleState.Monster);
+            //        return;
+            //    }
+            //    curCommand = manager.CommandQueue.Dequeue();
+            //    curCommand.attacker.TurnInit(curCommand);
 
-            }
+            //}
         }
         else if (FSM.preState == BattleState.Monster)
         {

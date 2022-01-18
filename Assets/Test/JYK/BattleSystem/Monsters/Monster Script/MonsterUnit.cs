@@ -158,9 +158,8 @@ public class MonsterUnit : UnitBase, IAttackable
     }
     public void Move()
     {
-        PlayMoveAnimation();
-        StartCoroutine(BattleManager.Instance.MoveUnitOnTile(command.target, this, 
-            () => { isActionDone = true; PlayIdleAnimation(); }));
+        BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
+            () => { isActionDone = true; PlayIdleAnimation(); });
     }
 
     // Animation

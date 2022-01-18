@@ -29,7 +29,7 @@ public class PlayerAction : State<CharacterBattleState>
         // 애니메이션이 끝나면? 타겟들의 OnAttacked 실행
         isAttackMotionEnd = false;
         playerAnimation.SetTrigger("Attack");
-        TileMaker.Instance.GetTile(playerController.curCommand.target).CancleConfirmTarget(playerController.playerType); //발판색삭제
+        TileMaker.Instance.GetTile(playerController.command.target).CancleConfirmTarget(playerController.playerType); //발판색삭제
     }
 
     public override void Release()
@@ -51,14 +51,14 @@ public class PlayerAction : State<CharacterBattleState>
         if(isAttackMotionEnd)
         {
             isAttackMotionEnd = false;
-            var monsterList = GetTargetList(playerController.curCommand.target);
+            var monsterList = GetTargetList(playerController.command.target);
             var targetList = monsterList.Cast<MonsterUnit>();
 
             // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
             foreach (var target in targetList)
             {
                 target.PlayHitAnimation();
-                target.OnAttacked(playerController.curCommand);
+                target.OnAttacked(playerController.command);
             }
             waitDelay = true;
         }

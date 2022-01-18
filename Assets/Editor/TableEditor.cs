@@ -178,6 +178,9 @@ public class TableEditor : EditorWindow
 
         var speedMax = int.Parse(consumData["SPEED_MAX"]);
         consumData["SPEED_MAX"] = EditorGUILayout.IntField("Speed_Max", speedMax).ToString();
+
+        var dodge = int.Parse(consumData["DODGE"]);
+        consumData["DODGE"] = EditorGUILayout.IntField("Dodge", dodge).ToString();
     } 
     
     private void ViewLocalizationData(List<Dictionary<string, string>> localizationList)

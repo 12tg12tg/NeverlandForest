@@ -38,8 +38,6 @@ public class BattleManager : MonoBehaviour
     public BattleMessage message;
     public BattleMessage cautionMessage;
     public BattleFSM FSM;
-    public GameObject playerTurnUI;
-    public UserInputPanel userInputPanel;
     public SkillSelectUI trapUI;
 
     //Vars
@@ -48,7 +46,6 @@ public class BattleManager : MonoBehaviour
     private int totlaWave, curWave, preWaveTurn;
     private const int middleOfStage = 4;
     private bool isDrag;
-    private Queue<PlayerCommand> comandQueue = new Queue<PlayerCommand>();
     private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
     private IEnumerable<Tiles> targetTiles;
     private bool isWaitingTileSelect;
@@ -58,8 +55,8 @@ public class BattleManager : MonoBehaviour
     public int Turn { get => turn; set => turn = value; }
     public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
-    public Queue<PlayerCommand> CommandQueue { get => comandQueue; }
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
+    public bool IsDuringPlayerAction { get; set; }
 
     private void Awake()
     {
@@ -75,6 +72,10 @@ public class BattleManager : MonoBehaviour
     {
         //Multitouch 활성화
         multiTouch = MultiTouch.Instance;
+
+        //Command 연결
+        boy.command = boyInput;
+        girl.command = girlInput;
     }
 
 
@@ -286,11 +287,10 @@ public class BattleManager : MonoBehaviour
             int i = 0;
             while (temp.Count != 0)
             {
-                var unitSc = temp.Dequeue();
-                monster.Add(unitSc);
-                var tempForCoroutine = unitSc;
-                unitSc.PlayMoveAnimation();
-                StartCoroutine(MoveUnitOnTile(new Vector2(i, 6), unitSc, tempForCoroutine.PlayIdleAnimation));
+                var monsterSc = temp.Dequeue();
+                monster.Add(monsterSc);
+                var tempForCoroutine = monsterSc;
+                MoveUnitOnTile(new Vector2(i, 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -308,11 +308,10 @@ public class BattleManager : MonoBehaviour
             int i = 0;
             while (temp.Count != 0)
             {
-                var unitSc = temp.Dequeue();
-                monster.Add(unitSc);
-                var tempForCoroutine = unitSc;
-                unitSc.PlayMoveAnimation();
-                StartCoroutine(MoveUnitOnTile(new Vector2(indexArr[i], 6), unitSc, tempForCoroutine.PlayIdleAnimation));
+                var monsterSc = temp.Dequeue();
+                monster.Add(monsterSc);
+                var tempForCoroutine = monsterSc;
+                MoveUnitOnTile(new Vector2(indexArr[i], 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -471,38 +470,53 @@ public class BattleManager : MonoBehaviour
         unit.transform.position = dest;
     }
 
-    public IEnumerator MoveUnitOnTile(Vector2 tilePos, UnitBase unit, UnityAction action = null)
+    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction)
     {
-        var preTile = unit.CurTile;
-        preTile.RemoveUnit(unit);
+        var preTile = monsterUnit.CurTile;
+        preTile.RemoveUnit(monsterUnit);
 
         var tile = tileMaker.GetTile(tilePos);
-        if (tile.CanStand)
+
+        tile.units.Add(monsterUnit);
+        monsterUnit.Pos = tilePos;
+
+        if(tile.units.Count == 2)
         {
-            tile.units.Add(unit);
-            unit.Pos = tilePos;
+            var frontDest = tile.FrontPos;
+            frontDest.y = tile.FrontMonster.transform.position.y;
 
-            var dest = tile.CenterPos;
-            dest.y = unit.transform.position.y;
+            var frontMonster = tile.FrontMonster;
 
-            var startRot = Quaternion.LookRotation(unit.transform.forward);
-            var destRot = Quaternion.LookRotation(dest - unit.transform.position);
-            Debug.Log(Quaternion.Angle(startRot, destRot));
-            if (Quaternion.Angle(startRot, destRot) > 0f)
-                yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.5f));
+            StartCoroutine(CoMoveMonster(frontMonster, frontDest,
+                frontMonster.PlayMoveAnimation, frontMonster.PlayIdleAnimation));
 
-            yield return new WaitForSeconds(0.3f);
-            yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, monsterSpeed, 0.3f));
-
-            if (Quaternion.Angle(startRot, destRot) > 0f)
-                yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.5f));
-
-            action?.Invoke();
+            var dest = tile.BehindPos;
+            dest.y = monsterUnit.transform.position.y;
+            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction));
         }
         else
         {
-            Debug.LogError("분명 미리 확인했을텐데, 이동시킬 타일이 CanStand에 위배됨");
+            var dest = tile.CenterPos;
+            dest.y = monsterUnit.transform.position.y;
+            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction));
         }
+    }
+
+    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc)
+    {
+        var startRot = Quaternion.LookRotation(unit.transform.forward);
+        var destRot = Quaternion.LookRotation(dest - unit.transform.position);
+        if (Quaternion.Angle(startRot, destRot) > 0f)
+            yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.3f));
+
+        yield return new WaitForSeconds(0.3f);
+
+        startAc?.Invoke();
+        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, monsterSpeed, 0.3f));
+        endAc?.Invoke();
+
+        if (Quaternion.Angle(startRot, destRot) > 0f)
+            yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.3f));
     }
 
     public void DisplayMonsterTile()
@@ -543,143 +557,43 @@ public class BattleManager : MonoBehaviour
     {
         boyInput.Clear();
         girlInput.Clear();
-        userInputPanel.Clear();
     }
 
     public void UpdateComand(PlayerType type, Vector2 target, DataPlayerSkill skill)
     {
         PlayerCommand command;
-        PlayerCommand another;
         PlayerBattleController attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
-            another = girlInput;
-
             attacker = boy;
         }
         else
         {
             command = girlInput;
-            another = boyInput;
-
             attacker = girl;
         }
 
-        if (!command.IsUpdated && !another.IsUpdated)
-        {
-            command.IsFirst = true;
-            another.IsFirst = false;
-        }
-        else if (command.IsUpdated && another.IsUpdated)
-        {
-            another.IsFirst = true;
-            command.IsFirst = false;
-        }
-
         command.Create(target, skill);
-
-        if (!another.IsUpdated)
-        {
-            userInputPanel.Init(command, null);
-        }
-        else
-        {
-            userInputPanel.Init(another, command);
-        }
     }
 
     public void UpdateComand(PlayerType type, Vector2 target, DataConsumable item)
     {
         PlayerCommand command;
-        PlayerCommand another;
         PlayerBattleController attacker;
         if (type == PlayerType.Boy)
         {
             command = boyInput;
-            another = girlInput;
-
             attacker = boy;
         }
         else
         {
             command = girlInput;
-            another = boyInput;
-
             attacker = girl;
         }
 
-        if (!command.IsUpdated && !another.IsUpdated)
-        {
-            command.IsFirst = true;
-            another.IsFirst = false;
-        }
-        else if (command.IsUpdated && another.IsUpdated)
-        {
-            another.IsFirst = true;
-            command.IsFirst = false;
-        }
-
         command.Create(target, item);
-
-        if (!another.IsUpdated)
-        {
-            userInputPanel.Init(command, null);
-        }
-        else
-        {
-            userInputPanel.Init(another, command);
-        }
     }
-
-    public void FinishTurn()
-    {
-        if (!boyInput.IsUpdated || !girlInput.IsUpdated)
-        {
-            string str = string.Empty;
-            if (!boyInput.IsUpdated && !girlInput.IsUpdated)
-                str = "사냥꾼과 약초학자의 행동이 정해지지 않았습니다.";
-            else if (boyInput.IsUpdated && !girlInput.IsUpdated)
-                str = "약초학자의 행동이 정해지지 않았습니다.";
-            else if (!boyInput.IsUpdated && girlInput.IsUpdated)
-                str = "사냥꾼의 행동이 정해지지 않았습니다.";
-
-            PrintCaution(str, 0.7f, 0.5f, null);
-            return;
-        }
-        else
-        {
-            if (boyInput.IsFirst)
-            {
-                comandQueue.Enqueue(boyInput);
-                comandQueue.Enqueue(girlInput);
-            }
-            else
-            {
-                comandQueue.Enqueue(girlInput);
-                comandQueue.Enqueue(boyInput);
-            }
-
-            FSM.ChangeState(BattleState.Action);
-            hunterUI.Close();
-            herbologistUI.Close();
-        }
-    }
-
-    public void CommandArrangeSwap()
-    {
-        if (boyInput.IsFirst)
-        {
-            boyInput.IsFirst = false;
-            girlInput.IsFirst = true;
-        }
-        else
-        {
-            boyInput.IsFirst = true;
-            girlInput.IsFirst = false;
-        }
-    }
-
 
 
     private void OnGUI()

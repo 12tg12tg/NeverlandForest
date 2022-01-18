@@ -16,8 +16,7 @@ public class PlayerCommand : BattleCommand
         this.type = type;
     }
     public bool IsUpdated { get => isUpdate; }
-    public bool IsFirst { get; set; }
-    public bool IsSecond { get => isUpdate ? !IsFirst : false; }
+
     public void Clear()
     {
         isUpdate = false;
@@ -25,6 +24,7 @@ public class PlayerCommand : BattleCommand
         skill = null;
         item = null;
     }
+
     public void Create(Vector2 target, DataPlayerSkill skill)
     {
         if (isUpdate)
@@ -34,6 +34,7 @@ public class PlayerCommand : BattleCommand
         isUpdate = true;
         actionType = ActionType.Skill;
     }
+
     public void Create(Vector2 target, DataConsumable item)
     {
         if (isUpdate)
