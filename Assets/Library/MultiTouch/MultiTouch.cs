@@ -174,7 +174,6 @@ public class MultiTouch : Singleton<MultiTouch>
                 IsLongTap = true;
                 break;
             case TapInteraction:
-                Debug.Log("¤§¤²ÅÇ");
                 IsTap = true;
                 break;
         }
