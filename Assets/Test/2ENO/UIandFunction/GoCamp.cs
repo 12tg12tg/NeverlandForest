@@ -8,8 +8,9 @@ public class GoCamp : MonoBehaviour
     public DungeonSystem dungeonSystem;
     public void OpenCampScene()
     {
-        dungeonSystem.DungeonSystemData.curPlayerData.SetUnitData(dungeonSystem.dungeonPlayer);
-        Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystem.DungeonSystemData;
+        dungeonSystem.DungeonSystemData.curPlayerGirlData.SetUnitData(dungeonSystem.dungeonPlayerGirl);
+        dungeonSystem.DungeonSystemData.curPlayerBoyData.SetUnitData(dungeonSystem.dungeonPlayerBoy);
+        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystem.DungeonSystemData;
 
         SceneManager.LoadScene("JYK_Test_Main");
     }

@@ -159,7 +159,31 @@ public class InventoryItemView : MonoBehaviour
 
     public void SortItemList()
     {
-        divideItemList.Sort((lhs, rhs) => lhs.itemId.CompareTo(rhs.itemId));
+        divideItemList.Sort((lhs, rhs) => ItemCompare(lhs,rhs));
+    }
+
+    private int ItemCompare(DataItem lhs, DataItem rhs)
+    {
+        int result = 1;
+        if(lhs.dataType < rhs.dataType)
+            return result;
+        else if(lhs.dataType > rhs.dataType)
+            return -result;
+        else
+        {
+            if (lhs.itemId < rhs.itemId)
+                return result;
+            else if (lhs.itemId > rhs.itemId)
+                return -result;
+            else
+            {
+                if (lhs.OwnCount < rhs.OwnCount)
+                    return result;
+                else if (lhs.OwnCount > rhs.OwnCount)
+                    return -result;
+            }
+        }
+        return 0;
     }
 
     //public void DeleteItemExcute(DataAllItem item)

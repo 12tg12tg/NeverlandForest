@@ -68,6 +68,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         newItem.itemId = rand;
         newItem.LimitCount = 5;
         newItem.OwnCount = Random.Range(1, 3);
+        newItem.dataType = DataType.AllItem;
         var stringId = $"{rand}";
         newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
 
@@ -93,6 +94,8 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         newItem.itemId = rand;
         newItem.LimitCount = 5;
         newItem.OwnCount = Random.Range(1, 3);
+        newItem.dataType = DataType.AllItem;
+
         var stringId = $"{rand}";
         newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
         item = newItem;

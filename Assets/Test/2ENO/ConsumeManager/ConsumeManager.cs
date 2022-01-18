@@ -122,9 +122,11 @@ public static class ConsumeManager
     {
         Vars.UserData.uData.CurStamina = Vars.UserData.uData.Tiredness;
     }
-    private static void FullingLantern(int oil)
+    public static void FullingLantern(int oil)
     {
         Vars.UserData.uData.LanternCount += oil;
+        Debug.Log($"  Vars.UserData.uData.LanternCount{  Vars.UserData.uData.LanternCount}");
+        Debug.Log($"   Vars.lanternMaxCount{  Vars.lanternMaxCount}");
         LanternStateChange();
     }
     private static void RecoverHp(PlayerType type,float recovery)
@@ -146,7 +148,7 @@ public static class ConsumeManager
             }
         }
     }
-    private static void ConsumeLantern(int oil)
+    public static void ConsumeLantern(int oil)
     {   
         // 사용하는 아이템에 따라서 oil의 수치값을 정해주면될것같다.
         Vars.UserData.uData.LanternCount -= oil;
@@ -272,6 +274,19 @@ public static class ConsumeManager
     {
         if (vals.Length != 0) return;
         Debug.Log("ConsumeMgr : NightTime 실행");
+    }
+
+    public static void CostDataReset()
+    {
+        Vars.UserData.uData.Hunger = 0;
+        Vars.UserData.uData.CurIngameHour = 0;
+        Vars.UserData.uData.CurIngameMinute = 0;
+        Vars.UserData.uData.LanternCount = 18;
+        Vars.UserData.uData.Date = 0;
+        Vars.UserData.uData.Tiredness = 100;
+        Vars.UserData.uData.HunterHp = 100f;
+        Vars.UserData.uData.HerbalistHp = 100f;
+
     }
 
     private static void Referece()

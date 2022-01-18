@@ -5,9 +5,11 @@ public class StaminaBar : MonoBehaviour
 {
     public Slider slider;
     public RectTransform sliderRect;
+    public Slider laternSlider;
     public void Start()
     {
         ChangeableStaminaChange();
+        ConsumeManager.CostDataReset();
     }
     void Update()
     {
@@ -44,19 +46,25 @@ public class StaminaBar : MonoBehaviour
         }
         if (GUILayout.Button("BlightUp"))
         {
-            ConsumeManager.CurLanternState++;
-            if (ConsumeManager.CurLanternState ==0)
+            if (ConsumeManager.CurLanternState != LanternState.Level4)
             {
-                ConsumeManager.CurLanternState = LanternState.Level4;
+                ConsumeManager.CurLanternState++;
             }
         }
         if (GUILayout.Button("BlightDown"))
         {
-            ConsumeManager.CurLanternState--;
-            if (ConsumeManager.CurLanternState == LanternState.Level4)
+            if (ConsumeManager.CurLanternState != LanternState.None)
             {
-                ConsumeManager.CurLanternState = LanternState.None;
+                ConsumeManager.CurLanternState--;
             }
+        }
+        if (GUILayout.Button("OilUp"))
+        {
+            ConsumeManager.FullingLantern(1);
+        }
+        if (GUILayout.Button("OilDown"))
+        {
+            ConsumeManager.ConsumeLantern(1);
         }
     }
 }

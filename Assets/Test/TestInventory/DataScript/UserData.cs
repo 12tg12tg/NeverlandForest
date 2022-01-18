@@ -17,12 +17,11 @@ public class UserData
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
     // 던전맵 데이터, 세이브 로드
-    public SerializeDictionary<Vector2, DungeonData> CurAllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
+    public SerializeDictionary<Vector2, DungeonData> AllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
     public Vector2 curDungeonIndex;
-    public int curDungeonRoomIdx;
-    public int dungeonStartIdx;
+    public int dungeonStartIdx = 100;
     public bool dungeonReStart;
-    public int currentDundeonRoomIndex;
+
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
 
@@ -38,25 +37,27 @@ public class UserData
     private readonly List<DataItem> haveAllItemList = new List<DataItem>();
     public ReadOnlyCollection<DataItem> HaveAllItemList => haveAllItemList.AsReadOnly();
 
-    public void AddItemData(DataItem newItem)
+    public bool AddItemData(DataItem newItem)
     {
         // 칸 하나를 전부 차지한 경우의 개수
         int myInventoryFullCount = 0;
         // 칸 하나를 일부 차지한 경우의 개수
         int myInventorySpaceCount = 0;
-        
-        foreach(var myItem in haveAllItemList)
+
+
+
+        foreach (var myItem in haveAllItemList)
         {
-            if (myItem.SpareCount != 0)
+            if (myItem.InvenRemainCount != 0)
                 myInventorySpaceCount++;
-            myInventoryFullCount += myItem.FullSpace;
+            myInventoryFullCount += myItem.InvenFullCount;
         }
 
         // 현재 아이템들의 Full카운트합이 인벤토리 max카운트와 같을때는 절대 못넣음, 1개도 들어갈 여분이 없다는 뜻
         if (myInventoryFullCount == maxInventoryItemCount)
         {
             Debug.Log("아이템이 초과되어 전부 넣지 못합니다");
-            return;
+            return false;
             // 아이템 못넣음
         }
         else
@@ -66,28 +67,26 @@ public class UserData
             if (maxInventoryItemCount == (myInventoryFullCount + myInventorySpaceCount))
             {
                 // 같은종류 아이템을 가지고 있을 떄
-                if (myItem != null)
+                if (myItem != null && myItem.InvenRemainCount != 0)
                 {
                     // 남은 여분공간이 추가될 아이템 개수보다 같거나 클때
-                    if (myItem.SpareCount >= newItem.OwnCount)
+                    if (myItem.LimitCount - myItem.InvenRemainCount >= newItem.OwnCount)
                     {
                         myItem.OwnCount += newItem.OwnCount;
                         newItem.OwnCount = 0;
                     }
                     else
                     {
-                        newItem.OwnCount -= myItem.SpareCount; // 서순중요
-                        myItem.OwnCount += myItem.SpareCount;
-                        // 이때, newItem은 아직 다 못넣은 상태
-                        Debug.Log("아이템이 초과되어 전부 넣지 못합니다");
-                        return;
+                        newItem.OwnCount -= (myItem.LimitCount - myItem.InvenRemainCount); // 서순중요
+                        myItem.OwnCount += (myItem.LimitCount - myItem.InvenRemainCount);
+                        // 아이템 다 안들어감
+                        return false;
                     }
                 }
                 else
                 {
                     // 아이템 못넣음
-                    Debug.Log("아이템이 초과되어 전부 넣지 못합니다");
-                    return;
+                    return false;
                 }
             }
             // 아직 인벤토리칸에 여유가 있다
@@ -95,23 +94,33 @@ public class UserData
             {
                 if (myItem != null)
                 {
-                    if (myItem.SpareCount >= newItem.OwnCount)
+                    if (myItem.LimitCount - myItem.InvenRemainCount >= newItem.OwnCount)
                     {
                         myItem.OwnCount += newItem.OwnCount;
                         newItem.OwnCount = 0;
                     }
                     else
                     {
+                        int spaceCount = 0;
                         while (newItem.OwnCount != 0 &&
-                            maxInventoryItemCount > (myInventoryFullCount + myInventorySpaceCount))
+                            maxInventoryItemCount >= (myInventoryFullCount + myInventorySpaceCount + spaceCount))
                         {
                             myItem.OwnCount++;
                             newItem.OwnCount--;
-                            if (myItem.SpareCount == 0)
+                            if (myItem.InvenRemainCount == 0)
                             {
                                 myInventoryFullCount++;
-                                if (newItem.OwnCount == 0)
-                                    myInventorySpaceCount--;
+                                spaceCount = -1;
+                            }
+                            else
+                                spaceCount = 0;
+
+                            if(maxInventoryItemCount < (myInventoryFullCount + myInventorySpaceCount + spaceCount))
+                            {
+                                myItem.OwnCount--;
+                                newItem.OwnCount++;
+                                // 아이템 다 안들어감
+                                return false;
                             }
                         }
                     }
@@ -120,38 +129,52 @@ public class UserData
                 else
                 {
                     int overOwnCount = 0;
-                    haveAllItemList.Add(newItem);
-                    var newItemSpare = (newItem.SpareCount == 0) ? 0 : 1;
-                    var tempFullCount = myInventoryFullCount + newItem.FullSpace;
-                    var tempSpareCount = myInventorySpaceCount + newItemSpare;
-                    if(maxInventoryItemCount - (tempFullCount + tempSpareCount) < 0)
+                    int spareInvenCount = maxInventoryItemCount - (myInventoryFullCount + myInventorySpaceCount);
+
+                    switch (newItem.dataType)
                     {
-                        var overInvenCount = (tempFullCount + tempSpareCount) - maxInventoryItemCount;
-                        if(newItem.SpareCount == 0)
+                        case DataType.Consume:
+                            break;
+                        case DataType.AllItem:
+                            var getItem = new DataAllItem(newItem);
+                            haveAllItemList.Add(getItem);
+                            break;
+                    }
+
+                    var newItemSpare = (newItem.InvenRemainCount == 0) ? 0 : 1;
+                    if(spareInvenCount - (newItem.InvenFullCount + newItemSpare) < 0)
+                    {
+                        var overInvenCount = (newItem.InvenFullCount + newItemSpare) - spareInvenCount;
+                        if(newItem.InvenRemainCount == 0)
                         {
                             overOwnCount = newItem.LimitCount * overInvenCount;
                         }
                         else
                         {
-                            overOwnCount = (newItem.LimitCount * overInvenCount - 1) + newItem.SpareCount;
+                            overOwnCount = (newItem.LimitCount * overInvenCount - 1) + newItem.InvenRemainCount;
                         }
+
                         newItem.OwnCount -= overOwnCount;
-                        // overOwnCount 만큼의 새로운 item 생성해서 대기
-                        Debug.Log("아이템이 초과되어 전부 넣지 못합니다");
-                        return;
+                        var getItem = haveAllItemList.Find(x => x.itemId == newItem.itemId && x.dataType == newItem.dataType);
+                        getItem.OwnCount = newItem.OwnCount;
+                        newItem.OwnCount = overOwnCount;
+                        // 아이템 다 안들어감
+                        return false;
                     }
                 }
             }
         }
-        Debug.Log("아이템 추가완료");
+        // 전부 들어감!
+        newItem.OwnCount = 0;
+        return true;
     }
-    public void RemoveItemData(DataItem removeItem)
+    public bool RemoveItemData(DataItem removeItem)
     {
         var index = haveAllItemList.FindIndex(x => (x.itemId == removeItem.itemId) && (x.dataType == removeItem.dataType));
         if (index == -1)
         {
             Debug.Log("삭제할 아이템이 없음");
-            return;
+            return false;
         }
         else
         {
@@ -160,9 +183,11 @@ public class UserData
             {
                 haveAllItemList.RemoveAt(index);
                 Debug.Log("아이템 삭제됨");
+                return true;
             }
             Debug.Log("아이템 감소됨");
         }
+        return false;
     }
     // DataItem 으로 그리고 List로 다시 변환해서 사용해보기
 }

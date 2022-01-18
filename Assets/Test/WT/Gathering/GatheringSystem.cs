@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,7 @@ public class GatheringSystem : MonoBehaviour
 {
     //  public PlayerDungeonUnit manplayer;
     public PlayerDungeonUnit womenplayer;
+    public PlayerDungeonUnit boyPlayer;
     public GameObject gatheringPanel;
     public TextMeshProUGUI gatheringtext;
 
@@ -18,6 +20,9 @@ public class GatheringSystem : MonoBehaviour
 
     public int testLanternLight = 0;
     private Animator playerAnimation;
+    private Animator playerAnimationBoy;
+    public InventoryController inventoryController;
+    
 
     public enum GatheringType
     {
@@ -26,7 +31,7 @@ public class GatheringSystem : MonoBehaviour
     }
     public GatheringType curgatheringType = GatheringType.MainDunguen;
 
-
+    private Coroutine coGather;
     private Coroutine coWomenMove;
     public Coroutine CoWomenMove => coWomenMove;
 
@@ -52,7 +57,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void Start()
     {
-       playerAnimation = GameObject.FindWithTag("Player").GetComponent<Animator>();
+        playerAnimation = womenplayer.GetComponent<Animator>();
+        playerAnimationBoy = boyPlayer.GetComponent<Animator>();
     }
     public void CreateGathering(DunGeonRoomType roomType, GameObject[] objPos, List<DungeonRoom> roomInfoList)
     {
@@ -144,12 +150,13 @@ public class GatheringSystem : MonoBehaviour
     {
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
-        womenplayer.IsCoMove = true;
+        boyPlayer.IsCoMove = true;
         if (coWomenMove == null)
         {
-            PlayWalkAnimation();
+            //PlayWalkAnimation();
+            PlayWalkAnimationBoy();
         }
-        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
     }
 
     private void PopUp()
@@ -299,13 +306,15 @@ public class GatheringSystem : MonoBehaviour
         if (coWomenMove == null)
         {
             womenbeforePosition = womenplayer.transform.position;
-            womenplayer.IsCoMove = true;
+            manbeforePosition = boyPlayer.transform.position;
+            boyPlayer.IsCoMove = true;
             if (coWomenMove == null)
             {
-                PlayWalkAnimation();
+                //PlayWalkAnimation();
+                PlayWalkAnimationBoy();
             }
-            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, objectPos, 1f, 
-                () => { coWomenMove = null; PopUp(); }));
+            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f, 
+                () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f); }));
         }
     }
     public void YesTool()
@@ -330,16 +339,21 @@ public class GatheringSystem : MonoBehaviour
         GatheringTreeByTool();
 
         var item = curSelectedObj.item;
+        var list = new List<DataItem>();
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
+            item.OwnCount = 10;
+            list.Add(item);
+            inventoryController.OpenChoiceMessageWindow(list);
         }
-        womenplayer.IsCoMove = true;
+        boyPlayer.IsCoMove = true;
         if (coWomenMove == null)
         {
-            PlayWalkAnimation();
+            //PlayWalkAnimation();
+            PlayWalkAnimationBoy();
         }
-        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
         gatheringToolPanel.SetActive(false);
@@ -407,21 +421,54 @@ public class GatheringSystem : MonoBehaviour
         //}
         GatheringTreeByHand();
         var item = curSelectedObj.item;
-        if (item != null)
-        {
-            Vars.UserData.AddItemData(item);
-        }
-        womenplayer.IsCoMove = true;
-        if (coWomenMove == null)
-        {
-            PlayWalkAnimation();
-        }
-        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(womenplayer.transform, womenplayer.transform.position, womenbeforePosition, speed, AfterMove));
+        var list = new List<DataItem>();
+
+        //if (item != null)
+        //{
+        //    Vars.UserData.AddItemData(item);
+        //    item.OwnCount = 10;
+        //    list.Add(item);
+        //    inventoryController.OpenChoiceMessageWindow(list);
+        //}
+        boyPlayer.IsCoMove = true;
+        playerAnimationBoy.speed = 0.5f;
+        playerAnimationBoy.SetTrigger("Pick");
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
         gatheringToolPanel.SetActive(false);
-        Destroy(curSelectedObj);
+        if (coGather != null)
+        {
+            StopCoroutine(coGather);
+        }
+        coGather = StartCoroutine(GatheringEnd());
+        //if (coWomenMove == null)
+        //{
+        //    //PlayWalkAnimation();
+        //    PlayWalkAnimationBoy();
+        //}
+        //coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        //gatheringPanel.SetActive(false);
+        //Debug.Log("ÆË¾÷²¯´Ù");
+        //gatheringToolPanel.SetActive(false);
+        //Destroy(curSelectedObj);
 
+    }
+    // Ãß°¡ÇÔ
+    private IEnumerator GatheringEnd()
+    {
+        while(!boyPlayer.isGatheringEnd)
+        {
+            yield return null;
+        }
+        playerAnimationBoy.speed = 1f;
+        if (coWomenMove == null)
+        {
+            //PlayWalkAnimation();
+            PlayWalkAnimationBoy();
+        }
+        playerAnimation.SetTrigger("Clap");
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        Destroy(curSelectedObj.gameObject);
     }
     private static void GatheringTreeByHand()
     {
@@ -466,12 +513,17 @@ public class GatheringSystem : MonoBehaviour
     private void AfterMove()
     {
         coWomenMove = null;
-        womenplayer.CoMoveStop();
         womenplayer.transform.rotation = Quaternion.Euler(Vector3.zero);
+        womenplayer.CoMoveStop();
     }
     private void PlayWalkAnimation()
     {
-        playerAnimation.SetTrigger("Walk");
+        //playerAnimation.SetTrigger("Walk");
+        playerAnimation.SetFloat("Speed", 3f);
     }
 
+    private void PlayWalkAnimationBoy()
+    {
+        playerAnimationBoy.SetFloat("Speed", 3f);
+    }
 }

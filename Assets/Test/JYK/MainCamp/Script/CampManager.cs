@@ -11,7 +11,10 @@ public class CampManager : MonoBehaviour
 
     public Camera campminimapCamera;
     public GameObject minimapPanel;
+    public GameObject diaryRecipePanel;
     private bool isminimap = false;
+    private bool isdiary = false;
+    private int curDungeonRoomIndex;
     public enum CampEvent
     {
         StartCook,
@@ -42,6 +45,10 @@ public class CampManager : MonoBehaviour
             minimapPanel.SetActive(true);
         else
             minimapPanel.SetActive(false);
+        if (isdiary)
+            diaryRecipePanel.SetActive(true);
+        else
+            diaryRecipePanel.SetActive(false);
     }
     public void OpenCookScene(object[] vals)
     {
@@ -65,7 +72,7 @@ public class CampManager : MonoBehaviour
     }
     public void OpenDiary()
     {
-        Debug.Log($"Open Diary window");
+        isdiary = !isdiary;
     }
     public void OpenInventory()
     {
@@ -100,10 +107,11 @@ public class CampManager : MonoBehaviour
     }
     public void CreateMiniMapObject()
     {
-        var array = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-        //int curIdx = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx;
-        int curIdx = 100;
-        var curRoomIndex = Vars.UserData.currentDundeonRoomIndex;
+        curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
+        var array = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
+
+        int curIdx = Vars.UserData.dungeonStartIdx;
+        var curRoomIndex = curDungeonRoomIndex;
         while (array[curIdx].nextRoomIdx != -1)
         {
             var room = array[curIdx];
@@ -119,7 +127,6 @@ public class CampManager : MonoBehaviour
                     var mesh = obj.gameObject.GetComponent<MeshRenderer>();
                     mesh.material.color = Color.blue;
                 }
-
             }
             else
             {

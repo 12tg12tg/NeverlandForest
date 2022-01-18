@@ -107,12 +107,12 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = startPos;
 
         // 이미 맵이 만들어 졌을때
-        if (Vars.UserData.CurAllDungeonData.ContainsKey(goalIndex))
+        if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
         {
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.dungeonReStart = true;
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
-            mapGenerator.DungeonGenerate(range, Vars.UserData.CurAllDungeonData[goalIndex].dungeonRoomArray,
+            mapGenerator.DungeonGenerate(range, Vars.UserData.AllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
                 {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
@@ -124,7 +124,7 @@ public class WorldMapPlayer : MonoBehaviour
         {
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.dungeonReStart = true;
-            Vars.UserData.CurAllDungeonData.Add(goalIndex, new DungeonData());
+            Vars.UserData.AllDungeonData.Add(goalIndex, new DungeonData());
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
             mapGenerator.DungeonGenerate(range, null, () =>
             {

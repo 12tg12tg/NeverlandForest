@@ -11,7 +11,6 @@ public class LanternBar : MonoBehaviour
     void Update()
     {
         slider.value = Vars.UserData.uData.LanternCount / Vars.lanternMaxCount;
-
         if (ConsumeManager.CurLanternState== LanternState.Level4)
         {
             blight.value = 1f;

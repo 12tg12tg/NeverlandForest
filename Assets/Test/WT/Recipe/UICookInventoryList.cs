@@ -12,18 +12,18 @@ public class UICookInventoryList : MonoBehaviour
     public List<CookObject> itemGoList = new List<CookObject>();
     public List<DataMaterial> alllist = new List<DataMaterial>();
     private int selectedSlot = -1;
+    
+    public Image fire;
+    public Image condiment;
+    public Image material;
+    public Image result;
+    public Sprite xSprite;
 
-    public Image Fire;
-    public Image Condiment;
-    public Image Material;
-    public Image Result;
+    public CookObject fireObject;
+    public CookObject condimentObject;
+    public CookObject materialObject;
+    public CookObject resultObject;
 
-    public CookObject FireObject;
-    public CookObject CondimentObject;
-    public CookObject MaterialObject;
-    public CookObject ResultObject;
-
-    private CookInventory ci;
     private CookMaterialTypes curType;
 
     private void Awake()
@@ -40,12 +40,18 @@ public class UICookInventoryList : MonoBehaviour
             button.onClick.AddListener(() => OnChangedSelection(item.Slot));
 
         }
-      
+
     }
     public void Start()
     {
-        FireObject = itemGoList[0];
-        Fire.sprite = itemGoList[0].icon;
+        fire.sprite = xSprite;
+        fireObject = itemGoList[0];
+
+        condiment.sprite = xSprite;
+        condimentObject = null;
+
+        material.sprite = xSprite;
+        materialObject = null;
     }
     public void Init(List<DataMaterial> itemList, CookMaterialTypes type)
     {
@@ -54,7 +60,7 @@ public class UICookInventoryList : MonoBehaviour
         curType = type;
     }
     public void SetAllItems(List<DataMaterial> itemList)
-     {
+    {
         foreach (var item in itemGoList)
         {
             item.gameObject.SetActive(false);
@@ -77,20 +83,21 @@ public class UICookInventoryList : MonoBehaviour
         switch (type)
         {
             case "NONE":
-                Fire.sprite = itemGoList[slot].icon;
-                FireObject = itemGoList[slot];
+                fire.sprite = itemGoList[slot].icon;
+                fireObject = itemGoList[slot];
+             
                 break;
             case "FIRE":
-                Fire.sprite = itemGoList[slot].icon;
-                FireObject = itemGoList[slot];
+                fire.sprite = itemGoList[slot].icon;
+                fireObject = itemGoList[slot];
                 break;
             case "CONDIMENT":
-                Condiment.sprite = itemGoList[slot].icon;
-                CondimentObject = itemGoList[slot];
+                condiment.sprite = itemGoList[slot].icon;
+                condimentObject = itemGoList[slot];
                 break;
             case "FOODINGREDIENT":
-                Material.sprite = itemGoList[slot].icon;
-                MaterialObject = itemGoList[slot];
+                material.sprite = itemGoList[slot].icon;
+                materialObject = itemGoList[slot];
                 break;
             case "FOOD":
                 break;
@@ -102,54 +109,56 @@ public class UICookInventoryList : MonoBehaviour
 
     public void RemoveFireIcon()
     {
-        if (ResultObject== null)
+        if (resultObject == null)
         {
-            Fire.sprite = null;
-            FireObject = null;
+            fire.sprite = null;
+            fireObject = null;
         }
-      
+
     }
     public void RemoveCondimetnIcon()
     {
-        if (ResultObject == null)
+        if (resultObject == null)
         {
-            Condiment.sprite = null;
-            CondimentObject = null;
+            condiment.sprite = null;
+            condimentObject = null;
         }
-       
+
     }
     public void RemoveMaterialIcon()
     {
-        if (ResultObject == null)
+        if (resultObject == null)
         {
-            Material.sprite = null;
-            MaterialObject = null;
+            material.sprite = null;
+            materialObject = null;
         }
-      
+
     }
     public void GetResultIcon()
     {
-        if (FireObject!=null && CondimentObject != null && MaterialObject != null
-            && Fire.sprite != null && Condiment.sprite != null && Material.sprite != null)
-        {   
-            
+        if (fireObject != null && condimentObject != null && materialObject != null
+            && fire.sprite != null && condiment.sprite != null && material.sprite != null)
+        {
             var list = Vars.UserData.HaveMaterialList;
-            if (ResultObject !=null)
+            if (resultObject != null)
             {
-                list.Add(ResultObject.DataItem);
+                list.Add(resultObject.DataItem);
                 for (int i = 0; i < list.Count; i++)
                 {
                     Debug.Log(list[i].ItemTableElem.name);
                 }
             }
-            Result.sprite = null;
-            ResultObject = null;
-            Fire.sprite = null;
-            FireObject = null;
-            Condiment.sprite = null;
-            CondimentObject = null;
-            Material.sprite = null;
-            MaterialObject = null;
+            result.sprite = null;
+            resultObject = null;
+
+            fire.sprite = xSprite;
+            fireObject = itemGoList[0];
+
+            condiment.sprite = xSprite;
+            condimentObject = null;
+
+            material.sprite = xSprite;
+            materialObject = null;
         }
     }
 }

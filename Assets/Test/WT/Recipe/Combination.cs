@@ -22,27 +22,11 @@ public class Combination : MonoBehaviour
     private int makeTime_Hour = 0;
     private int makeTime_Minute = 0;
 
-    public struct MadeCooking
-    {
-        public string Fire;
-        public string Condiment;
-        public string Material;
-        public string Result;
-    }
-    private MadeCooking madecooking;
     public void Start()
     {
         recipeTable = DataTableManager.GetTable<RecipeDataTable>();
-
-        Debug.Log(Vars.UserData.HaveRecipeIDList.Count);
         CheckCombination.gameObject.SetActive(false);
         result = "";
-
-        madecooking.Fire = string.Empty;
-        madecooking.Condiment = string.Empty;
-        madecooking.Material = string.Empty;
-        madecooking.Result = string.Empty;
-
     }
     void OnGUI()
     {
@@ -52,12 +36,12 @@ public class Combination : MonoBehaviour
         }
         if (GUILayout.Button("Start Cooking"))
         {
-            if (inventory.FireObject != null)
-                fire = inventory.FireObject.DataItem.ItemTableElem.id;
-            if (inventory.CondimentObject != null)
-                condiment = inventory.CondimentObject.DataItem.ItemTableElem.id;
-            if (inventory.MaterialObject != null)
-                material = inventory.MaterialObject.DataItem.ItemTableElem.id;
+            if (inventory.fireObject != null)
+                fire = inventory.fireObject.DataItem.ItemTableElem.id;
+            if (inventory.condimentObject != null)
+                condiment = inventory.condimentObject.DataItem.ItemTableElem.id;
+            if (inventory.materialObject != null)
+                material = inventory.materialObject.DataItem.ItemTableElem.id;
             if (fire != null && condiment != null && material != null)
             {
                 //CheckCombinationText.text = "제작 시간은 2:00:00 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
@@ -68,13 +52,7 @@ public class Combination : MonoBehaviour
                                                              // time[0] :hour, time[1] : minute time[2] : second
                                                              //레시피에 등록되어있는 아이템을 하는경우 시간이 뜨면서 만들것인지 체크
                     CheckCombinationText.text = $"제작 시간은 {time[0]}:{time[1]}:{time[2]} 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
-                    madecooking.Fire = fire;
-                    madecooking.Condiment = condiment;
-                    madecooking.Material = material;
-                    madecooking.Result = result;
-
                 }
-
             }
         }
       
@@ -103,12 +81,18 @@ public class Combination : MonoBehaviour
             if (recipeTable.IsCombine(condiment, material, out result, fire))
             {
                 CookingStart = true;
+
                 var hour = int.Parse(time[0]);
                 var minute = int.Parse(time[1]);
                 makeTime_Hour = hour;
                 makeTime_Minute = minute;
+
+
                 var allitem = DataTableManager.GetTable<AllItemDataTable>();
                 item = allitem.GetData<AllItemTableElem>(result);
+                inventory.result.sprite = item.IconSprite;
+                inventory.resultObject = inventory.itemGoList[int.Parse(result)];
+
                 CheckCombination.gameObject.SetActive(false); // 팝업창 끄고
             }
             else
@@ -126,23 +110,26 @@ public class Combination : MonoBehaviour
     private void MakeCook()
     {
         ConsumeManager.TimeUp(makeTime_Minute, makeTime_Hour);
-        inventory.Result.sprite = item.IconSprite;
-        inventory.ResultObject = inventory.itemGoList[int.Parse(result)];
+
+        Debug.Log($"makeTime_Hour{makeTime_Hour}");
+        Debug.Log($"makeTime_Minute{makeTime_Minute}");
+
         var RecipeId = recipeTable.GetRecipeId(result);
         var userData = Vars.UserData.HaveRecipeIDList;
+
         if (!userData.Contains(RecipeId))
         {
             userData.Add(RecipeId);
             info.Init();
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
+
+            //나중에 나온 기획에는 데이터가 있을때만 요리가 되게 변경해 달라고 했으니깐
+            //지금 여기서 검사는 조건문으로 레시피가 있을때만 요리를 해준다.
         }
         else
         {
             Debug.Log("이미 해당 레시피가 존재함");
         }
-        Debug.Log($"{result}번째 아이템 {item.name} 가 나왔습니다");
-        Debug.Log(Vars.UserData.uData.CurIngameHour);
-        Debug.Log(Vars.UserData.uData.CurIngameMinute);
         CookingStart = false;
     }
 
@@ -150,13 +137,16 @@ public class Combination : MonoBehaviour
     {
         CheckCombination.gameObject.SetActive(false); // 팝업창 끄고
                                                       //재료들을 null로 변경
-        inventory.Fire.sprite = null;
-        inventory.FireObject = null;
+        var allitem = DataTableManager.GetTable<AllItemDataTable>();
+        item = allitem.GetData<AllItemTableElem>(0.ToString());
 
-        inventory.Condiment.sprite = null;
-        inventory.CondimentObject = null;
+        inventory.fire.sprite = item.IconSprite;
+        inventory.fireObject = inventory.itemGoList[0];
 
-        inventory.Material.sprite = null;
-        inventory.MaterialObject = null;
+        inventory.condiment.sprite = item.IconSprite;
+        inventory.condimentObject = null;
+
+        inventory.material.sprite = item.IconSprite;
+        inventory.materialObject = null;
     }
 }
