@@ -5,8 +5,7 @@ using UnityEngine;
 public class PlayerHuntingUnit : UnitBase
 {
     private Coroutine coMove;
-    public GameObject arrow;
-    public float arrowSpeed;
+    public GameObject shootArrow;
     public Animator playerAnimation;
 
     private Vector2 currentIndex;
@@ -55,15 +54,5 @@ public class PlayerHuntingUnit : UnitBase
     {
         playerAnimation.SetTrigger("ShootingArrow");
         transform.LookAt(animalPos);
-    }
-
-    public void ShootArrow(Vector3 animalPos)
-    {
-        arrow.SetActive(true);
-        arrow.transform.LookAt(animalPos);
-
-        var co = Utility.CoTranslate(arrow.transform, animalPos, arrowSpeed, 0.5f);
-        //var co = Utility.CoTranslate(arrow.transform, arrow.transform.position, animalPos, 1f);
-        StartCoroutine(co);
     }
 }

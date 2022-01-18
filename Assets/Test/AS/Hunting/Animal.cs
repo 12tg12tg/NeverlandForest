@@ -1,23 +1,25 @@
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.Events;
 
 public class Animal : MonoBehaviour
 {
-    public MeshRenderer icon;
     public Animator animator;
     public GameObject resultPopUp;
-    public Color colorOrange;
 
+    private int escapePercentUp = 3;
     private int escapePercent;
     public int EscapePercent => escapePercent;
 
     private void Awake()
     {
-        icon.gameObject.transform.position = gameObject.transform.position + new Vector3(0f, 2f, 0f);
-        icon.material.color = Color.green;
+        InitEscapingPercentage();
+    }
+
+
+    private void OnEnable()
+    {
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, EscapingPercentageUp);
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, Escaping);
     }
@@ -52,19 +54,35 @@ public class Animal : MonoBehaviour
     }
     public void EscapingPercentageUp(object[] vals)
     {
-        escapePercent = vals.Length != 1 || !(bool)vals[0] ? escapePercent + 10 : escapePercent;
-        IconColor();
+        if (vals.Length != 1)
+            return;
+
+        escapePercent = (bool)vals[0] ? escapePercent + escapePercentUp : escapePercent;
+        GetComponent<AnimalStateIcon>().IconColor(escapePercent);
         if(escapePercent >= 20)
             animator.SetTrigger("Turn");
+
+        Debug.Log($"ÇöÀç µµ¸Á È®·ü:{escapePercent}");
     }
 
-    private void IconColor()
+    private void InitEscapingPercentage()
     {
-        icon.material.color = 
-            escapePercent < 15 ? Color.green :
-            escapePercent < 35 ? Color.yellow :
-            escapePercent < 55 ? colorOrange : Color.red;
+        //TODO : ·£ÅÏ + ³·/¹ã = ºû ±â´É Ãß°¡½Ã º¯°æ ¿¹Á¤
+        var lanternCount = Vars.UserData.uData.LanternCount;
+        var step =
+            lanternCount < 7 ? 1 :
+            lanternCount < 12 ? 2 :
+            lanternCount < 16 ? 3 : 4;
+        var lanternPercent = step == 1 ? Random.Range(2, 5) : Random.Range(2, 4);
+
+        escapePercent = lanternPercent * step;
+
+        // µµ¸Á È®·ü¾÷Àº 3 * step
+        escapePercentUp *= step;
+
+        Debug.Log($"±âº» µµ¸Á È®·ü:{escapePercent}");
     }
+
 
     public void AnimalMove(bool isDead, UnityAction action)
     {
@@ -84,12 +102,4 @@ public class Animal : MonoBehaviour
         animator.SetTrigger("Run");
     }
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Arrow"))
-        {
-            other.gameObject.SetActive(false);
-            EventBus<HuntingEvent>.Publish(HuntingEvent.Hunting);
-        }
-    }
 }
