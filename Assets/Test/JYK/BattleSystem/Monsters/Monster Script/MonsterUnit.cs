@@ -237,9 +237,13 @@ public class MonsterUnit : UnitBase, IAttackable
     public void TestToggle()
     {
         isGray = !isGray;
-        float value = isGray ? 1f : 0f;
-        Debug.Log(value);
+        //float value = isGray ? 1f : 0f;
+        //Debug.Log(value);
         var mt = gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material;
-        mt.SetFloat("GRAY", value);
+        //mt.SetFloat("GRAY", value);
+        if(isGray)
+            mt.EnableKeyword("GRAY");
+        else
+            mt.DisableKeyword("GRAY");
     }
 }
