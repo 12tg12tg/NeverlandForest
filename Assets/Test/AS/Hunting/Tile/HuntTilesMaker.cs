@@ -5,7 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class HuntTilesMaker : MonoBehaviour
 {
-    public PlayerHuntingUnit player;
+    public HuntPlayer player;
     public GameObject bush;
     public Material[] bushMaterials;
 

@@ -6,14 +6,15 @@ using UnityEngine.EventSystems;
 public class HuntTile : MonoBehaviour, IPointerClickHandler
 {
     public Bush bush;
-    public PlayerHuntingUnit player;
+    public HuntPlayer player;
     public Material[] materials;
     public MeshRenderer ren;
     public Vector2 index;
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        player.Move(index, transform.position, bush != null);
+        if ((int)index.y != 6)
+            player.Move(index, transform.position, bush != null);
     }
 
     private void OnTriggerEnter(Collider other)

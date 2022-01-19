@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationFunc : MonoBehaviour
 {
     public PlayerAction actionState;
-    public HuntingSystem huntingSystem;
+    public HuntingManager huntingSystem;
     public GameObject arrow;
 
     public void Hit()
