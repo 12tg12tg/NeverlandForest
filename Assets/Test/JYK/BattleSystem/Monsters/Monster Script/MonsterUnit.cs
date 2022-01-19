@@ -10,6 +10,9 @@ public enum MonsterState
 
 public class MonsterUnit : UnitBase, IAttackable
 {
+    // Test
+    public int keyValue = 1;
+    public bool isGray;
     // Component
     private Animator animator;
 
@@ -207,5 +210,36 @@ public class MonsterUnit : UnitBase, IAttackable
                 int id = int.Parse(baseElem.id);
                 MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
             }));
+    }
+
+    public void TestOnOff()
+    {
+        var mt = gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material;
+        switch (keyValue)
+        {
+            case 1:
+                mt.EnableKeyword("_USEGRAY_ON");
+                mt.DisableKeyword("_USEGRAY_OFF");
+                mt.DisableKeyword("_USEGRAY_BLACK");
+                break;
+            case 2:
+                mt.EnableKeyword("_USEGRAY_OFF");
+                mt.DisableKeyword("_USEGRAY_ON");
+                mt.DisableKeyword("_USEGRAY_BLACK");
+                break;
+            case 3:
+                mt.EnableKeyword("_USEGRAY_BLACK");
+                mt.DisableKeyword("_USEGRAY_OFF");
+                mt.DisableKeyword("_USEGRAY_ON");
+                break;
+        }
+    }
+    public void TestToggle()
+    {
+        isGray = !isGray;
+        float value = isGray ? 1f : 0f;
+        Debug.Log(value);
+        var mt = gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material;
+        mt.SetFloat("GRAY", value);
     }
 }

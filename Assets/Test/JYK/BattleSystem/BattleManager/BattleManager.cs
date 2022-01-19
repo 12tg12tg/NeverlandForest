@@ -26,6 +26,9 @@ public class BattleManager : MonoBehaviour
     private PlayerCommand boyInput;
     private PlayerCommand girlInput;
 
+    //Test
+    public MonsterUnit testMonster;
+
     //Canvas
     public CanvasScaler cs;
 
@@ -614,6 +617,18 @@ public class BattleManager : MonoBehaviour
         {
             UpdateWave();
         }
+        if (GUILayout.Button("Shader", GUILayout.Width(200f), GUILayout.Height(100f)))
+        {
+            testMonster.keyValue = testMonster.keyValue < 3 ? testMonster.keyValue + 1 : 1;
+            Debug.Log(testMonster.keyValue);
+            testMonster.TestOnOff();
+        }
+        if (GUILayout.Button("Shader2", GUILayout.Width(200f), GUILayout.Height(100f)))
+        {
+            testMonster.TestToggle();
+        }
+
+
         //if (GUILayout.Button("Å×½ºÆ® ¼ÅÇÃ", GUILayout.Width(200f), GUILayout.Height(100f)))
         //{
         //    List<int> list = new List<int>(new int[] { 0, 1, 2, 3, 4, 5 });
