@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class CampManager : MonoBehaviour
 {
-
     private static CampManager instance;
     public static CampManager Instance => instance;
 
@@ -15,8 +14,6 @@ public class CampManager : MonoBehaviour
     public Camera campminimapCamera;
     public GameObject minimapPanel;
     public GameObject diaryRecipePanel;
-    private bool isminimap = false;
-    private bool isdiary = false;
 
     private int curDungeonRoomIndex;
 
@@ -24,32 +21,40 @@ public class CampManager : MonoBehaviour
     public GameObject bluemoonObject;
 
     public TextMeshProUGUI days;
+    //Camp BonTime
     public TextMeshProUGUI bonTime;
     public TextMeshProUGUI bonTimeRecovery;
     public TextMeshProUGUI bonFireTime;
-    public TextMeshProUGUI sleepTimeRecovery;
-    public TextMeshProUGUI gatheringText;
-
     public GameObject bonTimePanel;
     public GameObject bonFireStatePanel;
+    private float recoveryBonTime = 0;
+
+    //Camp Sleeping
+    public TextMeshProUGUI sleepTimeRecovery;
     public GameObject sleepTimePanel;
+    private float recoverySleepTime = 0;
+
+    //CampGathering
+    private float gatheringTime = 0;
+    public TextMeshProUGUI gatheringText;
     public GameObject gatehringPanel;
     public GameObject gatehringReWardPanel;
-
-    private float recoveryBonTime = 0;
-    private float recoverySleepTime = 0;
-    private float gatheringTime = 0;
-
     public Image Reward0;
     public Image Reward1;
     public Image Reward2;
     public GameObject RewardParents;
     private AllItemTableElem item;
+    public Button rewardbutton0;
+    public Button rewardbutton1;
+    public Button rewardbutton2;
 
-    public Button button0;
-    public Button button1;
-    public Button button2;
+    //CampCook
+    Vector3 StartPos;
+    Vector3 EndPos;
+    public GameObject camera;
+    public GameObject pot;
 
+    public GameObject CookPanel;
     public float RecoverySleepTime => recoverySleepTime;
 
     public enum CampEvent
@@ -58,6 +63,7 @@ public class CampManager : MonoBehaviour
         StartGathering,
         StartSleep,
         StartBlueMoon,
+        StartMaking,
     }
     public void OnEnable()
     {
@@ -65,10 +71,12 @@ public class CampManager : MonoBehaviour
         EventBus<CampEvent>.Subscribe(CampEvent.StartGathering, OpenGatheringScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartSleep, StartSleep);
         EventBus<CampEvent>.Subscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
+        EventBus<CampEvent>.Subscribe(CampEvent.StartMaking, OpenMaking);
     }
     public void Awake()
     {
         instance = this;
+        StartPos = camera.transform.position;
     }
     private void OnDisable()
     {
@@ -76,14 +84,10 @@ public class CampManager : MonoBehaviour
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartGathering, OpenGatheringScene);
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartSleep, StartSleep);
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
+        EventBus<CampEvent>.Unsubscribe(CampEvent.StartMaking, OpenMaking);
 
         EventBus<CampEvent>.ResetEventBus();
     }
-    public void Update()
-    {
-        ChangeminimapCameraState();
-    }
-
     public void ChangeDay()
     {
         days.text = Vars.UserData.uData.Date.ToString() + "일";
@@ -93,20 +97,29 @@ public class CampManager : MonoBehaviour
         bonTime.text = Vars.UserData.uData.BonfireHour.ToString() + "시간";
         bonFireTime.text = bonTime.text;
     }
-    public void ChangeminimapCameraState()
-    {
-        if (isminimap)
-            minimapPanel.SetActive(true);
-        else
-            minimapPanel.SetActive(false);
-    }
+
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
-        Debug.Log($"Open Cooking Scene");
-        SceneManager.LoadScene("Wt_Scene");
+        // SceneManager.LoadScene("Wt_Scene");
+        StartCookingInCamp();
     }
 
+    public void StartCookingInCamp()
+    {
+        var potPos = pot.transform.position;
+        EndPos = new Vector3(potPos.x+1f, potPos.y + 2f, potPos.z - 3f);
+        StartCoroutine(Utility.CoTranslate(camera.transform,StartPos, EndPos, 3f, OpenCookInCamp));
+    }
+    public void CloseCookingCamp()
+    {
+        StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+    }
+    public void OpenCookInCamp()
+    {
+        CookPanel.gameObject.SetActive(true);
+        bonFireStatePanel.gameObject.SetActive(true);
+    }
     public void OpenGatheringScene(object[] vals)
     {
         if (vals.Length != 0) return;
@@ -117,18 +130,15 @@ public class CampManager : MonoBehaviour
         if (vals.Length != 0) return;
         Debug.Log($"Open Open BlueMoon Scene ");
     }
+    public  void OpenMaking(object[] vals)
+    {
+        if (vals.Length != 0) return;
+        Debug.Log($"Open Open OpenMaking ");
+    }
     public void StartSleep(object[] vals)
     {
         if (vals.Length != 0) return;
         OpenSleepTimePlus();
-    }
-    public void OpenDiary()
-    {
-        diaryRecipePanel.SetActive(true);
-    }
-    public void CloseDiary()
-    {
-        diaryRecipePanel.SetActive(false);
     }
     public void OpenInventory()
     {
@@ -143,10 +153,6 @@ public class CampManager : MonoBehaviour
         SceneManager.LoadScene("AS_RandomMap");
     }
 
-    public void OpenMiniMap()
-    {
-        isminimap = !isminimap;
-    }
     public void Start()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
@@ -163,8 +169,6 @@ public class CampManager : MonoBehaviour
         ChangeBonTime();
         ChangeBonTimeText();
         ChangeGatheringTimeText();
-        SetReward();
-       
     }
     public void CreateMiniMapObject()
     {
@@ -263,13 +267,6 @@ public class CampManager : MonoBehaviour
         bonFireStatePanel.SetActive(true);
         recoverySleepTime = 0f;
         ChangeSleepTimeText();
-
-    }
-    public void CloseSleepPanel()
-    {
-        sleepTimePanel.SetActive(false);
-        bonFireStatePanel.SetActive(false);
-
     }
     public void ChangeSleepTimeText()
     {
@@ -314,10 +311,6 @@ public class CampManager : MonoBehaviour
         gatheringText.text = gatheringTime.ToString() + "분";
 
     }
-    public void CloseGatheringPanel()
-    {
-        gatehringPanel.SetActive(false);
-    }
 
     public void PlusGatheringTime()
     {
@@ -345,23 +338,23 @@ public class CampManager : MonoBehaviour
             if (gatheringTime == 30)
             {
                 Reward0.gameObject.SetActive(true);
-                SetRewardItemIcon(button0.image);
+                SetRewardItemIcon(rewardbutton0.image);
             }
             else if (gatheringTime == 60)
             {
                 Reward0.gameObject.SetActive(true);
                 Reward1.gameObject.SetActive(true);
-                SetRewardItemIcon(button0.image);
-                SetRewardItemIcon(button1.image);
+                SetRewardItemIcon(rewardbutton0.image);
+                SetRewardItemIcon(rewardbutton1.image);
             }
             else if (gatheringTime == 90)
             {
                 Reward0.gameObject.SetActive(true);
                 Reward1.gameObject.SetActive(true);
                 Reward2.gameObject.SetActive(true);
-                SetRewardItemIcon(button0.image);
-                SetRewardItemIcon(button1.image);
-                SetRewardItemIcon(button2.image);
+                SetRewardItemIcon(rewardbutton0.image);
+                SetRewardItemIcon(rewardbutton1.image);
+                SetRewardItemIcon(rewardbutton2.image);
             }
         }
         gatehringPanel.SetActive(false);
@@ -411,22 +404,5 @@ public class CampManager : MonoBehaviour
         }
         item = newItem.ItemTableElem;
         buttonimage.sprite = item.IconSprite;
-    }
-    public void SetReward()
-    {
-        Reward0.gameObject.SetActive(false);
-        Reward1.gameObject.SetActive(false);
-        Reward2.gameObject.SetActive(false);
-    }
-    public void CloseRewardPanel()
-    {
-        Reward0.gameObject.SetActive(false);
-        Reward1.gameObject.SetActive(false);
-        Reward2.gameObject.SetActive(false);
-        gatehringReWardPanel.SetActive(false);
-    }
-    public void GetGatheringItem()
-    {
-
     }
 }
