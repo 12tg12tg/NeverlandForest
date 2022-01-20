@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         sm = SaveLoadManager.Instance;
 
         DontDestroyOnLoad(this);
-
+       
         //MonsterPool.Instance.Init();
     }
 }

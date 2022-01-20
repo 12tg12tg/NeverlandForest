@@ -8,6 +8,10 @@ public class LanternBar : MonoBehaviour
     public Slider slider;
     public Slider blight;
     // Update is called once per frame
+    public void Awake()
+    {
+        ConsumeManager.init(); 
+    }
     void Update()
     {
         slider.value = Vars.UserData.uData.LanternCount / Vars.lanternMaxCount;
@@ -27,10 +31,20 @@ public class LanternBar : MonoBehaviour
         {
             blight.value = 0.25f;
         }
-        else
+        else if (Vars.UserData.uData.lanternState == LanternState.None)
         {
-            blight.value = 0;
+            blight.value = 0f;
         }
-
+    }
+    public void OnGUI()
+    {
+        if (GUILayout.Button("랜턴밝기검사"))
+        {
+            Debug.Log(slider.value);
+            Debug.Log(blight.value);
+            Debug.Log($" Vars.UserData.uData.LanternCount{ Vars.UserData.uData.LanternCount}");
+            Debug.Log($" Vars.lanternMaxCount{ Vars.lanternMaxCount}");
+            Debug.Log($"Vars.UserData.uData.lanternState{Vars.UserData.uData.lanternState}");
+        }
     }
 }
