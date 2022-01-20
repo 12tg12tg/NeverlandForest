@@ -30,10 +30,12 @@ public class GatheringData : EventData
         {
             var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
             gatheringObj2.Init(system, this, dgSystem, roomIndex);
+            obj.objectType = gatheringtype;
             return gatheringObj2;
         }
         var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + offSetBasePos);
         var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        obj.objectType = gatheringtype;
         gatheringObj.Init(system, this, dgSystem, roomIndex);
 
         objectPosition = objPos;
