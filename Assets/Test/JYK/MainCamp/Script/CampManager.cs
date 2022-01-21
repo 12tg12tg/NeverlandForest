@@ -57,6 +57,9 @@ public class CampManager : MonoBehaviour
     public GameObject CookPanel;
     public float RecoverySleepTime => recoverySleepTime;
 
+    public InventoryController inventoryController;
+    private DataAllItem itemReward;
+
     public enum CampEvent
     {
         StartCook,
@@ -368,41 +371,64 @@ public class CampManager : MonoBehaviour
         //¾àÃÊ: 5 %
         // ¹ö¼¸: 5 %
         //²Î: 85 %
-        //var randNum = Random.Range(1, 101);
-        var randNum = 1;
+        var randNum = Random.Range(1, 101);
+      
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var newItem = new DataAllItem();
-        newItem.LimitCount = 5;
         newItem.OwnCount = Random.Range(1, 3);
         newItem.dataType = DataType.AllItem;
         var stringId = $"{randNum}";
+        newItem.itemId = randNum;
+        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
+
+        Debug.Log($"buttonimage{buttonimage.name}");
+        Debug.Log($"randNum{randNum}");
+
+
         if (randNum==1)
         {
             //³ª¹«Åä¸·: 1 %
-            newItem.itemId = randNum;
-            newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
+        itemReward = newItem;
         }
         else if(randNum ==100)
         {
             //¾¾¾Ñ: 1 %
+            itemReward = newItem;
         }
         else if(randNum >=2 &&randNum<= 4)
         {
             //³ª¹µ°¡Áö3 %
+            itemReward = newItem;
         }
         else if(randNum >= 5 && randNum <= 9)
         {
             //¾àÃÊ: 5 %
+            itemReward = newItem;
         }
         else if (randNum >=10 && randNum<= 14)
         {
             // ¹ö¼¸: 5 %
+            itemReward = newItem;
         }
         else
         {
             //²Î: 85 %
+            Debug.Log("²Î");
         }
-        item = newItem.ItemTableElem;
-        buttonimage.sprite = item.IconSprite;
+        if (item!=null)
+        {
+            item = newItem.ItemTableElem;
+            buttonimage.sprite = item.IconSprite;
+        }
     }
+
+    public void OkGathering()
+    {
+        if (itemReward!=null)
+        {
+            Vars.UserData.AddItemData(itemReward);
+            inventoryController.Init();
+        }
+    }
+
 }
