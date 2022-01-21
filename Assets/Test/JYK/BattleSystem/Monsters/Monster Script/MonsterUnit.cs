@@ -44,7 +44,6 @@ public class MonsterUnit : UnitBase, IAttackable
     {
         baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
         Init(baseElem);
-        Debug.Log($"{baseElem.Name}이 태어나다.");
         State = MonsterState.Idle;
     }
 
@@ -67,8 +66,8 @@ public class MonsterUnit : UnitBase, IAttackable
     public void OnAttacked(BattleCommand attacker)
     {
         var playerStats = attacker as PlayerCommand;
-        var damage = playerStats.skill.SkillTableElem.damage;
-        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다. {Hp + damage} -> {Hp}");
+        var damage = playerStats.skill.SkillTableElem.Damage;
+        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다. {Hp} -> {Hp - damage}");
         Hp -= damage;
         if (Hp <= 0)
         {

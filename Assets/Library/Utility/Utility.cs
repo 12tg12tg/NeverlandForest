@@ -55,13 +55,13 @@ public class Utility
         float timer = 0f;
         while (timer < time)
         {
-            var ratio = timer / time;
-            transform.localPosition = Vector3.Lerp(start, end, ratio);
-
             timer += Time.deltaTime;
+            var ratio = timer / time;
+            transform.position = Vector3.Lerp(start, end, ratio);
+
             yield return null;
         }
-        transform.localPosition = end;
+        transform.position = end;
         action?.Invoke();
     }
     public static IEnumerator CoTranslate(Transform transform, Vector3 dest, float speed, float minDist, UnityAction action = null)

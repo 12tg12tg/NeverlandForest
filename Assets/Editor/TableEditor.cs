@@ -117,22 +117,27 @@ public class TableEditor : EditorWindow
 
         consumData["NAME"] = EditorGUILayout.TextField("Name", consumData["NAME"]);
 
-        var count = int.Parse(consumData["COUNT"]);
-        consumData["COUNT"] = EditorGUILayout.IntField("Count", count).ToString();
+        consumData["PLAYER"] = EditorGUILayout.TextField("Player", consumData["PLAYER"]);
 
-        var damage = int.Parse(consumData["DAMAGE"]);
-        consumData["DAMAGE"] = EditorGUILayout.IntField("Damgae", damage).ToString();
+        var cost = int.Parse(consumData["COST"]);
+        consumData["COST"] = EditorGUILayout.IntField("Cost", cost).ToString();
 
-        var toggle = consumData["SIDE EFFECT"].Equals("O") ? true : false;
-        consumData["SIDE EFFECT"] = EditorGUILayout.Toggle("Side Effect", toggle) ? "O" : "X";
+        var min_damage = int.Parse(consumData["MIN DAMAGE"]);
+        consumData["MIN DAMAGE"] = EditorGUILayout.IntField("Min Damgae", min_damage).ToString();
 
-        var shapeType = new string[] { "One", "Six", "Eight", "Nine", "Cross", "X" };
-        int shapeIndex = ArrayUtility.IndexOf(shapeType, consumData["RANGE SHAPE"]);
-        EditorGUILayout.Popup("TableType", shapeIndex, shapeType);
-        consumData["RANGE SHAPE"] = shapeType[shapeIndex];
+        var max_damage = int.Parse(consumData["MAX DAMAGE"]);
+        consumData["MAX DAMAGE"] = EditorGUILayout.IntField("Max Damgae", max_damage).ToString();
 
-        var range = int.Parse(consumData["RANGE"]);
-        consumData["RANGE"] = EditorGUILayout.IntField("Range", range).ToString();
+        var toggle = consumData["ADD LANTERN"].Equals("O") ? true : false;
+        consumData["ADD LANTERN"] = EditorGUILayout.Toggle("Add Lantern", toggle) ? "O" : "X";
+
+        var hit_count = int.Parse(consumData["HIT COUNT"]);
+        consumData["HIT COUNT"] = EditorGUILayout.IntField("Max Damgae", hit_count).ToString();
+
+        var rangeType = System.Enum.GetNames(typeof(SkillRangeType));
+        int shapeIndex = ArrayUtility.IndexOf(rangeType, consumData["RANGE"]);
+        EditorGUILayout.Popup("Range", shapeIndex, rangeType);
+        consumData["RANGE"] = rangeType[shapeIndex];
 
         GUI.skin.textField.wordWrap = true;
         consumData["DESC"] = EditorGUILayout.TextField("Description", consumData["DESC"], GUILayout.Height(200));

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.EventSystems;
 
 // 사용자가 어떤 입력을 했을 때, 그에 해당하는 정보를 넘겨주거나, 동작을 실행시키거나 하는 클래스
@@ -15,6 +16,7 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
 
     // Instance
     public BattleManager manager;
+    public TileMaker tileMaker;
     private List<UnitBase> targetUnit;
 
     // Component
@@ -28,12 +30,59 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
     // Property
     public PlayerStats Stats { get => stats; }
 
-    public void TurnInit()
+    private void Start()
+    {
+        tileMaker = TileMaker.Instance;
+    }
+
+    public void TurnInit(ActionType action)
     {
         FSM.ChangeState(CharacterBattleState.Action);
         manager.IsDuringPlayerAction = true;
+
+        if (action == ActionType.Skill)
+        {
+            //스킬사용
+            StartCoroutine(CoActionCommand());
+        }
+        else
+        {
+            //아이템사용
+        }
     }
 
+    private IEnumerator CoActionCommand()
+    {
+        var tiles = tileMaker.GetSkillRangedTiles(command.target, command.skill.SkillTableElem.range);
+        var d = tiles.Count();
+        foreach (var tile in tiles)
+        {
+            tile.ConfirmAsTarget(command.type, tileMaker.LastClickPos, command.skill.SkillTableElem.range);
+        }
+        tileMaker.SetAllTileSoftClear();
+
+        var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
+        yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
+        playerActionState.isAttackMotionEnd = false;
+
+        var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+
+        // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
+        foreach (var target in monsterList)
+        {
+            target.PlayHitAnimation();
+            target.OnAttacked(command);
+        }
+
+        yield return new WaitForSeconds(1.5f);
+
+        // 발판색 삭제 및 배틀상태전환 및 일일히 승리 확인.
+        foreach (var tile in tiles)
+            tile.CancleConfirmTarget(playerType);
+
+        FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행
+        manager.EndOfPlayerAction();
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {

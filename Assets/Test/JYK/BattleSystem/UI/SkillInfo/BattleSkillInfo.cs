@@ -46,11 +46,12 @@ public class BattleSkillInfo : MonoBehaviour
         iconName.text = elem.name;
 
         sb.Clear();
-        var count = elem.count;
+        var count = elem.cost;
+        var costItem = elem.player == PlayerType.Boy ? "화살" : "랜턴";
         if (count == -1)
-            sb.Append($"횟수 : 제한없음.\n");
+            sb.Append($"소모 : 제한없음.\n");
         else
-            sb.Append($"횟수 : {elem.count}\n");
+            sb.Append($"소모 : {costItem} {elem.cost}개\n");
         sb.Append($"{elem.description}");
         description.text = sb.ToString();
         curInfoType = ActionType.Skill;
@@ -102,7 +103,7 @@ public class BattleSkillInfo : MonoBehaviour
 
         if (button.CurState == ActionType.Skill)
         {
-            manager.DisplayMonsterTile();
+            manager.DisplayMonsterTile(curSkill.SkillTableElem.range);
         }
         else
         {

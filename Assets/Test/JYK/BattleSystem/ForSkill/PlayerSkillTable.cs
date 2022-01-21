@@ -16,13 +16,32 @@ public class PlayerSkillTableElem : DataTableElemBase
 {
     private string iconID;
     public string name;
-    public int count;
-    public int damage;
-    public bool isSideEffect;
-    [Obsolete("rangeType을 사용하세요.")] public SkillRangeShape rangeShape;
-    public SkillRangeType rangeType;
-    public int additionalRange;
+    public PlayerType player;
+    public int cost;
+    private int min_Damage;
+    private int max_Damage;
+    private bool addLantern;
+    public int hitCount;
+    public SkillRangeType range;
     public string description;
+    public int Damage
+    {
+        get
+        {
+            int damage;
+            if (min_Damage == max_Damage)
+                damage = min_Damage;
+            else
+                damage = UnityEngine.Random.Range(min_Damage, max_Damage + 1);
+
+            if (addLantern)
+            {
+                damage += (int)Vars.UserData.uData.lanternState;
+            }
+
+            return damage;
+        }
+    }
 
     private Sprite iconSprite;
     public Sprite IconSprite
@@ -34,16 +53,22 @@ public class PlayerSkillTableElem : DataTableElemBase
     {
         id = data["ID"];
         name = data["NAME"];
-        count = int.Parse(data["COUNT"]);
-        damage = int.Parse(data["DAMAGE"]);
-        isSideEffect = data["SIDE EFFECT"].Equals("O") ? true : false;
 
-        var enumNames = Enum.GetNames(typeof(SkillRangeShape)).ToList();
-        rangeShape = (SkillRangeShape)enumNames.IndexOf(data["RANGE SHAPE"]);
+        var enums = Enum.GetNames(typeof(PlayerType)).ToList();
+        player = (PlayerType)enums.IndexOf(data["PLAYER"]);
 
-        additionalRange = int.Parse(data["RANGE"]);
+        cost = int.Parse(data["COST"]);
+        min_Damage = int.Parse(data["MIN DAMAGE"]);
+        max_Damage = int.Parse(data["MAX DAMAGE"]);
 
-        description = string.Format(data["DESC"], damage);
+        addLantern = data["ADD LANTERN"].Equals("O") ? true : false;
+
+        hitCount = int.Parse(data["HIT COUNT"]);
+
+        var enums2 = Enum.GetNames(typeof(SkillRangeType)).ToList();
+        range = (SkillRangeType)enums2.IndexOf(data["RANGE"]);
+
+        description = data["DESC"];
 
         iconID = data["ICON_ID"];
         iconSprite = Resources.Load<Sprite>($"SkillSprites/{iconID}");

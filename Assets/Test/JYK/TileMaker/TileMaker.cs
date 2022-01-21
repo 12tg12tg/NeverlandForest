@@ -28,6 +28,7 @@ public class TileMaker : MonoBehaviour
 
     //Property
     public HalfTile LastHalfTile { get; set; }
+    public Vector3 LastClickPos { get; set; }
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
 
@@ -302,6 +303,15 @@ public class TileMaker : MonoBehaviour
         {
             case SkillRangeType.One:
             case SkillRangeType.Tile:
+                var testList = from n in tileList where n == GetTile(choicesTile) select n;
+                foreach (var item in tileList)
+                {
+                    Debug.Log(item.index);
+                    if (item == GetTile(choicesTile))
+                        Debug.Log("true");
+                }
+
+
                 return from n in tileList where n == GetTile(choicesTile) select n;
             case SkillRangeType.Line:
                 int col = (int)choicesTile.y;
@@ -316,14 +326,14 @@ public class TileMaker : MonoBehaviour
     }    
 
     // 타일 속성 변경
-    public void SetAllTileMiddleState()
-    {
-        var count = tileList.Count;
-        for (int i = 0; i < count; i++)
-        {
-            tileList[i].SetMiddleState();
-        }
-    }
+    //public void SetAllTileMiddleState()
+    //{
+    //    var count = tileList.Count;
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        tileList[i].SetMiddleState();
+    //    }
+    //}
 
     public void SetAllTileSoftClear()
     {
@@ -346,10 +356,33 @@ public class TileMaker : MonoBehaviour
     }
 
     // 유닛반환
-    public List<UnitBase> GetUnitsOnTile(Vector2 pos)
+    public IEnumerable<UnitBase> GetUnitsOnTile(Vector2 pos)
     {
-        var tile = GetTile(pos);
-        return tile.units;
+        return GetTile(pos).Units;
     }
 
+    public IEnumerable<MonsterUnit> GetTargetList(Vector2 targetPos, SkillRangeType rangeType)
+    {
+        var tiles = GetSkillRangedTiles(targetPos, rangeType);
+        IEnumerable<MonsterUnit> list = null;
+        switch (rangeType)
+        {
+            case SkillRangeType.One:
+                list = from tile in tiles
+                       from n in tile.Units
+                       where (tile.Units_UnitCount() == 1)? true : 
+                                (tile.WhichPartOfTile(LastClickPos) == HalfTile.Front ? n == tile.FrontMonster : n == tile.BehindMonster)
+                       select n as MonsterUnit;
+                break;
+            case SkillRangeType.Tile:
+            case SkillRangeType.Line:
+            case SkillRangeType.Lantern:
+                list = from tile in tiles
+                       from n in tile.Units
+                       select n as MonsterUnit;
+                break;
+        }
+
+        return list;
+    }
 }

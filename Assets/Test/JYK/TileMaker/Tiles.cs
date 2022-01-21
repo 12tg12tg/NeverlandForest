@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.EventSystems;
 
 public enum HalfTile { Front, Behind }
@@ -18,7 +19,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public MeshRenderer ren;
     public Vector2 index;
     public bool isObstacle;
-    public List<UnitBase> units = new List<UnitBase>();
+    [SerializeField]private List<UnitBase> units = new List<UnitBase>();
 
     //Instance
     private TileMaker tileMaker;
@@ -31,14 +32,15 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     //Property
     public Vector3 CenterPos { get => transform.position; }
-    public bool HaveUnit { get => units.Count > 0; }
-    public bool CanStand { get => units.Count < 2; }
+    public bool HaveUnit { get => Units_UnitCount() > 0; }
+    public bool CanStand { get => Units_UnitCount() < 2; }
     public Vector3 FrontPos { get; private set; }
     public Vector3 BehindPos { get; private set; }
     public float Width { get; private set; }
     public float Height { get; private set; }
     public MonsterUnit FrontMonster { get => units[0] as MonsterUnit; }
     public MonsterUnit BehindMonster { get => units[1] as MonsterUnit; }
+    public IEnumerable<UnitBase> Units { get => from n in units where n != null select n; }
 
     //Vars
     private bool isHighlightAttack;
@@ -48,6 +50,14 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     private Color girlColor;
     public AffectedInfo affectedByBoy = new AffectedInfo();
     public AffectedInfo affectedByGirl = new AffectedInfo();
+
+    private void Awake()
+    {
+        while (units.Count < 2)
+        {
+            units.Add(null);
+        }
+    }
 
     private void Start()
     {
@@ -114,11 +124,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, BehindPos, 0.3f));
     }
 
-    private void PutSecondUnit(UnitBase unit)
-    {
-
-    }
-
     public HalfTile WhichPartOfTile(Vector3 touchPos)
     {
         float x = touchPos.x;
@@ -131,14 +136,14 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     public void PutMonster(MonsterUnit monster)
     {
-        if (units.Count == 0)
+        if (Units_UnitCount() == 0)
         {
-            units.Add(monster);
+            Units_UnitAdd(monster);
             monster.Pos = index;
         }
-        else if (units.Count == 1)
+        else if (Units_UnitCount() == 1)
         {
-            units.Add(monster);
+            Units_UnitAdd(monster);
             monster.Pos = index;
             MoveUnitFront(units[0]);
             MoveUnitBehind(units[1]);
@@ -169,16 +174,24 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         center.material.color = tileMaker.blueColor;
     }
 
-    public void HighlightCanAttackSign()
+    public void HighlightCanAttackSign(SkillRangeType range)
     {
         // Both drag and click
         isHighlightAttack = true;
-        if(units.Count == 1)
-            edge.material.color = tileMaker.targetColor;
+
+        if (range == SkillRangeType.One)
+        {
+            if (Units_UnitCount() == 1)
+                edge.material.color = tileMaker.targetColor;
+            else
+            {
+                frontEdge.material.color = tileMaker.targetColor;
+                behindEdge.material.color = tileMaker.targetColor;
+            }
+        }
         else
         {
-            frontEdge.material.color = tileMaker.targetColor;
-            behindEdge.material.color = tileMaker.targetColor;
+            edge.material.color = tileMaker.targetColor;
         }
     }
 
@@ -217,19 +230,16 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             return; // 선택되지 않은 타일이라면 종료.
 
         // 둘 중 하나라도 선택되어있다면, 새롭게 색칠.
-        if(units.Count == 2)
+        bool isOneTargetSkill = curInfo.skillRange == SkillRangeType.One;
+        if (isOneTargetSkill && Units_UnitCount() == 2)
         {
-            bool isOneTargetSkill = curInfo.skillRange == SkillRangeType.One;
-            if (isOneTargetSkill)
+            if (curInfo.half == HalfTile.Front)
             {
-                if (curInfo.half == HalfTile.Front)
-                {
-                    front.material.color = selectedColor;
-                }
-                else
-                {
-                    behind.material.color = selectedColor;
-                }
+                front.material.color = selectedColor;
+            }
+            else
+            {
+                behind.material.color = selectedColor;
             }
         }
         else
@@ -278,22 +288,22 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         ResetHighlightExceptConfirm();
     }
 
-    public void SetMiddleState()
-    {
-        //드래그 중 일때만 호출.
-        //하이라이트를 초기화하진 않으나, 마우스 드래그중에 표시되는 블루 프린트를 없앤다.
-        center.material.color = tileMaker.noneColor;
-        if (isHighlightAttack)
-            HighlightCanAttackSign();
-        if (isHighlightConsume)
-            HighlightCanConsumeSign();
-        if (affectedByBoy.isAffected || affectedByGirl.isAffected)
-            ResetHighlightExceptConfirm();
-    }
+    //public void SetMiddleState()
+    //{
+    //    //드래그 중 일때만 호출.
+    //    //하이라이트를 초기화하진 않으나, 마우스 드래그중에 표시되는 블루 프린트를 없앤다.
+    //    center.material.color = tileMaker.noneColor;
+    //    if (isHighlightAttack)
+    //        HighlightCanAttackSign();
+    //    if (isHighlightConsume)
+    //        HighlightCanConsumeSign();
+    //    if (affectedByBoy.isAffected || affectedByGirl.isAffected)
+    //        ResetHighlightExceptConfirm();
+    //}
 
     public void RemoveUnit(UnitBase unit)
     {
-        units.Remove(unit);
+        Units_MonsterRemove(unit as MonsterUnit);
     }
 
     //Drag Drop
@@ -318,7 +328,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         var actionType = button.CurState;
 
-        if (skill.SkillTableElem.rangeType == SkillRangeType.One)
+        if (skill.SkillTableElem.range == SkillRangeType.One)
         {
             //단일 타겟이라면 유효성 검사
             if (!BattleManager.Instance.IsVaildTargetTile(this))
@@ -329,7 +339,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             else
             {
                 tileMaker.AffectedTileCancle(button.groupUI.type);
-                ConfirmAsTarget(button.groupUI.type, eventData.pointerCurrentRaycast.worldPosition, skill.SkillTableElem.rangeType);
+                tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
             }
         }
         else
@@ -344,18 +354,50 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         if (actionType == ActionType.Skill)
         {
-            manager.UpdateComand(button.groupUI.type, tileMaker.LastDropPos, skill);
+            manager.DoCommand(button.groupUI.type, index, skill);
         }
         else
         {
-            manager.UpdateComand(button.groupUI.type, tileMaker.LastDropPos, item);
+            manager.DoCommand(button.groupUI.type, index, item);
         }
 
-        tileMaker.SetAllTileSoftClear();
         button.groupUI.EnableGroup();
         button.groupUI.Close();
         manager.EndTileClick();
     }
 
+    public void Units_UnitAdd(UnitBase unit)
+    {
+        if(units[0] == null)
+        {
+            units[0] = unit;
+        }
+        else if(units[1] == null)
+        {
+            units[1] = unit;
+        }
+    }
 
+    public int Units_UnitCount()
+    {
+        int count = 0;
+        for (int i = 0; i < units.Count; i++)
+        {
+            if (units[i] != null)
+                ++count;
+        }
+        return count;
+    }
+
+    public void Units_MonsterRemove(MonsterUnit unit)
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            if (units[i] == unit)
+            {
+                units[i] = null;
+                return;
+            }
+        }
+    }
 }
