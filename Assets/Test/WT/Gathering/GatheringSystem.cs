@@ -15,7 +15,6 @@ public class GatheringSystem : MonoBehaviour
     public TextMeshProUGUI yesTooltext;
     public TextMeshProUGUI noTooltext;
 
-    public GameObject gatheringPrehab;
     private List<GameObject> gatherings = new List<GameObject>();
 
     public int testLanternLight = 0;
@@ -59,75 +58,7 @@ public class GatheringSystem : MonoBehaviour
         playerAnimation = womenplayer.GetComponent<Animator>();
         playerAnimationBoy = boyPlayer.GetComponent<Animator>();
     }
-    public void CreateGathering(DunGeonRoomType roomType, GameObject[] objPos, List<DungeonRoom> roomInfoList)
-    {
-        if (roomType == DunGeonRoomType.MainRoom)
-        {
-            curgatheringType = GatheringType.MainDunguen;
-        }
-        else if (roomType == DunGeonRoomType.SubRoom)
-        {
-            curgatheringType = GatheringType.Path;
-        }
-        switch (curgatheringType)
-        {
-            case GatheringType.MainDunguen:
-
-                break;
-            case GatheringType.Path:
-                for (int i = 0; i < roomInfoList.Count; i++)
-                {
-                    if (roomInfoList[i].eventList[0] == DunGeonEvent.Gathering)
-                    {
-                        Setgathering(curgatheringType, objPos[i].transform.position);
-
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-
-    }
-    private void Setgathering(GatheringType gatheringType, Vector3 objPos)
-    {
-        GameObject eventObj;
-        switch (gatheringType)
-        {
-            case GatheringType.MainDunguen:
-                //메인던전에서 채집이 시작되면 count 0,1,2개만큼 켜준다.
-                //0~2
-                count = Random.Range(0, 3);
-                for (int i = 0; i < count; i++)
-                {
-                    eventObj = Instantiate(gatheringPrehab, objPos, Quaternion.identity);
-                    eventObj.AddComponent<GatheringObject>();
-                    eventObj.GetComponent<GatheringObject>().Init();
-                    eventObj.GetComponent<GatheringObject>().objId = i;
-                    gatherings.Add(eventObj);
-
-                }
-                break;
-            case GatheringType.Path:
-                //통로에서는 1개만 있으면 되기때문에 0,1번중 하나를 랜덤으로 킨다.
-                //무조건 1
-                count = 1;
-                for (int i = 0; i < count; i++)
-                {
-                    eventObj = Instantiate(gatheringPrehab, objPos, Quaternion.identity);
-                    Destroy(eventObj.GetComponent<EventObject>());
-                    eventObj.AddComponent<GatheringObject>();
-                    GatheringObject obj = eventObj.GetComponent<GatheringObject>();
-                    obj.gathering = this;
-                    obj.Init();
-                    obj.objId = i;
-                    gatherings.Add(eventObj);
-                }
-                break;
-            default:
-                break;
-        }
-    }
+  
     public void DeleteObj()
     {
         for (int i = 0; i < gatherings.Count; i++)
@@ -172,24 +103,23 @@ public class GatheringSystem : MonoBehaviour
         gatheringTooltext.gameObject.SetActive(true);
         gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";
         var lanternstate = ConsumeManager.CurLanternState;
-        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        //{
-        //    case GatheringObject.GatheringObjectType.Tree:
-        //        TreeGatheing(lanternstate);
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Pit:
-        //        PitGatheing(lanternstate);
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Herbs:
-        //        HerbsGatheing(lanternstate);
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Mushroom:
-        //        MushroomGatheing(lanternstate);
-        //        break;
-        //    default:
-        //        break;
-        //}
-        TreeGatheing(lanternstate);
+        switch (curSelectedObj.objectType)
+        {
+            case GatheringObjectType.Tree:
+                TreeGatheing(lanternstate);
+                break;
+            case GatheringObjectType.Pit:
+                PitGatheing(lanternstate);
+                break;
+            case GatheringObjectType.Herbs:
+                HerbsGatheing(lanternstate);
+                break;
+            case GatheringObjectType.Mushroom:
+                MushroomGatheing(lanternstate);
+                break;
+            default:
+                break;
+        }
     }
 
     private void TreeGatheing(LanternState lanternstate)
@@ -318,25 +248,23 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesTool()
     {
-        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        //{
-        //    case GatheringObject.GatheringObjectType.Tree:
-        //        GatheringTreeByTool();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Pit:
-        //        GatheringPitByTool();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Herbs:
-        //        GatheringHerbsByTool();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Mushroom:
-        //        GatheringMushroomByTool();
-        //        break;
-        //    default:
-        //        break;
-        //}
-        GatheringTreeByTool();
-
+        switch (curSelectedObj.objectType)
+        {
+            case GatheringObjectType.Tree:
+                GatheringTreeByTool();
+                break;
+            case GatheringObjectType.Pit:
+                GatheringPitByTool();
+                break;
+            case GatheringObjectType.Herbs:
+                GatheringHerbsByTool();
+                break;
+            case GatheringObjectType.Mushroom:
+                GatheringMushroomByTool();
+                break;
+            default:
+                break;
+        }
         var item = curSelectedObj.item;
         var list = new List<DataItem>();
         if (item != null)
@@ -400,24 +328,23 @@ public class GatheringSystem : MonoBehaviour
     }
     public void NoTool()
     {
-        //switch (gatheringPrehab.GetComponent<GatheringObject>().objectType)
-        //{
-        //    case GatheringObject.GatheringObjectType.Tree:
-        //        GatheringTreeByHand();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Pit:
-        //        GatheringPitByHand();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Herbs:
-        //        GatheringHerbsByHand();
-        //        break;
-        //    case GatheringObject.GatheringObjectType.Mushroom:
-        //        GatheringMushroomByHand();
-        //        break;
-        //    default:
-        //        break;
-        //}
-        GatheringTreeByHand();
+        switch (curSelectedObj.objectType)
+        {
+            case GatheringObjectType.Tree:
+                GatheringTreeByHand();
+                break;
+            case GatheringObjectType.Pit:
+                GatheringPitByHand();
+                break;
+            case GatheringObjectType.Herbs:
+                GatheringHerbsByHand();
+                break;
+            case GatheringObjectType.Mushroom:
+                GatheringMushroomByHand();
+                break;
+            default:
+                break;
+        }
         var item = curSelectedObj.item;
         var list = new List<DataItem>();
 

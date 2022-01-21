@@ -101,6 +101,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                         gatheringData1.eventType = DunGeonEvent.Gathering;
                         gatheringData1.offSetBasePos = (-3 + (i * 3));
                         gatheringData1.roomIndex = curRoom.roomIdx;
+                        gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(0, 4);
                         eventData.Add(gatheringData1);
                     }
                 }
@@ -109,8 +110,10 @@ public class DunGeonMapGenerate : MonoBehaviour
                     var gatheringData = new GatheringData();
                     gatheringData.eventType = DunGeonEvent.Gathering;
                     gatheringData.roomIndex = curRoom.roomIdx;
+                    gatheringData.gatheringtype =(GatheringObjectType)Random.Range(0, 4);
                     curRoom.gatheringCount = 1;
                     gatheringData.offSetBasePos = 2;
+                    eventData.Add(gatheringData);
                 }
                 break;
             case DunGeonEvent.Hunt:

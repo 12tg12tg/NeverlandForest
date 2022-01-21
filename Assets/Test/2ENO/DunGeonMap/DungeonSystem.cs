@@ -41,6 +41,11 @@ public class DungeonSystem : MonoBehaviour
     [Header("ETC")]
     public Button campButton;
 
+    public GatheringObject treeObj;
+    public GatheringObject pitObj;
+    public GatheringObject herbsObj;
+    public GatheringObject mushroomObj;
+
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
@@ -253,6 +258,7 @@ public class DungeonSystem : MonoBehaviour
                     newData2.eventBasePos = eventList[i].eventBasePos;
                     newData2.roomIndex = eventList[i].roomIndex;
                     newData2.objectPosition = eventList[i].objectPosition;
+                    newData2.gatheringtype = eventList[i].gatheringtype;
                     newList.Add(newData2);
                     break;
                 case DunGeonEvent.Hunt:
@@ -294,8 +300,28 @@ public class DungeonSystem : MonoBehaviour
                                 break;
                             case DunGeonEvent.Gathering:
                                 var createGt = eventObj as GatheringData;
-                                var obj2 = createGt.Createobj(gatheringObjPrefab, gatheringSystem, this);
-                                eventObjInstanceList.Add(obj2.gameObject);
+                                GatheringObject obj2;
+                                switch (eventObj.gatheringtype)
+                                {
+                                    case GatheringObjectType.Tree:
+                                        obj2 = createGt.Createobj(treeObj, gatheringSystem, this);
+                                        eventObjInstanceList.Add(obj2.gameObject);
+                                        break;
+                                    case GatheringObjectType.Pit:
+                                        obj2 = createGt.Createobj(pitObj, gatheringSystem, this);
+                                        eventObjInstanceList.Add(obj2.gameObject);
+                                        break;
+                                    case GatheringObjectType.Herbs:
+                                        obj2 = createGt.Createobj(herbsObj, gatheringSystem, this);
+                                        eventObjInstanceList.Add(obj2.gameObject);
+                                        break;
+                                    case GatheringObjectType.Mushroom:
+                                        obj2 = createGt.Createobj(mushroomObj, gatheringSystem, this);
+                                        eventObjInstanceList.Add(obj2.gameObject);
+                                        break;
+                                }
+                             
+
                                 break;
                             case DunGeonEvent.Hunt:
                                 var createHt = eventObj as HuntingData;
@@ -326,8 +352,27 @@ public class DungeonSystem : MonoBehaviour
                             break;
                         case DunGeonEvent.Gathering:
                             var createGt = eventObj as GatheringData;
-                            var obj2 = createGt.Createobj(gatheringObjPrefab, gatheringSystem, this);
-                            eventObjInstanceList.Add(obj2.gameObject);
+                            GatheringObject obj2;
+                            switch (eventObj.gatheringtype)
+                            {
+                                case GatheringObjectType.Tree:
+                                    obj2 = createGt.Createobj(treeObj, gatheringSystem, this);
+                                    eventObjInstanceList.Add(obj2.gameObject);
+                                    break;
+                                case GatheringObjectType.Pit:
+                                    obj2 = createGt.Createobj(pitObj, gatheringSystem, this);
+                                    eventObjInstanceList.Add(obj2.gameObject);
+                                    break;
+                                case GatheringObjectType.Herbs:
+                                    obj2 = createGt.Createobj(herbsObj, gatheringSystem, this);
+                                    eventObjInstanceList.Add(obj2.gameObject);
+                                    break;
+                                case GatheringObjectType.Mushroom:
+                                    obj2 = createGt.Createobj(mushroomObj, gatheringSystem, this);
+                                    eventObjInstanceList.Add(obj2.gameObject);
+                                    break;
+                            }
+
                             break;
                         case DunGeonEvent.Hunt:
                             var createHt = eventObj as HuntingData;
