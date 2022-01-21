@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,21 +43,35 @@ public struct Edge
 }
 public class WorldMap : MonoBehaviour
 {
+    [Header("프리팹")]
     public GameObject nodePrefab;
     public GameObject linePrefab;
     public GameObject fogPrefab;
+
+    [Header("미니월드맵에서 쓰는 메테리얼")]
     public Material material;
 
+    [Header("노드 행렬")]
     public int column;
     public int row;
-    public int beforeDate;
 
+    // 노드의 모든 정보를 갖고있는 변수
+    private WorldMapNode[,] maps;
+    public WorldMapNode[,] Maps => maps;
+    
+    // 간선체크 용도
+    private readonly List<Edge> edges = new List<Edge>();
+    public List<Edge> Edges => edges;
+
+    // 노드의 간격
     private readonly float posX = 5f;
     private readonly float posY = 15f;
 
-    public WorldMapNode[,] maps;
-    private readonly List<Edge> edges = new List<Edge>();
+    // 모든 노드가 부모자식이 연결 됐는지
     private bool isAllLinked = false;
+
+    // 안개에서 쓰는 변수
+    private int beforeDate;
 
 
     public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
@@ -85,7 +98,6 @@ public class WorldMap : MonoBehaviour
         var layerName = "WorldMap";
         Load(loadData, layerName);
         PaintLink(layerName);
-        //Vars.UserData.date = 3;
         Fog(Vars.UserData.uData.Date);
     }
 
@@ -201,8 +213,6 @@ public class WorldMap : MonoBehaviour
                         edges.Add(edge);
                         maps[j, i].Children.Add(list[k]);
                         list[k].Parent.Add(maps[j, i]);
-                        //list[k].difficulty = (Difficulty)(list[k].index.y - maps[j, i].index.y);
-                        //ColorChange(list[k]);
                     }
                 }
             }
@@ -219,7 +229,6 @@ public class WorldMap : MonoBehaviour
     private void PaintLink()
     {
         var lines = new GameObject("Lines");
-        //var pos = new Vector3(5f, 0f, 0f);
         for (int i = 0; i < column - 1; i++)
         {
             for (int j = 0; j < row; j++)
@@ -231,11 +240,11 @@ public class WorldMap : MonoBehaviour
                 lineRender.startWidth = lineRender.endWidth = 0.2f;
                 var startPos = maps[j, i].transform.position;
                 var endPos = maps[j, i].Children[0].transform.position;
-                var newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
-                var newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                var dis = 2f / Vector3.Distance(startPos, endPos);
+                var newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                var newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
                 lineRender.SetPosition(0, newStartPos);
                 lineRender.SetPosition(1, newEndPos);
-
 
                 if (maps[j, i].Children.Count >= 2)
                 {
@@ -243,8 +252,9 @@ public class WorldMap : MonoBehaviour
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
                     lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.2f;
                     endPos = maps[j, i].Children[1].transform.position;
-                    newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
-                    newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                    dis = 2f / Vector3.Distance(startPos, endPos);
+                    newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
                     lineRenderSecond.SetPosition(0, newStartPos);
                     lineRenderSecond.SetPosition(1, newEndPos);
                 }
@@ -254,8 +264,9 @@ public class WorldMap : MonoBehaviour
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
                     lineRenderThird.startWidth = lineRenderThird.endWidth = 0.2f;
                     endPos = maps[j, i].Children[2].transform.position;
-                    newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
-                    newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                    dis = 2f / Vector3.Distance(startPos, endPos);
+                    newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
                     lineRenderThird.SetPosition(0, newStartPos);
                     lineRenderThird.SetPosition(1, newEndPos);
                 }
@@ -345,7 +356,6 @@ public class WorldMap : MonoBehaviour
                 fogPrefab.transform.position = endPos;
                 //fogPrefab.transform.position = endPos - new Vector3(posY, 0f, 0f);
                 //StartCoroutine(Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, endPos, 1f));
-                
             }
             else
             {
