@@ -10,7 +10,7 @@ public class StaminaBar : MonoBehaviour
     public void Start()
     {
         ChangeableStaminaChange();
-        ConsumeManager.init();
+      
     }
     void Update()
     {

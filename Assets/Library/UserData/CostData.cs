@@ -14,6 +14,6 @@ public class CostData
     public float HunterHp { get; set; } = 100f;
     public float HerbalistHp { get; set; } = 100f;
 
-    public float BonfireHour { get; set; } = 2f;
+    public float BonfireHour { get; set; } = 5f;
 
 }

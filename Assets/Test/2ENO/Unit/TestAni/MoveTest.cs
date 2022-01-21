@@ -92,7 +92,6 @@ public class MoveTest : MonoBehaviour
                     var pos = boySpeed * Time.deltaTime * Vector3.forward;
                     playerBoy.transform.position += pos;
                     playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-
                 }
                 else if (playerXPos - 0.05f > touchXPos)
                 {
@@ -148,7 +147,6 @@ public class MoveTest : MonoBehaviour
                 }
             }
             playerAnimationGirl.SetFloat("Speed", boySpeed);
-
         }
     }
 
