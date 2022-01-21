@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -44,21 +43,35 @@ public struct Edge
 }
 public class WorldMap : MonoBehaviour
 {
+    [Header("프리팹")]
     public GameObject nodePrefab;
     public GameObject linePrefab;
     public GameObject fogPrefab;
+
+    [Header("미니월드맵에서 쓰는 메테리얼")]
     public Material material;
 
+    [Header("노드 행렬")]
     public int column;
     public int row;
-    public int beforeDate;
 
+    // 노드의 모든 정보를 갖고있는 변수
+    private WorldMapNode[,] maps;
+    public WorldMapNode[,] Maps => maps;
+    
+    // 간선체크 용도
+    private readonly List<Edge> edges = new List<Edge>();
+    public List<Edge> Edges => edges;
+
+    // 노드의 간격
     private readonly float posX = 5f;
     private readonly float posY = 15f;
 
-    public WorldMapNode[,] maps;
-    private readonly List<Edge> edges = new List<Edge>();
+    // 모든 노드가 부모자식이 연결 됐는지
     private bool isAllLinked = false;
+
+    // 안개에서 쓰는 변수
+    private int beforeDate;
 
 
     public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
@@ -85,7 +98,6 @@ public class WorldMap : MonoBehaviour
         var layerName = "WorldMap";
         Load(loadData, layerName);
         PaintLink(layerName);
-        //Vars.UserData.date = 3;
         Fog(Vars.UserData.uData.Date);
     }
 
@@ -201,8 +213,6 @@ public class WorldMap : MonoBehaviour
                         edges.Add(edge);
                         maps[j, i].Children.Add(list[k]);
                         list[k].Parent.Add(maps[j, i]);
-                        //list[k].difficulty = (Difficulty)(list[k].index.y - maps[j, i].index.y);
-                        //ColorChange(list[k]);
                     }
                 }
             }
@@ -223,32 +233,42 @@ public class WorldMap : MonoBehaviour
         {
             for (int j = 0; j < row; j++)
             {
-                if (maps[j, i] == null )
+                if (maps[j, i] == null)
                     continue;
                 var lineGo = Instantiate(linePrefab, lines.transform);
                 var lineRender = lineGo.GetComponent<LineRenderer>();
                 lineRender.startWidth = lineRender.endWidth = 0.2f;
-                lineRender.material.color = Color.white;
-                lineRender.SetPosition(0, maps[j, i].transform.position);
-                lineRender.SetPosition(1, maps[j, i].Children[0].transform.position);
+                var startPos = maps[j, i].transform.position;
+                var endPos = maps[j, i].Children[0].transform.position;
+                var dis = 2f / Vector3.Distance(startPos, endPos);
+                var newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                var newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
+                lineRender.SetPosition(0, newStartPos);
+                lineRender.SetPosition(1, newEndPos);
 
                 if (maps[j, i].Children.Count >= 2)
                 {
                     var lineGoSecond = Instantiate(linePrefab, lines.transform);
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
                     lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.2f;
-                    lineRenderSecond.material.color = Color.white;
-                    lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
-                    lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
+                    endPos = maps[j, i].Children[1].transform.position;
+                    dis = 2f / Vector3.Distance(startPos, endPos);
+                    newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
+                    lineRenderSecond.SetPosition(0, newStartPos);
+                    lineRenderSecond.SetPosition(1, newEndPos);
                 }
                 if (maps[j, i].Children.Count >= 3)
                 {
                     var lineGoThird = Instantiate(linePrefab, lines.transform);
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
                     lineRenderThird.startWidth = lineRenderThird.endWidth = 0.2f;
-                    lineRenderThird.material.color = Color.white;
-                    lineRenderThird.SetPosition(0, maps[j, i].transform.position);
-                    lineRenderThird.SetPosition(1, maps[j, i].Children[2].transform.position);
+                    endPos = maps[j, i].Children[2].transform.position;
+                    dis = 2f / Vector3.Distance(startPos, endPos);
+                    newStartPos = Vector3.Lerp(startPos, endPos, dis);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 1 - dis);
+                    lineRenderThird.SetPosition(0, newStartPos);
+                    lineRenderThird.SetPosition(1, newEndPos);
                 }
             }
         }
@@ -336,7 +356,6 @@ public class WorldMap : MonoBehaviour
                 fogPrefab.transform.position = endPos;
                 //fogPrefab.transform.position = endPos - new Vector3(posY, 0f, 0f);
                 //StartCoroutine(Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, endPos, 1f));
-                
             }
             else
             {
@@ -345,7 +364,7 @@ public class WorldMap : MonoBehaviour
         }
         beforeDate = date;
     }
-    public void FogComing()
+    public void FogComing() // 미니맵을 켰을 때(버튼 클릭 시) 실행되는 메서드
     {
         var date = Vars.UserData.uData.Date;
         if (date == 3)
@@ -357,7 +376,6 @@ public class WorldMap : MonoBehaviour
         }
         beforeDate = Vars.UserData.uData.Date;
     }
-
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
@@ -365,7 +383,6 @@ public class WorldMap : MonoBehaviour
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
-
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 100f, 0f, index.x * posX + 200f), Quaternion.identity);
@@ -374,7 +391,6 @@ public class WorldMap : MonoBehaviour
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
-
     private void FindNode(List<WorldMapNode> nodeList, int startIndex, int endIndex)
     {
         var end = endIndex + 1 > column  ? column : endIndex + 1;

@@ -288,7 +288,6 @@ public static class ConsumeManager
             Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
             DateUp();
         }
-        CampManager.Instance.ChangeDay();
         TimeStateChange();
     }
     public static void RecoveryTimeUp(int minute, int hour=0)

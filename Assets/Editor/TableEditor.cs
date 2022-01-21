@@ -6,7 +6,8 @@ using System.IO;
 
 public class TableEditor : EditorWindow
 {
-    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable", "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable" };
+    private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable",
+        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable", "RandomEventTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -66,6 +67,9 @@ public class TableEditor : EditorWindow
                 break;
             case "LocalizationTable":
                 ViewLocalizationData(tableList);
+                break;
+            case "RandomEventTable":
+                ViewRandomEventData(tableList);
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
@@ -197,7 +201,48 @@ public class TableEditor : EditorWindow
         consumData["KOR"] = EditorGUILayout.TextField("Korean", consumData["KOR"]);
 
         consumData["ENG"] = EditorGUILayout.TextField("English", consumData["ENG"]);
-   
+    }
+
+    private void ViewRandomEventData(List<Dictionary<string, string>> randomEventList)
+    {
+        var randomData = randomEventList[itemIndex];
+
+        randomData["ID"] = EditorGUILayout.TextField("ID", randomData["ID"]);
+        randomData["NAME"] = EditorGUILayout.TextField("NAME", randomData["NAME"]);
+        randomData["EVENTDESC"] = EditorGUILayout.TextField("EVENTDESC", randomData["EVENTDESC"]);
+        randomData["EVENTCONDITION"] = EditorGUILayout.TextField("EVENTCONDITION", randomData["EVENTCONDITION"]);
+        randomData["EVENTFREQUENCY"] = EditorGUILayout.TextField("EVENTFREQUENCY", randomData["EVENTFREQUENCY"]);
+        randomData["EVENTFREQUENCY2"] = EditorGUILayout.TextField("EVENTFREQUENCY2", randomData["EVENTFREQUENCY2"]);
+        randomData["SELECT1NAME"] = EditorGUILayout.TextField("SELECT1NAME", randomData["SELECT1NAME"]);
+        randomData["SUCESS1CHANCE"] = EditorGUILayout.TextField("SUCESS1CHANCE", randomData["SUCESS1CHANCE"]);
+        randomData["SUCESS1TYPE"] = EditorGUILayout.TextField("SUCESS1TYPE", randomData["SUCESS1TYPE"]);
+        randomData["SUCESS1ID"] = EditorGUILayout.TextField("SUCESS1ID", randomData["SUCESS1ID"]);
+        randomData["SUCESS1VAL"] = EditorGUILayout.TextField("SUCESS1VAL", randomData["SUCESS1VAL"]);
+        randomData["SUCESS1DESC"] = EditorGUILayout.TextField("SUCESS1DESC", randomData["SUCESS1DESC"]);
+        randomData["FAIL1TYPE"] = EditorGUILayout.TextField("FAIL1TYPE", randomData["FAIL1TYPE"]);
+        randomData["FAIL1ID"] = EditorGUILayout.TextField("FAIL1ID", randomData["FAIL1ID"]);
+        randomData["FAIL1VAL"] = EditorGUILayout.TextField("FAIL1VAL", randomData["FAIL1VAL"]);
+        randomData["FAIL1DESC"] = EditorGUILayout.TextField("FAIL1DESC", randomData["FAIL1DESC"]);
+        randomData["SELECT2NAME"] = EditorGUILayout.TextField("SELECT2NAME", randomData["SELECT2NAME"]);
+        randomData["SUCESS2CHANCE"] = EditorGUILayout.TextField("SUCESS2CHANCE", randomData["SUCESS2CHANCE"]);
+        randomData["SUCESS2TYPE"] = EditorGUILayout.TextField("SUCESS2TYPE", randomData["SUCESS2TYPE"]);
+        randomData["SUCESS2ID"] = EditorGUILayout.TextField("SUCESS2ID", randomData["SUCESS2ID"]);
+        randomData["SUCESS2VAL"] = EditorGUILayout.TextField("SUCESS2VAL", randomData["SUCESS2VAL"]);
+        randomData["SUCESS2DESC"] = EditorGUILayout.TextField("SUCESS2DESC", randomData["SUCESS2DESC"]);
+        randomData["FAIL2TYPE"] = EditorGUILayout.TextField("FAIL2TYPE", randomData["FAIL2TYPE"]);
+        randomData["FAIL2ID"] = EditorGUILayout.TextField("FAIL2ID", randomData["FAIL2ID"]);
+        randomData["FAIL2VAL"] = EditorGUILayout.TextField("FAIL2VAL", randomData["FAIL2VAL"]);
+        randomData["FAIL2DESC"] = EditorGUILayout.TextField("FAIL2DESC", randomData["FAIL2DESC"]);
+        randomData["SELECT3NAME"] = EditorGUILayout.TextField("SELECT3NAME", randomData["SELECT3NAME"]);
+        randomData["SUCESS3CHANCE"] = EditorGUILayout.TextField("SUCESS3CHANCE", randomData["SUCESS3CHANCE"]);
+        randomData["SUCESS3TYPE"] = EditorGUILayout.TextField("SUCESS3TYPE", randomData["SUCESS3TYPE"]);
+        randomData["SUCESS3ID"] = EditorGUILayout.TextField("SUCESS3ID", randomData["SUCESS3ID"]);
+        randomData["SUCESS3VAL"] = EditorGUILayout.TextField("SUCESS3VAL", randomData["SUCESS3VAL"]);
+        randomData["SUCESS3DESC"] = EditorGUILayout.TextField("SUCESS3DESC", randomData["SUCESS3DESC"]);
+        randomData["FAIL3TYPE"] = EditorGUILayout.TextField("FAIL3TYPE", randomData["FAIL3TYPE"]);
+        randomData["FAIL3ID"] = EditorGUILayout.TextField("FAIL3ID", randomData["FAIL3ID"]);
+        randomData["FAIL3VAL"] = EditorGUILayout.TextField("FAIL3VAL", randomData["FAIL3VAL"]);
+        randomData["FAIL3DESC"] = EditorGUILayout.TextField("FAIL3DESC", randomData["FAIL3DESC"]);
     }
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)

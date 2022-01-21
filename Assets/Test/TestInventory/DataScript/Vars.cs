@@ -85,7 +85,7 @@ public static class Vars
                 }
 
                 // 인벤토리에서 테스트로 사용할 아이템 리스트
-                int tempItemNum = 3;
+                int tempItemNum = 0;
                 for (int i = 0; i < 11; i++)
                 {
                     var newItem = new DataAllItem();

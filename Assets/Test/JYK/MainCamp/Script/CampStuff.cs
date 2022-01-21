@@ -30,4 +30,9 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     {
         EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartBlueMoon);
     }
+    public void StartMaking()
+    {
+        EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartMaking);
+
+    }
 }

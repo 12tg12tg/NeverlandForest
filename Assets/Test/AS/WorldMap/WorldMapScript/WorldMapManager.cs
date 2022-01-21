@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class WorldMapManager : MonoBehaviour
 {
+    [Header("월드맵에 쓰는 오브젝트")]
     public WorldMapPlayer player;
     public WorldMapCamera worldMapCamera;
+    public WorldMapGround ground;
 
+    [Header("프리팹")]
     public GameObject nodePrefab;
     public GameObject linePrefab;
     public GameObject fogPrefab;
 
+    [Header("노드 행렬")]
     public int column;
     public int row;
 
@@ -29,6 +33,8 @@ public class WorldMapManager : MonoBehaviour
                 NodeLinkToPlayer();
                 player.Init();
                 worldMapCamera.FollowPlayer();
+                if (ground != null)
+                    ground.CreateTree(worldMap.Edges, worldMap.Maps);
             }));
         }
         else
@@ -42,7 +48,7 @@ public class WorldMapManager : MonoBehaviour
 
     private void NodeLinkToPlayer()
     {
-        var maps = worldMap.maps;
+        var maps = worldMap.Maps;
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)

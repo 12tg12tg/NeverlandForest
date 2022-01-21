@@ -12,6 +12,7 @@ public class EventData
     public Vector3 objectPosition;
     // 이벤트를 생성한 방 정보, 오브젝트 생성시 이 정보를 넣고 삭제할때 그 방의 값에 적용하기위해
     public int roomIndex;
+    public GatheringObjectType gatheringtype;
 }
 [System.Serializable]
 public class GatheringData : EventData
@@ -29,10 +30,12 @@ public class GatheringData : EventData
         {
             var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
             gatheringObj2.Init(system, this, dgSystem, roomIndex);
+            obj.objectType = gatheringtype;
             return gatheringObj2;
         }
         var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + offSetBasePos);
         var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        obj.objectType = gatheringtype;
         gatheringObj.Init(system, this, dgSystem, roomIndex);
 
         objectPosition = objPos;

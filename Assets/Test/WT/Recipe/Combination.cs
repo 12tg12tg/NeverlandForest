@@ -45,8 +45,6 @@ public class Combination : MonoBehaviour
             if (inventory.materialObject != null)
                 material = inventory.materialObject.DataItem.ItemTableElem.id;
 
-           
-
             if (fire != null && condiment != null && material != null)
             {
                 //CheckCombinationText.text = "제작 시간은 2:00:00 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
@@ -93,7 +91,7 @@ public class Combination : MonoBehaviour
                 var makeTime = 60 * hour + minute;
                 var bonFireTime = Vars.UserData.uData.BonfireHour * 60;
 
-                if (bonFireTime > makeTime)
+                if (bonFireTime >= makeTime)
                 {
                     CookingStart = true;
                     var allitem = DataTableManager.GetTable<AllItemDataTable>();
@@ -115,8 +113,6 @@ public class Combination : MonoBehaviour
                 {
                     Debug.Log("현재 모닥불의 시간이 부족합니다.");
                 }
-            
-                CampManager.Instance.ChangeBonTime();
                 CheckCombination.gameObject.SetActive(false); // 팝업창 끄고
             }
             else
