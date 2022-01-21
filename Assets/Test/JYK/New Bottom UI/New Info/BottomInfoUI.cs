@@ -27,6 +27,20 @@ public class BottomInfoUI : MonoBehaviour
 
     public void Init(DataItem item)
     {
-
+        if (item == null)
+            return;
+        switch (item.dataType)
+        {
+            case DataType.Consume:
+                break;
+            case DataType.AllItem:
+                var allItem = item as DataAllItem;
+                img.sprite = allItem.ItemTableElem.IconSprite;
+                info_name.text = allItem.ItemTableElem.name;
+                info_description.text = ".....";
+                break;
+            case DataType.Material:
+                break;
+        }
     }
 }

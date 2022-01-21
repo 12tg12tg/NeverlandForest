@@ -1,106 +1,68 @@
 using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-
-public class BottomUIManager : MonoBehaviour
+public class RandomEventUIManager : MonoBehaviour
 {
     public enum ButtonState { Item, Skill }
 
-    private static BottomUIManager instance;
-    public static BottomUIManager Instance => instance;
+    private static RandomEventUIManager instance;
+    public static RandomEventUIManager Instance => instance;
 
     //Instance
     public BottomInfoUI info;
-    public List<BottomSkillButtonUI> skillButtons;
     public List<BottomItemButtonUI> itemButtons;
 
     //Vars
     [HideInInspector] public ButtonState buttonState;
 
     //PopUpWindow
-    public bool isPopUp;
     public RectTransform popUpWindow;
     public DataItem selectItem;
 
+    // RandomEventText
+    public List<GameObject> selectButtons;
 
     private void Awake()
     {
         instance = this;
-        SkillButtonInit();
-        popUpWindow.gameObject.SetActive(false);
+        //popUpWindow.SetActive(false);
     }
 
-    private void OnGUI()
+    private void SelectInit()
     {
-        if(GUILayout.Button("Set Battle State Toggle"))
+        for (int i = 0; i < selectButtons.Count; i++)
         {
-            if (GameManager.Manager.State == GameState.Battle)
-                GameManager.Manager.State = GameState.None;
-            else
-                GameManager.Manager.State = GameState.Battle;
-        }
-    }
+            var btnObj = selectButtons[i];
 
-    private void Update()
-    {
-        if (!isPopUp)
-        {
-            if (MultiTouch.Instance.TouchCount > 0)
-            {
-                var touchPos = MultiTouch.Instance.TouchPos;
-                if (!IsContainPos(touchPos))
-                {
-                    popUpWindow.gameObject.SetActive(false);
-                    isPopUp = false;
-                }
-            }
-        }
+            var button = btnObj.GetComponent<Button>();
+            var image = btnObj.GetComponent<Image>();
 
-        if(MultiTouch.Instance.TouchCount > 0)
-            isPopUp = false;
-    }
-    private bool IsContainPos(Vector2 pos)
-    {
-        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
-    }
+            var texts = btnObj.GetComponentsInChildren<TextMeshProUGUI>();
+            var nameText = texts[0];
+            var infoText = texts[1];
 
-    public void SkillButtonInit()
-    {
-        info.Init();
-        popUpWindow.gameObject.SetActive(false);
+            // 현재 방의 이벤트 데이터의 피드백 함수 add함
+            // 다음 UI로 전환하는 함수 add
+            //button.onClick.AddListener()
 
-        buttonState = ButtonState.Skill;
-        itemButtons.ForEach((n) => n.gameObject.SetActive(false));
-        skillButtons.ForEach((n) => n.gameObject.SetActive(true));
-
-        var list = Vars.BoySkillList;
-        int count = list.Count;
-
-        int buttonIndex = 1;
-        for (int i = 0; i < count; i++)
-        {
-            skillButtons[buttonIndex++].Init(list[i]);
-        }
-
-        buttonIndex = 7;
-        list = Vars.GirlSkillList;
-        for (int i = 0; i < count; i++)
-        {
-            skillButtons[buttonIndex++].Init(list[i]);
+            // 이벤트 데이터의 i 인덱스 selectString으로 초기화
+            //nameText.text = 
+            // 이벤트 데이터에서 i 인덱스 is선택값 이 true 면 초기화 아니면 비공개 defaultText로 표시
+            //infoText.text = 
         }
     }
 
     public void ItemButtonInit()
     {
         info.Init();
-        popUpWindow.gameObject.SetActive(false);
+        //popUpWindow.SetActive(false);
 
         buttonState = ButtonState.Item;
         itemButtons.ForEach((n) => n.gameObject.SetActive(true));
-        skillButtons.ForEach((n) => n.gameObject.SetActive(false));
 
         ItemListInit();
     }
@@ -141,9 +103,8 @@ public class BottomUIManager : MonoBehaviour
                 allItem.OwnCount = 1;
                 if (Vars.UserData.RemoveItemData(allItem))
                 {
-                    popUpWindow.gameObject.SetActive(false);
+                    //popUpWindow.SetActive(false);
                     selectItem = null;
-                    isPopUp = false;
                 }
                 break;
         }
@@ -162,9 +123,8 @@ public class BottomUIManager : MonoBehaviour
                 allItem.OwnCount = 1;
                 if (Vars.UserData.RemoveItemData(allItem))
                 {
-                    popUpWindow.gameObject.SetActive(false);
+                    //popUpWindow.SetActive(false);
                     selectItem = null;
-                    isPopUp = false;
                 }
                 break;
         }

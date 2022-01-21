@@ -91,7 +91,7 @@ public static class Vars
                     var newItem = new DataAllItem();
                     newItem.itemId = tempItemNum;
                     newItem.LimitCount = Random.Range(5, 6);
-                    newItem.OwnCount = Random.Range(1, 7);
+                    newItem.OwnCount = Random.Range(1, 5);
                     newItem.dataType = DataType.AllItem;
                     var stringId = $"{tempItemNum}";
                     newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);

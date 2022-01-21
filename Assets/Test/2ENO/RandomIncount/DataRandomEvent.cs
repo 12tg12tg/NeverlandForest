@@ -50,7 +50,6 @@ public class DataRandomEvent
         fail3Desc = data.fail3Desc;
     }
     // 피드백 함수들, 피드백 함수로 인해 값의 변화가 없는 케이스는 return
-
     public void SelectFeedBack(int selectNum)
     {
         if (selectNum < 1 || selectNum > 3)
@@ -168,20 +167,48 @@ public class DataRandomEvent
                     newItem.itemTableElem = newItemTable.GetData<AllItemTableElem>(stringId);
                     newItem.OwnCount = eventVals[i];
 
+                    if (isSucessFeedBack)
+                        tempStr = $"아이템 획득\n";
+                    else
+                        tempStr = $"아이템 감소\n";
+                    sb.Append(tempStr);
                     break;
                 case EventFeedBackType.LanternGage:
                     var lanternGage = eventVals[i];
 
-
+                    if (isSucessFeedBack)
+                        tempStr = $"랜턴수치 증가\n";
+                    else
+                        tempStr = $"랜턴수치 감소\n";
+                    sb.Append(tempStr);
                     break;
                 case EventFeedBackType.TurnConsume:
                     var turnConsume = eventVals[i];
+
+                    if (isSucessFeedBack)
+                        tempStr = $"성공 - 턴 소비\n";
+                    else
+                        tempStr = $"실패 - 턴 소비\n";
+                    sb.Append(tempStr);
                     break;
                 case EventFeedBackType.MostItemLose:
                     // 현재 가지고 있는 인벤토리 아이템 OwnCount 검색
+
+                    if (isSucessFeedBack)
+                        tempStr = $"성공 - 가장많은 아이템 감소\n";
+                    else
+                        tempStr = $"실패 - 가장많은 아이템 감소\n";
+                    sb.Append(tempStr);
                     break;
                 case EventFeedBackType.RandomMaterial:
                     // 현재 가지고있는 인벤토리 아이템 Type Linq로 검색 -> 재료아이템 리스트만 뽑아서 그중 하나랜덤으로 고르고 적용!
+
+                    if (isSucessFeedBack)
+                        tempStr = $"성공 - 랜덤재료 획득\n";
+                    else
+                        tempStr = $"실패 - 랜덤재료 감소\n";
+                    sb.Append(tempStr);
+
                     break;
                 case EventFeedBackType.AnotherEvent:
                     // 다른 이벤트 해금 - 랜덤매니저 함수 호출
@@ -190,14 +217,17 @@ public class DataRandomEvent
                         eventManager.AddEventInPool(newRndEvent);
                     else
                         eventManager.RemoveEventInPool(newRndEvent);
+
+                    tempStr = $"이벤트 해금\n";
+                    sb.Append(tempStr);
                     break;
             }
         }
+
+        resultInfo = sb.ToString();
     }
 
-    private void ResultInfoString(EventFeedBackType type)
-    {
-    }
+
 
     //public void Select1FeedBack()
     //{
