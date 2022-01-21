@@ -219,36 +219,45 @@ public class WorldMap : MonoBehaviour
     private void PaintLink()
     {
         var lines = new GameObject("Lines");
+        //var pos = new Vector3(5f, 0f, 0f);
         for (int i = 0; i < column - 1; i++)
         {
             for (int j = 0; j < row; j++)
             {
-                if (maps[j, i] == null )
+                if (maps[j, i] == null)
                     continue;
                 var lineGo = Instantiate(linePrefab, lines.transform);
                 var lineRender = lineGo.GetComponent<LineRenderer>();
                 lineRender.startWidth = lineRender.endWidth = 0.2f;
-                lineRender.material.color = Color.white;
-                lineRender.SetPosition(0, maps[j, i].transform.position);
-                lineRender.SetPosition(1, maps[j, i].Children[0].transform.position);
+                var startPos = maps[j, i].transform.position;
+                var endPos = maps[j, i].Children[0].transform.position;
+                var newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
+                var newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                lineRender.SetPosition(0, newStartPos);
+                lineRender.SetPosition(1, newEndPos);
+
 
                 if (maps[j, i].Children.Count >= 2)
                 {
                     var lineGoSecond = Instantiate(linePrefab, lines.transform);
                     var lineRenderSecond = lineGoSecond.GetComponent<LineRenderer>();
                     lineRenderSecond.startWidth = lineRenderSecond.endWidth = 0.2f;
-                    lineRenderSecond.material.color = Color.white;
-                    lineRenderSecond.SetPosition(0, maps[j, i].transform.position);
-                    lineRenderSecond.SetPosition(1, maps[j, i].Children[1].transform.position);
+                    endPos = maps[j, i].Children[1].transform.position;
+                    newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                    lineRenderSecond.SetPosition(0, newStartPos);
+                    lineRenderSecond.SetPosition(1, newEndPos);
                 }
                 if (maps[j, i].Children.Count >= 3)
                 {
                     var lineGoThird = Instantiate(linePrefab, lines.transform);
                     var lineRenderThird = lineGoThird.GetComponent<LineRenderer>();
                     lineRenderThird.startWidth = lineRenderThird.endWidth = 0.2f;
-                    lineRenderThird.material.color = Color.white;
-                    lineRenderThird.SetPosition(0, maps[j, i].transform.position);
-                    lineRenderThird.SetPosition(1, maps[j, i].Children[2].transform.position);
+                    endPos = maps[j, i].Children[2].transform.position;
+                    newStartPos = Vector3.Lerp(startPos, endPos, 0.1f);
+                    newEndPos = Vector3.Lerp(startPos, endPos, 0.9f);
+                    lineRenderThird.SetPosition(0, newStartPos);
+                    lineRenderThird.SetPosition(1, newEndPos);
                 }
             }
         }
@@ -345,7 +354,7 @@ public class WorldMap : MonoBehaviour
         }
         beforeDate = date;
     }
-    public void FogComing()
+    public void FogComing() // 미니맵을 켰을 때(버튼 클릭 시) 실행되는 메서드
     {
         var date = Vars.UserData.uData.Date;
         if (date == 3)
@@ -357,7 +366,6 @@ public class WorldMap : MonoBehaviour
         }
         beforeDate = Vars.UserData.uData.Date;
     }
-
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
@@ -365,7 +373,6 @@ public class WorldMap : MonoBehaviour
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
-
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 100f, 0f, index.x * posX + 200f), Quaternion.identity);
@@ -374,7 +381,6 @@ public class WorldMap : MonoBehaviour
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
-
     private void FindNode(List<WorldMapNode> nodeList, int startIndex, int endIndex)
     {
         var end = endIndex + 1 > column  ? column : endIndex + 1;

@@ -5,7 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class HuntTilesMaker : MonoBehaviour
 {
-    public HuntPlayer player;
+    public HuntPlayer huntPlayers;
     public GameObject bush;
     public Material[] bushMaterials;
 
@@ -66,7 +66,7 @@ public class HuntTilesMaker : MonoBehaviour
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<HuntTile>();
         tile.materials = bushMaterials;
-        tile.player = player;
+        tile.huntPlayers = huntPlayers;
         tile.index = index;
         tile.ren = ren;
 

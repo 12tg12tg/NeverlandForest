@@ -27,10 +27,5 @@ public class LanternBar : MonoBehaviour
         {
             blight.value = 0.25f;
         }
-        else
-        {
-            blight.value = 0;
-        }
-
     }
 }

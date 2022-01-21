@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public enum HuntingEvent
 {
@@ -13,7 +14,7 @@ public enum HuntingEvent
 }
 public class HuntingManager : MonoBehaviour
 {
-    public HuntPlayer huntPlayer;
+    public HuntPlayer huntPlayers;
     public HuntTilesMaker tileMaker;
     public Image getItemImage;
     public TMP_Text huntButtonText;
@@ -51,18 +52,16 @@ public class HuntingManager : MonoBehaviour
 
         InitHuntPercentage();
 
-        for (int i = 0; i < tiles.Length; i++)
-        {
-            if (tiles[i].index.Equals(huntPlayer.CurrentIndex))
-            {
-                huntPlayer.transform.position = tiles[i].transform.position;
-            }
-        }
+        huntPlayers.hunter.transform.position = 
+            tiles.Where(x => x.index.Equals(huntPlayers.CurrentIndex))
+                 .Select(x => x.transform.position).FirstOrDefault();
+
         if (worldMap != null)
         {
             worldMap.InitWorldMiniMap();
         }
 
+        // TODO : »èÁ¦ ¿¹Á¤
         TestGizmos();
     }
 
@@ -134,8 +133,7 @@ public class HuntingManager : MonoBehaviour
 
         Debug.Log($"³» È®·ü:{totalHuntPercent * 0.01f} > ·£´ý È®·ü:{rnd}");
 
-        huntPlayer.shootArrow.SetActive(true);
-        StartCoroutine(huntPlayer.shootArrow.GetComponent<Arrow>().ArrowShoot(pos));
+        huntPlayers.ShootArrow(pos);
     }
 
     private void TestGizmos()
@@ -148,12 +146,13 @@ public class HuntingManager : MonoBehaviour
         }
     }
 
-    public void LookOnTarget() => huntPlayer.ShootAnimation(animal.transform.position);
+    public void LookOnTarget() => huntPlayers.ShootAnimation(animal.transform.position);
     private void Hunting(object[] vals)
     {
         var textTMP = result.GetComponentInChildren<TMP_Text>();
         if (isHunted)
         {
+            huntPlayers.HuntSuccessAnimation();
             animal.AnimalDead();
             getItemImage.gameObject.SetActive(true);
             textTMP.text = "Hunting Success";
@@ -161,10 +160,11 @@ public class HuntingManager : MonoBehaviour
         }
         else
         {
+            huntPlayers.HuntFailAnimation();
             animal.AnimalRunAway();
             textTMP.text = "Hunting Fail";
         }
-
+        huntPlayers.ReturnBow();
         animal.AnimalMove(isHunted, () => result.SetActive(true));
     }
         

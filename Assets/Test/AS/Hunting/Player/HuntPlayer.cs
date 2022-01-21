@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class HuntPlayer : UnitBase
 {
-    private Coroutine coMove;
-    public GameObject shootArrow;
-    public Animator playerAnimation;
-
+    [Header("Hunter")]
+    public Arrow shootArrow;
+    public GameObject hunter;
+    public Animator hunterAnimation;
+    public GameObject bowHand;
+    public GameObject bowBack;
+    private Coroutine coHunterMove;
     private Vector2 currentIndex;
     public Vector2 CurrentIndex => currentIndex;
+
+    [Header("Herbalist")]
+    public GameObject herbalist;
+    public Animator herbalistAnimation;
+
 
     private void Start()
     {
@@ -29,7 +37,7 @@ public class HuntPlayer : UnitBase
             return;
 
         // index의 y 값 비교를 통해서 앞으로 한칸 전진 했는지 판단 가능
-        if (index.y.Equals(currentIndex.y + 1) && coMove == null)
+        if (index.y.Equals(currentIndex.y + 1) && coHunterMove == null)
         {
             isForward = true;
             // 동물이 도망칠 확률 업
@@ -37,22 +45,47 @@ public class HuntPlayer : UnitBase
         }
         EventBus<HuntingEvent>.Publish(HuntingEvent.PlayerMove, isForward, isOnBush);
 
-        if (coMove == null)
+        if (coHunterMove == null)
         {
-            playerAnimation.SetTrigger("Walk");
+            hunterAnimation.SetTrigger("Walk");
             currentIndex = index;
         }
-        coMove ??= StartCoroutine(Utility.CoTranslateLookFoward(transform, transform.position, pos, 1f, () =>
+        coHunterMove ??= StartCoroutine(Utility.CoTranslateLookFoward(hunter.transform, hunter.transform.position, pos, 1f, () =>
         {
-            playerAnimation.SetTrigger("Idle");
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
-            coMove = null;
+            hunterAnimation.SetTrigger("Idle");
+            hunter.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+            coHunterMove = null;
             EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape);
         }));
     }
+
+    public void HuntFailAnimation()
+    {
+        hunterAnimation.SetTrigger("Fail");
+        herbalistAnimation.SetTrigger("Fail");
+    }
+    public void HuntSuccessAnimation()
+    {
+        hunterAnimation.SetTrigger("Success");
+        herbalistAnimation.SetTrigger("Success");
+    }
+
+    // TODO : 더 좋은 방법이 있으면 바꿀 예정
+    public void ReturnBow()
+    {
+        bowBack.SetActive(true);
+        bowHand.SetActive(false);
+    }
+
+
     public void ShootAnimation(Vector3 animalPos)
     {
-        playerAnimation.SetTrigger("ShootingArrow");
-        transform.LookAt(animalPos);
+        hunterAnimation.SetTrigger("ShootingArrow");
+        hunter.transform.LookAt(animalPos);
+    }
+    public void ShootArrow(Vector3 pos)
+    {
+        shootArrow.gameObject.SetActive(true);
+        StartCoroutine(shootArrow.Shoot(pos));
     }
 }

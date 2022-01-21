@@ -12,7 +12,7 @@ public class Arrow : MonoBehaviour
     private const float gravity = 9.8f;
     private const float maxDistance = 30f;
 
-    public IEnumerator ArrowShoot(Vector3 targerPos)
+    public IEnumerator Shoot(Vector3 targerPos)
     {
         // 높이 계산
         var distance = Vector3.Distance(transform.position, targerPos);
