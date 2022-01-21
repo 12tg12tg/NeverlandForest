@@ -22,7 +22,7 @@ public class WorldMapManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapNode);
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapData);
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMap = gameObject.AddComponent<WorldMap>();
@@ -43,6 +43,8 @@ public class WorldMapManager : MonoBehaviour
             NodeLinkToPlayer();
             player.ComeBackWorldMap();
             worldMapCamera.FollowPlayer();
+            if (ground != null)
+                ground.Load();
         }
     }
 
@@ -53,9 +55,9 @@ public class WorldMapManager : MonoBehaviour
         {
             for (int j = 0; j < row; j++)
             {
-                if (maps[j, i] == null)
+                if (maps[i][j] == null)
                     continue;
-                var node = maps[j, i].GetComponent<WorldMapNode>();
+                var node = maps[i][j].GetComponent<WorldMapNode>();
                 node.OnClick += (x) =>
                 {
                     for (int i = 0; i < x.Parent.Count; i++)
