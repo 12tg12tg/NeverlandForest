@@ -43,6 +43,10 @@ public static class DataTableManager
         var localizationTable = new LocalizationTable();
         localizationTable.Load();
         tables.Add(typeof(LocalizationTable), localizationTable);
+
+        var randomEventTable = new RandomEventTable();
+        randomEventTable.Load();
+        tables.Add(typeof(RandomEventTable), randomEventTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase

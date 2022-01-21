@@ -45,6 +45,13 @@ public class DungeonSystem : MonoBehaviour
     private Vector2 curDungeonIndex;
     private int startIndex;
     private int curDungeonRoomIndex;
+
+
+    // 테스트용 코드
+    private void Update()
+    {
+    }
+
     public void OnGUI()
     {
         if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))

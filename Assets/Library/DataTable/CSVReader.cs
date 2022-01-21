@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Text;
 
 public class CSVReader
 {
@@ -19,10 +20,52 @@ public class CSVReader
         if (lines.Length <= 1) return list;
 
         var header = Regex.Split(lines[0], SPLIT_RE);
+        var sb = new StringBuilder();
+        bool isSkip = false;
+        string line = string.Empty;
         for (var i = 1; i < lines.Length; i++)
         {
+            // " 포함된 시작부분
+            if(!isSkip && lines[i].Contains("\""))
+            {
+                lines[i].Replace("\"", "");
+                if (lines[i].Contains("\n"))
+                {
+                    sb.Append(lines[i]);
+                    sb.Append("\n");
+                }
+                else
+                    sb.Append(lines[i]);
+                isSkip = true;
 
-            var values = Regex.Split(lines[i], SPLIT_RE);
+                continue;
+            }
+            // " 포함된 마지막 부분
+            else if(isSkip && lines[i].Contains("\""))
+            {
+                lines[i].Replace("\"", "");
+                sb.Append(lines[i]);
+                line = sb.ToString();
+                isSkip = false;
+                sb.Clear();
+            }
+            else if(isSkip && !lines[i].Contains("\""))
+            {
+                if (lines[i].Contains("\n"))
+                {
+                    sb.Append(lines[i]);
+                    sb.Append("\n");
+                }
+                else
+                    sb.Append(lines[i]);
+                continue;
+            }
+            else
+            {
+                line = lines[i];
+            }
+            
+            var values = Regex.Split(line, SPLIT_RE);
             if (values.Length == 0 || values[0] == "") continue;
 
             var entry = new Dictionary<string, string>();
