@@ -54,7 +54,6 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
     private IEnumerator CoActionCommand()
     {
         var tiles = tileMaker.GetSkillRangedTiles(command.target, command.skill.SkillTableElem.range);
-        var d = tiles.Count();
         foreach (var tile in tiles)
         {
             tile.ConfirmAsTarget(command.type, tileMaker.LastClickPos, command.skill.SkillTableElem.range);
@@ -92,8 +91,6 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
         if (command.IsUpdated || manager.IsDuringPlayerAction)
             return;
 
-        // 캐릭터 클릭했을 시 수행할 동작들
-        manager.OpenSkillUI(playerType);
     }
 
     public void OnDrop(PointerEventData eventData)

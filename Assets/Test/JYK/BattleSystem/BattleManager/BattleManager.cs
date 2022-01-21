@@ -27,20 +27,16 @@ public class BattleManager : MonoBehaviour
     private PlayerCommand boyInput;
     private PlayerCommand girlInput;
 
-    //Canvas
-    public CanvasScaler cs;
-
     //Instance
     [SerializeField] private BottomUIManager uiManager;
     public TileMaker tileMaker;
     public Image dragSlot;
-    public BattleSkillInfo info;
-    public SkillSelectUI hunterUI;
-    public SkillSelectUI herbologistUI;
     public BattleMessage message;
     public BattleMessage cautionMessage;
     public BattleFSM FSM;
-    public SkillSelectUI trapUI;
+
+    //New Instance
+    [SerializeField] private Button battleStartBut;
 
     //Vars
     private int turn;
@@ -52,10 +48,12 @@ public class BattleManager : MonoBehaviour
     private IEnumerable<Tiles> targetTiles;
     private bool isWaitingTileSelect;
     private const float monsterSpeed = 10f;
+    public bool isPlayerFirst;
+    private int progress;
 
     //Property
+    public int Progress => progress;
     public int Turn { get => turn; set => turn = value; }
-    public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
     public bool IsDuringPlayerAction { get; set; }
@@ -126,6 +124,7 @@ public class BattleManager : MonoBehaviour
         preWaveTurn = 1;
         curWave = 0;
         IsDuringPlayerAction = false;
+        GameManager.Manager.State = GameState.Battle;
 
         // 3. 몬스터 (랜덤뽑기) & 배치
         monster.Clear();
@@ -215,15 +214,27 @@ public class BattleManager : MonoBehaviour
         SetUnitOnTile(new Vector2(0, 0), girl.Stats);
         SetUnitOnTile(new Vector2(1, 0), boy.Stats);
 
-        //스킬창 Init
-        hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
-        herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
-        trapUI.Init(PlayerType.None, this, Vars.GirlSkillList, null);
-
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
     }
 
+    public void WaitUntillSettingDone()
+    {
+        /* 전투시작 버튼 활성화
+           인벤토리에서 트랩류 스킬 테두리 On && 나머지 비활성화 */
+        battleStartBut.gameObject.SetActive(true);
+
+
+
+    }
+    
+    public void StartButton() // 버튼용 함수
+    {
+        battleStartBut.gameObject.SetActive(false);
+
+        var start = FSM.GetState(BattleState.Start) as BattleStart;
+        start.IsReadyDone = true;
+    }
 
     //Wave
     public bool IsReadyToNextWave()
@@ -332,7 +343,7 @@ public class BattleManager : MonoBehaviour
             return;
         if (!IsReadyToNextWave())
             return;
-        if (turn != 1 && turn - preWaveTurn < 2)
+        if (turn != 1 && turn - preWaveTurn < 1)
             return;
         else
             preWaveTurn = turn;
@@ -355,19 +366,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    //Battle Ready
-    public void ActivateTrapSetUI()
-    {
-        trapUI.gameObject.SetActive(true);
-    }
-
-    public void TrapSettingDone()
-    {
-        var startState = FSM.GetState(BattleState.Start) as BattleStart;
-        startState.IsTrapDone = true;
-        trapUI.Close();
-    }
-
     //UI
     public void PrintMessage(string message, float time, UnityAction action)
     {
@@ -377,14 +375,6 @@ public class BattleManager : MonoBehaviour
     public void PrintCaution(string message, float time, float fadeDelay, UnityAction action)
     {
         cautionMessage.PrintMessageFadeOut(message, 0.7f, 0.5f, null);
-    }
-
-    public void OpenSkillUI(PlayerType type)
-    {
-        if (type == PlayerType.Boy)
-            hunterUI.Open();
-        else
-            herbologistUI.Open();
     }
 
     public void CreateTempSkillUiForDrag(DataPlayerSkill skill)
@@ -405,20 +395,6 @@ public class BattleManager : MonoBehaviour
     {
         dragSlot.gameObject.SetActive(false);
         isDrag = false;
-    }
-
-    public void OpenSkillInfo(SkillButton clickedButton, DataPlayerSkill skill, Vector2 pos)
-    {
-        CurClickedButton = clickedButton;
-        info.gameObject.SetActive(true);
-        info.Init(skill, pos);
-    }
-
-    public void OpenItemInfo(SkillButton clickedButton, DataConsumable item, Vector2 pos)
-    {
-        CurClickedButton = clickedButton;
-        info.gameObject.SetActive(true);
-        info.Init(item, pos);
     }
 
     //Tile
@@ -514,6 +490,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void UndisplayMonsterTile()
+    {
+        targetTiles = tileMaker.GetMonsterTiles();
+        foreach (var tile in targetTiles)
+        {
+            tile.ResetHighlightExceptConfirm();
+        }
+    }
+
     public void DisplayPlayerTile()
     {
         targetTiles = tileMaker.GetPlayerTiles();
@@ -537,6 +522,20 @@ public class BattleManager : MonoBehaviour
     {
         isWaitingTileSelect = false;
     }
+
+    //Progress
+    public void UpdateProgress()
+    {
+        progress++;
+        BottomUIManager.Instance.UpdateProgress();
+    }
+
+    public void ResetProgress()
+    {
+        progress = 0;
+        BottomUIManager.Instance.UpdateProgress();
+    }
+
 
     //Command
     public void ClearCommand()
@@ -565,24 +564,24 @@ public class BattleManager : MonoBehaviour
         attacker.TurnInit(ActionType.Skill);
     }
 
-    public void DoCommand(PlayerType type, Vector2 target, DataConsumable item)
+    public void DoCommand(DataConsumable item)
     {
         PlayerCommand command;
         PlayerBattleController attacker;
-        if (type == PlayerType.Boy)
-        {
-            command = boyInput;
-            attacker = boy;
-        }
-        else
-        {
-            command = girlInput;
-            attacker = girl;
-        }
+        //if (type == PlayerType.Boy)
+        //{
+        //    command = boyInput;
+        //    attacker = boy;
+        //}
+        //else
+        //{
+        //    command = girlInput;
+        //    attacker = girl;
+        //}
 
-        command.Create(target, item);
+        //command.Create(target, item);
 
-        attacker.TurnInit(ActionType.Item);
+        //attacker.TurnInit(ActionType.Item);
     }
 
     public void EndOfPlayerAction()
@@ -598,7 +597,17 @@ public class BattleManager : MonoBehaviour
             IsDuringPlayerAction = false;
             if (boyInput.IsUpdated && girlInput.IsUpdated)
             {
-                FSM.ChangeState(BattleState.Monster);
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Boy, true);
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Girl, true);
+
+                if (isPlayerFirst)
+                {
+                    FSM.ChangeState(BattleState.Monster);
+                }
+                else
+                {
+                    FSM.ChangeState(BattleState.Settlement);
+                }
             }
             else
             {
@@ -621,10 +630,7 @@ public class BattleManager : MonoBehaviour
         {
             Init(true);
         }
-        if (GUILayout.Button("Wave Update", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            UpdateWave();
-        }
+
         if(GUILayout.Button(" ← ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
             var monster0 = monster[0];
@@ -641,6 +647,17 @@ public class BattleManager : MonoBehaviour
 
             MoveUnitOnTile(foward.index, monster0, null, null);
         }
+
+        if (GUILayout.Button("Lantern 2", GUILayout.Width(100), GUILayout.Height(100)))
+        {
+            ConsumeManager.ConsumeLantern(12);
+        }
+        if (GUILayout.Button("Lantern 3", GUILayout.Width(100), GUILayout.Height(100)))
+        {
+            ConsumeManager.FullingLantern(12);
+        }
+
+
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
         //{
         //    List<int> list = new List<int>(new int[] { 0, 1, 2, 3, 4, 5 });
@@ -679,5 +696,7 @@ public class BattleManager : MonoBehaviour
         //        PlaceUnitOnTile(foward.index, monster0, true);
         //    }
         //}
+
+
     }
 }

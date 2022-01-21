@@ -321,12 +321,11 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             return;
 
         var manager = BattleManager.Instance;
-        var button = manager.CurClickedButton;
 
-        var skill = button.Skill;
-        var item = button.Item;
+        var skill = BottomUIManager.Instance.curSkillButton.skill;
+        //var item = BottomUIManager.Instance.curSkillButton.item;
 
-        var actionType = button.CurState;
+        var actionType = BottomUIManager.Instance.buttonState;
 
         if (skill.SkillTableElem.range == SkillRangeType.One)
         {
@@ -338,7 +337,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             }
             else
             {
-                tileMaker.AffectedTileCancle(button.groupUI.type);
+                tileMaker.AffectedTileCancle(skill.SkillTableElem.player);
                 tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
             }
         }
@@ -352,18 +351,19 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         }
 
-        if (actionType == ActionType.Skill)
+        if (actionType == BottomUIManager.ButtonState.Skill)
         {
-            manager.DoCommand(button.groupUI.type, index, skill);
+            manager.DoCommand(skill.SkillTableElem.player, index, skill);
         }
         else
         {
-            manager.DoCommand(button.groupUI.type, index, item);
+            //manager.DoCommand(item as DataConsumable);
         }
 
-        button.groupUI.EnableGroup();
-        button.groupUI.Close();
+        BottomUIManager.Instance.curSkillButton.Cancle();
+        BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
         manager.EndTileClick();
+        manager.UpdateProgress();
     }
 
     public void Units_UnitAdd(UnitBase unit)
