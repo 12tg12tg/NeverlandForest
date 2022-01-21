@@ -14,7 +14,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     [SerializeField] private Button below;              // 활성화/비활성화할 버튼
 
     [SerializeField] private RectTransform coverRt;
-    [SerializeField] private CanvasScaler cs;
+    private CanvasScaler cs;
     private float height;
     private Vector3 openOffset;                         // Open/Close용 크기 계산
 
@@ -29,7 +29,7 @@ public class BottomSkillButtonUI : MonoBehaviour
                 CalculateOffset();
             }
             return openOffset;
-        }
+        } 
     }
 
     public void Init(DataPlayerSkill skill)
@@ -44,6 +44,7 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void CalculateOffset()
     {
+        cs = GetComponentInParent<CanvasScaler>();
         var size = Utility.RelativeRectSize(cs, coverRt);
         height = size.y;
         openOffset = new Vector3(0f, height * 3 / 8, 0f);
@@ -54,7 +55,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     {
         BottomUIManager.Instance.info.Init(skill);
 
-        if(BattleManager.Instance.IsMiddleOfBattle)
+        if(GameManager.Manager.State == GameState.Battle)
         {
             cover.interactable = false;
             StartCoroutine(Utility.CoTranslate(coverRt, coverRt.position, coverRt.position + OpenOffset, 0.3f,

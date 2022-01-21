@@ -59,7 +59,6 @@ public class BattleManager : MonoBehaviour
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
     public bool IsDuringPlayerAction { get; set; }
-    public bool IsMiddleOfBattle { get; set; }
 
     private void Awake()
     {

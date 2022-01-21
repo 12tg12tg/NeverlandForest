@@ -15,7 +15,7 @@ public enum TimeState
     NightTime,
     DayTime,
 }
-public enum GameState
+public enum LivingState
 {
     None,
     Playing,
@@ -126,7 +126,7 @@ public static class ConsumeManager
             Vars.UserData.uData.Tiredness = 0;
             //eventbus에 게임오버를 보내주자.
             //eventbus에 gamestate는 어디서 만들지? gameManger에 만들어져 있던가?
-            EventBus<GameState>.Publish(GameState.GameOver);
+            EventBus<LivingState>.Publish(LivingState.GameOver);
         }
         CurStaminaChange();
     }

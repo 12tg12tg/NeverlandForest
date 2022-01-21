@@ -25,6 +25,17 @@ public class BottomUIManager : MonoBehaviour
         SkillButtonInit();
     }
 
+    private void OnGUI()
+    {
+        if(GUILayout.Button("Set Battle State Toggle"))
+        {
+            if (GameManager.Manager.State == GameState.Battle)
+                GameManager.Manager.State = GameState.None;
+            else
+                GameManager.Manager.State = GameState.Battle;
+        }
+    }
+
     public void SkillButtonInit()
     {
         info.Init();
