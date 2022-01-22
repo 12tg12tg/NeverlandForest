@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// 이 UI가 켜지는 순간 기본 던전맵 동작은 작동 중단
 public class RandomEventUIManager : MonoBehaviour
 {
     public enum ButtonState { Item, Skill }
@@ -20,20 +21,58 @@ public class RandomEventUIManager : MonoBehaviour
     [HideInInspector] public ButtonState buttonState;
 
     //PopUpWindow
+    public bool isPopUp;
     public RectTransform popUpWindow;
     public DataItem selectItem;
 
+    // RandomEventData
+    public DataRandomEvent randomEventData;
+
     // RandomEventText
     public List<GameObject> selectButtons;
+    public TextMeshProUGUI eventDesc;
 
     private void Awake()
     {
         instance = this;
-        //popUpWindow.SetActive(false);
+        gameObject.SetActive(false);
+        popUpWindow.gameObject.SetActive(false);
+        ItemButtonInit();
+    }
+    private void Update()
+    {
+        if (!isPopUp)
+        {
+            if (MultiTouch.Instance.TouchCount > 0)
+            {
+                var touchPos = MultiTouch.Instance.TouchPos;
+                if (!IsContainPos(touchPos))
+                {
+                    popUpWindow.gameObject.SetActive(false);
+                    isPopUp = false;
+                }
+            }
+        }
+
+        if (MultiTouch.Instance.TouchCount > 0)
+            isPopUp = false;
+    }
+    private bool IsContainPos(Vector2 pos)
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
+    }
+
+    public void EventInit(DataRandomEvent data)
+    {
+        randomEventData = data;
+        gameObject.SetActive(true);
+        eventDesc.text = randomEventData.eventDesc;
+        SelectInit();
     }
 
     private void SelectInit()
     {
+        
         for (int i = 0; i < selectButtons.Count; i++)
         {
             var btnObj = selectButtons[i];
@@ -47,19 +86,20 @@ public class RandomEventUIManager : MonoBehaviour
 
             // 현재 방의 이벤트 데이터의 피드백 함수 add함
             // 다음 UI로 전환하는 함수 add
-            //button.onClick.AddListener()
+            int selectNum = i+1;
+            button.onClick.AddListener(() => randomEventData.SelectFeedBack(selectNum));
 
             // 이벤트 데이터의 i 인덱스 selectString으로 초기화
-            //nameText.text = 
+            nameText.text = randomEventData.selectName[i];
             // 이벤트 데이터에서 i 인덱스 is선택값 이 true 면 초기화 아니면 비공개 defaultText로 표시
-            //infoText.text = 
+            infoText.text = randomEventData.SelectInfos[i];
         }
     }
 
     public void ItemButtonInit()
     {
         info.Init();
-        //popUpWindow.SetActive(false);
+        popUpWindow.gameObject.SetActive(false);
 
         buttonState = ButtonState.Item;
         itemButtons.ForEach((n) => n.gameObject.SetActive(true));
@@ -103,8 +143,9 @@ public class RandomEventUIManager : MonoBehaviour
                 allItem.OwnCount = 1;
                 if (Vars.UserData.RemoveItemData(allItem))
                 {
-                    //popUpWindow.SetActive(false);
+                    popUpWindow.gameObject.SetActive(false);
                     selectItem = null;
+                    isPopUp = false;
                 }
                 break;
         }
@@ -123,8 +164,9 @@ public class RandomEventUIManager : MonoBehaviour
                 allItem.OwnCount = 1;
                 if (Vars.UserData.RemoveItemData(allItem))
                 {
-                    //popUpWindow.SetActive(false);
+                    popUpWindow.gameObject.SetActive(false);
                     selectItem = null;
+                    isPopUp = false;
                 }
                 break;
         }

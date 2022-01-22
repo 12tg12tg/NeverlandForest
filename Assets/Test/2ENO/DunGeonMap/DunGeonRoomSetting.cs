@@ -41,6 +41,7 @@ public class DungeonRoom
     // 현재 이벤트타입 리스트에 따라 생성되어질 오브젝트들 정보
     public int gatheringCount;
     public List<EventData> eventObjDataList = new List<EventData>();
+    public EventData randomEventData;
 
     public DunGeonRoomType RoomType
     {
@@ -94,7 +95,7 @@ public static class DunGeonRoomSetting
         // 입력받은 방에 1~2개 사이의 이벤트를 넣어주고
         // 각 이벤트를 나올수 있는 이벤트 타입중 확률적으로 1개 골라서 넣어준다
 
-        var tempPercent = new List<int> { 30, 40, 30, 5, 5 };
+        var tempPercent = new List<int> { 20, 30, 20, 30, 5 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
             room.SetEvent(DunGeonEvent.Gathering);

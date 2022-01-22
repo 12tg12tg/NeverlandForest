@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
-// 퍼사드 느낌
 public class DungeonSystem : MonoBehaviour
 {
     RoomTool roomManager;
@@ -12,7 +11,7 @@ public class DungeonSystem : MonoBehaviour
     private DungeonRoom beforeDungeonRoom;
 
     // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
-    private DungeonData dungeonSystemData = new ();
+    private DungeonData dungeonSystemData = new();
     public DungeonData DungeonSystemData
     {
         get => dungeonSystemData;
@@ -20,10 +19,11 @@ public class DungeonSystem : MonoBehaviour
 
     [Header("Prefab, Instance")]
     public NewRoomControl roomGenerate;
-
     public GatheringObject gatheringObjPrefab;
     public BattleObject battleObjPrefab;
     public HuntingObject huntingObjPrefab;
+    public RandomEventObject randomEventObjPrefab;
+
 
     [Header("Player, System")]
     public PlayerDungeonUnit dungeonPlayerGirl;
@@ -51,11 +51,6 @@ public class DungeonSystem : MonoBehaviour
     private int startIndex;
     private int curDungeonRoomIndex;
 
-
-    // 테스트용 코드
-    private void Update()
-    {
-    }
 
     public void OnGUI()
     {
@@ -109,6 +104,9 @@ public class DungeonSystem : MonoBehaviour
         worldMap.InitWorldMiniMap();
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+
+        // TODO: 임시! 가라로 해놓은거
+        RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -230,6 +228,20 @@ public class DungeonSystem : MonoBehaviour
         while (array[curIdx].nextRoomIdx != -1)
         {
             EventDataInit(array[curIdx].eventObjDataList);
+
+            // TODO: 임시.. 가라로 해놓음
+            if (array[curIdx].randomEventData != null)
+            {
+                var newData3 = new RandomIncountData();
+                newData3.eventType = DunGeonEvent.RandomIncount;
+                newData3.isCreate = array[curIdx].randomEventData.isCreate;
+                newData3.eventBasePos = array[curIdx].randomEventData.eventBasePos;
+                newData3.roomIndex = array[curIdx].randomEventData.roomIndex;
+                newData3.objectPosition = array[curIdx].randomEventData.objectPosition;
+                newData3.randomEventID = array[curIdx].randomEventData.randomEventID;
+                array[curIdx].randomEventData = newData3;
+            }
+
             curIdx = array[curIdx].nextRoomIdx;
         }
 
@@ -288,6 +300,13 @@ public class DungeonSystem : MonoBehaviour
         {
             while (roomData.RoomType != DunGeonRoomType.MainRoom)
             {
+                // TODO: 임시, 가라로 만듬
+                if(roomData.randomEventData != null)
+                {
+                    var createRd = roomData.randomEventData as RandomIncountData;
+                    var obj3 = createRd.CreateObj(randomEventObjPrefab, this);
+                    eventObjInstanceList.Add(obj3.gameObject);
+                }
                 foreach (var eventObj in roomData.eventObjDataList)
                 {
                     {
@@ -320,8 +339,6 @@ public class DungeonSystem : MonoBehaviour
                                         eventObjInstanceList.Add(obj2.gameObject);
                                         break;
                                 }
-                             
-
                                 break;
                             case DunGeonEvent.Hunt:
                                 var createHt = eventObj as HuntingData;
@@ -340,7 +357,14 @@ public class DungeonSystem : MonoBehaviour
         }
         else
         {
-            foreach(var eventObj in roomData.eventObjDataList)
+            // TODO: 임시, 가라로 만듬
+            if (roomData.randomEventData != null)
+            {
+                var createRd = roomData.randomEventData as RandomIncountData;
+                var obj3 = createRd.CreateObj(randomEventObjPrefab, this);
+                eventObjInstanceList.Add(obj3.gameObject);
+            }
+            foreach (var eventObj in roomData.eventObjDataList)
             {
                 {
                     switch (eventObj.eventType)

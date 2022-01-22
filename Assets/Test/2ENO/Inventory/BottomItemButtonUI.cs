@@ -49,21 +49,41 @@ public class BottomItemButtonUI : MonoBehaviour
 
     public void ItemButtonClick()
     {
-        BottomUIManager.Instance.info.Init(dataItem);
-        BottomUIManager.Instance.selectItem = dataItem;
-        BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-        BottomUIManager.Instance.isPopUp = true;
-
-        var uiVec = BottomUIManager.Instance.popUpWindow.position;
-        var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-        BottomUIManager.Instance.popUpWindow.position = newVector;
-        // 선택초기화
-        for (int i = 0; i < BottomUIManager.Instance.itemButtons.Count; i++)
+        // TODO: 임시, 가라로 해놓은거
+        if(RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
         {
-            BottomUIManager.Instance.itemButtons[i].IsSelect = false;
-        }
-        IsSelect = true;
+            RandomEventUIManager.Instance.info.Init(dataItem);
+            RandomEventUIManager.Instance.selectItem = dataItem;
+            RandomEventUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+            RandomEventUIManager.Instance.isPopUp = true;
 
+            var uiVec = RandomEventUIManager.Instance.popUpWindow.position;
+            var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+            RandomEventUIManager.Instance.popUpWindow.position = newVector;
+            // 선택초기화
+            for (int i = 0; i < RandomEventUIManager.Instance.itemButtons.Count; i++)
+            {
+                RandomEventUIManager.Instance.itemButtons[i].IsSelect = false;
+            }
+            IsSelect = true;
+        }
+        else
+        {
+            BottomUIManager.Instance.info.Init(dataItem);
+            BottomUIManager.Instance.selectItem = dataItem;
+            BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+            BottomUIManager.Instance.isPopUp = true;
+
+            var uiVec = BottomUIManager.Instance.popUpWindow.position;
+            var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+            BottomUIManager.Instance.popUpWindow.position = newVector;
+            // 선택초기화
+            for (int i = 0; i < BottomUIManager.Instance.itemButtons.Count; i++)
+            {
+                BottomUIManager.Instance.itemButtons[i].IsSelect = false;
+            }
+            IsSelect = true;
+        }
     }
 
 }

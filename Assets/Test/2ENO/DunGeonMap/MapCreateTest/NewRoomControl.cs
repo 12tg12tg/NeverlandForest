@@ -98,6 +98,9 @@ public class NewRoomControl : MonoBehaviour
         RoomEndPosAndNumberSet();
         for (int i = 0; i < objPosList.Count; i++)
         {
+            // 임시, 가라로 만듬
+            if (curDungeonRoom.randomEventData != null)
+                curDungeonRoom.randomEventData.eventBasePos = objPosList[i];
             foreach (var obj in curDungeonRoom.eventObjDataList)
             {
                 obj.eventBasePos = objPosList[i];

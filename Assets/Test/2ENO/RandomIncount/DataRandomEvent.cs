@@ -8,46 +8,74 @@ public class DataRandomEvent
     private string eventID;
     // 각종 문자열들 이지만 실제로는 stringTable의 ID
     private string eventName;
-    private string eventDesc;
-    private string select1Name;
-    private string select2Name;
-    private string select3Name;
-    private string sucess1Desc;
-    private string sucess2Desc;
-    private string sucess3Desc;
-    private string fail1Desc;
-    private string fail2Desc;
-    private string fail3Desc;
+    public string eventDesc;
+    public List<string> selectName = new List<string>();
+    //private string select2Name;
+    //private string select3Name;
+    public List<string> sucessDesc = new List<string>();
+    //private string sucess2Desc;
+    //private string sucess3Desc;
+    public List<string> failDesc = new List<string>();
+    //private string fail2Desc;
+    //private string fail3Desc;
+
+    // 이벤트의 선택지 클릭시, 해당 선택지에 대한 피드백 정보가 이후부터는 공개된다.
+    private List<bool> isSelectChecks;
+    public List<bool> IsSelectChecks
+    {
+        get
+        {
+            if (isSelectChecks == null)
+            {
+                isSelectChecks = new List<bool>();
+                isSelectChecks.Add(false);
+                isSelectChecks.Add(false);
+                isSelectChecks.Add(false);
+            }
+            return isSelectChecks;
+        }
+        set => isSelectChecks = value;
+    }
+
+    private List<string> selectInfos;
+    public List<string> SelectInfos
+    {
+        get
+        {
+            if (selectInfos == null)
+            {
+                selectInfos = new List<string>();
+                selectInfos.Add("선택되지 않은 선택지입니다");
+                selectInfos.Add("선택되지 않은 선택지입니다");
+                selectInfos.Add("선택되지 않은 선택지입니다");
+            }
+            return selectInfos;
+        }
+        set => selectInfos = value;
+    }
+    private string resultInfo;
 
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
-    private RandomEventManager eventManager;
 
     private bool isSucessFeedBack;
 
-    // 이벤트의 선택지 클릭시, 해당 선택지에 대한 피드백 정보가 이후부터는 공개된다.
-    private bool[] isSelectCheck = new bool[3];
 
-    private string[] selectInfo = new string[3];
-
-    private string resultInfo;
-
-    public DataRandomEvent(RandomEventTableElem data, RandomEventManager manager)
+    public DataRandomEvent(RandomEventTableElem data)
     {
-        eventManager = manager;
         eventID = data.id;
         eventData = data;
         eventName = data.name;
         eventDesc = data.eventDesc;
-        select1Name = data.select1Name;
-        select2Name = data.select2Name;
-        select3Name = data.select3Name;
-        sucess1Desc = data.sucess1Desc;
-        sucess2Desc = data.sucess2Desc;
-        sucess3Desc = data.sucess3Desc;
-        fail1Desc = data.fail1Desc;
-        fail2Desc = data.fail2Desc;
-        fail3Desc = data.fail3Desc;
+        selectName.Add(data.select1Name);
+        selectName.Add(data.select2Name);
+        selectName.Add(data.select3Name);
+        sucessDesc.Add(data.sucess1Desc);
+        sucessDesc.Add(data.sucess2Desc);
+        sucessDesc.Add(data.sucess3Desc);
+        failDesc.Add(data.fail1Desc);
+        failDesc.Add(data.fail2Desc);
+        failDesc.Add(data.fail3Desc);
     }
     // 피드백 함수들, 피드백 함수로 인해 값의 변화가 없는 케이스는 return
     public void SelectFeedBack(int selectNum)
@@ -74,10 +102,6 @@ public class DataRandomEvent
                 eventSucessChance = eventData.sucess3Chance;
                 break;
         }
-
-        if (eventTypes[0] == EventFeedBackType.None || eventTypes[0] == EventFeedBackType.NoLose
-            || eventTypes[0] == EventFeedBackType.GetNote || eventTypes[0] == EventFeedBackType.Battle)
-            return;
 
         if (eventSucessChance == 0)
             return;
@@ -130,6 +154,11 @@ public class DataRandomEvent
                 isSucessFeedBack = false;
             }
         }
+
+        if (eventTypes[0] == EventFeedBackType.None || eventTypes[0] == EventFeedBackType.NoLose
+    || eventTypes[0] == EventFeedBackType.GetNote || eventTypes[0] == EventFeedBackType.Battle)
+            return;
+
         StringBuilder sb = new StringBuilder();
         string tempStr;
 
@@ -212,11 +241,11 @@ public class DataRandomEvent
                     break;
                 case EventFeedBackType.AnotherEvent:
                     // 다른 이벤트 해금 - 랜덤매니저 함수 호출
-                    var newRndEvent = eventManager.allDataList.Find(x => x.EventData.id == $"{eventfeedbackIDs[i]}");
+                    var newRndEvent = RandomEventManager.Instance.allDataList.Find(x => x.EventData.id == $"{eventfeedbackIDs[i]}");
                     if (eventVals[i] == 1)
-                        eventManager.AddEventInPool(newRndEvent);
+                        RandomEventManager.Instance.AddEventInPool(newRndEvent);
                     else
-                        eventManager.RemoveEventInPool(newRndEvent);
+                        RandomEventManager.Instance.RemoveEventInPool(newRndEvent);
 
                     tempStr = $"이벤트 해금\n";
                     sb.Append(tempStr);
