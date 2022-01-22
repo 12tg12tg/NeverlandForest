@@ -330,7 +330,6 @@ public static class ConsumeManager
             totalTime = 0;
         }
         Vars.UserData.uData.BonfireHour = totalTime/60;
-        CampManager.Instance.ChangeBonTime();
     }
 
     public static void RecoveryBonFire(float minute, float hour = 0)
@@ -339,7 +338,6 @@ public static class ConsumeManager
         totalTime += minute;
         totalTime += 60 * hour;
         Vars.UserData.uData.BonfireHour = totalTime / 60;
-        CampManager.Instance.ChangeBonTime();
 
     }
 
