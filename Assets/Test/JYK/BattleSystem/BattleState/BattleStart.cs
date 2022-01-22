@@ -65,7 +65,7 @@ public class BattleStart : State<BattleState>
             }
 
             manager.PrintMessage($"{manager.Turn}ÅÏ ½ÃÀÛ", 0.8f,
-                () => { manager.UpdateWave(); action.Invoke(); });
+                () => { manager.UpdateWave(); manager.AllMonsterDebuffCheck(action); }); 
         }
     }
 

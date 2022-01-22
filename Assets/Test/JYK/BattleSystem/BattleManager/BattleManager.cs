@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     private MultiTouch multiTouch;
 
     //Unit
-    public List<MonsterUnit> monster = new List<MonsterUnit>();
+    public List<MonsterUnit> monsters = new List<MonsterUnit>();
     private Queue<MonsterUnit> wave1 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave2 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave3 = new Queue<MonsterUnit>();
@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
         GameManager.Manager.State = GameState.Battle;
 
         // 3. 몬스터 (랜덤뽑기) & 배치
-        monster.Clear();
+        monsters.Clear();
         wave1.Clear();
         wave2.Clear();
         wave3.Clear();
@@ -264,7 +264,7 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
                 var tilePos = new Vector2(i, 6);
                 tempForCoroutine.ObstacleAdd(tilePos);
@@ -287,7 +287,7 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
                 var tilePos = new Vector2(indexArr[i], 6);
                 tempForCoroutine.ObstacleAdd(tilePos);
@@ -591,7 +591,7 @@ public class BattleManager : MonoBehaviour
     public void EndOfPlayerAction()
     {
         // 이겼는지 체크
-        var monsterlist = monster.Where(n => n.State != MonsterState.Dead).ToList();
+        var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
             PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
@@ -620,6 +620,17 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void AllMonsterDebuffCheck(UnityAction action = null)
+    {
+        var monster = monsters.Where(x => x.obstacles != null)
+                              .Select(x => x)
+                              .ToList();
+
+        for (int i = 0; i < monster.Count; i++)
+        {
+            monster[i].ObstacleHit(action);
+        }
+    }
     private void OnGUI()
     {
         if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
@@ -637,7 +648,7 @@ public class BattleManager : MonoBehaviour
 
         if(GUILayout.Button(" ← ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y - 1));
 
@@ -645,7 +656,7 @@ public class BattleManager : MonoBehaviour
         }
         if (GUILayout.Button(" → ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y + 1));
 

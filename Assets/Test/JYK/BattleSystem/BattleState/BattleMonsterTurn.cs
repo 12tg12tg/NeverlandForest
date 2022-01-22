@@ -16,7 +16,7 @@ public class BattleMonsterTurn : State<BattleState>
     public override void Init()
     {
         // 1. 행동할 몬스터가 있는지 확인
-        var list = manager.monster.Where(n => n.State != MonsterState.Dead).ToList();
+        var list = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if (list.Count == 0)
         {
             manager.PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));

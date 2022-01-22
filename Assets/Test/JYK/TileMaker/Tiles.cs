@@ -341,10 +341,13 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
             var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
             var os = Instantiate(prefab, transform);
+            var rigid = os.AddComponent<Rigidbody>();
+            rigid.useGravity = false;
+            rigid.isKinematic = true;
             obstacle = new Obstacle();
             obstacle.prefab = os;
-            obstacle.type = ObstacleType.BoobyTrap;
-            obstacle.trapDamage = 1f;
+            obstacle.type = obstacleType;
+            obstacle.trapDamage = 1;
         }
         else
         {

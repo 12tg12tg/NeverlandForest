@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Events;
 
 public enum MonsterState
 {
@@ -72,6 +73,11 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         var damage = playerStats.skill.SkillTableElem.Damage;
         Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다. {Hp} -> {Hp - damage}");
         Hp -= damage;
+        DeadCheak();
+    }
+
+    public void DeadCheak()
+    {
         if (Hp <= 0)
         {
             PlayDeadAnimation();
@@ -92,7 +98,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private void EraseThis()
     {
         CurTile.RemoveUnit(this);
-        manager.monster.Remove(this);
+        manager.monsters.Remove(this);
     }
 
 
@@ -137,7 +143,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                 var rand = Random.Range(0, countInRow);
                 command.actionType = MonsterActionType.Move;
                 command.target = movableTiles[rand].index;
-                Debug.Log((int)(command.target.y - CurTile.index.y));
+                Debug.Log((int)(CurTile.index.y - command.target.y));
             }
             else
             {
@@ -229,7 +235,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             var ob = new Obstacle(obstacleList[i].obstacle);
             obstacles.Add(ob);
-            //Destroy(obstacleList[i].obstacle.prefab); // TODO : -> 부딪혔을 때(콜라이더 트리거)로 변경해야함
             obstacleList[i].obstacle = null;
             // 부비트랩이 있으면 command.target 해당 부비트랩이 있는 곳으로 변경 해야함
             // 멈춰야함
@@ -249,8 +254,48 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             var ob = new Obstacle(goalTile.obstacle);
             obstacles.Add(ob);
-            //Destroy(goalTile.obstacle.prefab); // TODO : -> 부딪혔을 때(콜라이더 트리거)로 변경해야함
             goalTile.obstacle = null;
         }
+    }
+
+    public void ObstacleHit(UnityAction action = null)
+    {
+        var totalDamage = 0;
+        var obs = obstacles.Where(x => x.trapDamage != 0)
+                           .Select(x => x)
+                           .ToList();
+
+        if (obs.Count == 0) // 올가미나 장벽만 있는 경우는 리턴
+            return;
+
+        obs.ForEach(x => totalDamage += x.trapDamage);
+        Debug.Log($"현재 Hp:{Hp} - {totalDamage} = {Hp -= totalDamage}");
+        //monster[i].Hp -= totalDamage; // 위 디버그 지우면 얘 풀면 됨
+
+        // 장애물 지속턴이 0이하가 됐을 때 없애는 용도
+        DurationDecrease(obs);
+
+        // 몬스터 죽었는지 체크
+        DeadCheak();
+
+        action?.Invoke();
+    }
+
+    private void DurationDecrease(List<Obstacle> obs)
+    {
+        obs.ForEach(x => x.duration -= 1);
+        for (int i = 0; i < obs.Count; i++)
+        {
+            if (obs[i].duration < 1)
+            {
+                obstacles.Remove(obs[i]);
+            }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Trap"))
+            Destroy(other.gameObject);
     }
 }

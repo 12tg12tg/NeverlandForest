@@ -21,11 +21,11 @@ public class Obstacle
     public GameObject prefab;
 
     [Header("트랩 데미지 및 지속 턴 수")]
-    public float trapDamage;
+    public int trapDamage;
     public int duration;
 
     [Header("장벽 체력")]
-    public float hp;
+    public int hp;
 
     public Obstacle() { }
 
@@ -39,7 +39,7 @@ public class Obstacle
         hp = obstacle.hp;
     }
 
-    public Obstacle(ObstacleType type, GameObject prefab, int duration, float trapDamage, float hp)
+    public Obstacle(ObstacleType type, GameObject prefab, int duration, int trapDamage, int hp)
     {
         this.type = type;
         this.prefab = prefab;

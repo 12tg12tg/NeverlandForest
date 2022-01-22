@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class BattleSettlement : State<BattleState>
 {
@@ -35,9 +36,24 @@ public class BattleSettlement : State<BattleState>
         });
 
         //실드깍. 디버프 피깍.
+        manager.AllMonsterDebuffCheck();
 
         //다시 플레이어턴으로
+    }
 
+    private void DurationDecrease(List<Obstacle> obstacles)
+    {
+        obstacles.ForEach(x => x.duration -= 1);
+        for (int j = 0; j < obstacles.Count;)
+        {
+            if (obstacles[j].duration < 1)
+            {
+                obstacles.Remove(obstacles[j]);
+                continue;
+            }
+            else
+                j++;
+        }
     }
 
     public override void Release()
