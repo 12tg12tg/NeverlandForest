@@ -44,7 +44,10 @@ public class BattleAction : State<BattleState>
             {
                 if(manager.MonsterQueue.Count <= 0)
                 {
-                    FSM.ChangeState(BattleState.Settlement);
+                    if (manager.isPlayerFirst)
+                        FSM.ChangeState(BattleState.Settlement);
+                    else
+                        FSM.ChangeState(BattleState.Player);
                     return;
                 }
 

@@ -6,7 +6,10 @@ using TMPro;
 
 public class BottomSkillButtonUI : MonoBehaviour
 {
+    public Button ownButton;
+
     public DataPlayerSkill skill;                       // 담고있는 스킬정보
+
     [SerializeField] private Image skillImg;
     [SerializeField] private TextMeshProUGUI costTxt;   //스킬 정보를 바탕으로 구성
 
@@ -18,8 +21,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     private float height;
     private Vector3 openOffset;                         // Open/Close용 크기 계산
 
-    [SerializeField] private RectTransform costRt;      // 왼쪽 위 코스트 정보 크기계산
-
+    // Property
     private Vector3 OpenOffset
     {
         get
@@ -51,13 +53,27 @@ public class BottomSkillButtonUI : MonoBehaviour
         Debug.Log($"{height}, {coverRt.sizeDelta.y}");
     }
 
+
+    public void MakeUnclickable()
+    {
+        ownButton.interactable = false;
+        skillImg.color = new Color(0.4f, 0.4f, 0.4f);
+    }
+
+    public void MakeClickable()
+    {
+        ownButton.interactable = true;
+        skillImg.color = Color.white;
+    }
+
     public void IntoSkillStage() // 버튼
     {
         BottomUIManager.Instance.info.Init(skill);
 
-        if(GameManager.Manager.State == GameState.Battle)
+        if(GameManager.Manager.State == GameState.Battle && BattleManager.Instance.FSM.curState == BattleState.Player)
         {
             cover.interactable = false;
+            BottomUIManager.Instance.IntoSkillState(this);
             StartCoroutine(Utility.CoTranslate(coverRt, coverRt.position, coverRt.position + OpenOffset, 0.3f,
                 () => { below.interactable = true; }));
         }
@@ -66,6 +82,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     public void Cancle() // 버튼
     {
         below.interactable = false;
+        BottomUIManager.Instance.ExitSkillState();
         StartCoroutine(Utility.CoTranslate(coverRt, coverRt.position, coverRt.position - OpenOffset, 0.3f,
             () => { cover.interactable = true; }));
     }

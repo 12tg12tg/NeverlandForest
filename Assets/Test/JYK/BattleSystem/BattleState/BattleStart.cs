@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class BattleStart : State<BattleState>
 {
     private BattleManager manager;
     private float startDelay = 2.5f;
-    private bool isAnimationDone;
-    private bool isTrapSet;
+    
+    private bool isReadyDone;
 
-    public bool IsTrapDone { get => isTrapSet; set => isTrapSet = value; } 
+    public bool IsReadyDone { get => isReadyDone; set => isReadyDone = value; } 
 
     public BattleStart(BattleManager manager)
     {
@@ -18,18 +19,26 @@ public class BattleStart : State<BattleState>
 
     public override void Init()
     {
-        isAnimationDone = false;
-        isTrapSet = false;
+        BottomUIManager.Instance.progress.SetActive(true);
+        manager.ResetProgress();
+        isReadyDone = false;
+        if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2)
+        {
+            // 몬스터 선공
+            manager.isPlayerFirst = false;
+            manager.PrintMessage("몬스터 습격!", startDelay, () => isReadyDone = true);
 
-        // 흐름
-        //  전투방 입장 → 캐릭터 두명 클로즈업 상태 → 두려운 애니메이션 → 화살 대기 애니메이션 
-        //  → 원래 구도로 카메라 이동 → 타일 열리기 → 전투 준비단계 메세지 → 함정 설치
-        //  → (설치 완료 입력시) → FSM.ChangeState(BattleState.Player);
+            
+        }
+        else
+        {
+            // 플레이어 선공
+            manager.isPlayerFirst = true;
+            manager.PrintMessage("몬스터 습격 대비!", startDelay, () => manager.WaitUntillSettingDone());
 
-        //  연출 부분 [전투방 입장 → ... → 타일 열리기] 까지는 코루틴으로 한번에 하나의 함수로 차례로 진행.
-        //  그게 끝난 시점에서 [전투 준비단계 메세지] 부터 아래 코드 실행.
+        }
 
-        manager.PrintMessage("전투 준비 단계", startDelay, () => manager.ActivateTrapSetUI());
+
     }
 
     public override void Release()
@@ -40,11 +49,23 @@ public class BattleStart : State<BattleState>
     public override void Update()
     {
         /*메세지 띄운 후 시작 연출*/
-        if (isTrapSet)
+        if (isReadyDone)
         {
-            isTrapSet = false;
-            FSM.ChangeState(BattleState.Player);
-            manager.UpdateWave();
+            isReadyDone = false;
+
+            UnityAction action = null;
+
+            if (manager.isPlayerFirst)
+            {
+                action = () => FSM.ChangeState(BattleState.Player);
+            }
+            else
+            {
+                action = () => FSM.ChangeState(BattleState.Monster);
+            }
+
+            manager.PrintMessage($"{manager.Turn}턴 시작", 0.8f,
+                () => { manager.UpdateWave(); action.Invoke(); });
         }
     }
 

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Text;
 
+[System.Obsolete("UI개편 이후 사용되지 않음.")]
 public class BattleSkillInfo : MonoBehaviour
 {
     //Component
@@ -38,7 +39,7 @@ public class BattleSkillInfo : MonoBehaviour
     public void Init(DataPlayerSkill skill, Vector2 pos)
     {
         manager ??= BattleManager.Instance;
-        cs ??= manager.cs;
+        //cs ??= manager.cs;
 
         curSkill = skill;
         var elem = curSkill.SkillTableElem;
@@ -69,7 +70,7 @@ public class BattleSkillInfo : MonoBehaviour
     public void Init(DataConsumable item, Vector2 pos)
     {
         manager ??= BattleManager.Instance;
-        cs ??= manager.cs;
+        //cs ??= manager.cs;
 
         curItem = item;
         var elem = curItem.ItemTableElem;
@@ -98,20 +99,20 @@ public class BattleSkillInfo : MonoBehaviour
 
     public void SelectSkill()
     {
-        var button = manager.CurClickedButton;
-        button.groupUI.DisableGroupDuringSelect(button);
+        //var button = manager.CurClickedButton;
+        //button.groupUI.DisableGroupDuringSelect(button);
 
-        if (button.CurState == ActionType.Skill)
-        {
-            manager.DisplayMonsterTile(curSkill.SkillTableElem.range);
-        }
-        else
-        {
-            manager.DisplayPlayerTile();
-        }
-        manager.ReadyTileClick();
-        manager.PrintCaution("사용할 지점을 터치하세요.", 1f, 0.7f, null);
-        gameObject.SetActive(false);
+        //if (button.CurState == ActionType.Skill)
+        //{
+        //    manager.DisplayMonsterTile(curSkill.SkillTableElem.range);
+        //}
+        //else
+        //{
+        //    manager.DisplayPlayerTile();
+        //}
+        //manager.ReadyTileClick();
+        //manager.PrintCaution("사용할 지점을 터치하세요.", 1f, 0.7f, null);
+        //gameObject.SetActive(false);
     }
 
     private bool IsContainPos(Vector2 pos)

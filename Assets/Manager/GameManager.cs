@@ -10,12 +10,15 @@ public enum GameState
 
 public class GameManager : MonoBehaviour
 {
+    // Managers
     private static GameManager gm;
-    private MultiTouch mt;
     private SaveLoadManager sm;
+    private MultiTouch mt;
 
+    // Vars
     private GameState state;
 
+    // Property
     public GameState State
     {
         get => state;

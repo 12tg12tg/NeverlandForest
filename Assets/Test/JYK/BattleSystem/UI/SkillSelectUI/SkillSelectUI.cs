@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+[System.Obsolete("UI개편 이후 사용되지 않습니다.")]
 public class SkillSelectUI : MonoBehaviour
 {
     //prefab
@@ -81,7 +82,7 @@ public class SkillSelectUI : MonoBehaviour
 
 
         this.manager = manager;
-        cs = manager.cs;
+        //cs = manager.cs;
         another = anotherUi;
 
         ChangeSlot(ActionType.Skill);

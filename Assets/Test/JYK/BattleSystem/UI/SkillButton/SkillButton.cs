@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[System.Obsolete("UI개편 이후 사용되지 않음")]
 public class SkillButton : MonoBehaviour, IPointerClickHandler/*, IDragHandler, IEndDragHandler, IBeginDragHandler*/
 {
     public SkillSelectUI groupUI;
@@ -36,13 +37,13 @@ public class SkillButton : MonoBehaviour, IPointerClickHandler/*, IDragHandler, 
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (MultiTouch.Instance.PrimaryPos != Vector2.zero)
-        {
-            if (curState == ActionType.Skill)
-                manager.OpenSkillInfo(this, skill, MultiTouch.Instance.PrimaryPos);
-            else
-                manager.OpenItemInfo(this, item, MultiTouch.Instance.PrimaryPos);
-        }
+        //if (MultiTouch.Instance.PrimaryPos != Vector2.zero)
+        //{
+        //    if (curState == ActionType.Skill)
+        //        manager.OpenSkillInfo(this, skill, MultiTouch.Instance.PrimaryPos);
+        //    else
+        //        manager.OpenItemInfo(this, item, MultiTouch.Instance.PrimaryPos);
+        //}
     }
 
     //public void OnBeginDrag(PointerEventData eventData)

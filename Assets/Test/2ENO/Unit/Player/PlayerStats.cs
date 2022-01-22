@@ -8,21 +8,7 @@ public class PlayerStats : UnitBase, IAttackable
     public BattleManager manager;
     public PlayerBattleController controller;
 
-    // Vars
-    private bool isBind;
-    // 나중에 flag enum으로 구현
-    private bool isBuff;
-    private bool isDeBuff;
-    private int def;
-    // 임시: 장착 아이템 리스트 가지고 있기
-    //private List<DataItem> equipItemList = new List<DataItem>();
-
     // Property
-    public int Def { set => def = value; get => def; }
-    public bool IsBind { set => isBind = true; get => isBind; }
-    public bool IsBuff { set => isBuff = value; get => isBuff; }
-    public bool IsDeBuff { set => isDeBuff = value; get => isDeBuff; }
-
     private List<DataPlayerSkill> skillList = new List<DataPlayerSkill>();
     public List<DataPlayerSkill> SkillList
     {
