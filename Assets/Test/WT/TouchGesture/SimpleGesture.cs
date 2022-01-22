@@ -45,6 +45,7 @@ public class SimpleGesture : MonoBehaviour
     {
         RotateUpdate();
         GestureUpdate();
+
     }
 
     private void GestureUpdate()

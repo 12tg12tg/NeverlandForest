@@ -317,7 +317,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.IsWaitingTileSelect)
+        if (!BattleManager.Instance.IsWaitingTileSelect )
             return;
 
         var manager = BattleManager.Instance;

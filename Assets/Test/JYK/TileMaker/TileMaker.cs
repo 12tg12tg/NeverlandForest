@@ -303,23 +303,17 @@ public class TileMaker : MonoBehaviour
         {
             case SkillRangeType.One:
             case SkillRangeType.Tile:
-                var testList = from n in tileList where n == GetTile(choicesTile) select n;
-                foreach (var item in tileList)
-                {
-                    Debug.Log(item.index);
-                    if (item == GetTile(choicesTile))
-                        Debug.Log("true");
-                }
-
-
                 return from n in tileList where n == GetTile(choicesTile) select n;
+
             case SkillRangeType.Line:
                 int col = (int)choicesTile.y;
                 return from n in tileList where (int)n.index.y == col select n;
+
             case SkillRangeType.Lantern:
-                int currentLantern = 4;
+                int currentLantern = (int)Vars.UserData.uData.lanternState;
                 var maxCol = lanternToCol[currentLantern];
                 return from n in tileList where (int)n.index.y != 0 && (int)n.index.y <= maxCol select n;
+
             default:
                 return null;
         }

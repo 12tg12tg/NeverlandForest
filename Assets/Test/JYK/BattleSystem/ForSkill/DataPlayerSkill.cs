@@ -14,5 +14,12 @@ public class DataPlayerSkill : DataSkill
         get { return skillTableElem as PlayerSkillTableElem; }
     }
 
-    /*부모에서 쿨타임, 턴제한, 횟수제한, Invoke 등 구현하기*/
+    public override IEnumerator CoSkillCoroutine()
+    {
+        yield return null;
+    }
+
+    /*부모에서 턴제한, Invoke 등 구현하기*/
+
+
 }

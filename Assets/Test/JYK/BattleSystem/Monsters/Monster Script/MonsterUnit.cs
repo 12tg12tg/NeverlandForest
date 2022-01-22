@@ -8,16 +8,18 @@ public enum MonsterState
     Idle, Attack, Move, DoSomething, Dead
 }
 
-public class MonsterUnit : UnitBase, IAttackable
+public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 {
     // Component
     private Animator animator;
+    public Collider trigger;
 
     // Vars
     private int sheild;
     private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
+    public PlayerCommand hitInfo;
     public MonsterCommand command;
     private BattleManager manager;
     private bool isActionDone;
@@ -29,7 +31,7 @@ public class MonsterUnit : UnitBase, IAttackable
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
     public int Speed { get => BaseElem.Speed; } // 랜덤을 최소 < 속도 < 최대 내에서 뽑아주는 프로퍼티임.
-    public bool IsBind { get; set; }
+    public bool IsBind { get; set; } // 사냥꾼 스킬
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
@@ -206,5 +208,12 @@ public class MonsterUnit : UnitBase, IAttackable
                 int id = int.Parse(baseElem.id);
                 MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
             }));
+    }
+
+    // IAttackReady
+    public void Ready(PlayerCommand command)
+    {
+        trigger.enabled = true;
+        hitInfo = command;
     }
 }

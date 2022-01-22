@@ -6,7 +6,11 @@ public abstract class DataSkill
 {
     public int itemId;
     protected DataTableElemBase skillTableElem;
+    public bool skillDone;
 
-    /*쿨타임, 턴제한, 횟수제한, Invoke 등 구현하기*/
+
+    /*턴제한, Invoke 등 구현하기*/
+    public abstract IEnumerator CoSkillCoroutine();
+
 }
 
