@@ -61,6 +61,8 @@ public class CampManager : MonoBehaviour
     {
         instance = this;
         StartPos = camera.transform.position;
+        SetBonTime();
+        SetSleepTime();
     }
     private void OnDisable()
     {
@@ -72,7 +74,40 @@ public class CampManager : MonoBehaviour
 
         EventBus<CampEvent>.ResetEventBus();
     }
- 
+    public void SetBonTime()
+    {
+        bonTimeText.text = Vars.UserData.uData.BonfireHour.ToString() + "½Ã°£";
+    }
+    public  void SetSleepTime()
+    {
+        sleepTimeText.text = recoverySleepTime.ToString() + "ºÐ";
+    }
+    public void PlusSleepTime()
+    {
+        recoverySleepTime += 30;
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        if (haveMinute< recoverySleepTime)
+        {
+            recoverySleepTime = haveMinute;
+        }
+        SetSleepTime();
+    }
+    public void MinuseSleepTime()
+    {
+        recoverySleepTime -= 30;
+        if (recoverySleepTime<0)
+        {
+            recoverySleepTime = 0;
+        }
+        SetSleepTime();
+    }
+    public void IGoSleep()
+    {
+        ConsumeManager.RecoveryTiredness();
+        recoverySleepTime = 0;
+        SetSleepTime();
+        SetBonTime();
+    }
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
@@ -86,7 +121,6 @@ public class CampManager : MonoBehaviour
         EndPos = new Vector3(potPos.x+1f, potPos.y + 2f, potPos.z - 3f);
 
         StartCoroutine(Utility.CoTranslate(camera.transform,StartPos, EndPos, 3f, OpenCookInCamp));
-      
     }
     public void RotateButtonCheck()
     {
@@ -115,9 +149,6 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(true);
         diaryManager.OpenCooking();
         newBottomUi.SetActive(false);
-        /*    
-        CookPanel.gameObject.SetActive(true);
-        bonFireStatePanel.gameObject.SetActive(true);*/
     }
     public void StartCooking()
     {
@@ -126,7 +157,23 @@ public class CampManager : MonoBehaviour
             simpleGesture.Init();
             diaryManager.OpenCookingRotation();
         }
+        else
+        {
+            if (diaryManager.recipeIcon.fire.sprite != null && 
+                diaryManager.recipeIcon.condiment.sprite != null &&
+                diaryManager.recipeIcon.material.sprite != null)
+            {
+                diaryManager.CallMakeCook();
+            }
+           
+        }
     }
+    public void ReCook()
+    {
+        OpenCookInCamp();
+        diaryManager.CloseCookingReward();
+    }
+
     public void OpenGatheringScene(object[] vals)
     {
         if (vals.Length != 0) return;

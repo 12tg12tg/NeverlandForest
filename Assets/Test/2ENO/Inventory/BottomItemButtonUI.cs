@@ -50,7 +50,8 @@ public class BottomItemButtonUI : MonoBehaviour
     public void ItemButtonClick()
     {
         // TODO: 임시, 가라로 해놓은거
-        if(RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
+      
+        if(RandomEventManager.Instance  !=null&& RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
         {
             RandomEventUIManager.Instance.info.Init(dataItem);
             RandomEventUIManager.Instance.selectItem = dataItem;
@@ -69,20 +70,21 @@ public class BottomItemButtonUI : MonoBehaviour
         }
         else
         {
-            BottomUIManager.Instance.info.Init(dataItem);
-            BottomUIManager.Instance.selectItem = dataItem;
-            BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-            BottomUIManager.Instance.isPopUp = true;
+            /* BottomUIManager.Instance.info.Init(dataItem);
+             BottomUIManager.Instance.selectItem = dataItem;
+             BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+             BottomUIManager.Instance.isPopUp = true;
 
-            var uiVec = BottomUIManager.Instance.popUpWindow.position;
-            var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-            BottomUIManager.Instance.popUpWindow.position = newVector;
-            // 선택초기화
-            for (int i = 0; i < BottomUIManager.Instance.itemButtons.Count; i++)
-            {
-                BottomUIManager.Instance.itemButtons[i].IsSelect = false;
-            }
-            IsSelect = true;
+             var uiVec = BottomUIManager.Instance.popUpWindow.position;
+             var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+             BottomUIManager.Instance.popUpWindow.position = newVector;
+             // 선택초기화
+             for (int i = 0; i < BottomUIManager.Instance.itemButtons.Count; i++)
+             {
+                 BottomUIManager.Instance.itemButtons[i].IsSelect = false;
+             }
+             IsSelect = true;*/
+            DiaryInventory.Instance.info.Init(dataItem);
         }
     }
 

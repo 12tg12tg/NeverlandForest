@@ -112,6 +112,8 @@ public static class ConsumeManager
                 //스태미나 10회복당 1시간 개념이였으니깐 1회복당 6분의 개념
                 CurStaminaChange();
             }
+            rimittime -= time;
+            Vars.UserData.uData.BonfireHour = rimittime / 60;
         }
         else
         {
