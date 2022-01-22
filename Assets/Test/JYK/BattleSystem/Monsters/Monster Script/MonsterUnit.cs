@@ -27,6 +27,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private const float actionDelay = 0.5f;
     [Header("반드시 테이블에서의 몬스터 아이디 입력")]
     public string monsterID;
+    public List<Obstacle> obstacles = new List<Obstacle>();
 
     // Property
     public int Sheild { get => sheild; set => sheild = value; }
@@ -136,6 +137,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                 var rand = Random.Range(0, countInRow);
                 command.actionType = MonsterActionType.Move;
                 command.target = movableTiles[rand].index;
+                Debug.Log((int)(command.target.y - CurTile.index.y));
             }
             else
             {
@@ -159,6 +161,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
     public void Move()
     {
+        ObstacleAdd();
         BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
             () => { isActionDone = true; PlayIdleAnimation(); });
     }
@@ -210,10 +213,44 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }));
     }
 
-    // IAttackReady
     public void Ready(PlayerCommand command)
     {
         trigger.enabled = true;
         hitInfo = command;
+    }
+
+    public void ObstacleAdd()
+    {
+        var goalTile = TileMaker.Instance.GetTile(command.target);
+        var movableTilesOtherRow = TileMaker.Instance.GetMovablePathTiles(CurTile, goalTile);
+        var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).Select(x => x).ToList();
+        
+        for (int i = obstacleList.Count - 1; i >= 0; i--)
+        {
+            var ob = new Obstacle(obstacleList[i].obstacle);
+            obstacles.Add(ob);
+            //Destroy(obstacleList[i].obstacle.prefab); // TODO : -> 부딪혔을 때(콜라이더 트리거)로 변경해야함
+            obstacleList[i].obstacle = null;
+            // 부비트랩이 있으면 command.target 해당 부비트랩이 있는 곳으로 변경 해야함
+            // 멈춰야함
+            if (ob.type == ObstacleType.BoobyTrap)
+            {
+                command.target = obstacleList[i].index;
+                return;
+            }
+        }
+    }
+
+    public void ObstacleAdd(Vector2 pos)
+    {
+        var goalTile = TileMaker.Instance.GetTile(pos);
+
+        if (goalTile.obstacle != null)
+        {
+            var ob = new Obstacle(goalTile.obstacle);
+            obstacles.Add(ob);
+            //Destroy(goalTile.obstacle.prefab); // TODO : -> 부딪혔을 때(콜라이더 트리거)로 변경해야함
+            goalTile.obstacle = null;
+        }
     }
 }

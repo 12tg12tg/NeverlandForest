@@ -13,7 +13,8 @@ public class UserData
     public List<DataConsumable> ConsumableItemList { get; set; } = new List<DataConsumable>();
 
     //World Info
-    public List<MapNodeStruct_0> WorldMapNodeStruct { get; set; } = new List<MapNodeStruct_0>();
+    public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();
+    public List<WorldMapTreeInfo> WorldMapTree { get; set; } = new List<WorldMapTreeInfo>();
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
     // 던전맵 데이터, 세이브 로드

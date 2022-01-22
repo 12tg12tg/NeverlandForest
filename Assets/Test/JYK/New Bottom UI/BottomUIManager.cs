@@ -23,6 +23,8 @@ public class BottomUIManager : MonoBehaviour
     //Vars
     [HideInInspector] public ButtonState buttonState;
     [HideInInspector] public BottomSkillButtonUI curSkillButton;
+    [HideInInspector] public ObstacleType curObstacleType;
+
     private bool isBoySkillDone;
     private bool isGirlSkillDone;
 

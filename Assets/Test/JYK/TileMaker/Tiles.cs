@@ -20,6 +20,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public Vector2 index;
     public bool isObstacle;
     [SerializeField]private List<UnitBase> units = new List<UnitBase>();
+    public Obstacle obstacle = null;
 
     //Instance
     private TileMaker tileMaker;
@@ -317,53 +318,79 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.IsWaitingTileSelect )
+        var obstacleType = BottomUIManager.Instance.curObstacleType;
+
+        if (!BattleManager.Instance.IsWaitingTileSelect && obstacleType == ObstacleType.None)
             return;
 
-        var manager = BattleManager.Instance;
-
-        var skill = BottomUIManager.Instance.curSkillButton.skill;
-        //var item = BottomUIManager.Instance.curSkillButton.item;
-
-        var actionType = BottomUIManager.Instance.buttonState;
-
-        if (skill.SkillTableElem.range == SkillRangeType.One)
+        if(obstacle != null && obstacleType != ObstacleType.None)
         {
-            //단일 타겟이라면 유효성 검사
-            if (!BattleManager.Instance.IsVaildTargetTile(this))
+            Debug.Log("장애물이 이미 설치되어 있습니다");
+            return;
+        }
+
+        // 블루문이 아닐 때 장벽은 설치 못하도록 막아야 함
+        var manager = BattleManager.Instance;
+        if(manager.FSM.curState == BattleState.Start)
+        {
+            for (int i = 0; i < units.Count; i++)
             {
-                manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
-                return;
+                if (units[i] != null) // 플레이어가 위치한 곳 장애물 설치 못하도록 막는 용도
+                    return;
+            }
+            // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
+            var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+            var os = Instantiate(prefab, transform);
+            obstacle = new Obstacle();
+            obstacle.prefab = os;
+            obstacle.type = ObstacleType.BoobyTrap;
+            obstacle.trapDamage = 1f;
+        }
+        else
+        {
+            var skill = BottomUIManager.Instance.curSkillButton.skill;
+            //var item = BottomUIManager.Instance.curSkillButton.item;
+
+            var actionType = BottomUIManager.Instance.buttonState;
+
+            if (skill.SkillTableElem.range == SkillRangeType.One)
+            {
+                //단일 타겟이라면 유효성 검사
+                if (!BattleManager.Instance.IsVaildTargetTile(this))
+                {
+                    manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
+                    return;
+                }
+                else
+                {
+                    tileMaker.AffectedTileCancle(skill.SkillTableElem.player);
+                    tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
+                }
             }
             else
             {
-                tileMaker.AffectedTileCancle(skill.SkillTableElem.player);
-                tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
+                //범위 스킬이라면
+                //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
+                //  1) 범위 계산 후 타일 리스트를 만들어서.
+                //  2) tile.Confirm(color) 함수 호출하기.
+                //  3) affectedPlayer 설정하기.
+
             }
-        }
-        else
-        {
-            //범위 스킬이라면
-            //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
-            //  1) 범위 계산 후 타일 리스트를 만들어서.
-            //  2) tile.Confirm(color) 함수 호출하기.
-            //  3) affectedPlayer 설정하기.
 
-        }
+            if (actionType == BottomUIManager.ButtonState.Skill)
+            {
+                manager.DoCommand(skill.SkillTableElem.player, index, skill);
+            }
+            else
+            {
+                //manager.DoCommand(item as DataConsumable);
+            }
 
-        if (actionType == BottomUIManager.ButtonState.Skill)
-        {
-            manager.DoCommand(skill.SkillTableElem.player, index, skill);
+            BottomUIManager.Instance.curSkillButton.Cancle();
+            BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
+            manager.EndTileClick();
+            manager.UpdateProgress(); 
         }
-        else
-        {
-            //manager.DoCommand(item as DataConsumable);
-        }
-
-        BottomUIManager.Instance.curSkillButton.Cancle();
-        BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
-        manager.EndTileClick();
-        manager.UpdateProgress();
     }
 
     public void Units_UnitAdd(UnitBase unit)

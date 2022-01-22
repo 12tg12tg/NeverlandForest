@@ -9,7 +9,7 @@ using OptionSaveDataCurrentVersion = OptionSaveData_0;
 using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
 using TimeSaveDataCurrentVersion = TimeSaveData_0;
 using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
-using WorldMapNodeSaveDataCurrentVersion = WorldMapNodeData_0;
+using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 
@@ -40,7 +40,7 @@ public static class SaveLoadSystem
         Recipe,
         Time,
         DungeonMap,
-        WorldMapNode,
+        WorldMapData,
         WorldMapPlayerData,
         ConsumableData,
     }
@@ -275,7 +275,7 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-            case SaveType.WorldMapNode:
+            case SaveType.WorldMapData:
                 switch (version)
                 {
                     case 0:
@@ -342,7 +342,7 @@ public static class SaveLoadSystem
                     data = data.VersionUp();
                 }
                 return data;
-            case SaveType.WorldMapNode:
+            case SaveType.WorldMapData:
                 while (!(data is WorldMapNodeSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();

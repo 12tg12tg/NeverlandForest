@@ -281,6 +281,19 @@ public class TileMaker : MonoBehaviour
         return list.ToArray();
     }
 
+    public IEnumerable<Tiles> GetMovablePathTiles(Tiles curTile, Tiles goalTile)
+    {
+        var curX = curTile.index.x;
+        var curY = curTile.index.y;
+        var goalY = goalTile.index.y;
+
+        var list = from n in tileList
+                   where n.index.x == curX && n.index.y <= curY - 1f && n.index.y >= goalY
+                   select n;
+        return list;
+    }
+
+
     public IEnumerable<Tiles> GetMonsterTiles()
     {
         var list = from n in tileList
