@@ -4,6 +4,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public enum DirectionInho
 {
@@ -26,9 +27,10 @@ public class DunGeonMapGenerate : MonoBehaviour
     public DirectionInho direction;
 
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
-    //public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
+
+
 
     public void Init(DungeonSystem system)
     {
@@ -123,6 +125,10 @@ public class DunGeonMapGenerate : MonoBehaviour
                 eventData.Add(huntingData);
                 break;
             case DunGeonEvent.RandomIncount:
+                var randomData = new RandomIncountData();
+                randomData.eventType = DunGeonEvent.RandomIncount;
+                randomData.roomIndex = curRoom.roomIdx;
+                curRoom.randomEventData = randomData;
                 break;
             case DunGeonEvent.SubStory:
                 break;
@@ -142,9 +148,20 @@ public class DunGeonMapGenerate : MonoBehaviour
             TestMapSet(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
             yield return null;
         }
+
+
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DungeonEventGenerate(dungeonRoomArray);
+
+        var list = dungeonRoomArray.Where(x => x.eventList.FindIndex(y => y == DunGeonEvent.RandomIncount) != -1).ToList();
+
+        // TODO : 코루틴안에 코루틴..
+        for (int i = 0; i < list.Count;)
+        {
+            yield return StartCoroutine(RandomEventManager.Instance.CreateRandomEvent(list[i].randomEventData));
+            i++;
+        }
 
         action?.Invoke();
         

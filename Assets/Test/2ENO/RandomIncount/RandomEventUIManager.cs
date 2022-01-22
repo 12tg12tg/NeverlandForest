@@ -1,20 +1,20 @@
 using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-
-public class BottomUIManager : MonoBehaviour
+// 이 UI가 켜지는 순간 기본 던전맵 동작은 작동 중단
+public class RandomEventUIManager : MonoBehaviour
 {
     public enum ButtonState { Item, Skill }
 
-    private static BottomUIManager instance;
-    public static BottomUIManager Instance => instance;
+    private static RandomEventUIManager instance;
+    public static RandomEventUIManager Instance => instance;
 
     //Instance
     public BottomInfoUI info;
-    public List<BottomSkillButtonUI> skillButtons;
     public List<BottomItemButtonUI> itemButtons;
 
     //Vars
@@ -25,25 +25,20 @@ public class BottomUIManager : MonoBehaviour
     public RectTransform popUpWindow;
     public DataItem selectItem;
 
+    // RandomEventData
+    public DataRandomEvent randomEventData;
+
+    // RandomEventText
+    public List<GameObject> selectButtons;
+    public TextMeshProUGUI eventDesc;
 
     private void Awake()
     {
         instance = this;
-        SkillButtonInit();
+        gameObject.SetActive(false);
         popUpWindow.gameObject.SetActive(false);
+        ItemButtonInit();
     }
-
-    private void OnGUI()
-    {
-        if(GUILayout.Button("Set Battle State Toggle"))
-        {
-            if (GameManager.Manager.State == GameState.Battle)
-                GameManager.Manager.State = GameState.None;
-            else
-                GameManager.Manager.State = GameState.Battle;
-        }
-    }
-
     private void Update()
     {
         if (!isPopUp)
@@ -59,7 +54,7 @@ public class BottomUIManager : MonoBehaviour
             }
         }
 
-        if(MultiTouch.Instance.TouchCount > 0)
+        if (MultiTouch.Instance.TouchCount > 0)
             isPopUp = false;
     }
     private bool IsContainPos(Vector2 pos)
@@ -67,29 +62,37 @@ public class BottomUIManager : MonoBehaviour
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
     }
 
-    public void SkillButtonInit()
+    public void EventInit(DataRandomEvent data)
     {
-        info.Init();
-        popUpWindow.gameObject.SetActive(false);
+        randomEventData = data;
+        gameObject.SetActive(true);
+        eventDesc.text = randomEventData.eventDesc;
+        SelectInit();
+    }
 
-        buttonState = ButtonState.Skill;
-        itemButtons.ForEach((n) => n.gameObject.SetActive(false));
-        skillButtons.ForEach((n) => n.gameObject.SetActive(true));
-
-        var list = Vars.BoySkillList;
-        int count = list.Count;
-
-        int buttonIndex = 1;
-        for (int i = 0; i < count; i++)
+    private void SelectInit()
+    {
+        
+        for (int i = 0; i < selectButtons.Count; i++)
         {
-            skillButtons[buttonIndex++].Init(list[i]);
-        }
+            var btnObj = selectButtons[i];
 
-        buttonIndex = 7;
-        list = Vars.GirlSkillList;
-        for (int i = 0; i < count; i++)
-        {
-            skillButtons[buttonIndex++].Init(list[i]);
+            var button = btnObj.GetComponent<Button>();
+            var image = btnObj.GetComponent<Image>();
+
+            var texts = btnObj.GetComponentsInChildren<TextMeshProUGUI>();
+            var nameText = texts[0];
+            var infoText = texts[1];
+
+            // 현재 방의 이벤트 데이터의 피드백 함수 add함
+            // 다음 UI로 전환하는 함수 add
+            int selectNum = i+1;
+            button.onClick.AddListener(() => randomEventData.SelectFeedBack(selectNum));
+
+            // 이벤트 데이터의 i 인덱스 selectString으로 초기화
+            nameText.text = randomEventData.selectName[i];
+            // 이벤트 데이터에서 i 인덱스 is선택값 이 true 면 초기화 아니면 비공개 defaultText로 표시
+            infoText.text = randomEventData.SelectInfos[i];
         }
     }
 
@@ -100,7 +103,6 @@ public class BottomUIManager : MonoBehaviour
 
         buttonState = ButtonState.Item;
         itemButtons.ForEach((n) => n.gameObject.SetActive(true));
-        skillButtons.ForEach((n) => n.gameObject.SetActive(false));
 
         ItemListInit();
     }
