@@ -266,7 +266,9 @@ public class BattleManager : MonoBehaviour
                 var monsterSc = temp.Dequeue();
                 monster.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
-                MoveUnitOnTile(new Vector2(i, 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
+                var tilePos = new Vector2(i, 6);
+                tempForCoroutine.ObstacleAdd(tilePos);
+                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -287,7 +289,9 @@ public class BattleManager : MonoBehaviour
                 var monsterSc = temp.Dequeue();
                 monster.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
-                MoveUnitOnTile(new Vector2(indexArr[i], 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
+                var tilePos = new Vector2(indexArr[i], 6);
+                tempForCoroutine.ObstacleAdd(tilePos);
+                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -655,6 +659,31 @@ public class BattleManager : MonoBehaviour
         if (GUILayout.Button("Lantern 3", GUILayout.Width(100), GUILayout.Height(100)))
         {
             ConsumeManager.FullingLantern(12);
+        }
+
+        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "올가미"))
+        {
+            uiManager.curObstacleType = ObstacleType.Lasso;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "부비트랩"))
+        {
+            uiManager.curObstacleType = ObstacleType.BoobyTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "나무트랩"))
+        {
+            uiManager.curObstacleType = ObstacleType.WoodenTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 300, 100, 100), "가시트랩"))
+        {
+            uiManager.curObstacleType = ObstacleType.ThornTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 400, 100, 100), "장애물"))
+        {
+            uiManager.curObstacleType = ObstacleType.Barrier;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 500, 100, 100), "None"))
+        {
+            uiManager.curObstacleType = ObstacleType.None;
         }
 
 
