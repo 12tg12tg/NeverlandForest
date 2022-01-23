@@ -136,6 +136,7 @@ public class RecipeIcon : MonoBehaviour
                 Vars.UserData.RemoveItemData(fireitem);
                 Vars.UserData.RemoveItemData(condimentitem);
                 Vars.UserData.RemoveItemData(materialitem);
+
                 inventoryController.Init();
                 isfireok = false;
                 iscondimentok = false;
@@ -145,6 +146,7 @@ public class RecipeIcon : MonoBehaviour
                 material.sprite = null;
                 result = string.Empty;
                 makingTime.text = string.Empty;
+                Debug.Log("요리 완료");
             }
             else
             {
