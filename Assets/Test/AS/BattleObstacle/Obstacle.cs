@@ -24,7 +24,6 @@ public class Obstacle
     public int trapDamage;
     public int duration;
     public int numberOfInstallation;
-    [SerializeField]
     public List<Obstacle> pair = new List<Obstacle>();
 
     [Header("장벽 체력")]

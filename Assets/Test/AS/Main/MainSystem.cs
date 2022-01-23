@@ -10,6 +10,6 @@ public class MainSystem : MonoBehaviour
 
     public void Hunt()
     {
-        Instantiate(huntPrefab);
+        huntPrefab.SetActive(true);
     }
 }

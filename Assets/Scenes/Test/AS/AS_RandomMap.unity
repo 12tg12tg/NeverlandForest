@@ -3598,7 +3598,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 312235307}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -85, y: 29, z: 210}
+  m_LocalPosition: {x: -85, y: 29, z: -90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -17273,7 +17273,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.2647934, y: 0}
+  m_AnchoredPosition: {x: -4.264786, y: 0}
   m_SizeDelta: {x: 0.4043, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982026372
@@ -33944,6 +33944,9 @@ MonoBehaviour:
   - {fileID: 698883428697437901}
   - {fileID: 698883430283919174}
   - {fileID: 698883429048767074}
+  tags: []
+  progress: {fileID: 0}
+  progressImg: []
   itemButtons:
   - {fileID: 8760266739712715002}
   - {fileID: 4018544456758809843}
@@ -33958,6 +33961,8 @@ MonoBehaviour:
   - {fileID: 3075787608842125188}
   - {fileID: 156690617262881369}
   buttonState: 0
+  curSkillButton: {fileID: 0}
+  curObstacleType: 0
   isPopUp: 0
   popUpWindow: {fileID: 8285671218246767182}
 --- !u!114 &698883430261930226

@@ -1235,7 +1235,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainObj: {fileID: 130689773}
-  huntPrefab: {fileID: 2402504004854966319, guid: 71aa396da04f76c4eb219b956b8c9489, type: 3}
+  huntPrefab: {fileID: 1227401591}
 --- !u!1001 &300495314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2855,6 +2855,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d8a20d3435e04380b487a7e65cbb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainRoomPrefab: {fileID: 0}
+  roadPrefab: {fileID: 0}
+  mapPos: {fileID: 0}
+  diaryManager: {fileID: 0}
+  newBottomUi: {fileID: 0}
+  campminimapCamera: {fileID: 0}
+  minimapPanel: {fileID: 0}
+  diaryRecipePanel: {fileID: 0}
+  bluemoonObject: {fileID: 0}
+  bonTimeText: {fileID: 0}
+  sleepTimeText: {fileID: 0}
+  camera: {fileID: 0}
+  pot: {fileID: 0}
+  CookPanel: {fileID: 0}
+  inventoryController: {fileID: 0}
+  simpleGesture: {fileID: 0}
 --- !u!1 &680545452
 GameObject:
   m_ObjectHideFlags: 0
@@ -5078,6 +5094,72 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4448638351147518409, guid: 3863445876e4de74282eb5fe781e1edc, type: 3}
   m_PrefabInstance: {fileID: 1187982935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1227401590
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6035672267034211399, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_Name
+      value: HuntingManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211399, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6035672267034211417, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+--- !u!1 &1227401591 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6035672267034211399, guid: 8d725c8be770c934a8177a4ddbea0a9a, type: 3}
+  m_PrefabInstance: {fileID: 1227401590}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1241150096
 GameObject:
@@ -7630,6 +7712,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1771754918}
   sliderRect: {fileID: 1950988572}
+  laternSlider: {fileID: 0}
+  campManager: {fileID: 0}
 --- !u!1001 &1773673304
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8478,6 +8562,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 2021524544}
+  blight: {fileID: 0}
 --- !u!1 &2068404087
 GameObject:
   m_ObjectHideFlags: 0
