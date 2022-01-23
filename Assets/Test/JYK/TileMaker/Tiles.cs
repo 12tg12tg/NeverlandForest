@@ -21,9 +21,9 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public bool isObstacle;
     [SerializeField]private List<UnitBase> units = new List<UnitBase>();
     public Obstacle obstacle = null;
-
     //Instance
     private TileMaker tileMaker;
+    [Space(15)] // 장애물 이랑 구별 하려고 추가
     public MeshRenderer center;
     public MeshRenderer edge;
     public MeshRenderer frontEdge;
@@ -342,25 +342,60 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 }
 
                 // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
-                var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
-                var os = Instantiate(prefab, transform);
-                var rigid = os.AddComponent<Rigidbody>();
-                rigid.useGravity = false;
-                rigid.isKinematic = true;
-                obstacle = new Obstacle();
-                obstacle.prefab = os;
-                obstacle.type = obstacleType;
-                obstacle.trapDamage = obstacleType.Equals(ObstacleType.Lasso) ? 0 : 1;
-                obstacle.numberOfInstallation = obstacleType.Equals(ObstacleType.Lasso) ? 2 : 1;
-                obstacle.numberOfInstallation--;
-                if (obstacle.numberOfInstallation == 0)
-                    BottomUIManager.Instance.curObstacleType = ObstacleType.None;
-                else
+                GameObject os = default;
+                if(!obstacleType.Equals(ObstacleType.Barrier))
                 {
-                    Inventory_Virtual.instance.isLasso = true;
+                    var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                    os = Instantiate(prefab, transform);
+                    var rigid = os.AddComponent<Rigidbody>();
+                    rigid.useGravity = false;
+                    rigid.isKinematic = true;
+
+                    // 장애물 능력 부여(데이터 테이블 생기면 바뀌어야 함)
+                    obstacle = new Obstacle();
+                    obstacle.prefab = os;
+                    obstacle.type = obstacleType;
+                    obstacle.trapDamage = obstacleType.Equals(ObstacleType.Lasso) ? 0 : 1;
+                    obstacle.numberOfInstallation = obstacleType.Equals(ObstacleType.Lasso) ? 2 : 1;
+                    obstacle.hp = obstacleType.Equals(ObstacleType.Barrier) ? 10 : 0;
+
+                    obstacle.numberOfInstallation--;
+                    if (obstacle.numberOfInstallation == 0)
+                        BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                    else
+                    {
+                        Inventory_Virtual.instance.isLasso = true;
+                    }
+                }
+                else if(obstacleType.Equals(ObstacleType.Barrier))
+                {
+                    if ((int)index.y == tileMaker.col - 1) // 장벽은 마지막 몬스터 등장 하는 곳에는 설치 못하도록
+                        return;
+                    var barrierTile = tileMaker.GetNearRowTiles(index).ToList();
+                    Obstacle barrier = default;
+                    for (int i = 0; i < barrierTile.Count; i++)
+                    {
+                        if ((int)(barrierTile[i].index.x) == 1)
+                        {
+                            var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                            barrierTile[i].obstacle = new Obstacle();
+                            barrierTile[i].obstacle.prefab = Instantiate(prefab, barrierTile[i].transform);
+                            barrierTile[i].obstacle.type = obstacleType;
+                            barrierTile[i].obstacle.hp = 10;
+                            barrier = barrierTile[i].obstacle;
+                        }
+                        else
+                        {
+                            barrierTile[i].obstacle = new Obstacle();
+                            barrierTile[i].obstacle.type = obstacleType;
+                        }
+                    }
+                    barrierTile.ForEach(x => x.obstacle.pair.Add(barrier));
+
+                    BottomUIManager.Instance.curObstacleType = ObstacleType.None;
                 }
             }
-            else
+            else if(obstacleType.Equals(ObstacleType.Barrier))
             {
                 // 올가미 두번 째 위치 설치하는 곳
                 var lassoTile = tileMaker.TileList
@@ -369,7 +404,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                     .Where(x => x.obstacle.numberOfInstallation == 1)
                     .Select(x => x).First();
 
-                var list = tileMaker.GetNear8Tiles(lassoTile.index).ToList();
+                var list = tileMaker.GetNearUpDownTiles(lassoTile.index).ToList();
                 for (int i = 0; i < list.Count; i++)
                 {
                     if (list[i].index.Equals(index))
