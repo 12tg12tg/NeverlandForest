@@ -106,7 +106,7 @@ public class DungeonSystem : MonoBehaviour
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         // TODO: 임시! 가라로 해놓은거
-        //RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
+        RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅

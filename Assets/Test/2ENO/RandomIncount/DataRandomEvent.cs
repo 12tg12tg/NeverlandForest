@@ -47,17 +47,22 @@ public class DataRandomEvent
         }
         set => selectInfos = value;
     }
+    private bool isSucessFeedBack;
+
     // 최종 결과들. UI에서 사용
     public string resultInfo;
     public string selectResult;
     public int curSelectNum;
     public List<DataItem> rewardItems = new();
+    public int selectCount;
+
+    private List<string> feedBackStringSelect1 = new();
+    private List<string> feedBackStringSelect2 = new();
+    private List<string> feedBackStringSelect3 = new();
+
 
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
-
-    private bool isSucessFeedBack;
-
 
     public DataRandomEvent(RandomEventTableElem data)
     {
@@ -73,6 +78,7 @@ public class DataRandomEvent
         var fail2DescString = stringTable.GetData<LocalizationTableElem>(data.fail2Desc);
         var fail3DescString = stringTable.GetData<LocalizationTableElem>(data.fail3Desc);
         eventDesc = eventDescString.kor;
+        //eventDesc = data.eventDesc;
         selectName.Add(select1NameString.kor);
         selectName.Add(select2NameString.kor);
         selectName.Add(select3NameString.kor);
@@ -86,6 +92,23 @@ public class DataRandomEvent
         eventID = data.id;
         eventData = data;
         eventName = data.name;
+
+        if (data.sucess1Chance == 0)
+            selectCount = 0;
+        else if (data.sucess2Chance == 0)
+            selectCount = 1;
+        else if (data.sucess3Chance == 0)
+            selectCount = 2;
+        else
+            selectCount = 3;
+
+        //List<EventFeedBackType> tempList = new List<EventFeedBackType>();
+        //tempList.AddRange(data.sucess1Type);
+        //tempList.AddRange(data.sucess2Type);
+        //tempList.AddRange(data.sucess3Type);
+        //tempList.AddRange(data.fail1Type);
+        //tempList.AddRange(data.fail2Type);
+        //tempList.AddRange(data.fail3Type);
     }
 
     private void DataInit()
@@ -110,16 +133,20 @@ public class DataRandomEvent
         List<EventFeedBackType> eventTypes = null;
         List<int> eventfeedbackIDs = null;
         List<int> eventVals = null;
+        List<string> tempStrList = null;
         switch(selectNum)
         {
             case 1:
                 eventSucessChance = eventData.sucess1Chance;
+                tempStrList = feedBackStringSelect1;
                 break;
             case 2:
                 eventSucessChance = eventData.sucess2Chance;
+                tempStrList = feedBackStringSelect2;
                 break;
             case 3:
                 eventSucessChance = eventData.sucess3Chance;
+                tempStrList = feedBackStringSelect3;
                 break;
         }
 
@@ -174,11 +201,17 @@ public class DataRandomEvent
                 isSucessFeedBack = false;
             }
         }
+        if (isSucessFeedBack)
+            selectResult = sucessDesc[selectNum - 1];
+        else
+            selectResult = failDesc[selectNum - 1];
 
         if (eventTypes[0] == EventFeedBackType.None || eventTypes[0] == EventFeedBackType.NoLose
     || eventTypes[0] == EventFeedBackType.GetNote || eventTypes[0] == EventFeedBackType.Battle)
+        {
+            selectInfos[selectNum - 1] = $"소모값 없음";
             return;
-
+        }
         StringBuilder sb = new StringBuilder();
         string tempStr;
 
@@ -193,6 +226,11 @@ public class DataRandomEvent
                     Vars.UserData.uData.CurStamina += stamina;
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
+
+
+                    tempStr = $"스테미나수치 : {stamina} ";
+                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.Hp:
                     var hp = eventVals[i];
@@ -201,6 +239,12 @@ public class DataRandomEvent
                     Vars.UserData.uData.HerbalistHp += hp;
                     tempStr = $"HP수치 : {hp}\n";
                     sb.Append(tempStr);
+
+
+                    tempStr = $"HP수치 : {hp} ";
+
+                    if(tempStrList.FindIndex(x=> x==tempStr ) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.Item:
                     // 아이템 획득 또는 감소 - val값에 따라 ownCount 조정해서 넣음
@@ -224,6 +268,9 @@ public class DataRandomEvent
                         rewardItems.Add(newItem);
                     }
                     sb.Append(tempStr);
+
+                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.LanternGage:
                     var lanternGage = eventVals[i];
@@ -231,15 +278,22 @@ public class DataRandomEvent
                     ConsumeManager.ConsumeLantern(-lanternGage);
                     tempStr = $"랜턴수치 : {lanternGage}\n";
                     sb.Append(tempStr);
+
+
+                    tempStr = $"랜턴수치 : {lanternGage} ";
+                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.TurnConsume:
                     var turnConsume = eventVals[i];
+                    tempStr = $"턴 소비 {turnConsume}\n";
 
-                    if (isSucessFeedBack)
-                        tempStr = $"성공 - 턴 소비\n";
-                    else
-                        tempStr = $"실패 - 턴 소비\n";
                     sb.Append(tempStr);
+
+                    tempStr = $"턴 소비 {turnConsume} ";
+
+                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.MostItemLose:
                     // 현재 가지고 있는 인벤토리 아이템 OwnCount 검색
@@ -270,14 +324,20 @@ public class DataRandomEvent
 
                     tempStr = $"이벤트 해금\n";
                     sb.Append(tempStr);
+
+                    tempStr = $"이벤트 해금 ";
+                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                        tempStrList.Add(tempStr);
                     break;
             }
         }
 
-        if (isSucessFeedBack)
-            selectResult = sucessDesc[selectNum - 1];
-        else
-            selectResult = failDesc[selectNum - 1];
+        var tempSb = new StringBuilder();
+        for (int i = 0; i < tempStrList.Count; i++)
+        {
+            tempSb.Append(tempStrList[i]);
+        }
+        selectInfos[selectNum - 1] = tempSb.ToString();
 
         resultInfo = sb.ToString();
     }
