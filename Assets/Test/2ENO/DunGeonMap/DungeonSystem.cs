@@ -23,7 +23,7 @@ public class DungeonSystem : MonoBehaviour
     public BattleObject battleObjPrefab;
     public HuntingObject huntingObjPrefab;
     public RandomEventObject randomEventObjPrefab;
-
+    
 
     [Header("Player, System")]
     public PlayerDungeonUnit dungeonPlayerGirl;
@@ -72,7 +72,7 @@ public class DungeonSystem : MonoBehaviour
     {
         // 현재 불러올 맵 데이터가 없을 때
         if (Vars.UserData.AllDungeonData.Count <= 0)
-            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            //GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
 
         dungeonPlayerGirl.gameObject.SetActive(false);
         dungeonPlayerBoy.gameObject.SetActive(false);
@@ -103,10 +103,10 @@ public class DungeonSystem : MonoBehaviour
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
 
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
         // TODO: 임시! 가라로 해놓은거
-        RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
+        //RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -162,7 +162,7 @@ public class DungeonSystem : MonoBehaviour
         //ConsumeManager.TimeUp(0, 3);
         if (isRoomEnd)
         {
-            foreach(var obj in eventObjInstanceList)
+            foreach (var obj in eventObjInstanceList)
             {
                 Destroy(obj);
             }
@@ -173,7 +173,7 @@ public class DungeonSystem : MonoBehaviour
                 Vars.UserData.WorldMapPlayerData.isClear = true;
                 Vars.UserData.curDungeonIndex = Vector2.zero;
                 Vars.UserData.AllDungeonData.Clear();
-                GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+                //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
             }

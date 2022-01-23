@@ -44,9 +44,17 @@ public class RandomEventManager : MonoBehaviour
         var list = from data in allDataList
                    where data.EventData.eventCondition == RandomEventCondition.Always
                    select data;
-        // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
 
-        randomEventPool.AddRange(list);
+        //// TODO : 테스트용 임시코드
+        var testEvent = randomTable.GetData<RandomEventTableElem>("11");
+        for (int i = 0; i < 20; i++)
+        {
+            var data = new DataRandomEvent(testEvent);
+            randomEventPool.Add(data);
+        }
+
+        // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
+        //randomEventPool.AddRange(list);
     }
 
     public void LoadEventData()
@@ -75,48 +83,49 @@ public class RandomEventManager : MonoBehaviour
     {
         while (string.IsNullOrEmpty(roomData.randomEventID))
         {
-            var rndVal = Random.Range(0, 101);
-            RandomEventFrequency eventFre = RandomEventFrequency.None;
-            if (rndVal < 40)
-                eventFre = RandomEventFrequency.Usually;
-            else if (rndVal < 70)
-                eventFre = RandomEventFrequency.Often;
-            else if (rndVal < 90)
-                eventFre = RandomEventFrequency.SomeTime;
-            else
-                eventFre = RandomEventFrequency.Rarely;
+            //var rndVal = Random.Range(0, 101);
+            //RandomEventFrequency eventFre = RandomEventFrequency.None;
+            //if (rndVal < 40)
+            //    eventFre = RandomEventFrequency.Usually;
+            //else if (rndVal < 70)
+            //    eventFre = RandomEventFrequency.Often;
+            //else if (rndVal < 90)
+            //    eventFre = RandomEventFrequency.SomeTime;
+            //else
+            //    eventFre = RandomEventFrequency.Rarely;
 
-            // 1차 대분류 빈도확률로 픽
-            var list1 = from data in randomEventPool
-                        where data.EventData.eventFrequency == eventFre
-                        select data;
+            //// 1차 대분류 빈도확률로 픽
+            //var list1 = from data in randomEventPool
+            //            where data.EventData.eventFrequency == eventFre
+            //            select data;
 
-            // 2차 소분류 빈도확률로 픽
+            //// 2차 소분류 빈도확률로 픽
 
-            var pList = PercentPick(list1.ToList());
-            var sList = PerCentSum(pList);
+            //var pList = PercentPick(list1.ToList());
+            //var sList = PerCentSum(pList);
 
-            var rndVal2 = Random.Range(0, sList.Last());
-            var index = 0;
-            foreach (var data in sList)
-            {
-                if (rndVal2 < data)
-                    break;
-                index++;
-            }
+            //var rndVal2 = Random.Range(0, sList.Last());
+            //var index = 0;
+            //foreach (var data in sList)
+            //{
+            //    if (rndVal2 <= data)
+            //        break;
+            //    index++;
+            //}
 
-            if (beforeEventData == null)
-            {
-                roomData.randomEventID = randomEventPool[index].EventData.id;
-                beforeEventData = randomEventPool[index];
-                break;
-            }
-            else if (beforeEventData.EventData.id != randomEventPool[index].EventData.id)
-            {
-                roomData.randomEventID = randomEventPool[index].EventData.id;
-                beforeEventData = randomEventPool[index];
-                break;
-            }
+            //if (beforeEventData == null)
+            //{
+            //    roomData.randomEventID = randomEventPool[index].EventData.id;
+            //    beforeEventData = randomEventPool[index];
+            //    break;
+            //}
+            //else if (beforeEventData.EventData.id != randomEventPool[index].EventData.id)
+            //{
+            //    roomData.randomEventID = randomEventPool[index].EventData.id;
+            //    beforeEventData = randomEventPool[index];
+            //    break;
+            //}
+            roomData.randomEventID = randomEventPool[0].EventData.id;
             yield return null;
         }
     }

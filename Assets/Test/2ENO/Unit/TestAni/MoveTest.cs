@@ -19,17 +19,18 @@ public class MoveTest : MonoBehaviour
     public GameObject playerGirl;
 
     // 달리기 움직임 및 손잡기 관련
-    private float boySpeed;
+    public float boySpeed;
     private float girlSpeed;
     private bool isRunReady;
     private bool isRun;
     private bool isHand;
+    private bool isTurn;
 
     private RigBuilder rigBuilder;
     private Rig boyRig;
     private Rig[] girlRigs;
     private IKControl boyRight;
-    private List<RigLayer> layers;
+    private List<RigLayer> girlRiglayers;
 
     private Coroutine coHand;
     void Start()
@@ -39,9 +40,9 @@ public class MoveTest : MonoBehaviour
         playerAnimationGirl = playerGirl.GetComponent<Animator>();
 
         rigBuilder = playerGirl.GetComponent<RigBuilder>();
-        layers = rigBuilder.layers;
+        girlRiglayers = rigBuilder.layers;
 
-        foreach (var obj in layers)
+        foreach (var obj in girlRiglayers)
             obj.active = false;
 
         boyRig = playerBoy.GetComponentInChildren<Rig>();
@@ -50,7 +51,7 @@ public class MoveTest : MonoBehaviour
 
         // 0 active = 오른쪽 방향
         // 1 active = 왼쪽방향 이동기준
-        layers[1].active = true;
+        girlRiglayers[1].active = true;
         boyRight.isRight = false;
     }
 
@@ -78,7 +79,7 @@ public class MoveTest : MonoBehaviour
         var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
         if (!isCoMove)
         {
-            if (multiTouch.TouchCount > 0 && isRayCol)
+            if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
             {
                 boySpeed = Input.GetAxis("MouseAxes");
                 boySpeed *= speed;
@@ -89,12 +90,21 @@ public class MoveTest : MonoBehaviour
                 var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
                 if (playerXPos + 0.05f < touchXPos)
                 {
+                    if (!isTurn)
+                        RigOff();
+                    isTurn = true;
+
                     var pos = boySpeed * Time.deltaTime * Vector3.forward;
                     playerBoy.transform.position += pos;
                     playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+
                 }
                 else if (playerXPos - 0.05f > touchXPos)
                 {
+                    if (isTurn)
+                        RigOff();
+                    isTurn = false;
+
                     var pos = boySpeed * Time.deltaTime * -Vector3.forward;
                     playerBoy.transform.position += pos;
                     playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
@@ -102,53 +112,77 @@ public class MoveTest : MonoBehaviour
                 }
                 else
                     boySpeed = 0f;
+
+                if (playerBoy.transform.position.z > playerGirl.transform.position.z + 1.15f)
+                {
+                    girlRiglayers[1].active = false;
+                    girlRiglayers[0].active = true;
+                    boyRight.isRight = true;
+                    var pos = boySpeed * Time.deltaTime * Vector3.forward;
+                    playerGirl.transform.position += pos;
+                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+
+                    if (isHand)
+                    {
+                        if (coHand != null)
+                        {
+                            StopCoroutine(coHand);
+                            coHand = null;
+                        }
+                        coHand ??= StartCoroutine(HandShakeOn());
+                        isHand = false;
+                    }
+                }
+                else if (playerBoy.transform.position.z < playerGirl.transform.position.z - 1.15f)
+                {
+                    girlRiglayers[1].active = true;
+                    girlRiglayers[0].active = false;
+                    boyRight.isRight = false;
+                    var pos = boySpeed * Time.deltaTime * -Vector3.forward;
+                    playerGirl.transform.position += pos;
+                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+
+                    if (isHand)
+                    {
+                        if (coHand != null)
+                        {
+                            StopCoroutine(coHand);
+                            coHand = null;
+                        }
+                        coHand ??= StartCoroutine(HandShakeOn());
+                        isHand = false;
+                    }
+                }
+                else
+                {
+                    if (!isHand)
+                    {
+                        if (coHand != null)
+                        {
+                            StopCoroutine(coHand);
+                            coHand = null;
+                        }
+                        coHand ??= StartCoroutine(HandShakeOff());
+                        isHand = true;
+                    }
+                }
             }
             else
                 boySpeed = 0f;
 
             playerAnimationBoy.SetFloat("Speed", boySpeed);
 
-            if (playerBoy.transform.position.z > playerGirl.transform.position.z + 1f)
-            {
-                layers[1].active = false;
-                layers[0].active = true;
-                boyRight.isRight = true;
-                var pos = boySpeed * Time.deltaTime * Vector3.forward;
-                playerGirl.transform.position += pos;
-                playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
 
-                if (isHand)
-                {
-                    coHand ??= StartCoroutine(HandShakeOn());
-                    isHand = false;
-                }
-            }
-            else if (playerBoy.transform.position.z < playerGirl.transform.position.z - 1f)
-            {
-                layers[1].active = true;
-                layers[0].active = false;
-                boyRight.isRight = false;
-                var pos = boySpeed * Time.deltaTime * -Vector3.forward;
-                playerGirl.transform.position += pos;
-                playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
-
-                if (isHand)
-                {
-                    coHand ??= StartCoroutine(HandShakeOn());
-                    isHand = false;
-                }
-            }
-            else
-            {
-                if (!isHand)
-                {
-                    coHand ??= StartCoroutine(HandShakeOff());
-                    isHand = true;
-                }
-            }
             playerAnimationGirl.SetFloat("Speed", boySpeed);
         }
+        else
+        {
+            RigOff();
+            isHand = true;
+        }
     }
+
+
 
     private IEnumerator HandShakeOn()
     {
@@ -158,7 +192,7 @@ public class MoveTest : MonoBehaviour
         while(timer < 1.1f)
         {
             boyRig.weight = Mathf.Lerp(0f, 1f, timer);
-            if(layers[0].active == true)
+            if(girlRiglayers[0].active == true)
                 girlRigs[0].weight = boyRig.weight;
             else
                 girlRigs[1].weight = boyRig.weight;
@@ -175,7 +209,7 @@ public class MoveTest : MonoBehaviour
         while (timer < 1.1f)
         {
             boyRig.weight = Mathf.Lerp(1f, 0f, timer);
-            if (layers[0].active == true)
+            if (girlRiglayers[0].active == true)
                 girlRigs[0].weight = boyRig.weight;
             else
                 girlRigs[1].weight = boyRig.weight;
@@ -190,14 +224,17 @@ public class MoveTest : MonoBehaviour
     {
         boyRight.ikActive = false;
         boyRig.enabled = false;
-        foreach (var obj in layers)
+        foreach (var obj in girlRiglayers)
             obj.active = false;
+        girlRigs[0].weight = 0f;
+        girlRigs[1].weight = 0f;
+        boyRig.weight = 0f;
     }
     private void RigOn()
     {
         boyRight.ikActive = true;
         boyRig.enabled = true;
-        foreach (var obj in layers)
+        foreach (var obj in girlRiglayers)
             obj.active = true;
     }
 

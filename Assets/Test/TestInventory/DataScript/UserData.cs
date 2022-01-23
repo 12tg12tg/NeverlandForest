@@ -181,7 +181,10 @@ public class UserData
         }
         else
         {
-            haveAllItemList[index].OwnCount -= removeItem.OwnCount;
+            if(removeItem.OwnCount < 0)
+                haveAllItemList[index].OwnCount += removeItem.OwnCount;
+            else
+                haveAllItemList[index].OwnCount -= removeItem.OwnCount;
             if(haveAllItemList[index].OwnCount <= 0)
             {
                 haveAllItemList.RemoveAt(index);
