@@ -345,6 +345,18 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 GameObject os = default;
                 if(!obstacleType.Equals(ObstacleType.Barrier))
                 {
+                    // 올가미를 설치 하려고 할 때 주변에 두번 째 올가미를 설치할 곳이 없을 경우 안되게끔
+                    if (obstacleType.Equals(ObstacleType.Lasso))
+                    {
+                        var list = tileMaker.GetNearUpDownTiles(index).ToList();
+                        var obList = list.Where(x => x.obstacle == null).Select(x => x).ToList();
+                        if (obList.Count == 0)
+                        {
+                            Debug.Log("두번 째 올가미를 설치할 공간이 없습니다. 다른곳에 설치하세요");
+                            return;
+                        }
+                    }
+
                     var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
                     os = Instantiate(prefab, transform);
                     var rigid = os.AddComponent<Rigidbody>();
@@ -371,6 +383,16 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 {
                     if ((int)index.y == tileMaker.col - 1) // 장벽은 마지막 몬스터 등장 하는 곳에는 설치 못하도록
                         return;
+
+                    // 장벽을 설치는 해당 열에 아무것도 없어야 설치가 가능하다
+                    var list = tileMaker.GetNearRowTiles(index).ToList();
+                    var obList = list.Where(x => x.obstacle != null).Select(x => x).ToList();
+                    if (obList.Count != 0)
+                    {
+                        Debug.Log("장벽을 설치할 공간이 부족합니다. 다른곳에 설치하세요");
+                        return;
+                    }
+
                     var barrierTile = tileMaker.GetNearRowTiles(index).ToList();
                     Obstacle barrier = default;
                     for (int i = 0; i < barrierTile.Count; i++)
