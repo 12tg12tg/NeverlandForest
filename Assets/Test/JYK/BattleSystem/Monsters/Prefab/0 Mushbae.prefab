@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4480251189072947136}
   - component: {fileID: 4511900101503581785}
   - component: {fileID: 1639722500187141562}
-  - component: {fileID: -6728793683635885699}
+  - component: {fileID: -7415683762171777417}
   m_Layer: 0
   m_Name: 0 Mushbae
   m_TagString: Untagged
@@ -97,18 +97,19 @@ CapsuleCollider:
   m_Height: 1.0000002
   m_Direction: 1
   m_Center: {x: 0, y: 0.34, z: -0.03}
---- !u!114 &-6728793683635885699
-MonoBehaviour:
+--- !u!65 &-7415683762171777417
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4480251189080331264}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 2
+  m_Size: {x: 0.24, y: 0.37, z: 0.19}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!1 &4480251189080331266
 GameObject:
   m_ObjectHideFlags: 0

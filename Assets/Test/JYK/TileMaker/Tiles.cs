@@ -333,18 +333,64 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         var manager = BattleManager.Instance;
         if(manager.FSM.curState == BattleState.Start)
         {
-            for (int i = 0; i < units.Count; i++)
+            if (!Inventory_Virtual.instance.isLasso)
             {
-                if (units[i] != null) // 플레이어가 위치한 곳 장애물 설치 못하도록 막는 용도
-                    return;
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if (units[i] != null) // 플레이어가 위치한 곳 장애물 설치 못하도록 막는 용도
+                        return;
+                }
+
+                // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
+                var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                var os = Instantiate(prefab, transform);
+                var rigid = os.AddComponent<Rigidbody>();
+                rigid.useGravity = false;
+                rigid.isKinematic = true;
+                obstacle = new Obstacle();
+                obstacle.prefab = os;
+                obstacle.type = obstacleType;
+                obstacle.trapDamage = obstacleType.Equals(ObstacleType.Lasso) ? 0 : 1;
+                obstacle.numberOfInstallation = obstacleType.Equals(ObstacleType.Lasso) ? 2 : 1;
+                obstacle.numberOfInstallation--;
+                if (obstacle.numberOfInstallation == 0)
+                    BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                else
+                {
+                    Inventory_Virtual.instance.isLasso = true;
+                }
             }
-            // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
-            var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
-            var os = Instantiate(prefab, transform);
-            obstacle = new Obstacle();
-            obstacle.prefab = os;
-            obstacle.type = ObstacleType.BoobyTrap;
-            obstacle.trapDamage = 1f;
+            else
+            {
+                // 올가미 두번 째 위치 설치하는 곳
+                var lassoTile = tileMaker.TileList
+                    .Where(x => x.obstacle != null)
+                    .Where(x => x.obstacle.type.Equals(ObstacleType.Lasso))
+                    .Where(x => x.obstacle.numberOfInstallation == 1)
+                    .Select(x => x).First();
+
+                var list = tileMaker.GetNear8Tiles(lassoTile.index).ToList();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].index.Equals(index))
+                    {
+                        var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                        var os = Instantiate(prefab, transform);
+                        var rigid = os.AddComponent<Rigidbody>();
+                        rigid.useGravity = false;
+                        rigid.isKinematic = true;
+                        obstacle = new Obstacle();
+                        obstacle.prefab = os;
+                        obstacle.type = obstacleType;
+                        obstacle.pair.Add(lassoTile.obstacle);
+                        lassoTile.obstacle.pair.Add(obstacle);
+                        lassoTile.obstacle.numberOfInstallation--;
+                        Inventory_Virtual.instance.isLasso = false;
+                        BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                        return;
+                    }
+                }
+            }
         }
         else
         {

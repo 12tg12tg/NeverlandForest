@@ -623,6 +623,19 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void AllMonsterDebuffCheck(UnityAction action = null)
+    {
+        var monster = monsters.Where(x => x.obstacles != null)
+                              .Select(x => x)
+                              .ToList();
+
+        for (int i = 0; i < monster.Count; i++)
+        {
+            monster[i].ObstacleHit();
+        }
+
+        action?.Invoke();
+    }
     private void OnGUI()
     {
         if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
