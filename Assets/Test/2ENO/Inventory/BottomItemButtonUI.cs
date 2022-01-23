@@ -73,7 +73,7 @@ public class BottomItemButtonUI : MonoBehaviour
         }
         else
         {
-            /* BottomUIManager.Instance.info.Init(dataItem);
+             BottomUIManager.Instance.info.Init(dataItem);
              BottomUIManager.Instance.selectItem = dataItem;
              BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
              BottomUIManager.Instance.isPopUp = true;
@@ -86,8 +86,8 @@ public class BottomItemButtonUI : MonoBehaviour
              {
                  BottomUIManager.Instance.itemButtons[i].IsSelect = false;
              }
-             IsSelect = true;*/
-            DiaryInventory.Instance.info.Init(dataItem);
+             IsSelect = true;
+            //DiaryInventory.Instance.info.Init(dataItem);
         }
     }
 
