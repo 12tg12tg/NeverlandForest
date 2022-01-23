@@ -813,6 +813,7 @@ GameObject:
   - component: {fileID: 6328325485100009508}
   - component: {fileID: -2395896274837613022}
   - component: {fileID: 2099405359193693055}
+  - component: {fileID: -4455150592308570262}
   m_Layer: 0
   m_Name: 7 Bloody-bat
   m_TagString: Untagged
@@ -886,6 +887,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 2099405359193693055}
   monsterID: 7
+  obstacles: []
 --- !u!136 &2099405359193693055
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -900,6 +902,18 @@ CapsuleCollider:
   m_Height: 2.35
   m_Direction: 1
   m_Center: {x: 0, y: 1.15, z: 0}
+--- !u!114 &-4455150592308570262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6328325485107444708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6328325485107444712
 GameObject:
   m_ObjectHideFlags: 0

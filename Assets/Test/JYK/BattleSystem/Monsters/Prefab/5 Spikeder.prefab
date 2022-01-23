@@ -836,6 +836,7 @@ GameObject:
   - component: {fileID: 9220383817024442575}
   - component: {fileID: 1332837144032885741}
   - component: {fileID: 7848955563663305559}
+  - component: {fileID: 7887329218666270987}
   m_Layer: 0
   m_Name: 5 Spikeder
   m_TagString: Untagged
@@ -917,6 +918,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 7848955563663305559}
   monsterID: 5
+  obstacles: []
 --- !u!136 &7848955563663305559
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -931,6 +933,18 @@ CapsuleCollider:
   m_Height: 1.68
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
+--- !u!114 &7887329218666270987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220383817017189135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &9220383817017189137
 GameObject:
   m_ObjectHideFlags: 0

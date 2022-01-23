@@ -66,7 +66,9 @@ public class Utility
     }
     public static IEnumerator CoTranslate(Transform transform, Vector3 dest, float speed, float minDist, UnityAction action = null)
     {
-        var foward = transform.forward;
+        var startPos = transform.position;
+        var foward = (dest - startPos).normalized;
+
         while (Vector3.Distance(transform.position, dest) > minDist)
         {
             transform.position += foward * speed * Time.deltaTime;

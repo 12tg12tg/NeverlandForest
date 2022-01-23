@@ -16,13 +16,13 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
     // Vars
     private int sheild;
+    private int maxSheild;
     private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
-    public PlayerCommand hitInfo;
     public MonsterCommand command;
     private BattleManager manager;
-    private bool isActionDone;
+    public bool isActionDone;
     private float delayTimer;
     private const float actionDelay = 0.5f;
     [Header("반드시 테이블에서의 몬스터 아이디 입력")]
@@ -68,10 +68,76 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     // IAttackable
     public void OnAttacked(BattleCommand attacker)
     {
-        var playerStats = attacker as PlayerCommand;
-        var damage = playerStats.skill.SkillTableElem.Damage;
-        Debug.Log($"{Pos} 몬스터가 {playerStats.type}에게 {damage}의 피해를 받다. {Hp} -> {Hp - damage}");
-        Hp -= damage;
+        var playerCommand = attacker as PlayerCommand;
+        var damage = playerCommand.skill.SkillTableElem.Damage;
+
+        // Damage
+        CalcultateDamage(playerCommand.type, damage, out int curDamage, out int curSheildDamage);
+        //Debug.Log($"{Pos}{name} 몬스터가 {type}에게 hp : {curDamage} 의 피해를 받다. {Hp} -> {Hp - decrease}");
+
+        // 만약 사냥꾼 이라면 바인드 디버프 추가.
+        if (playerCommand.type == PlayerType.Boy)
+        {
+            // 데미지계산
+            Debug.Log($"{Pos} 몬스터가 {playerCommand.type}에게 {damage}의 피해를 받다. {Hp} -> {Hp - damage}");
+            Hp -= damage;
+            if (Hp <= 0)
+            {
+                PlayDeadAnimation();
+                State = MonsterState.Dead;
+            }
+
+
+            // 부가효과
+            if (playerCommand.skill.SkillTableElem.name != "근거리")
+                IsBind = true;
+            if (playerCommand.skill.SkillTableElem.name == "넉 백")
+            {
+                Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
+
+                if (backTile != null)
+                {
+                    if (/*올가미가 있으면서 반대쪽 몬스터가 있다면*/ false)
+                    {
+
+                    }
+                    else
+                    {
+                        BattleManager.Instance.MoveUnitOnTile(backTile.index, this, null, null, false);
+                    }
+                }
+            }
+        }
+        else
+        {
+            LockTrigger();
+        }
+    }
+
+    public void CalcultateDamage(PlayerType type, int damage, out int curDamage, out int curSheildDamage)
+    {
+        curDamage = 0;
+        curSheildDamage = 0;
+
+        if (type == PlayerType.Boy)
+        {
+            // 데미지계산
+            curDamage = damage - sheild < 0 ? 0 : damage - sheild;
+            Hp -= curDamage;
+        }
+        else if(type == PlayerType.Girl)
+        {
+            sheild -= damage;
+            if(sheild < 0)
+            {
+                curDamage = -sheild;
+                sheild = 0;
+                Hp -= curDamage;
+            }
+            curSheildDamage = damage - curDamage;
+        }
+
+        // DeathCheck
         if (Hp <= 0)
         {
             PlayDeadAnimation();
@@ -85,6 +151,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         Hp = elem.hp;
         Atk = elem.atk;
         sheild = elem.sheild;
+        maxSheild = sheild;
         type = elem.type;
         manager ??= BattleManager.Instance;
         command ??= new MonsterCommand(this);
@@ -92,7 +159,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private void EraseThis()
     {
         CurTile.RemoveUnit(this);
-        manager.monster.Remove(this);
+        manager.monsters.Remove(this);
     }
 
 
@@ -105,6 +172,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         return dist <= range;
         // 나중에 플레이어가 쓰러져있는지 아닌지도 확인.
     }
+
     public MonsterCommand SetActionCommand()
     {
         // 1. 이전 커맨드 지우기
@@ -124,6 +192,8 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         // 4. 속박 상태인지 확인
         else if(IsBind)
         {
+            PlayHitAnimation(); // + 속박 표시
+            IsBind = false;
             command.actionType = MonsterActionType.None;         
         }
         // 5. 움직일 대상 타일 찾기
@@ -159,6 +229,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         State = MonsterState.DoSomething;
         return command;
     }
+
     public void Move()
     {
         ObstacleAdd();
@@ -213,12 +284,18 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }));
     }
 
-    public void Ready(PlayerCommand command)
+    // Trigger Enable
+    public void EnableTrigger()
     {
         trigger.enabled = true;
-        hitInfo = command;
     }
 
+    public void LockTrigger()
+    {
+        trigger.enabled = false;
+    }
+
+    // Debuff
     public void ObstacleAdd()
     {
         var goalTile = TileMaker.Instance.GetTile(command.target);

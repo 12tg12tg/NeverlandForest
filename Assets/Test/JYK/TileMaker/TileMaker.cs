@@ -392,4 +392,14 @@ public class TileMaker : MonoBehaviour
 
         return list;
     }
+
+    public IEnumerable<Tiles> GetNear8Tiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where n.index.x > center.x - 1 && n.index.x < center.x + 1 && n.index.y > center.y - 1 && center.y < center.y + 1
+                   && n != centerTile && n.index.y != 0
+                   select n;
+        return list;
+    }
 }

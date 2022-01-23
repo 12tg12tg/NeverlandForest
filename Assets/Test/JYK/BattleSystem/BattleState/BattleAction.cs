@@ -21,6 +21,7 @@ public class BattleAction : State<BattleState>
             switch (curMonsterCommand.actionType)
             {
                 case MonsterActionType.None:
+                    curMonsterCommand.attacker.isActionDone = true;
                     break;
                 case MonsterActionType.Attack:
                     curMonsterCommand.attacker.PlayAttackAnimation();
@@ -55,6 +56,7 @@ public class BattleAction : State<BattleState>
                 switch (curMonsterCommand.actionType)
                 {
                     case MonsterActionType.None:
+                        curMonsterCommand.attacker.isActionDone = true;
                         break;
                     case MonsterActionType.Attack:
                         curMonsterCommand.attacker.PlayAttackAnimation();

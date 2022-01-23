@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     private MultiTouch multiTouch;
 
     //Unit
-    public List<MonsterUnit> monster = new List<MonsterUnit>();
+    public List<MonsterUnit> monsters = new List<MonsterUnit>();
     private Queue<MonsterUnit> wave1 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave2 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave3 = new Queue<MonsterUnit>();
@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
         GameManager.Manager.State = GameState.Battle;
 
         // 3. ¸ó½ºÅÍ (·£´ý»Ì±â) & ¹èÄ¡
-        monster.Clear();
+        monsters.Clear();
         wave1.Clear();
         wave2.Clear();
         wave3.Clear();
@@ -264,7 +264,7 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
                 var tilePos = new Vector2(i, 6);
                 tempForCoroutine.ObstacleAdd(tilePos);
@@ -287,7 +287,7 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
                 var tilePos = new Vector2(indexArr[i], 6);
                 tempForCoroutine.ObstacleAdd(tilePos);
@@ -414,7 +414,7 @@ public class BattleManager : MonoBehaviour
         unit.transform.position = dest;
     }
 
-    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction)
+    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction, bool rotateFoward = true)
     {
         var preTile = monsterUnit.CurTile;
         preTile.RemoveUnit(monsterUnit);
@@ -425,7 +425,7 @@ public class BattleManager : MonoBehaviour
         monsterUnit.Pos = tilePos;
 
         MonsterUnit alreadyPlacedMonster = (tile.FrontMonster == monsterUnit) ? tile.BehindMonster : tile.FrontMonster;
-        bool isAlreadyBehind = (tile.FrontMonster == monsterUnit) ? true : false;
+        bool isAlreadyBehind = tile.FrontMonster == monsterUnit;
 
         if (tile.Units_UnitCount() == 2)
         {
@@ -438,7 +438,7 @@ public class BattleManager : MonoBehaviour
                 frontDest.y = tile.FrontMonster.transform.position.y;
 
                 StartCoroutine(CoMoveMonster(monsterUnit, frontDest,
-                    moveStartAction, moveEndAction));
+                    moveStartAction, moveEndAction, rotateFoward));
             }
             else
             {
@@ -450,7 +450,7 @@ public class BattleManager : MonoBehaviour
                 behindDest.y = tile.BehindMonster.transform.position.y;
 
                 StartCoroutine(CoMoveMonster(monsterUnit, behindDest,
-                    moveStartAction, moveEndAction));
+                    moveStartAction, moveEndAction, rotateFoward));
 
                 var frontDest = tile.FrontPos;
                 frontDest.y = tile.FrontMonster.transform.position.y;
@@ -464,24 +464,27 @@ public class BattleManager : MonoBehaviour
         {
             var dest = tile.CenterPos;
             dest.y = monsterUnit.transform.position.y;
-            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction));
+            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction, rotateFoward));
         }
     }
 
-    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc)
+    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc, bool haveToRotate = true)
     {
         var startRot = Quaternion.LookRotation(unit.transform.forward);
         var destRot = Quaternion.LookRotation(dest - unit.transform.position);
-        if (Quaternion.Angle(startRot, destRot) > 0f)
+
+        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
             yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.3f));
 
         yield return new WaitForSeconds(0.3f);
 
+        var speed = (haveToRotate) ? monsterSpeed : monsterSpeed * 2;
+
         startAc?.Invoke();
-        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, monsterSpeed, 0.3f));
+        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, speed, 0.3f));
         endAc?.Invoke();
 
-        if (Quaternion.Angle(startRot, destRot) > 0f)
+        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
             yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.3f));
     }
 
@@ -591,7 +594,7 @@ public class BattleManager : MonoBehaviour
     public void EndOfPlayerAction()
     {
         // ÀÌ°å´ÂÁö Ã¼Å©
-        var monsterlist = monster.Where(n => n.State != MonsterState.Dead).ToList();
+        var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
             PrintMessage($"½Â¸®!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
@@ -637,7 +640,7 @@ public class BattleManager : MonoBehaviour
 
         if(GUILayout.Button(" ¡ç ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y - 1));
 
@@ -645,7 +648,7 @@ public class BattleManager : MonoBehaviour
         }
         if (GUILayout.Button(" ¡æ ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y + 1));
 

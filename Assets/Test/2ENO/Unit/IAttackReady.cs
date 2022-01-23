@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IAttackReady
 {
-    public void Ready(PlayerCommand command);
+    public void EnableTrigger();
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4524045572460584640}
   - component: {fileID: 4501658650802276561}
   - component: {fileID: 6333794242100136533}
+  - component: {fileID: 7841099161502580984}
   m_Layer: 0
   m_Name: 11 Peekabae
   m_TagString: Untagged
@@ -86,6 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 6333794242100136533}
   monsterID: 11
+  obstacles: []
 --- !u!136 &6333794242100136533
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -100,6 +102,18 @@ CapsuleCollider:
   m_Height: 1.3
   m_Direction: 1
   m_Center: {x: 0, y: 0.65, z: 0}
+--- !u!114 &7841099161502580984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4524045572467879168}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4524045572467879170
 GameObject:
   m_ObjectHideFlags: 0

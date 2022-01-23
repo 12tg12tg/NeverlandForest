@@ -945,6 +945,7 @@ GameObject:
   - component: {fileID: 3491765107655524130}
   - component: {fileID: -2538686189885670207}
   - component: {fileID: 1119710877022363810}
+  - component: {fileID: -3071672615715424282}
   m_Layer: 0
   m_Name: 3 Flower-pong
   m_TagString: Untagged
@@ -1014,6 +1015,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   trigger: {fileID: 1119710877022363810}
   monsterID: 3
+  obstacles: []
 --- !u!136 &1119710877022363810
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1028,6 +1030,18 @@ CapsuleCollider:
   m_Height: 1.24
   m_Direction: 1
   m_Center: {x: 0, y: 0.58, z: 0}
+--- !u!114 &-3071672615715424282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3491765107648122082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3491765107648122084
 GameObject:
   m_ObjectHideFlags: 0
