@@ -82,16 +82,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         // 만약 사냥꾼 이라면 바인드 디버프 추가.
         if (playerCommand.type == PlayerType.Boy)
         {
-            // 데미지계산
-            Debug.Log($"{Pos} 몬스터가 {playerCommand.type}에게 {damage}의 피해를 받다. {Hp} -> {Hp - damage}");
-            Hp -= damage;
-            if (Hp <= 0)
-            {
-                PlayDeadAnimation();
-                State = MonsterState.Dead;
-            }
-
-
             // 부가효과
             if (playerCommand.skill.SkillTableElem.name != "근거리")
                 IsBind = true;
@@ -365,11 +355,5 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                 obstacles.Remove(obs[i]);
             }
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Trap"))
-            Destroy(other.gameObject);
     }
 }

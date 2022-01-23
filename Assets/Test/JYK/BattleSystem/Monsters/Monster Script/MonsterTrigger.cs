@@ -34,6 +34,8 @@ public class MonsterTrigger : MonoBehaviour
                 boyAction.isAttackMotionEnd = true;
                 monsterUnit.trigger.enabled = false;
             }
-        }
+        }        
+        else if (other.CompareTag("Trap"))
+            Destroy(other.gameObject);
     }
 }

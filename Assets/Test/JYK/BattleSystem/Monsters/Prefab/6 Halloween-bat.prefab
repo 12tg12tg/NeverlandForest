@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 1162074717673543219}
   - component: {fileID: 2941806670976981609}
   - component: {fileID: 2607532471700328269}
-  - component: {fileID: -3454256762422761432}
+  - component: {fileID: 2218209644419856371}
   m_Layer: 0
   m_Name: 6 Halloween-bat
   m_TagString: Untagged
@@ -774,6 +774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 2607532471700328269}
+  isActionDone: 0
   monsterID: 6
   obstacles: []
 --- !u!136 &2607532471700328269
@@ -790,7 +791,7 @@ CapsuleCollider:
   m_Height: 1.75
   m_Direction: 1
   m_Center: {x: 0, y: 0.89, z: 0}
---- !u!114 &-3454256762422761432
+--- !u!114 &2218209644419856371
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

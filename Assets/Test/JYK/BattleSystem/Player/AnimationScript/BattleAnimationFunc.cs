@@ -43,7 +43,7 @@ public class BattleAnimationFunc : MonoBehaviour
         var shootArrow = ProjectilePool.Instance.GetObject(ProjectileTag.HunterArrow);
         shootArrow.transform.position = shootStartPos;
         var arrow = shootArrow.GetComponent<Arrow>();
-        StartCoroutine(arrow.Shoot(pos));
+        StartCoroutine(arrow.Shoot(pos, true));
     }
 
     public void ShootArrowLine(Vector3 pos, bool isFianlShot = false)

@@ -295,6 +295,7 @@ GameObject:
   - component: {fileID: -5673326065835695694}
   - component: {fileID: 6531018775999943452}
   - component: {fileID: -1309786123534560192}
+  - component: {fileID: 2099087159875414895}
   m_Layer: 0
   m_Name: 8 Bay
   m_TagString: Untagged
@@ -355,6 +356,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 6531018775999943452}
+  isActionDone: 0
   monsterID: 8
   obstacles: []
 --- !u!136 &6531018775999943452
@@ -384,6 +386,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.33, y: 0.37, z: 0.19}
   m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!114 &2099087159875414895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610133508913661007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7610133508913661013
 GameObject:
   m_ObjectHideFlags: 0

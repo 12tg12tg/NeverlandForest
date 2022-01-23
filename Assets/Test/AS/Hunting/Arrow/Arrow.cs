@@ -14,7 +14,7 @@ public class Arrow : MonoBehaviour
     private const float gravity = 9.8f;
     private const float maxDistance = 30f;
 
-    public IEnumerator Shoot(Vector3 targerPos)
+    public IEnumerator Shoot(Vector3 targerPos, bool returnToPool = false)
     {
         // 높이 계산
         var distance = Vector3.Distance(transform.position, targerPos);
@@ -43,7 +43,8 @@ public class Arrow : MonoBehaviour
             transform.SetPositionAndRotation(pos, Quaternion.LookRotation(dir));
             yield return null;
         }
-        ProjectilePool.Instance.ReturnObject(ProjectileTag.HunterArrow, gameObject);
+        if(returnToPool)
+            ProjectilePool.Instance.ReturnObject(ProjectileTag.HunterArrow, gameObject);
     }
 
     public IEnumerator ShootLine(Vector3 targetPos)

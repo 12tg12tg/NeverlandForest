@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: 3491765107655524130}
   - component: {fileID: -2538686189885670207}
   - component: {fileID: 1119710877022363810}
-  - component: {fileID: -3071672615715424282}
+  - component: {fileID: -1418247009295556939}
   m_Layer: 0
   m_Name: 3 Flower-pong
   m_TagString: Untagged
@@ -1014,6 +1014,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 1119710877022363810}
+  isActionDone: 0
   monsterID: 3
   obstacles: []
 --- !u!136 &1119710877022363810
@@ -1030,7 +1031,7 @@ CapsuleCollider:
   m_Height: 1.24
   m_Direction: 1
   m_Center: {x: 0, y: 0.58, z: 0}
---- !u!114 &-3071672615715424282
+--- !u!114 &-1418247009295556939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
