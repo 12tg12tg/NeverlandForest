@@ -26,7 +26,7 @@ public class MonsterTrigger : MonoBehaviour
                     boyAction.isAttackMotionEnd = true;
                     monsterUnit.trigger.enabled = false;
                 }
-
+                monsterUnit.PlayHitAnimation();
                 monsterUnit.OnAttacked(BattleManager.Instance.boy.command);
             }
             else

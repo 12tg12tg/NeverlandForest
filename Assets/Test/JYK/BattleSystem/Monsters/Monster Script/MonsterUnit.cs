@@ -74,7 +74,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
         // Damage
         CalcultateDamage(playerCommand.type, damage, out int curDamage, out int curSheildDamage);
-        Debug.Log($"{Pos}{name} 몬스터가 {type}에게 {curDamage}의 Hp 피해와 {curSheildDamage}의 실드 피해를 받았다.\n" +
+        Debug.Log($"{Pos}{name} 몬스터가 {baseElem.Name}에게 {curDamage}의 Hp 피해와 {curSheildDamage}의 실드 피해를 받았다.\n" +
             $"Hp : {Hp + curDamage} -> {Hp} // Sheild : {sheild + curSheildDamage} -> {sheild}");
         DeadCheak();
 

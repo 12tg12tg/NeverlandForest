@@ -632,6 +632,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658804723}
   m_CullTransparentMesh: 1
+--- !u!108 &772398800 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5101310018156484368, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+  m_PrefabInstance: {fileID: 5986173606744051258}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &831999381
 GameObject:
   m_ObjectHideFlags: 0
@@ -2273,7 +2278,7 @@ MonoBehaviour:
   - {fileID: 1004222701176744, guid: 82043896241aa3e40b3fb852ccb25919, type: 3}
   - {fileID: 1972130481285912, guid: e1fadd6879b13b941954f97c929bd37c, type: 3}
   - {fileID: 1110784214689124, guid: 647294b88a005364b95a6848dfb44a51, type: 3}
-  - {fileID: 1882664209322680, guid: c2dbb62d11101d04093eef9a80a7e75e, type: 3}
+  - {fileID: 3103612831352625126, guid: 66e2497894eaa194495751373ebac94e, type: 3}
   isLasso: 0
 --- !u!4 &1473034196
 Transform:
@@ -2470,7 +2475,7 @@ MonoBehaviour:
   controller: {fileID: 1393460399}
   arrow: {fileID: 0}
   hitArrow: {fileID: 0}
-  lanternLight: {fileID: 0}
+  lanternLight: {fileID: 772398800}
   shootStartPos: {x: 0, y: 0, z: 0}
   angle: 0
 --- !u!1001 &2115501086
@@ -2484,6 +2489,14 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 5986173606744051263}
+    - target: {fileID: 902737428444986570, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: prefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 902737428444986570, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: prefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 1845955007268882, guid: 628c35403a10f4f42be9fd2d7006cef8, type: 3}
     - target: {fileID: 6622130764036362300, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: parent
       value: 
@@ -2630,6 +2643,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: CreateLantern
       objectReference: {fileID: 0}
+    - target: {fileID: 5004018810399953324, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5058734526800433850, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_Shadows.m_NearPlane
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5228009035904235396, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2706,6 +2727,10 @@ PrefabInstance:
       propertyPath: aniFunc
       value: 
       objectReference: {fileID: 5986173606744051262}
+    - target: {fileID: 6532882969189548856, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_Name
+      value: CreateLantern
+      objectReference: {fileID: 0}
     - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.14292526

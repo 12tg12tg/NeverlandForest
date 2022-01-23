@@ -395,7 +395,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                     BottomUIManager.Instance.curObstacleType = ObstacleType.None;
                 }
             }
-            else if(obstacleType.Equals(ObstacleType.Barrier))
+            else
             {
                 // 올가미 두번 째 위치 설치하는 곳
                 var lassoTile = tileMaker.TileList

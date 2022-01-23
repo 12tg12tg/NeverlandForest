@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum ProjectileTag
 {
-    HunterArrow,
+    HunterArrow, LightExplosion,
 }
 
 public class ProjectilePool : CustomObjectPool<ProjectileTag>

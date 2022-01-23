@@ -32,7 +32,8 @@ public class BattleAnimationFunc : MonoBehaviour
 
     public void Shoot()
     {
-        shootStartPos = arrow.transform.position;
+        if(shootStartPos == Vector3.zero)
+            shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
         var dest = TileMaker.Instance.GetTile(controller.command.target).CenterPos;
         dest.y += 2f;
@@ -61,7 +62,8 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot2 애니메이션
     public void Shoot2()
     {
-        shootStartPos = arrow.transform.position;
+        if (shootStartPos == Vector3.zero)
+            shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
         var dest = TileMaker.Instance.GetTile(controller.command.target).CenterPos;
         dest.y += 2f;
@@ -71,7 +73,8 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot3 애니메이션
     public void Shoot3()
     {
-        shootStartPos = arrow.transform.position;
+        if (shootStartPos == Vector3.zero)
+            shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
 
         // 타일로쏠꺼냐(빈타일에도 화살이날라감)
@@ -91,7 +94,8 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot4 애니메이션
     public void Shoot4()
     {
-        shootStartPos = arrow.transform.position;
+        if (shootStartPos == Vector3.zero)
+            shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
         var dest = TileMaker.Instance.GetTile(controller.command.target).CenterPos;
         dest.y += 2f;
@@ -99,7 +103,8 @@ public class BattleAnimationFunc : MonoBehaviour
     }
     public void FinalShoot()
     {
-        shootStartPos = arrow.transform.position;
+        if (shootStartPos == Vector3.zero)
+            shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
         var dest = TileMaker.Instance.GetTile(controller.command.target).CenterPos;
         dest.y += 2f;
@@ -109,11 +114,57 @@ public class BattleAnimationFunc : MonoBehaviour
     // Light 애니메이션
     public void Light()
     {
-
+        StartCoroutine(CoLightUp());
     }
 
-    private IEnumerator CoLight()
+    public void Burn()
     {
-        yield return null;
+        StartCoroutine(CoLightDown());
+        var command = controller.command;
+        var list = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+        foreach (var monster in list)
+        {
+            var go = ProjectilePool.Instance.GetObject(ProjectileTag.LightExplosion);
+            var pos = go.transform.position = monster.transform.position;
+            var ren = monster.GetComponentInChildren<SkinnedMeshRenderer>();
+            var maxY = ren.bounds.max.y;
+            pos.y = maxY;
+
+            go.transform.position = pos;
+            var particle = go.GetComponent<Particle>();
+            particle.Init();
+        }
+        actionState.isAttackMotionEnd = true;
+    }
+
+    private IEnumerator CoLightUp()
+    {
+        var time = 1f;
+        var timer = 0f;
+        var curRange = lanternLight.range;
+        var destRange = curRange + 2f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            lanternLight.range = Mathf.Lerp(curRange, destRange, ratio);
+            yield return null;
+        }
+        lanternLight.range = destRange;
+    }
+    private IEnumerator CoLightDown()
+    {
+        var time = 0.4f;
+        var timer = 0f;
+        var curRange = lanternLight.range;
+        var destRange = curRange - 2f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            lanternLight.range = Mathf.Lerp(curRange, destRange, ratio);
+            yield return null;
+        }
+        lanternLight.range = destRange;
     }
 }
