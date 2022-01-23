@@ -43,6 +43,7 @@ public class TileMaker : MonoBehaviour
     public float spacing = 1f;
     private Tiles[,] allTiles;
     private List<Tiles> tileList = new List<Tiles>();
+    public List<Tiles> TileList => tileList;
     private Dictionary<int, int> lanternToCol = new Dictionary<int, int>()
     {
         { 0, 0 }, { 1, 2 }, { 2, 4 }, { 3, 5 }, { 4, 6 }
@@ -392,4 +393,20 @@ public class TileMaker : MonoBehaviour
 
         return list;
     }
+
+    public IEnumerable<Tiles> GetNear8Tiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where 
+                   n.index.x >= center.x - 1 && 
+                   n.index.x <= center.x + 1 && 
+                   n.index.y >= center.y - 1 &&
+                   n.index.y <= center.y + 1 && 
+                   n != centerTile 
+                   && n.index.y != 0
+                   select n;
+        return list;
+    }
+
 }

@@ -236,8 +236,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             var ob = new Obstacle(obstacleList[i].obstacle);
             obstacles.Add(ob);
             obstacleList[i].obstacle = null;
-            // 부비트랩이 있으면 command.target 해당 부비트랩이 있는 곳으로 변경 해야함
-            // 멈춰야함
+            
             if (ob.type == ObstacleType.BoobyTrap)
             {
                 command.target = obstacleList[i].index;
@@ -258,7 +257,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         }
     }
 
-    public void ObstacleHit(UnityAction action = null)
+    public void ObstacleHit()
     {
         var totalDamage = 0;
         var obs = obstacles.Where(x => x.trapDamage != 0)
@@ -277,8 +276,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
         // 몬스터 죽었는지 체크
         DeadCheak();
-
-        action?.Invoke();
     }
 
     private void DurationDecrease(List<Obstacle> obs)

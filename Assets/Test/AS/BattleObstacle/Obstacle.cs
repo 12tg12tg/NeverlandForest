@@ -20,9 +20,12 @@ public class Obstacle
     public ObstacleType type;
     public GameObject prefab;
 
-    [Header("트랩 데미지 및 지속 턴 수")]
+    [Header("장애물 속성")]
     public int trapDamage;
     public int duration;
+    public int numberOfInstallation;
+    [SerializeField]
+    public List<Obstacle> pair = new List<Obstacle>();
 
     [Header("장벽 체력")]
     public int hp;
@@ -37,6 +40,8 @@ public class Obstacle
         duration = obstacle.duration;
         trapDamage = obstacle.trapDamage;
         hp = obstacle.hp;
+        numberOfInstallation = obstacle.numberOfInstallation;
+        pair = obstacle.pair;
     }
 
     public Obstacle(ObstacleType type, GameObject prefab, int duration, int trapDamage, int hp)

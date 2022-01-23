@@ -628,8 +628,10 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < monster.Count; i++)
         {
-            monster[i].ObstacleHit(action);
+            monster[i].ObstacleHit();
         }
+
+        action?.Invoke();
     }
     private void OnGUI()
     {

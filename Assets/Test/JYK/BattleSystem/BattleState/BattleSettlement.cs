@@ -41,21 +41,6 @@ public class BattleSettlement : State<BattleState>
         //다시 플레이어턴으로
     }
 
-    private void DurationDecrease(List<Obstacle> obstacles)
-    {
-        obstacles.ForEach(x => x.duration -= 1);
-        for (int j = 0; j < obstacles.Count;)
-        {
-            if (obstacles[j].duration < 1)
-            {
-                obstacles.Remove(obstacles[j]);
-                continue;
-            }
-            else
-                j++;
-        }
-    }
-
     public override void Release()
     {
 
