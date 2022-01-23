@@ -67,10 +67,10 @@ public class StaminaBar : MonoBehaviour
         {
             ConsumeManager.ConsumeLantern(1);
         }
-        if (GUILayout.Button("BlueMoonObj_OnOff"))
-        {
-            campManager.OnOffBluemoonObject();
-        }
+        //if (GUILayout.Button("BlueMoonObj_OnOff"))
+        //{
+        //    campManager.OnOffBluemoonObject();
+        //}
         if (GUILayout.Button("DayNightChange"))
         {
             ConsumeManager.TimeUp(0, 13);

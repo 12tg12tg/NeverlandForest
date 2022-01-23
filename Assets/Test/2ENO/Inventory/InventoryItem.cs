@@ -44,6 +44,8 @@ public class InventoryItem : MonoBehaviour
         count.text = data.OwnCount.ToString();
         itemName.name = elem.name;
     }
+
+
     //public void Init(DataWeapon data)
     //{
     //    if (data == null)

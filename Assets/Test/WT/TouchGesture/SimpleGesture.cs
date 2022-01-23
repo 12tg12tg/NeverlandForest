@@ -14,17 +14,20 @@ public class SimpleGesture : MonoBehaviour
     public float destRPS;
 
     public float dv = 0f;
-    public float ddv = 0.05f;
-    private readonly float minDV = 0.25f;
+    public float ddv = 0.1f;
+    private readonly float minDV = 0.4f;
 
     private Coroutine accelCo;
-
     private float delayTimer;
     private bool startDecrease;
     private bool haveToleftDecrease;
 
     private bool IsLeftTurn { get => RPS > 0; }
     private bool IsRightTurn { get => RPS < 0; }
+    //Check
+    public bool leftTurnDone;
+    public bool rightTurnDone;
+    public float prevRotY;
 
     //Gesture Vars
     private bool fingerIsDown = false;
@@ -36,6 +39,8 @@ public class SimpleGesture : MonoBehaviour
     private string[] clockCircleChain = new string[2] { "32413", "34132" };
     private string[] counterCircleChain = new string[3] { "42314", "43142", "23142" };
 
+    public CampManager campManager;
+
     private void Start()
     {
         mt = MultiTouch.Instance;
@@ -45,9 +50,49 @@ public class SimpleGesture : MonoBehaviour
     {
         RotateUpdate();
         GestureUpdate();
-
+        CheckUpdate();
+    }
+    public void Init()
+    {
+        prevRotY = 0f;
     }
 
+    private void CheckUpdate()
+    {
+        var curY = target.rotation.eulerAngles.y;
+        if (IsRightTurn)
+        {
+            bool prev_InLeftHalf = prevRotY < 360f && prevRotY > 340f;
+            bool cur_InRightHalf = curY > 0f && curY < 20f;
+
+            if (prev_InLeftHalf && cur_InRightHalf)
+            {
+                rightTurnDone = true;
+            }
+        }
+        else if (IsLeftTurn)
+        {
+            bool prev_InRightHalf = prevRotY < 20f && prevRotY > 0f;
+            bool cur_InLeftHalf = curY > 340f && curY < 360f;
+
+            if (prev_InRightHalf && cur_InLeftHalf)
+            {
+                leftTurnDone = true;
+            }
+        }
+
+        if (rightTurnDone && leftTurnDone)
+        {
+            /*클리어 조건 달성*/
+            Debug.Log("클리어 조건 달성");
+          
+            campManager.CloseRotationPanel();
+            rightTurnDone = false;
+            leftTurnDone = false;
+            campManager.CallMakeCook();
+        }
+        prevRotY = curY;
+    }
     private void GestureUpdate()
     {
         // touch start
@@ -160,7 +205,7 @@ public class SimpleGesture : MonoBehaviour
     private void RotateUpdate()
     {
         var rot = RPS * Time.deltaTime;
-        target.transform.rotation *= Quaternion.Euler(0f, 0f, rot);
+        target.transform.rotation *= Quaternion.Euler(0f, -rot, 0f);
 
         if (!startDecrease)
         {
@@ -289,6 +334,8 @@ public class SimpleGesture : MonoBehaviour
         Debug.Log("코루틴 종료");
         accelCo = null;
     }
+
+
 
     private void OnGUI()
     {

@@ -12,8 +12,8 @@ public class MainCameraMove : MonoBehaviour
 
     void Update()
     {
-        var targetPos = new Vector3(player.transform.position.x + 15f, player.transform.position.y + 10f, player.transform.position.z + 2.3f);
-        var targetRotate = new Vector3(28f, 270f, 0f);
+        var targetPos = new Vector3(player.transform.position.x, player.transform.position.y + 9f, player.transform.position.z - 13f);
+        var targetRotate = new Vector3(30f, 0, 0f);
         transform.position = targetPos;
         transform.rotation = Quaternion.Euler(targetRotate);
     }

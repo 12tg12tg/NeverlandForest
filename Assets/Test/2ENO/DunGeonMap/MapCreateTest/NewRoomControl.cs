@@ -98,6 +98,9 @@ public class NewRoomControl : MonoBehaviour
         RoomEndPosAndNumberSet();
         for (int i = 0; i < objPosList.Count; i++)
         {
+            // 임시, 가라로 만듬
+            if (curDungeonRoom.randomEventData != null)
+                curDungeonRoom.randomEventData.eventBasePos = objPosList[i];
             foreach (var obj in curDungeonRoom.eventObjDataList)
             {
                 obj.eventBasePos = objPosList[i];
@@ -128,13 +131,13 @@ public class NewRoomControl : MonoBehaviour
         }
     }
 
-    // 일단 z축으로만 이동
+    // 일단 z축으로만 이동  -> x축으로 변경
     private Vector3 NewPos(GameObject baseObj)
     {
         Vector3 baseCenter = baseObj.transform.position;
         Vector3 baseSize = baseObj.GetComponent<MeshCollider>().bounds.size;
 
-        var newPos = new Vector3(baseCenter.x, baseCenter.y, baseCenter.z + baseSize.z);
+        var newPos = new Vector3(baseCenter.x + baseSize.x, baseCenter.y, baseCenter.z);
         return newPos;
     }
 

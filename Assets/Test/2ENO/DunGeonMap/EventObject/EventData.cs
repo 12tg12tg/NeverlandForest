@@ -13,6 +13,9 @@ public class EventData
     // 이벤트를 생성한 방 정보, 오브젝트 생성시 이 정보를 넣고 삭제할때 그 방의 값에 적용하기위해
     public int roomIndex;
     public GatheringObjectType gatheringtype;
+
+    // 문자열은 저장이 안되나????
+    public string randomEventID;
 }
 [System.Serializable]
 public class GatheringData : EventData
@@ -28,13 +31,13 @@ public class GatheringData : EventData
         }
         if(isCreate)
         {
-            var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             gatheringObj2.Init(system, this, dgSystem, roomIndex);
             obj.objectType = gatheringtype;
             return gatheringObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + offSetBasePos);
-        var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x + offSetBasePos, eventBasePos.y, eventBasePos.z );
+        var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         obj.objectType = gatheringtype;
         gatheringObj.Init(system, this, dgSystem, roomIndex);
 
@@ -56,12 +59,12 @@ public class HuntingData : EventData
         }
         if (isCreate)
         {
-            var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             huntingObj2.Init(dgSystem, this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y + 1f, eventBasePos.z - 1.5f);
-        var huntingObj = Object.Instantiate(obj, objPos,Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x - 1.5f, eventBasePos.y + 1f, eventBasePos.z);
+        var huntingObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
         huntingObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
@@ -80,15 +83,39 @@ public class BattleData : EventData
         }
         if (isCreate)
         {
-            var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             battleObj2.Init(dgSystem, this, roomIndex);
             return battleObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + 5f);
-        var battleObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var battleObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         battleObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
         return battleObj;
+    }
+}
+
+public class RandomIncountData : EventData
+{
+    public RandomEventObject CreateObj(RandomEventObject obj, DungeonSystem dgSystem)
+    {
+        if (eventBasePos.Equals(Vector3.zero))
+        {
+            Debug.Log("베이스 포지션이 초기화되지 않음!");
+            return null;
+        }
+        if (isCreate)
+        {
+            var randomObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
+            randomObj2.Init(dgSystem, this, roomIndex, randomEventID);
+            return randomObj2;
+        }
+        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var randomObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
+        randomObj.Init(dgSystem, this, roomIndex, randomEventID);
+        objectPosition = objPos;
+        isCreate = true;
+        return randomObj;
     }
 }

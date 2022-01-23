@@ -34,7 +34,7 @@ public class UserData
     public CostData uData = new CostData();
 
     // 인벤토리에 사용
-    public int maxInventoryItemCount = 21;
+    public int maxInventoryItemCount = 12;
     private readonly List<DataItem> haveAllItemList = new List<DataItem>();
     public ReadOnlyCollection<DataItem> HaveAllItemList => haveAllItemList.AsReadOnly();
     public bool AddItemData(DataItem newItem)
@@ -182,7 +182,10 @@ public class UserData
         }
         else
         {
-            haveAllItemList[index].OwnCount -= removeItem.OwnCount;
+            if(removeItem.OwnCount < 0)
+                haveAllItemList[index].OwnCount += removeItem.OwnCount;
+            else
+                haveAllItemList[index].OwnCount -= removeItem.OwnCount;
             if(haveAllItemList[index].OwnCount <= 0)
             {
                 haveAllItemList.RemoveAt(index);
