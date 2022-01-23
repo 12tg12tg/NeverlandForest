@@ -409,4 +409,29 @@ public class TileMaker : MonoBehaviour
         return list;
     }
 
+    public IEnumerable<Tiles> GetNearUpDownTiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where
+                   n.index.x >= center.x - 1 &&
+                   n.index.x <= center.x + 1 &&
+                   n.index.y == center.y &&
+                   n != centerTile &&
+                   n.index.y != 0
+                   select n;
+        return list;
+    }
+    public IEnumerable<Tiles> GetNearRowTiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where
+                   n.index.x >= 0 &&
+                   n.index.x <= 2 &&
+                   n.index.y == center.y &&
+                   n.index.y != 0
+                   select n;
+        return list;
+    }
 }

@@ -44,12 +44,14 @@ public class Obstacle
         pair = obstacle.pair;
     }
 
-    public Obstacle(ObstacleType type, GameObject prefab, int duration, int trapDamage, int hp)
+    public Obstacle(ObstacleType type, GameObject prefab, int duration, int trapDamage, int hp, int numberOfInstallation, List<Obstacle> pair)
     {
         this.type = type;
         this.prefab = prefab;
         this.duration = duration;
         this.trapDamage = trapDamage;
         this.hp = hp;
+        this.numberOfInstallation = numberOfInstallation;
+        this.pair = pair;
     }
 }

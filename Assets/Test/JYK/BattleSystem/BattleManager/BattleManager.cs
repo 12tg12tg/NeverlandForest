@@ -683,23 +683,23 @@ public class BattleManager : MonoBehaviour
         }
         if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "ºÎºñÆ®·¦"))
         {
-            uiManager.curObstacleType = ObstacleType.BoobyTrap;
+            if(!Inventory_Virtual.instance.isLasso)
+                uiManager.curObstacleType = ObstacleType.BoobyTrap;
         }
         if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "³ª¹«Æ®·¦"))
         {
+            if(!Inventory_Virtual.instance.isLasso)
             uiManager.curObstacleType = ObstacleType.WoodenTrap;
         }
         if (GUI.Button(new Rect(Screen.width - 105, 300, 100, 100), "°¡½ÃÆ®·¦"))
         {
+            if(!Inventory_Virtual.instance.isLasso)
             uiManager.curObstacleType = ObstacleType.ThornTrap;
         }
         if (GUI.Button(new Rect(Screen.width - 105, 400, 100, 100), "Àå¾Ö¹°"))
         {
+            if(!Inventory_Virtual.instance.isLasso)
             uiManager.curObstacleType = ObstacleType.Barrier;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 500, 100, 100), "None"))
-        {
-            uiManager.curObstacleType = ObstacleType.None;
         }
 
 
