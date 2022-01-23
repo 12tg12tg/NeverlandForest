@@ -94,9 +94,9 @@ public class MoveTest : MonoBehaviour
                         RigOff();
                     isTurn = true;
 
-                    var pos = boySpeed * Time.deltaTime * Vector3.forward;
+                    var pos = boySpeed * Time.deltaTime * Vector3.right;
                     playerBoy.transform.position += pos;
-                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
 
                 }
                 else if (playerXPos - 0.05f > touchXPos)
@@ -105,22 +105,23 @@ public class MoveTest : MonoBehaviour
                         RigOff();
                     isTurn = false;
 
-                    var pos = boySpeed * Time.deltaTime * -Vector3.forward;
+                    var pos = boySpeed * Time.deltaTime * -Vector3.right;
                     playerBoy.transform.position += pos;
-                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 270, 0f));
 
                 }
                 else
                     boySpeed = 0f;
 
-                if (playerBoy.transform.position.z > playerGirl.transform.position.z + 1.15f)
+                // Girl Move
+                if (playerBoy.transform.position.x > playerGirl.transform.position.x + 1.15f)
                 {
                     girlRiglayers[1].active = false;
                     girlRiglayers[0].active = true;
                     boyRight.isRight = true;
-                    var pos = boySpeed * Time.deltaTime * Vector3.forward;
+                    var pos = boySpeed * Time.deltaTime * Vector3.right;
                     playerGirl.transform.position += pos;
-                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
 
                     if (isHand)
                     {
@@ -133,14 +134,14 @@ public class MoveTest : MonoBehaviour
                         isHand = false;
                     }
                 }
-                else if (playerBoy.transform.position.z < playerGirl.transform.position.z - 1.15f)
+                else if (playerBoy.transform.position.x < playerGirl.transform.position.x - 1.15f)
                 {
                     girlRiglayers[1].active = true;
                     girlRiglayers[0].active = false;
                     boyRight.isRight = false;
-                    var pos = boySpeed * Time.deltaTime * -Vector3.forward;
+                    var pos = boySpeed * Time.deltaTime * -Vector3.right;
                     playerGirl.transform.position += pos;
-                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
+                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 270f, 0f));
 
                     if (isHand)
                     {
@@ -171,8 +172,6 @@ public class MoveTest : MonoBehaviour
                 boySpeed = 0f;
 
             playerAnimationBoy.SetFloat("Speed", boySpeed);
-
-
             playerAnimationGirl.SetFloat("Speed", boySpeed);
         }
         else

@@ -72,7 +72,7 @@ public class DungeonSystem : MonoBehaviour
     {
         // 현재 불러올 맵 데이터가 없을 때
         if (Vars.UserData.AllDungeonData.Count <= 0)
-            //GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
 
         dungeonPlayerGirl.gameObject.SetActive(false);
         dungeonPlayerBoy.gameObject.SetActive(false);
@@ -103,8 +103,8 @@ public class DungeonSystem : MonoBehaviour
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
 
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         // TODO: 임시! 가라로 해놓은거
         //RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
     }
@@ -134,8 +134,8 @@ public class DungeonSystem : MonoBehaviour
 
         if (dungeonSystemData.curPlayerGirlData.curRoomNumber == -1)
         {
-            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
-            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z + 0.5f);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z - 0.5f);
             dungeonPlayerGirl.transform.position = newPos2;
             dungeonPlayerBoy.transform.position = newPos1;
         }
@@ -159,7 +159,7 @@ public class DungeonSystem : MonoBehaviour
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
         // 방 한칸 지날때마다 3시간씩 지남
-        //ConsumeManager.TimeUp(0, 3);
+        ConsumeManager.TimeUp(0, 3);
         if (isRoomEnd)
         {
             foreach (var obj in eventObjInstanceList)
@@ -186,8 +186,8 @@ public class DungeonSystem : MonoBehaviour
             //dungeonPlayerGirl.transform.position = roomGenerate.spawnPos;
             //dungeonPlayerBoy.transform.position = roomGenerate.spawnPos;
 
-            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
-            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z + 0.5f);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z - 0.5f);
             dungeonPlayerGirl.transform.position = newPos2;
             dungeonPlayerBoy.transform.position = newPos1;
 

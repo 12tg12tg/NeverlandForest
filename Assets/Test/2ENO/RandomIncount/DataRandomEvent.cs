@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-
+using System.Linq;
 public class DataRandomEvent
 {
     private string eventID;
@@ -190,20 +190,16 @@ public class DataRandomEvent
                 case EventFeedBackType.Stamina:
                     // 스테미나 조정 함수에 값 넘겨줌
                     var stamina = eventVals[i];
-
-                    if(isSucessFeedBack)
-                        tempStr = $"스테미나수치 {stamina} 증가\n";
-                    else
-                        tempStr = $"스테미나수치 {stamina} 감소\n";
+                    Vars.UserData.uData.CurStamina += stamina;
+                    tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
                     break;
                 case EventFeedBackType.Hp:
                     var hp = eventVals[i];
 
-                    if (isSucessFeedBack)
-                        tempStr = $"HP수치 {hp} 증가\n";
-                    else
-                        tempStr = $"HP수치 {hp} 감소\n";
+                    Vars.UserData.uData.HunterHp += hp;
+                    Vars.UserData.uData.HerbalistHp += hp;
+                    tempStr = $"HP수치 : {hp}\n";
                     sb.Append(tempStr);
                     break;
                 case EventFeedBackType.Item:
@@ -232,10 +228,8 @@ public class DataRandomEvent
                 case EventFeedBackType.LanternGage:
                     var lanternGage = eventVals[i];
 
-                    if (isSucessFeedBack)
-                        tempStr = $"랜턴수치 증가\n";
-                    else
-                        tempStr = $"랜턴수치 감소\n";
+                    ConsumeManager.ConsumeLantern(-lanternGage);
+                    tempStr = $"랜턴수치 : {lanternGage}\n";
                     sb.Append(tempStr);
                     break;
                 case EventFeedBackType.TurnConsume:
