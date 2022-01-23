@@ -9,6 +9,7 @@ public class BattleAnimationFunc : MonoBehaviour
     public PlayerAction actionState;
     public GameObject arrow;
     public GameObject hitArrow;
+    public Light lanternLight;
 
     public Vector3 shootStartPos;
     public float angle;
@@ -105,5 +106,14 @@ public class BattleAnimationFunc : MonoBehaviour
         ShootArrowLine(dest, true);
     }
 
+    // Light 애니메이션
+    public void Light()
+    {
 
+    }
+
+    private IEnumerator CoLight()
+    {
+        yield return null;
+    }
 }

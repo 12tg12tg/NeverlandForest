@@ -2470,6 +2470,7 @@ MonoBehaviour:
   controller: {fileID: 1393460399}
   arrow: {fileID: 0}
   hitArrow: {fileID: 0}
+  lanternLight: {fileID: 0}
   shootStartPos: {x: 0, y: 0, z: 0}
   angle: 0
 --- !u!1001 &2115501086
@@ -2621,6 +2622,14 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 640566308070355531, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 996361840819460812, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_Name
+      value: CreateLantern
+      objectReference: {fileID: 0}
     - target: {fileID: 5228009035904235396, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2697,9 +2706,53 @@ PrefabInstance:
       propertyPath: aniFunc
       value: 
       objectReference: {fileID: 5986173606744051262}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.14292526
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.042302504
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.030036004
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.585825
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.08550583
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.11200392
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.7980933
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -4.508
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -15.578
+      objectReference: {fileID: 0}
+    - target: {fileID: 6532882969189548859, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -106.823
+      objectReference: {fileID: 0}
     - target: {fileID: 8377964562493867491, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8737213824354008772, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1871824746705797480, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
@@ -2742,6 +2795,7 @@ MonoBehaviour:
   controller: {fileID: 628525176}
   arrow: {fileID: 5986173606744051260}
   hitArrow: {fileID: 0}
+  lanternLight: {fileID: 0}
   shootStartPos: {x: 0, y: 0, z: 0}
   angle: 0
 --- !u!4 &5986173606744051263 stripped
