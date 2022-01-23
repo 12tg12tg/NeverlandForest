@@ -4,7 +4,7 @@ using UnityEngine;
 public enum SaveDataName
 {
     BackUp,
-    TextWorldMapNodePath,
+    TextWorldMapDataPath,
     TextWorldMapPlayerDataPath,
     TextDungeonMapPath,
 }

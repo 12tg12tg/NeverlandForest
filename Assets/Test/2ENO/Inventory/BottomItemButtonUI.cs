@@ -49,6 +49,8 @@ public class BottomItemButtonUI : MonoBehaviour
 
     public void ItemButtonClick()
     {
+        if (dataItem == null)
+            return;
         // TODO: 임시, 가라로 해놓은거
       
         if(RandomEventManager.Instance  !=null&& RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
@@ -65,12 +67,13 @@ public class BottomItemButtonUI : MonoBehaviour
             for (int i = 0; i < RandomEventUIManager.Instance.itemButtons.Count; i++)
             {
                 RandomEventUIManager.Instance.itemButtons[i].IsSelect = false;
+                RandomEventUIManager.Instance.itemButtons2page[i].IsSelect = false;
             }
             IsSelect = true;
         }
         else
         {
-            /* BottomUIManager.Instance.info.Init(dataItem);
+             BottomUIManager.Instance.info.Init(dataItem);
              BottomUIManager.Instance.selectItem = dataItem;
              BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
              BottomUIManager.Instance.isPopUp = true;
@@ -83,8 +86,8 @@ public class BottomItemButtonUI : MonoBehaviour
              {
                  BottomUIManager.Instance.itemButtons[i].IsSelect = false;
              }
-             IsSelect = true;*/
-            DiaryInventory.Instance.info.Init(dataItem);
+             IsSelect = true;
+            //DiaryInventory.Instance.info.Init(dataItem);
         }
     }
 

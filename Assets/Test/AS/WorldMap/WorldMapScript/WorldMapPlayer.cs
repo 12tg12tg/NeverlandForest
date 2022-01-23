@@ -149,14 +149,10 @@ public class WorldMapPlayer : MonoBehaviour
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             PlayerDeathChack();
         }));
-        for (int i = 0; i < totalMap.Length; i++)
-        {
-            if (totalMap[i].index.Equals(data.goalIndex))
-            {
-                transform.LookAt(totalMap[i].transform);
-                break;
-            }
-        }
+
+        var trans = totalMap.Where(x => x.index.Equals(data.goalIndex))
+                            .Select(x => x.transform).FirstOrDefault();
+        transform.LookAt(trans);
     }
     private void PlayerRunWorldMap()
     {
@@ -173,6 +169,10 @@ public class WorldMapPlayer : MonoBehaviour
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             PlayerDeathChack();
         }));
+
+        var trans = totalMap.Where(x => x.index.Equals(currentIndex))
+                            .Select(x => x.transform).FirstOrDefault();
+        transform.LookAt(trans);
     }
     private void PlayerDeathChack() // ¾È°³¿¡ ´ê¾ÒÀ» ¶§
     {
@@ -182,9 +182,9 @@ public class WorldMapPlayer : MonoBehaviour
             var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
             {
                 Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
-                Utility.DeleteSaveData(SaveDataName.TextWorldMapNodePath);
+                Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
                 Debug.Log("»ç¸Á");
-                Vars.UserData.WorldMapNodeStruct = new List<MapNodeStruct_0>();
+                Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
                 Vars.UserData.WorldMapPlayerData = default;
                 Vars.UserData.uData.Date = 0;
             });

@@ -15,10 +15,18 @@ public class BottomUIManager : MonoBehaviour
     //Instance
     public BottomInfoUI info;
     public List<BottomSkillButtonUI> skillButtons;
+    public List<Button> tags;
+    public GameObject progress;
+    [SerializeField] private List<Image> progressImg;
     public List<BottomItemButtonUI> itemButtons;
 
     //Vars
     [HideInInspector] public ButtonState buttonState;
+    [HideInInspector] public BottomSkillButtonUI curSkillButton;
+    [HideInInspector] public ObstacleType curObstacleType;
+
+    private bool isBoySkillDone;
+    private bool isGirlSkillDone;
 
     //PopUpWindow
     public bool isPopUp;
@@ -33,15 +41,80 @@ public class BottomUIManager : MonoBehaviour
         popUpWindow.gameObject.SetActive(false);
     }
 
-    private void OnGUI()
+    // 프로그래스
+    public void UpdateProgress()
     {
-        if(GUILayout.Button("Set Battle State Toggle"))
+        int prog = BattleManager.Instance.Progress;
+        if (prog == 0)
         {
-            if (GameManager.Manager.State == GameState.Battle)
-                GameManager.Manager.State = GameState.None;
-            else
-                GameManager.Manager.State = GameState.Battle;
+            progressImg[0].enabled = false;
+            progressImg[1].enabled = false;
         }
+        else if(prog == 1)
+        {
+            progressImg[0].enabled = true;
+            progressImg[1].enabled = false;
+        }
+        else if(prog == 2)
+        {
+            progressImg[0].enabled = true;
+            progressImg[1].enabled = true;
+        }
+    }
+
+    // 스킬 버튼
+    public void InteractiveSkillButton(PlayerType type, bool interactive)
+    {
+        if(type == PlayerType.Boy)
+        {
+            isBoySkillDone = !interactive;
+        }
+        else
+        {
+            isGirlSkillDone = !interactive;
+        }
+        UpdateSkillInteractive();
+    }
+
+    public void UpdateSkillInteractive()
+    {
+        skillButtons.ForEach(n =>
+        {
+            if (n.skill?.SkillTableElem.player == PlayerType.Boy)
+            {
+                if (isBoySkillDone)
+                    n.MakeUnclickable();
+                else
+                    n.MakeClickable();
+            }
+            else if (n.skill?.SkillTableElem.player == PlayerType.Girl)
+            {
+                if (isGirlSkillDone)
+                    n.MakeUnclickable();
+                else
+                    n.MakeClickable();
+            }
+        });
+    }
+
+    public void IntoSkillState(BottomSkillButtonUI skillButton)
+    {
+        //Time.timeScale = 0.2f;
+        this.curSkillButton = skillButton;
+        BattleManager.Instance.ReadyTileClick();
+        BattleManager.Instance.DisplayMonsterTile(curSkillButton.skill.SkillTableElem.range);
+        skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
+        tags.ForEach(n => n.interactable = false);
+    }
+
+    public void ExitSkillState()
+    {
+        //Time.timeScale = 1f;
+        curSkillButton = null;
+        BattleManager.Instance.EndTileClick();
+        BattleManager.Instance.UndisplayMonsterTile();
+        UpdateSkillInteractive();
+        tags.ForEach(n => n.interactable = true);
     }
 
     private void Update()
@@ -67,7 +140,7 @@ public class BottomUIManager : MonoBehaviour
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
     }
 
-    public void SkillButtonInit()
+    public void SkillButtonInit() // 스킬아이콘 12개 세팅 : 태그 버튼 + 자동 활성화를 위한 함수
     {
         info.Init();
         popUpWindow.gameObject.SetActive(false);
@@ -93,6 +166,7 @@ public class BottomUIManager : MonoBehaviour
         }
     }
 
+    // 아이템 버튼
     public void ItemButtonInit()
     {
         info.Init();

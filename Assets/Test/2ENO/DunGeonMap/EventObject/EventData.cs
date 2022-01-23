@@ -31,13 +31,13 @@ public class GatheringData : EventData
         }
         if(isCreate)
         {
-            var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             gatheringObj2.Init(system, this, dgSystem, roomIndex);
             obj.objectType = gatheringtype;
             return gatheringObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + offSetBasePos);
-        var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x + offSetBasePos, eventBasePos.y, eventBasePos.z );
+        var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         obj.objectType = gatheringtype;
         gatheringObj.Init(system, this, dgSystem, roomIndex);
 
@@ -59,12 +59,12 @@ public class HuntingData : EventData
         }
         if (isCreate)
         {
-            var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             huntingObj2.Init(dgSystem, this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y + 1f, eventBasePos.z - 1.5f);
-        var huntingObj = Object.Instantiate(obj, objPos,Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x - 1.5f, eventBasePos.y + 1f, eventBasePos.z);
+        var huntingObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
         huntingObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
@@ -83,12 +83,12 @@ public class BattleData : EventData
         }
         if (isCreate)
         {
-            var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             battleObj2.Init(dgSystem, this, roomIndex);
             return battleObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + 5f);
-        var battleObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var battleObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         battleObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
@@ -107,12 +107,12 @@ public class RandomIncountData : EventData
         }
         if (isCreate)
         {
-            var randomObj2 = Object.Instantiate(obj, objectPosition, Quaternion.identity);
+            var randomObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             randomObj2.Init(dgSystem, this, roomIndex, randomEventID);
             return randomObj2;
         }
-        var objPos = new Vector3(eventBasePos.x, eventBasePos.y, eventBasePos.z + 5f);
-        var randomObj = Object.Instantiate(obj, objPos, Quaternion.identity);
+        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var randomObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         randomObj.Init(dgSystem, this, roomIndex, randomEventID);
         objectPosition = objPos;
         isCreate = true;

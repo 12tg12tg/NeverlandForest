@@ -43,6 +43,7 @@ public class TileMaker : MonoBehaviour
     public float spacing = 1f;
     private Tiles[,] allTiles;
     private List<Tiles> tileList = new List<Tiles>();
+    public List<Tiles> TileList => tileList;
     private Dictionary<int, int> lanternToCol = new Dictionary<int, int>()
     {
         { 0, 0 }, { 1, 2 }, { 2, 4 }, { 3, 5 }, { 4, 6 }
@@ -281,6 +282,19 @@ public class TileMaker : MonoBehaviour
         return list.ToArray();
     }
 
+    public IEnumerable<Tiles> GetMovablePathTiles(Tiles curTile, Tiles goalTile)
+    {
+        var curX = curTile.index.x;
+        var curY = curTile.index.y;
+        var goalY = goalTile.index.y;
+
+        var list = from n in tileList
+                   where n.index.x == curX && n.index.y <= curY - 1f && n.index.y >= goalY
+                   select n;
+        return list;
+    }
+
+
     public IEnumerable<Tiles> GetMonsterTiles()
     {
         var list = from n in tileList
@@ -303,23 +317,17 @@ public class TileMaker : MonoBehaviour
         {
             case SkillRangeType.One:
             case SkillRangeType.Tile:
-                var testList = from n in tileList where n == GetTile(choicesTile) select n;
-                foreach (var item in tileList)
-                {
-                    Debug.Log(item.index);
-                    if (item == GetTile(choicesTile))
-                        Debug.Log("true");
-                }
-
-
                 return from n in tileList where n == GetTile(choicesTile) select n;
+
             case SkillRangeType.Line:
                 int col = (int)choicesTile.y;
                 return from n in tileList where (int)n.index.y == col select n;
+
             case SkillRangeType.Lantern:
-                int currentLantern = 4;
+                int currentLantern = (int)Vars.UserData.uData.lanternState;
                 var maxCol = lanternToCol[currentLantern];
                 return from n in tileList where (int)n.index.y != 0 && (int)n.index.y <= maxCol select n;
+
             default:
                 return null;
         }
@@ -383,6 +391,47 @@ public class TileMaker : MonoBehaviour
                 break;
         }
 
+        return list;
+    }
+
+    public IEnumerable<Tiles> GetNear8Tiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where 
+                   n.index.x >= center.x - 1 && 
+                   n.index.x <= center.x + 1 && 
+                   n.index.y >= center.y - 1 &&
+                   n.index.y <= center.y + 1 && 
+                   n != centerTile 
+                   && n.index.y != 0
+                   select n;
+        return list;
+    }
+
+    public IEnumerable<Tiles> GetNearUpDownTiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where
+                   n.index.x >= center.x - 1 &&
+                   n.index.x <= center.x + 1 &&
+                   n.index.y == center.y &&
+                   n != centerTile &&
+                   n.index.y != 0
+                   select n;
+        return list;
+    }
+    public IEnumerable<Tiles> GetNearRowTiles(Vector2 center)
+    {
+        var centerTile = GetTile(center);
+        var list = from n in tileList
+                   where
+                   n.index.x >= 0 &&
+                   n.index.x <= 2 &&
+                   n.index.y == center.y &&
+                   n.index.y != 0
+                   select n;
         return list;
     }
 }

@@ -123,6 +123,8 @@ public class TableEditor : EditorWindow
 
         consumData["PLAYER"] = EditorGUILayout.TextField("Player", consumData["PLAYER"]);
 
+        consumData["ANI TRIGGER"] = EditorGUILayout.TextField("Ani Trigger", consumData["ANI TRIGGER"]);
+
         var cost = int.Parse(consumData["COST"]);
         consumData["COST"] = EditorGUILayout.IntField("Cost", cost).ToString();
 

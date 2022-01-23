@@ -8,11 +8,13 @@ public class Arrow : MonoBehaviour
     public GameObject hitArrow;
     public float angle;
 
+    public bool isFinalShot;
+
     private const float speed = 30f;
     private const float gravity = 9.8f;
     private const float maxDistance = 30f;
 
-    public IEnumerator Shoot(Vector3 targerPos)
+    public IEnumerator Shoot(Vector3 targerPos, bool returnToPool = false)
     {
         // 높이 계산
         var distance = Vector3.Distance(transform.position, targerPos);
@@ -41,6 +43,33 @@ public class Arrow : MonoBehaviour
             transform.SetPositionAndRotation(pos, Quaternion.LookRotation(dir));
             yield return null;
         }
+        if(returnToPool)
+            ProjectilePool.Instance.ReturnObject(ProjectileTag.HunterArrow, gameObject);
+    }
+
+    public IEnumerator ShootLine(Vector3 targetPos)
+    {
+        // 높이 계산
+        var distance = Vector3.Distance(transform.position, targetPos);
+
+        var time = distance / speed;
+
+        var startArrowPos = transform.position;
+
+        var dir = Quaternion.LookRotation(targetPos - startArrowPos);
+
+        var timer = 0f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+
+            var pos = Vector3.Lerp(startArrowPos, targetPos, ratio);
+
+            transform.SetPositionAndRotation(pos, dir);
+            yield return null;
+        }
+        ProjectilePool.Instance.ReturnObject(ProjectileTag.HunterArrow, gameObject);
     }
 
     private void OnTriggerEnter(Collider other)

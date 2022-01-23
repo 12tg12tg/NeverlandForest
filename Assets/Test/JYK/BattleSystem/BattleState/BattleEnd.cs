@@ -12,7 +12,7 @@ public class BattleEnd : State<BattleState>
 
     public override void Init()
     {
-        Debug.Log("Battle End Init");
+        BottomUIManager.Instance.progress.SetActive(false);
     }
 
     public override void Release()

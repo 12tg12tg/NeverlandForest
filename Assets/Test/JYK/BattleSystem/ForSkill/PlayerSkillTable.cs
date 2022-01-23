@@ -17,6 +17,7 @@ public class PlayerSkillTableElem : DataTableElemBase
     private string iconID;
     public string name;
     public PlayerType player;
+    public string aniTrigger;
     public int cost;
     private int min_Damage;
     private int max_Damage;
@@ -56,6 +57,8 @@ public class PlayerSkillTableElem : DataTableElemBase
 
         var enums = Enum.GetNames(typeof(PlayerType)).ToList();
         player = (PlayerType)enums.IndexOf(data["PLAYER"]);
+
+        aniTrigger = data["ANI TRIGGER"];
 
         cost = int.Parse(data["COST"]);
         min_Damage = int.Parse(data["MIN DAMAGE"]);

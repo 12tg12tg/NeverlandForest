@@ -23,7 +23,7 @@ public class DungeonSystem : MonoBehaviour
     public BattleObject battleObjPrefab;
     public HuntingObject huntingObjPrefab;
     public RandomEventObject randomEventObjPrefab;
-
+    
 
     [Header("Player, System")]
     public PlayerDungeonUnit dungeonPlayerGirl;
@@ -103,10 +103,10 @@ public class DungeonSystem : MonoBehaviour
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
 
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         // TODO: 임시! 가라로 해놓은거
-        RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
+        //RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -134,8 +134,8 @@ public class DungeonSystem : MonoBehaviour
 
         if (dungeonSystemData.curPlayerGirlData.curRoomNumber == -1)
         {
-            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
-            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z + 0.5f);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z - 0.5f);
             dungeonPlayerGirl.transform.position = newPos2;
             dungeonPlayerBoy.transform.position = newPos1;
         }
@@ -159,10 +159,10 @@ public class DungeonSystem : MonoBehaviour
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
         // 방 한칸 지날때마다 3시간씩 지남
-        //ConsumeManager.TimeUp(0, 3);
+        ConsumeManager.TimeUp(0, 3);
         if (isRoomEnd)
         {
-            foreach(var obj in eventObjInstanceList)
+            foreach (var obj in eventObjInstanceList)
             {
                 Destroy(obj);
             }
@@ -173,7 +173,7 @@ public class DungeonSystem : MonoBehaviour
                 Vars.UserData.WorldMapPlayerData.isClear = true;
                 Vars.UserData.curDungeonIndex = Vector2.zero;
                 Vars.UserData.AllDungeonData.Clear();
-                GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+                //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
             }
@@ -186,8 +186,8 @@ public class DungeonSystem : MonoBehaviour
             //dungeonPlayerGirl.transform.position = roomGenerate.spawnPos;
             //dungeonPlayerBoy.transform.position = roomGenerate.spawnPos;
 
-            var newPos1 = new Vector3(roomGenerate.spawnPos.x - 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
-            var newPos2 = new Vector3(roomGenerate.spawnPos.x + 0.5f, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z);
+            var newPos1 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z + 0.5f);
+            var newPos2 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z - 0.5f);
             dungeonPlayerGirl.transform.position = newPos2;
             dungeonPlayerBoy.transform.position = newPos1;
 

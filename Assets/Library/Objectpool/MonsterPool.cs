@@ -29,6 +29,8 @@ public class MonsterPool : CustomObjectPool<MonsterPoolTag>
     {
         go.SetActive(true);
         go.transform.SetParent(parent);
+        var col = go.GetComponent<Collider>();
+        col.enabled = false;
         var anim = go.GetComponentInChildren<Animator>();
         anim.Rebind();
     }

@@ -20,9 +20,10 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public Vector2 index;
     public bool isObstacle;
     [SerializeField]private List<UnitBase> units = new List<UnitBase>();
-
+    public Obstacle obstacle = null;
     //Instance
     private TileMaker tileMaker;
+    [Space(15)] // 장애물 이랑 구별 하려고 추가
     public MeshRenderer center;
     public MeshRenderer edge;
     public MeshRenderer frontEdge;
@@ -317,53 +318,160 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!BattleManager.Instance.IsWaitingTileSelect)
+        var obstacleType = BottomUIManager.Instance.curObstacleType;
+
+        if (!BattleManager.Instance.IsWaitingTileSelect && obstacleType == ObstacleType.None)
             return;
 
-        var manager = BattleManager.Instance;
-        var button = manager.CurClickedButton;
-
-        var skill = button.Skill;
-        var item = button.Item;
-
-        var actionType = button.CurState;
-
-        if (skill.SkillTableElem.range == SkillRangeType.One)
+        if(obstacle != null && obstacleType != ObstacleType.None)
         {
-            //단일 타겟이라면 유효성 검사
-            if (!BattleManager.Instance.IsVaildTargetTile(this))
+            Debug.Log("장애물이 이미 설치되어 있습니다");
+            return;
+        }
+
+        // 블루문이 아닐 때 장벽은 설치 못하도록 막아야 함
+        var manager = BattleManager.Instance;
+        if(manager.FSM.curState == BattleState.Start)
+        {
+            if (!Inventory_Virtual.instance.isLasso)
             {
-                manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
-                return;
+                for (int i = 0; i < units.Count; i++)
+                {
+                    if (units[i] != null) // 플레이어가 위치한 곳 장애물 설치 못하도록 막는 용도
+                        return;
+                }
+
+                // 나중에 데이터 테이블이 생기면 한번에 가져올 수 있음
+                GameObject os = default;
+                if(!obstacleType.Equals(ObstacleType.Barrier))
+                {
+                    var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                    os = Instantiate(prefab, transform);
+                    var rigid = os.AddComponent<Rigidbody>();
+                    rigid.useGravity = false;
+                    rigid.isKinematic = true;
+
+                    // 장애물 능력 부여(데이터 테이블 생기면 바뀌어야 함)
+                    obstacle = new Obstacle();
+                    obstacle.prefab = os;
+                    obstacle.type = obstacleType;
+                    obstacle.trapDamage = obstacleType.Equals(ObstacleType.Lasso) ? 0 : 1;
+                    obstacle.numberOfInstallation = obstacleType.Equals(ObstacleType.Lasso) ? 2 : 1;
+                    obstacle.hp = obstacleType.Equals(ObstacleType.Barrier) ? 10 : 0;
+
+                    obstacle.numberOfInstallation--;
+                    if (obstacle.numberOfInstallation == 0)
+                        BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                    else
+                    {
+                        Inventory_Virtual.instance.isLasso = true;
+                    }
+                }
+                else if(obstacleType.Equals(ObstacleType.Barrier))
+                {
+                    if ((int)index.y == tileMaker.col - 1) // 장벽은 마지막 몬스터 등장 하는 곳에는 설치 못하도록
+                        return;
+                    var barrierTile = tileMaker.GetNearRowTiles(index).ToList();
+                    Obstacle barrier = default;
+                    for (int i = 0; i < barrierTile.Count; i++)
+                    {
+                        if ((int)(barrierTile[i].index.x) == 1)
+                        {
+                            var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                            barrierTile[i].obstacle = new Obstacle();
+                            barrierTile[i].obstacle.prefab = Instantiate(prefab, barrierTile[i].transform);
+                            barrierTile[i].obstacle.type = obstacleType;
+                            barrierTile[i].obstacle.hp = 10;
+                            barrier = barrierTile[i].obstacle;
+                        }
+                        else
+                        {
+                            barrierTile[i].obstacle = new Obstacle();
+                            barrierTile[i].obstacle.type = obstacleType;
+                        }
+                    }
+                    barrierTile.ForEach(x => x.obstacle.pair.Add(barrier));
+
+                    BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                }
+            }
+            else if(obstacleType.Equals(ObstacleType.Barrier))
+            {
+                // 올가미 두번 째 위치 설치하는 곳
+                var lassoTile = tileMaker.TileList
+                    .Where(x => x.obstacle != null)
+                    .Where(x => x.obstacle.type.Equals(ObstacleType.Lasso))
+                    .Where(x => x.obstacle.numberOfInstallation == 1)
+                    .Select(x => x).First();
+
+                var list = tileMaker.GetNearUpDownTiles(lassoTile.index).ToList();
+                for (int i = 0; i < list.Count; i++)
+                {
+                    if (list[i].index.Equals(index))
+                    {
+                        var prefab = Inventory_Virtual.instance.obstaclePrefab[(int)obstacleType - 1];
+                        var os = Instantiate(prefab, transform);
+                        var rigid = os.AddComponent<Rigidbody>();
+                        rigid.useGravity = false;
+                        rigid.isKinematic = true;
+                        obstacle = new Obstacle();
+                        obstacle.prefab = os;
+                        obstacle.type = obstacleType;
+                        obstacle.pair.Add(lassoTile.obstacle);
+                        lassoTile.obstacle.pair.Add(obstacle);
+                        lassoTile.obstacle.numberOfInstallation--;
+                        Inventory_Virtual.instance.isLasso = false;
+                        BottomUIManager.Instance.curObstacleType = ObstacleType.None;
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            var skill = BottomUIManager.Instance.curSkillButton.skill;
+            //var item = BottomUIManager.Instance.curSkillButton.item;
+
+            var actionType = BottomUIManager.Instance.buttonState;
+
+            if (skill.SkillTableElem.range == SkillRangeType.One)
+            {
+                //단일 타겟이라면 유효성 검사
+                if (!BattleManager.Instance.IsVaildTargetTile(this))
+                {
+                    manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
+                    return;
+                }
+                else
+                {
+                    tileMaker.AffectedTileCancle(skill.SkillTableElem.player);
+                    tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
+                }
             }
             else
             {
-                tileMaker.AffectedTileCancle(button.groupUI.type);
-                tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
+                //범위 스킬이라면
+                //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
+                //  1) 범위 계산 후 타일 리스트를 만들어서.
+                //  2) tile.Confirm(color) 함수 호출하기.
+                //  3) affectedPlayer 설정하기.
+
             }
-        }
-        else
-        {
-            //범위 스킬이라면
-            //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
-            //  1) 범위 계산 후 타일 리스트를 만들어서.
-            //  2) tile.Confirm(color) 함수 호출하기.
-            //  3) affectedPlayer 설정하기.
 
-        }
+            if (actionType == BottomUIManager.ButtonState.Skill)
+            {
+                manager.DoCommand(skill.SkillTableElem.player, index, skill);
+            }
+            else
+            {
+                //manager.DoCommand(item as DataConsumable);
+            }
 
-        if (actionType == ActionType.Skill)
-        {
-            manager.DoCommand(button.groupUI.type, index, skill);
+            BottomUIManager.Instance.curSkillButton.Cancle();
+            BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
+            manager.EndTileClick();
+            manager.UpdateProgress(); 
         }
-        else
-        {
-            manager.DoCommand(button.groupUI.type, index, item);
-        }
-
-        button.groupUI.EnableGroup();
-        button.groupUI.Close();
-        manager.EndTileClick();
     }
 
     public void Units_UnitAdd(UnitBase unit)

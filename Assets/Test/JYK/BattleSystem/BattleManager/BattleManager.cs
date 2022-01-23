@@ -18,7 +18,7 @@ public class BattleManager : MonoBehaviour
     private MultiTouch multiTouch;
 
     //Unit
-    public List<MonsterUnit> monster = new List<MonsterUnit>();
+    public List<MonsterUnit> monsters = new List<MonsterUnit>();
     private Queue<MonsterUnit> wave1 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave2 = new Queue<MonsterUnit>();
     private Queue<MonsterUnit> wave3 = new Queue<MonsterUnit>();
@@ -27,20 +27,16 @@ public class BattleManager : MonoBehaviour
     private PlayerCommand boyInput;
     private PlayerCommand girlInput;
 
-    //Canvas
-    public CanvasScaler cs;
-
     //Instance
     [SerializeField] private BottomUIManager uiManager;
     public TileMaker tileMaker;
     public Image dragSlot;
-    public BattleSkillInfo info;
-    public SkillSelectUI hunterUI;
-    public SkillSelectUI herbologistUI;
     public BattleMessage message;
     public BattleMessage cautionMessage;
     public BattleFSM FSM;
-    public SkillSelectUI trapUI;
+
+    //New Instance
+    [SerializeField] private Button battleStartBut;
 
     //Vars
     private int turn;
@@ -52,10 +48,12 @@ public class BattleManager : MonoBehaviour
     private IEnumerable<Tiles> targetTiles;
     private bool isWaitingTileSelect;
     private const float monsterSpeed = 10f;
+    public bool isPlayerFirst;
+    private int progress;
 
     //Property
+    public int Progress => progress;
     public int Turn { get => turn; set => turn = value; }
-    public SkillButton CurClickedButton { get; set; }
     public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
     public bool IsDuringPlayerAction { get; set; }
@@ -126,9 +124,10 @@ public class BattleManager : MonoBehaviour
         preWaveTurn = 1;
         curWave = 0;
         IsDuringPlayerAction = false;
+        GameManager.Manager.State = GameState.Battle;
 
         // 3. 몬스터 (랜덤뽑기) & 배치
-        monster.Clear();
+        monsters.Clear();
         wave1.Clear();
         wave2.Clear();
         wave3.Clear();
@@ -215,15 +214,27 @@ public class BattleManager : MonoBehaviour
         SetUnitOnTile(new Vector2(0, 0), girl.Stats);
         SetUnitOnTile(new Vector2(1, 0), boy.Stats);
 
-        //스킬창 Init
-        hunterUI.Init(PlayerType.Boy, this, Vars.BoySkillList, herbologistUI);
-        herbologistUI.Init(PlayerType.Girl, this, Vars.GirlSkillList, hunterUI);
-        trapUI.Init(PlayerType.None, this, Vars.GirlSkillList, null);
-
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
     }
 
+    public void WaitUntillSettingDone()
+    {
+        /* 전투시작 버튼 활성화
+           인벤토리에서 트랩류 스킬 테두리 On && 나머지 비활성화 */
+        battleStartBut.gameObject.SetActive(true);
+
+
+
+    }
+    
+    public void StartButton() // 버튼용 함수
+    {
+        battleStartBut.gameObject.SetActive(false);
+
+        var start = FSM.GetState(BattleState.Start) as BattleStart;
+        start.IsReadyDone = true;
+    }
 
     //Wave
     public bool IsReadyToNextWave()
@@ -253,9 +264,11 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
-                MoveUnitOnTile(new Vector2(i, 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
+                var tilePos = new Vector2(i, 6);
+                tempForCoroutine.ObstacleAdd(tilePos);
+                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -274,9 +287,11 @@ public class BattleManager : MonoBehaviour
             while (temp.Count != 0)
             {
                 var monsterSc = temp.Dequeue();
-                monster.Add(monsterSc);
+                monsters.Add(monsterSc);
                 var tempForCoroutine = monsterSc;
-                MoveUnitOnTile(new Vector2(indexArr[i], 6), monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
+                var tilePos = new Vector2(indexArr[i], 6);
+                tempForCoroutine.ObstacleAdd(tilePos);
+                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
                 i++;
             }
         }
@@ -332,7 +347,7 @@ public class BattleManager : MonoBehaviour
             return;
         if (!IsReadyToNextWave())
             return;
-        if (turn != 1 && turn - preWaveTurn < 2)
+        if (turn != 1 && turn - preWaveTurn < 1)
             return;
         else
             preWaveTurn = turn;
@@ -355,19 +370,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    //Battle Ready
-    public void ActivateTrapSetUI()
-    {
-        trapUI.gameObject.SetActive(true);
-    }
-
-    public void TrapSettingDone()
-    {
-        var startState = FSM.GetState(BattleState.Start) as BattleStart;
-        startState.IsTrapDone = true;
-        trapUI.Close();
-    }
-
     //UI
     public void PrintMessage(string message, float time, UnityAction action)
     {
@@ -377,14 +379,6 @@ public class BattleManager : MonoBehaviour
     public void PrintCaution(string message, float time, float fadeDelay, UnityAction action)
     {
         cautionMessage.PrintMessageFadeOut(message, 0.7f, 0.5f, null);
-    }
-
-    public void OpenSkillUI(PlayerType type)
-    {
-        if (type == PlayerType.Boy)
-            hunterUI.Open();
-        else
-            herbologistUI.Open();
     }
 
     public void CreateTempSkillUiForDrag(DataPlayerSkill skill)
@@ -407,20 +401,6 @@ public class BattleManager : MonoBehaviour
         isDrag = false;
     }
 
-    public void OpenSkillInfo(SkillButton clickedButton, DataPlayerSkill skill, Vector2 pos)
-    {
-        CurClickedButton = clickedButton;
-        info.gameObject.SetActive(true);
-        info.Init(skill, pos);
-    }
-
-    public void OpenItemInfo(SkillButton clickedButton, DataConsumable item, Vector2 pos)
-    {
-        CurClickedButton = clickedButton;
-        info.gameObject.SetActive(true);
-        info.Init(item, pos);
-    }
-
     //Tile
     public void SetUnitOnTile(Vector2 tilePos, UnitBase unit)
     {
@@ -434,7 +414,7 @@ public class BattleManager : MonoBehaviour
         unit.transform.position = dest;
     }
 
-    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction)
+    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction, bool rotateFoward = true)
     {
         var preTile = monsterUnit.CurTile;
         preTile.RemoveUnit(monsterUnit);
@@ -445,7 +425,7 @@ public class BattleManager : MonoBehaviour
         monsterUnit.Pos = tilePos;
 
         MonsterUnit alreadyPlacedMonster = (tile.FrontMonster == monsterUnit) ? tile.BehindMonster : tile.FrontMonster;
-        bool isAlreadyBehind = (tile.FrontMonster == monsterUnit) ? true : false;
+        bool isAlreadyBehind = tile.FrontMonster == monsterUnit;
 
         if (tile.Units_UnitCount() == 2)
         {
@@ -458,7 +438,7 @@ public class BattleManager : MonoBehaviour
                 frontDest.y = tile.FrontMonster.transform.position.y;
 
                 StartCoroutine(CoMoveMonster(monsterUnit, frontDest,
-                    moveStartAction, moveEndAction));
+                    moveStartAction, moveEndAction, rotateFoward));
             }
             else
             {
@@ -470,7 +450,7 @@ public class BattleManager : MonoBehaviour
                 behindDest.y = tile.BehindMonster.transform.position.y;
 
                 StartCoroutine(CoMoveMonster(monsterUnit, behindDest,
-                    moveStartAction, moveEndAction));
+                    moveStartAction, moveEndAction, rotateFoward));
 
                 var frontDest = tile.FrontPos;
                 frontDest.y = tile.FrontMonster.transform.position.y;
@@ -484,24 +464,27 @@ public class BattleManager : MonoBehaviour
         {
             var dest = tile.CenterPos;
             dest.y = monsterUnit.transform.position.y;
-            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction));
+            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction, rotateFoward));
         }
     }
 
-    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc)
+    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc, bool haveToRotate = true)
     {
         var startRot = Quaternion.LookRotation(unit.transform.forward);
         var destRot = Quaternion.LookRotation(dest - unit.transform.position);
-        if (Quaternion.Angle(startRot, destRot) > 0f)
+
+        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
             yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.3f));
 
         yield return new WaitForSeconds(0.3f);
 
+        var speed = (haveToRotate) ? monsterSpeed : monsterSpeed * 2;
+
         startAc?.Invoke();
-        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, monsterSpeed, 0.3f));
+        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, speed, 0.3f));
         endAc?.Invoke();
 
-        if (Quaternion.Angle(startRot, destRot) > 0f)
+        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
             yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.3f));
     }
 
@@ -511,6 +494,15 @@ public class BattleManager : MonoBehaviour
         foreach (var tile in targetTiles)
         {
             tile.HighlightCanAttackSign(range);
+        }
+    }
+
+    public void UndisplayMonsterTile()
+    {
+        targetTiles = tileMaker.GetMonsterTiles();
+        foreach (var tile in targetTiles)
+        {
+            tile.ResetHighlightExceptConfirm();
         }
     }
 
@@ -537,6 +529,20 @@ public class BattleManager : MonoBehaviour
     {
         isWaitingTileSelect = false;
     }
+
+    //Progress
+    public void UpdateProgress()
+    {
+        progress++;
+        BottomUIManager.Instance.UpdateProgress();
+    }
+
+    public void ResetProgress()
+    {
+        progress = 0;
+        BottomUIManager.Instance.UpdateProgress();
+    }
+
 
     //Command
     public void ClearCommand()
@@ -565,30 +571,30 @@ public class BattleManager : MonoBehaviour
         attacker.TurnInit(ActionType.Skill);
     }
 
-    public void DoCommand(PlayerType type, Vector2 target, DataConsumable item)
+    public void DoCommand(DataConsumable item)
     {
         PlayerCommand command;
         PlayerBattleController attacker;
-        if (type == PlayerType.Boy)
-        {
-            command = boyInput;
-            attacker = boy;
-        }
-        else
-        {
-            command = girlInput;
-            attacker = girl;
-        }
+        //if (type == PlayerType.Boy)
+        //{
+        //    command = boyInput;
+        //    attacker = boy;
+        //}
+        //else
+        //{
+        //    command = girlInput;
+        //    attacker = girl;
+        //}
 
-        command.Create(target, item);
+        //command.Create(target, item);
 
-        attacker.TurnInit(ActionType.Item);
+        //attacker.TurnInit(ActionType.Item);
     }
 
     public void EndOfPlayerAction()
     {
         // 이겼는지 체크
-        var monsterlist = monster.Where(n => n.State != MonsterState.Dead).ToList();
+        var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
             PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
@@ -598,7 +604,17 @@ public class BattleManager : MonoBehaviour
             IsDuringPlayerAction = false;
             if (boyInput.IsUpdated && girlInput.IsUpdated)
             {
-                FSM.ChangeState(BattleState.Monster);
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Boy, true);
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Girl, true);
+
+                if (isPlayerFirst)
+                {
+                    FSM.ChangeState(BattleState.Monster);
+                }
+                else
+                {
+                    FSM.ChangeState(BattleState.Settlement);
+                }
             }
             else
             {
@@ -607,6 +623,19 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void AllMonsterDebuffCheck(UnityAction action = null)
+    {
+        var monster = monsters.Where(x => x.obstacles != null)
+                              .Select(x => x)
+                              .ToList();
+
+        for (int i = 0; i < monster.Count; i++)
+        {
+            monster[i].ObstacleHit();
+        }
+
+        action?.Invoke();
+    }
     private void OnGUI()
     {
         if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
@@ -621,13 +650,10 @@ public class BattleManager : MonoBehaviour
         {
             Init(true);
         }
-        if (GUILayout.Button("Wave Update", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            UpdateWave();
-        }
+
         if(GUILayout.Button(" ← ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y - 1));
 
@@ -635,12 +661,48 @@ public class BattleManager : MonoBehaviour
         }
         if (GUILayout.Button(" → ", GUILayout.Width(200f), GUILayout.Height(200f)))
         {
-            var monster0 = monster[0];
+            var monster0 = monsters[0];
             var tile = monster0.CurTile;
             Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y + 1));
 
             MoveUnitOnTile(foward.index, monster0, null, null);
         }
+
+        if (GUILayout.Button("Lantern 2", GUILayout.Width(100), GUILayout.Height(100)))
+        {
+            ConsumeManager.ConsumeLantern(12);
+        }
+        if (GUILayout.Button("Lantern 3", GUILayout.Width(100), GUILayout.Height(100)))
+        {
+            ConsumeManager.FullingLantern(12);
+        }
+
+        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "올가미"))
+        {
+            uiManager.curObstacleType = ObstacleType.Lasso;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "부비트랩"))
+        {
+            if(!Inventory_Virtual.instance.isLasso)
+                uiManager.curObstacleType = ObstacleType.BoobyTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "나무트랩"))
+        {
+            if(!Inventory_Virtual.instance.isLasso)
+            uiManager.curObstacleType = ObstacleType.WoodenTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 300, 100, 100), "가시트랩"))
+        {
+            if(!Inventory_Virtual.instance.isLasso)
+            uiManager.curObstacleType = ObstacleType.ThornTrap;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 400, 100, 100), "장애물"))
+        {
+            if(!Inventory_Virtual.instance.isLasso)
+            uiManager.curObstacleType = ObstacleType.Barrier;
+        }
+
+
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
         //{
         //    List<int> list = new List<int>(new int[] { 0, 1, 2, 3, 4, 5 });
@@ -679,5 +741,7 @@ public class BattleManager : MonoBehaviour
         //        PlaceUnitOnTile(foward.index, monster0, true);
         //    }
         //}
+
+
     }
 }

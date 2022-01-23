@@ -26,7 +26,7 @@ public class CSVReader
         for (var i = 1; i < lines.Length; i++)
         {
             // " 포함된 시작부분
-            if(!isSkip && lines[i].Contains("\""))
+            if(!isSkip && lines[i].Contains("\"") && lines[i].Split("\"").Length == 2)
             {
                 lines[i].Replace("\"", "");
                 if (lines[i].Contains("\n"))

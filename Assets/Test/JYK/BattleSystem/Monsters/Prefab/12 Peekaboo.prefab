@@ -168,6 +168,9 @@ GameObject:
   - component: {fileID: 2143963233178082986}
   - component: {fileID: 2143963233185509706}
   - component: {fileID: -6302157861576753856}
+  - component: {fileID: 3547480039820923659}
+  - component: {fileID: 1650197998825162233}
+  - component: {fileID: 8842988888026203872}
   m_Layer: 0
   m_Name: 12 Peekaboo
   m_TagString: Untagged
@@ -240,7 +243,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec8461d150dc5044ab7c92c16a12c9f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  trigger: {fileID: 3547480039820923659}
+  isActionDone: 0
   monsterID: 12
+  obstacles: []
+--- !u!136 &3547480039820923659
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143963233178108554}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  m_Radius: 0.47
+  m_Height: 1.55
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.78, z: 0}
+--- !u!65 &1650197998825162233
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143963233178108554}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.24, y: 0.37, z: 0.19}
+  m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!114 &8842988888026203872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143963233178108554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2143963233178108556
 GameObject:
   m_ObjectHideFlags: 0

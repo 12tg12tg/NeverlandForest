@@ -9,7 +9,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     RecipeSaveData_0 recipeData;
     TimeSaveData_0 timeData;
     DungeonMapSaveData_0 dungeonMapData;
-    WorldMapNodeData_0 worldMapSaveNodeData;
+    WorldMapData_0 worldMapSaveData;
     WorldMapPlayerData_0 worldMapPlayerData;
     ConsumableSaveData_0 consumableSaveData;
     private void Start()
@@ -35,8 +35,8 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.DungeonMap:
                 SaveDungeonMap();
                 break;
-            case SaveLoadSystem.SaveType.WorldMapNode:
-                SaveWorldMapNode();
+            case SaveLoadSystem.SaveType.WorldMapData:
+                SaveWorldMapData();
                 break;
             case SaveLoadSystem.SaveType.WorldMapPlayerData:
                 SaveWorldMapPlayer();
@@ -62,7 +62,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.DungeonMap:
                 LoadDungeonMap();
                 break;
-            case SaveLoadSystem.SaveType.WorldMapNode:
+            case SaveLoadSystem.SaveType.WorldMapData:
                 LoadWorldMapNode();
                 break;
             case SaveLoadSystem.SaveType.WorldMapPlayerData:
@@ -144,11 +144,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         //timeData.makeTime = Vars.UserData.MakeList;
         //SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
     }
-    private void SaveWorldMapNode()
+    private void SaveWorldMapData()
     {
-        worldMapSaveNodeData = new WorldMapNodeData_0();
-        worldMapSaveNodeData.MapNodeStruct = Vars.UserData.WorldMapNodeStruct;
-        SaveLoadSystem.Save(worldMapSaveNodeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapNode);
+        worldMapSaveData = new WorldMapData_0();
+        worldMapSaveData.WorldMapNodeStruct = Vars.UserData.WorldMapNodeStruct;
+        worldMapSaveData.WorldMapTree = Vars.UserData.WorldMapTree;
+        SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapData);
     }
     private void SaveWorldMapPlayer()
     {
@@ -227,10 +228,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadWorldMapNode()
     {
-        worldMapSaveNodeData = (WorldMapNodeData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapNode);
-        if (worldMapSaveNodeData != null)
+        worldMapSaveData = (WorldMapData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapData);
+        if (worldMapSaveData != null)
         {
-            Vars.UserData.WorldMapNodeStruct = worldMapSaveNodeData.MapNodeStruct;
+            Vars.UserData.WorldMapNodeStruct = worldMapSaveData.WorldMapNodeStruct;
+            Vars.UserData.WorldMapTree = worldMapSaveData.WorldMapTree;
         }
     }
     private void LoadWorldMapPlayer()

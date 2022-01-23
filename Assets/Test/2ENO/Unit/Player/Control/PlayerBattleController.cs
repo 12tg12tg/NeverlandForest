@@ -53,25 +53,39 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
 
     private IEnumerator CoActionCommand()
     {
+        //현재 스킬 정보에 따른 예외처리
+        //1) 커맨드가 스킬인가 아이템인가?
+        //2) 커맨드가 공격스킬인가 충전스킬인가?
+
+        //스킬 범위 바닥 타일 표시
         var tiles = tileMaker.GetSkillRangedTiles(command.target, command.skill.SkillTableElem.range);
-        var d = tiles.Count();
         foreach (var tile in tiles)
         {
             tile.ConfirmAsTarget(command.type, tileMaker.LastClickPos, command.skill.SkillTableElem.range);
         }
         tileMaker.SetAllTileSoftClear();
 
+        //몬스터 맞을 준비. 콜라이더 켜기
+        var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+        var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
+        foreach (var target in neverChangeMonsterList)
+        {
+            target.EnableTrigger();
+        }
+        
+        //몬스터 맞고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.
         var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
         yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
         playerActionState.isAttackMotionEnd = false;
 
-        var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
-
         // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
-        foreach (var target in monsterList)
+        if (command.skill.SkillTableElem.name != "집중공격")
         {
-            target.PlayHitAnimation();
-            target.OnAttacked(command);
+            foreach (var target in neverChangeMonsterList)
+            {
+                target.PlayHitAnimation();
+                target.OnAttacked(command);
+            }
         }
 
         yield return new WaitForSeconds(1.5f);
@@ -92,8 +106,6 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
         if (command.IsUpdated || manager.IsDuringPlayerAction)
             return;
 
-        // 캐릭터 클릭했을 시 수행할 동작들
-        manager.OpenSkillUI(playerType);
     }
 
     public void OnDrop(PointerEventData eventData)

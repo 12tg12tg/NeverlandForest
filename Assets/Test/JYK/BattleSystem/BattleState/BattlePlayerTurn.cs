@@ -16,6 +16,7 @@ public class BattlePlayerTurn : State<BattleState>
     public override void Init()
     {
         isMessageOff = false;
+        manager.ResetProgress();
         manager.ClearCommand();
         manager.PrintMessage("플레이어 턴", messageTime, () =>
         {

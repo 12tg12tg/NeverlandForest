@@ -11,7 +11,7 @@ public enum CharacterBattleState
 
 public class PlayerBattleFSM : FSM<CharacterBattleState>
 {
-    public AnimationFunc aniFunc;
+    public BattleAnimationFunc aniFunc;
     public Animator animator;
     public PlayerBattleController controller;
 

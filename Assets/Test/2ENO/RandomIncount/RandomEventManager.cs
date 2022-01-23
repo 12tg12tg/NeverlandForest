@@ -44,8 +44,16 @@ public class RandomEventManager : MonoBehaviour
         var list = from data in allDataList
                    where data.EventData.eventCondition == RandomEventCondition.Always
                    select data;
-        // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
 
+        // TODO : 테스트용 임시코드
+        //var testEvent = randomTable.GetData<RandomEventTableElem>("11");
+        //for (int i = 0; i < 20; i++)
+        //{
+        //    var data = new DataRandomEvent(testEvent);
+        //    randomEventPool.Add(data);
+        //}
+
+        // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
         randomEventPool.AddRange(list);
     }
 
@@ -100,7 +108,7 @@ public class RandomEventManager : MonoBehaviour
             var index = 0;
             foreach (var data in sList)
             {
-                if (rndVal2 < data)
+                if (rndVal2 <= data)
                     break;
                 index++;
             }
@@ -117,6 +125,9 @@ public class RandomEventManager : MonoBehaviour
                 beforeEventData = randomEventPool[index];
                 break;
             }
+
+            // 아이템 테스트코드
+            //roomData.randomEventID = randomEventPool[0].EventData.id;
             yield return null;
         }
     }
