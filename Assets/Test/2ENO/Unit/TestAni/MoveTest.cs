@@ -77,7 +77,7 @@ public class MoveTest : MonoBehaviour
         // 첫 터치 기준으로만 잡음
 
         var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        if (!isCoMove)
+        if (!isCoMove && !RandomEventUIManager.Instance.isEventOn)
         {
             if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
             {

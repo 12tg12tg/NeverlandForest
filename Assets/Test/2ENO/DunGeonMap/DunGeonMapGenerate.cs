@@ -63,6 +63,8 @@ public class DunGeonMapGenerate : MonoBehaviour
             action?.Invoke();
         }
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
+
+        int a = 100;
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = startIdx;
 
@@ -163,6 +165,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             i++;
         }
 
+        int a = 100;
         action?.Invoke();
         
         //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;

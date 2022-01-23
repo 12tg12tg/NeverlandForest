@@ -43,11 +43,13 @@ public class RandomEventUIManager : MonoBehaviour
     public TextMeshProUGUI selectName;
     public TextMeshProUGUI selectDesc;
     public TextMeshProUGUI resultDesc;
+    public GameObject itemInfo;
 
     private List<DataItem> rewardItemList = new();
     // 선택 아이템을 인벤토리쪽과 보상쪽 둘다 하나로 쓸수 있는지 고민?
     public DataItem curSelectItem;
 
+    public bool isEventOn;
 
     private void Awake()
     {
@@ -58,6 +60,15 @@ public class RandomEventUIManager : MonoBehaviour
         windows[1].SetActive(false);
         closeBtn.gameObject.SetActive(false);
         ItemButtonInit();
+    }
+
+    private void OnEnable()
+    {
+        isEventOn = true;
+    }
+    private void OnDisable()
+    {
+        isEventOn = false;
     }
     private void Update()
     {
@@ -103,9 +114,16 @@ public class RandomEventUIManager : MonoBehaviour
 
     private void SelectInit()
     {
-        
+        int j = selectButtons.Count - 1;
         for (int i = 0; i < selectButtons.Count; i++)
         {
+            if (randomEventData.selectCount < i + 1)
+            {
+                selectButtons[j].GetComponent<Image>().enabled = false;
+                selectButtons[j].GetComponent<Button>().enabled = false;
+                j--;
+                continue;
+            }
             var btnObj = selectButtons[i];
 
             var button = btnObj.GetComponent<Button>();
@@ -141,6 +159,8 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardItemList.AddRange(randomEventData.rewardItems);
 
+            resultDesc.enabled = false;
+            itemInfo.SetActive(true);
             rewardOrCheck[0].SetActive(true);
             rewardOrCheck[1].SetActive(false);
             RewardItemLIstInit(rewardItemList);
@@ -149,6 +169,8 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardOrCheck[0].SetActive(false);
             rewardOrCheck[1].SetActive(true);
+            resultDesc.enabled = true;
+            itemInfo.SetActive(false);
         }
     }
 
