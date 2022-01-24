@@ -52,8 +52,8 @@ public class BottomItemButtonUI : MonoBehaviour
         if (dataItem == null)
             return;
         // TODO: 임시, 가라로 해놓은거
-      
-        if(RandomEventManager.Instance  !=null&& GameManager.Manager.State ==GameState.Dungeon)
+
+        if (RandomEventManager.Instance != null && RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
         {
             RandomEventUIManager.Instance.info.Init(dataItem);
             RandomEventUIManager.Instance.selectItem = dataItem;
@@ -71,6 +71,7 @@ public class BottomItemButtonUI : MonoBehaviour
             }
             IsSelect = true;
         }
+       
         else
         {
             BottomUIManager.Instance.info.Init(dataItem);
@@ -87,11 +88,10 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.itemButtons[i].IsSelect = false;
             }
             IsSelect = true;
-
-
-            if (DiaryInventory.Instance !=null)
+            if (DiaryInventory.Instance != null)
             {
                 DiaryInventory.Instance.info.Init(dataItem);
+                Debug.Log("다이어리", DiaryInventory.Instance.info);
                 // 선택초기화
                 for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
                 {
