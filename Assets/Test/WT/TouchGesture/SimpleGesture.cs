@@ -54,6 +54,7 @@ public class SimpleGesture : MonoBehaviour
     }
     public void Init()
     {
+        RPS = 0f;
         prevRotY = 0f;
     }
 
