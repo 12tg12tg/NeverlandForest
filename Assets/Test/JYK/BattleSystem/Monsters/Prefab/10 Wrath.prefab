@@ -140,6 +140,7 @@ GameObject:
   - component: {fileID: 4515087228445143571}
   - component: {fileID: 2910795829214806331}
   - component: {fileID: 1034385696114834900}
+  - component: {fileID: -6316448248298956961}
   m_Layer: 0
   m_Name: 10 Wrath
   m_TagString: Untagged
@@ -212,6 +213,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trigger: {fileID: 4515087228445143571}
+  uiLinker: {fileID: 0}
+  initHp: 0
   isActionDone: 0
   monsterID: 10
   obstacles: []
@@ -254,6 +257,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.24, y: 0.37, z: 0.19}
   m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!114 &-6316448248298956961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734572081990470152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06db6325dca078c42a09b9fc17fdb616, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpBarPrefab: {fileID: 492793071959783573, guid: 7cf966c9405d4294d9681de7da26e0fa, type: 3}
+  linkedUi: {fileID: 0}
+  hpBarOffset: {x: 0, y: 2.2, z: 0}
+  longRange: {r: 0.18382876, g: 0.764151, b: 0.42942175, a: 1}
+  shortRange: {r: 0.24363652, g: 0.37679905, b: 0.6886792, a: 1}
 --- !u!1 &1734572081990470154
 GameObject:
   m_ObjectHideFlags: 0

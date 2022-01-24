@@ -28,6 +28,7 @@ public class BattleManager : MonoBehaviour
     private PlayerCommand girlInput;
 
     //Instance
+    public Canvas uiCanvas;
     [SerializeField] private BottomUIManager uiManager;
     public TileMaker tileMaker;
     public Image dragSlot;

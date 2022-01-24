@@ -14,8 +14,10 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     // Component
     private Animator animator;
     public Collider trigger;
+    public MonsterUILinker uiLinker;
 
     // Vars
+    public int initHp;
     private int sheild;
     private int maxSheild;
     private int speed;
@@ -47,8 +49,8 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private void Start()
     {
         baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
+        uiLinker = GetComponent<MonsterUILinker>();
         Init(baseElem);
-        State = MonsterState.Idle;
     }
 
     // Update
@@ -76,6 +78,8 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         CalcultateDamage(playerCommand.type, damage, out int curDamage, out int curSheildDamage);
         Debug.Log($"{Pos}{name} 몬스터가 {baseElem.Name}에게 {curDamage}의 Hp 피해와 {curSheildDamage}의 실드 피해를 받았다.\n" +
             $"Hp : {Hp + curDamage} -> {Hp} // Sheild : {sheild + curSheildDamage} -> {sheild}");
+        uiLinker.UpdateHpBar(Hp, initHp);
+        uiLinker.UpdateSheild(sheild, maxSheild);
         DeadCheak();
 
 
@@ -138,19 +142,23 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             PlayDeadAnimation();
             State = MonsterState.Dead;
+            Destroy(uiLinker.linkedUi?.gameObject);
         }
     }
 
     // 초기화
     public void Init(MonsterTableElem elem)
     {
-        Hp = elem.hp;
+        initHp = Hp = elem.hp;
         Atk = elem.atk;
         sheild = elem.sheild;
         maxSheild = sheild;
         type = elem.type;
         manager ??= BattleManager.Instance;
         command ??= new MonsterCommand(this);
+
+        uiLinker.Init(elem.type);
+        State = MonsterState.Idle;
     }
     private void EraseThis()
     {
@@ -203,23 +211,41 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                 var rand = Random.Range(0, countInRow);
                 command.actionType = MonsterActionType.Move;
                 command.target = movableTiles[rand].index;
-                Debug.Log((int)(CurTile.index.y - command.target.y));
+                uiLinker.UpdateDistance((int)(CurTile.index.y - command.target.y));
             }
             else
             {
-                // 다른 행에서도 확인
-                var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
-                int count = movableTilesOtherRow.Length;
-                if(count != 0)
+                // 동일행에 없으면 사거리밖이어도 공격.
+                if (CurTile.index.y <= 2)
                 {
-                    var rand = Random.Range(0, count);
-                    command.actionType = MonsterActionType.Move;
-                    command.target = movableTilesOtherRow[rand].index;
+                    command.actionType = MonsterActionType.Attack;
+                    var randTarget = Random.Range(0, 2);
+                    command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
                 }
                 else
                 {
+                    // 갈곳없어서 행동하지않음.
                     command.actionType = MonsterActionType.None;
                 }
+
+
+                // 다른 행에서도 확인
+                {
+                    var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
+                    int count = movableTilesOtherRow.Length;
+                    if (count != 0)
+                    {
+                        var rand = Random.Range(0, count);
+                        command.actionType = MonsterActionType.Move;
+                        command.target = movableTilesOtherRow[rand].index;
+                    }
+                    else
+                    {
+                        command.actionType = MonsterActionType.None;
+                    }
+                }
+
+
             }
         }
         State = MonsterState.DoSomething;
@@ -342,6 +368,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         DurationDecrease(obs);
 
         // 몬스터 죽었는지 체크
+        uiLinker.UpdateHpBar(Hp, initHp);
         DeadCheak();
     }
 
