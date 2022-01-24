@@ -231,18 +231,18 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
                 // 다른 행에서도 확인
                 {
-                    var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
-                    int count = movableTilesOtherRow.Length;
-                    if (count != 0)
-                    {
-                        var rand = Random.Range(0, count);
-                        command.actionType = MonsterActionType.Move;
-                        command.target = movableTilesOtherRow[rand].index;
-                    }
-                    else
-                    {
-                        command.actionType = MonsterActionType.None;
-                    }
+                    //var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
+                    //int count = movableTilesOtherRow.Length;
+                    //if (count != 0)
+                    //{
+                    //    var rand = Random.Range(0, count);
+                    //    command.actionType = MonsterActionType.Move;
+                    //    command.target = movableTilesOtherRow[rand].index;
+                    //}
+                    //else
+                    //{
+                    //    command.actionType = MonsterActionType.None;
+                    //}
                 }
 
 
