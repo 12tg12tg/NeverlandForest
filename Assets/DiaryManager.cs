@@ -16,6 +16,23 @@ public class DiaryManager : MonoBehaviour
     public GameObject cookingPanel;
     public GameObject sleepingPanel;
     public GameObject gatheringIncCampPanel;
+    public GameObject gatheringInCampReward;
+
+    public GameObject gatheringReward0;
+    public GameObject gatheringReward1;
+    public GameObject gatheringReward2;
+    public GameObject gatheringReward3;
+    public GameObject gatheringReward4;
+    public GameObject gatheringReward5;
+
+    public Image gatheringReward0_img;
+    public Image gatheringReward1_img;
+    public Image gatheringReward2_img;
+    public Image gatheringReward3_img;
+    public Image gatheringReward4_img;
+    public Image gatheringReward5_img;
+
+
     public GameObject battleRewardPanel;
     public GameObject huntRewardPanel;
     public GameObject gatheringInDungeonPanel;
