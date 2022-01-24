@@ -63,6 +63,8 @@ public class DunGeonMapGenerate : MonoBehaviour
             action?.Invoke();
         }
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
+
+        int a = 100;
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonStartIdx = startIdx;
 
@@ -96,7 +98,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             case DunGeonEvent.Gathering:
                 if (curRoom.RoomType == DunGeonRoomType.MainRoom)
                 {
-                    curRoom.gatheringCount = Random.Range(0, 3);
+                    curRoom.gatheringCount = 2/*Random.Range(0, 3)*/;
                     for (int i = 0; i < curRoom.gatheringCount; i++)
                     {
                         var gatheringData1 = new GatheringData();
@@ -163,6 +165,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             i++;
         }
 
+        int a = 100;
         action?.Invoke();
         
         //Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;

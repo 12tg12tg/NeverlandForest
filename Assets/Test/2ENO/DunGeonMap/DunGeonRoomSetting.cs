@@ -95,7 +95,7 @@ public static class DunGeonRoomSetting
         // 입력받은 방에 1~2개 사이의 이벤트를 넣어주고
         // 각 이벤트를 나올수 있는 이벤트 타입중 확률적으로 1개 골라서 넣어준다
 
-        var tempPercent = new List<int> { 20, 30, 20, 30, 5 };
+        var tempPercent = new List<int> { 25, 25, 25, 25, 0 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
             room.SetEvent(DunGeonEvent.Gathering);
@@ -130,7 +130,6 @@ public static class DunGeonRoomSetting
             eventP.Add(sum);
         }
         DunGeonEvent eventType = DunGeonEvent.Empty;
-
 
         var rnd = UnityEngine.Random.Range(0, 110);
 

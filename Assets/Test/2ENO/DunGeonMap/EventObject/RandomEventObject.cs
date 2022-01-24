@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class RandomEventObject : MonoBehaviour
 {
-    private DungeonSystem dungeonSystem;
     private EventData data;
     private int thisRoomIdx;
     private string randomEventID;
 
-    public void Init(DungeonSystem system, EventData dt, int roomIdx, string eventID)
+    public void Init(EventData dt, int roomIdx, string eventID)
     {
-        this.dungeonSystem = system;
         data = dt;
         thisRoomIdx = roomIdx;
         randomEventID = eventID;
@@ -25,8 +23,8 @@ public class RandomEventObject : MonoBehaviour
     {
         if (other.tag is "Player")
         {
-            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
-            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             var rndEvent = RandomEventManager.Instance.GetEventData(randomEventID);
             RandomEventUIManager.Instance.EventInit(rndEvent);
 

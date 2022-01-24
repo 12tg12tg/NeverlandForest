@@ -85,20 +85,20 @@ public static class Vars
                 }
 
                 // 인벤토리에서 테스트로 사용할 아이템 리스트
-                int tempItemNum = 0;
-                for (int i = 0; i < 11; i++)
-                {
-                    var newItem = new DataAllItem();
-                    newItem.itemId = tempItemNum;
-                    newItem.LimitCount = Random.Range(5, 6);
-                    newItem.OwnCount = Random.Range(1, 5);
-                    newItem.dataType = DataType.AllItem;
-                    var stringId = $"{tempItemNum}";
-                    newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
-                    tempItemNum += 1;
+                //int tempItemNum = 0;
+                //for (int i = 0; i < 11; i++)
+                //{
+                //    var newItem = new DataAllItem();
+                //    newItem.itemId = tempItemNum;
+                //    newItem.LimitCount = Random.Range(5, 6);
+                //    newItem.OwnCount = Random.Range(1, 5);
+                //    newItem.dataType = DataType.AllItem;
+                //    var stringId = $"{tempItemNum}";
+                //    newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
+                //    tempItemNum += 1;
 
-                    userData.AddItemData(newItem);
-                }
+                //    userData.AddItemData(newItem);
+                //}
             }
             return userData;
         }

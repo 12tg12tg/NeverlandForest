@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum GameState
 {
-    None, Battle, Hunt, Gathering, Cook, 
+    None, Battle, Hunt, Gathering, Cook, Camp, Dungeon
 }
 
 

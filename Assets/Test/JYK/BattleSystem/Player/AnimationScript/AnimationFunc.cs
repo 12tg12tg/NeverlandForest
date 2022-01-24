@@ -6,6 +6,7 @@ public class AnimationFunc : MonoBehaviour
 {
     public PlayerAction actionState;
     public HuntingManager huntingSystem;
+    public GatheringSystem gathringSystem;
     public GameObject arrow;
 
     public void Hit()
@@ -23,5 +24,10 @@ public class AnimationFunc : MonoBehaviour
     {
         arrow.SetActive(false);
         huntingSystem.Shooting();
+    }
+
+    public void GatherIngPickUpEnd()
+    {
+        gathringSystem.GatheringEnd();
     }
 }

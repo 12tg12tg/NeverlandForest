@@ -53,7 +53,7 @@ public class BottomItemButtonUI : MonoBehaviour
             return;
         // TODO: 임시, 가라로 해놓은거
       
-        if(RandomEventManager.Instance  !=null&& RandomEventManager.Instance.curGameState == CurrentGameScene.Dungeon)
+        if(RandomEventManager.Instance  !=null&& GameManager.Manager.State == GameState.Dungeon)
         {
             RandomEventUIManager.Instance.info.Init(dataItem);
             RandomEventUIManager.Instance.selectItem = dataItem;

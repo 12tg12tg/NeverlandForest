@@ -29,7 +29,6 @@ public class GatheringSystem : MonoBehaviour
     }
     public GatheringType curgatheringType = GatheringType.MainDunguen;
 
-    private Coroutine coGather;
     private Coroutine coWomenMove;
     public Coroutine CoWomenMove => coWomenMove;
 
@@ -242,6 +241,7 @@ public class GatheringSystem : MonoBehaviour
                 //PlayWalkAnimation();
                 PlayWalkAnimationBoy();
             }
+            boyPlayer.tag = "Untagged";
             coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f, 
                 () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f); }));
         }
@@ -267,23 +267,28 @@ public class GatheringSystem : MonoBehaviour
         }
         var item = curSelectedObj.item;
         var list = new List<DataItem>();
+
+
+        // ¾ÆÀÌÅÛ È¹µæ
         if (item != null)
         {
+            item.OwnCount = 1;
             Vars.UserData.AddItemData(item);
-            list.Add(item);
-            inventoryController.OpenChoiceMessageWindow(list);
+            BottomUIManager.Instance.ItemListInit();
+            //list.Add(item);
+            //inventoryController.OpenChoiceMessageWindow(list);
         }
         boyPlayer.IsCoMove = true;
-        if (coWomenMove == null)
-        {
-            //PlayWalkAnimation();
-            PlayWalkAnimationBoy();
-        }
-        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        playerAnimationBoy.speed = 0.5f;
+        playerAnimationBoy.SetTrigger("Pick");
+        //if (coWomenMove == null)
+        //{
+        //    PlayWalkAnimationBoy();
+        //}
+        //coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
         gatheringToolPanel.SetActive(false);
-        Destroy(curSelectedObj);
     }
 
     private static void GatheringTreeByTool()
@@ -347,25 +352,27 @@ public class GatheringSystem : MonoBehaviour
         }
         var item = curSelectedObj.item;
         var list = new List<DataItem>();
+        // ¾ÆÀÌÅÛ È¹µæ
+        if (item != null)
+        {
+            Vars.UserData.AddItemData(item);
+            item.OwnCount = 3;
+            BottomUIManager.Instance.ItemListInit();
+            //list.Add(item);
+            //inventoryController.OpenChoiceMessageWindow(list);
+        }
 
-        //if (item != null)
-        //{
-        //    Vars.UserData.AddItemData(item);
-        //    item.OwnCount = 10;
-        //    list.Add(item);
-        //    inventoryController.OpenChoiceMessageWindow(list);
-        //}
         boyPlayer.IsCoMove = true;
         playerAnimationBoy.speed = 0.5f;
         playerAnimationBoy.SetTrigger("Pick");
         gatheringPanel.SetActive(false);
         Debug.Log("ÆË¾÷²¯´Ù");
         gatheringToolPanel.SetActive(false);
-        if (coGather != null)
-        {
-            StopCoroutine(coGather);
-        }
-        coGather = StartCoroutine(GatheringEnd());
+
+        //Vars.UserData.AddItemData(item);
+        //list.Add(item);
+        //inventoryController.OpenChoiceMessageWindow(list);
+
         //if (coWomenMove == null)
         //{
         //    //PlayWalkAnimation();
@@ -376,22 +383,13 @@ public class GatheringSystem : MonoBehaviour
         //Debug.Log("ÆË¾÷²¯´Ù");
         //gatheringToolPanel.SetActive(false);
         //Destroy(curSelectedObj);
-        Vars.UserData.AddItemData(item);
-        list.Add(item);
-        inventoryController.OpenChoiceMessageWindow(list);
 
     }
-    // Ãß°¡ÇÔ
-    private IEnumerator GatheringEnd()
+    public void GatheringEnd()
     {
-        while(!boyPlayer.isGatheringEnd)
-        {
-            yield return null;
-        }
         playerAnimationBoy.speed = 1f;
         if (coWomenMove == null)
         {
-            //PlayWalkAnimation();
             PlayWalkAnimationBoy();
         }
         playerAnimation.SetTrigger("Clap");
@@ -443,6 +441,7 @@ public class GatheringSystem : MonoBehaviour
         coWomenMove = null;
         womenplayer.transform.rotation = Quaternion.Euler(Vector3.zero);
         womenplayer.CoMoveStop();
+        boyPlayer.tag = "Player";
     }
     private void PlayWalkAnimation()
     {

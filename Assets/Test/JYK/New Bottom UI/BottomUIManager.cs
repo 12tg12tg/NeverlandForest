@@ -37,8 +37,8 @@ public class BottomUIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        SkillButtonInit();
         popUpWindow.gameObject.SetActive(false);
+        SkillButtonInit();
     }
 
     // 프로그래스
@@ -179,7 +179,7 @@ public class BottomUIManager : MonoBehaviour
         ItemListInit();
     }
 
-    private void ItemListInit()
+    public void ItemListInit()
     {
         itemButtons.ForEach(n => n.Init(null));
         // 이거 Create할때 임시리스트 생성해서 사용중이긴 한데 자주 호출됬을때 좀 찝찝할수도

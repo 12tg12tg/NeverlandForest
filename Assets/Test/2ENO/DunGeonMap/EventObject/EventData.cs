@@ -22,7 +22,7 @@ public class GatheringData : EventData
 {
     public int offSetBasePos;
 
-    public GatheringObject Createobj(GatheringObject obj, GatheringSystem system, DungeonSystem dgSystem)
+    public GatheringObject Createobj(GatheringObject obj, GatheringSystem system)
     {
         if(eventBasePos.Equals(Vector3.zero))
         {
@@ -32,14 +32,14 @@ public class GatheringData : EventData
         if(isCreate)
         {
             var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-            gatheringObj2.Init(system, this, dgSystem, roomIndex);
+            gatheringObj2.Init(system, this, roomIndex);
             obj.objectType = gatheringtype;
             return gatheringObj2;
         }
         var objPos = new Vector3(eventBasePos.x + offSetBasePos, eventBasePos.y, eventBasePos.z );
         var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         obj.objectType = gatheringtype;
-        gatheringObj.Init(system, this, dgSystem, roomIndex);
+        gatheringObj.Init(system, this, roomIndex);
 
         objectPosition = objPos;
         isCreate = true;
@@ -50,7 +50,7 @@ public class GatheringData : EventData
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
-    public HuntingObject Createobj(HuntingObject obj, DungeonSystem dgSystem)
+    public HuntingObject Createobj(HuntingObject obj)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -60,12 +60,12 @@ public class HuntingData : EventData
         if (isCreate)
         {
             var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-            huntingObj2.Init(dgSystem, this, roomIndex);
+            huntingObj2.Init(this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x - 1.5f, eventBasePos.y + 1f, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x - 2.5f, eventBasePos.y + 1f, eventBasePos.z);
         var huntingObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
-        huntingObj.Init(dgSystem, this, roomIndex);
+        huntingObj.Init(this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
         return huntingObj;
@@ -74,7 +74,7 @@ public class HuntingData : EventData
 [System.Serializable]
 public class BattleData : EventData
 {
-    public BattleObject CreateObj(BattleObject obj, DungeonSystem dgSystem)
+    public BattleObject CreateObj(BattleObject obj)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -84,12 +84,12 @@ public class BattleData : EventData
         if (isCreate)
         {
             var battleObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-            battleObj2.Init(dgSystem, this, roomIndex);
+            battleObj2.Init(this, roomIndex);
             return battleObj2;
         }
         var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
         var battleObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-        battleObj.Init(dgSystem, this, roomIndex);
+        battleObj.Init(this, roomIndex);
         objectPosition = objPos;
         isCreate = true;
         return battleObj;
@@ -98,7 +98,7 @@ public class BattleData : EventData
 
 public class RandomIncountData : EventData
 {
-    public RandomEventObject CreateObj(RandomEventObject obj, DungeonSystem dgSystem)
+    public RandomEventObject CreateObj(RandomEventObject obj)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -108,12 +108,12 @@ public class RandomIncountData : EventData
         if (isCreate)
         {
             var randomObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-            randomObj2.Init(dgSystem, this, roomIndex, randomEventID);
+            randomObj2.Init(this, roomIndex, randomEventID);
             return randomObj2;
         }
-        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x - 5f, eventBasePos.y, eventBasePos.z);
         var randomObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-        randomObj.Init(dgSystem, this, roomIndex, randomEventID);
+        randomObj.Init(this, roomIndex, randomEventID);
         objectPosition = objPos;
         isCreate = true;
         return randomObj;

@@ -5,12 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GoCamp : MonoBehaviour
 {
-    public DungeonSystem dungeonSystem;
     public void OpenCampScene()
     {
-        dungeonSystem.DungeonSystemData.curPlayerGirlData.SetUnitData(dungeonSystem.dungeonPlayerGirl);
-        dungeonSystem.DungeonSystemData.curPlayerBoyData.SetUnitData(dungeonSystem.dungeonPlayerBoy);
-        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystem.DungeonSystemData;
+        DungeonSystem.Instance.DungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
+        DungeonSystem.Instance.DungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
+        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = DungeonSystem.Instance.DungeonSystemData;
 
         SceneManager.LoadScene("JYK_Test_Main");
     }

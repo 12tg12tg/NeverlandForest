@@ -28,7 +28,6 @@ public class PlayerDungeonUnit : UnitBase
     private int curRoomNumber = 0;
 
     public MoveTest playerMove;
-    public bool isGatheringEnd;
 
     public bool IsCoMove
     {
@@ -97,7 +96,6 @@ public class PlayerDungeonUnit : UnitBase
     {
         isCoMove = false;
         playerMove.isCoMove = false;
-        isGatheringEnd = false;
     }
 
     public void AnimationChange(bool isMove)
@@ -122,9 +120,5 @@ public class PlayerDungeonUnit : UnitBase
             return;
         curAnimation = PlayerMoveAnimation.Idle;
         playerAnimation.SetTrigger("Idle");
-    }
-    private void PlayGatherAniEnd()
-    {
-        isGatheringEnd = true;
     }
 }
