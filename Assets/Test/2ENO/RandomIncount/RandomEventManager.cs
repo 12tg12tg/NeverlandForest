@@ -103,18 +103,19 @@ public class RandomEventManager : MonoBehaviour
                 index++;
             }
 
-            if (beforeEventData == null)
-            {
-                roomData.randomEventID = randomEventPool[index].EventData.id;
-                beforeEventData = randomEventPool[index];
-                break;
-            }
-            else if (beforeEventData.EventData.id != randomEventPool[index].EventData.id)
-            {
-                roomData.randomEventID = randomEventPool[index].EventData.id;
-                beforeEventData = randomEventPool[index];
-                break;
-            }
+            //if (beforeEventData == null)
+            //{
+            //    roomData.randomEventID = randomEventPool[index].EventData.id;
+            //    beforeEventData = randomEventPool[index];
+            //    break;
+            //}
+            //else if (beforeEventData.EventData.id != randomEventPool[index].EventData.id)
+            //{
+            //    roomData.randomEventID = randomEventPool[index].EventData.id;
+            //    beforeEventData = randomEventPool[index];
+            //    break;
+            //}
+            roomData.randomEventID = "4";
 
             // 아이템 테스트코드
             //roomData.randomEventID = randomEventPool[0].EventData.id;
