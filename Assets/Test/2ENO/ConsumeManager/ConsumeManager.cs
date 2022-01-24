@@ -394,4 +394,5 @@ public static class ConsumeManager
         EventBus<DateEvent>.ResetEventBus();
 
     }
+  
 }
