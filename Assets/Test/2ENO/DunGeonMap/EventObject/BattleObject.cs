@@ -5,12 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class BattleObject : MonoBehaviour
 {
-    private DungeonSystem dungeonSystem;
     private EventData data;
     private int thisRoomIdx;
-    public void Init(DungeonSystem system, EventData dt, int roomIdx)
+    public void Init(EventData dt, int roomIdx)
     {
-        this.dungeonSystem = system;
         data = dt;
         thisRoomIdx = roomIdx;
     }
@@ -22,8 +20,8 @@ public class BattleObject : MonoBehaviour
     {
         if (other.tag is "Player")
         {
-            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
-            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             SceneManager.LoadScene("JYK_Test_Battle");
             Destroy(gameObject);

@@ -6,23 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class RoomTool
 {
-    private DungeonSystem dungeonSystem;
-
     public DungeonRoom curDungeonInfo;
     public DungeonRoom beforeDungeonInfo;
 
     //public TextMeshProUGUI text;
-    public void init(DungeonData data, DungeonSystem system)
-    {
-        if (dungeonSystem == null)
-            dungeonSystem = system;
-    }
 
     public DungeonRoom GetNextRoom(DungeonRoom curRoom)
     {
         if (curRoom.nextRoomIdx == -1)
             return null;
-        var nextRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curRoom.nextRoomIdx];
+        var nextRoom = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curRoom.nextRoomIdx];
         return nextRoom;
     }
 
@@ -30,7 +23,7 @@ public class RoomTool
     {
         if (curRoom.beforeRoomIdx == -1)
             return null;
-        var beforeRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curRoom.beforeRoomIdx];
+        var beforeRoom = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curRoom.beforeRoomIdx];
         return beforeRoom;
     }
 

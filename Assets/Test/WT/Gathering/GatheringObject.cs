@@ -12,7 +12,6 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
 {
     public EventData data;
     public int roomIndex;
-    public DungeonSystem dungeonSystem;
     private AllItemDataTable allitemTable;
 
     public GatheringObjectType objectType;
@@ -48,9 +47,9 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         gathering.GoGatheringObject(gameObject.transform.position);
         gathering.curSelectedObj = this;
 
-        dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
-        dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
-        dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
+        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
+        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
+        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
         //Destroy(gameObject);
     }
     public void Init()
@@ -87,9 +86,8 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
         item = newItem;
     }
-    public void Init(GatheringSystem system, EventData dt, DungeonSystem dgSystem, int thisRoomIdx)
+    public void Init(GatheringSystem system, EventData dt, int thisRoomIdx)
     {
-        dungeonSystem = dgSystem;
         data = dt;
         roomIndex = thisRoomIdx;
 

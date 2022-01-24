@@ -23,7 +23,6 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
     public DungeonRoom roomInfo;
     public DunGeonEvent eventType;
     public Vector3 objectPosition;
-    private DungeonSystem dungeonSystem;
 
     private int roomIndex;
 
@@ -41,7 +40,6 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
         data = dt;
         roomIndex = roomIdx;
         //objectPosition = objectPos;
-        dungeonSystem = system;
         eventType = dt.eventType;
         var mesh = gameObject.GetComponent<MeshRenderer>();
         switch (eventType)
@@ -80,9 +78,6 @@ public class EventObject : MonoBehaviour, IPointerClickHandler
     {
         Debug.Log("클릭이동!");
         //dungeonSystem.DungeonSystemData.curEventObjList.Remove(eventObjInfo);
-
-        dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(eventType);
-        dungeonSystem.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
 
         Destroy(gameObject);
         //EventBus<DungeonMap>.Publish(DungeonMap.EventObjectClick, eventType, transform.position);

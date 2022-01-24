@@ -6,7 +6,6 @@ public class NewRoomControl : MonoBehaviour
 {
     public Vector3 spawnPos;
     public List<Vector3> objPosList = new List<Vector3>();
-    private DungeonSystem dungeonSystem;
 
     //public GameObject spawnObj;
     //public List<GameObject> eventPosObjList = new List<GameObject>();
@@ -19,10 +18,6 @@ public class NewRoomControl : MonoBehaviour
     // 임시 Pool
     public List<NewRoomInstance> pool = new List<NewRoomInstance>();
 
-    void Awake()
-    {
-        dungeonSystem = GameObject.FindWithTag("DungeonSystem").GetComponent<DungeonSystem>();
-    }
 
     public void RoomPrefabSet(DungeonRoom curDungeonRoom)
     {
@@ -108,7 +103,7 @@ public class NewRoomControl : MonoBehaviour
             // TODO : 옆으로 길어지는 코드 깔금하게 정리필요
             if (curDungeonRoom.nextRoomIdx == -1)
                 break;
-            curDungeonRoom = dungeonSystem.DungeonSystemData.dungeonRoomArray[curDungeonRoom.nextRoomIdx];
+            curDungeonRoom = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curDungeonRoom.nextRoomIdx];
         }
         //dungeonSystem.DungeonSystemData.curRoomInstanceData = 
     }
