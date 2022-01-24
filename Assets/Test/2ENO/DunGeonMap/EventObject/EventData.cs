@@ -63,7 +63,7 @@ public class HuntingData : EventData
             huntingObj2.Init(dgSystem, this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x - 1.5f, eventBasePos.y + 1f, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x - 2.5f, eventBasePos.y + 1f, eventBasePos.z);
         var huntingObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
         huntingObj.Init(dgSystem, this, roomIndex);
         objectPosition = objPos;
@@ -111,7 +111,7 @@ public class RandomIncountData : EventData
             randomObj2.Init(dgSystem, this, roomIndex, randomEventID);
             return randomObj2;
         }
-        var objPos = new Vector3(eventBasePos.x + 5f, eventBasePos.y, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x - 5f, eventBasePos.y, eventBasePos.z);
         var randomObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
         randomObj.Init(dgSystem, this, roomIndex, randomEventID);
         objectPosition = objPos;

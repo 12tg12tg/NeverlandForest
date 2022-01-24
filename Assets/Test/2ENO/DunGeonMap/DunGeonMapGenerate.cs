@@ -98,7 +98,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             case DunGeonEvent.Gathering:
                 if (curRoom.RoomType == DunGeonRoomType.MainRoom)
                 {
-                    curRoom.gatheringCount = Random.Range(0, 3);
+                    curRoom.gatheringCount = 2/*Random.Range(0, 3)*/;
                     for (int i = 0; i < curRoom.gatheringCount; i++)
                     {
                         var gatheringData1 = new GatheringData();

@@ -48,12 +48,12 @@ public class EndPos : MonoBehaviour
             if (!isLastPos)
             {
                 bool isGoForward = (roomNumber - player.CurRoomNumber >= 0) ? true : false;
-                if(player.transform.position.z > transform.position.z && isGoForward)
+                if(player.transform.position.x > transform.position.x && isGoForward)
                 {
                     player.CurRoomNumber = roomNumber + 1;
                     dungeonSystem.ChangeRoomEvent(false, isGoForward);
                 }
-                else if(player.transform.position.z < transform.position.z && !isGoForward)
+                else if(player.transform.position.x < transform.position.x && !isGoForward)
                 {
                     player.CurRoomNumber = roomNumber;
                     dungeonSystem.ChangeRoomEvent(false, isGoForward);

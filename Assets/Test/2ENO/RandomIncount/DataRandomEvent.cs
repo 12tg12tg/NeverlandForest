@@ -229,7 +229,7 @@ public class DataRandomEvent
 
 
                     tempStr = $"스테미나수치 : {stamina} ";
-                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.Hp:
@@ -243,7 +243,7 @@ public class DataRandomEvent
 
                     tempStr = $"HP수치 : {hp} ";
 
-                    if(tempStrList.FindIndex(x=> x==tempStr ) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.Item:
@@ -269,7 +269,7 @@ public class DataRandomEvent
                     }
                     sb.Append(tempStr);
 
-                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.LanternGage:
@@ -281,7 +281,7 @@ public class DataRandomEvent
 
 
                     tempStr = $"랜턴수치 : {lanternGage} ";
-                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.TurnConsume:
@@ -292,7 +292,7 @@ public class DataRandomEvent
 
                     tempStr = $"턴 소비 {turnConsume} ";
 
-                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.MostItemLose:
@@ -326,7 +326,7 @@ public class DataRandomEvent
                     sb.Append(tempStr);
 
                     tempStr = $"이벤트 해금 ";
-                    if (tempStrList.FindIndex(x => x == tempStr) == -1)
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
             }

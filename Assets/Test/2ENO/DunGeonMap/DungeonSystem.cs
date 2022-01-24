@@ -106,7 +106,7 @@ public class DungeonSystem : MonoBehaviour
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         // TODO: 임시! 가라로 해놓은거
-        RandomEventManager.Instance.curGameState = CurrentGameScene.Dungeon;
+        GameManager.Manager.State = GameState.Dungeon;
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -158,8 +158,7 @@ public class DungeonSystem : MonoBehaviour
     // 방마다 위치해있는 트리거 발동할때 실행
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
-        // 방 한칸 지날때마다 3시간씩 지남
-        ConsumeManager.TimeUp(0, 3);
+
         if (isRoomEnd)
         {
             foreach (var obj in eventObjInstanceList)
@@ -201,6 +200,8 @@ public class DungeonSystem : MonoBehaviour
         {
             if(isGoForward)
             {
+                // 방 한칸 지날때마다 30분씩 지남
+                ConsumeManager.TimeUp(30, 0);
                 beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
                 dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
                 CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
@@ -252,6 +253,7 @@ public class DungeonSystem : MonoBehaviour
         List<EventData> newList = new List<EventData>();
         for (int i = 0; i < eventList.Count; i++)
         {
+            // TODO : 현재 eventList[i]가 EventData타입이라, 첨 실행할때 offsetBasePos를 gathring에 못넣어주는 일 생겨서 계속 000위치에 생성되는 버그, 여기 들어오는조건을 걸어둬야할 필요잇음
             switch (eventList[i].eventType)
             {
                 case DunGeonEvent.Battle:
@@ -268,6 +270,7 @@ public class DungeonSystem : MonoBehaviour
                     newData2.eventType = DunGeonEvent.Gathering;
                     newData2.isCreate = eventList[i].isCreate;
                     newData2.eventBasePos = eventList[i].eventBasePos;
+                    newData2.offSetBasePos = (eventList[i] as GatheringData) == null ? 0 : (eventList[i] as GatheringData).offSetBasePos;
                     newData2.roomIndex = eventList[i].roomIndex;
                     newData2.objectPosition = eventList[i].objectPosition;
                     newData2.gatheringtype = eventList[i].gatheringtype;

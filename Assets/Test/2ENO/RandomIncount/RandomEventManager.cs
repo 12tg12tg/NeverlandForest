@@ -3,21 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// TODO: 임시
-public enum CurrentGameScene
-{
-    Dungeon,
-    Hunting,
-    Camp,
-    Battle,
-}
-
 public class RandomEventManager : MonoBehaviour
 {
     private static RandomEventManager instance;
     public static RandomEventManager Instance => instance;
-    // TODO: 임시
-    public CurrentGameScene curGameState;
 
     public List<DataRandomEvent> allDataList = new List<DataRandomEvent>();
     private List<DataRandomEvent> randomEventPool = new List<DataRandomEvent>();
@@ -76,7 +65,8 @@ public class RandomEventManager : MonoBehaviour
 
     public DataRandomEvent GetEventData(string eventID)
     {
-        return randomEventPool.Find(x => x.EventData.id == eventID);
+        var eventt = randomEventPool.Find(x => x.EventData.id == eventID);
+        return eventt;
     }
 
     public IEnumerator CreateRandomEvent(EventData roomData)
@@ -85,9 +75,9 @@ public class RandomEventManager : MonoBehaviour
         {
             var rndVal = Random.Range(0, 101);
             RandomEventFrequency eventFre = RandomEventFrequency.None;
-            if (rndVal < 40)
+            if (rndVal < 60)
                 eventFre = RandomEventFrequency.Usually;
-            else if (rndVal < 70)
+            else if (rndVal < 80)
                 eventFre = RandomEventFrequency.Often;
             else if (rndVal < 90)
                 eventFre = RandomEventFrequency.SomeTime;
