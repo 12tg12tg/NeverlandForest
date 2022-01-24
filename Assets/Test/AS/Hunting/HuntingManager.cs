@@ -41,7 +41,24 @@ public class HuntingManager : MonoBehaviour
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.Hunting, Hunting);
     }
 
-    private void Start()
+    //private void Start()
+    //{
+    //    //Init();
+
+    //    // TODO : 삭제 예정
+    //    TestGizmos();
+    //}
+
+    private void OnGUI()
+    {
+        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
+        {
+            tileMaker.InitMakeTiles();
+            Init();
+        }
+    }
+
+    public void Init()
     {
         var count = tileMaker.transform.childCount;
         tiles = new HuntTile[count];
@@ -52,7 +69,7 @@ public class HuntingManager : MonoBehaviour
 
         InitHuntPercentage();
 
-        huntPlayers.hunter.transform.position = 
+        huntPlayers.hunter.transform.position =
             tiles.Where(x => x.index.Equals(huntPlayers.CurrentIndex))
                  .Select(x => x.transform.position).FirstOrDefault();
 
@@ -60,9 +77,6 @@ public class HuntingManager : MonoBehaviour
         {
             worldMap.InitWorldMiniMap();
         }
-
-        // TODO : 삭제 예정
-        TestGizmos();
     }
 
     private void InitHuntPercentage()

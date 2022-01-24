@@ -16,12 +16,12 @@ public class HuntTilesMaker : MonoBehaviour
     public float spacing = 1f;
     public int[] randomBush;
 
-    private void Start()
-    {
-        MakeTiles();
-    }
+    //private void Start()
+    //{
+    //    MakeTiles();
+    //}
 
-    private void MakeTiles()
+    public void InitMakeTiles()
     {
         // ÀºÆó¹°
         randomBush = new int[col - 2];
