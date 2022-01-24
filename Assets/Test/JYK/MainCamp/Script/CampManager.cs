@@ -24,20 +24,28 @@ public class CampManager : MonoBehaviour
 
     private float recoveryBonTime = 0;
     private float recoverySleepTime = 0;
+    private float gatheringTime = 0;
     public float RecoverySleepTime => recoverySleepTime;
     public TextMeshProUGUI bonTimeText;
     public TextMeshProUGUI sleepTimeText;
+    public TextMeshProUGUI gatheringTimeText;
     //CampCook
     Vector3 StartPos;
     Vector3 EndPos;
     public GameObject camera;
     public GameObject pot;
+    public GameObject workshop;
+    public GameObject tent;
+    public GameObject bush;
 
     public GameObject CookPanel;
 
     public InventoryController inventoryController;
     private DataAllItem itemReward;
     private bool isCookMove;
+    private bool isProduceMove;
+    private bool isSleepMove;
+    private bool isGatheringMove;
 
     public SimpleGesture simpleGesture;
 
@@ -57,13 +65,6 @@ public class CampManager : MonoBehaviour
         EventBus<CampEvent>.Subscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartMaking, OpenMaking);
     }
-    public void Awake()
-    {
-        instance = this;
-        StartPos = camera.transform.position;
-        SetBonTime();
-        SetSleepTime();
-    }
     private void OnDisable()
     {
         EventBus<CampEvent>.Unsubscribe(CampEvent.StartCook, OpenCookScene);
@@ -74,11 +75,34 @@ public class CampManager : MonoBehaviour
 
         EventBus<CampEvent>.ResetEventBus();
     }
+    public void Awake()
+    {
+        instance = this;
+        StartPos = camera.transform.position;
+        SetBonTime();
+        SetSleepTime();
+        SetGatheringTime();
+    }
+    public void Start()
+    {
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+        CreateMiniMapObject();
+        SetMinimapCamera();
+        GameManager.Manager.State = GameState.Camp;
+    }
+  
+    //BonTime
     public void SetBonTime()
     {
         bonTimeText.text = Vars.UserData.uData.BonfireHour.ToString() + "½Ã°£";
     }
-    public  void SetSleepTime()
+    public void RecoveryBonTime()
+    {
+        ConsumeManager.RecoveryBonFire(recoveryBonTime);
+    }
+
+    //Sleeping
+    public void SetSleepTime()
     {
         sleepTimeText.text = recoverySleepTime.ToString() + "ºÐ";
     }
@@ -108,6 +132,36 @@ public class CampManager : MonoBehaviour
         SetSleepTime();
         SetBonTime();
     }
+    public void StartSleep(object[] vals)
+    {
+        if (vals.Length != 0) return;
+        StartSleepInCamp();
+    }
+    public void StartSleepInCamp()
+    {
+        var tentPos = tent.transform.position;
+        EndPos = new Vector3(tentPos.x, tentPos.y + 2f, tentPos.z - 5f);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenSleepInCamp));
+    }
+    public void OpenSleepInCamp()
+    {
+        isSleepMove = true;
+        diaryManager.gameObject.SetActive(true);
+        diaryManager.OpenSleeping();
+        newBottomUi.SetActive(false);
+    }
+    public void CloseSleepInCamp()
+    {
+        if (isSleepMove)
+        {
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            newBottomUi.SetActive(true);
+            isSleepMove = false;
+        }
+
+    }
+
+    //CookingInCamp
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
@@ -140,6 +194,8 @@ public class CampManager : MonoBehaviour
         {
             StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
             CloseRotationPanel();
+            newBottomUi.SetActive(true);
+
             isCookMove = false;
         }
     }
@@ -165,7 +221,6 @@ public class CampManager : MonoBehaviour
             {
                 diaryManager.CallMakeCook();
             }
-           
         }
     }
     public void ReCook()
@@ -173,29 +228,78 @@ public class CampManager : MonoBehaviour
         OpenCookInCamp();
         diaryManager.CloseCookingReward();
     }
+    public void CallMakeCook()
+    {
+        diaryManager.CallMakeCook();
+    }
 
+    //GatheringInCamp
     public void OpenGatheringScene(object[] vals)
     {
         if (vals.Length != 0) return;
+        StartGatheringInCamp();
     }
+    public void StartGatheringInCamp()
+    {
+        var bushPos = bush.transform.position;
+        EndPos = new Vector3(bushPos.x, bushPos.y + 2f, bushPos.z - 5f);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenGatheringInCamp));
+    }
+    public void OpenGatheringInCamp()
+    {
+        isGatheringMove = true;
+        diaryManager.gameObject.SetActive(true);
+        diaryManager.OpenGatheringInCamp();
+        newBottomUi.SetActive(false);
+    }
+    public void CloseGatheringInCamp()
+    {
+        if (isGatheringMove)
+        {
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            newBottomUi.SetActive(true);
+
+            isGatheringMove = false;
+        }
+    }
+
+    //BlueMoonInCamp
     public void OpenBlueMoonScene(object[] vals)
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Open BlueMoon Scene ");
     }
+
+    //ProducingInCamp
     public  void OpenMaking(object[] vals)
     {
         if (vals.Length != 0) return;
-        Debug.Log($"Open Open OpenMaking ");
+        StartProduceInCamp();
     }
-    public void StartSleep(object[] vals)
+    public void StartProduceInCamp()
     {
-        if (vals.Length != 0) return;
+        var workPos = workshop.transform.position;
+        EndPos = new Vector3(workPos.x, workPos.y + 2f, workPos.z - 5f);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenProduceInCamp));
     }
-    public void OpenInventory()
+    public void OpenProduceInCamp()
     {
-        Debug.Log($"Open Inventory window");
+        isProduceMove = true;
+        diaryManager.gameObject.SetActive(true);
+        diaryManager.OpenProduce();
+        newBottomUi.SetActive(false);
     }
+    public void CloseProduceInCamp()
+    {
+        if (isProduceMove)
+        {
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            newBottomUi.SetActive(true);
+
+            isProduceMove = false;
+        }
+    }
+    //SceneChange
     public void GoWorldMap()
     {
         SceneManager.LoadScene("AS_WorldMap");
@@ -204,23 +308,7 @@ public class CampManager : MonoBehaviour
     {
         SceneManager.LoadScene("AS_RandomMap");
     }
-    public void CallMakeCook()
-    {
-        diaryManager.CallMakeCook();
-    }
-    public void Start()
-    {
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-        CreateMiniMapObject();
-        var first = mapPos.transform.GetChild(0);
-        var count = mapPos.transform.childCount;
-        var lastIdx = count - 1;
-        var last = mapPos.transform.GetChild(lastIdx);
-
-        var x = (first.position.x + last.position.x) / 2;
-
-        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
-    }
+    //MinimapCreate
     public void CreateMiniMapObject()
     {
         curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
@@ -265,7 +353,17 @@ public class CampManager : MonoBehaviour
         objectInfo2.roomIdx = lastRoom.roomIdx;
         mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
     }
+    public void SetMinimapCamera()
+    {
+        var first = mapPos.transform.GetChild(0);
+        var count = mapPos.transform.childCount;
+        var lastIdx = count - 1;
+        var last = mapPos.transform.GetChild(lastIdx);
 
+        var x = (first.position.x + last.position.x) / 2;
+
+        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
+    }
     public void OnOffBluemoonObject()
     {
         isBlueMoon = !isBlueMoon;
@@ -278,11 +376,7 @@ public class CampManager : MonoBehaviour
             bluemoonObject.SetActive(false);
         }
     }
-    public void RecoveryBonTime()
-    {
-        ConsumeManager.RecoveryBonFire(recoveryBonTime);
-    }
-  
+ 
     public void SetRewardItemIcon(Image buttonimage)
     {
         //³ª¹«Åä¸·: 1 %
@@ -300,10 +394,6 @@ public class CampManager : MonoBehaviour
         var stringId = $"{randNum}";
         newItem.itemId = randNum;
         newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
-
-        Debug.Log($"buttonimage{buttonimage.name}");
-        Debug.Log($"randNum{randNum}");
-
 
         if (randNum==1)
         {
@@ -335,6 +425,28 @@ public class CampManager : MonoBehaviour
             //²Î: 85 %
             Debug.Log("²Î");
         }
-
+    }
+    public void SetGatheringTime()
+    {
+        gatheringTimeText.text = gatheringTime.ToString() + "ºÐ";
+    }
+    public void PlusGatheringTime()
+    {
+        gatheringTime += 30;
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        if (haveMinute < gatheringTime)
+        {
+            gatheringTime = haveMinute;
+        }
+        SetGatheringTime();
+    }
+    public void MinusGatheringTime()
+    {
+        gatheringTime -= 30;
+        if (gatheringTime < 0)
+        {
+            gatheringTime = 0;
+        }
+        SetGatheringTime();
     }
 }
