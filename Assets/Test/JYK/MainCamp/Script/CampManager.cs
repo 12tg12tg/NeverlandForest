@@ -24,9 +24,11 @@ public class CampManager : MonoBehaviour
 
     private float recoveryBonTime = 0;
     private float recoverySleepTime = 0;
+    private float gatheringTime = 0;
     public float RecoverySleepTime => recoverySleepTime;
     public TextMeshProUGUI bonTimeText;
     public TextMeshProUGUI sleepTimeText;
+    public TextMeshProUGUI gatheringTimeText;
     //CampCook
     Vector3 StartPos;
     Vector3 EndPos;
@@ -79,19 +81,13 @@ public class CampManager : MonoBehaviour
         StartPos = camera.transform.position;
         SetBonTime();
         SetSleepTime();
+        SetGatheringTime();
     }
     public void Start()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         CreateMiniMapObject();
-        var first = mapPos.transform.GetChild(0);
-        var count = mapPos.transform.childCount;
-        var lastIdx = count - 1;
-        var last = mapPos.transform.GetChild(lastIdx);
-
-        var x = (first.position.x + last.position.x) / 2;
-
-        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
+        SetMinimapCamera();
         GameManager.Manager.State = GameState.Camp;
     }
   
@@ -357,7 +353,17 @@ public class CampManager : MonoBehaviour
         objectInfo2.roomIdx = lastRoom.roomIdx;
         mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
     }
+    public void SetMinimapCamera()
+    {
+        var first = mapPos.transform.GetChild(0);
+        var count = mapPos.transform.childCount;
+        var lastIdx = count - 1;
+        var last = mapPos.transform.GetChild(lastIdx);
 
+        var x = (first.position.x + last.position.x) / 2;
+
+        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
+    }
     public void OnOffBluemoonObject()
     {
         isBlueMoon = !isBlueMoon;
@@ -419,5 +425,28 @@ public class CampManager : MonoBehaviour
             //²Î: 85 %
             Debug.Log("²Î");
         }
+    }
+    public void SetGatheringTime()
+    {
+        gatheringTimeText.text = gatheringTime.ToString() + "ºÐ";
+    }
+    public void PlusGatheringTime()
+    {
+        gatheringTime += 30;
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        if (haveMinute < gatheringTime)
+        {
+            gatheringTime = haveMinute;
+        }
+        SetGatheringTime();
+    }
+    public void MinusGatheringTime()
+    {
+        gatheringTime -= 30;
+        if (gatheringTime < 0)
+        {
+            gatheringTime = 0;
+        }
+        SetGatheringTime();
     }
 }
