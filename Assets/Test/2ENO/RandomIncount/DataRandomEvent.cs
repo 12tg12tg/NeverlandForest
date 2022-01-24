@@ -256,6 +256,7 @@ public class DataRandomEvent
                     newItem.itemTableElem = newItemTable.GetData<AllItemTableElem>(stringId);
                     newItem.dataType = DataType.AllItem;
                     newItem.OwnCount = eventVals[i];
+                    newItem.LimitCount = 5;
 
                     if (newItem.OwnCount < 0)
                     {
