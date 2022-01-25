@@ -24,9 +24,9 @@ public static class DataTableManager
         weaponTable.Load();
         tables.Add(typeof(WeaponTable), weaponTable);
 
-        var materialTable = new AllItemDataTable();
-        materialTable.Load();
-        tables.Add(typeof(AllItemDataTable), materialTable);
+        var allItemTable = new AllItemDataTable();
+        allItemTable.Load();
+        tables.Add(typeof(AllItemDataTable), allItemTable);
 
         var recipeTable = new RecipeDataTable();
         recipeTable.Load();

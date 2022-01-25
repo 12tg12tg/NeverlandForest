@@ -97,7 +97,7 @@ public class SkillSelectUI : MonoBehaviour
     public void SetGoToItem()
     {
         SetAllGoUnactivate();
-        var itemList = Vars.UserData.ConsumableItemList;
+        var itemList = Vars.UserData.HaveAllItemList;
         for (int i = 0; i < itemList.Count; i++)
         {
             skillGoList[i].gameObject.SetActive(true);

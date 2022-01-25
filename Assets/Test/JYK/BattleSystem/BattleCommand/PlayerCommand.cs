@@ -7,7 +7,7 @@ public class PlayerCommand : BattleCommand
     public PlayerBattleController attacker;
     public Vector2 target;
     public DataPlayerSkill skill;
-    public DataConsumable item;
+    public DataAllItem item;
     public ActionType actionType;
     public PlayerType type;
     public PlayerCommand(PlayerBattleController pUnit, PlayerType type)
@@ -35,7 +35,7 @@ public class PlayerCommand : BattleCommand
         actionType = ActionType.Skill;
     }
 
-    public void Create(Vector2 target, DataConsumable item)
+    public void Create(Vector2 target, DataAllItem item)
     {
         if (isUpdate)
             Clear();

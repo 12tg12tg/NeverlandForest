@@ -20,7 +20,6 @@ public class GatheringSystem : MonoBehaviour
     public int testLanternLight = 0;
     private Animator playerAnimation;
     private Animator playerAnimationBoy;
-    public InventoryController inventoryController;
 
     public enum GatheringType
     {

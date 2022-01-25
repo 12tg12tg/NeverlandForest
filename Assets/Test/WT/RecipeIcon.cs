@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+// 인벤토리 컨트롤러 제거, DataAllItem 속성들 다양해짐
+
 public class RecipeIcon : MonoBehaviour
 {
     public RecipeObj itemPrehab;
@@ -31,8 +34,6 @@ public class RecipeIcon : MonoBehaviour
     private int fireNum ;
     private int condimentNum ;
     private int materialNum ;
-
-    public InventoryController inventoryController;
 
     public void Awake()
     {
@@ -101,18 +102,18 @@ public class RecipeIcon : MonoBehaviour
           
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].itemTableElem.id == fireobj.id)
+                if (list[i].ItemTableElem.id == fireobj.id)
                 {
                     isfireok = true;
                     fireNum = i;
                 }
-                if (list[i].itemTableElem.id == condimentobj.id)
+                if (list[i].ItemTableElem.id == condimentobj.id)
                 {
                     iscondimentok = true;
                     condimentNum = i;
 
                 }
-                if (list[i].itemTableElem.id == materialobj.id)
+                if (list[i].ItemTableElem.id == materialobj.id)
                 {
                     ismaterialok = true;
                     materialNum = i;
@@ -137,7 +138,6 @@ public class RecipeIcon : MonoBehaviour
                 Vars.UserData.RemoveItemData(condimentitem);
                 Vars.UserData.RemoveItemData(materialitem);
 
-                inventoryController.Init();
                 isfireok = false;
                 iscondimentok = false;
                 ismaterialok = false;

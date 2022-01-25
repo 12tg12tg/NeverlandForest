@@ -389,7 +389,7 @@ public class BattleManager : MonoBehaviour
         isDrag = true;
     }
 
-    public void CreateTempItemUiForDrag(DataConsumable item)
+    public void CreateTempItemUiForDrag(DataAllItem item)
     {
         dragSlot.gameObject.SetActive(true);
         dragSlot.sprite = item.ItemTableElem.IconSprite;
@@ -572,7 +572,7 @@ public class BattleManager : MonoBehaviour
         attacker.TurnInit(ActionType.Skill);
     }
 
-    public void DoCommand(DataConsumable item)
+    public void DoCommand(DataAllItem item)
     {
         PlayerCommand command;
         PlayerBattleController attacker;

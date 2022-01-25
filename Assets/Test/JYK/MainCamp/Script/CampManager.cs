@@ -40,7 +40,6 @@ public class CampManager : MonoBehaviour
 
     public GameObject CookPanel;
 
-    public InventoryController inventoryController;
     private DataAllItem itemReward;
     private bool isCookMove;
     private bool isProduceMove;
@@ -385,15 +384,12 @@ public class CampManager : MonoBehaviour
         //¾àÃÊ: 5 %
         // ¹ö¼¸: 5 %
         //²Î: 85 %
-        var randNum = Random.Range(1, 101);
-      
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var newItem = new DataAllItem();
+      
+        var randNum = Random.Range(1, 30);
+        var stringId = $"ITEM_{randNum}";
+        var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
         newItem.OwnCount = Random.Range(1, 3);
-        newItem.dataType = DataType.AllItem;
-        var stringId = $"{randNum}";
-        newItem.itemId = randNum;
-        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
 
         if (randNum==1)
         {

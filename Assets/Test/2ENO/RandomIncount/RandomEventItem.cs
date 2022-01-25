@@ -24,9 +24,9 @@ public class RandomEventItem : MonoBehaviour
         }
     }
 
-    private DataItem dataItem;
+    private DataAllItem dataItem;
 
-    public DataItem DataItem { get => dataItem; }
+    public DataAllItem DataItem { get => dataItem; }
 
     public void Init(DataAllItem data)
     {
@@ -40,7 +40,6 @@ public class RandomEventItem : MonoBehaviour
         {
             dataItem = data;
             AllItemTableElem elem = data.ItemTableElem;
-
             icon.sprite = elem.IconSprite;
             count.text = data.OwnCount.ToString();
         }

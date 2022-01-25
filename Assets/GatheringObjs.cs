@@ -27,16 +27,11 @@ public class GatheringObjs : MonoBehaviour, IPointerClickHandler
     {
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         //처음 수집씬에 들어오면 랜덤으로 아이템 하나를 들고 시작함
-        var newItem = new DataAllItem();
         rand = Random.Range(0, 4);
-        newItem.itemId = rand;
-        newItem.LimitCount = 5;
+        var stringId = $"ITEM_{rand}";
+        var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
         newItem.OwnCount = Random.Range(1, 3);
-        newItem.dataType = DataType.AllItem;
-        var stringId = $"{rand}";
-        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
         item = newItem;
-        GameObject obj;
     }
     // Start is called before the first frame update
     void Start()
