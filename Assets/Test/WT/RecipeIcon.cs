@@ -80,14 +80,17 @@ public class RecipeIcon : MonoBehaviour
     {
         var allitem = DataTableManager.GetTable<AllItemDataTable>();
         // 누른 레시피의 조합을 보여주자.
-        fire.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[0]).IconSprite;
-        condiment.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[1]).IconSprite;
-        material.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[2]).IconSprite;
+        var fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
+        var condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
+        var materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
+        fire.sprite = allitem.GetData<AllItemTableElem>(fireid).IconSprite;
+        condiment.sprite = allitem.GetData<AllItemTableElem>(condimentid).IconSprite;
+        material.sprite = allitem.GetData<AllItemTableElem>(materialid).IconSprite;
         result = itemGoList[slot].Result;
 
-        fireobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[0]);
-        condimentobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[1]);
-        materialobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[2]);
+        fireobj = allitem.GetData<AllItemTableElem>(fireid);
+        condimentobj = allitem.GetData<AllItemTableElem>(condimentid);
+        materialobj = allitem.GetData<AllItemTableElem>(materialid);
 
         Time = itemGoList[slot].Time;
         makingTime.text = $"제작 시간은 {Time[0]}:{Time[1]}:{Time[2]} 입니다. ";

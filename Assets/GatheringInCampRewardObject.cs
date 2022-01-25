@@ -7,7 +7,7 @@ public class GatheringInCampRewardObject : MonoBehaviour
     private DataAllItem item;
     public Image selectedImg;
     private bool isSelect;
-
+    private string stringid = string.Empty;
     public bool IsSelect
     {
         get => isSelect;
@@ -47,38 +47,33 @@ public class GatheringInCampRewardObject : MonoBehaviour
         var randNum = Random.Range(1, 101);
 
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var newItem = new DataAllItem();
-        newItem.OwnCount = Random.Range(1, 3);
-        newItem.dataType = DataType.AllItem;
-        var stringId = $"{randNum}";
-        newItem.itemId = randNum;
-        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
-        newItem.LimitCount = 3;
+       
+
         //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
         if (randNum == 1)
         {
             //³ª¹«Åä¸·: 1 %
-            item = newItem;
+            stringid = $"ITEM_1";
         }
-        else if (randNum == 100)
+        else if (randNum == 2)
         {
             //¾¾¾Ñ: 1 %
-            item = newItem;
+            stringid = $"ITEM_3";
         }
-        else if (randNum >= 2 && randNum <= 4)
+        else if (randNum >= 3 && randNum <= 5)
         {
             //³ª¹µ°¡Áö3 %
-            item = newItem;
+            stringid = $"ITEM_2";
         }
-        else if (randNum >= 5 && randNum <= 9)
+        else if (randNum >= 6 && randNum <= 10)
         {
             //¾àÃÊ: 5 %
-            item = newItem;
+            stringid = $"ITEM_4";
         }
-        else if (randNum >= 10 && randNum <= 14)
+        else if (randNum >= 11 && randNum <= 15)
         {
             // ¹ö¼¸: 5 %
-            item = newItem;
+            stringid = $"ITEM_6";
         }
         else
         {
@@ -86,10 +81,19 @@ public class GatheringInCampRewardObject : MonoBehaviour
             Debug.Log("²Î");
             rewardIcon.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
         }
-        if (item != null)
+
+        if (stringid != string.Empty)
         {
+            var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid))
+            {
+                OwnCount = Random.Range(1, 3)
+                 
+            };
+            rewardIcon.sprite = newItem.ItemTableElem.IconSprite;
+            item = newItem;
             CampManager.Instance.RewardList.Add(item);
         }
+      
     }
     public void ItemButtonClick()
     {

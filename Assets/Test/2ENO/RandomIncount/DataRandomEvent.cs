@@ -223,10 +223,10 @@ public class DataRandomEvent
                 case EventFeedBackType.Stamina:
                     // 스테미나 조정 함수에 값 넘겨줌
                     var stamina = eventVals[i];
-                    Vars.UserData.uData.CurStamina += stamina;
+                    //Vars.UserData.uData.CurStamina += stamina;
+                    ConsumeManager.RecoveryTiredness(stamina);
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
-
 
                     tempStr = $"스테미나수치 : {stamina} ";
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)

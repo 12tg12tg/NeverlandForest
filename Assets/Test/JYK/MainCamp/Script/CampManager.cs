@@ -42,8 +42,6 @@ public class CampManager : MonoBehaviour
 
     public GameObject CookPanel;
 
-    public InventoryController inventoryController;
-
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     public List<DataAllItem>RewardList
     {
@@ -56,6 +54,7 @@ public class CampManager : MonoBehaviour
             rewardList = value;
         }
     }
+    private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
 
     private bool isCookMove;
     private bool isProduceMove;
@@ -449,6 +448,7 @@ public class CampManager : MonoBehaviour
         {
             GameObject reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
             reward.transform.parent = diaryManager.gatheringParent.transform;
+            gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
         }
         ConsumeManager.TimeUp(gatheringTime);
         if (rewardList.Count != 0)
@@ -467,6 +467,11 @@ public class CampManager : MonoBehaviour
 
     public void GetItem()
     {
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            gatheringRewardList[i].IsSelect = false;
+        }
+
         if (selectItem != null)
         {
             Vars.UserData.AddItemData(selectItem);
