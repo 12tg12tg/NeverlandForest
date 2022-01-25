@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections.Generic;
 public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
@@ -29,6 +30,7 @@ public class CampManager : MonoBehaviour
     public TextMeshProUGUI bonTimeText;
     public TextMeshProUGUI sleepTimeText;
     public TextMeshProUGUI gatheringTimeText;
+
     //CampCook
     Vector3 StartPos;
     Vector3 EndPos;
@@ -42,13 +44,15 @@ public class CampManager : MonoBehaviour
 
     public InventoryController inventoryController;
     private DataAllItem itemReward;
+    private List<DataAllItem> RewardList = new List<DataAllItem>();
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
 
     public SimpleGesture simpleGesture;
-
+    //
+    public ReconfirmPanelManager reconfirmPanelManager;
     public enum CampEvent
     {
         StartCook,
@@ -306,7 +310,16 @@ public class CampManager : MonoBehaviour
     }
     public void GoDungeon()
     {
-        SceneManager.LoadScene("AS_RandomMap");
+
+        if (Vars.UserData.uData.BonfireHour ==0)
+        {
+            SceneManager.LoadScene("AS_RandomMap");
+        }
+        else
+        {
+            reconfirmPanelManager.OpenBonFireReconfirm();
+        }
+       
     }
     //MinimapCreate
     public void CreateMiniMapObject()
@@ -394,11 +407,11 @@ public class CampManager : MonoBehaviour
         var stringId = $"{randNum}";
         newItem.itemId = randNum;
         newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
-
+        //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
         if (randNum==1)
         {
             //나무토막: 1 %
-        itemReward = newItem;
+            itemReward = newItem;
         }
         else if(randNum ==100)
         {
@@ -424,6 +437,12 @@ public class CampManager : MonoBehaviour
         {
             //꽝: 85 %
             Debug.Log("꽝");
+            buttonimage.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
+        }
+        if (itemReward!=null)
+        {
+            RewardList.Add(itemReward);
+            itemReward = null;
         }
     }
     public void SetGatheringTime()
@@ -448,5 +467,101 @@ public class CampManager : MonoBehaviour
             gatheringTime = 0;
         }
         SetGatheringTime();
+    }
+    public void GatheringInCamp()
+    {
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        haveMinute -= gatheringTime;
+        Vars.UserData.uData.BonfireHour = haveMinute / 60;
+        diaryManager.OpenGatheringReward();
+        diaryManager.AllRewardClose();
+       
+        Debug.Log($"gatheringTime{gatheringTime}");
+        if (gatheringTime/30==1)//보상1개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+        }
+        else if (gatheringTime / 30 == 2)//보상2개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+            diaryManager.gatheringReward1.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward1_img);
+        }
+        else if (gatheringTime / 30 == 3)//보상3개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+            diaryManager.gatheringReward1.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward1_img);
+            diaryManager.gatheringReward2.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward2_img);
+        }
+        else if (gatheringTime / 30 == 4)//보상4개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+            diaryManager.gatheringReward1.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward1_img);
+            diaryManager.gatheringReward2.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward2_img);
+            diaryManager.gatheringReward3.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward3_img);
+        }
+        else if (gatheringTime / 30 == 5)//보상5개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+            diaryManager.gatheringReward1.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward1_img);
+            diaryManager.gatheringReward2.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward2_img);
+            diaryManager.gatheringReward3.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward3_img);
+            diaryManager.gatheringReward4.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward4_img);
+        }
+        else if (gatheringTime / 30 == 6)//보상6개
+        {
+            diaryManager.gatheringReward0.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward0_img);
+            diaryManager.gatheringReward1.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward1_img);
+            diaryManager.gatheringReward2.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward2_img);
+            diaryManager.gatheringReward3.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward3_img);
+            diaryManager.gatheringReward4.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward4_img);
+            diaryManager.gatheringReward5.SetActive(true);
+            SetRewardItemIcon(diaryManager.gatheringReward5_img);
+        }
+        ConsumeManager.TimeUp(gatheringTime);
+        if (RewardList.Count !=0)
+        {
+           
+            for (int i = 0; i < RewardList.Count; i++)
+            {
+                Debug.Log($"itemReward{RewardList[i].ItemTableElem.name}");
+            }
+        }
+        Debug.Log($"보상갯수 : {RewardList.Count}");
+        gatheringTime = 0;
+        SetGatheringTime();
+        SetBonTime();
+       
+    }
+
+    public void GetItem()
+    {
+
+    }
+    public void AllItem()
+    {
+        for (int i = 0; i < RewardList.Count; i++)
+        {
+            Vars.UserData.AddItemData(RewardList[i]);
+        }
     }
 }

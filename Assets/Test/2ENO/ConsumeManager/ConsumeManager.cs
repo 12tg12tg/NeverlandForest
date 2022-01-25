@@ -264,7 +264,6 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.NightTime;
         }
-        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
     }
 
     public static void TimeUp(float minute, float hour=0)

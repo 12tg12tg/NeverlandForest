@@ -138,6 +138,17 @@ public class DiaryManager : MonoBehaviour
         CookingRewardPanel.SetActive(false);
 
     }
+    public void AllClose()
+    {
+        producePanel.SetActive(false);
+        cookingPanel.SetActive(false);
+        sleepingPanel.SetActive(false);
+        gatheringIncCampPanel.SetActive(false);
+        battleRewardPanel.SetActive(false);
+        huntRewardPanel.SetActive(false);
+        gatheringInDungeonPanel.SetActive(false);
+    }
+
     public void OpenProduce()
     {
         producePanel.SetActive(true);
@@ -179,6 +190,17 @@ public class DiaryManager : MonoBehaviour
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(false);
     }
+    public void OpenGatheringReward()
+    {
+        producePanel.SetActive(false);
+        cookingPanel.SetActive(false);
+        sleepingPanel.SetActive(false);
+        gatheringIncCampPanel.SetActive(false);
+        battleRewardPanel.SetActive(false);
+        huntRewardPanel.SetActive(false);
+        gatheringInDungeonPanel.SetActive(false);
+        gatheringInCampReward.SetActive(true);
+    }
     public void OpenBattleReward()
     {
         producePanel.SetActive(false);
@@ -208,5 +230,14 @@ public class DiaryManager : MonoBehaviour
         battleRewardPanel.SetActive(false);
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(true);
+    }
+    public void AllRewardClose()
+    {
+        gatheringReward0.SetActive(false);
+        gatheringReward1.SetActive(false);
+        gatheringReward2.SetActive(false);
+        gatheringReward3.SetActive(false);
+        gatheringReward4.SetActive(false);
+        gatheringReward5.SetActive(false);
     }
 }
