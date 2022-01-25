@@ -34,7 +34,7 @@ public class WorldMapManager : MonoBehaviour
                 player.Init();
                 worldMapCamera.FollowPlayer();
                 if (ground != null)
-                    ground.CreateTree(worldMap.Edges, worldMap.Maps);
+                    ground.CreateTree(worldMap.Edges);
             }));
         }
         else

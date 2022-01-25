@@ -5,87 +5,151 @@ using System.Linq;
 
 public enum TreeType
 {
+    // trees에 연결된 순서랑 일치해야 함
     BasicTree,
     DryTree,
     CutDryTree,
+    None,
 }
 
 public class WorldMapGround : MonoBehaviour
 {
-    [Header("Tree")]
-    public GameObject tree;
-    public GameObject dryTree;
-    public GameObject cutDryTree;
+    [Header("나무 프리팹")]
+    public GameObject[] trees;
 
-    [Header("Map")]
+    [Header("나무 등장 확률")]
+    public int[] percentageOfTrees;
+
+    [Header("바닥")]
     public MeshRenderer land;
 
-    private Vector3 min;
-    private Vector3 max;
+    [Header("가로 세로 간격")]
+    public float col;
+    public float row;
+    public float interval;
+    public float num;
 
-    private List<WorldMapTreeInfo> treeList = new List<WorldMapTreeInfo>();
+    private readonly List<WorldMapTreeInfo> treeList = new List<WorldMapTreeInfo>();
 
-    private void Awake()
-    {
-        min = land.bounds.min;
-        max = land.bounds.max;
-
-    }
-
-    public void CreateTree(List<Edge> edges, WorldMapNode[][] nodes)
+    public void CreateTree(List<Edge> edges)
     {
         var go = new GameObject("Tree");
         go.transform.SetParent(transform);
 
-        for (int i = 0; i < 100; i++)
+        var colRatio = 1f / col;
+        var rowRatio = 1f / row;
+
+        var sizeX = land.bounds.size.x;
+        var sizeZ = land.bounds.size.z;
+
+        for (int i = 0; i < row; i++)
         {
-            var x = Random.Range(min.x, max.x); // 가로
-            var z = Random.Range(min.z, max.z); // 세로
-
-            var rndType = (TreeType)Random.Range(0, 3);
-            GameObject treeGo = default;
-            switch (rndType)
+            for (int k = 0; k < col; k++)
             {
-                case TreeType.BasicTree:
-                    treeGo = tree;
-                    break;
-                case TreeType.DryTree:
-                    treeGo = dryTree;
-                    break;
-                case TreeType.CutDryTree:
-                    treeGo = cutDryTree;
-                    break;
+                var minX = land.bounds.min.x + k * (sizeX * colRatio);
+                var maxX = minX + (sizeX * colRatio);
+
+                var minZ = land.bounds.min.z + i * (sizeZ * rowRatio);
+                var maxZ = minZ + (sizeZ * rowRatio);
+
+                var pos = new Vector3(Random.Range(minX, maxX), 0f, Random.Range(minZ, maxZ));
+
+                var count = 0;
+                for (int j = 0; j < num; j++)
+                {
+                    // 이미 생성된 나무와의 거리, 라인과의 거리 체크
+                    if (!CheckForPosDuplicate(pos, interval) || !CheckForLine(edges, pos, interval - 1f))
+                    {
+                        // 100번 동안 다시 뽑아도 없으면 넘기기
+                        var check = count >= 100;
+                        j = check ? j + 1 : j - 1;
+                        count = check ? 0 : count + 1;
+                        Debug.Log($"{count}번째 다시 뽑기");
+                        continue;
+                    }
+
+                    // 수치별 나무타입 랜덤
+                    var rndType = GetTreeType();
+
+                    // 나무 생성
+                    var tr = Instantiate(trees[(int)rndType], pos, Quaternion.identity);
+                    tr.transform.SetParent(go.transform);
+                    tr.name = rndType.ToString();
+
+                    var treeInfo = new WorldMapTreeInfo
+                    {
+                        treePos = tr.transform.position,
+                        type = (int)rndType
+                    };
+
+                    treeList.Add(treeInfo);
+                } 
             }
-            var tr = Instantiate(treeGo, new Vector3(x, 0f, z), Quaternion.identity);
-            tr.transform.SetParent(go.transform);
-            tr.name = rndType.ToString();
-            var treeInfo = new WorldMapTreeInfo
-            {
-                treePos = tr.transform.position,
-                index = (int)rndType
-            };
-            treeList.Add(treeInfo);
         }
-
-        // 나무가 랜덤하게 생성 될 때 간선에 있으면 안되고 노드도 가리면 안된다
 
         Save();
     }
 
-    public void Save()
+    private TreeType GetTreeType()
+    {
+        // 총합을 구하고
+        var total = 0;
+        for (int i = 0; i < trees.Length; i++)
+        {
+            total += percentageOfTrees[i];
+        }
+
+        // 총합만큼 랜덤을 돌림
+        var rnd = Random.Range(0, total);
+        var rndType = TreeType.None;
+        var percentage = 0;
+        for (int i = 0; i < trees.Length; i++)
+        {
+            // 수치 누적으로 계산
+            percentage += percentageOfTrees[i];
+            var percent = rnd < percentage;
+            rndType = percent ? (TreeType)i : rndType;
+
+            // 일치하면 반환
+            if (percent)
+                return rndType;
+        }
+        return rndType;
+    }
+    private bool CheckForLine(List<Edge> edges, Vector3 pos, float dis)
+    {
+        for (int j = 0; j < edges.Count; j++)
+        {
+            if (!edges[j].DistanceCheak(pos, dis))
+                return false;
+        }
+        return true;
+    }
+    private bool CheckForPosDuplicate(Vector3 pos, float dis)
+    {
+        for (int i = 0; i < treeList.Count; i++)
+        {
+            if (Vector3.Distance(treeList[i].treePos, pos) < dis)
+                return false;
+        }
+        return true;
+    }
+
+    private void Save()
     {
         var treeData = Vars.UserData.WorldMapTree;
         treeData.Clear();
         for (int i = 0; i < treeList.Count; i++)
         {
-            var treeInfo = new WorldMapTreeInfo();
-            treeInfo.treePos = treeList[i].treePos;
-            treeInfo.index = treeList[i].index;
+            var treeInfo = new WorldMapTreeInfo
+            {
+                treePos = treeList[i].treePos,
+                type = treeList[i].type
+            };
             treeData.Add(treeInfo);
         }
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapData);
     }
-
     public void Load()
     {
         var treeData = Vars.UserData.WorldMapTree;
@@ -93,21 +157,8 @@ public class WorldMapGround : MonoBehaviour
         go.transform.SetParent(transform);
         for (int i = 0; i < treeData.Count; i++)
         {
-            GameObject treeGo = default;
-            var type = (TreeType)treeData[i].index;
-            switch (type)
-            {
-                case TreeType.BasicTree:
-                    treeGo = tree;
-                    break;
-                case TreeType.DryTree:
-                    treeGo = dryTree;
-                    break;
-                case TreeType.CutDryTree:
-                    treeGo = cutDryTree;
-                    break;
-            }
-            var tr = Instantiate(treeGo, treeData[i].treePos, Quaternion.identity);
+            var type = (TreeType)treeData[i].type;
+            var tr = Instantiate(trees[(int)type], treeData[i].treePos, Quaternion.identity);
             tr.transform.SetParent(go.transform);
             tr.name = type.ToString();
         }

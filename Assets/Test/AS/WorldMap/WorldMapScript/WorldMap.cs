@@ -7,7 +7,7 @@ public struct Edge
 {
     public Vector3 start;
     public Vector3 end;
-
+    public Vector3 DirVec => end - start;
     public Edge(Vector3 start, Vector3 end)
     {
         this.start = start;
@@ -40,20 +40,47 @@ public struct Edge
 
         return p1 * p2 < 0 && p3 * p4 < 0;
     }
+
+    public static bool IsCrossingLineToDot(Vector3 start, Vector3 end, Vector3 dot)
+    {
+        if (start.x < dot.x && dot.x < end.x)
+            return Mathf.Approximately((dot.x - start.x) * (end.z - start.z) / (end.x - start.x) + start.z, dot.z);
+
+        return false;
+    }
+
+    public bool DistanceCheak(Vector3 pos, float dis)
+    {
+        // 사이각 구하기
+        var dirVec2 = pos - start;
+        var angle = Vector3.Angle(DirVec, dirVec2);
+        
+        // 빗변
+        var hypotenuse = Vector3.Distance(start, pos);
+
+        // 밑변
+        var dotBase = hypotenuse * Mathf.Cos(angle * Mathf.Deg2Rad);
+
+        // 원하는 지점
+        var vec = start + (DirVec.normalized * dotBase);
+
+        // 점과 선의 거리
+        var distance = Vector3.Distance(pos, vec);
+
+        return distance > dis;
+    }
 }
 public class WorldMap : MonoBehaviour
 {
-    [Header("프리팹")]
-    public GameObject nodePrefab;
-    public GameObject linePrefab;
-    public GameObject fogPrefab;
+    private GameObject nodePrefab;
+    private GameObject linePrefab;
+    private GameObject fogPrefab;
+
+    private int column;
+    private int row;
 
     [Header("미니월드맵에서 쓰는 메테리얼")]
     public Material material;
-
-    [Header("노드 행렬")]
-    public int column;
-    public int row;
 
     // 노드의 모든 정보를 갖고있는 변수
     private WorldMapNode[][] maps;
@@ -64,8 +91,8 @@ public class WorldMap : MonoBehaviour
     public List<Edge> Edges => edges;
 
     // 노드의 간격
-    private readonly float posX = 5f;
-    private readonly float posY = 15f;
+    private readonly float posX = 15f;
+    private readonly float posZ = 10f;
 
     // 모든 노드가 부모자식이 연결 됐는지
     private bool isAllLinked = false;
@@ -348,13 +375,13 @@ public class WorldMap : MonoBehaviour
             {
                 fogPrefab = Instantiate(fogPrefab);
                 fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
-                var posX = (fogPrefab.transform.localScale.x * 10f) - (posY / 2);
+                var posX = (fogPrefab.transform.localScale.x * 10f) - (this.posX / 2);
                 var endPos = transform.GetChild(0).position - new Vector3(posX, 0f, 0f);
                 fogPrefab.transform.position = endPos;
             }
             else
             {
-                fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
+                fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
             }
         }
         beforeDate = date;
@@ -367,20 +394,20 @@ public class WorldMap : MonoBehaviour
 
         for (int i = beforeDate; i < date; i++)
         {
-            fogPrefab.transform.position += new Vector3(posY, 0f, 0f);
+            fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
         }
         beforeDate = Vars.UserData.uData.Date;
     }
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posY, 0f, index.x * posX), Quaternion.identity);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posX, 0f, index.x * posZ), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posY - 100f, 0f, index.x * posX - 100f), Quaternion.identity);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * posX - 100f, 0f, index.x * posZ - 100f), Quaternion.identity);
         go.layer = LayerMask.NameToLayer(LayerName);
         go.transform.SetParent(gameObject.transform);
         node = go.AddComponent<WorldMapNode>();
@@ -410,7 +437,7 @@ public class WorldMap : MonoBehaviour
                 if (maps[i][j] == null)
                     continue;
                 var dot = maps[i][j].transform.position;
-                if (IsCrossingLineToDot(pos1, pos2, dot))
+                if (Edge.IsCrossingLineToDot(pos1, pos2, dot))
                     return true;
             }
         }
@@ -434,13 +461,7 @@ public class WorldMap : MonoBehaviour
         }
         return true;
     }
-    public bool IsCrossingLineToDot(Vector3 start, Vector3 end, Vector3 dot)
-    {
-        if (start.x < dot.x && dot.x < end.x)
-            return Mathf.Approximately((dot.x - start.x) * (end.z - start.z) / (end.x - start.x) + start.z, dot.z);
-
-        return false;
-    }
+    
     public void Save()
     {
         var node = Vars.UserData.WorldMapNodeStruct;
