@@ -25,22 +25,14 @@ public class BottomInfoUI : MonoBehaviour
         info_description.text = skill.SkillTableElem.description;
     }
 
-    public void Init(DataItem item)
+    public void Init(DataAllItem item)
     {
         if (item == null)
             return;
-        switch (item.dataType)
-        {
-            case DataType.Consume:
-                break;
-            case DataType.AllItem:
-                var allItem = item as DataAllItem;
-                img.sprite = allItem.ItemTableElem.IconSprite;
-                info_name.text = allItem.ItemTableElem.name;
-                info_description.text = ".....";
-                break;
-            case DataType.Material:
-                break;
-        }
+
+        var allItem = item;
+        img.sprite = allItem.ItemTableElem.IconSprite;
+        info_name.text = allItem.ItemTableElem.name;
+        info_description.text = allItem.ItemTableElem.desc;
     }
 }

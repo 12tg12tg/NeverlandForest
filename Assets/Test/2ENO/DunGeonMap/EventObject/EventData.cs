@@ -12,9 +12,9 @@ public class EventData
     public Vector3 objectPosition;
     // 이벤트를 생성한 방 정보, 오브젝트 생성시 이 정보를 넣고 삭제할때 그 방의 값에 적용하기위해
     public int roomIndex;
+    // 채집
     public GatheringObjectType gatheringtype;
-
-    // 문자열은 저장이 안되나????
+    // 랜덤인카운트
     public string randomEventID;
 }
 [System.Serializable]
@@ -22,7 +22,7 @@ public class GatheringData : EventData
 {
     public int offSetBasePos;
 
-    public GatheringObject Createobj(GatheringObject obj, GatheringSystem system)
+    public GatheringObject CreateObj(GatheringObject obj, GatheringSystem system)
     {
         if(eventBasePos.Equals(Vector3.zero))
         {
@@ -50,7 +50,7 @@ public class GatheringData : EventData
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
-    public HuntingObject Createobj(HuntingObject obj)
+    public HuntingObject CreateObj(HuntingObject obj)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {

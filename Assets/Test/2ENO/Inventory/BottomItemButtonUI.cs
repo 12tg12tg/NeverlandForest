@@ -25,9 +25,9 @@ public class BottomItemButtonUI : MonoBehaviour
         }
     }
 
-    private DataItem dataItem;
+    private DataAllItem dataItem;
 
-    public DataItem DataItem { get => dataItem; }
+    public DataAllItem DataItem { get => dataItem; }
 
     public void Init(DataAllItem data)
     {

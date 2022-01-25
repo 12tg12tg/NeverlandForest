@@ -56,6 +56,7 @@ public class CampManager : MonoBehaviour
             rewardList = value;
         }
     }
+
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
@@ -412,7 +413,7 @@ public class CampManager : MonoBehaviour
             bluemoonObject.SetActive(false);
         }
     }
-  
+
     public void SetGatheringTime()
     {
         gatheringTimeText.text = gatheringTime.ToString() + "Ка";

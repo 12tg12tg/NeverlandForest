@@ -10,7 +10,6 @@ public class UserData
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     */
     //Item Info
-    public List<DataConsumable> ConsumableItemList { get; set; } = new List<DataConsumable>();
 
     //World Info
     public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();
@@ -35,9 +34,9 @@ public class UserData
 
     // 인벤토리에 사용
     public int maxInventoryItemCount = 12;
-    private readonly List<DataItem> haveAllItemList = new List<DataItem>();
-    public ReadOnlyCollection<DataItem> HaveAllItemList => haveAllItemList.AsReadOnly();
-    public bool AddItemData(DataItem newItem)
+    private readonly List<DataAllItem> haveAllItemList = new List<DataAllItem>();
+    public ReadOnlyCollection<DataAllItem> HaveAllItemList => haveAllItemList.AsReadOnly();
+    public bool AddItemData(DataAllItem newItem)
     {
         // 칸 하나를 전부 차지한 경우의 개수
         int myInventoryFullCount = 0;
@@ -62,7 +61,7 @@ public class UserData
         }
         else
         {
-            var myItem = haveAllItemList.Find(x => (x.itemId == newItem.itemId) && (x.dataType == newItem.dataType));
+            var myItem = haveAllItemList.Find(x => (x.itemId == newItem.itemId));
             // 칸 차지하는 경우의 수 모두 합쳐서 현재 인벤토리칸이 꽉 차있는 경우
             if (maxInventoryItemCount == (myInventoryFullCount + myInventorySpaceCount))
             {
@@ -70,15 +69,15 @@ public class UserData
                 if (myItem != null && myItem.InvenRemainCount != 0)
                 {
                     // 남은 여분공간이 추가될 아이템 개수보다 같거나 클때
-                    if (myItem.LimitCount - myItem.InvenRemainCount >= newItem.OwnCount)
+                    if (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount >= newItem.OwnCount)
                     {
                         myItem.OwnCount += newItem.OwnCount;
                         newItem.OwnCount = 0;
                     }
                     else
                     {
-                        newItem.OwnCount -= (myItem.LimitCount - myItem.InvenRemainCount); // 서순중요
-                        myItem.OwnCount += (myItem.LimitCount - myItem.InvenRemainCount);
+                        newItem.OwnCount -= (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount); // 서순중요
+                        myItem.OwnCount += (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount);
                         // 아이템 다 안들어감
                         return false;
                     }
@@ -94,7 +93,7 @@ public class UserData
             {
                 if (myItem != null)
                 {
-                    if (myItem.LimitCount - myItem.InvenRemainCount >= newItem.OwnCount)
+                    if (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount >= newItem.OwnCount)
                     {
                         myItem.OwnCount += newItem.OwnCount;
                         newItem.OwnCount = 0;
@@ -131,19 +130,8 @@ public class UserData
                     int overOwnCount = 0;
                     int spareInvenCount = maxInventoryItemCount - (myInventoryFullCount + myInventorySpaceCount);
 
-                    switch (newItem.dataType)
-                    {
-                        case DataType.Consume:
-                            break;
-                        case DataType.AllItem:
-                            var getItem = new DataAllItem(newItem);
-                            haveAllItemList.Add(getItem);
-                            break;
-                        case DataType.Material:
-                            var getmaterialItem = new DataMaterial(newItem);
-                            haveAllItemList.Add(getmaterialItem);
-                            break;
-                    }
+                    var getItem = new DataAllItem(newItem);
+                    haveAllItemList.Add(getItem);
 
                     var newItemSpare = (newItem.InvenRemainCount == 0) ? 0 : 1;
                     if(spareInvenCount - (newItem.InvenFullCount + newItemSpare) < 0)
@@ -151,16 +139,16 @@ public class UserData
                         var overInvenCount = (newItem.InvenFullCount + newItemSpare) - spareInvenCount;
                         if(newItem.InvenRemainCount == 0)
                         {
-                            overOwnCount = newItem.LimitCount * overInvenCount;
+                            overOwnCount = newItem.ItemTableElem.limitCount * overInvenCount;
                         }
                         else
                         {
-                            overOwnCount = (newItem.LimitCount * overInvenCount - 1) + newItem.InvenRemainCount;
+                            overOwnCount = (newItem.ItemTableElem.limitCount * overInvenCount - 1) + newItem.InvenRemainCount;
                         }
 
                         newItem.OwnCount -= overOwnCount;
-                        var getItem = haveAllItemList.Find(x => x.itemId == newItem.itemId && x.dataType == newItem.dataType);
-                        getItem.OwnCount = newItem.OwnCount;
+                        myItem = haveAllItemList.Find(x => x.itemId == newItem.itemId);
+                        myItem.OwnCount = newItem.OwnCount;
                         newItem.OwnCount = overOwnCount;
                         // 아이템 다 안들어감
                         return false;
@@ -172,9 +160,9 @@ public class UserData
         newItem.OwnCount = 0;
         return true;
     }
-    public bool RemoveItemData(DataItem removeItem)
+    public bool RemoveItemData(DataAllItem removeItem)
     {
-        var index = haveAllItemList.FindIndex(x => (x.itemId == removeItem.itemId) && (x.dataType == removeItem.dataType));
+        var index = haveAllItemList.FindIndex(x => (x.itemId == removeItem.itemId));
         if (index == -1)
         {
             Debug.Log("삭제할 아이템이 없음");

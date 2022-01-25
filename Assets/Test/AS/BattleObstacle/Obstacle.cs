@@ -26,6 +26,7 @@ public class Obstacle
     public int numberOfInstallation;
     public List<Obstacle> pair = new List<Obstacle>();
 
+
     [Header("장벽 체력")]
     public int hp;
 

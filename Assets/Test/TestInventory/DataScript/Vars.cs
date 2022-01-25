@@ -62,28 +62,6 @@ public static class Vars
                 var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
                 userData = new UserData();
 
-                for (int i = 0; i < 16; i++)
-                {
-                    var newItem = new DataMaterial();
-                    newItem.itemId = i;
-                    var randId = $"{i}";
-                    newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(randId);
-                    userData.HaveMaterialList.Add(newItem);
-                }
-
-                //테스트용 리스트
-                var consumableTable = DataTableManager.GetTable<ConsumableTable>();
-
-                for (int i = 1; i <= consumableTable.data.Count; i++)
-                {
-                    var newItem = new DataConsumable();
-                    newItem.itemId = i;
-                    newItem.dataType = DataType.Consume;
-                    var Id = $"CON_000{i}";
-                    newItem.itemTableElem = consumableTable.GetData<ConsumableTableElem>(Id);
-                    userData.ConsumableItemList.Add(newItem);
-                }
-
                 // 인벤토리에서 테스트로 사용할 아이템 리스트
                 //int tempItemNum = 0;
                 //for (int i = 0; i < 11; i++)

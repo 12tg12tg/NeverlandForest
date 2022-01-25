@@ -5,196 +5,198 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
 
-public class InventoryItemView : MonoBehaviour
-{
-    public InventoryController invenCtrl;
+//public class InventoryItemView : MonoBehaviour
+//{
+//    public InventoryController invenCtrl;
 
-    public InventoryItem itemPrefab;
-    public ScrollRect scrollRect;
+//    public InventoryItem itemPrefab;
+//    public ScrollRect scrollRect;
 
-    public const int MaxItemCount = 21;
-    private List<InventoryItem> itemGoList = new List<InventoryItem>();
-    private List<DataItem> itemDataList = new List<DataItem>();
-    private List<DataItem> divideItemList = new List<DataItem>();
+//    public const int MaxItemCount = 21;
+//    private List<InventoryItem> itemGoList = new List<InventoryItem>();
+//    private List<DataItem> itemDataList = new List<DataItem>();
+//    private List<DataItem> divideItemList = new List<DataItem>();
 
-    //private DataCharacter selectedCharacter;
-    private int selectedSlot = -1;
+//    //private DataCharacter selectedCharacter;
+//    private int selectedSlot = -1;
 
-    private void Awake()
-    {
-        for (var i = 0; i < MaxItemCount; ++i)
-        {
-            var item = Instantiate(itemPrefab, scrollRect.content);
-            item.Slot = i;
-            itemGoList.Add(item);
-            item.gameObject.SetActive(false);
+//    private void Awake()
+//    {
+//        for (var i = 0; i < MaxItemCount; ++i)
+//        {
+//            var item = Instantiate(itemPrefab, scrollRect.content);
+//            item.Slot = i;
+//            itemGoList.Add(item);
+//            item.gameObject.SetActive(false);
 
-            var button = item.GetComponent<Button>();
-            button.onClick.AddListener(() => OnItemClickEvent(item.Slot));
-        }
-    }
+//            var button = item.GetComponent<Button>();
+//            button.onClick.AddListener(() => OnItemClickEvent(item.Slot));
+//        }
+//    }
 
-    public void Init(List<DataItem> itemDataList)
-    {
-        this.itemDataList = itemDataList;
-        // 초기화    // 칸 합치기 기능 포함
-        InitDivideItemList(this.itemDataList);
+//    public void Init(List<DataItem> itemDataList)
+//    {
+//        this.itemDataList = itemDataList;
+//        // 초기화    // 칸 합치기 기능 포함
+//        InitDivideItemList(this.itemDataList);
 
-        SortItemList();
-        SetAllItems(divideItemList);
-    }
-    //Init, 초기화 느낌 1회성
-    public void InitDivideItemList(List<DataItem> itemDataList)
-    {
-        var dataAllDivideItemList = new List<DataItem>();
-        for (int i = 0; i < itemDataList.Count; i++)
-        {
-            var newItem = itemDataList[i];
+//        SortItemList();
+//        SetAllItems(divideItemList);
+//    }
+//    //Init, 초기화 느낌 1회성
+//    public void InitDivideItemList(List<DataItem> itemDataList)
+//    {
+//        var dataAllDivideItemList = new List<DataItem>();
+//        for (int i = 0; i < itemDataList.Count; i++)
+//        {
+//            var newItem = itemDataList[i];
 
-            switch (newItem.dataType)
-            {
-                case DataType.Default:
-                    break;
-                case DataType.Consume:
-                    dataAllDivideItemList.Add(new DataConsumable(newItem));
-                    break;
-                case DataType.AllItem:
-                    dataAllDivideItemList.Add(new DataAllItem(newItem));
-                    break;
-                case DataType.Material:
-                    dataAllDivideItemList.Add(new DataMaterial(newItem));
-                    break;
-            }
-        }
+//            switch (newItem.dataType)
+//            {
+//                case DataType.Default:
+//                    break;
+//                case DataType.Consume:
+//                    dataAllDivideItemList.Add(new DataConsumable(newItem));
+//                    break;
+//                case DataType.AllItem:
+//                    dataAllDivideItemList.Add(new DataAllItem(newItem));
+//                    break;
+//                case DataType.Material:
+//                    dataAllDivideItemList.Add(new DataMaterial(newItem));
+//                    break;
+//            }
+//        }
 
-        // TODO: while문으로 바꾸고싶은데 일단 for문의 최대치가 증가하는 이상한 느낌으로 동작중..
-        for (int i = 0; i < dataAllDivideItemList.Count; i++)
-        {
-            if(dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
-            {
-                var divideItem = DivideCreate(dataAllDivideItemList[i]);
-                if (divideItem != null)
-                    dataAllDivideItemList.Add(divideItem);
-            }
-        }
-        divideItemList = dataAllDivideItemList;
-    }
+//        // TODO: while문으로 바꾸고싶은데 일단 for문의 최대치가 증가하는 이상한 느낌으로 동작중..
+//        for (int i = 0; i < dataAllDivideItemList.Count; i++)
+//        {
+//            if(dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
+//            {
+//                var divideItem = DivideCreate(dataAllDivideItemList[i]);
+//                if (divideItem != null)
+//                    dataAllDivideItemList.Add(divideItem);
+//            }
+//        }
+//        divideItemList = dataAllDivideItemList;
+//    }
 
-    public DataItem DivideCreate(DataItem item)
-    {
-        DataItem newItem = null;
-        switch (item.dataType)
-        {
-            case DataType.Default:
-                break;
-            case DataType.Consume:
-                newItem = new DataConsumable(item);
-                break;
-            case DataType.AllItem:
-                // TODO: DataAllItem을 DataItem으로 초기화 하는 파트 나중에 고유 값 생기면 초기화 생성자에서 item을 as DataAllItem으로 변환해서 해보기?
-                newItem = new DataAllItem(item);
-                break;
-            case DataType.Material:
-                newItem = new DataMaterial(item);
-                break;
-        }
-        // 한도치 계산해서 분할 복사, 원본역시 분할된 만큼 소유개수 줄음
-        if (item.OwnCount > item.LimitCount)
-        {
-            newItem.OwnCount = item.OwnCount - item.LimitCount;
-            newItem.LimitCount = item.LimitCount;
-            newItem.itemTableElem = item.itemTableElem;
-            newItem.itemId = item.itemId;
-            item.OwnCount = item.LimitCount;
-        }
-        else
-        {
-            return null;
-        }
-        return newItem;
-    }
+//    public DataItem DivideCreate(DataItem item)
+//    {
+//        DataItem newItem = null;
+//        switch (item.dataType)
+//        {
+//            case DataType.Default:
+//                break;
+//            case DataType.Consume:
+//                newItem = new DataConsumable(item);
+//                break;
+//            case DataType.AllItem:
+//                // TODO: DataAllItem을 DataItem으로 초기화 하는 파트 나중에 고유 값 생기면 초기화 생성자에서 item을 as DataAllItem으로 변환해서 해보기?
+//                newItem = new DataAllItem(item);
+//                break;
+//            case DataType.Material:
+//                newItem = new DataMaterial(item);
+//                break;
+//        }
+//        // 한도치 계산해서 분할 복사, 원본역시 분할된 만큼 소유개수 줄음
+//        if (item.OwnCount > item.LimitCount)
+//        {
+//            newItem.OwnCount = item.OwnCount - item.LimitCount;
+//            newItem.LimitCount = item.LimitCount;
+//            newItem.itemTableElem = item.itemTableElem;
+//            newItem.itemId = item.itemId;
+//            item.OwnCount = item.LimitCount;
+//        }
+//        else
+//        {
+//            return null;
+//        }
+//        return newItem;
+//    }
 
 
-    public void SetAllItems(List<DataItem> itemList)
-    {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
+//    public void SetAllItems(List<DataItem> itemList)
+//    {
+//        foreach (var item in itemGoList)
+//        {
+//            item.gameObject.SetActive(false);
+//        }
 
-        for (var i = 0; i < itemList.Count; i++)
-        {
-            itemGoList[i].gameObject.SetActive(true);
-            switch (itemList[i].dataType)
-            {
-                case DataType.Default:
-                    break;
-                case DataType.Consume:
-                    var conItem = new DataConsumable(itemList[i]);
-                    itemGoList[i].Init(conItem);
+//        for (var i = 0; i < itemList.Count; i++)
+//        {
+//            itemGoList[i].gameObject.SetActive(true);
+//            switch (itemList[i].dataType)
+//            {
+//                case DataType.Default:
+//                    break;
+//                case DataType.Consume:
+//                    var conItem = new DataConsumable(itemList[i]);
+//                    itemGoList[i].Init(conItem);
 
-                    break;
-                case DataType.AllItem:
-                    var allItem = new DataAllItem(itemList[i]);
-                    itemGoList[i].Init(allItem);
-                    break;
-                case DataType.Material:
-                    var materialitem = new DataMaterial(itemList[i]);
-                    itemGoList[i].Init(materialitem);
-                    break;
-            }
-        }
+//                    break;
+//                case DataType.AllItem:
+//                    var allItem = new DataAllItem(itemList[i]);
+//                    itemGoList[i].Init(allItem);
+//                    break;
+//                case DataType.Material:
+//                    var materialitem = new DataMaterial(itemList[i]);
+//                    itemGoList[i].Init(materialitem);
+//                    break;
+//            }
+//        }
 
-        if (this.itemDataList.Count > 0)
-        {
-            selectedSlot = 0;
-            EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
-        }
-    }
+//        if (this.itemDataList.Count > 0)
+//        {
+//            selectedSlot = 0;
+//            EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
+//        }
+//    }
 
-    private void OnItemClickEvent(int slot)
-    {
-        switch (itemGoList[slot].DataItem.dataType)
-        {
-            case DataType.Default:
-                break;
-            case DataType.Consume:
-                break;
-            case DataType.AllItem:
-                var item = itemGoList[slot].DataItem as DataAllItem;
-                invenCtrl.OpenClickMessageWindow(item);
-                break;
-        }
-    }
+//    private void OnItemClickEvent(int slot)
+//    {
+//        switch (itemGoList[slot].DataItem.dataType)
+//        {
+//            case DataType.Default:
+//                break;
+//            case DataType.Consume:
+//                break;
+//            case DataType.AllItem:
+//                var item = itemGoList[slot].DataItem as DataAllItem;
+//                invenCtrl.OpenClickMessageWindow(item);
+//                break;
+//        }
+//    }
 
-    public void SortItemList()
-    {
-        divideItemList.Sort((lhs, rhs) => ItemCompare(lhs,rhs));
-    }
+//    public void SortItemList()
+//    {
+//        divideItemList.Sort((lhs, rhs) => ItemCompare(lhs,rhs));
+//    }
 
-    private int ItemCompare(DataItem lhs, DataItem rhs)
-    {
-        int result = 1;
-        if(lhs.dataType < rhs.dataType)
-            return result;
-        else if(lhs.dataType > rhs.dataType)
-            return -result;
-        else
-        {
-            if (lhs.itemId < rhs.itemId)
-                return result;
-            else if (lhs.itemId > rhs.itemId)
-                return -result;
-            else
-            {
-                if (lhs.OwnCount < rhs.OwnCount)
-                    return result;
-                else if (lhs.OwnCount > rhs.OwnCount)
-                    return -result;
-            }
-        }
-        return 0;
-    }
+//    private int ItemCompare(DataItem lhs, DataItem rhs)
+//    {
+//        int result = 1;
+//        if(lhs.dataType < rhs.dataType)
+//            return result;
+//        else if(lhs.dataType > rhs.dataType)
+//            return -result;
+//        else
+//        {
+//            if (lhs.itemId < rhs.itemId)
+//                return result;
+//            else if (lhs.itemId > rhs.itemId)
+//                return -result;
+//            else
+//            {
+//                if (lhs.OwnCount < rhs.OwnCount)
+//                    return result;
+//                else if (lhs.OwnCount > rhs.OwnCount)
+//                    return -result;
+//            }
+//        }
+//        return 0;
+//    }
+
+
 
     //public void DeleteItemExcute(DataAllItem item)
     //{
@@ -306,4 +308,4 @@ public class InventoryItemView : MonoBehaviour
     //    SortItemList();
     //    SetAllItems(divideItemList);
     //}
-}
+//}

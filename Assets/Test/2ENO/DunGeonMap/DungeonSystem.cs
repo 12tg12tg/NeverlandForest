@@ -235,20 +235,6 @@ public class DungeonSystem : MonoBehaviour
         while (array[curIdx].nextRoomIdx != -1)
         {
             EventDataInit(array[curIdx].eventObjDataList);
-
-            // TODO: 임시.. 가라로 해놓음
-            if (array[curIdx].randomEventData != null)
-            {
-                var newData3 = new RandomIncountData();
-                newData3.eventType = DunGeonEvent.RandomIncount;
-                newData3.isCreate = array[curIdx].randomEventData.isCreate;
-                newData3.eventBasePos = array[curIdx].randomEventData.eventBasePos;
-                newData3.roomIndex = array[curIdx].randomEventData.roomIndex;
-                newData3.objectPosition = array[curIdx].randomEventData.objectPosition;
-                newData3.randomEventID = array[curIdx].randomEventData.randomEventID;
-                array[curIdx].randomEventData = newData3;
-            }
-
             curIdx = array[curIdx].nextRoomIdx;
         }
 
@@ -292,6 +278,14 @@ public class DungeonSystem : MonoBehaviour
                     newList.Add(newData3);
                     break;
                 case DunGeonEvent.RandomIncount:
+                    var newData4 = new RandomIncountData();
+                    newData4.eventType = DunGeonEvent.RandomIncount;
+                    newData4.isCreate = eventList[i].isCreate;
+                    newData4.eventBasePos = eventList[i].eventBasePos;
+                    newData4.roomIndex = eventList[i].roomIndex;
+                    newData4.objectPosition = eventList[i].objectPosition;
+                    newData4.randomEventID = eventList[i].randomEventID;
+                    newList.Add(newData4);
                     break;
                 case DunGeonEvent.SubStory:
                     break;
@@ -309,13 +303,6 @@ public class DungeonSystem : MonoBehaviour
         {
             while (roomData.RoomType != DunGeonRoomType.MainRoom)
             {
-                // TODO: 임시, 가라로 만듬
-                if(roomData.randomEventData != null)
-                {
-                    var createRd = roomData.randomEventData as RandomIncountData;
-                    var obj3 = createRd.CreateObj(randomEventObjPrefab);
-                    eventObjInstanceList.Add(obj3.gameObject);
-                }
                 foreach (var eventObj in roomData.eventObjDataList)
                 {
                     {
@@ -332,29 +319,32 @@ public class DungeonSystem : MonoBehaviour
                                 switch (eventObj.gatheringtype)
                                 {
                                     case GatheringObjectType.Tree:
-                                        obj2 = createGt.Createobj(treeObj, gatheringSystem);
+                                        obj2 = createGt.CreateObj(treeObj, gatheringSystem);
                                         eventObjInstanceList.Add(obj2.gameObject);
                                         break;
                                     case GatheringObjectType.Pit:
-                                        obj2 = createGt.Createobj(pitObj, gatheringSystem);
+                                        obj2 = createGt.CreateObj(pitObj, gatheringSystem);
                                         eventObjInstanceList.Add(obj2.gameObject);
                                         break;
                                     case GatheringObjectType.Herbs:
-                                        obj2 = createGt.Createobj(herbsObj, gatheringSystem);
+                                        obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
                                         eventObjInstanceList.Add(obj2.gameObject);
                                         break;
                                     case GatheringObjectType.Mushroom:
-                                        obj2 = createGt.Createobj(mushroomObj, gatheringSystem);
+                                        obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
                                         eventObjInstanceList.Add(obj2.gameObject);
                                         break;
                                 }
                                 break;
                             case DunGeonEvent.Hunt:
                                 var createHt = eventObj as HuntingData;
-                                var obj3 = createHt.Createobj(huntingObjPrefab);
+                                var obj3 = createHt.CreateObj(huntingObjPrefab);
                                 eventObjInstanceList.Add(obj3.gameObject);
                                 break;
                             case DunGeonEvent.RandomIncount:
+                                var createRi = eventObj as RandomIncountData;
+                                var obj4 = createRi.CreateObj(randomEventObjPrefab);
+                                eventObjInstanceList.Add(obj4.gameObject);
                                 break;
                             case DunGeonEvent.SubStory:
                                 break;
@@ -366,13 +356,6 @@ public class DungeonSystem : MonoBehaviour
         }
         else
         {
-            // TODO: 임시, 가라로 만듬
-            if (roomData.randomEventData != null)
-            {
-                var createRd = roomData.randomEventData as RandomIncountData;
-                var obj3 = createRd.CreateObj(randomEventObjPrefab);
-                eventObjInstanceList.Add(obj3.gameObject);
-            }
             foreach (var eventObj in roomData.eventObjDataList)
             {
                 {
@@ -389,19 +372,19 @@ public class DungeonSystem : MonoBehaviour
                             switch (eventObj.gatheringtype)
                             {
                                 case GatheringObjectType.Tree:
-                                    obj2 = createGt.Createobj(treeObj, gatheringSystem);
+                                    obj2 = createGt.CreateObj(treeObj, gatheringSystem);
                                     eventObjInstanceList.Add(obj2.gameObject);
                                     break;
                                 case GatheringObjectType.Pit:
-                                    obj2 = createGt.Createobj(pitObj, gatheringSystem);
+                                    obj2 = createGt.CreateObj(pitObj, gatheringSystem);
                                     eventObjInstanceList.Add(obj2.gameObject);
                                     break;
                                 case GatheringObjectType.Herbs:
-                                    obj2 = createGt.Createobj(herbsObj, gatheringSystem);
+                                    obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
                                     eventObjInstanceList.Add(obj2.gameObject);
                                     break;
                                 case GatheringObjectType.Mushroom:
-                                    obj2 = createGt.Createobj(mushroomObj, gatheringSystem);
+                                    obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
                                     eventObjInstanceList.Add(obj2.gameObject);
                                     break;
                             }
@@ -409,10 +392,13 @@ public class DungeonSystem : MonoBehaviour
                             break;
                         case DunGeonEvent.Hunt:
                             var createHt = eventObj as HuntingData;
-                            var obj3 = createHt.Createobj(huntingObjPrefab);
+                            var obj3 = createHt.CreateObj(huntingObjPrefab);
                             eventObjInstanceList.Add(obj3.gameObject);
                             break;
                         case DunGeonEvent.RandomIncount:
+                            var createRi = eventObj as RandomIncountData;
+                            var obj4 = createRi.CreateObj(randomEventObjPrefab);
+                            eventObjInstanceList.Add(obj4.gameObject);
                             break;
                         case DunGeonEvent.SubStory:
                             break;

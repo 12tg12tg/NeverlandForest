@@ -41,43 +41,23 @@ public class DiaryInventory : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
-            switch (list[i].dataType)
-            {
-                case DataType.Consume:
-                    break;
-                case DataType.AllItem:
-                    itemButtons[i].Init(list[i] as DataAllItem);
-                    break;
-                case DataType.Material:
-                    break;
-            }
+            itemButtons[i].Init(list[i]);
+            break;
         }
     }
 
-    private List<DataItem> CreateDivideItemList(List<DataItem> itemDataList)
+    private List<DataAllItem> CreateDivideItemList(List<DataAllItem> itemDataList)
     {
-        var dataAllDivideItemList = new List<DataItem>();
+        var dataAllDivideItemList = new List<DataAllItem>();
         for (int i = 0; i < itemDataList.Count; i++)
         {
             var newItem = itemDataList[i];
-
-            switch (newItem.dataType)
-            {
-                case DataType.Consume:
-                    dataAllDivideItemList.Add(new DataConsumable(newItem));
-                    break;
-                case DataType.AllItem:
-                    dataAllDivideItemList.Add(new DataAllItem(newItem));
-                    break;
-                case DataType.Material:
-                    dataAllDivideItemList.Add(new DataMaterial(newItem));
-                    break;
-            }
+            dataAllDivideItemList.Add(new DataAllItem(newItem));
         }
 
         for (int i = 0; i < dataAllDivideItemList.Count; i++)
         {
-            if (dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
+            if (dataAllDivideItemList[i].ItemTableElem.limitCount < dataAllDivideItemList[i].OwnCount)
             {
                 var divideItem = CreateDivideItem(dataAllDivideItemList[i]);
                 if (divideItem != null)
@@ -86,55 +66,35 @@ public class DiaryInventory : MonoBehaviour
         }
         return dataAllDivideItemList;
     }
-    private DataItem CreateDivideItem(DataItem item)
+    private DataAllItem CreateDivideItem(DataAllItem item)
     {
-        DataItem newItem = null;
-        switch (item.dataType)
-        {
-            case DataType.Consume:
-                newItem = new DataConsumable(item);
-                break;
-            case DataType.AllItem:
-                newItem = new DataAllItem(item);
-                break;
-            case DataType.Material:
-                newItem = new DataMaterial(item);
-                break;
-        }
+        DataAllItem newItem = new DataAllItem(item);
+
         // 한도치 계산해서 분할 복사, 원본역시 분할된 만큼 소유개수 줄음
-        if (item.OwnCount > item.LimitCount)
+        if (item.OwnCount > item.ItemTableElem.limitCount)
         {
-            newItem.OwnCount = item.OwnCount - item.LimitCount;
-            newItem.LimitCount = item.LimitCount;
-            newItem.itemTableElem = item.itemTableElem;
-            newItem.itemId = item.itemId;
-            item.OwnCount = item.LimitCount;
+            newItem.OwnCount = item.OwnCount - item.ItemTableElem.limitCount;
+            item.OwnCount = item.ItemTableElem.limitCount;
         }
         else
-        {
             return null;
-        }
         return newItem;
     }
 
-    private void SortItemList(List<DataItem> itemList)
+    private void SortItemList(List<DataAllItem> itemList)
     {
         itemList.Sort((lhs, rhs) => ItemCompare(lhs, rhs));
     }
 
-    private int ItemCompare(DataItem lhs, DataItem rhs)
+    private int ItemCompare(DataAllItem lhs, DataAllItem rhs)
     {
         int result = 1;
-        if (lhs.dataType < rhs.dataType)
-            return result;
-        else if (lhs.dataType > rhs.dataType)
-            return -result;
+        if (lhs.ItemTableElem.type.CompareTo(rhs.ItemTableElem.type) != 0)
+            return lhs.ItemTableElem.type.CompareTo(rhs.ItemTableElem.type);
         else
         {
-            if (lhs.itemId < rhs.itemId)
-                return result;
-            else if (lhs.itemId > rhs.itemId)
-                return -result;
+            if (lhs.ItemTableElem.id.CompareTo(rhs.ItemTableElem.id) != 0)
+                return lhs.ItemTableElem.id.CompareTo(rhs.ItemTableElem.id);
             else
             {
                 if (lhs.OwnCount < rhs.OwnCount)

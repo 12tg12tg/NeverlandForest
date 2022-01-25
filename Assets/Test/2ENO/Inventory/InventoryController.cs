@@ -3,104 +3,106 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class InventoryController : GenericWindow
-{
-    [Header("InventoryClass")]
-    [Space(3)]
-    public InventoryItemView itemViewUI;
-    public ItemClickMessage itemMessageUI;
-    public GetItemView itemGetUI;
+//public class InventoryController : GenericWindow
+//{
+//    [Header("InventoryClass")]
+//    [Space(3)]
+//    public InventoryItemView itemViewUI;
+//    public ItemClickMessage itemMessageUI;
+//    public GetItemView itemGetUI;
 
-    public void Start()
-    {
-        Debug.Log("Awake");
-        Init();
-    }
-    public override void Open()
-    {
-        base.Open();
-        itemMessageUI.Close();
-        itemGetUI.Close();
-    }
-    public override void Close()
-    {
-        base.Close();
-        itemMessageUI.Close();
-        itemGetUI.Close();
-    }
+//    public void Start()
+//    {
+//        Debug.Log("Awake");
+//        Init();
+//    }
+//    public override void Open()
+//    {
+//        base.Open();
+//        itemMessageUI.Close();
+//        itemGetUI.Close();
+//    }
+//    public override void Close()
+//    {
+//        base.Close();
+//        itemMessageUI.Close();
+//        itemGetUI.Close();
+//    }
 
-    public void Init()
-    {
-        SetInventoryType();
-    }
+//    public void Init()
+//    {
+//        SetInventoryType();
+//    }
 
-    public void SetInventoryType()
-    { 
-        var list = Vars.UserData.HaveAllItemList.ToList();
-        itemViewUI.Init(list);
-    }
+//    public void SetInventoryType()
+//    { 
+//        var list = Vars.UserData.HaveAllItemList.ToList();
+//        itemViewUI.Init(list);
+//    }
 
-    public void OpenClickMessageWindow(DataItem item)
-    {
-        Open();
-        itemMessageUI.Open();
-        itemMessageUI.Init(item);
-        //manager.Open(1, true);
-    }
+//    public void OpenClickMessageWindow(DataItem item)
+//    {
+//        Open();
+//        itemMessageUI.Open();
+//        itemMessageUI.Init(item);
+//        //manager.Open(1, true);
+//    }
 
-    public void OpenChoiceMessageWindow(List<DataItem> itemList)
-    {
-        Open();
-        itemGetUI.Open();
-        itemGetUI.Init(itemList);
-    }
+//    public void OpenChoiceMessageWindow(List<DataItem> itemList)
+//    {
+//        Open();
+//        itemGetUI.Open();
+//        itemGetUI.Init(itemList);
+//    }
 
-    private void OnGUI()
-    {
-        if (GUILayout.Button("ItemGet"))
-        {
-            var getItemList = new List<DataItem>();
-            var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
-            var stringId = "7";
-            var newItem = new DataAllItem();
-            newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
-            newItem.itemId = int.Parse(stringId);
-            newItem.OwnCount = 13;
-            newItem.LimitCount = 5;
-            newItem.dataType = DataType.AllItem;
+//    private void OnGUI()
+//    {
+//        if (GUILayout.Button("ItemGet"))
+//        {
+//            var getItemList = new List<DataItem>();
+//            var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+//            var stringId = "7";
+//            var newItem = new DataAllItem();
+//            newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
+//            newItem.itemId = int.Parse(stringId);
+//            newItem.OwnCount = 13;
+//            newItem.LimitCount = 5;
+//            newItem.dataType = DataType.AllItem;
 
-            var stringId2 = "6";
-            var newItem2 = new DataAllItem();
-            newItem2.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId2);
-            newItem2.itemId = int.Parse(stringId2);
-            newItem2.OwnCount = 7;
-            newItem2.LimitCount = 5;
-            newItem2.dataType = DataType.AllItem;
+//            var stringId2 = "6";
+//            var newItem2 = new DataAllItem();
+//            newItem2.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId2);
+//            newItem2.itemId = int.Parse(stringId2);
+//            newItem2.OwnCount = 7;
+//            newItem2.LimitCount = 5;
+//            newItem2.dataType = DataType.AllItem;
 
-            getItemList.Add(newItem);
-            getItemList.Add(newItem2);
+//            getItemList.Add(newItem);
+//            getItemList.Add(newItem2);
 
-            OpenChoiceMessageWindow(getItemList);
-        }
+//            OpenChoiceMessageWindow(getItemList);
+//        }
 
-        if(GUILayout.Button("DeleteItem"))
-        {
-            var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
-            var stringId = "7";
-            var newItem = new DataAllItem();
-            newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
-            newItem.itemId = int.Parse(stringId);
-            newItem.OwnCount = 6;
-            newItem.LimitCount = 5;
-            newItem.dataType = DataType.AllItem;
+//        if(GUILayout.Button("DeleteItem"))
+//        {
+//            var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+//            var stringId = "7";
+//            var newItem = new DataAllItem();
+//            newItem.itemTableElem = allItemTable.GetData<AllItemTableElem>(stringId);
+//            newItem.itemId = int.Parse(stringId);
+//            newItem.OwnCount = 6;
+//            newItem.LimitCount = 5;
+//            newItem.dataType = DataType.AllItem;
 
-            Vars.UserData.RemoveItemData(newItem);
+//            Vars.UserData.RemoveItemData(newItem);
 
-            var list = Vars.UserData.HaveAllItemList.ToList();
-            itemViewUI.Init(list);
-        }
-    }
-}
+//            var list = Vars.UserData.HaveAllItemList.ToList();
+//            itemViewUI.Init(list);
+//        }
+//    }
+//}
+
+
 //List<DataAllItem> list = new List<DataAllItem>();
 //foreach (var item in Vars.UserData.HaveAllItemList)
 //{
