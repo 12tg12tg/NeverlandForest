@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class HuntPlayer : UnitBase
 {
-    [Header("Hunter")]
+    [Header("사냥꾼")]
     public Arrow shootArrow;
     public GameObject hunter;
     public Animator hunterAnimation;
@@ -14,11 +14,13 @@ public class HuntPlayer : UnitBase
     private Vector2 currentIndex;
     public Vector2 CurrentIndex => currentIndex;
 
-    [Header("Herbalist")]
+    [Header("약초학자")]
     public GameObject herbalist;
     public Animator herbalistAnimation;
 
-
+    [Header("공용")]
+    private int life = 2;
+    public int Life { get => life; set => life = value; }
     private void Start()
     {
         currentIndex = Vector2.right; // 인덱스 1,0 이라는 의미.. 최초 시작 왼쪽 가운데
@@ -41,7 +43,7 @@ public class HuntPlayer : UnitBase
         {
             isForward = true;
             // 동물이 도망칠 확률 업
-            EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape, true);
+            EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscapePercentUp, true);
         }
         EventBus<HuntingEvent>.Publish(HuntingEvent.PlayerMove, isForward, isOnBush);
 
@@ -55,7 +57,9 @@ public class HuntPlayer : UnitBase
             hunterAnimation.SetTrigger("Idle");
             hunter.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
             coHunterMove = null;
-            EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape);
+
+            // 플레이어의 이동이 끝나면 동물 도망 체크
+            EventBus<HuntingEvent>.Publish(HuntingEvent.AnimalEscape, this);
         }));
     }
 
