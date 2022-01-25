@@ -7,6 +7,9 @@ public class GatheringSystem : MonoBehaviour
     //  public PlayerDungeonUnit manplayer;
     public PlayerDungeonUnit womenplayer;
     public PlayerDungeonUnit boyPlayer;
+
+    public DiaryManager diaryManager;
+
     public GameObject gatheringPanel;
     public TextMeshProUGUI gatheringtext;
 

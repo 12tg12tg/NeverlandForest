@@ -18,20 +18,8 @@ public class DiaryManager : MonoBehaviour
     public GameObject gatheringIncCampPanel;
     public GameObject gatheringInCampReward;
 
-    public GameObject gatheringReward0;
-    public GameObject gatheringReward1;
-    public GameObject gatheringReward2;
-    public GameObject gatheringReward3;
-    public GameObject gatheringReward4;
-    public GameObject gatheringReward5;
-
-    public Image gatheringReward0_img;
-    public Image gatheringReward1_img;
-    public Image gatheringReward2_img;
-    public Image gatheringReward3_img;
-    public Image gatheringReward4_img;
-    public Image gatheringReward5_img;
-
+    public GatheringInCampRewardObject gatheringRewardPrheb;
+    public GameObject gatheringParent;
 
     public GameObject battleRewardPanel;
     public GameObject huntRewardPanel;
@@ -147,6 +135,8 @@ public class DiaryManager : MonoBehaviour
         battleRewardPanel.SetActive(false);
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(false);
+        gatheringInCampReward.SetActive(false);
+
     }
 
     public void OpenProduce()
@@ -231,13 +221,5 @@ public class DiaryManager : MonoBehaviour
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(true);
     }
-    public void AllRewardClose()
-    {
-        gatheringReward0.SetActive(false);
-        gatheringReward1.SetActive(false);
-        gatheringReward2.SetActive(false);
-        gatheringReward3.SetActive(false);
-        gatheringReward4.SetActive(false);
-        gatheringReward5.SetActive(false);
-    }
+  
 }

@@ -43,8 +43,19 @@ public class CampManager : MonoBehaviour
     public GameObject CookPanel;
 
     public InventoryController inventoryController;
-    private DataAllItem itemReward;
-    private List<DataAllItem> RewardList = new List<DataAllItem>();
+
+    private List<DataAllItem> rewardList = new List<DataAllItem>();
+    public List<DataAllItem>RewardList
+    {
+        get
+        {
+            return rewardList;
+        }
+        set
+        {
+            rewardList = value;
+        }
+    }
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
@@ -53,6 +64,18 @@ public class CampManager : MonoBehaviour
     public SimpleGesture simpleGesture;
     //
     public ReconfirmPanelManager reconfirmPanelManager;
+    private DataAllItem selectItem;
+    public DataAllItem SelectItem
+    {
+        get
+        {
+            return selectItem;
+        }
+        set
+        {
+            selectItem = value;
+        }
+    }
     public enum CampEvent
     {
         StartCook,
@@ -162,7 +185,7 @@ public class CampManager : MonoBehaviour
             newBottomUi.SetActive(true);
             isSleepMove = false;
         }
-
+        newBottomUi.SetActive(true);
     }
 
     //CookingInCamp
@@ -389,62 +412,7 @@ public class CampManager : MonoBehaviour
             bluemoonObject.SetActive(false);
         }
     }
- 
-    public void SetRewardItemIcon(Image buttonimage)
-    {
-        //³ª¹«Åä¸·: 1 %
-        //¾¾¾Ñ: 1 %
-        //³ª¹µ°¡Áö3 %
-        //¾àÃÊ: 5 %
-        // ¹ö¼¸: 5 %
-        //²Î: 85 %
-        var randNum = Random.Range(1, 101);
-      
-        var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var newItem = new DataAllItem();
-        newItem.OwnCount = Random.Range(1, 3);
-        newItem.dataType = DataType.AllItem;
-        var stringId = $"{randNum}";
-        newItem.itemId = randNum;
-        newItem.itemTableElem = allitemTable.GetData<AllItemTableElem>(stringId);
-        //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
-        if (randNum==1)
-        {
-            //³ª¹«Åä¸·: 1 %
-            itemReward = newItem;
-        }
-        else if(randNum ==100)
-        {
-            //¾¾¾Ñ: 1 %
-            itemReward = newItem;
-        }
-        else if(randNum >=2 &&randNum<= 4)
-        {
-            //³ª¹µ°¡Áö3 %
-            itemReward = newItem;
-        }
-        else if(randNum >= 5 && randNum <= 9)
-        {
-            //¾àÃÊ: 5 %
-            itemReward = newItem;
-        }
-        else if (randNum >=10 && randNum<= 14)
-        {
-            // ¹ö¼¸: 5 %
-            itemReward = newItem;
-        }
-        else
-        {
-            //²Î: 85 %
-            Debug.Log("²Î");
-            buttonimage.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
-        }
-        if (itemReward!=null)
-        {
-            RewardList.Add(itemReward);
-            itemReward = null;
-        }
-    }
+  
     public void SetGatheringTime()
     {
         gatheringTimeText.text = gatheringTime.ToString() + "ºÐ";
@@ -474,94 +442,68 @@ public class CampManager : MonoBehaviour
         haveMinute -= gatheringTime;
         Vars.UserData.uData.BonfireHour = haveMinute / 60;
         diaryManager.OpenGatheringReward();
-        diaryManager.AllRewardClose();
-       
+
         Debug.Log($"gatheringTime{gatheringTime}");
-        if (gatheringTime/30==1)//º¸»ó1°³
+        for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-        }
-        else if (gatheringTime / 30 == 2)//º¸»ó2°³
-        {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-            diaryManager.gatheringReward1.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward1_img);
-        }
-        else if (gatheringTime / 30 == 3)//º¸»ó3°³
-        {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-            diaryManager.gatheringReward1.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward1_img);
-            diaryManager.gatheringReward2.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward2_img);
-        }
-        else if (gatheringTime / 30 == 4)//º¸»ó4°³
-        {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-            diaryManager.gatheringReward1.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward1_img);
-            diaryManager.gatheringReward2.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward2_img);
-            diaryManager.gatheringReward3.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward3_img);
-        }
-        else if (gatheringTime / 30 == 5)//º¸»ó5°³
-        {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-            diaryManager.gatheringReward1.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward1_img);
-            diaryManager.gatheringReward2.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward2_img);
-            diaryManager.gatheringReward3.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward3_img);
-            diaryManager.gatheringReward4.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward4_img);
-        }
-        else if (gatheringTime / 30 == 6)//º¸»ó6°³
-        {
-            diaryManager.gatheringReward0.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward0_img);
-            diaryManager.gatheringReward1.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward1_img);
-            diaryManager.gatheringReward2.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward2_img);
-            diaryManager.gatheringReward3.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward3_img);
-            diaryManager.gatheringReward4.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward4_img);
-            diaryManager.gatheringReward5.SetActive(true);
-            SetRewardItemIcon(diaryManager.gatheringReward5_img);
+            GameObject reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
+            reward.transform.parent = diaryManager.gatheringParent.transform;
         }
         ConsumeManager.TimeUp(gatheringTime);
-        if (RewardList.Count !=0)
+        if (rewardList.Count != 0)
         {
-           
-            for (int i = 0; i < RewardList.Count; i++)
+            for (int i = 0; i < rewardList.Count; i++)
             {
-                Debug.Log($"itemReward{RewardList[i].ItemTableElem.name}");
+                Debug.Log($"itemReward{rewardList[i].ItemTableElem.name}");
             }
         }
-        Debug.Log($"º¸»ó°¹¼ö : {RewardList.Count}");
+        Debug.Log($"º¸»ó°¹¼ö : {rewardList.Count}");
         gatheringTime = 0;
         SetGatheringTime();
         SetBonTime();
-       
+
     }
 
     public void GetItem()
     {
-
+        if (selectItem != null)
+        {
+            Vars.UserData.AddItemData(selectItem);
+            if (BottomUIManager.Instance !=null)
+            {
+                BottomUIManager.Instance.ItemListInit();
+            }
+            if (DiaryInventory.Instance !=null)
+            {
+                DiaryInventory.Instance.ItemButtonInit();
+            }
+            selectItem = null;
+        }
     }
     public void AllItem()
     {
-        for (int i = 0; i < RewardList.Count; i++)
+        if (rewardList.Count>0)
         {
-            Vars.UserData.AddItemData(RewardList[i]);
+            for (int i = 0; i < rewardList.Count; i++)
+            {
+                Vars.UserData.AddItemData(rewardList[i]);
+            }
+            for (int i = 0; i < rewardList.Count; i++)
+            {
+                rewardList.RemoveAt(i);
+            }
+            rewardList.Clear();
+            if (BottomUIManager.Instance != null)
+            {
+                BottomUIManager.Instance.ItemListInit();
+            }
+            if (DiaryInventory.Instance != null)
+            {
+                DiaryInventory.Instance.ItemButtonInit();
+            }
         }
+        diaryManager.AllClose();
+        diaryManager.gameObject.SetActive(false);
+        newBottomUi.SetActive(true);
     }
 }
