@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 public class GatheringSystem : MonoBehaviour
 {
     //  public PlayerDungeonUnit manplayer;
@@ -15,8 +16,6 @@ public class GatheringSystem : MonoBehaviour
 
     public GameObject gatheringToolPanel;
     public TextMeshProUGUI gatheringTooltext;
-    public TextMeshProUGUI yesTooltext;
-    public TextMeshProUGUI noTooltext;
 
     private List<GameObject> gatherings = new List<GameObject>();
 
@@ -24,6 +23,18 @@ public class GatheringSystem : MonoBehaviour
     private Animator playerAnimation;
     private Animator playerAnimationBoy;
     public InventoryController inventoryController;
+
+    //New
+    public TextMeshProUGUI gatheringLanternLeveltext;
+    public TextMeshProUGUI gatheringToolConsumetext;
+    public Image toolImage;
+    public TextMeshProUGUI gatheringToolCompleteTimeText;
+    public TextMeshProUGUI toolName;
+    public TextMeshProUGUI toolCount;
+
+    public TextMeshProUGUI gatheringHandConsumeText;
+    public Image handimage;
+    public TextMeshProUGUI handCompleteTimeText;
 
     public enum GatheringType
     {
@@ -70,10 +81,6 @@ public class GatheringSystem : MonoBehaviour
         gatherings.Clear();
     }
 
-    private void Update()
-    {
-
-    }
     public void YesIGathering() //좋아 채집하겠어
     {
         ToolPopUp(); //판넬이 켜지고 
@@ -81,7 +88,6 @@ public class GatheringSystem : MonoBehaviour
     public void NoIDonGathering()
     {
         gatheringPanel.SetActive(false);
-        Debug.Log("팝업껏다");
         boyPlayer.IsCoMove = true;
         if (coWomenMove == null)
         {
@@ -93,17 +99,36 @@ public class GatheringSystem : MonoBehaviour
 
     private void PopUp()
     {
-        Debug.Log("팝업떳다");
         gatheringPanel.SetActive(true);
         gatheringtext.gameObject.SetActive(true);
         gatheringtext.text = " 채집을 시작하겠습니까";
     }
     private void ToolPopUp()
     {
-        Debug.Log("도구팝업떳다");
-        gatheringToolPanel.SetActive(true);
-        gatheringTooltext.gameObject.SetActive(true);
-        gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";
+        /* Debug.Log("도구팝업떳다");
+         gatheringToolPanel.SetActive(true);
+         gatheringTooltext.gameObject.SetActive(true);
+         gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";*/
+
+        diaryManager.gameObject.SetActive(true);
+        diaryManager.OpenGatheringInDungeon();
+        if (ConsumeManager.CurTimeState ==TimeState.DayTime)
+        {
+            gatheringLanternLeveltext.text = "랜턴" + Vars.UserData.uData.lanternState.ToString();
+            if (ConsumeManager.CurLanternState ==LanternState.Level3)
+            {
+                gatheringLanternLeveltext.text += "(30분보정중)";
+            }
+            else if (ConsumeManager.CurLanternState == LanternState.Level4)
+            {
+                gatheringLanternLeveltext.text += "(1시간보정중)";
+            }
+            else
+            {
+                gatheringLanternLeveltext.text += "(밝기가낮아 보정받지못합니다)";
+
+            }
+        }
         var lanternstate = ConsumeManager.CurLanternState;
         switch (curSelectedObj.objectType)
         {
@@ -131,25 +156,40 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+           gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+             + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 " + "\n"
+           + (Vars.UserData.uData.CurIngameMinute ).ToString() + "분";
         }
         else if (lanternstate == LanternState.Level3)
         {
-            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
           + "시간은 1시간을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 " + "\n"
+            + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
         }
         else
         {
-            yesTooltext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비합니다" + "\n"
        + "시간은 1시간 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 2시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+          + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour +2).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
+        toolName.text = "도끼";
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     private void PitGatheing(LanternState lanternstate) //구덩이채집? 
     {
@@ -158,25 +198,40 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+           + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+             + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else if (lanternstate == LanternState.Level3)
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 1시간을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+           + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
         }
         else
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
        + "시간은 1시간 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 2시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 2).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
+        toolName.text = "삽";
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     private void HerbsGatheing(LanternState lanternstate) //구덩이채집? 
     {
@@ -185,25 +240,42 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+    + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
+
         }
         else if (lanternstate == LanternState.Level3)
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
+
         }
         else
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
        + "시간은 1시간 을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
         }
+        toolName.text = "삽";
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     private void MushroomGatheing(LanternState lanternstate) //구덩이채집? 
     {
@@ -212,25 +284,40 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+ + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else if (lanternstate == LanternState.Level3)
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
           + "시간은 30분을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간을 소비합니다";
+            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+ + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else
         {
-            yesTooltext.text = "삽은 스테미나를 10 소비합니다" + "\n"
+            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
        + "시간은 1시간 을 소비합니다";
-            noTooltext.text = "맨손은 스테미나를 20 소비합니다" + "\n"
+            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
+            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+     + (Vars.UserData.uData.CurIngameMinute ).ToString() + "분";
+            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+       + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "분";
         }
+        toolName.text = "삽";
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     public void GoGatheringObject(Vector3 objectPos)
     {
@@ -289,6 +376,7 @@ public class GatheringSystem : MonoBehaviour
         //    PlayWalkAnimationBoy();
         //}
         //coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        diaryManager.gameObject.SetActive(false);
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
         gatheringToolPanel.SetActive(false);
@@ -368,6 +456,7 @@ public class GatheringSystem : MonoBehaviour
         boyPlayer.IsCoMove = true;
         playerAnimationBoy.speed = 0.5f;
         playerAnimationBoy.SetTrigger("Pick");
+        diaryManager.gameObject.SetActive(false);
         gatheringPanel.SetActive(false);
         Debug.Log("팝업껏다");
         gatheringToolPanel.SetActive(false);
