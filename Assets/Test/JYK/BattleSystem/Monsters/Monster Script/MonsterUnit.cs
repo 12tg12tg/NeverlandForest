@@ -6,7 +6,7 @@ using UnityEngine.Events;
 
 public enum MonsterState
 {
-    Idle, Attack, Move, DoSomething, Dead
+    Idle, DoSomething, Dead
 }
 
 public class MonsterUnit : UnitBase, IAttackable, IAttackReady
@@ -44,13 +44,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private void Awake()
     {
         animator = GetComponent<Animator>();
-    }
-
-    private void Start()
-    {
-        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
         uiLinker = GetComponent<MonsterUILinker>();
-        Init(baseElem);
     }
 
     // Update
@@ -108,7 +102,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         }
         else
         {
-            LockTrigger();
+            DisableHitTrigger();
         }
     }
 
@@ -144,20 +138,23 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             State = MonsterState.Dead;
             Destroy(uiLinker.linkedUi?.gameObject);
         }
+        
     }
 
     // 초기화
-    public void Init(MonsterTableElem elem)
+    public void Init()
     {
-        initHp = Hp = elem.hp;
-        Atk = elem.atk;
-        sheild = elem.sheild;
+        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
+
+        initHp = Hp = baseElem.hp;
+        Atk = baseElem.atk;
+        sheild = baseElem.sheild;
         maxSheild = sheild;
-        type = elem.type;
+        type = baseElem.type;
         manager ??= BattleManager.Instance;
         command ??= new MonsterCommand(this);
 
-        uiLinker.Init(elem.type);
+        uiLinker.Init(baseElem.type);
         State = MonsterState.Idle;
     }
     private void EraseThis()
@@ -194,67 +191,74 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
         }
         // 4. 속박 상태인지 확인
-        else if(IsBind)
+        else if (IsBind)
         {
             PlayHitAnimation(); // + 속박 표시
             IsBind = false;
-            command.actionType = MonsterActionType.None;         
+            command.actionType = MonsterActionType.None;
         }
         // 5. 움직일 대상 타일 찾기
         else
         {
-            // 같은 행에서 먼저 확인
-            var movableTiles = TileMaker.Instance.GetMovableTilesInSameRow(CurTile);
-            int countInRow = movableTiles.Length;
-            if (countInRow != 0)
+            // 움직일 거리 정하기
+            // 1) 일단 최소 ~ 최대 이동거리 사잇 값으로 설정.
+            // 2) 플레이어 영역을 넘어서는지 확인                 -- 4번을 확인하면 확인할 필요 없음.
+            //      3) 넘어선다면 최대 사거리 까지로 정정.
+            // 4) 최대 사거리를 넘어서는지 확인
+            //      4) 넘어선다면 최대 사거리 까지로 정정.
+            var curMoveLen = BaseElem.Speed;
+            int rangeTile = (int)BaseElem.type + 1; // 공격 가능한 사거리의 타일
+            var dest = Pos.y - curMoveLen;
+            if (dest < rangeTile)
             {
-                var rand = Random.Range(0, countInRow);
-                command.actionType = MonsterActionType.Move;
-                command.target = movableTiles[rand].index;
-                uiLinker.UpdateDistance((int)(CurTile.index.y - command.target.y));
+                curMoveLen = (int)Pos.y - rangeTile;
             }
-            else
-            {
-                // 동일행에 없으면 사거리밖이어도 공격.
-                if (CurTile.index.y <= 2)
-                {
-                    command.actionType = MonsterActionType.Attack;
-                    var randTarget = Random.Range(0, 2);
-                    command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
-                }
-                else
-                {
-                    // 갈곳없어서 행동하지않음.
-                    command.actionType = MonsterActionType.None;
-                }
-
-
-                // 다른 행에서도 확인
-                {
-                    //var movableTilesOtherRow = TileMaker.Instance.GetMovableTiles(CurTile);
-                    //int count = movableTilesOtherRow.Length;
-                    //if (count != 0)
-                    //{
-                    //    var rand = Random.Range(0, count);
-                    //    command.actionType = MonsterActionType.Move;
-                    //    command.target = movableTilesOtherRow[rand].index;
-                    //}
-                    //else
-                    //{
-                    //    command.actionType = MonsterActionType.None;
-                    //}
-                }
-
-
-            }
+            command.nextMove = curMoveLen;
+            command.actionType = MonsterActionType.Move;
         }
         State = MonsterState.DoSomething;
+
+        uiLinker.UpdateCircleUI(command);
         return command;
     }
 
     public void Move()
     {
-        ObstacleAdd();
+        // 우선 같은 행에서 이동거리 타일이 비어있는지 확인
+        var indexX = Pos.x;
+        var indexY = Pos.y - command.nextMove;
+        var destTile = TileMaker.Instance.GetTile(new Vector2(indexX, indexY));
+        bool moveFoward = false;
+
+        if(destTile.CanStand)
+        {
+            moveFoward = true;
+
+            command.target = destTile.index;
+        }
+        else
+        {
+            moveFoward = false;
+
+            // 다른 행에서 비어있는지 확인
+            var list = TileMaker.Instance.GetMovableTilesFoward(Pos, command.nextMove, true);
+            int count = list.Count;
+            if(count != 0)
+            {
+                var rand = Random.Range(0, count);
+                command.target = list[rand].index;
+            }
+            else
+            {
+                /* UI 증발하는 효과 */
+                // 행동하지 않음.
+                return;
+            }
+        }
+
+        if(moveFoward) // 직선이동할때만 트랩 계산
+            ObstacleAdd();
+
         BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
             () => { isActionDone = true; PlayIdleAnimation(); });
     }
@@ -262,7 +266,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     // Animation
     public void PlayAttackAnimation()
     {
-        State = MonsterState.Attack;
         animator.SetTrigger("Attack");
     }
     public void PlayDeadAnimation()
@@ -307,12 +310,12 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
 
     // Trigger Enable
-    public void EnableTrigger()
+    public void EnableHitTrigger()
     {
         trigger.enabled = true;
     }
 
-    public void LockTrigger()
+    public void DisableHitTrigger()
     {
         trigger.enabled = false;
     }

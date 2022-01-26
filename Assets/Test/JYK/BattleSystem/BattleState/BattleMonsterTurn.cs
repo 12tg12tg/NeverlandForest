@@ -29,12 +29,12 @@ public class BattleMonsterTurn : State<BattleState>
 
             foreach (var monster in list)
             {
-                var command = monster.SetActionCommand();
+                var command = monster.command;
                 if (command != null)
                     manager.MonsterQueue.Enqueue(command);
             }
 
-            manager.MonsterQueue.OrderByDescending(x => x.Ordering);
+            /*큐 정렬기준 에 따라 순서 정하기 - 조건 확인 후 업데이트*/
         }
     }
 

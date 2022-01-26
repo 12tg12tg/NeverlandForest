@@ -258,16 +258,19 @@ public class TileMaker : MonoBehaviour
         else return null;
     }
 
-    public Tiles[] GetMovableTilesInSameRow(Tiles curTile)
+    public List<Tiles> GetMovableTilesFoward(Vector2 baseTile, int len, bool canMoveDiagonal)
     {
-        //같은 행에 이동가능한 반경이면서 이미 2개의 유닛이 서있지 않은 타일들을 모두 반환.
-        var curX = curTile.index.x;
-        var curY = curTile.index.y;
-        var maxMovableRange = curTile.MaxMovableRange();
+        // 몬스터 이동거리에 맞는 타일 반환
+        var curY = (int)baseTile.y;
+        var destY = curY - len;
+
         var list = from n in tileList
-                   where n.index.x == curX && (n.index.y >= curY - maxMovableRange && n.index.y <= curY - 1) && n.CanStand
+                   where (canMoveDiagonal ?
+                            destY == (int)n.index.y :
+                            destY == (int)n.index.y && baseTile.x == n.index.x)
+                            && n.CanStand && (int)n.index.y != 0
                    select n;
-        return list.ToArray();
+        return list.ToList();
     }
 
     public Tiles[] GetMovableTiles(Tiles curTile)

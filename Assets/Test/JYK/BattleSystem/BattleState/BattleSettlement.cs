@@ -16,8 +16,6 @@ public class BattleSettlement : State<BattleState>
 
     public override void Init()
     {
-        /*방금 몬스터의 공격을 받았으므로, 플레이어 패배 판단*/
-
         //몇턴.
         manager.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
         {

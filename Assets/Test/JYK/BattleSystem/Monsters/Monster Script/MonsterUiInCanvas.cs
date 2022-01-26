@@ -18,6 +18,7 @@ public class MonsterUiInCanvas : MonoBehaviour
     public Image hpBarImg;
     public Image sheildImg;
     public TextMeshProUGUI nextMoveDistance;
+    public Image iconImage;
     private bool isInit;
 
     private void Start()

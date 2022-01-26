@@ -35,14 +35,16 @@ public class BattleAction : State<BattleState>
 
     public override void Release()
     {
-        Debug.Log("Battle Action Release");
     }
+
     public override void Update()
     {
         if (FSM.preState == BattleState.Monster)
         {
             if(curMonsterCommand.attacker.State == MonsterState.Idle)
             {
+                curMonsterCommand.attacker.SetActionCommand();      // 행동 마치자마자 다음 행동 정하기.
+
                 if(manager.MonsterQueue.Count <= 0)
                 {
                     if (manager.isPlayerFirst)

@@ -19,9 +19,9 @@ public class BattleManager : MonoBehaviour
 
     //Unit
     public List<MonsterUnit> monsters = new List<MonsterUnit>();
-    private Queue<MonsterUnit> wave1 = new Queue<MonsterUnit>();
-    private Queue<MonsterUnit> wave2 = new Queue<MonsterUnit>();
-    private Queue<MonsterUnit> wave3 = new Queue<MonsterUnit>();
+    private List<MonsterUnit> wave1 = new List<MonsterUnit>();
+    private List<MonsterUnit> wave2 = new List<MonsterUnit>();
+    private List<MonsterUnit> wave3 = new List<MonsterUnit>();
     public PlayerBattleController boy;
     public PlayerBattleController girl;
     private PlayerCommand boyInput;
@@ -88,11 +88,9 @@ public class BattleManager : MonoBehaviour
         //Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
-    public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    // 초기화
+    public void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
-        // 1. Grade & Wave
-        //  마지막방전투인지 일반전투인지를 판단하고,
-        //  중반이 지나갔는지 아닌지를 판단하고,
         if (isBlueMoonBattle)
         {
             curGroup = 6;
@@ -119,32 +117,32 @@ public class BattleManager : MonoBehaviour
                 curGroup = Random.Range(0, 4);
             }
         }
-
-        // 2. 변수 초기화
+    }
+    public void VarInit()
+    {
         turn = 1;
         preWaveTurn = 1;
         curWave = 0;
         IsDuringPlayerAction = false;
         GameManager.Manager.State = GameState.Battle;
-
-        // 3. 몬스터 (랜덤뽑기) & 배치
+    }
+    public void MonsterInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    {
         monsters.Clear();
         wave1.Clear();
         wave2.Clear();
         wave3.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            wave1.Add(null);
+            wave2.Add(null);
+            wave3.Add(null);
+        }
 
         var monsterElems = DataTableManager.GetTable<MonsterTable>().data.Values;
         var groups = (from n in monsterElems
                       where (n as MonsterTableElem).@group == curGroup
                       select int.Parse(n.id)).ToList();
-
-        void EnqueueMonster(Queue<MonsterUnit> queue, int id) // 지역 메소드
-        {
-            var tag = (MonsterPoolTag)id;
-            var go = MonsterPool.Instance.GetObject(tag);
-            var unitSc = go.GetComponent<MonsterUnit>();
-            queue.Enqueue(unitSc);
-        }
 
         if (isBlueMoonBattle || isEndOfDeongun)
         {
@@ -156,13 +154,21 @@ public class BattleManager : MonoBehaviour
             groups.Remove(bossIndex);
 
             var rand = Random.Range(0, groups.Count);
-            EnqueueMonster(wave2, groups[rand]);
-            EnqueueMonster(wave2, bossIndex);       // 보스 중앙
+            wave2[0] = FindMonsterToId(groups[rand]);
+
+            wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+
             rand = Random.Range(0, groups.Count);
-            EnqueueMonster(wave2, groups[rand]);
+            wave2[2] = FindMonsterToId(groups[rand]);
+
+            for (int i = 0; i < 3; i++)
+            {
+                wave2[i].Pos = new Vector2(i, 6);
+                wave2[i].SetActionCommand();
+            }
 
             // Wave1, Wave3
-            Queue<MonsterUnit> temp;
+            List<MonsterUnit> temp;
             for (int i = 0; i < 2; i++)
             {
                 if (i == 0)
@@ -170,19 +176,14 @@ public class BattleManager : MonoBehaviour
                 else
                     temp = wave3;
 
-                int monsterInWave = Random.Range(2, 4);
-                for (int k = 0; k < monsterInWave; k++)
-                {
-                    rand = Random.Range(0, groups.Count);
-                    EnqueueMonster(temp, groups[rand]);
-                }
+                MakeNormalWave(groups, temp);
             }
         }
         else
         {
             // 일반 배틀
             int randWaveCount = Random.Range(2, 4);
-            Queue<MonsterUnit> temp = null;
+            List<MonsterUnit> temp = null;
             for (int i = 0; i < curWave; i++)
             {
                 if (i == 0)
@@ -192,19 +193,53 @@ public class BattleManager : MonoBehaviour
                 else
                     temp = wave3;
 
-                int monsterInWave = Random.Range(2, 4);
-                for (int k = 0; k < monsterInWave; k++)
-                {
-                    var rand = Random.Range(0, groups.Count);
-                    EnqueueMonster(temp, groups[rand]);
-                }
+                MakeNormalWave(groups, temp);
             }
         }
+    }
+    MonsterUnit FindMonsterToId(int monsterId) // 지역 메소드
+    {
+        var tag = (MonsterPoolTag)monsterId;
+        var go = MonsterPool.Instance.GetObject(tag);
+        var unitSc = go.GetComponent<MonsterUnit>();
+        unitSc.Init();
+        return unitSc;
+    }
+    public void MakeNormalWave(List<int> idGroup, List<MonsterUnit> wave)
+    {
+        int monsterInWave = Random.Range(2, 4);
+        int exceptCol = -1;
+        if (monsterInWave == 2)
+            exceptCol = Random.Range(0, 3);
+
+        int rand;
+        int colIndex = 0;
+        for (int k = 0; k < monsterInWave; k++, colIndex++)
+        {
+            rand = Random.Range(0, idGroup.Count);
+            if (colIndex == exceptCol)
+                colIndex++;
+            wave[colIndex] = FindMonsterToId(idGroup[rand]);
+            wave[colIndex].Pos = new Vector2(colIndex, 6);
+            wave[colIndex].SetActionCommand();
+        }
+    }
+    public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    {
+        // 1. Grade & Wave
+        //  마지막방전투인지 일반전투인지를 판단하고,
+        //  중반이 지나갔는지 아닌지를 판단하고,
+        GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
+
+        // 2. 변수 초기화
+        VarInit();
+
+        // 3. 몬스터 (랜덤뽑기) & 배치
+        MonsterInit(isBlueMoonBattle, isEndOfDeongun);
 
         SetWavePosition(wave1);
         SetWavePosition(wave2);
         SetWavePosition(wave3);
-        //StartWave(1);
 
         // 플레이어 스탯 전달받기
         // Vars 전역 저장소에서 불러오기.
@@ -219,16 +254,13 @@ public class BattleManager : MonoBehaviour
         FSM.ChangeState(BattleState.Start);
     }
 
+    // 플레이어 입력 대기
     public void WaitUntillSettingDone()
     {
         /* 전투시작 버튼 활성화
            인벤토리에서 트랩류 스킬 테두리 On && 나머지 비활성화 */
         battleStartBut.gameObject.SetActive(true);
-
-
-
-    }
-    
+    }   
     public void StartButton() // 버튼용 함수
     {
         battleStartBut.gameObject.SetActive(false);
@@ -251,7 +283,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartWave(int wave)
     {
-        Queue<MonsterUnit> temp = null;
+        List<MonsterUnit> temp = null;
         if (wave == 1)
             temp = wave1;
         else if (wave == 2)
@@ -259,59 +291,33 @@ public class BattleManager : MonoBehaviour
         else
             temp = wave3;
 
-        if (temp.Count == 3) // 세마리라면 마지막 몹을 중앙에.
+        for (int i = 0; i < temp.Count; i++)
         {
-            int i = 0;
-            while (temp.Count != 0)
-            {
-                var monsterSc = temp.Dequeue();
-                monsters.Add(monsterSc);
-                var tempForCoroutine = monsterSc;
-                var tilePos = new Vector2(i, 6);
-                tempForCoroutine.ObstacleAdd(tilePos);
-                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
-                i++;
-            }
+            if (temp[i] == null)
+                continue;
+            monsters.Add(temp[i]);
+            var tempForCoroutine = temp[i];
+            var tilePos = new Vector2(i, 6);
+            tempForCoroutine.ObstacleAdd(tilePos);
+            MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
         }
-        else // 두마리라면 뽑아서 아무데나 안겹치게.
-        {
-            int randException = Random.Range(0, 3); // 0 || 1 || 2
-            int[] indexArr = null;
-            if (randException == 0)
-                indexArr = new int[] { 1, 2 };
-            else if (randException == 1)
-                indexArr = new int[] { 0, 2 };
-            else
-                indexArr = new int[] { 0, 1 };
 
-            int i = 0;
-            while (temp.Count != 0)
-            {
-                var monsterSc = temp.Dequeue();
-                monsters.Add(monsterSc);
-                var tempForCoroutine = monsterSc;
-                var tilePos = new Vector2(indexArr[i], 6);
-                tempForCoroutine.ObstacleAdd(tilePos);
-                MoveUnitOnTile(tilePos, monsterSc, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
-                i++;
-            }
-        }
     } //매개변수 웨이브를 전투에 입장시키기.
 
-    public void SetWavePosition(Queue<MonsterUnit> waveQueue, bool useCoroutine = false)
+    public void SetWavePosition(List<MonsterUnit> waveList, bool useCoroutine = false)
     {
-        if (waveQueue.Count == 0)
+        if (waveList.Count == 0)
             return;
 
         int wave;
-        if (waveQueue == wave1)
+        if (waveList == wave1)
             wave = 1;
-        else if (waveQueue == wave2)
+        else if (waveList == wave2)
             wave = 2;
         else
             wave = 3;
 
-        int count = waveQueue.Count;
+        int count = waveList.Count;
         var remainWave = wave - curWave;
         MonsterUnit temp;
 
@@ -321,24 +327,24 @@ public class BattleManager : MonoBehaviour
         var spacingX = basePos.x - leftPos.x;
         var spacingZ = upPos.z - basePos.z;
 
-        if (count == 2)
-            basePos += new Vector3(0f, 0f, spacingZ / 2);
+        //if (count == 2)
+        //    basePos += new Vector3(0f, 0f, spacingZ / 2);
 
         for (int i = 0; i < count; i++)
         {
-            temp = waveQueue.Dequeue();
+            if (waveList[i] == null)
+                continue;
 
-            var curPos = temp.transform.position;
+            var curPos = waveList[i].transform.position;
             var newPos = basePos + new Vector3(spacingX * remainWave, 0f, i * spacingZ);
             if (!useCoroutine)
-                temp.transform.position = newPos;
+                waveList[i].transform.position = newPos;
             else
             {
-                var tempForCoroutine = temp;
-                temp.PlayMoveAnimation();
-                StartCoroutine(Utility.CoTranslate(temp.transform, curPos, newPos, 1f, tempForCoroutine.PlayIdleAnimation));
+                var tempForCoroutine = waveList[i];
+                waveList[i].PlayMoveAnimation();
+                StartCoroutine(Utility.CoTranslate(waveList[i].transform, curPos, newPos, 1f, tempForCoroutine.PlayIdleAnimation));
             }
-            waveQueue.Enqueue(temp);
         }
     }
 

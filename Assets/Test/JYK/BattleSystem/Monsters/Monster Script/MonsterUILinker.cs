@@ -7,17 +7,24 @@ using UnityEngine.UI;
 public class MonsterUILinker : MonoBehaviour
 {
     public GameObject hpBarPrefab;
-    public MonsterUiInCanvas linkedUi;
-    public Vector3 hpBarOffset = new Vector3(0f, 2.2f, 0f);
+
+    // Component
     private Canvas uiCanvas;
 
+    // Instance
+    public MonsterUiInCanvas linkedUi;
     private Image rangeImg;
     private Image hpBarImage;
     private Image sheildImg;
+    private Image iconImg;
     private TextMeshProUGUI nextMoveDistance;
 
+    // Vars
+    public Vector3 hpBarOffset = new Vector3(0f, 2.2f, 0f);
     public Color longRange;
     public Color shortRange;
+    public Sprite attackIcon;
+    public Sprite cantMoveIcon;
 
     public void Init(MonsterType type)
     {
@@ -34,7 +41,7 @@ public class MonsterUILinker : MonoBehaviour
         hpBarImage = linkedUi.hpBarImg;
         sheildImg = linkedUi.sheildImg;
         nextMoveDistance = linkedUi.nextMoveDistance;
-
+        iconImg = linkedUi.iconImage;
         linkedUi.Init(transform);
 
         hpBarOffset.y = GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y;
@@ -54,9 +61,26 @@ public class MonsterUILinker : MonoBehaviour
         sheildImg.fillAmount = (float)curS / fulSild;
     }
 
-    public void UpdateDistance(int speed)
+    public void UpdateCircleUI(MonsterCommand command)
     {
-        nextMoveDistance.text = speed.ToString();
+        switch (command.actionType)
+        {
+            case MonsterActionType.None:
+                nextMoveDistance.enabled = false;
+                iconImg.enabled = true;
+                iconImg.sprite = cantMoveIcon;
+                break;
+            case MonsterActionType.Attack:
+                nextMoveDistance.enabled = false;
+                iconImg.enabled = true;
+                iconImg.sprite = attackIcon;
+                break;
+            case MonsterActionType.Move:
+                nextMoveDistance.enabled = true;
+                iconImg.enabled = false;
+                nextMoveDistance.text = command.nextMove.ToString();
+                break;
+        }
     }
 
     public void SetRangeColor(MonsterType type)
