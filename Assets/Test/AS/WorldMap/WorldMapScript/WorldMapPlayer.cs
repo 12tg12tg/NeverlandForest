@@ -179,16 +179,22 @@ public class WorldMapPlayer : MonoBehaviour
         var y = (int)currentIndex.y;
         if (y <= Vars.UserData.uData.Date - 3)
         {
-            var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
-            {
-                Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
-                Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
-                Debug.Log("사망");
-                Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
-                Vars.UserData.WorldMapPlayerData = default;
-                Vars.UserData.uData.Date = 0;
-            });
-            StartCoroutine(coScene);
+            GameManager.Manager.GameOver(GameOverType.WitchCaught);
         }
+    }
+
+    // TODO : 나중에 씬 병합 시 게임매니저로 옮겨질 예정(수정도 필요함)
+    public void Replay()
+    {
+        var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
+        {
+            Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
+            Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
+            Debug.Log("사망");
+            Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
+            Vars.UserData.WorldMapPlayerData = default;
+            Vars.UserData.uData.Date = 0;
+        });
+        StartCoroutine(coScene);
     }
 }

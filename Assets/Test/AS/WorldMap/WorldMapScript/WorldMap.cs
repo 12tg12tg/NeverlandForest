@@ -63,18 +63,21 @@ public struct Edge
 
         // 원하는 지점
         var vec = start + (DirVec.normalized * dotBase);
-
-        // 점과 선의 거리
-        var distance = Vector3.Distance(pos, vec);
-
-        return distance > dis;
+        
+        if (vec.x > start.x && vec.x < end.x)
+        {
+            // 점과 선의 거리
+            var distance = Vector3.Distance(pos, vec);
+            return distance > dis;
+        }
+        return true;
     }
 }
 public class WorldMap : MonoBehaviour
 {
     private GameObject nodePrefab;
     private GameObject linePrefab;
-    private GameObject fogPrefab;
+    public GameObject fogPrefab;
 
     private int column;
     private int row;
@@ -402,6 +405,7 @@ public class WorldMap : MonoBehaviour
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posX, 0f, index.x * posZ), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
+        go.layer = LayerMask.NameToLayer("Node");
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }

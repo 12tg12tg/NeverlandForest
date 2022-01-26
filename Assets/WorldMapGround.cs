@@ -26,15 +26,23 @@ public class WorldMapGround : MonoBehaviour
     [Header("가로 세로 간격")]
     public float col;
     public float row;
-    public float interval;
+    public float intervalLine;
+    public float intervalTree;
     public float num;
+
+    public GameObject testCube;
 
     private readonly List<WorldMapTreeInfo> treeList = new List<WorldMapTreeInfo>();
 
-    public void CreateTree(List<Edge> edges)
+    public void CreateTree(List<Edge> edges, WorldMapNode[][] nodes)
     {
         var go = new GameObject("Tree");
         go.transform.SetParent(transform);
+        
+        var arrayList = nodes.Select(x => x.Where(x => x != null)
+                                           .Select(x => x.transform.position)
+                                           .ToArray())
+                             .ToList();
 
         var colRatio = 1f / col;
         var rowRatio = 1f / row;
@@ -46,25 +54,28 @@ public class WorldMapGround : MonoBehaviour
         {
             for (int k = 0; k < col; k++)
             {
+                var count = 0;
+
                 var minX = land.bounds.min.x + k * (sizeX * colRatio);
                 var maxX = minX + (sizeX * colRatio);
 
                 var minZ = land.bounds.min.z + i * (sizeZ * rowRatio);
                 var maxZ = minZ + (sizeZ * rowRatio);
 
-                var pos = new Vector3(Random.Range(minX, maxX), 0f, Random.Range(minZ, maxZ));
-
-                var count = 0;
                 for (int j = 0; j < num; j++)
                 {
-                    // 이미 생성된 나무와의 거리, 라인과의 거리 체크
-                    if (!CheckForPosDuplicate(pos, interval) || !CheckForLine(edges, pos, interval - 1f))
+                    var pos = new Vector3(Random.Range(minX, maxX), 0f, Random.Range(minZ, maxZ));
+
+                    // 이미 생성된 나무와의 거리, 라인과의 거리, 노드와의 거리 체크
+                    if (!CheckForPosDuplicate(pos, intervalTree) ||
+                        !CheckForLine(edges, pos, intervalLine) ||
+                        !CheckForPosDuplicate(arrayList, pos, intervalLine))
                     {
                         // 100번 동안 다시 뽑아도 없으면 넘기기
                         var check = count >= 100;
                         j = check ? j + 1 : j - 1;
                         count = check ? 0 : count + 1;
-                        Debug.Log($"{count}번째 다시 뽑기");
+                        //Debug.Log($"{count}번째 다시 뽑기");
                         continue;
                     }
 
@@ -131,6 +142,19 @@ public class WorldMapGround : MonoBehaviour
         {
             if (Vector3.Distance(treeList[i].treePos, pos) < dis)
                 return false;
+        }
+        return true;
+    }
+
+    private bool CheckForPosDuplicate(List<Vector3[]> nodes, Vector3 pos, float dis)
+    {
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            for (int j = 0; j < nodes[i].Length; j++)
+            {
+                if (Vector3.Distance(nodes[i][j], pos) < dis)
+                    return false;
+            }
         }
         return true;
     }
