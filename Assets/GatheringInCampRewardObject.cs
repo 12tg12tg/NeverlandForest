@@ -47,18 +47,21 @@ public class GatheringInCampRewardObject : MonoBehaviour
         var randNum = Random.Range(1, 101);
 
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-       
+
 
         //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
         if (randNum == 1)
         {
             //³ª¹«Åä¸·: 1 %
             stringid = $"ITEM_1";
+
+
         }
         else if (randNum == 2)
         {
             //¾¾¾Ñ: 1 %
             stringid = $"ITEM_3";
+
         }
         else if (randNum >= 3 && randNum <= 5)
         {
@@ -69,11 +72,13 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //¾àÃÊ: 5 %
             stringid = $"ITEM_4";
+
         }
         else if (randNum >= 11 && randNum <= 15)
         {
             // ¹ö¼¸: 5 %
             stringid = $"ITEM_6";
+
         }
         else
         {
@@ -87,17 +92,17 @@ public class GatheringInCampRewardObject : MonoBehaviour
             var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid))
             {
                 OwnCount = Random.Range(1, 3)
-                 
+
             };
             rewardIcon.sprite = newItem.ItemTableElem.IconSprite;
             item = newItem;
             CampManager.Instance.RewardList.Add(item);
         }
-      
+
     }
     public void ItemButtonClick()
     {
-        if (item !=null)
+        if (item != null)
         {
             CampManager.Instance.SelectItem = item;
             IsSelect = true;

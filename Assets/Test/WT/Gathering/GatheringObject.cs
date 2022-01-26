@@ -23,6 +23,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         }
     }
     public DataAllItem item;
+    public DataAllItem subitem;
     private List<DataAllItem> allitemlist;
     private Vector3 weedPos;
    
@@ -63,24 +64,31 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         switch (objectType)
         {
             case GatheringObjectType.Tree:
-                rand = 1;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{1}"));
+                item.OwnCount = Random.Range(1, 3);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{2}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Pit:
-                rand = 2;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
+                item.OwnCount = Random.Range(3, 5);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Herbs:
-                rand = 3;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{4}"));
+                item.OwnCount = Random.Range(1, 3);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{5}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Mushroom:
-                rand = 4;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{6}"));
+                item.OwnCount = Random.Range(1, 3);
                 break;
             default:
                 break;
         }
-        var stringId = $"ITEM_{rand}";
-        var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
-        newItem.OwnCount = Random.Range(1, 3);
-        item = newItem;
+       
     }
     public void Init(GatheringSystem system, EventData dt, int thisRoomIdx)
     {
@@ -97,24 +105,30 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         switch (objectType)
         {
             case GatheringObjectType.Tree:
-                rand = 1;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{1}"));
+                item.OwnCount = Random.Range(1, 3);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{2}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Pit:
-                rand = 2;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
+                item.OwnCount = Random.Range(3, 5);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Herbs:
-                rand = 3;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{4}"));
+                item.OwnCount = Random.Range(1, 3);
+                subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{5}"));
+                subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Mushroom:
-                rand = 4;
+                item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{6}"));
+                item.OwnCount = Random.Range(1, 3);
                 break;
             default:
                 break;
         }
-        var stringId = $"ITEM_{rand}";
-        var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
-        newItem.OwnCount = Random.Range(1, 3);
-        item = newItem;
     }
     public void Appear()
     {

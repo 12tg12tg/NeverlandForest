@@ -34,7 +34,7 @@ public class GatheringSystem : MonoBehaviour
     public TextMeshProUGUI gatheringHandConsumeText;
     public Image handimage;
     public TextMeshProUGUI handCompleteTimeText;
-
+    public ReconfirmPanelManager reconfirmPanelManager;
     public enum GatheringType
     {
         MainDunguen,
@@ -229,7 +229,7 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     private void HerbsGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý? 
@@ -273,7 +273,7 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     private void MushroomGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý? 
@@ -315,7 +315,7 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/sword");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
     }
     public void GoGatheringObject(Vector3 objectPos)
@@ -337,6 +337,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesTool()
     {
+        var item = curSelectedObj.item;
+        var subitem = curSelectedObj.subitem;
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
@@ -347,6 +349,17 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
+                if (Vars.UserData.AddItemData(subitem) !=false)
+                {
+                    Vars.UserData.AddItemData(subitem);
+                    BottomUIManager.Instance.ItemListInit();
+                }
+                else
+                {
+                    reconfirmPanelManager.gameObject.SetActive(true);
+                    reconfirmPanelManager.OpenBagReconfirm();
+                }
+               
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByTool();
@@ -354,19 +367,23 @@ public class GatheringSystem : MonoBehaviour
             default:
                 break;
         }
-        var item = curSelectedObj.item;
-        var list = new List<DataItem>();
-
-
         // ¾ÆÀÌÅÛ È¹µæ
-        if (item != null)
+        if (Vars.UserData.AddItemData(item) !=false)
         {
-            item.OwnCount = 1;
             Vars.UserData.AddItemData(item);
-            BottomUIManager.Instance.ItemListInit();
-            //list.Add(item);
-            //inventoryController.OpenChoiceMessageWindow(list);
         }
+        else
+        {
+            reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.OpenBagReconfirm();
+        }
+        Debug.Log(item.ItemTableElem.name);
+        if (subitem!=null)
+        {
+            Debug.Log(subitem.ItemTableElem.name);
+        }
+        BottomUIManager.Instance.ItemListInit();
+       
         boyPlayer.IsCoMove = true;
         playerAnimationBoy.speed = 0.5f;
         playerAnimationBoy.SetTrigger("Pick");
@@ -423,6 +440,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void NoTool()
     {
+        var item = curSelectedObj.item;
+        var subitem = curSelectedObj.subitem;
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
@@ -433,6 +452,17 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
+                if (Vars.UserData.AddItemData(item) !=false)
+                {
+                    Vars.UserData.AddItemData(item);
+                    BottomUIManager.Instance.ItemListInit();
+                }
+                else
+                {
+                    reconfirmPanelManager.gameObject.SetActive(true);
+                    reconfirmPanelManager.OpenBagReconfirm();
+                }
+             
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByHand();
@@ -440,17 +470,19 @@ public class GatheringSystem : MonoBehaviour
             default:
                 break;
         }
-        var item = curSelectedObj.item;
-        var list = new List<DataItem>();
+
         // ¾ÆÀÌÅÛ È¹µæ
-        if (item != null)
+        if (Vars.UserData.AddItemData(subitem) !=false)
         {
-            Vars.UserData.AddItemData(item);
-            item.OwnCount = 3;
+            Vars.UserData.AddItemData(subitem);
             BottomUIManager.Instance.ItemListInit();
-            //list.Add(item);
-            //inventoryController.OpenChoiceMessageWindow(list);
         }
+        else
+        {
+            reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.OpenBagReconfirm();
+        }
+      
 
         boyPlayer.IsCoMove = true;
         playerAnimationBoy.speed = 0.5f;
@@ -475,6 +507,10 @@ public class GatheringSystem : MonoBehaviour
         //gatheringToolPanel.SetActive(false);
         //Destroy(curSelectedObj);
 
+    }
+    public void CloseBagisFull()
+    {
+        reconfirmPanelManager.gameObject.SetActive(false);
     }
     public void GatheringEnd()
     {

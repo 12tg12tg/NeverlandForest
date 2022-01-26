@@ -29,8 +29,12 @@ public class RecipeIcon : MonoBehaviour
     private AllItemTableElem materialobj;
 
     private bool isfireok;
+    public bool Isfireok => isfireok;
     private bool iscondimentok;
+    public bool Iscondimentok => iscondimentok;
     private bool ismaterialok;
+    public bool Ismaterialok => ismaterialok;
+
     private int fireNum ;
     private int condimentNum ;
     private int materialNum ;
@@ -102,7 +106,6 @@ public class RecipeIcon : MonoBehaviour
         var list = Vars.UserData.HaveAllItemList;
         if (result!=null)
         {
-          
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].ItemTableElem.id == fireobj.id)
@@ -150,10 +153,11 @@ public class RecipeIcon : MonoBehaviour
                 result = string.Empty;
                 makingTime.text = string.Empty;
                 Debug.Log("요리 완료");
+                DiaryManager.Instacne.OpenCookingReward();
             }
             else
             {
-                Debug.Log("재료가 부족합니다");
+                CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
         }
     }

@@ -88,6 +88,7 @@ public class TableEditor : EditorWindow
         itemData["LIMIT"] = EditorGUILayout.TextField("Limit", itemData["LIMIT"]);
         itemData["EAT"] = EditorGUILayout.TextField("Eat", itemData["EAT"]);
         itemData["BURN"] = EditorGUILayout.TextField("Burn", itemData["BURN"]);
+        itemData["BURN_RECOVERY"] = EditorGUILayout.TextField("Burn_recovery", itemData["BURN_RECOVERY"]);
         itemData["STAT_HP"] = EditorGUILayout.TextField("Stat_HP", itemData["STAT_HP"]);
         itemData["OBSTACLE_TYPE"] = EditorGUILayout.TextField("Obstacle_Type", itemData["OBSTACLE_TYPE"]);
         itemData["OBSTACLE_HP"] = EditorGUILayout.TextField("Obstacle_HP", itemData["OBSTACLE_HP"]);

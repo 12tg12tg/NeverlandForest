@@ -1,8 +1,7 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using System.Collections.Generic;
 public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
@@ -39,11 +38,12 @@ public class CampManager : MonoBehaviour
     public GameObject workshop;
     public GameObject tent;
     public GameObject bush;
+    public TextMeshProUGUI cookingText;
 
     public GameObject CookPanel;
 
     private List<DataAllItem> rewardList = new List<DataAllItem>();
-    public List<DataAllItem>RewardList
+    public List<DataAllItem> RewardList
     {
         get
         {
@@ -117,7 +117,7 @@ public class CampManager : MonoBehaviour
         SetMinimapCamera();
         GameManager.Manager.State = GameState.Camp;
     }
-  
+
     //BonTime
     public void SetBonTime()
     {
@@ -137,7 +137,7 @@ public class CampManager : MonoBehaviour
     {
         recoverySleepTime += 30;
         var haveMinute = Vars.UserData.uData.BonfireHour * 60;
-        if (haveMinute< recoverySleepTime)
+        if (haveMinute < recoverySleepTime)
         {
             recoverySleepTime = haveMinute;
         }
@@ -146,7 +146,7 @@ public class CampManager : MonoBehaviour
     public void MinuseSleepTime()
     {
         recoverySleepTime -= 30;
-        if (recoverySleepTime<0)
+        if (recoverySleepTime < 0)
         {
             recoverySleepTime = 0;
         }
@@ -199,9 +199,9 @@ public class CampManager : MonoBehaviour
     public void StartCookingInCamp()
     {
         var potPos = pot.transform.position;
-        EndPos = new Vector3(potPos.x+1f, potPos.y + 2f, potPos.z - 3f);
+        EndPos = new Vector3(potPos.x + 1f, potPos.y + 2f, potPos.z - 3f);
 
-        StartCoroutine(Utility.CoTranslate(camera.transform,StartPos, EndPos, 3f, OpenCookInCamp));
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenCookInCamp));
     }
     public void RotateButtonCheck()
     {
@@ -242,10 +242,10 @@ public class CampManager : MonoBehaviour
         }
         else
         {
-            if (diaryManager.recipeIcon.fire.sprite != null && 
+            if (diaryManager.recipeIcon.fire.sprite != null &&
                 diaryManager.recipeIcon.condiment.sprite != null &&
                 diaryManager.recipeIcon.material.sprite != null)
-            {
+            {   
                 diaryManager.CallMakeCook();
             }
         }
@@ -298,7 +298,7 @@ public class CampManager : MonoBehaviour
     }
 
     //ProducingInCamp
-    public  void OpenMaking(object[] vals)
+    public void OpenMaking(object[] vals)
     {
         if (vals.Length != 0) return;
         StartProduceInCamp();
@@ -331,19 +331,28 @@ public class CampManager : MonoBehaviour
     {
         SceneManager.LoadScene("AS_WorldMap");
     }
+    public void GoDungeonCheck()
+    {
+        if (Vars.UserData.uData.BonfireHour != 0)
+        {
+            reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.OpenBonFireReconfirm();
+            bonTimeText.gameObject.SetActive(false);
+        }
+    }
+
     public void GoDungeon()
     {
-
-        if (Vars.UserData.uData.BonfireHour ==0)
-        {
-            SceneManager.LoadScene("AS_RandomMap");
-        }
-        else
-        {
-            reconfirmPanelManager.OpenBonFireReconfirm();
-        }
-       
+        SceneManager.LoadScene("AS_RandomMap");
     }
+    public void NoIdonGO()
+    {
+        reconfirmPanelManager.gameObject.SetActive(false);
+        reconfirmPanelManager.AllClose();
+        bonTimeText.gameObject.SetActive(true);
+
+    }
+
     //MinimapCreate
     public void CreateMiniMapObject()
     {
@@ -475,11 +484,11 @@ public class CampManager : MonoBehaviour
         if (selectItem != null)
         {
             Vars.UserData.AddItemData(selectItem);
-            if (BottomUIManager.Instance !=null)
+            if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
             }
-            if (DiaryInventory.Instance !=null)
+            if (DiaryInventory.Instance != null)
             {
                 DiaryInventory.Instance.ItemButtonInit();
             }
@@ -488,7 +497,7 @@ public class CampManager : MonoBehaviour
     }
     public void AllItem()
     {
-        if (rewardList.Count>0)
+        if (rewardList.Count > 0)
         {
             for (int i = 0; i < rewardList.Count; i++)
             {
@@ -512,4 +521,19 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(false);
         newBottomUi.SetActive(true);
     }
+
+    public void BurnItemCheck()
+    {
+        var bottomui = newBottomUi.GetComponent<BottomUIManager>();
+        for (int i = 0; i < bottomui.itemButtons.Count; i++)
+        {
+            if (bottomui.itemButtons[i].DataItem != null &&
+                bottomui.itemButtons[i].DataItem.ItemTableElem.isBurn == true)
+            {
+                bottomui.itemButtons[i].IsBurn = true;
+            }
+        }
+
+    }
+
 }

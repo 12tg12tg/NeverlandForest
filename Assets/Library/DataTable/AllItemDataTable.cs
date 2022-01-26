@@ -12,6 +12,7 @@ public class AllItemTableElem : DataTableElemBase
     public int limitCount;
     public bool isEat;
     public bool isBurn;
+    public float burn_recovery;
     public int stat_Hp;
     public ObstacleType obstacleType;
     public int obstacleHp;
@@ -41,6 +42,7 @@ public class AllItemTableElem : DataTableElemBase
         limitCount = int.Parse(data["LIMIT"]);
         isEat = Convert.ToBoolean(int.Parse(data["EAT"]));
         isBurn = Convert.ToBoolean(int.Parse(data["BURN"]));
+        burn_recovery =float.Parse(data["BURN_RECOVERY"]);
         stat_Hp = int.Parse(data["STAT_HP"]);
         obstacleType = (ObstacleType)int.Parse(data["OBSTACLE_TYPE"]);
         obstacleHp = int.Parse(data["OBSTACLE_HP"]);

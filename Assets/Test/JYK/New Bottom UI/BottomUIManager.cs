@@ -32,7 +32,7 @@ public class BottomUIManager : MonoBehaviour
     public bool isPopUp;
     public RectTransform popUpWindow;
     public DataAllItem selectItem;
-
+    public RectTransform selectedItemRect;
 
     private void Awake()
     {
@@ -119,11 +119,11 @@ public class BottomUIManager : MonoBehaviour
 
     private void Update()
     {
+        var touchPos = MultiTouch.Instance.TouchPos;
         if (!isPopUp)
         {
             if (MultiTouch.Instance.TouchCount > 0)
             {
-                var touchPos = MultiTouch.Instance.TouchPos;
                 if (!IsContainPos(touchPos))
                 {
                     popUpWindow.gameObject.SetActive(false);
@@ -132,12 +132,18 @@ public class BottomUIManager : MonoBehaviour
             }
         }
 
-        if(MultiTouch.Instance.TouchCount > 0)
+        if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect(touchPos))
+        {
             isPopUp = false;
+        }
     }
     private bool IsContainPos(Vector2 pos)
     {
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
+    }
+    private bool IsContainItemRect(Vector2 pos)
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos);
     }
 
     public void SkillButtonInit() // 스킬아이콘 12개 세팅 : 태그 버튼 + 자동 활성화를 위한 함수
@@ -223,6 +229,31 @@ public class BottomUIManager : MonoBehaviour
         }
         ItemListInit();
     }
+
+    public void ItemBurn()
+    {
+        if (selectItem.ItemTableElem.isBurn ==true && selectItem !=null)
+        {
+            if (selectItem == null)
+                return;
+
+            var allItem = new DataAllItem(selectItem);
+            allItem.OwnCount = 1;
+            var bonminute = Vars.UserData.uData.BonfireHour * 60;
+            bonminute += selectItem.ItemTableElem.burn_recovery;
+            Vars.UserData.uData.BonfireHour = bonminute / 60;
+           
+            if (Vars.UserData.RemoveItemData(allItem))
+            {
+                popUpWindow.gameObject.SetActive(false);
+                selectItem = null;
+                isPopUp = false;
+            }
+            CampManager.Instance.SetBonTime();
+            ItemListInit();
+        }
+    }
+
 
     private List<DataAllItem> CreateDivideItemList(List<DataAllItem> itemDataList)
     {

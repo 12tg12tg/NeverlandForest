@@ -19,7 +19,6 @@ public class DiaryInventory : MonoBehaviour
 
     private void Awake()
     {
-        ItemButtonInit();
         instance = this;
     }
 
@@ -42,7 +41,6 @@ public class DiaryInventory : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             itemButtons[i].Init(list[i]);
-            break;
         }
     }
 
