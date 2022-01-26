@@ -79,6 +79,7 @@ public class HuntingManager : MonoBehaviour
             tiles.Where(x => x.index.Equals(huntPlayers.CurrentIndex))
                  .Select(x => x.transform.position).FirstOrDefault();
 
+        // TODO : 현재 안쓰는 중(사냥에서 월드미니맵을 보여주지 않는게 확정되면 지울 예정)
         if (worldMap != null)
         {
             worldMap.InitWorldMiniMap();

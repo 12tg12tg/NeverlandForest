@@ -8,6 +8,7 @@ public class Animal : MonoBehaviour
     public Animator animator;
     public GameObject resultPopUp;
 
+    public int dangerIndex = 3;
     private bool isDanger = false;
     private int escapePercentUp = 3;
     private int escapePercent;
@@ -42,9 +43,10 @@ public class Animal : MonoBehaviour
 
         var isReducedLife = rnd < escapePercent * 0.01f;
         player.Life = isReducedLife ? player.Life - 1 : player.Life;
-        
+
+        // 첫번 째 플레이어의 칸과 동물의 칸 제외하고 총 5칸
         // 3칸 내에서 2번 발각되거나 4칸 이후에 1번이라도 발각되면 동물 도망
-        if (player.Life == 0 || (player.CurrentIndex.y > 2 && isReducedLife))
+        if (player.Life == 0 || (player.CurrentIndex.y > dangerIndex && isReducedLife))
         {
             Debug.Log($"{rnd * 100} < 현재 확률: {escapePercent} 동물 도망 성공");
             AnimalRunAway();
@@ -55,7 +57,7 @@ public class Animal : MonoBehaviour
 
             StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
         }
-        else if (player.Life.Equals(1) && player.CurrentIndex.y < 3 && !isDanger)
+        else if (player.Life.Equals(1) && player.CurrentIndex.y < dangerIndex - 1 && !isDanger)
         {
             isDanger = true; // 한번만 하기 위함
             Debug.Log($"{rnd * 100} < 현재 확률: {escapePercent} 동물에게 발각될 뻔 했다");

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 [Serializable]
 public class WorldMapPlayer : MonoBehaviour
 {
-    public WorldMapManager map;
+    public WorldMapManager worldmapManager;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
 
@@ -27,7 +27,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Init()
     {
-        TotalMapInit();
+        totalMap = worldmapManager.GetComponentsInChildren<WorldMapNode>();
         currentIndex = totalMap[0].index;
         transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
 
@@ -36,17 +36,6 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-    }
-
-    private void TotalMapInit()
-    {
-        // totalMap 연결
-        totalMap = new WorldMapNode[map.transform.childCount];
-        for (int i = 0; i < map.transform.childCount; i++)
-        {
-            totalMap[i] = map.transform.GetChild(i).GetComponent<WorldMapNode>();
-        }
-        totalMap.OrderBy(n => n.level);
     }
 
     public void Load()
@@ -58,8 +47,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void ComeBackWorldMap()
     {
-        TotalMapInit();
-
+        totalMap = worldmapManager.GetComponentsInChildren<WorldMapNode>();
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
         {

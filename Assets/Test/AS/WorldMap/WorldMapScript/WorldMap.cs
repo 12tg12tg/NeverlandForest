@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 public struct Edge
 {
@@ -75,15 +76,19 @@ public struct Edge
 }
 public class WorldMap : MonoBehaviour
 {
-    private GameObject nodePrefab;
-    private GameObject linePrefab;
+    // 미니맵을 사용하려 할 때 필요해서 열어놔야함
+    [Header("프리팹")]
+    public GameObject nodePrefab;
+    public GameObject linePrefab;
     public GameObject fogPrefab;
+    
+    [Header("행렬")]
+    public int column;
+    public int row;
 
-    private int column;
-    private int row;
-
-    [Header("미니월드맵에서 쓰는 메테리얼")]
+    [Header("미니월드맵에서 쓰는 것들")]
     public Material material;
+    public GameObject miniMapLand;
 
     // 노드의 모든 정보를 갖고있는 변수
     private WorldMapNode[][] maps;
@@ -101,7 +106,8 @@ public class WorldMap : MonoBehaviour
     private bool isAllLinked = false;
 
     // 안개에서 쓰는 변수
-    private int beforeDate;
+    private static int beforeDate;
+    private readonly int witchFollowDate = 3;
 
     public void Init(int column, int row, GameObject nodePrefab, GameObject linePrefab, GameObject fogPrefab)
     {
@@ -115,7 +121,7 @@ public class WorldMap : MonoBehaviour
     {
         Load(loadData);
         PaintLink();
-        Fog(Vars.UserData.uData.Date);
+        FogInit(Vars.UserData.uData.Date);
     }
     public void InitWorldMiniMap()
     {
@@ -123,9 +129,11 @@ public class WorldMap : MonoBehaviour
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapData);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         var layerName = "WorldMap";
+        var date = Vars.UserData.uData.Date;
         Load(loadData, layerName);
         PaintLink(layerName);
-        Fog(Vars.UserData.uData.Date);
+        FogInit(date);
+        FogMove(date, true);
     }
     public IEnumerator InitMap(UnityAction action)
     {
@@ -254,6 +262,11 @@ public class WorldMap : MonoBehaviour
             isAllLinked = false;
         }
     }
+
+
+
+    // PaintLink 메서드 둘의 차이는 미니 월드맵에서 사용되어 layer 부여하여 카메라가 지정된 레이어만 보이도록 하기 위함과
+    // 라인을 그릴때 노드에서 부터 그리느냐, 노드에서 일정 범위가 떨어져 있는 곳부터 그리느냐의 차이
     private void PaintLink()
     {
         var lines = new GameObject("Lines");
@@ -301,9 +314,9 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
-    public void PaintLink(string LayerName)
+    private void PaintLink(string LayerName)
     {
-        var lines = new GameObject();
+        var lines = new GameObject("Lines");
         lines.transform.SetParent(transform);
         lines.layer = LayerMask.NameToLayer(LayerName);
         var curIndex = Vars.UserData.WorldMapPlayerData.currentIndex;
@@ -370,37 +383,81 @@ public class WorldMap : MonoBehaviour
             }
         }
     }
-    public void Fog(int date)
+
+    private void FogInit(int date)
     {
-        for (int i = 3; i <= date; i++)
+        if (date > witchFollowDate - 1)
         {
-            if (i.Equals(3))
-            {
-                fogPrefab = Instantiate(fogPrefab);
-                fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
-                var posX = (fogPrefab.transform.localScale.x * 10f) - (this.posX / 2);
-                var endPos = transform.GetChild(0).position - new Vector3(posX, 0f, 0f);
-                fogPrefab.transform.position = endPos;
-            }
-            else
+            fogPrefab = Instantiate(fogPrefab);
+            fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
+            var posX = (fogPrefab.transform.localScale.x * 10f) - (this.posX / 2);
+            var addPos = miniMapLand != null ? 
+                new Vector3(miniMapLand.transform.localScale.z * 10f, 0f, miniMapLand.transform.localScale.z * 10f) : 
+                Vector3.zero;
+            var endPos = Vector3.zero - new Vector3(posX, 0f, 0f) - addPos;
+            fogPrefab.transform.position = endPos;
+            NodeColorChange(beforeDate - witchFollowDate);
+        }
+        for (int i = witchFollowDate; i < date; i++)
+        {
+            fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
+        }
+        //beforeDate = date;
+    }
+
+    public void FogMove(int date, bool isMiniMap = false)
+    {
+        for (int i = witchFollowDate; i <= date; i++)
+        {
+            if (isMiniMap)
             {
                 fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
             }
+            else
+            {
+                var endPos = new Vector3(posX * (date - beforeDate), 0f, 0f);
+                var coMove = Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, fogPrefab.transform.position + endPos, 1f, () => NodeColorChange(date - witchFollowDate));
+                StartCoroutine(coMove);
+                beforeDate = date;
+                return;
+            }
         }
+        NodeColorChange(date - witchFollowDate);
         beforeDate = date;
     }
-    public void FogComing() // 미니맵을 켰을 때(버튼 클릭 시) 실행되는 메서드
+
+    public void FogCheck() // 미니맵을 켰을 때(버튼 클릭 시) 실행되는 메서드
     {
         var date = Vars.UserData.uData.Date;
-        if (date == 3)
-            Fog(date);
+        if (date == witchFollowDate)
+            FogInit(date);
 
         for (int i = beforeDate; i < date; i++)
         {
             fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
         }
-        beforeDate = Vars.UserData.uData.Date;
+        //beforeDate = date;
     }
+
+    public void NodeColorChange(int indexY)
+    {
+        for (int i = 0; i <= indexY; i++)
+        {
+            var passNodes = maps.Select(x => x.Where(x => x != null && Mathf.Approximately(x.index.y, i))
+                                          .Select(x => x)
+                                          .ToArray())
+                            .ToArray();
+
+            for (int j = 0; j < passNodes.Length; j++)
+            {
+                for (int k = 0; k < passNodes[j].Length; k++)
+                {
+                    passNodes[j][k].GetComponent<MeshRenderer>().material.color = Color.black;
+                }
+            } 
+        }
+    }
+
     private void InitNode(out WorldMapNode node, Vector2 index)
     {
         var go = Instantiate(nodePrefab, new Vector3(index.y * posX, 0f, index.x * posZ), Quaternion.identity);
@@ -411,9 +468,9 @@ public class WorldMap : MonoBehaviour
     }
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * posX - 100f, 0f, index.x * posZ - 100f), Quaternion.identity);
-        go.layer = LayerMask.NameToLayer(LayerName);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * (posX + 10f) - 100f, 0f, index.x * posZ - 100f), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
+        go.layer = LayerMask.NameToLayer(LayerName);
         node = go.AddComponent<WorldMapNode>();
         node.index = index;
     }
@@ -502,6 +559,7 @@ public class WorldMap : MonoBehaviour
             maps[i] = new WorldMapNode[row];
         }
 
+        // 노드 초기화
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
@@ -519,11 +577,15 @@ public class WorldMap : MonoBehaviour
                         {
                             InitNode(out maps[i][j], index, LayerName);
                         }
+
+                        // 노드 레벨 연결
+                        maps[i][j].level = loadData[k].level;
                     }
                 }
             }
         }
 
+        // 노드 연결
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)
