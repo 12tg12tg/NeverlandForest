@@ -15,60 +15,43 @@ public class BattleAction : State<BattleState>
 
     public override void Init()
     {
-        if (FSM.preState == BattleState.Monster)
+        if (manager.MonsterQueue.Count <= 0)
+        {
+            if (manager.isPlayerFirst)
+                FSM.ChangeState(BattleState.Settlement);
+            else
+                FSM.ChangeState(BattleState.Player);
+            return;
+        }
+        else
         {
             curMonsterCommand = manager.MonsterQueue.Dequeue();
-            switch (curMonsterCommand.actionType)
-            {
-                case MonsterActionType.None:
-                    curMonsterCommand.attacker.isActionDone = true;
-                    break;
-                case MonsterActionType.Attack:
-                    curMonsterCommand.attacker.PlayAttackAnimation();
-                    break;
-                case MonsterActionType.Move:
-                    curMonsterCommand.attacker.Move();
-                    break;
-            }
+            curMonsterCommand.attacker.DoCommand();
         }
     }
 
     public override void Release()
     {
+        manager.monsters.ForEach(n => n.SetActionCommand());
     }
 
     public override void Update()
     {
-        if (FSM.preState == BattleState.Monster)
+        if (curMonsterCommand.attacker.State == MonsterState.Idle)
         {
-            if(curMonsterCommand.attacker.State == MonsterState.Idle)
+            if (manager.MonsterQueue.Count <= 0)
             {
-                curMonsterCommand.attacker.SetActionCommand();      // 행동 마치자마자 다음 행동 정하기.
-
-                if(manager.MonsterQueue.Count <= 0)
-                {
-                    if (manager.isPlayerFirst)
-                        FSM.ChangeState(BattleState.Settlement);
-                    else
-                        FSM.ChangeState(BattleState.Player);
-                    return;
-                }
-
-                curMonsterCommand = manager.MonsterQueue.Dequeue();
-                switch (curMonsterCommand.actionType)
-                {
-                    case MonsterActionType.None:
-                        curMonsterCommand.attacker.isActionDone = true;
-                        break;
-                    case MonsterActionType.Attack:
-                        curMonsterCommand.attacker.PlayAttackAnimation();
-                        break;
-                    case MonsterActionType.Move:
-                        curMonsterCommand.attacker.Move();
-                        break;
-                }
+                if (manager.isPlayerFirst)
+                    FSM.ChangeState(BattleState.Settlement);
+                else
+                    FSM.ChangeState(BattleState.Player);
+                return;
             }
+
+            curMonsterCommand = manager.MonsterQueue.Dequeue();
+            curMonsterCommand.attacker.DoCommand();
         }
+
     }
 
     public override void FixedUpdate()

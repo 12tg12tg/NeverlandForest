@@ -270,6 +270,10 @@ public class BattleManager : MonoBehaviour
     }
 
     //Wave
+    public bool IsAllWaveClear()
+    {
+        return wave1.Count == 0 && wave2.Count == 0 && wave3.Count == 0;
+    }
     public bool IsReadyToNextWave()
     {
         for (int i = 0; i < 3; i++)
@@ -643,6 +647,7 @@ public class BattleManager : MonoBehaviour
 
         action?.Invoke();
     }
+
     private void OnGUI()
     {
         if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
@@ -708,6 +713,7 @@ public class BattleManager : MonoBehaviour
             if(!Inventory_Virtual.instance.isLasso)
             uiManager.curObstacleType = ObstacleType.Barrier;
         }
+
 
 
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))

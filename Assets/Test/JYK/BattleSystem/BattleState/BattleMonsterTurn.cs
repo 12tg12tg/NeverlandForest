@@ -8,6 +8,7 @@ public class BattleMonsterTurn : State<BattleState>
 {
     private BattleManager manager;
     private float timer = 0;
+    private bool canEndState;
     public BattleMonsterTurn(BattleManager manager)
     {
         this.manager = manager;
@@ -19,11 +20,16 @@ public class BattleMonsterTurn : State<BattleState>
         var list = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if (list.Count == 0)
         {
-            manager.PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
+            if(manager.IsAllWaveClear())
+                manager.PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
+            else
+            {
+                manager.PrintMessage("행동할 몬스터 없음!", 1f, () => canEndState = true);
+            }
         }
         else
         {
-            manager.PrintMessage("몬스터 턴", 1f, null);
+            manager.PrintMessage("몬스터 턴", 1f, () => canEndState = true);
 
             manager.MonsterQueue.Clear();
 
@@ -45,11 +51,14 @@ public class BattleMonsterTurn : State<BattleState>
 
     public override void Update()
     {
-        timer += Time.deltaTime;
-        if(timer > 2f)
+        if (canEndState)
         {
-            timer = 0f;
-            FSM.ChangeState(BattleState.Action);
+            timer += Time.deltaTime;
+            if (timer > 1f)
+            {
+                timer = 0f;
+                FSM.ChangeState(BattleState.Action);
+            }
         }
     }
     public override void FixedUpdate()

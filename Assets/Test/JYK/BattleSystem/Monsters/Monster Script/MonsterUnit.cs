@@ -82,7 +82,14 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             // 부가효과
             if (playerCommand.skill.SkillTableElem.name != "근거리")
-                IsBind = true;
+            {
+                if (command.actionType == MonsterActionType.Move)
+                {
+                    IsBind = true;
+                    command.actionType = MonsterActionType.None;
+                    uiLinker.SetCantMove();
+                }
+            }
             if (playerCommand.skill.SkillTableElem.name == "넉 백")
             {
                 Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
@@ -136,7 +143,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             PlayDeadAnimation();
             State = MonsterState.Dead;
-            Destroy(uiLinker.linkedUi?.gameObject);
+            Release();
         }
         
     }
@@ -163,6 +170,10 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         manager.monsters.Remove(this);
     }
 
+    private void Release()
+    {
+        uiLinker.Release();
+    }
 
     // Action
     private bool CheckCanAttackPlayer()
@@ -190,14 +201,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             var randTarget = Random.Range(0, 2);
             command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
         }
-        // 4. 속박 상태인지 확인
-        else if (IsBind)
-        {
-            PlayHitAnimation(); // + 속박 표시
-            IsBind = false;
-            command.actionType = MonsterActionType.None;
-        }
-        // 5. 움직일 대상 타일 찾기
+        // 4. 움직일 대상 타일 찾기
         else
         {
             // 움직일 거리 정하기
@@ -220,6 +224,29 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
         uiLinker.UpdateCircleUI(command);
         return command;
+    }
+
+    public void DoCommand()
+    {
+        switch (command.actionType)
+        {
+            case MonsterActionType.None:
+                DoBindEffect();
+                uiLinker.DisapearCircleUI(command,() => isActionDone = true);
+                break;
+            case MonsterActionType.Attack:
+                uiLinker.DisapearCircleUI(command, PlayAttackAnimation);
+                
+                break;
+            case MonsterActionType.Move:
+                Move();
+                break;
+        }
+    }
+
+    public void DoBindEffect()
+    {
+        PlayHitAnimation();
     }
 
     public void Move()
@@ -250,7 +277,9 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }
             else
             {
-                /* UI 증발하는 효과 */
+                // UI 증발하는 효과
+                uiLinker.CantGoAnyWhere(() => isActionDone = true);
+                
                 // 행동하지 않음.
                 return;
             }
@@ -260,7 +289,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             ObstacleAdd();
 
         BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
-            () => { isActionDone = true; PlayIdleAnimation(); });
+            () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); });
     }
 
     // Animation

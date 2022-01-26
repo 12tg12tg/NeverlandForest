@@ -32,12 +32,24 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         targetTr = target;
         isInit = true;
+        SetNaturalState();
+    }
+
+    public void SetNaturalState()
+    {
+        // 트랜스폼의 스케일, 회전값, 이미지 색상, 알파값 조정.
+        nextMoveDistance.alpha = 1f;
+        iconImage.color = Color.yellow;
+        iconImage.transform.rotation = Quaternion.identity;
+        iconImage.transform.localScale.Set(1f, 1f, 1f);
+        nextMoveDistance.transform.localScale.Set(1f, 1f, 1f);
     }
 
     public void Release()
     {
         targetTr = null;
         isInit = false;
+
     }
 
     private void LateUpdate()
@@ -56,5 +68,6 @@ public class MonsterUiInCanvas : MonoBehaviour
 
             rectHp.localPosition = localPos;
         }
+
     }
 }
