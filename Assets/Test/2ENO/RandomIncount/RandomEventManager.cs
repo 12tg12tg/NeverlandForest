@@ -113,22 +113,22 @@ public class RandomEventManager : MonoBehaviour
                 index++;
             }
 
-            //var eventIndex = randomEventPool.FindIndex(x => x.EventData.id == templist[index].EventData.id);
-            //if (beforeEventData == null)
-            //{
-            //    roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
-            //    beforeEventData = randomEventPool[eventIndex];
-            //    break;
-            //}
-            //else if (beforeEventData.EventData.id != randomEventPool[eventIndex].EventData.id)
-            //{
-            //    roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
-            //    beforeEventData = randomEventPool[eventIndex];
-            //    break;
-            //}
+            var eventIndex = randomEventPool.FindIndex(x => x.EventData.id == templist[index].EventData.id);
+            if (beforeEventData == null)
+            {
+                roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
+                beforeEventData = randomEventPool[eventIndex];
+                break;
+            }
+            else if (beforeEventData.EventData.id != randomEventPool[eventIndex].EventData.id)
+            {
+                roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
+                beforeEventData = randomEventPool[eventIndex];
+                break;
+            }
 
             // 특정 이벤트 확정반환 테스트코드
-            roomData.randomEventID = "27";
+            //roomData.randomEventID = "27";
         }
     }
 
