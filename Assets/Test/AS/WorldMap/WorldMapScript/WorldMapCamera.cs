@@ -6,18 +6,33 @@ public class WorldMapCamera : MonoBehaviour
 {
     public Transform playerPos;
 
-    private Coroutine coCameraMove;
-    private Vector3 startPos;
+    private float startX;
+    private float distance;
+    private float maxDistance;
 
-    private readonly float startX = 0f;
-    private readonly float distance = 30f;
-    private readonly float maxDistance = 120f;
+    private Vector3 startPos;
+    private Coroutine coCameraMove;
 
     private static bool isInit = false;
 
-    public void Awake()
+    public bool UseMiniMap;
+
+    private void Awake()
     {
-        transform.position = new Vector3(playerPos.position.x + startX, transform.position.y, transform.position.z);
+        if(!UseMiniMap)
+        {
+            startX = 0f;
+            distance = 30f;
+            maxDistance = 120f;
+            transform.position = new Vector3(playerPos.position.x + startX, transform.position.y, transform.position.z);
+        }
+        else
+        {
+            distance = 50f;
+            maxDistance = 200f;
+            startPos = transform.position;
+            startX = startPos.x - distance * 0.3f;
+        }
     }
 
     private void Update()
@@ -47,20 +62,21 @@ public class WorldMapCamera : MonoBehaviour
         }
     }
 
-    public void FollowPlayer()
+    public void FollowPlayer(UnityAction action = null)
     {
         if (coCameraMove != null)
             return;
 
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
         var startPos = new Vector3(playerPos.position.x - 10f, transform.position.y, transform.position.z);
-        var endPos = Vars.UserData.WorldMapPlayerData.isClear || !isInit ? new Vector3(distance / 2, 0f, 0f) + startPos : Vector3.zero + startPos;
+        var endPos = Vars.UserData.WorldMapPlayerData.isClear || !isInit ? new Vector3(distance - 5f, 0f, 0f) + startPos : Vector3.zero + startPos;
 
         coCameraMove ??= StartCoroutine(
             Utility.CoTranslate(transform, startPos, endPos, 1f,
             () => {
                 coCameraMove = null;
                 isInit = true;
+                action?.Invoke();
             }));
     }
 }

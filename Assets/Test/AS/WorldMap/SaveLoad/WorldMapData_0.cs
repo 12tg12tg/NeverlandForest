@@ -9,10 +9,10 @@ public struct WorldMapNodeStruct
     public List<Vector2> parent;
 }
 
-public class WorldMapTreeInfo
+public struct WorldMapTreeInfo
 {
     public Vector3 treePos;
-    public int index;
+    public int type;
 }
 
 public class WorldMapData_0 : SaveDataBase

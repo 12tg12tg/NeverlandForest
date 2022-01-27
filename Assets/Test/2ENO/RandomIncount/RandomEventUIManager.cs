@@ -264,19 +264,20 @@ public class RandomEventUIManager : MonoBehaviour
         itemButtons2page.ForEach(n => n.Init(null));
 
         // 이거 Create할때 임시리스트 생성해서 사용중이긴 한데 자주 호출됬을때 좀 찝찝할수도
-        var list = CreateDivideItemList(Vars.UserData.HaveAllItemList.ToList());
-        SortItemList(list);
-        int count = list.Count;
+        var list1 = Vars.UserData.HaveAllItemList.ToList();
+        //var list = CreateDivideItemList(list1);
+        SortItemList(list1);
+        int count = list1.Count;
 
         for (int i = 0; i < count; i++)
         {
-            switch (list[i].dataType)
+            switch (list1[i].dataType)
             {
                 case DataType.Consume:
                     break;
                 case DataType.AllItem:
-                    itemButtons[i].Init(list[i] as DataAllItem);
-                    itemButtons2page[i].Init(list[i] as DataAllItem);
+                    itemButtons[i].Init(list1[i] as DataAllItem);
+                    itemButtons2page[i].Init(list1[i] as DataAllItem);
                     break;
                 case DataType.Material:
                     break;
@@ -350,6 +351,8 @@ public class RandomEventUIManager : MonoBehaviour
 
         for (int i = 0; i < dataAllDivideItemList.Count; i++)
         {
+            dataAllDivideItemList[i].LimitCount = 5;
+
             if (dataAllDivideItemList[i].LimitCount < dataAllDivideItemList[i].OwnCount)
             {
                 var divideItem = CreateDivideItem(dataAllDivideItemList[i]);
