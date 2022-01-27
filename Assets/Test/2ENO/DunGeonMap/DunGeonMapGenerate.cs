@@ -170,13 +170,17 @@ public class DunGeonMapGenerate : MonoBehaviour
             dungeonRoomArray[i].IsCheck = false;
             if (i == 0)
             {
-                dungeonRoomArray[i].Pos = Vector2.zero;
+                dungeonRoomArray[i].Pos = new Vector2(-500f, -1200f);
             }
             else
             {
+                if(i==100)
+                {
+                    int a = 100;
+                }
                 var row = i % col;
                 var colum = i / col;
-                dungeonRoomArray[i].Pos = new Vector2(row * distance, colum * distance);
+                dungeonRoomArray[i].Pos = new Vector2(-500f + row * distance * 15f, -1200f + colum * distance * 15f);
             }
         }
         remainMainRoom = roomCount;
