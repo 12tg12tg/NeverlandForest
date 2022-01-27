@@ -19,7 +19,7 @@ public class HuntingManager : MonoBehaviour
     public HuntTilesMaker tileMaker;
     public Animal animal;
     public GameObject result;
-    public WorldMap worldMap;
+    public WorldMapMaker worldMap;
 
     // UI
     public Image getItemImage;
