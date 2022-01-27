@@ -8,7 +8,7 @@ public class ScreenFixed : MonoBehaviour
     public int fixedHeight = 1080;
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 5, 100, 50), "SetScreen"))
+        if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.5f, 100, 50), "SetScreen"))
             SetResolution();
     }
 

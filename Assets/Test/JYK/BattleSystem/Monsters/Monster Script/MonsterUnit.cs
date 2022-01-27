@@ -144,7 +144,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         {
             PlayDeadAnimation();
             State = MonsterState.Dead;
-            Release();
+            uiLinker.Release();
         }
         
     }
@@ -173,7 +173,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
     private void Release()
     {
-        uiLinker.Release();
+        
     }
 
     // Action

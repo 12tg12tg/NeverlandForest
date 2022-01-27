@@ -49678,6 +49678,7 @@ MonoBehaviour:
   battleRewardPanel: {fileID: 403141666}
   huntRewardPanel: {fileID: 1279270655}
   gatheringInDungeonPanel: {fileID: 454470775}
+  gatheringInDungeonReward: {fileID: 0}
   CookingRotationPanel: {fileID: 815862733}
   CookingRewardPanel: {fileID: 54506145}
   rotationButton: {fileID: 1907012220}
@@ -49687,6 +49688,7 @@ MonoBehaviour:
   sleepInventory: {fileID: 243765508}
   gatheringInventory: {fileID: 1817311858}
   gatheringrewardInventory: {fileID: 606391456}
+  gatheringInDungeonrewardInventory: {fileID: 0}
 --- !u!1 &1408446383
 GameObject:
   m_ObjectHideFlags: 0
@@ -55680,6 +55682,7 @@ GameObject:
   - component: {fileID: 1575165979}
   - component: {fileID: 1575165980}
   - component: {fileID: 1575165981}
+  - component: {fileID: 1575165982}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -55798,6 +55801,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1575165982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575165975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f9b91e350a1e84daf94c085ed91e81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fixedWidth: 1920
+  fixedHeight: 1080
 --- !u!1 &1577447053
 GameObject:
   m_ObjectHideFlags: 0
