@@ -60,16 +60,9 @@ public class DungeonRoom
         switch (eventType)
         {
             case DunGeonEvent.Battle:
-                if (eventList.FindIndex(x => x == DunGeonEvent.Hunt) != -1
-                    || eventList.FindIndex(x => x == DunGeonEvent.RandomIncount) != -1
-                    || eventList.FindIndex(x => x == DunGeonEvent.SubStory) != -1)
-                    return;
-                break;
             case DunGeonEvent.Hunt:
             case DunGeonEvent.RandomIncount:
             case DunGeonEvent.SubStory:
-                if (eventList.FindIndex(x => x == DunGeonEvent.Battle) != -1)
-                    return;
                 break;
         }
         eventList.Add(eventType);
@@ -106,10 +99,10 @@ public static class DunGeonRoomSetting
         else
         {
             var SubEvent = EventPic(tempPercent);
-            while (SubEvent == DunGeonEvent.Battle)
-            {
-                SubEvent = EventPic(tempPercent);
-            }
+            //while (SubEvent == DunGeonEvent.Battle)
+            //{
+            //    SubEvent = EventPic(tempPercent);
+            //}
             room.SetEvent(SubEvent);
         }
     }
