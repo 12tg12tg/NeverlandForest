@@ -14,8 +14,8 @@ public class BottomInfoUI : MonoBehaviour
     public void Init()
     {
         img.sprite = null;
-        info_name.text = string.Empty;
-        info_description.text = string.Empty;
+        info_name.text = "정보 없음";
+        info_description.text = "정보 없음";
     }
 
     public void Init(DataPlayerSkill skill)

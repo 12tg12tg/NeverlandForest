@@ -28,8 +28,8 @@ public enum EventFeedBackType
     LanternGage,
     TurnConsume,
     Battle,
-    MostItemLose,
-    RandomMaterial,
+    RandomMaterialLose,
+    RandomMaterialGet,
     AnotherEvent,
     None,
 }

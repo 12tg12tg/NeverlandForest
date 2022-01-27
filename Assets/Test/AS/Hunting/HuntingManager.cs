@@ -9,6 +9,7 @@ using System.Linq;
 public enum HuntingEvent
 {
     PlayerMove,
+    AnimalEscapePercentUp,
     AnimalEscape,
     Hunting,
 }
@@ -16,22 +17,26 @@ public class HuntingManager : MonoBehaviour
 {
     public HuntPlayer huntPlayers;
     public HuntTilesMaker tileMaker;
+    public Animal animal;
+    public GameObject result;
+    public WorldMap worldMap;
+
+    // UI
     public Image getItemImage;
     public TMP_Text huntButtonText;
     public TMP_Text popupText;
 
     private HuntTile[] tiles;
 
+    // 확률
     private int huntPercent;
     private int huntPercentUp;
     private int bushHuntPercent;
     private int totalHuntPercent;
+
     private bool isHunted = false;
 
-    public Animal animal;
-    public GameObject result;
-    public WorldMap worldMap;
-
+    // 테스트
     public Vector3[] testPos = new Vector3[1000];
 
     private void OnEnable()
@@ -55,6 +60,7 @@ public class HuntingManager : MonoBehaviour
         {
             tileMaker.InitMakeTiles();
             Init();
+            animal.InitEscapingPercentage();
         }
     }
 
@@ -73,6 +79,7 @@ public class HuntingManager : MonoBehaviour
             tiles.Where(x => x.index.Equals(huntPlayers.CurrentIndex))
                  .Select(x => x.transform.position).FirstOrDefault();
 
+        // TODO : 현재 안쓰는 중(사냥에서 월드미니맵을 보여주지 않는게 확정되면 지울 예정)
         if (worldMap != null)
         {
             worldMap.InitWorldMiniMap();
@@ -148,16 +155,6 @@ public class HuntingManager : MonoBehaviour
         huntPlayers.ShootArrow(pos);
     }
 
-    private void TestGizmos()
-    {
-        for (int i = 0; i < 1000; i++)
-        {
-            var rndAngle2 = Random.Range(0, 181);
-            var rndAnimalRange2 = Random.Range(3.6f, 4.6f);
-            testPos[i] = animal.transform.position - Quaternion.Euler(new Vector3(0f, rndAngle2, 0f)) * Vector3.forward * rndAnimalRange2;
-        }
-    }
-
     public void LookOnTarget() => huntPlayers.ShootAnimation(animal.transform.position);
     private void Hunting(object[] vals)
     {
@@ -179,7 +176,7 @@ public class HuntingManager : MonoBehaviour
         huntPlayers.ReturnBow();
         animal.AnimalMove(isHunted, () => result.SetActive(true));
     }
-        
+
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
 
     public void OnDrawGizmos()
@@ -189,6 +186,15 @@ public class HuntingManager : MonoBehaviour
         for (int i = 0; i < testPos.Length; i++)
         {
             Gizmos.DrawSphere(testPos[i], 0.2f);
+        }
+    }
+    private void TestGizmos()
+    {
+        for (int i = 0; i < 1000; i++)
+        {
+            var rndAngle2 = Random.Range(0, 181);
+            var rndAnimalRange2 = Random.Range(3.6f, 4.6f);
+            testPos[i] = animal.transform.position - Quaternion.Euler(new Vector3(0f, rndAngle2, 0f)) * Vector3.forward * rndAnimalRange2;
         }
     }
 }

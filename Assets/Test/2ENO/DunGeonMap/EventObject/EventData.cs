@@ -50,7 +50,7 @@ public class GatheringData : EventData
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
-    public HuntingObject CreateObj(HuntingObject obj)
+    public HuntingObject CreateObj(GameObject obj)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -59,12 +59,18 @@ public class HuntingData : EventData
         }
         if (isCreate)
         {
-            var huntingObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
+            var gameObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
+            gameObj.layer = LayerMask.NameToLayer("EventObject");
+
+            var huntingObj2 = gameObj.AddComponent<HuntingObject>();
             huntingObj2.Init(this, roomIndex);
             return huntingObj2;
         }
         var objPos = new Vector3(eventBasePos.x - 2.5f, eventBasePos.y + 1f, eventBasePos.z);
-        var huntingObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
+        var gameObj2 = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
+        gameObj2.layer = LayerMask.NameToLayer("EventObject");
+
+        var huntingObj = gameObj2.AddComponent<HuntingObject>();
         huntingObj.Init(this, roomIndex);
         objectPosition = objPos;
         isCreate = true;

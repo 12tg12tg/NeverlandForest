@@ -168,7 +168,7 @@ public class UserData
         if (index == -1)
         {
             Debug.Log("삭제할 아이템이 없음");
-            return false;
+            return true;
         }
         else
         {

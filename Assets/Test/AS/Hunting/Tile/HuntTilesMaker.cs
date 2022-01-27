@@ -16,10 +16,6 @@ public class HuntTilesMaker : MonoBehaviour
     public float spacing = 1f;
     public int[] randomBush;
 
-    //private void Start()
-    //{
-    //    MakeTiles();
-    //}
 
     public void InitMakeTiles()
     {

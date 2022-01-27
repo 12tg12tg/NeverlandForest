@@ -6,15 +6,18 @@ public class DataAllItem
 {
     public string itemId;
 
+    // 사용시 무조건 데이터 테이블에서 받아오기
     public DataAllItem(AllItemTableElem itemElem)
     {
         itemId = itemElem.id;
         itemTableElem = itemElem;
     }
+    // elem 깊은복사로 바꿈
     public DataAllItem(DataAllItem item)
     {
         OwnCount = item.OwnCount;
-        itemTableElem = item.itemTableElem;
+        var elem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(item.itemTableElem.id);
+        itemTableElem = elem;
         itemId = item.itemId;
     }
 

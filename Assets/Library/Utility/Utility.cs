@@ -52,11 +52,12 @@ public class Utility
 
     public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {
-        float timer = 0f;
-        while (timer < time)
+        float startTime = Time.realtimeSinceStartup;
+        float destTime = startTime + time;
+
+        while (Time.realtimeSinceStartup < destTime)
         {
-            timer += Time.deltaTime;
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             transform.position = Vector3.Lerp(start, end, ratio);
 
             yield return null;
@@ -165,5 +166,23 @@ public class Utility
         var path = Path.Combine(Application.persistentDataPath, typeName.ToString() + ".json");
         if (File.Exists(path))
             File.Delete(path);
+    }
+
+    public static IEnumerator CoScaleChange(RectTransform rt, Vector3 destScale, float time, UnityAction action = null)
+    {
+        float startTime = Time.realtimeSinceStartup;
+        float destTime = Time.realtimeSinceStartup + time;
+
+        Vector3 startScale = rt.localScale;
+        while (Time.realtimeSinceStartup < destTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
+            var lerp = Vector3.Lerp(startScale, destScale, ratio);
+            lerp.z = 0f;
+            rt.localScale = lerp;
+            yield return null;
+        }
+        rt.localScale = destScale;
+        action?.Invoke();
     }
 }
