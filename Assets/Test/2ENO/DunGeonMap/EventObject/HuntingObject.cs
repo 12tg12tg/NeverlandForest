@@ -12,9 +12,6 @@ public class HuntingObject : MonoBehaviour, IPointerClickHandler
     {
         data = dt;
         thisRoomIdx = roomIdx;
-
-        var mesh = gameObject.GetComponent<MeshRenderer>();
-        mesh.material.color = Color.blue;
     }
 
     public void OnPointerClick(PointerEventData eventData)

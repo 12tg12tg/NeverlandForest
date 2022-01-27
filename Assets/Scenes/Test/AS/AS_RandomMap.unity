@@ -688,8 +688,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 81.25, y: -56.875}
-  m_SizeDelta: {x: 92.5, y: 113.75}
+  m_AnchoredPosition: {x: 81.25, y: -66.5}
+  m_SizeDelta: {x: 92.5, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &41539623
 MonoBehaviour:
@@ -1161,6 +1161,42 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1736684015}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 216066727}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 698883430261930236}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 189350838}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -2672,9 +2708,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 224.00012, y: -19}
-  m_SizeDelta: {x: 200.15796, y: 201.3048}
-  m_Pivot: {x: 1.0000001, y: 1.0000001}
+  m_AnchoredPosition: {x: 189.85986, y: -100.46134}
+  m_SizeDelta: {x: 276.4264, y: 206.6864}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216066729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2757,15 +2793,63 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 438457896}
-        m_TargetAssemblyTypeName: ResizeMiniMap, Assembly-CSharp
-        m_MethodName: Resize
-        m_Mode: 4
+      - m_Target: {fileID: 1289931476}
+        m_TargetAssemblyTypeName: MiniMapCamMove, Assembly-CSharp
+        m_MethodName: ExpandMinimapToggle
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0.5
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1468685182}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 189350838}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1736684015}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 698883430261930236}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2961,12 +3045,12 @@ RectTransform:
   - {fileID: 41539622}
   - {fileID: 2050320312}
   m_Father: {fileID: 1877503502}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 263.75, y: -83.625}
-  m_SizeDelta: {x: 527.5, y: 113.75}
+  m_AnchoredPosition: {x: 263.75, y: -66.5}
+  m_SizeDelta: {x: 527.5, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263294696
 MonoBehaviour:
@@ -3462,43 +3546,6 @@ RectTransform:
   m_AnchoredPosition: {x: 1478.9431, y: 717.659}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &290494243
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 290494244}
-  m_Layer: 5
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &290494244
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 290494243}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 507289216}
-  m_Father: {fileID: 698165334}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 139.74318, y: -15.249853}
-  m_SizeDelta: {x: 249.48636, y: 10.499706}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &294973818
 GameObject:
   m_ObjectHideFlags: 0
@@ -3559,43 +3606,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLastPos: 0
   roomNumber: 0
---- !u!1 &307730460
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 307730461}
-  m_Layer: 5
-  m_Name: GameObject (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &307730461
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 307730460}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1592281209}
-  m_Father: {fileID: 1104251220}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 390.625, y: -18.375}
-  m_SizeDelta: {x: 243.75, y: 16.75}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &312235307
 GameObject:
   m_ObjectHideFlags: 0
@@ -3750,8 +3760,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 195, y: -70.25}
-  m_SizeDelta: {x: 370, y: 67}
+  m_AnchoredPosition: {x: 195, y: -81.8}
+  m_SizeDelta: {x: 370, y: 82.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &319229271
 MonoBehaviour:
@@ -3907,82 +3917,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 322026957}
-  m_CullTransparentMesh: 1
---- !u!1 &322271236
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 322271237}
-  - component: {fileID: 322271239}
-  - component: {fileID: 322271238}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &322271237
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322271236}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1340784068}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &322271238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322271236}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &322271239
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 322271236}
   m_CullTransparentMesh: 1
 --- !u!1 &328927343
 GameObject:
@@ -4295,6001 +4229,2801 @@ MonoBehaviour:
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
   - roomIdx: 0
     nextRoomIdx: 0
     beforeRoomIdx: 0
     roadCount: 0
     eventList: 
-    gatheringCount: 1
     eventObjDataList: []
-    randomEventData:
-      eventType: 0
-      eventBasePos: {x: 0, y: 0, z: 0}
-      isCreate: 0
-      objectPosition: {x: 0, y: 0, z: 0}
-      roomIndex: 0
-      gatheringtype: 0
-      randomEventID: 
+    gatheringCount: 1
 --- !u!4 &388943631
 Transform:
   m_ObjectHideFlags: 0
@@ -10320,8 +7054,12 @@ MonoBehaviour:
   roomGenerate: {fileID: 1962903810}
   gatheringObjPrefab: {fileID: 5848164670683082066, guid: fabbd84efbc2df944aff3eee1f7c24cf, type: 3}
   battleObjPrefab: {fileID: -5142030714397656426, guid: 9f97925efcbdc8c40a04daa6b4cedd10, type: 3}
-  huntingObjPrefab: {fileID: -8825529092096798119, guid: 38505fe499cd58b47af40d0a9cc76abc, type: 3}
+  huntingObjPrefab: {fileID: 4217450336931509714, guid: fa026a08652cdc043a3c14e7ee4d0b1c, type: 3}
   randomEventObjPrefab: {fileID: 7387319835836890263, guid: 2614c16b0e2319242825c5aef42d5d74, type: 3}
+  treeObj: {fileID: 996525636475923809, guid: 108b3e4a3de43e2478493c21f583bd53, type: 3}
+  pitObj: {fileID: -559228705734403707, guid: 99a95287072042c4c8e783490ce9ef04, type: 3}
+  herbsObj: {fileID: -3375949545043474010, guid: e889b003abf071a479935f0219bcd21d, type: 3}
+  mushroomObj: {fileID: 3367083845483867604, guid: 9c122a6c575deac47b0d47cd3ce65c4a, type: 3}
   dungeonPlayerGirl: {fileID: 4935466034000115639}
   dungeonPlayerBoy: {fileID: 8073720700360075657}
   gatheringSystem: {fileID: 2104294271}
@@ -10331,10 +7069,9 @@ MonoBehaviour:
   dungeonRoomObjectList: []
   worldMap: {fileID: 1995851672}
   campButton: {fileID: 189350840}
-  treeObj: {fileID: 996525636475923809, guid: 108b3e4a3de43e2478493c21f583bd53, type: 3}
-  pitObj: {fileID: -559228705734403707, guid: 99a95287072042c4c8e783490ce9ef04, type: 3}
-  herbsObj: {fileID: -3375949545043474010, guid: e889b003abf071a479935f0219bcd21d, type: 3}
-  mushroomObj: {fileID: 3367083845483867604, guid: 9c122a6c575deac47b0d47cd3ce65c4a, type: 3}
+  rndUi: {fileID: 645603841}
+  playerMove: {fileID: 1736684016}
+  minimapCam: {fileID: 1289931476}
 --- !u!1001 &400746510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11016,7 +7753,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.2647934, y: 0}
+  m_AnchoredPosition: {x: -4.264786, y: 0}
   m_SizeDelta: {x: 0.4043, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &446596611
@@ -11861,10 +8598,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 645603839}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 645603841}
+        m_TargetAssemblyTypeName: RandomEventUIManager, Assembly-CSharp
+        m_MethodName: EventExitInit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12007,82 +8744,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &507289215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 507289216}
-  - component: {fileID: 507289218}
-  - component: {fileID: 507289217}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &507289216
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507289215}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 290494244}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &507289217
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507289215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &507289218
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507289215}
-  m_CullTransparentMesh: 1
 --- !u!1 &514236616
 GameObject:
   m_ObjectHideFlags: 0
@@ -12167,10 +8828,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 645603839}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 645603841}
+        m_TargetAssemblyTypeName: RandomEventUIManager, Assembly-CSharp
+        m_MethodName: EventExitInit
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12766,17 +9427,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8104160054984350323, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
   m_PrefabInstance: {fileID: 7726722958080784879}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &569820515 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2610935982899153909, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
-  m_PrefabInstance: {fileID: 7726722958080784879}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &585348765
 GameObject:
   m_ObjectHideFlags: 0
@@ -14214,6 +10864,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 263294696}
+  info2page: {fileID: 1277720948}
   itemButtons:
   - {fileID: 119899081}
   - {fileID: 1003716750}
@@ -14257,6 +10908,7 @@ MonoBehaviour:
   isPopUp: 0
   popUpWindow: {fileID: 696573072}
   confirmPanel: {fileID: 631183122}
+  itemBox: {fileID: 0}
   closeBtn: {fileID: 1076786884}
   selectButtons:
   - {fileID: 608575604}
@@ -14478,92 +11130,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696573071}
   m_CullTransparentMesh: 1
---- !u!1 &698165333
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 698165334}
-  - component: {fileID: 698165336}
-  - component: {fileID: 698165335}
-  m_Layer: 5
-  m_Name: Consumable
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &698165334
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698165333}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 290494244}
-  - {fileID: 1340784068}
-  m_Father: {fileID: 855874561}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 269.48636, y: -10.249853}
-  m_SizeDelta: {x: 538.9727, y: 20.499706}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &698165335
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698165333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 15
-    m_Right: 15
-    m_Top: 10
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
---- !u!114 &698165336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698165333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: 1
-  m_LayoutPriority: 1
 --- !u!1001 &719036445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15110,8 +11676,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.75, y: -221}
-  m_SizeDelta: {x: 527.5, y: 201}
+  m_AnchoredPosition: {x: 273.75, y: -226}
+  m_SizeDelta: {x: 527.5, y: 206}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &798953147
 MonoBehaviour:
@@ -15245,17 +11811,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8104160054984350323, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
   m_PrefabInstance: {fileID: 7726722957433928246}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &799744065 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2610935982899153909, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
-  m_PrefabInstance: {fileID: 7726722957433928246}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &809182497
 GameObject:
   m_ObjectHideFlags: 0
@@ -15752,7 +12307,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &855874561
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15765,15 +12320,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 698165334}
   - {fileID: 1277720947}
   m_Father: {fileID: 1164919831}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 279.48636, y: -322.49265}
-  m_SizeDelta: {x: 538.9727, y: 102.99823}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &855874562
 MonoBehaviour:
@@ -16810,10 +13364,10 @@ RectTransform:
   m_Father: {fileID: 1277720947}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 82.39727, y: -41.249264}
-  m_SizeDelta: {x: 94.79454, y: 82.49853}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &938270078
 MonoBehaviour:
@@ -16988,7 +13542,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &968965694
 RectTransform:
   m_ObjectHideFlags: 0
@@ -17004,10 +13558,10 @@ RectTransform:
   m_Father: {fileID: 1164919831}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 289.72455, y: -427.11353}
+  m_SizeDelta: {x: 559.4491, y: 89.77294}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &968965695
 MonoBehaviour:
@@ -17657,10 +14211,10 @@ RectTransform:
   m_Father: {fileID: 1742148266}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 199.58908, y: -51.499115}
-  m_SizeDelta: {x: 379.17816, y: 41.99882}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1006896509
 MonoBehaviour:
@@ -19285,8 +15839,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 263.75, y: -50.25}
-  m_SizeDelta: {x: 263.75, y: 100.5}
+  m_AnchoredPosition: {x: 263.75, y: -51.5}
+  m_SizeDelta: {x: 263.75, y: 103}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1102773392
 MonoBehaviour:
@@ -19355,92 +15909,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1104251219
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1104251220}
-  - component: {fileID: 1104251222}
-  - component: {fileID: 1104251221}
-  m_Layer: 5
-  m_Name: Consumable
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1104251220
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104251219}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1575399712}
-  - {fileID: 307730461}
-  m_Father: {fileID: 1877503502}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 263.75, y: -13.375}
-  m_SizeDelta: {x: 527.5, y: 26.75}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1104251221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104251219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 15
-    m_Right: 15
-    m_Top: 10
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 10
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
---- !u!114 &1104251222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1104251219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: 1
-  m_LayoutPriority: 1
 --- !u!1 &1108994975
 GameObject:
   m_ObjectHideFlags: 0
@@ -19476,8 +15944,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 195, y: -18.375}
-  m_SizeDelta: {x: 370, y: 16.75}
+  m_AnchoredPosition: {x: 195, y: -20.3}
+  m_SizeDelta: {x: 370, y: 20.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1108994977
 MonoBehaviour:
@@ -19536,8 +16004,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 131.875, y: -50.25}
-  m_SizeDelta: {x: 263.75, y: 100.5}
+  m_AnchoredPosition: {x: 131.875, y: -51.5}
+  m_SizeDelta: {x: 263.75, y: 103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120636471
 MonoBehaviour:
@@ -19725,17 +16193,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8104160054984350323, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
   m_PrefabInstance: {fileID: 7726722959044679238}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1138491700 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2610935982899153909, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
-  m_PrefabInstance: {fileID: 7726722959044679238}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1158063184
 GameObject:
   m_ObjectHideFlags: 0
@@ -20575,7 +17032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f9656b342316b45b30726e8ffde11e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dungeonSystem: {fileID: 388943632}
 --- !u!4 &1251346487
 Transform:
   m_ObjectHideFlags: 0
@@ -20889,12 +17345,12 @@ RectTransform:
   - {fileID: 938270077}
   - {fileID: 1742148266}
   m_Father: {fileID: 855874561}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 269.48636, y: -61.74897}
-  m_SizeDelta: {x: 538.9727, y: 82.49853}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1277720948
 MonoBehaviour:
@@ -21166,7 +17622,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.2901961}
+  m_BackGroundColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -21211,6 +17667,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71c0cd07fffb63144b67867c6cb0e9bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftVec: {x: 0, y: 0, z: 0}
+  rightVec: {x: 0, y: 0, z: 0}
+  topVec: {x: 0, y: 0, z: 0}
+  bottomVec: {x: 0, y: 0, z: 0}
+  minimapImg: {fileID: 216066728}
+  canvas: {fileID: 438457894}
 --- !u!1 &1290839600
 GameObject:
   m_ObjectHideFlags: 0
@@ -21720,43 +18182,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.22, y: 1, z: 0.24}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!1 &1340784067
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1340784068}
-  m_Layer: 5
-  m_Name: GameObject (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1340784068
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1340784067}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 322271237}
-  m_Father: {fileID: 698165334}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 399.22955, y: -15.249853}
-  m_SizeDelta: {x: 249.48636, y: 10.499706}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1351235169
 GameObject:
   m_ObjectHideFlags: 0
@@ -21964,7 +18389,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22538,17 +18963,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8104160054984350323, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
   m_PrefabInstance: {fileID: 641293973}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1463208457 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2610935982899153909, guid: 0cf528d65fd18f948b27d6fc45675c1f, type: 3}
-  m_PrefabInstance: {fileID: 641293973}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1468685182
 GameObject:
   m_ObjectHideFlags: 0
@@ -22670,6 +19084,42 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 1736684015}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 216066727}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 698883430261930236}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 189350838}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
@@ -23634,43 +20084,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f1c00a071e1ec944b8e7a97d44209fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1575399711
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1575399712}
-  m_Layer: 5
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1575399712
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1575399711}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1579405956}
-  m_Father: {fileID: 1104251220}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 136.875, y: -18.375}
-  m_SizeDelta: {x: 243.75, y: 16.75}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1576693272
 GameObject:
   m_ObjectHideFlags: 0
@@ -23702,82 +20115,6 @@ Transform:
   m_Father: {fileID: 41640036}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1579405955
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1579405956}
-  - component: {fileID: 1579405958}
-  - component: {fileID: 1579405957}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1579405956
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579405955}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1575399712}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1579405957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579405955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1579405958
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1579405955}
-  m_CullTransparentMesh: 1
 --- !u!1 &1581185977
 GameObject:
   m_ObjectHideFlags: 0
@@ -23838,82 +20175,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 6.22, y: 1, z: 0.81}
   m_Center: {x: 0, y: 0.4, z: 0}
---- !u!1 &1592281208
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1592281209}
-  - component: {fileID: 1592281211}
-  - component: {fileID: 1592281210}
-  m_Layer: 5
-  m_Name: Image
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1592281209
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592281208}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 307730461}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1592281210
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592281208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1592281211
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592281208}
-  m_CullTransparentMesh: 1
 --- !u!1001 &1660251643
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24972,12 +21233,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee19f2ab96a3ff4f96bc4956f1fb9f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWindow: 0
-  previousWindow: 0
-  firstSelected: {fileID: 0}
-  invenCtrl: {fileID: 7726722957876487265}
-  itemPrefab: {fileID: 2173704776113129584, guid: ba627a0b25ba86849a2755b1c2b6ec78, type: 3}
-  scrollRect: {fileID: 771301855}
 --- !u!1 &1732528095
 GameObject:
   m_ObjectHideFlags: 0
@@ -25098,10 +21353,10 @@ RectTransform:
   m_Father: {fileID: 1277720947}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 339.3836, y: -41.249264}
-  m_SizeDelta: {x: 399.17816, y: 82.49853}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1742148267
 MonoBehaviour:
@@ -26106,8 +22361,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.75, y: -60.25}
-  m_SizeDelta: {x: 527.5, y: 100.5}
+  m_AnchoredPosition: {x: 273.75, y: -61.5}
+  m_SizeDelta: {x: 527.5, y: 103}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1766025153
 MonoBehaviour:
@@ -26453,15 +22708,14 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1104251220}
   - {fileID: 263294695}
   m_Father: {fileID: 172998334}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 273.75, y: -401.75}
-  m_SizeDelta: {x: 527.5, y: 140.5}
+  m_AnchoredPosition: {x: 273.75, y: -405.5}
+  m_SizeDelta: {x: 527.5, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1877503503
 MonoBehaviour:
@@ -28338,7 +24592,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18
+  m_fontSize: 20.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -29120,8 +25374,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 332.5, y: -56.875}
-  m_SizeDelta: {x: 390, y: 113.75}
+  m_AnchoredPosition: {x: 332.5, y: -66.5}
+  m_SizeDelta: {x: 390, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2050320313
 MonoBehaviour:
@@ -29392,7 +25646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.53333336}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -29563,10 +25817,10 @@ RectTransform:
   m_Father: {fileID: 1742148266}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 199.58908, y: -15.249853}
-  m_SizeDelta: {x: 379.17816, y: 10.499705}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2085682688
 MonoBehaviour:
@@ -29762,7 +26016,6 @@ MonoBehaviour:
   yesTooltext: {fileID: 945951959}
   noTooltext: {fileID: 900631520}
   testLanternLight: 0
-  inventoryController: {fileID: 7726722957876487265}
   curgatheringType: 0
   curSelectedObj: {fileID: 0}
 --- !u!1 &2113395674
@@ -51604,17 +47857,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 659b6e5fc45ea1049a6263166c162a9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWindow: 0
-  previousWindow: 0
-  firstSelected: {fileID: 0}
-  buttons:
-  - {fileID: 569820515}
-  - {fileID: 799744065}
-  - {fileID: 1463208457}
-  - {fileID: 1138491700}
-  itemImg: {fileID: 7726722957827151808}
-  buttonPanel: {fileID: 7726722958389579552}
-  invenCtrl: {fileID: 7726722957876487265}
 --- !u!1 &7726722957444345363
 GameObject:
   m_ObjectHideFlags: 0
@@ -51844,12 +48086,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5162bbd6107d20b47962ca1781958a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextWindow: 0
-  previousWindow: 0
-  firstSelected: {fileID: 0}
-  itemViewUI: {fileID: 7726722958591340611}
-  itemMessageUI: {fileID: 7726722957444345361}
-  itemGetUI: {fileID: 1730188465}
 --- !u!224 &7726722957876487266
 RectTransform:
   m_ObjectHideFlags: 0
@@ -52210,9 +48446,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 560775595e053d246aa38aa976359589, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  invenCtrl: {fileID: 7726722957876487265}
-  itemPrefab: {fileID: 2173704776113129584, guid: ba627a0b25ba86849a2755b1c2b6ec78, type: 3}
-  scrollRect: {fileID: 7726722959413621424}
 --- !u!224 &7726722958591340636
 RectTransform:
   m_ObjectHideFlags: 0

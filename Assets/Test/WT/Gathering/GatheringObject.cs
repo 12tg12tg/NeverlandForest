@@ -27,18 +27,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
     private Vector3 weedPos;
    
     public GatheringSystem gathering;
-   /* private int index;
-    public int Index
-    {
-        get
-        {
-            return index;
-        }
-        set
-        {
-            index = value;
-        }
-    }*/
+
     private string id;
     private int rand;
     public int objId; //∞Ì¿Ø¿« id
@@ -123,6 +112,5 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
     public void Disappear()
     {
         gameObject.SetActive(false);
-
     }
 }

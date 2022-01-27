@@ -15,6 +15,7 @@ public class RandomEventUIManager : MonoBehaviour
 
     //Instance
     public BottomInfoUI info;
+    public BottomInfoUI info2page;
     public List<BottomItemButtonUI> itemButtons;
     public List<BottomItemButtonUI> itemButtons2page;
 
@@ -28,8 +29,8 @@ public class RandomEventUIManager : MonoBehaviour
     //PopUpWindow
     public bool isPopUp;
     public RectTransform popUpWindow;
-    public DataAllItem selectItem;
     public RectTransform confirmPanel;
+    public RectTransform itemBox;
 
     //closeBtn
     public RectTransform closeBtn;
@@ -46,12 +47,25 @@ public class RandomEventUIManager : MonoBehaviour
     public GameObject itemInfo;
 
     private List<DataAllItem> rewardItemList = new();
-    // 선택 아이템을 인벤토리쪽과 보상쪽 둘다 하나로 쓸수 있는지 고민?
-    public DataAllItem curSelectItem;
+
+    public DataAllItem selectInvenItem;
+    public DataAllItem selectRewardItem;
+
 
     public bool isEventOn;
 
     private void Awake()
+    {
+        //instance = this;
+        //gameObject.SetActive(false);
+        //popUpWindow.gameObject.SetActive(false);
+        //windows[0].SetActive(true);
+        //windows[1].SetActive(false);
+        //closeBtn.gameObject.SetActive(false);
+        //ItemButtonInit();
+    }
+
+    public void Init()
     {
         instance = this;
         gameObject.SetActive(false);
@@ -72,32 +86,41 @@ public class RandomEventUIManager : MonoBehaviour
     }
     private void Update()
     {
-        if (!isPopUp)
-        {
-            if (MultiTouch.Instance.TouchCount > 0)
-            {
-                var touchPos = MultiTouch.Instance.TouchPos;
-                if (!IsContainPos(touchPos))
-                {
-                    popUpWindow.gameObject.SetActive(false);
-                    isPopUp = false;
-                    selectItem = null;
+        var touchPos = MultiTouch.Instance.TouchPos;
 
-                    for (int i = 0; i < itemButtons.Count; i++)
-                    {
-                        itemButtons[i].IsSelect = false;
-                        itemButtons2page[i].IsSelect = false;
-                    }
+        if (MultiTouch.Instance.TouchCount > 0)
+        {
+            if (!IsContainPos(touchPos) && !ISContainItemBox(touchPos) && isPopUp == true)
+                isPopUp = false;
+        }
+
+        if (isPopUp)
+        {
+            if (!popUpWindow.gameObject.activeSelf)
+                popUpWindow.gameObject.SetActive(true);
+        }
+        else
+        {
+            if (popUpWindow.gameObject.activeSelf)
+            {
+                popUpWindow.gameObject.SetActive(false);
+                for (int i = 0; i < itemButtons.Count; i++)
+                {
+                    selectInvenItem = null;
+                    itemButtons[i].IsSelect = false;
+                    itemButtons2page[i].IsSelect = false;
                 }
             }
         }
-
-        if (MultiTouch.Instance.TouchCount > 0)
-            isPopUp = false;
     }
     private bool IsContainPos(Vector2 pos)
     {
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
+    }
+
+    private bool ISContainItemBox(Vector2 pos)
+    {
+        return RectTransformUtility.RectangleContainsScreenPoint(itemBox, pos);
     }
 
     public void EventInit(DataRandomEvent data)
@@ -117,7 +140,7 @@ public class RandomEventUIManager : MonoBehaviour
         int j = selectButtons.Count - 1;
         for (int i = 0; i < selectButtons.Count; i++)
         {
-            if (randomEventData.selectCount < i + 1)
+            if (randomEventData.selectBtnCount < i + 1)
             {
                 selectButtons[j].GetComponent<Image>().enabled = false;
                 selectButtons[j].GetComponent<Button>().enabled = false;
@@ -137,7 +160,7 @@ public class RandomEventUIManager : MonoBehaviour
             // 다음 UI로 전환하는 함수 add
             int selectNum = i+1;
             button.onClick.AddListener(() => randomEventData.SelectFeedBack(selectNum));
-            button.onClick.AddListener(() => NextPage());
+            //button.onClick.AddListener(() => NextPage());
             // 이벤트 데이터의 i 인덱스 selectString으로 초기화
             nameText.text = randomEventData.selectName[i];
             // 이벤트 데이터에서 i 인덱스 is선택값 이 true 면 초기화 아니면 비공개 defaultText로 표시
@@ -145,7 +168,7 @@ public class RandomEventUIManager : MonoBehaviour
         }
     }
 
-    private void NextPage()
+    public void NextPage()
     {
         windows[0].SetActive(false);
         windows[1].SetActive(true);
@@ -153,13 +176,13 @@ public class RandomEventUIManager : MonoBehaviour
 
         resultDesc.text = randomEventData.resultInfo;
         selectName.text = randomEventData.selectName[randomEventData.curSelectNum - 1];
-        selectDesc.text = randomEventData.selectResult;
+        selectDesc.text = randomEventData.selectResultDesc;
         
         if(randomEventData.rewardItems.Count > 0)
         {
             rewardItemList.AddRange(randomEventData.rewardItems);
 
-            resultDesc.enabled = false;
+            resultDesc.transform.gameObject.SetActive(false);
             itemInfo.SetActive(true);
             rewardOrCheck[0].SetActive(true);
             rewardOrCheck[1].SetActive(false);
@@ -169,7 +192,7 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardOrCheck[0].SetActive(false);
             rewardOrCheck[1].SetActive(true);
-            resultDesc.enabled = true;
+            resultDesc.transform.gameObject.SetActive(true);
             itemInfo.SetActive(false);
         }
     }
@@ -179,11 +202,26 @@ public class RandomEventUIManager : MonoBehaviour
         if (rewardItemList.Count > 0)
             confirmPanel.gameObject.SetActive(true);
         else
-            gameObject.SetActive(false);
+            EventExitInit();
+    }
+    public void EventExitInit()
+    {
+        gameObject.SetActive(false);
+        // 이벤트 데이터 값중 유지되면 안되는 것들 모두 초기화
+        randomEventData.DataDefaultEventExit();
+        rewardItemList.Clear();
+        for (int i = 0; i < selectButtons.Count; i++)
+        {
+            var btnObj = selectButtons[i];
+
+            var button = btnObj.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+        }
     }
     public void RewardItemLIstInit(List<DataAllItem> itemList)
     {
         rewardItemButtons.ForEach(n => n.Init(null));
+        rewardItemButtons.ForEach(n => n.IsSelect = false);
 
         var count = itemList.Count;
 
@@ -194,21 +232,23 @@ public class RandomEventUIManager : MonoBehaviour
                 Debug.LogError("수치 이상!");
             }
 
-            rewardItemButtons[i].Init(itemList[i] as DataAllItem);
+            rewardItemButtons[i].Init(itemList[i]);
         }
     }
 
     public void GetSelectItem()
     {
-        if (rewardItemList.Count <= 0)
+        if (rewardItemList.Count <= 0 || selectRewardItem == null || selectRewardItem.OwnCount <= 0)
             return;
 
-        Vars.UserData.AddItemData(curSelectItem);
+        Vars.UserData.AddItemData(selectRewardItem);
         ItemListInit();
-        if (curSelectItem.OwnCount <= 0)
+        if (selectRewardItem.OwnCount <= 0)
         {
-            var index = rewardItemList.FindIndex(x => x.itemId == curSelectItem.itemId);
+            var index = rewardItemList.FindIndex(x => x.itemId == selectRewardItem.itemId);
             rewardItemList.RemoveAt(index);
+            info.Init();
+            info2page.Init();
         }
         RewardItemLIstInit(rewardItemList);
     }
@@ -236,11 +276,14 @@ public class RandomEventUIManager : MonoBehaviour
                 rewardItemList.RemoveAt(index);
         }
         RewardItemLIstInit(rewardItemList);
+        info.Init();
+        info2page.Init();
     }
 
     public void ItemButtonInit()
     {
         info.Init();
+        info2page.Init();
         popUpWindow.gameObject.SetActive(false);
 
         buttonState = ButtonState.Item;
@@ -268,30 +311,37 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void ItemUse()
     {
-        if (selectItem == null)
+        if (selectInvenItem == null)
             return;
-        var allItem = new DataAllItem(selectItem);
+        var allItem = new DataAllItem(selectInvenItem);
         allItem.OwnCount = 1;
         if (Vars.UserData.RemoveItemData(allItem))
         {
-            popUpWindow.gameObject.SetActive(false);
-            selectItem = null;
+            selectInvenItem = null;
             isPopUp = false;
+            itemButtons.ForEach(n => n.IsSelect = false);
+            itemButtons2page.ForEach(n => n.IsSelect = false);
+            info.Init();
+            info2page.Init();
         }
         ItemListInit();
     }
     public void ItemDump()
     {
-        if (selectItem == null)
+        if (selectInvenItem == null)
             return;
 
-        var allItem = new DataAllItem(selectItem);
+        var allItem = new DataAllItem(selectInvenItem);
         allItem.OwnCount = 1;
         if (Vars.UserData.RemoveItemData(allItem))
         {
-            popUpWindow.gameObject.SetActive(false);
-            selectItem = null;
+            itemBox.GetComponent<BottomItemButtonUI>().IsSelect = false;
+            selectInvenItem = null;
             isPopUp = false;
+            itemButtons.ForEach(n => n.IsSelect = false);
+            itemButtons2page.ForEach(n => n.IsSelect = false);
+            info.Init();
+            info2page.Init();
         }
         ItemListInit();
     }

@@ -6,7 +6,6 @@ using System.Linq;
 public class DataRandomEvent
 {
     private string eventID;
-    // 각종 문자열들 이지만 실제로는 stringTable의 ID
     public string eventName;
     public string eventDesc;
     public List<string> selectName = new List<string>();
@@ -14,23 +13,6 @@ public class DataRandomEvent
     public List<string> failDesc = new List<string>();
 
     // 이벤트의 선택지 클릭시, 해당 선택지에 대한 피드백 정보가 이후부터는 공개된다.
-    private List<bool> isSelectChecks;
-    public List<bool> IsSelectChecks
-    {
-        get
-        {
-            if (isSelectChecks == null)
-            {
-                isSelectChecks = new List<bool>();
-                isSelectChecks.Add(false);
-                isSelectChecks.Add(false);
-                isSelectChecks.Add(false);
-            }
-            return isSelectChecks;
-        }
-        set => isSelectChecks = value;
-    }
-
     private List<string> selectInfos;
     public List<string> SelectInfos
     {
@@ -47,19 +29,20 @@ public class DataRandomEvent
         }
         set => selectInfos = value;
     }
+
     private bool isSucessFeedBack;
+    private List<bool> isInsufficiency = new List<bool>() { false, false, false };
 
     // 최종 결과들. UI에서 사용
     public string resultInfo;
-    public string selectResult;
+    public string selectResultDesc;
     public int curSelectNum;
     public List<DataAllItem> rewardItems = new();
-    public int selectCount;
+    public int selectBtnCount;
 
     private List<string> feedBackStringSelect1 = new();
     private List<string> feedBackStringSelect2 = new();
     private List<string> feedBackStringSelect3 = new();
-
 
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
@@ -94,13 +77,13 @@ public class DataRandomEvent
         eventName = data.name;
 
         if (data.sucess1Chance == 0)
-            selectCount = 0;
+            selectBtnCount = 0;
         else if (data.sucess2Chance == 0)
-            selectCount = 1;
+            selectBtnCount = 1;
         else if (data.sucess3Chance == 0)
-            selectCount = 2;
+            selectBtnCount = 2;
         else
-            selectCount = 3;
+            selectBtnCount = 3;
 
         //List<EventFeedBackType> tempList = new List<EventFeedBackType>();
         //tempList.AddRange(data.sucess1Type);
@@ -114,7 +97,7 @@ public class DataRandomEvent
     private void DataInit()
     {
         resultInfo = string.Empty;
-        selectResult = string.Empty;
+        selectResultDesc = string.Empty;
         curSelectNum = -1;
         rewardItems.Clear();
     }
@@ -202,16 +185,11 @@ public class DataRandomEvent
             }
         }
         if (isSucessFeedBack)
-            selectResult = sucessDesc[selectNum - 1];
+            selectResultDesc = sucessDesc[selectNum - 1];
         else
-            selectResult = failDesc[selectNum - 1];
+            selectResultDesc = failDesc[selectNum - 1];
 
-        if (eventTypes[0] == EventFeedBackType.None || eventTypes[0] == EventFeedBackType.NoLose
-    || eventTypes[0] == EventFeedBackType.GetNote || eventTypes[0] == EventFeedBackType.Battle)
-        {
-            selectInfos[selectNum - 1] = $"소모값 없음";
-            return;
-        }
+
         StringBuilder sb = new StringBuilder();
         string tempStr;
 
@@ -221,20 +199,27 @@ public class DataRandomEvent
             switch (eventTypes[i])
             {
                 case EventFeedBackType.Stamina:
-                    // 스테미나 조정 함수에 값 넘겨줌
+                    // 소비값 부족시 예외처리
+                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var stamina = eventVals[i];
-                    Vars.UserData.uData.CurStamina += stamina;
+                    if (stamina < 0)
+                    {
+                        if (Vars.UserData.uData.CurStamina + stamina <= 0)
+                            isInsufficiency[selectNum-1] = true;
+                        else
+                            Vars.UserData.uData.CurStamina += stamina;
+                    }
+                    
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
-
 
                     tempStr = $"스테미나수치 : {stamina} ";
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.Hp:
+                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var hp = eventVals[i];
-
                     Vars.UserData.uData.HunterHp += hp;
                     Vars.UserData.uData.HerbalistHp += hp;
                     tempStr = $"HP수치 : {hp}\n";
@@ -251,64 +236,102 @@ public class DataRandomEvent
                     var newItemTable = DataTableManager.GetTable<AllItemDataTable>();
                     var stringId = $"ITEM_{eventfeedbackIDs[i]}";
                     var newItem = new DataAllItem(newItemTable.GetData<AllItemTableElem>(stringId));
-                    
+
                     newItem.OwnCount = eventVals[i];
                     if (newItem.OwnCount < 0)
                     {
+                        var item = Vars.UserData.HaveAllItemList.ToList().Find(x => x.itemId == newItem.itemId);
+                        if (item.OwnCount + newItem.OwnCount < 0)
+                            isInsufficiency[selectNum - 1] = true;
+                        else
+                            Vars.UserData.RemoveItemData(newItem);
+
+                        Debug.Log("아이템감소");
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 감소\n";
-                        Vars.UserData.RemoveItemData(newItem);
                     }
                     else
                     {
+                        Debug.Log("아이템획득");
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 획득\n";
                         rewardItems.Add(newItem);
                     }
                     sb.Append(tempStr);
 
+                    if (newItem.OwnCount < 0)
+                        tempStr = $"아이템 {newItem.ItemTableElem.name} 감소 ";
+                    else
+                        tempStr = $"아이템{newItem.ItemTableElem.name} 획득 ";
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.LanternGage:
+                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var lanternGage = eventVals[i];
 
                     ConsumeManager.ConsumeLantern(-lanternGage);
                     tempStr = $"랜턴수치 : {lanternGage}\n";
                     sb.Append(tempStr);
 
-
                     tempStr = $"랜턴수치 : {lanternGage} ";
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.TurnConsume:
+                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var turnConsume = eventVals[i];
                     tempStr = $"턴 소비 {turnConsume}\n";
-
                     sb.Append(tempStr);
 
                     tempStr = $"턴 소비 {turnConsume} ";
-
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
                         tempStrList.Add(tempStr);
                     break;
-                case EventFeedBackType.MostItemLose:
-                    // 현재 가지고 있는 인벤토리 아이템 OwnCount 검색
+                case EventFeedBackType.RandomMaterialLose:
+                    var list = Vars.UserData.HaveAllItemList.ToList();
+                    var materialList = list.Where(x => x.ItemTableElem.type == "MATERIAL").ToList();
+                    var index = Random.Range(0, materialList.Count);
 
-                    if (isSucessFeedBack)
-                        tempStr = $"성공 - 가장많은 아이템 감소\n";
+                    DataAllItem mtItem = null;
+                    if (materialList.Count <= 0)
+                        isInsufficiency[selectNum - 1] = true;
                     else
-                        tempStr = $"실패 - 가장많은 아이템 감소\n";
-                    sb.Append(tempStr);
+                    {
+                        mtItem = new DataAllItem(materialList[index]);
+                        mtItem.OwnCount = eventVals[i];
+                        if (materialList[index].OwnCount - mtItem.OwnCount < 0)
+                            isInsufficiency[selectNum - 1] = true;
+                        else
+                            Vars.UserData.RemoveItemData(mtItem);
+                        tempStr = $"{materialList[index].ItemTableElem.name}를 : {eventVals[i]}만큼 잃음\n";
+                        sb.Append(tempStr);
+                    }
+
+                    tempStr = $"무작위 재료를 잃음 ";
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
+                        tempStrList.Add(tempStr);
                     break;
-                case EventFeedBackType.RandomMaterial:
-                    // 현재 가지고있는 인벤토리 아이템 Type Linq로 검색 -> 재료아이템 리스트만 뽑아서 그중 하나랜덤으로 고르고 적용!
-
-                    if (isSucessFeedBack)
-                        tempStr = $"성공 - 랜덤재료 획득\n";
-                    else
-                        tempStr = $"실패 - 랜덤재료 감소\n";
+                case EventFeedBackType.RandomMaterialGet:
+                    var getMaterialList = new List<DataAllItem>();
+                    var table = DataTableManager.GetTable<AllItemDataTable>();
+                    for (int k = 0; k < table.data.Count; i++)
+                    {
+                        var strId = $"ITEM_{k + 1}";
+                        var elem = table.data[strId] as AllItemTableElem;
+                        if(elem.type == "MATERIAL")
+                        {
+                            var item = new DataAllItem(elem);
+                            item.OwnCount = eventVals[i];
+                            getMaterialList.Add(item);
+                        }
+                    }
+                    var index2 = Random.Range(0, getMaterialList.Count);
+                    rewardItems.Add(getMaterialList[index2]);
+                    tempStr = $"{getMaterialList[index2].ItemTableElem.name}를 : {eventVals[i]}만큼 얻음\n";
                     sb.Append(tempStr);
 
+                    tempStr = $"무작위 재료를 얻음 ";
+                    if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
+                        tempStrList.Add(tempStr);
                     break;
                 case EventFeedBackType.AnotherEvent:
                     // 다른 이벤트 해금 - 랜덤매니저 함수 호출
@@ -333,11 +356,25 @@ public class DataRandomEvent
         {
             tempSb.Append(tempStrList[i]);
         }
-        selectInfos[selectNum - 1] = tempSb.ToString();
+        if(tempStrList.Count > 0)
+            selectInfos[selectNum - 1] = tempSb.ToString();
+        else
+            selectInfos[selectNum - 1] = $"소모값 없음";
 
         resultInfo = sb.ToString();
+        if (!isInsufficiency[selectNum - 1])
+            RandomEventUIManager.Instance.NextPage();
+        else
+            Debug.Log("조건 불충분");
     }
 
+    public void DataDefaultEventExit()
+    {
+        for (int i = 0; i < isInsufficiency.Count; i++)
+        {
+            isInsufficiency[i] = false;
+        }
+    }
 
 
     //public void Select1FeedBack()
