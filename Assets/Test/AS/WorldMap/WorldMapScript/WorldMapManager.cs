@@ -42,7 +42,10 @@ public class WorldMapManager : MonoBehaviour
             worldMap.LoadWorldMap(loadData);
             NodeLinkToPlayer();
             player.ComeBackWorldMap();
-            worldMapCamera.FollowPlayer(() => worldMap.FogMove(Vars.UserData.uData.Date));
+            worldMapCamera.FollowPlayer(() =>
+            {
+                worldMap.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
+            });
             if (ground != null)
                 ground.Load();
         }

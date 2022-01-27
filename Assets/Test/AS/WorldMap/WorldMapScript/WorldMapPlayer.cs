@@ -135,7 +135,6 @@ public class WorldMapPlayer : MonoBehaviour
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            PlayerDeathChack();
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(data.goalIndex))
@@ -155,34 +154,18 @@ public class WorldMapPlayer : MonoBehaviour
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            PlayerDeathChack();
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(currentIndex))
                             .Select(x => x.transform).FirstOrDefault();
         transform.LookAt(trans);
     }
-    private void PlayerDeathChack() // 안개에 닿았을 때
+    public void PlayerDeathChack() // 안개에 닿았을 때
     {
         var y = (int)currentIndex.y;
         if (y <= Vars.UserData.uData.Date - 3)
         {
             GameManager.Manager.GameOver(GameOverType.WitchCaught);
         }
-    }
-
-    // TODO : 나중에 씬 병합 시 게임매니저로 옮겨질 예정(수정도 필요함)
-    public void Replay()
-    {
-        var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
-        {
-            Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
-            Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
-            Debug.Log("사망");
-            Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
-            Vars.UserData.WorldMapPlayerData = default;
-            Vars.UserData.uData.Date = 0;
-        });
-        StartCoroutine(coScene);
     }
 }

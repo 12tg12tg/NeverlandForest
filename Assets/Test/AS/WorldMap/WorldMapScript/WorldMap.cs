@@ -405,7 +405,7 @@ public class WorldMap : MonoBehaviour
         //beforeDate = date;
     }
 
-    public void FogMove(int date, bool isMiniMap = false)
+    public void FogMove(int date, bool isMiniMap = false, UnityAction action = null)
     {
         for (int i = witchFollowDate; i <= date; i++)
         {
@@ -416,7 +416,11 @@ public class WorldMap : MonoBehaviour
             else
             {
                 var endPos = new Vector3(posX * (date - beforeDate), 0f, 0f);
-                var coMove = Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, fogPrefab.transform.position + endPos, 1f, () => NodeColorChange(date - witchFollowDate));
+                var coMove = Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, fogPrefab.transform.position + endPos, 1f, () =>
+                {
+                    NodeColorChange(date - witchFollowDate);
+                    action?.Invoke();
+                });
                 StartCoroutine(coMove);
                 beforeDate = date;
                 return;
@@ -453,8 +457,10 @@ public class WorldMap : MonoBehaviour
                 for (int k = 0; k < passNodes[j].Length; k++)
                 {
                     passNodes[j][k].GetComponent<MeshRenderer>().material.color = Color.black;
+                    var main = passNodes[j][k].GetComponentInChildren<ParticleSystem>().main;
+                    main.startColor = Color.white;
                 }
-            } 
+            }
         }
     }
 
