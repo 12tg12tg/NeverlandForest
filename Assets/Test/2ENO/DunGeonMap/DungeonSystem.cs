@@ -351,9 +351,9 @@ public class DungeonSystem : MonoBehaviour
                         switch (eventObj.eventType)
                         {
                             case DunGeonEvent.Battle:
-                                //var createBt = eventObj as BattleData;
-                                //var obj = createBt.CreateObj(battleObjPrefab);
-                                //eventObjInstanceList.Add(obj.gameObject);
+                                var createBt = eventObj as BattleData;
+                                var obj = createBt.CreateObj(battleObjPrefab);
+                                eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
                                 var createGt = eventObj as GatheringData;
