@@ -29,7 +29,7 @@ public class InputPairImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
         choiceImg.sprite = skill.SkillTableElem.IconSprite;
     }
-    public void Init(PlayerType type, DataConsumable item)
+    public void Init(PlayerType type, DataAllItem item)
     {
         if (type == PlayerType.Boy)
         {

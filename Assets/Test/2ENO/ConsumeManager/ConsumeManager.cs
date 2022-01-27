@@ -120,6 +120,16 @@ public static class ConsumeManager
             Debug.Log("모닥불의 시간이 부족합니다");
         }
     }
+    public static void RecoveryTiredness(float recoverTired) //피로도 회복
+    {
+        Vars.UserData.uData.Tiredness += recoverTired;
+        if (Vars.UserData.uData.Tiredness>100)
+        {
+            Vars.UserData.uData.Tiredness = 100;
+        }
+        CurStaminaChange();
+    }
+
     public static void GettingTired(float gettingTired) //피로도 증가
     {
         Vars.UserData.uData.Tiredness -= gettingTired;
@@ -264,7 +274,6 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.NightTime;
         }
-        Debug.Log($"Vars.UserData.uData.CurIngameHour{Vars.UserData.uData.CurIngameHour}");
     }
 
     public static void TimeUp(float minute, float hour=0)

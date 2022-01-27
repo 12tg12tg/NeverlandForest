@@ -130,13 +130,11 @@ public class HuntingManager : MonoBehaviour
     private void GetItem()
     {
         // 추후 동물이 얻을 수 있는 아이템 리스트가 생기면 거기에서 가져오게끔 변경 예정
-        var newItem = new DataAllItem();
-        var tempItemNum = newItem.itemId = 5;
-        newItem.LimitCount = 3;
-        newItem.OwnCount = Random.Range(1, 5);
-        var stringId = $"{tempItemNum}";
+        var tempItemNum = 5;
+        var stringId = $"ITEM_{tempItemNum}";
         var item = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(stringId);
-        newItem.itemTableElem = item;
+        var newItem = new DataAllItem(item);
+        newItem.OwnCount = Random.Range(1, 5);
         getItemImage.sprite = item.IconSprite;
         Vars.UserData.AddItemData(newItem);
     }

@@ -53,7 +53,7 @@ public class DataRandomEvent
     public string resultInfo;
     public string selectResult;
     public int curSelectNum;
-    public List<DataItem> rewardItems = new();
+    public List<DataAllItem> rewardItems = new();
     public int selectCount;
 
     private List<string> feedBackStringSelect1 = new();
@@ -215,7 +215,7 @@ public class DataRandomEvent
         StringBuilder sb = new StringBuilder();
         string tempStr;
 
-        // 이거 유동적으로 바뀌는 설명들도 문자 테이블로 사용해야 되자나? ㅎㄷㄷ;
+        // TODO : tempStr도 문자 테이블로 해야댐
         for (int i = 0; i < eventTypes.Count; i++)
         {
             switch (eventTypes[i])
@@ -223,10 +223,10 @@ public class DataRandomEvent
                 case EventFeedBackType.Stamina:
                     // 스테미나 조정 함수에 값 넘겨줌
                     var stamina = eventVals[i];
-                    Vars.UserData.uData.CurStamina += stamina;
+                    //Vars.UserData.uData.CurStamina += stamina;
+                    ConsumeManager.RecoveryTiredness(stamina);
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
-
 
                     tempStr = $"스테미나수치 : {stamina} ";
                     if (tempStrList.FindIndex(x => x.Equals(tempStr)) == -1)
@@ -249,15 +249,10 @@ public class DataRandomEvent
                 case EventFeedBackType.Item:
                     // 아이템 획득 또는 감소 - val값에 따라 ownCount 조정해서 넣음
                     var newItemTable = DataTableManager.GetTable<AllItemDataTable>();
-                    var newItem = new DataAllItem();
-
-                    newItem.itemId = eventfeedbackIDs[i];
-                    var stringId = $"{eventfeedbackIDs[i]}";
-                    newItem.itemTableElem = newItemTable.GetData<AllItemTableElem>(stringId);
-                    newItem.dataType = DataType.AllItem;
+                    var stringId = $"ITEM_{eventfeedbackIDs[i]}";
+                    var newItem = new DataAllItem(newItemTable.GetData<AllItemTableElem>(stringId));
+                    
                     newItem.OwnCount = eventVals[i];
-                    newItem.LimitCount = 5;
-
                     if (newItem.OwnCount < 0)
                     {
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 감소\n";

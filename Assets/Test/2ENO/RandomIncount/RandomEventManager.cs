@@ -34,14 +34,6 @@ public class RandomEventManager : MonoBehaviour
                    where data.EventData.eventCondition == RandomEventCondition.Always
                    select data;
 
-        // TODO : 테스트용 임시코드
-        //var testEvent = randomTable.GetData<RandomEventTableElem>("11");
-        //for (int i = 0; i < 20; i++)
-        //{
-        //    var data = new DataRandomEvent(testEvent);
-        //    randomEventPool.Add(data);
-        //}
-
         // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
         randomEventPool.AddRange(list);
     }
@@ -68,11 +60,19 @@ public class RandomEventManager : MonoBehaviour
         var eventt = randomEventPool.Find(x => x.EventData.id == eventID);
         return eventt;
     }
-
-    public IEnumerator CreateRandomEvent(EventData roomData)
+    // 코루틴에서 다시 일반으로 바꿔봄
+    public void CreateRandomEvent(EventData roomData)
     {
+        int count = 0;
         while (string.IsNullOrEmpty(roomData.randomEventID))
         {
+            count++;
+            if(count > 100)
+            {
+                Debug.Log("무한오류");
+                return;
+            }
+
             var rndVal = Random.Range(0, 101);
             RandomEventFrequency eventFre = RandomEventFrequency.None;
             if (rndVal < 60)
@@ -90,7 +90,6 @@ public class RandomEventManager : MonoBehaviour
                         select data;
 
             // 2차 소분류 빈도확률로 픽
-
             var pList = PercentPick(list1.ToList());
             var sList = PerCentSum(pList);
 
@@ -116,9 +115,8 @@ public class RandomEventManager : MonoBehaviour
                 break;
             }
 
-            // 아이템 테스트코드
+            // 특정 이벤트 확정반환 테스트코드
             //roomData.randomEventID = randomEventPool[0].EventData.id;
-            yield return null;
         }
     }
 

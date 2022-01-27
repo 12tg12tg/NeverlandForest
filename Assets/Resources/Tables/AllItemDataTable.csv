@@ -1,37 +1,36 @@
-﻿ID,NAME,DESC,TYPE,ICON_ID
-0,None,아무것도 없다,NONE,xsymbol
-1,Fire,불이 있다,FIRE,armor
-2,Salt,소금,CONDIMENT,axe
-3,Peper,후추,CONDIMENT,b_t_01
-4,RedPeper,고추,CONDIMENT,bag
-5,MEAT,고기,FOODINGREDIENT,belts
-6,FISH,생선,FOODINGREDIENT,book
-7,FLOUR,밀가루,FOODINGREDIENT,boots
-8,RICE,쌀,FOODINGREDIENT,bracers
-9,EGG,달걀,FOODINGREDIENT,cloaks
-10,VEGETABLE,채소 ,FOODINGREDIENT,coins
-11,STEAK,스테이크,FOOD,gem
-12,FISH DISHE,생선요리,FOOD,gloves
-13,BREAD,빵,FOOD,helmets
-14,RICE DISH,쌀요리,FOOD,hp
-15,SALAD,샐러드,FOOD,mp
-16,Wooden Trap,나무 트랩,FOOD,hp
-17,Spike Trap,가시 트랩,FOOD,hp
-18,Fence,장벽,FOOD,hp
-19,Oil,오일,FOOD,hp
-20,Arrow,화살,FOOD,hp
-21,Steel Arrow,쇠화살,FOOD,hp
-22,Potion,포션,FOOD,hp
-23,Fired Mushroom,버섯 구이,FOOD,hp
-24,Fired Salty Mushroom,짠 버섯 구이,FOOD,hp
-25,Fired Sweet Mushroom,단 버섯 구이,FOOD,hp
-26,Fired Meat,구운 고기,FOOD,hp
-27,Fired Salty Meat,짠 구운고기,FOOD,hp
-28,Fired Sweet Meat,단 구운고기,FOOD,hp
-29,Sunnyside Up,계란프라이,FOOD,hp
-30,Eggroll,계란말이,FOOD,hp
-31,Fried Mushegg,버섯 계란 볶음,FOOD,hp
-32,Boiled Egg,삶은 계란,FOOD,hp
-33,Mush Steak,버섯 스테이크,FOOD,hp
-34,Mush Meat Stick,버섯 고기 꼬치,FOOD,hp
-35,Pudding,푸딩,FOOD,hp
+﻿ID,NAME,DESC,TYPE,PREFAB_ID,ICON_ID,LIMIT,EAT,BURN,BURN_RECOVERY,STAT_HP,OBSTACLE_TYPE,OBSTACLE_HP,TRAP_DAMAGE,DURATION,INSTALLATION_NUMBER
+ITEM_1,Wood,나무 토막,MATERIAL,,Wood,5,0,1,60,-999,0,-999,-999,-999,-999
+ITEM_2,Stick,나뭇가지,MATERIAL,,mandrake root,5,0,1,30,-999,0,-999,-999,-999,-999
+ITEM_3,Seed,씨앗,MATERIAL,,coffee,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_4,Weed,약초,MATERIAL,,tea,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_5,Truck,나무 줄기,MATERIAL,,wheat,5,0,1,30,-999,0,-999,-999,-999,-999
+ITEM_6,Mushroom,버섯,MATERIAL,,Champignon,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_7,Meat,고기,MATERIAL,,Food_Meat,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_8,Egg,달걀,MATERIAL,,eggs,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_9,Scrap,쇠붙이,MATERIAL,,ingots,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_10,Salt,암염,MATERIAL,,Rock,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_11,Sugar,돌사탕,MATERIAL,,candy,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_12,Axe,도끼,TOOL,,axe,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_13,Shovel,삽,TOOL,,BrokenShovel,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_14,Snare,올가비,INSTALLATION,,pants,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_15,Spike Snare,가시 올가미,INSTALLATION,,belts,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_16,Wooden Trap,나무 트랩,INSTALLATION,,bag,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_17,Spike Trap,가시 트랩,INSTALLATION,,b_t_01,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_18,Fence,장벽,INSTALLATION,,WoodenShield,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_19,Oil,오일,CONSUMABLE,,honey,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_20,Arrow,화살,CONSUMABLE,,BattleBow,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_21,Steel Arrow,쇠화살,CONSUMABLE,,VikingShortBow,5,0,0,0,-999,0,-999,-999,-999,-999
+ITEM_22,Potion,포션,CONSUMABLE,,mp,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_23,Fired Mushroom,버섯 구이,FOOD,,pie,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_24,Fired Salty Mushroom,짠 버섯 구이,FOOD,,porridge,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_25,Fired Sweet Mushroom,단 버섯 구이,FOOD,,potato,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_26,Fired Meat,구운 고기,FOOD,,pumpiking,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_27,Fired Salty Meat,짠 구운고기,FOOD,,sea buckthorn,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_28,Fired Sweet Meat,단 구운고기,FOOD,,octopus,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_29,Sunnyside Up,계란프라이,FOOD,,fish steak,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_30,Eggroll,계란말이,FOOD,,cookies,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_31,Fried Mushegg,버섯 계란 볶음,FOOD,,chiken ,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_32,Boiled Egg,삶은 계란,FOOD,,cherry,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_33,Mush Steak,버섯 스테이크,FOOD,,amanita,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_34,Mush Meat Stick,버섯 고기 꼬치,FOOD,,mushroom,5,1,0,0,-999,0,-999,-999,-999,-999
+ITEM_35,Pudding,푸딩,FOOD,,cake2,5,1,0,0,-999,0,-999,-999,-999,-999

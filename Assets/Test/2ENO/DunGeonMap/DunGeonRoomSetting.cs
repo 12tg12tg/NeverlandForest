@@ -34,14 +34,10 @@ public class DungeonRoom
     public int beforeRoomIdx;
     public int roadCount;
 
-
-    // < 이벤트 생성 관련 > - 이벤트 생성 매니저를 따로 만들어서 그곳에 타입, 이벤트 id 입력하면 그것에 맞는 이벤트 반환?
     public List<DunGeonEvent> eventList = new List<DunGeonEvent>();
-
     // 현재 이벤트타입 리스트에 따라 생성되어질 오브젝트들 정보
-    public int gatheringCount;
     public List<EventData> eventObjDataList = new List<EventData>();
-    public EventData randomEventData;
+    public int gatheringCount;
 
     public DunGeonRoomType RoomType
     {

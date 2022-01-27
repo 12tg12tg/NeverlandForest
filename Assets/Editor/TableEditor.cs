@@ -58,6 +58,7 @@ public class TableEditor : EditorWindow
             case "WeaponDataTable":
                 break;
             case "AllItemDataTable":
+                ViewAllItemData(tableList);
                 break;
             case "PlayerSkillTable":
                 ViewPlayerSkillData(tableList);
@@ -73,6 +74,27 @@ public class TableEditor : EditorWindow
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
+    }
+
+    private void ViewAllItemData(List<Dictionary<string, string>> itemList)
+    {
+        var itemData = itemList[itemIndex];
+        itemData["ID"] = EditorGUILayout.TextField("Id", itemData["ID"]);
+        itemData["NAME"] = EditorGUILayout.TextField("Name", itemData["NAME"]);
+        itemData["DESC"] = EditorGUILayout.TextField("Desc", itemData["DESC"]);
+        itemData["TYPE"] = EditorGUILayout.TextField("Type", itemData["TYPE"]);
+        itemData["PREFAB_ID"] = EditorGUILayout.TextField("Prefab_ID", itemData["PREFAB_ID"]);
+        itemData["ICON_ID"] = EditorGUILayout.TextField("Icon_ID", itemData["ICON_ID"]);
+        itemData["LIMIT"] = EditorGUILayout.TextField("Limit", itemData["LIMIT"]);
+        itemData["EAT"] = EditorGUILayout.TextField("Eat", itemData["EAT"]);
+        itemData["BURN"] = EditorGUILayout.TextField("Burn", itemData["BURN"]);
+        itemData["BURN_RECOVERY"] = EditorGUILayout.TextField("Burn_recovery", itemData["BURN_RECOVERY"]);
+        itemData["STAT_HP"] = EditorGUILayout.TextField("Stat_HP", itemData["STAT_HP"]);
+        itemData["OBSTACLE_TYPE"] = EditorGUILayout.TextField("Obstacle_Type", itemData["OBSTACLE_TYPE"]);
+        itemData["OBSTACLE_HP"] = EditorGUILayout.TextField("Obstacle_HP", itemData["OBSTACLE_HP"]);
+        itemData["TRAP_DAMAGE"] = EditorGUILayout.TextField("Trap_Damage", itemData["TRAP_DAMAGE"]);
+        itemData["DURATION"] = EditorGUILayout.TextField("Duration", itemData["DURATION"]);
+        itemData["INSTALLATION_NUMBER"] = EditorGUILayout.TextField("Installation_Number", itemData["INSTALLATION_NUMBER"]);
     }
 
     private void ViewConsumableData(List<Dictionary<string, string>> consumList)

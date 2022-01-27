@@ -14,7 +14,8 @@ public class BattleSkillInfo : MonoBehaviour
     //Instance
     private CanvasScaler cs;
     private DataPlayerSkill curSkill;
-    private DataConsumable curItem;
+    // DataConsume 안쓰고 AllDataItem으로 모두 통일
+    private DataAllItem curItem;
     private BattleManager manager;
 
     //GmaeObject
@@ -67,7 +68,8 @@ public class BattleSkillInfo : MonoBehaviour
         transform.position = pos;
     }
 
-    public void Init(DataConsumable item, Vector2 pos)
+    // DataConsume 안쓰고 AllDataItem으로 모두 통일
+    public void Init(DataAllItem item, Vector2 pos)
     {
         manager ??= BattleManager.Instance;
         //cs ??= manager.cs;
@@ -80,7 +82,7 @@ public class BattleSkillInfo : MonoBehaviour
         sb.Clear();
         var count = item.OwnCount;
         sb.Append($"보유 수량 : {count}\n");
-        sb.Append($"{elem.description}");
+        sb.Append($"{elem.desc}");
         description.text = sb.ToString();
         curInfoType = ActionType.Item;
 

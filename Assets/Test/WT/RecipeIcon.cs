@@ -4,6 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+
+// 인벤토리 컨트롤러 제거, DataAllItem 속성들 다양해짐
+
 public class RecipeIcon : MonoBehaviour
 {
     public RecipeObj itemPrehab;
@@ -26,13 +29,15 @@ public class RecipeIcon : MonoBehaviour
     private AllItemTableElem materialobj;
 
     private bool isfireok;
+    public bool Isfireok => isfireok;
     private bool iscondimentok;
+    public bool Iscondimentok => iscondimentok;
     private bool ismaterialok;
+    public bool Ismaterialok => ismaterialok;
+
     private int fireNum ;
     private int condimentNum ;
     private int materialNum ;
-
-    public InventoryController inventoryController;
 
     public void Awake()
     {
@@ -79,14 +84,17 @@ public class RecipeIcon : MonoBehaviour
     {
         var allitem = DataTableManager.GetTable<AllItemDataTable>();
         // 누른 레시피의 조합을 보여주자.
-        fire.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[0]).IconSprite;
-        condiment.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[1]).IconSprite;
-        material.sprite = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[2]).IconSprite;
+        var fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
+        var condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
+        var materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
+        fire.sprite = allitem.GetData<AllItemTableElem>(fireid).IconSprite;
+        condiment.sprite = allitem.GetData<AllItemTableElem>(condimentid).IconSprite;
+        material.sprite = allitem.GetData<AllItemTableElem>(materialid).IconSprite;
         result = itemGoList[slot].Result;
 
-        fireobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[0]);
-        condimentobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[1]);
-        materialobj = allitem.GetData<AllItemTableElem>(itemGoList[slot].Recipes[2]);
+        fireobj = allitem.GetData<AllItemTableElem>(fireid);
+        condimentobj = allitem.GetData<AllItemTableElem>(condimentid);
+        materialobj = allitem.GetData<AllItemTableElem>(materialid);
 
         Time = itemGoList[slot].Time;
         makingTime.text = $"제작 시간은 {Time[0]}:{Time[1]}:{Time[2]} 입니다. ";
@@ -98,21 +106,20 @@ public class RecipeIcon : MonoBehaviour
         var list = Vars.UserData.HaveAllItemList;
         if (result!=null)
         {
-          
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].itemTableElem.id == fireobj.id)
+                if (list[i].ItemTableElem.id == fireobj.id)
                 {
                     isfireok = true;
                     fireNum = i;
                 }
-                if (list[i].itemTableElem.id == condimentobj.id)
+                if (list[i].ItemTableElem.id == condimentobj.id)
                 {
                     iscondimentok = true;
                     condimentNum = i;
 
                 }
-                if (list[i].itemTableElem.id == materialobj.id)
+                if (list[i].ItemTableElem.id == materialobj.id)
                 {
                     ismaterialok = true;
                     materialNum = i;
@@ -137,7 +144,6 @@ public class RecipeIcon : MonoBehaviour
                 Vars.UserData.RemoveItemData(condimentitem);
                 Vars.UserData.RemoveItemData(materialitem);
 
-                inventoryController.Init();
                 isfireok = false;
                 iscondimentok = false;
                 ismaterialok = false;
@@ -147,10 +153,11 @@ public class RecipeIcon : MonoBehaviour
                 result = string.Empty;
                 makingTime.text = string.Empty;
                 Debug.Log("요리 완료");
+                DiaryManager.Instacne.OpenCookingReward();
             }
             else
             {
-                Debug.Log("재료가 부족합니다");
+                CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
         }
     }

@@ -25,9 +25,24 @@ public class BottomItemButtonUI : MonoBehaviour
         }
     }
 
-    private DataItem dataItem;
+    private bool isBurn;
+    public bool IsBurn
+    {
+        get => isBurn;
+        set
+        {
+            isBurn = value;
+            if (isBurn)
+                selectedImg.color = Color.red;
+            else
+                selectedImg.color = Color.white;
+        }
+    }
 
-    public DataItem DataItem { get => dataItem; }
+
+    private DataAllItem dataItem;
+
+    public DataAllItem DataItem { get => dataItem; }
 
     public void Init(DataAllItem data)
     {
@@ -77,6 +92,7 @@ public class BottomItemButtonUI : MonoBehaviour
             BottomUIManager.Instance.selectItem = dataItem;
             BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
             BottomUIManager.Instance.isPopUp = true;
+            BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
 
             var uiVec = BottomUIManager.Instance.popUpWindow.position;
             var newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -87,10 +103,10 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.itemButtons[i].IsSelect = false;
             }
             IsSelect = true;
+           
             if (DiaryInventory.Instance != null)
             {
                 DiaryInventory.Instance.info.Init(dataItem);
-                Debug.Log("다이어리", DiaryInventory.Instance.info);
                 // 선택초기화
                 for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
                 {

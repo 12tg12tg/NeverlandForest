@@ -11,11 +11,12 @@ public class RecipeObj : MonoBehaviour
     private string result;
     public string Result => result;
     public void Init(RecipeDataTable elem, string id)
-    {
+    {   
         result = elem.GetData<RecipeTableElem>(id).result_ID;
         recipes = elem.GetCombination(result);
         var allitem = DataTableManager.GetTable<AllItemDataTable>();
-        image.sprite = allitem.GetData<AllItemTableElem>(result).IconSprite;
+        var stringid = $"ITEM_{result}";
+        image.sprite = allitem.GetData<AllItemTableElem>(stringid).IconSprite;
         time = elem.IsMakingTime(result);
     }
 

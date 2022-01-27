@@ -6,13 +6,9 @@ public class NewRoomControl : MonoBehaviour
 {
     public Vector3 spawnPos;
     public List<Vector3> objPosList = new List<Vector3>();
-
-    //public GameObject spawnObj;
-    //public List<GameObject> eventPosObjList = new List<GameObject>();
-
     //private List<Vector3> posCheckList = new();
 
-    // 일단 임시?
+    // TODO : 일단 임시?
     public List<NewRoomInstance> prefabList = new List<NewRoomInstance>();
     public List<NewRoomInstance> roomList = new List<NewRoomInstance>();
     // 임시 Pool
@@ -93,9 +89,6 @@ public class NewRoomControl : MonoBehaviour
         RoomEndPosAndNumberSet();
         for (int i = 0; i < objPosList.Count; i++)
         {
-            // 임시, 가라로 만듬
-            if (curDungeonRoom.randomEventData != null)
-                curDungeonRoom.randomEventData.eventBasePos = objPosList[i];
             foreach (var obj in curDungeonRoom.eventObjDataList)
             {
                 obj.eventBasePos = objPosList[i];
@@ -105,7 +98,6 @@ public class NewRoomControl : MonoBehaviour
                 break;
             curDungeonRoom = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curDungeonRoom.nextRoomIdx];
         }
-        //dungeonSystem.DungeonSystemData.curRoomInstanceData = 
     }
     // 각 방 넘버링 및 마지막방 체크
     private void RoomEndPosAndNumberSet()
@@ -181,69 +173,3 @@ public class NewRoomControl : MonoBehaviour
     //}
 
 }
-
-//// test
-//public List<GameObject> prefabList = new List<GameObject>();
-//public List<TestPrefabId> roomList = new List<TestPrefabId>();
-//// objectPool
-//public List<TestPrefabId> pool = new List<TestPrefabId>();
-
-//var randomRoad = 7;
-//var roomNumberList = RoomListSet(randomRoad);
-
-//if(pool.Count <= 0)
-//{
-//    for (int i = 0; i < prefabList.Count; i++)
-//    {
-//        var obj = Instantiate(prefabList[i], transform);
-//        var prefab = obj.AddComponent<TestPrefabId>();
-//        prefab.prefabId = i;
-//        prefab.isActive = false;
-//        prefab.gameObject.SetActive(false);
-//        pool.Add(prefab);
-//    }
-//}
-//foreach (var room in roomList)
-//    room.gameObject.SetActive(false);
-//roomList.Clear();
-
-//for (int i = 0; i < randomRoad; i++)
-//{
-//    var prefab = pool.Find(x => x.prefabId == roomNumberList[i] && x.isActive == false);
-//    if(prefab == null)
-//    {
-//        var obj = Instantiate(prefabList[roomNumberList[i]], transform);
-//        var tempPrefab = obj.AddComponent<TestPrefabId>();
-//        tempPrefab.prefabId = roomNumberList[i];
-//        tempPrefab.isActive = false;
-//        tempPrefab.gameObject.SetActive(false);
-//        pool.Add(tempPrefab);
-//        prefab = tempPrefab;
-//    }
-
-
-//    if (roomList.Count <= 0)
-//    {
-//        prefab.gameObject.SetActive(true);
-//        prefab.isActive = true;
-//        prefab.transform.position = transform.position;
-//        roomList.Add(prefab);
-//    }
-//    else
-//    {
-//        var newPosition = NewPos(roomList[i-1].gameObject);
-//        prefab.gameObject.SetActive(true);
-//        prefab.isActive = true;
-//        prefab.transform.position = newPosition;
-//        roomList.Add(prefab);
-//    }
-
-//var childEnd = gameObject.GetComponentsInChildren<EndPos>();
-//for (int i = 0; i < childEnd.Length; i++)
-//{
-//    childEnd[i].roomNumber = i + 1;
-//    if (i == childEnd.Length - 1)
-//    {
-//        childEnd[i].isLastPos = true;
-//    }
-//}
