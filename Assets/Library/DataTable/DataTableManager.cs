@@ -47,6 +47,12 @@ public static class DataTableManager
         var randomEventTable = new RandomEventTable();
         randomEventTable.Load();
         tables.Add(typeof(RandomEventTable), randomEventTable);
+
+
+        var craftTable = new CraftDataTable();
+        craftTable.Load();
+        tables.Add(typeof(CraftDataTable), craftTable);
+
     }
 
     public static T GetTable<T>() where T : DataTableBase

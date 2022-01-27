@@ -95,7 +95,7 @@ public class CraftIcon : MonoBehaviour
         materialobj2 = allitem.GetData<AllItemTableElem>(materialid);
 
         Time = itemGoList[slot].Time;
-        makingTime.text = $"제작 시간은 {Time[0]}:{Time[1]}:{Time[2]} 입니다. ";
+        makingTime.text = $"제작 시간은 {Time}분 입니다. ";
     }
     public void MakeCooking()
     {

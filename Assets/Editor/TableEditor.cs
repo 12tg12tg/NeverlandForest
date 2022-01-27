@@ -7,7 +7,7 @@ using System.IO;
 public class TableEditor : EditorWindow
 {
     private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable",
-        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable", "RandomEventTable" };
+        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable", "RandomEventTable","CraftDataTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -60,6 +60,8 @@ public class TableEditor : EditorWindow
             case "AllItemDataTable":
                 ViewAllItemData(tableList);
                 break;
+            case "RecipeDataTable":
+                break;
             case "PlayerSkillTable":
                 ViewPlayerSkillData(tableList);
                 break;
@@ -71,6 +73,9 @@ public class TableEditor : EditorWindow
                 break;
             case "RandomEventTable":
                 ViewRandomEventData(tableList);
+                break;
+            case "CraftDataTable":
+                ViewCraftData(tableList);
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
@@ -267,6 +272,21 @@ public class TableEditor : EditorWindow
         randomData["FAIL3ID"] = EditorGUILayout.TextField("FAIL3ID", randomData["FAIL3ID"]);
         randomData["FAIL3VAL"] = EditorGUILayout.TextField("FAIL3VAL", randomData["FAIL3VAL"]);
         randomData["FAIL3DESC"] = EditorGUILayout.TextField("FAIL3DESC", randomData["FAIL3DESC"]);
+    }
+
+    private void ViewCraftData(List<Dictionary<string, string>> craftList)
+    {
+        // 에디터에서 보여주는 데이터들
+        var craftData = craftList[itemIndex];
+        craftData["ID"] = EditorGUILayout.TextField("ID", craftData["ID"]);
+        craftData["NAME"] = EditorGUILayout.TextField("NAME", craftData["NAME"]);
+        craftData["TYPE"] = EditorGUILayout.TextField("TYPE", craftData["TYPE"]);
+        craftData["RESULTID"] = EditorGUILayout.TextField("RESULTID", craftData["RESULTID"]);
+        craftData["Mat1"] = EditorGUILayout.TextField("Mat1", craftData["Mat1"]);
+        craftData["Mat2"] = EditorGUILayout.TextField("Mat2", craftData["Mat2"]);
+        craftData["Mat3"] = EditorGUILayout.TextField("Mat3", craftData["Mat3"]);
+        craftData["DURATION"] = EditorGUILayout.TextField("DURATION", craftData["DURATION"]);
+      
     }
 
     private void GUIButton(List<Dictionary<string, string>> tableList, string tableName)

@@ -72,6 +72,7 @@ public static class Vars
                     tempItemNum += 1;
                     userData.AddItemData(newItem);
                 }
+               
             }
             return userData;
         }

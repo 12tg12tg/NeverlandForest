@@ -12,6 +12,7 @@ using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
 using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
+using CraftSaveDataCurrentVersion = CraftSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -300,6 +301,14 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.Craft:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<CraftSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -357,6 +366,12 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.WorldMapPlayerData:
                 while (!(data is WorldMapPlayerSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.Craft:
+                while (!(data is CraftSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

@@ -40,6 +40,7 @@ public class CraftTableElem : DataTableElemBase
     public CraftTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
+        name = data["NAME"];
         type = int.Parse(data["TYPE"]);
         result_ID = data["RESULTID"];
         material0 = data["Mat1"];
@@ -55,12 +56,12 @@ public class CraftDataTable : DataTableBase
     {
         csvFilePath = "CraftDataTable";
     }
-    public Dictionary<int, string> CombineDictionary =
+    public Dictionary<int, string> craftCombineDictionary =
         new Dictionary<int, string>(); // 조합식이랑 결과값을 가지고있는 diction
-    public Dictionary<string, string[]> CombineListDictionary =
+    public Dictionary<string, string[]> craftmaterialListDictionary =
         new Dictionary<string, string[]>(); // 재료들의 번호를 가지고있는 diction
 
-    public Dictionary<string, string> MakingTimeDictionary = new Dictionary<string, string>();
+    public Dictionary<string, string> makingTimeDictionary = new Dictionary<string, string>();
     //아이템 번호(Result)랑 시간에 대한 값들을 가지고 있다. 
     public override void Load()
     {
@@ -82,14 +83,14 @@ public class CraftDataTable : DataTableBase
             combinekey.material0 = id1;
             combinekey.material1 = id2;
             combinekey.material2 = id3;
-            CombineDictionary.Add(combinekey.fullkey, elem.result_ID);
+            craftCombineDictionary.Add(combinekey.fullkey, elem.result_ID);
 
             string[] crafts = new string[] { elem.material0, elem.material1, elem.material2 };
 
-            CombineListDictionary.Add(elem.result_ID, crafts);
+            craftmaterialListDictionary.Add(elem.result_ID, crafts);
 
             string craftTime = elem.duration_minute.ToString();
-            MakingTimeDictionary.Add(elem.result_ID, craftTime);
+            makingTimeDictionary.Add(elem.result_ID, craftTime);
         }
     }
     public bool IsCombine(string material0, string material1, out string result, string material2 = "0")
@@ -98,15 +99,15 @@ public class CraftDataTable : DataTableBase
         combinekey.material0 = byte.Parse(material0);
         combinekey.material1 = byte.Parse(material1);
         combinekey.material2 = byte.Parse(material2);
-        return CombineDictionary.TryGetValue(combinekey.fullkey, out result);
+        return craftCombineDictionary.TryGetValue(combinekey.fullkey, out result);
     }
     public string IsMakingTime(string key)
     {
-        return MakingTimeDictionary[key];
+       return makingTimeDictionary[key];
     }
     public string[] GetCombination(string key)
     {
-        return CombineListDictionary[key];
+        return craftmaterialListDictionary[key];
     }
     public string GetCraftId(string result)
     {
