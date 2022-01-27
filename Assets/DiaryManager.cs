@@ -24,6 +24,7 @@ public class DiaryManager : MonoBehaviour
     public GameObject battleRewardPanel;
     public GameObject huntRewardPanel;
     public GameObject gatheringInDungeonPanel;
+    public GameObject gatheringInDungeonReward;
     public GameObject CookingRotationPanel;
     public GameObject CookingRewardPanel;
 
@@ -35,6 +36,7 @@ public class DiaryManager : MonoBehaviour
     public DiaryInventory sleepInventory;
     public DiaryInventory gatheringInventory;
     public DiaryInventory gatheringrewardInventory;
+    public DiaryInventory gatheringInDungeonrewardInventory;
 
     private bool isRotation=false;
     public bool IsRotation
@@ -206,6 +208,20 @@ public class DiaryManager : MonoBehaviour
         gatheringInCampReward.SetActive(true);
         gatheringrewardInventory.ItemButtonInit();
     }
+    public void OpenGatheringInDungeonReward()
+    {
+        producePanel.SetActive(false);
+        cookingPanel.SetActive(false);
+        sleepingPanel.SetActive(false);
+        gatheringIncCampPanel.SetActive(false);
+        battleRewardPanel.SetActive(false);
+        huntRewardPanel.SetActive(false);
+        gatheringInDungeonPanel.SetActive(true);
+        gatheringInCampReward.SetActive(false);
+        gatheringInDungeonReward.SetActive(true);
+        gatheringInDungeonrewardInventory.ItemButtonInit();
+    }
+
     public void OpenBattleReward()
     {
         producePanel.SetActive(false);

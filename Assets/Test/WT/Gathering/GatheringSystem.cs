@@ -35,6 +35,48 @@ public class GatheringSystem : MonoBehaviour
     public Image handimage;
     public TextMeshProUGUI handCompleteTimeText;
     public ReconfirmPanelManager reconfirmPanelManager;
+    
+    public GameObject toolconsumeTime;
+    public GameObject handconsumeTime;
+
+    public GameObject toolitemicon;
+    public GameObject handitemicon;
+
+    public GameObject toolcompleteTime;
+    public GameObject handcompleteTime;
+
+    public GameObject toolbutton;
+    public GameObject handbutton;
+
+    public GameObject toolremainTime;
+    public GameObject handremainTime;
+
+    public GatheringInDungeonRewardObject gatheringInDungeonRewardObject;
+    private List<GatheringInDungeonRewardObject> gatheringRewardList = 
+        new List<GatheringInDungeonRewardObject>();
+    private List<DataAllItem> rewardList = new List<DataAllItem>();
+    public GameObject gatheringParent;
+
+    private DataAllItem selecteditem;
+    public DataAllItem SelectedItem
+    {
+        get=> selecteditem;
+        set
+        {
+            selecteditem = value;
+        }
+    }
+    private static GatheringSystem instance;
+    public static GatheringSystem Instance => instance;
+    GameObject reward;
+    GameObject subreward;
+
+
+    public void Awake()
+    {
+        instance = this;
+    }
+    private bool isMove;
     public enum GatheringType
     {
         MainDunguen,
@@ -101,14 +143,10 @@ public class GatheringSystem : MonoBehaviour
         gatheringPanel.SetActive(true);
         gatheringtext.gameObject.SetActive(true);
         gatheringtext.text = " 채집을 시작하겠습니까";
+        isMove = true;
     }
     private void ToolPopUp()
     {
-        /* Debug.Log("도구팝업떳다");
-         gatheringToolPanel.SetActive(true);
-         gatheringTooltext.gameObject.SetActive(true);
-         gatheringTooltext.text = "무엇으로 채집을 하시겠습니까?";*/
-
         diaryManager.gameObject.SetActive(true);
         diaryManager.OpenGatheringInDungeon();
         if (ConsumeManager.CurTimeState ==TimeState.DayTime)
@@ -150,6 +188,22 @@ public class GatheringSystem : MonoBehaviour
 
     private void TreeGatheing(LanternState lanternstate)
     {
+
+        toolconsumeTime.SetActive(true);
+        handconsumeTime.SetActive(true);
+
+        toolitemicon.SetActive(true);
+        handitemicon.SetActive(true);
+
+        toolcompleteTime.SetActive(true);
+        handcompleteTime.SetActive(true);
+
+        toolbutton.SetActive(true);
+        handbutton.SetActive(true);
+
+        toolremainTime.SetActive(true);
+        handremainTime.SetActive(true);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -192,6 +246,20 @@ public class GatheringSystem : MonoBehaviour
     }
     private void PitGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolconsumeTime.SetActive(true);
+        handconsumeTime.SetActive(true);
+
+        toolitemicon.SetActive(true);
+        handitemicon.SetActive(true);
+
+        toolcompleteTime.SetActive(true);
+        handcompleteTime.SetActive(true);
+
+        toolbutton.SetActive(true);
+        handbutton.SetActive(true);
+
+        toolremainTime.SetActive(true);
+        handremainTime.SetActive(true);
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -234,6 +302,20 @@ public class GatheringSystem : MonoBehaviour
     }
     private void HerbsGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolconsumeTime.SetActive(false);
+        handconsumeTime.SetActive(true);
+
+        toolitemicon.SetActive(false);
+        handitemicon.SetActive(true);
+
+        toolcompleteTime.SetActive(false);
+        handcompleteTime.SetActive(true);
+
+        toolbutton.SetActive(false);
+        handbutton.SetActive(true);
+
+        toolremainTime.SetActive(false);
+        handremainTime.SetActive(true);
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -278,6 +360,20 @@ public class GatheringSystem : MonoBehaviour
     }
     private void MushroomGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolconsumeTime.SetActive(false);
+        handconsumeTime.SetActive(true);
+
+        toolitemicon.SetActive(false);
+        handitemicon.SetActive(true);
+
+        toolcompleteTime.SetActive(false);
+        handcompleteTime.SetActive(true);
+
+        toolbutton.SetActive(false);
+        handbutton.SetActive(true);
+
+        toolremainTime.SetActive(false);
+        handremainTime.SetActive(true);
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -335,10 +431,14 @@ public class GatheringSystem : MonoBehaviour
                 () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f); }));
         }
     }
+    private void Update()
+    {
+        Debug.Log(curSelectedObj.item);
+    }
     public void YesTool()
     {
-        var item = curSelectedObj.item;
-        var subitem = curSelectedObj.subitem;
+        var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
@@ -349,17 +449,26 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
-                if (Vars.UserData.AddItemData(subitem) !=false)
-                {
-                    Vars.UserData.AddItemData(subitem);
-                    BottomUIManager.Instance.ItemListInit();
-                }
-                else
-                {
-                    reconfirmPanelManager.gameObject.SetActive(true);
-                    reconfirmPanelManager.OpenBagReconfirm();
-                }
-               
+
+                subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+                var currentsubitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.subitem.ItemTableElem.id));
+                gatheringInDungeonRewardObject.Item = currentsubitem;
+                gatheringInDungeonRewardObject.rewardIcon.sprite = currentsubitem.ItemTableElem.IconSprite;
+                subreward.transform.parent = gatheringParent.transform;
+                gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
+                rewardList.Add(curSelectedObj.subitem);
+
+                /* if (Vars.UserData.AddItemData(subitem) !=false)
+                 {
+                     Vars.UserData.AddItemData(subitem);
+                     BottomUIManager.Instance.ItemListInit();
+                 }
+                 else
+                 {
+                     reconfirmPanelManager.gameObject.SetActive(true);
+                     reconfirmPanelManager.OpenBagReconfirm();
+                 }
+                */
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByTool();
@@ -367,36 +476,110 @@ public class GatheringSystem : MonoBehaviour
             default:
                 break;
         }
-        // 아이템 획득
-        if (Vars.UserData.AddItemData(item) !=false)
+        // 아이템 획득 준비 보상창에 생성하기
+
+        reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+        gatheringInDungeonRewardObject.Init(curSelectedObj.item);
+        gatheringInDungeonRewardObject.rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+        reward.transform.parent = gatheringParent.transform;
+        gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
+        rewardList.Add(curSelectedObj.item);
+        diaryManager.OpenGatheringInDungeonReward();
+
+        /*   if (Vars.UserData.AddItemData(item) !=false)
+           {
+               Vars.UserData.AddItemData(item);
+           }
+           else
+           {
+               reconfirmPanelManager.gameObject.SetActive(true);
+               reconfirmPanelManager.OpenBagReconfirm();
+           }
+           BottomUIManager.Instance.ItemListInit();
+          */
+    }
+    public void NoTool()
+    {
+        var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+
+        switch (curSelectedObj.objectType)
         {
-            Vars.UserData.AddItemData(item);
+            case GatheringObjectType.Tree:
+                GatheringTreeByHand();
+                break;
+            case GatheringObjectType.Pit:
+                GatheringPitByHand();
+                break;
+            case GatheringObjectType.Herbs:
+                GatheringHerbsByHand();
+                /* if (Vars.UserData.AddItemData(item) !=false)
+                 {
+                     Vars.UserData.AddItemData(item);
+                     BottomUIManager.Instance.ItemListInit();
+                 }
+                 else
+                 {
+                     reconfirmPanelManager.gameObject.SetActive(true);
+                     reconfirmPanelManager.OpenBagReconfirm();
+                 }*/
+                subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+                var currentsubitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.subitem.ItemTableElem.id));
+                gatheringInDungeonRewardObject.Item = currentsubitem;
+                gatheringInDungeonRewardObject.rewardIcon.sprite = currentsubitem.ItemTableElem.IconSprite;
+                subreward.transform.parent = gatheringParent.transform;
+                gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
+                rewardList.Add(curSelectedObj.subitem);
+
+                break;
+            case GatheringObjectType.Mushroom:
+                GatheringMushroomByHand();
+                break;
+            default:
+                break;
+        }
+
+        // 아이템 획득준비 보상창에 생성하기
+        reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+        var currentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.item.ItemTableElem.id));
+
+        gatheringInDungeonRewardObject.Item = currentitem;
+        gatheringInDungeonRewardObject.rewardIcon.sprite = currentitem.ItemTableElem.IconSprite;
+        reward.transform.parent = gatheringParent.transform;
+        gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
+        rewardList.Add(curSelectedObj.item);
+        diaryManager.OpenGatheringInDungeonReward();
+
+        /*if (Vars.UserData.AddItemData(subitem) !=false)
+        {
+            Vars.UserData.AddItemData(subitem);
+            BottomUIManager.Instance.ItemListInit();
         }
         else
         {
             reconfirmPanelManager.gameObject.SetActive(true);
             reconfirmPanelManager.OpenBagReconfirm();
         }
-        Debug.Log(item.ItemTableElem.name);
-        if (subitem!=null)
-        {
-            Debug.Log(subitem.ItemTableElem.name);
-        }
-        BottomUIManager.Instance.ItemListInit();
-       
-        boyPlayer.IsCoMove = true;
-        playerAnimationBoy.speed = 0.5f;
-        playerAnimationBoy.SetTrigger("Pick");
-        //if (coWomenMove == null)
-        //{
-        //    PlayWalkAnimationBoy();
-        //}
-        //coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
-        diaryManager.gameObject.SetActive(false);
-        gatheringPanel.SetActive(false);
-        Debug.Log("팝업껏다");
-        gatheringToolPanel.SetActive(false);
+      */
+
+
     }
+    public void ClosePopup()
+    {
+        if (isMove)
+        {
+            boyPlayer.IsCoMove = true;
+            playerAnimationBoy.speed = 0.5f;
+            playerAnimationBoy.SetTrigger("Pick");
+            diaryManager.gameObject.SetActive(false);
+            gatheringPanel.SetActive(false);
+            Debug.Log("팝업껏다");
+            gatheringToolPanel.SetActive(false);
+            isMove = false;
+            diaryManager.gatheringInDungeonReward.SetActive(false);
+        }
+       
+    }
+  
 
     private static void GatheringTreeByTool()
     {
@@ -438,76 +621,7 @@ public class GatheringSystem : MonoBehaviour
         else
             ConsumeManager.TimeUp(0, 1);
     }
-    public void NoTool()
-    {
-        var item = curSelectedObj.item;
-        var subitem = curSelectedObj.subitem;
-        switch (curSelectedObj.objectType)
-        {
-            case GatheringObjectType.Tree:
-                GatheringTreeByHand();
-                break;
-            case GatheringObjectType.Pit:
-                GatheringPitByHand();
-                break;
-            case GatheringObjectType.Herbs:
-                GatheringHerbsByHand();
-                if (Vars.UserData.AddItemData(item) !=false)
-                {
-                    Vars.UserData.AddItemData(item);
-                    BottomUIManager.Instance.ItemListInit();
-                }
-                else
-                {
-                    reconfirmPanelManager.gameObject.SetActive(true);
-                    reconfirmPanelManager.OpenBagReconfirm();
-                }
-             
-                break;
-            case GatheringObjectType.Mushroom:
-                GatheringMushroomByHand();
-                break;
-            default:
-                break;
-        }
-
-        // 아이템 획득
-        if (Vars.UserData.AddItemData(subitem) !=false)
-        {
-            Vars.UserData.AddItemData(subitem);
-            BottomUIManager.Instance.ItemListInit();
-        }
-        else
-        {
-            reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.OpenBagReconfirm();
-        }
-      
-
-        boyPlayer.IsCoMove = true;
-        playerAnimationBoy.speed = 0.5f;
-        playerAnimationBoy.SetTrigger("Pick");
-        diaryManager.gameObject.SetActive(false);
-        gatheringPanel.SetActive(false);
-        Debug.Log("팝업껏다");
-        gatheringToolPanel.SetActive(false);
-
-        //Vars.UserData.AddItemData(item);
-        //list.Add(item);
-        //inventoryController.OpenChoiceMessageWindow(list);
-
-        //if (coWomenMove == null)
-        //{
-        //    //PlayWalkAnimation();
-        //    PlayWalkAnimationBoy();
-        //}
-        //coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
-        //gatheringPanel.SetActive(false);
-        //Debug.Log("팝업껏다");
-        //gatheringToolPanel.SetActive(false);
-        //Destroy(curSelectedObj);
-
-    }
+ 
     public void CloseBagisFull()
     {
         reconfirmPanelManager.gameObject.SetActive(false);
@@ -579,5 +693,44 @@ public class GatheringSystem : MonoBehaviour
     private void PlayWalkAnimationBoy()
     {
         playerAnimationBoy.SetFloat("Speed", 3f);
+    }
+    public void GetSelectedItem()
+    {
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            gatheringRewardList[i].IsSelect = false;
+        }
+        if (selecteditem != null)
+        {
+            if (Vars.UserData.AddItemData(selecteditem) != false)
+            {
+                Vars.UserData.AddItemData(selecteditem);
+            }
+            else
+            {
+                reconfirmPanelManager.gameObject.SetActive(true);
+                reconfirmPanelManager.OpenBagReconfirm();
+            }
+        }
+        diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+        BottomUIManager.Instance.ItemListInit();
+    }
+    public void GetAllItem()
+    {
+        for (int i = 0; i < rewardList.Count; i++)
+        {
+            if (Vars.UserData.AddItemData(rewardList[i]) != false)
+            {
+                Vars.UserData.AddItemData(rewardList[i]);
+            }
+            else
+            {
+                reconfirmPanelManager.gameObject.SetActive(true);
+                reconfirmPanelManager.OpenBagReconfirm();
+            }
+            diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+            BottomUIManager.Instance.ItemListInit();
+        }
+        ClosePopup();
     }
 }
