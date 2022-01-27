@@ -303,7 +303,9 @@ public class BattleManager : MonoBehaviour
             var tempForCoroutine = temp[i];
             var tilePos = new Vector2(i, 6);
             tempForCoroutine.ObstacleAdd(tilePos);
-            MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, tempForCoroutine.PlayIdleAnimation);
+            tempForCoroutine.SetMoveUi(true);
+            MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, 
+                () => { tempForCoroutine.PlayIdleAnimation(); tempForCoroutine.SetMoveUi(false); });
         }
 
     } //매개변수 웨이브를 전투에 입장시키기.
@@ -342,12 +344,17 @@ public class BattleManager : MonoBehaviour
             var curPos = waveList[i].transform.position;
             var newPos = basePos + new Vector3(spacingX * remainWave, 0f, i * spacingZ);
             if (!useCoroutine)
+            {
                 waveList[i].transform.position = newPos;
+                waveList[i].uiLinker.linkedUi.MoveUi();
+            }
             else
             {
                 var tempForCoroutine = waveList[i];
                 waveList[i].PlayMoveAnimation();
-                StartCoroutine(Utility.CoTranslate(waveList[i].transform, curPos, newPos, 1f, tempForCoroutine.PlayIdleAnimation));
+                waveList[i].SetMoveUi(true);
+                StartCoroutine(Utility.CoTranslate(waveList[i].transform, curPos, newPos, 1f, 
+                    () => { tempForCoroutine.PlayIdleAnimation(); tempForCoroutine.SetMoveUi(false); }));
             }
         }
     }

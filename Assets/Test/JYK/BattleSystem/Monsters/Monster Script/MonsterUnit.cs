@@ -102,7 +102,8 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                     }
                     else
                     {
-                        BattleManager.Instance.MoveUnitOnTile(backTile.index, this, null, null, false);
+                        SetMoveUi(true);
+                        BattleManager.Instance.MoveUnitOnTile(backTile.index, this, null, () => SetMoveUi(false), false);
                     }
                 }
             }
@@ -288,8 +289,14 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         if(moveFoward) // 직선이동할때만 트랩 계산
             ObstacleAdd();
 
+        SetMoveUi(true);
         BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
-            () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); });
+            () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); SetMoveUi(false); });
+    }
+
+    public void SetMoveUi(bool moveUi)
+    {
+        uiLinker.linkedUi.UpdateUi = moveUi; 
     }
 
     // Animation
