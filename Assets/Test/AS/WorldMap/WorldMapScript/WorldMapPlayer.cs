@@ -7,11 +7,10 @@ using UnityEngine.SceneManagement;
 [Serializable]
 public class WorldMapPlayer : MonoBehaviour
 {
-    public WorldMapManager worldmapManager;
     private WorldMapNode[] totalMap;
     private Coroutine coMove;
 
-    public Vector2 currentIndex;
+    private Vector2 currentIndex;
     private Vector2 goalIndex;
 
     private Vector3 startPos;
@@ -27,7 +26,8 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Init()
     {
-        totalMap = worldmapManager.GetComponentsInChildren<WorldMapNode>();
+        totalMap = GameManager.Manager.wm.worldMapMaker.GetComponentsInChildren<WorldMapNode>();
+        //totalMap = transform.GetComponentsInChildren<WorldMapNode>();
         currentIndex = totalMap[0].index;
         transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
 
@@ -47,7 +47,9 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void ComeBackWorldMap()
     {
-        totalMap = worldmapManager.GetComponentsInChildren<WorldMapNode>();
+        // TODO : 씬 하나로 합치면 아래코드는 없어져도 될듯 함
+        totalMap = GameManager.Manager.wm.GetComponentsInChildren<WorldMapNode>();
+
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
         {

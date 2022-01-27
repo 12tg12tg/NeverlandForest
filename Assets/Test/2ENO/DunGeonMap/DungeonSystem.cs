@@ -44,7 +44,7 @@ public class DungeonSystem : MonoBehaviour
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
-    public WorldMap worldMap;
+    public WorldMapMaker worldMap;
     
 
 

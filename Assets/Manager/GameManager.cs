@@ -24,10 +24,15 @@ public class GameManager : MonoBehaviour
     private static GameManager gm;
     private SaveLoadManager sm;
     private MultiTouch mt;
-
+    [Header("월드맵")]
+    public WorldMapManager wm;
+    [Header("카메라")]
+    public CameraManager cm;
     // Vars
-    public GameObject gameoverUI;
     private GameState state;
+    [Header("UI")]
+    public GameObject gameoverUI;
+    
 
     // Property
     public GameState State
@@ -42,12 +47,12 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         gm = this;
-
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
+        if (wm != null)
+            wm.Init();
 
         DontDestroyOnLoad(this);
-       
         //MonsterPool.Instance.Init();
     }
 
