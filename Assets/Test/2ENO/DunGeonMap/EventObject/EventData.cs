@@ -61,7 +61,11 @@ public class HuntingData : EventData
         {
             var gameObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
             gameObj.layer = LayerMask.NameToLayer("EventObject");
-
+            // TODO : 박스컬라이더 임시로 만들어서 붙여줌
+            var boxCol = gameObj.AddComponent<BoxCollider>();
+            boxCol.isTrigger = true;
+            boxCol.center = new Vector3(0f, 1f, 0f);
+            boxCol.size = new Vector3(2f, 1f, 1.3f);
             var huntingObj2 = gameObj.AddComponent<HuntingObject>();
             huntingObj2.Init(this, roomIndex);
             return huntingObj2;
@@ -69,7 +73,10 @@ public class HuntingData : EventData
         var objPos = new Vector3(eventBasePos.x - 2.5f, eventBasePos.y + 1f, eventBasePos.z);
         var gameObj2 = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
         gameObj2.layer = LayerMask.NameToLayer("EventObject");
-
+        var boxCol2 = gameObj2.AddComponent<BoxCollider>();
+        boxCol2.isTrigger = true;
+        boxCol2.center = new Vector3(0f, 1f, 0f);
+        boxCol2.size = new Vector3(2f, 1f, 1.3f);
         var huntingObj = gameObj2.AddComponent<HuntingObject>();
         huntingObj.Init(this, roomIndex);
         objectPosition = objPos;

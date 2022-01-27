@@ -16,6 +16,12 @@ public class MiniMapCamMove : MonoBehaviour
 
     //private Vector3 curRoomPos;
 
+    private void Awake()
+    {
+        var rect = canvas.GetComponent<RectTransform>().rect;
+        minimapImg.sizeDelta = new Vector2(rect.width * 0.2f, rect.height * 0.3f);
+    }
+
     public void Init()
     {
         startPos = minimapImg.anchoredPosition;
@@ -30,13 +36,12 @@ public class MiniMapCamMove : MonoBehaviour
             var curObj = DungeonSystem.Instance.dungeonRoomObjectList.Find(x => x.roomIdx == DungeonSystem.Instance.DungeonSystemData.curDungeonRoomData.roomIdx);
             if (curObj != null)
             {
-                transform.position = new Vector3(curObj.gameObject.transform.position.x, curObj.gameObject.transform.position.y, -10f);
+                transform.position = new Vector3(curObj.gameObject.transform.position.x, 150f, curObj.gameObject.transform.position.z);
             }
         }
         else
         {
-            transform.position = new Vector3(leftVec.x + rightVec.x / 2, (topVec.y + bottomVec.y / 2) - 5f + 3000f, -10f);
-            
+            transform.position = new Vector3((leftVec.x + rightVec.x) / 2, 150f, ((topVec.z + bottomVec.z)/ 2) - 5f);
         }
     }
 
@@ -49,6 +54,6 @@ public class MiniMapCamMove : MonoBehaviour
         IsExpand = toggle.isOn ? false : true;
         minimapImg.anchoredPosition = toggle.isOn ? startPos : new Vector2(rect.width * 0.5f, -rect.height * 0.5f);
         minimapImg.sizeDelta = toggle.isOn ? new Vector2(rect.width * 0.2f, rect.height * 0.3f) : new Vector2(rect.width * 0.9f, rect.height * 0.9f);
-        camera.orthographicSize = toggle.isOn ? 8f : 17f;
+        camera.fieldOfView = toggle.isOn ? 60f : 120f;
     }
 }
