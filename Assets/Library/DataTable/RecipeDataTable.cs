@@ -67,9 +67,7 @@ public class RecipeDataTable : DataTableBase
             data.Clear();
         else
             data = new SerializeDictionary<string, DataTableElemBase>();
-        //list = CSVReader.Read(csvFilePath);
         var alist = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
-        //tableTitle = list.First().Keys.ToArray();
         foreach (var line in alist.sc)
         {
             var elem = new RecipeTableElem(line);
@@ -92,28 +90,6 @@ public class RecipeDataTable : DataTableBase
             string[] TimeRecipe = new string[] { elem.Hour, elem.Mininute, elem.Second };
             MakingTimeDictionary.Add(elem.result_ID, TimeRecipe);
         }
-        /*foreach (var line in list)
-        {
-            var elem = new RecipeTableElem(line);
-            data.Add(elem.id, elem);
-
-            var id1 =byte.Parse(elem.FireExist);
-            var id2 = byte.Parse(elem.MSG);
-            var id3 = byte.Parse(elem.Material);
-
-            var combinekey = new RecipeCombine();
-            combinekey.fire = id1;
-            combinekey.msg = id2;
-            combinekey.material = id3;
-            CombineDictionary.Add(combinekey.fullkey, elem.result_ID);
-
-            string[] recipe = new string[] { elem.FireExist ,elem.MSG, elem.Material};
-
-            CombineListDictionary.Add(elem.result_ID, recipe);
-
-            string[] TimeRecipe = new string[] { elem.Hour, elem.Mininute, elem.Second };
-            MakingTimeDictionary.Add(elem.result_ID, TimeRecipe);
-        }*/
     }
 
     public bool IsCombine(string msg,string material,out string result,string fireexist= "0")
@@ -138,13 +114,6 @@ public class RecipeDataTable : DataTableBase
     }
     public string GetRecipeId(string result)
     {
-      /*  foreach (var line in list)
-        {
-            if (line["RESULTID"].Equals(result))
-            {
-                return line["ID"];
-            }
-        }*/
         var alist = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
         foreach (var line in alist.sc)
         {
@@ -153,7 +122,6 @@ public class RecipeDataTable : DataTableBase
                 return line["ID"];
             }
         }
-
         return string.Empty;
     }
 }

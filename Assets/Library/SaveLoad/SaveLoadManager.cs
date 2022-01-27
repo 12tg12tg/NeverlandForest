@@ -12,6 +12,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     WorldMapData_0 worldMapSaveData;
     WorldMapPlayerData_0 worldMapPlayerData;
     ConsumableSaveData_0 consumableSaveData;
+    CraftSaveData_0 craftSaveData;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -41,6 +42,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.WorldMapPlayerData:
                 SaveWorldMapPlayer();
                 break;
+            case SaveLoadSystem.SaveType.Craft:
+                SaveCraft();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -67,6 +71,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.WorldMapPlayerData:
                 LoadWorldMapPlayer();
+                break;
+            case SaveLoadSystem.SaveType.Craft:
+                LoadCraft();
                 break;
         }
     }
@@ -138,6 +145,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         recipeData.haveRecipe = Vars.UserData.HaveRecipeIDList;
         SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
     }
+    private void SaveCraft()
+    {
+        craftSaveData = new CraftSaveData_0();
+        craftSaveData.haveCraft = Vars.UserData.HaveCraftIDList;
+        SaveLoadSystem.Save(craftSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
+
+    }
     private void SaveTime()
     {
         //timeData = new TimeSaveData_0();
@@ -180,6 +194,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (recipeData != null)
         {
             Vars.UserData.HaveRecipeIDList = recipeData.haveRecipe;
+        }
+    }
+    private void LoadCraft()
+    {
+        craftSaveData = (CraftSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
+        if (craftSaveData != null)
+        {
+            Vars.UserData.HaveCraftIDList = craftSaveData.haveCraft;
         }
     }
     private void LoadTime()

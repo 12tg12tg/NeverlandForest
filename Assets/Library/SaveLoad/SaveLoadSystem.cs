@@ -43,6 +43,7 @@ public static class SaveLoadSystem
         WorldMapData,
         WorldMapPlayerData,
         ConsumableData,
+        Craft,
     }
 
     private static bool isInit;
