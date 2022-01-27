@@ -171,9 +171,12 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         manager.monsters.Remove(this);
     }
 
-    private void Release()
+    public void Release()
     {
-        
+        uiLinker.Release();
+        EraseThis();
+        int id = int.Parse(baseElem.id);
+        MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
     }
 
     // Action

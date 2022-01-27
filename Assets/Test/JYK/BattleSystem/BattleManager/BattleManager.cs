@@ -307,6 +307,7 @@ public class BattleManager : MonoBehaviour
             MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, 
                 () => { tempForCoroutine.PlayIdleAnimation(); tempForCoroutine.SetMoveUi(false); });
         }
+        temp.Clear();
 
     } //매개변수 웨이브를 전투에 입장시키기.
 
@@ -720,7 +721,23 @@ public class BattleManager : MonoBehaviour
             if(!Inventory_Virtual.instance.isLasso)
             uiManager.curObstacleType = ObstacleType.Barrier;
         }
-
+        if(GUI.Button(new Rect(Screen.width - 300, 0, 100, 50), "전투 종료"))
+        {
+            var list = new List<MonsterUnit>(monsters);
+            list.AddRange(wave1);
+            list.AddRange(wave2);
+            list.AddRange(wave3);
+            wave1.Clear();
+            wave2.Clear();
+            wave3.Clear();
+            list.ToList().ForEach(n => { if(n != null) n.Release(); });
+            FSM.ChangeState(BattleState.Monster);
+        }
+        if (GUI.Button(new Rect(Screen.width - 300, 50, 100, 50), "전투 종료 씬 전환"))
+        {
+            monsters.ForEach(n => n.Release());
+            SceneManager.LoadScene("As_RandomMap");
+        }
 
 
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
