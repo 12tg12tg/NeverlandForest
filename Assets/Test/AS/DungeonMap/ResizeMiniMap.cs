@@ -18,6 +18,11 @@ public class ResizeMiniMap : MonoBehaviour
         var toggle = miniMap.GetComponent<Toggle>();
         var rt = GetComponent<RectTransform>();
         var size = toggle.isOn ? rt.rect.height * percentage : rt.rect.width * defaultPercentage;
+        //var rect = miniMap.rect;
+        var rect = GetComponent<RectTransform>().rect;
+
+        miniMap.anchoredPosition = toggle.isOn ? new Vector2(rect.width * 0.5f, -rect.height * 0.5f) : miniMap.anchoredPosition;
+        Debug.Log($"{Screen.width} , {Screen.height}");
         miniMap.sizeDelta = new Vector2(size, size);
     }
 }

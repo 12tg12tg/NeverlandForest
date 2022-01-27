@@ -19,9 +19,9 @@ public class BottomItemButtonUI : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.blue;
+                selectedImg.color = Color.red;
             else
-                selectedImg.color = Color.white;
+                selectedImg.color = Color.green;
         }
     }
 
@@ -70,8 +70,10 @@ public class BottomItemButtonUI : MonoBehaviour
         if (RandomEventManager.Instance != null && GameManager.Manager.State == GameState.Dungeon)
         {
             RandomEventUIManager.Instance.info.Init(dataItem);
-            RandomEventUIManager.Instance.selectItem = dataItem;
-            RandomEventUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+            RandomEventUIManager.Instance.info2page.Init(dataItem);
+            RandomEventUIManager.Instance.selectInvenItem = dataItem;
+            //RandomEventUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+            RandomEventUIManager.Instance.itemBox = gameObject.GetComponent<RectTransform>();
             RandomEventUIManager.Instance.isPopUp = true;
 
             var uiVec = RandomEventUIManager.Instance.popUpWindow.position;

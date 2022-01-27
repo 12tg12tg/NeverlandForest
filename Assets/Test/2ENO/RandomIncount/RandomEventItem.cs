@@ -18,9 +18,9 @@ public class RandomEventItem : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.blue;
+                selectedImg.color = Color.red;
             else
-                selectedImg.color = Color.white;
+                selectedImg.color = Color.green;
         }
     }
 
@@ -51,13 +51,14 @@ public class RandomEventItem : MonoBehaviour
             return;
 
         RandomEventUIManager.Instance.info.Init(dataItem);
-        RandomEventUIManager.Instance.curSelectItem = null;
+        RandomEventUIManager.Instance.info2page.Init(dataItem);
+        RandomEventUIManager.Instance.selectRewardItem = null;
         // 선택초기화
         for (int i = 0; i < RandomEventUIManager.Instance.rewardItemButtons.Count; i++)
         {
             RandomEventUIManager.Instance.rewardItemButtons[i].IsSelect = false;
         }
         IsSelect = true;
-        RandomEventUIManager.Instance.curSelectItem = dataItem;
+        RandomEventUIManager.Instance.selectRewardItem = dataItem;
     }
 }

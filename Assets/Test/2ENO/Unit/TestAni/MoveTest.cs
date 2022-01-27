@@ -11,7 +11,7 @@ public class MoveTest : MonoBehaviour
     
     private PlayerMoveAnimation curAnimation;
     private MultiTouch multiTouch;
-    private float speed = 5f;
+    private float speed = 10f;
 
     public bool isCoMove;
 
@@ -33,7 +33,29 @@ public class MoveTest : MonoBehaviour
     private List<RigLayer> girlRiglayers;
 
     private Coroutine coHand;
-    void Start()
+    //void Start()
+    //{
+    //    multiTouch = GameManager.Manager.MultiTouch;
+    //    playerAnimationBoy = playerBoy.GetComponent<Animator>();
+    //    playerAnimationGirl = playerGirl.GetComponent<Animator>();
+
+    //    rigBuilder = playerGirl.GetComponent<RigBuilder>();
+    //    girlRiglayers = rigBuilder.layers;
+
+    //    foreach (var obj in girlRiglayers)
+    //        obj.active = false;
+
+    //    boyRig = playerBoy.GetComponentInChildren<Rig>();
+    //    girlRigs = playerGirl.GetComponentsInChildren<Rig>();
+    //    boyRight = playerBoy.GetComponent<IKControl>();
+
+    //    // 0 active = 오른쪽 방향
+    //    // 1 active = 왼쪽방향 이동기준
+    //    girlRiglayers[1].active = true;
+    //    boyRight.isRight = false;
+    //}
+
+    public void Init()
     {
         multiTouch = GameManager.Manager.MultiTouch;
         playerAnimationBoy = playerBoy.GetComponent<Animator>();
@@ -77,7 +99,7 @@ public class MoveTest : MonoBehaviour
         // 첫 터치 기준으로만 잡음
 
         var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        if (!isCoMove && !RandomEventUIManager.Instance.isEventOn)
+        if (!isCoMove /* && !RandomEventUIManager.Instance.isEventOn*/)
         {
             if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
             {
