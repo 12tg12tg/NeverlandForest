@@ -151,6 +151,7 @@ public class MoveTest : MonoBehaviour
                         {
                             StopCoroutine(coHand);
                             coHand = null;
+                            RigOff();
                         }
                         coHand ??= StartCoroutine(HandShakeOn());
                         isHand = false;
@@ -171,11 +172,13 @@ public class MoveTest : MonoBehaviour
                         {
                             StopCoroutine(coHand);
                             coHand = null;
+                            RigOff();
                         }
                         coHand ??= StartCoroutine(HandShakeOn());
                         isHand = false;
                     }
                 }
+                // 캐릭터 둘이 거리가 가까워질때
                 else
                 {
                     if (!isHand)
@@ -190,11 +193,24 @@ public class MoveTest : MonoBehaviour
                     }
                 }
             }
+            // 터치 안누를때
             else
+            {
                 boySpeed = 0f;
+                if (!isHand)
+                {
+                    if (coHand != null)
+                    {
+                        StopCoroutine(coHand);
+                        coHand = null;
+                    }
+                    coHand ??= StartCoroutine(HandShakeOff());
+                    isHand = true;
+                }
+            }
 
-            playerAnimationBoy.SetFloat("Speed", boySpeed);
-            playerAnimationGirl.SetFloat("Speed", boySpeed);
+            playerAnimationBoy.SetFloat("Speed", 10);
+            playerAnimationGirl.SetFloat("Speed", 10);
         }
         else
         {
