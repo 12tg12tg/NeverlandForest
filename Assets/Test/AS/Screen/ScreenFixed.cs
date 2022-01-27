@@ -5,6 +5,7 @@ using UnityEngine;
 public class ScreenFixed : MonoBehaviour
 {
     public Camera uiCamera;
+    public Camera uiCamera2;
 
     [Header("화면 해상도")]
     public readonly int fixedWidth = 3040;
@@ -47,6 +48,7 @@ public class ScreenFixed : MonoBehaviour
             // TODO : 카메라가 추가될 때 하단에 추가해야 함(else 부분도)
             Camera.main.rect = rect;
             uiCamera.rect = rect;
+            uiCamera2.rect = rect;
         }
         else
         {
@@ -56,6 +58,7 @@ public class ScreenFixed : MonoBehaviour
 
             Camera.main.rect = rect;
             uiCamera.rect = rect;
+            uiCamera2.rect = rect;
         }
 
         Debug.Log("화면 재정의 완료");
