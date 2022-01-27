@@ -31,14 +31,11 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
             item = value;
         }
     }
-    private void Update()
-    {
-        //Debug.Log(item);
-    }
+   
     public void ItemButtonClick()
     {
-
         GatheringSystem.Instance.SelectedItem = item;
+        Debug.Log($"{item} {staticData}");
         IsSelect = true;
 
     }
@@ -57,9 +54,5 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
             rewardIcon.sprite = elem.IconSprite;
         }
     }
-    public void Test(DataAllItem data)
-    {
-        item = data;
-        Debug.Log($"{item} {staticData}");
-    }
+   
 }

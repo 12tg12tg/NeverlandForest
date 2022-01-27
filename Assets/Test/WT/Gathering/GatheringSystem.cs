@@ -431,10 +431,6 @@ public class GatheringSystem : MonoBehaviour
                 () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f); }));
         }
     }
-    private void Update()
-    {
-        Debug.Log(curSelectedObj.item);
-    }
     public void YesTool()
     {
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
@@ -451,24 +447,10 @@ public class GatheringSystem : MonoBehaviour
                 GatheringHerbsByTool();
 
                 subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
-                var currentsubitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.subitem.ItemTableElem.id));
-                gatheringInDungeonRewardObject.Item = currentsubitem;
-                gatheringInDungeonRewardObject.rewardIcon.sprite = currentsubitem.ItemTableElem.IconSprite;
+                subreward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.subitem);
                 subreward.transform.parent = gatheringParent.transform;
                 gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
                 rewardList.Add(curSelectedObj.subitem);
-
-                /* if (Vars.UserData.AddItemData(subitem) !=false)
-                 {
-                     Vars.UserData.AddItemData(subitem);
-                     BottomUIManager.Instance.ItemListInit();
-                 }
-                 else
-                 {
-                     reconfirmPanelManager.gameObject.SetActive(true);
-                     reconfirmPanelManager.OpenBagReconfirm();
-                 }
-                */
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByTool();
@@ -479,24 +461,11 @@ public class GatheringSystem : MonoBehaviour
         // 아이템 획득 준비 보상창에 생성하기
 
         reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
-        gatheringInDungeonRewardObject.Init(curSelectedObj.item);
-        gatheringInDungeonRewardObject.rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+        reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
         reward.transform.parent = gatheringParent.transform;
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
         diaryManager.OpenGatheringInDungeonReward();
-
-        /*   if (Vars.UserData.AddItemData(item) !=false)
-           {
-               Vars.UserData.AddItemData(item);
-           }
-           else
-           {
-               reconfirmPanelManager.gameObject.SetActive(true);
-               reconfirmPanelManager.OpenBagReconfirm();
-           }
-           BottomUIManager.Instance.ItemListInit();
-          */
     }
     public void NoTool()
     {
@@ -512,20 +481,8 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
-                /* if (Vars.UserData.AddItemData(item) !=false)
-                 {
-                     Vars.UserData.AddItemData(item);
-                     BottomUIManager.Instance.ItemListInit();
-                 }
-                 else
-                 {
-                     reconfirmPanelManager.gameObject.SetActive(true);
-                     reconfirmPanelManager.OpenBagReconfirm();
-                 }*/
                 subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
-                var currentsubitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.subitem.ItemTableElem.id));
-                gatheringInDungeonRewardObject.Item = currentsubitem;
-                gatheringInDungeonRewardObject.rewardIcon.sprite = currentsubitem.ItemTableElem.IconSprite;
+                subreward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.subitem);
                 subreward.transform.parent = gatheringParent.transform;
                 gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
                 rewardList.Add(curSelectedObj.subitem);
@@ -537,31 +494,13 @@ public class GatheringSystem : MonoBehaviour
             default:
                 break;
         }
-
         // 아이템 획득준비 보상창에 생성하기
         reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
-        var currentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(curSelectedObj.item.ItemTableElem.id));
-
-        gatheringInDungeonRewardObject.Item = currentitem;
-        gatheringInDungeonRewardObject.rewardIcon.sprite = currentitem.ItemTableElem.IconSprite;
+        reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
         reward.transform.parent = gatheringParent.transform;
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
         diaryManager.OpenGatheringInDungeonReward();
-
-        /*if (Vars.UserData.AddItemData(subitem) !=false)
-        {
-            Vars.UserData.AddItemData(subitem);
-            BottomUIManager.Instance.ItemListInit();
-        }
-        else
-        {
-            reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.OpenBagReconfirm();
-        }
-      */
-
-
     }
     public void ClosePopup()
     {
@@ -577,10 +516,7 @@ public class GatheringSystem : MonoBehaviour
             isMove = false;
             diaryManager.gatheringInDungeonReward.SetActive(false);
         }
-       
     }
-  
-
     private static void GatheringTreeByTool()
     {
         var lanternstate = ConsumeManager.CurLanternState;
@@ -705,6 +641,13 @@ public class GatheringSystem : MonoBehaviour
             if (Vars.UserData.AddItemData(selecteditem) != false)
             {
                 Vars.UserData.AddItemData(selecteditem);
+                for (int i = 0; i < rewardList.Count; i++)
+                {
+                    if (rewardList[i] ==selecteditem)
+                    {
+                        rewardList.RemoveAt(i);
+                    }
+                }
             }
             else
             {
@@ -714,6 +657,23 @@ public class GatheringSystem : MonoBehaviour
         }
         diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
+        if (reward!=null)
+        {
+            if (selecteditem == reward.GetComponent<GatheringInDungeonRewardObject>().Item)
+            {
+                Destroy(reward);
+            }
+        }
+      
+        if (subreward!=null)
+        {
+            if (selecteditem == subreward.GetComponent<GatheringInDungeonRewardObject>().Item)
+            {
+                Destroy(subreward);
+            }
+        }
+        
+        selecteditem = null;
     }
     public void GetAllItem()
     {
@@ -722,6 +682,7 @@ public class GatheringSystem : MonoBehaviour
             if (Vars.UserData.AddItemData(rewardList[i]) != false)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
+                rewardList.RemoveAt(i);
             }
             else
             {
@@ -731,6 +692,15 @@ public class GatheringSystem : MonoBehaviour
             diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
             BottomUIManager.Instance.ItemListInit();
         }
+        if (reward != null)
+        {
+            Destroy(reward);
+        }
+        if (subreward != null)
+        {
+            Destroy(subreward);
+        }
+        rewardList.Clear();
         ClosePopup();
     }
 }
