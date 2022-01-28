@@ -20,9 +20,8 @@ public class DungeonSystem : MonoBehaviour
         get => dungeonSystemData;
     }
 
-    [Header("Prefab, Instance")]
+    [Header("프리팹, 인스턴스")]
     public NewRoomControl roomGenerate;
-    public GatheringObject gatheringObjPrefab;
     public BattleObject battleObjPrefab;
     //public HuntingObject huntingObjPrefab;
     public GameObject huntingObjPrefab;
@@ -33,23 +32,20 @@ public class DungeonSystem : MonoBehaviour
     public GatheringObject mushroomObj;
     
 
-    [Header("Player, System")]
+    [Header("플레이어, 다른시스템")]
     public PlayerDungeonUnit dungeonPlayerGirl;
     public PlayerDungeonUnit dungeonPlayerBoy;
     public GatheringSystem gatheringSystem;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
-    [Header("Map Generate")]
+    [Header("맵 생성(오브젝트)관련")]
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     public WorldMapMaker worldMap;
-    
 
-
-
-    [Header("ETC")]
+    [Header("기타")]
     public Button campButton;
     public RandomEventUIManager rndUi;
     public MoveTest playerMove;
