@@ -50,7 +50,7 @@ public class Utility
         SceneManager.LoadScene(SceneName);
     }
 
-    public static IEnumerator CoTranslate(RectTransform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
+    public static IEnumerator CoTranslate(RectTransform transform, Vector2 start, Vector2 end, float time, UnityAction action = null)
     {
         float startTime = Time.realtimeSinceStartup;
         float destTime = startTime + time;
@@ -58,11 +58,11 @@ public class Utility
         while (Time.realtimeSinceStartup < destTime)
         {
             var ratio = (Time.realtimeSinceStartup - startTime) / time;
-            transform.position = Vector3.Lerp(start, end, ratio);
+            transform.anchoredPosition = Vector2.Lerp(start, end, ratio);
 
             yield return null;
         }
-        transform.position = end;
+        transform.anchoredPosition = end;
         action?.Invoke();
     }
     public static IEnumerator CoTranslate(Transform transform, Vector3 dest, float speed, float minDist, UnityAction action = null)
@@ -131,8 +131,9 @@ public class Utility
 
     public static Vector2 RelativeRectSize(CanvasScaler cs, RectTransform rt)
     {
-        float wRatio = Screen.width / cs.referenceResolution.x;
-        float hRatio = Screen.height / cs.referenceResolution.y;
+        var cvs = cs.GetComponent<RectTransform>();
+        float wRatio = cvs.rect.width / cs.referenceResolution.x;
+        float hRatio = cvs.rect.height / cs.referenceResolution.y;
 
         float ratio =
             wRatio * (1f - cs.matchWidthOrHeight) +
