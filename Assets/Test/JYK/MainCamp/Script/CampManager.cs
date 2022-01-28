@@ -12,6 +12,7 @@ public class CampManager : MonoBehaviour
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public DiaryManager diaryManager;
+    public GameObject testPrehab;
     public GameObject newBottomUi;
 
     public Camera campminimapCamera;
@@ -458,8 +459,10 @@ public class CampManager : MonoBehaviour
         Debug.Log($"gatheringTime{gatheringTime}");
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
-            reward.transform.parent = diaryManager.gatheringParent.transform;
+            //reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
+            reward = Instantiate(testPrehab, diaryManager.gatheringParent.transform);
+
+            //reward.transform.parent = diaryManager.gatheringParent.transform;
             gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
             rewardGameObjectList.Add(reward);
         }

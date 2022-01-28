@@ -6,6 +6,7 @@ public class ScreenFixed : MonoBehaviour
 {
     public Camera uiCamera;
     public Camera uiCamera2;
+    public Camera[] uiCamera3;
 
     [Header("화면 해상도")]
     public readonly int fixedWidth = 3040;
@@ -51,6 +52,14 @@ public class ScreenFixed : MonoBehaviour
                 uiCamera.rect = rect;
             if (uiCamera2 != null)
                 uiCamera2.rect = rect;
+            if (uiCamera3 != null)
+            {
+                for (int i = 0; i < uiCamera3.Length; i++)
+                {
+                    uiCamera3[i].rect = rect;
+                }
+            }
+
         }
         else
         {
@@ -63,6 +72,13 @@ public class ScreenFixed : MonoBehaviour
                 uiCamera.rect = rect;
             if (uiCamera2 != null)
                 uiCamera2.rect = rect;
+            if (uiCamera3 != null)
+            {
+                for (int i = 0; i < uiCamera3.Length; i++)
+                {
+                    uiCamera3[i].rect = rect;
+                }
+            }
         }
 
         Debug.Log("화면 재정의 완료");
