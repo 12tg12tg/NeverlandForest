@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
@@ -43,6 +44,7 @@ public class CampManager : MonoBehaviour
     public GameObject CookPanel;
 
     private List<DataAllItem> rewardList = new List<DataAllItem>();
+    private List<GameObject> rewardGameObjectList = new List<GameObject>();
     public List<DataAllItem> RewardList
     {
         get
@@ -76,6 +78,7 @@ public class CampManager : MonoBehaviour
             selectItem = value;
         }
     }
+    GameObject reward;
     public enum CampEvent
     {
         StartCook,
@@ -245,7 +248,7 @@ public class CampManager : MonoBehaviour
             if (diaryManager.recipeIcon.fire.sprite != null &&
                 diaryManager.recipeIcon.condiment.sprite != null &&
                 diaryManager.recipeIcon.material.sprite != null)
-            {   
+            {
                 diaryManager.CallMakeCook();
             }
         }
@@ -455,9 +458,10 @@ public class CampManager : MonoBehaviour
         Debug.Log($"gatheringTime{gatheringTime}");
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            GameObject reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
+            reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
             reward.transform.parent = diaryManager.gatheringParent.transform;
             gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
+            rewardGameObjectList.Add(reward);
         }
         ConsumeManager.TimeUp(gatheringTime);
         if (rewardList.Count != 0)
@@ -484,6 +488,18 @@ public class CampManager : MonoBehaviour
         if (selectItem != null)
         {
             Vars.UserData.AddItemData(selectItem);
+            for (int i = 0; i < rewardList.Count; i++)
+            {
+                if (rewardList[i] ==selectItem)
+                {
+                    rewardList.RemoveAt(i);
+                }
+            }
+            if (rewardList.Count==0)
+            {
+                rewardList.Clear();
+            }
+           
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -491,6 +507,18 @@ public class CampManager : MonoBehaviour
             if (DiaryInventory.Instance != null)
             {
                 DiaryInventory.Instance.ItemButtonInit();
+            }
+            for (int i = 0; i < rewardGameObjectList.Count; i++)
+            {
+                if (selectItem == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
+                {
+                    Destroy(rewardGameObjectList[i]);
+                    rewardGameObjectList.RemoveAt(i);
+                }
+            }
+            if (rewardGameObjectList.Count == 0)
+            {
+                rewardGameObjectList.Clear();
             }
             selectItem = null;
         }
@@ -502,12 +530,19 @@ public class CampManager : MonoBehaviour
             for (int i = 0; i < rewardList.Count; i++)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
-            }
-            for (int i = 0; i < rewardList.Count; i++)
-            {
                 rewardList.RemoveAt(i);
             }
             rewardList.Clear();
+
+            for (int i = 0; i < rewardGameObjectList.Count; i++)
+            {
+                rewardGameObjectList.RemoveAt(i);
+                rewardList.RemoveAt(i);
+            }
+            if (rewardGameObjectList.Count == 0)
+            {
+                rewardGameObjectList.Clear();
+            }
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -535,5 +570,8 @@ public class CampManager : MonoBehaviour
         }
 
     }
-
+    public void Test()
+    {
+        Debug.Log($"rewardList");
+    }
 }

@@ -660,7 +660,7 @@ public class GatheringSystem : MonoBehaviour
         if (reward!=null)
         {
             if (selecteditem == reward.GetComponent<GatheringInDungeonRewardObject>().Item)
-            {
+            {   
                 Destroy(reward);
             }
         }
