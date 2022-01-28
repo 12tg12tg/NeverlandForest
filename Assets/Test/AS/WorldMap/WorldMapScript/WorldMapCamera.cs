@@ -17,7 +17,7 @@ public class WorldMapCamera : MonoBehaviour
 
     public bool UseMiniMap;
 
-    private void Awake()
+    public void Init()
     {
         if(!UseMiniMap)
         {
@@ -30,6 +30,7 @@ public class WorldMapCamera : MonoBehaviour
         {
             distance = 50f;
             maxDistance = 200f;
+            Debug.Log(transform.position);
             startPos = transform.position;
             startX = startPos.x - distance * 0.3f;
         }
