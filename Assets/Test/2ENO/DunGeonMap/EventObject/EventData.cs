@@ -17,7 +17,6 @@ public class EventData
     // 랜덤인카운트
     public string randomEventID;
 }
-[System.Serializable]
 public class GatheringData : EventData
 {
     public int offSetBasePos;
@@ -46,7 +45,6 @@ public class GatheringData : EventData
         return gatheringObj;
     }
 }
-[System.Serializable]
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
@@ -84,7 +82,6 @@ public class HuntingData : EventData
         return huntingObj;
     }
 }
-[System.Serializable]
 public class BattleData : EventData
 {
     public BattleObject CreateObj(BattleObject obj)
