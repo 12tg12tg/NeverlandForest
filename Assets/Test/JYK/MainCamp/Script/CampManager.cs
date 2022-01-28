@@ -530,22 +530,12 @@ public class CampManager : MonoBehaviour
     {
         if (rewardList.Count > 0)
         {
-            for (int i = 0; i < rewardList.Count; i++)
+            for (int i = rewardList.Count-1; i>= 0 ; i--)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);
             }
             rewardList.Clear();
-
-            for (int i = 0; i < rewardGameObjectList.Count; i++)
-            {
-                rewardGameObjectList.RemoveAt(i);
-                rewardList.RemoveAt(i);
-            }
-            if (rewardGameObjectList.Count == 0)
-            {
-                rewardGameObjectList.Clear();
-            }
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -554,6 +544,14 @@ public class CampManager : MonoBehaviour
             {
                 DiaryInventory.Instance.ItemButtonInit();
             }
+        }
+        for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+        {
+            Destroy(rewardGameObjectList[i]);
+        }
+        if (rewardGameObjectList.Count == 0)
+        {
+            rewardGameObjectList.Clear();
         }
         diaryManager.AllClose();
         diaryManager.gameObject.SetActive(false);
