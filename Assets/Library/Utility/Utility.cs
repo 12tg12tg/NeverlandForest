@@ -134,9 +134,13 @@ public class Utility
         float wRatio = Screen.width / cs.referenceResolution.x;
         float hRatio = Screen.height / cs.referenceResolution.y;
 
+        Debug.Log($"{Screen.width}, {Screen.height}, {wRatio}, {hRatio}");
+
         float ratio =
             wRatio * (1f - cs.matchWidthOrHeight) +
             hRatio * (cs.matchWidthOrHeight);
+
+        Debug.Log($"{ratio}, {cs.matchWidthOrHeight}");
 
         var size = new Vector2();
         size.x = rt.rect.width * ratio;

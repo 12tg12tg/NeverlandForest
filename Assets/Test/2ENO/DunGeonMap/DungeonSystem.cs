@@ -238,13 +238,15 @@ public class DungeonSystem : MonoBehaviour
                 campButton.interactable = true;
             else
                 campButton.interactable = false;
+
+            ConsumeManager.TimeUp(0, 1);
         }
         else
         {
             if(isGoForward)
             {
                 // 방 한칸 지날때마다 30분씩 지남
-                ConsumeManager.TimeUp(30, 0);
+                ConsumeManager.TimeUp(0, 1);
                 beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
                 dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
                 CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
