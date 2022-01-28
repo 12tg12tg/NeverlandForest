@@ -209,8 +209,8 @@ public class MoveTest : MonoBehaviour
                 }
             }
 
-            playerAnimationBoy.SetFloat("Speed", 10);
-            playerAnimationGirl.SetFloat("Speed", 10);
+            playerAnimationBoy.SetFloat("Speed", boySpeed);
+            playerAnimationGirl.SetFloat("Speed", boySpeed);
         }
         else
         {
