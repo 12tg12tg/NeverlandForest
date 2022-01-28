@@ -74,7 +74,6 @@ public class Animal : MonoBehaviour
             return;
 
         escapePercent = (bool)vals[0] ? escapePercent + escapePercentUp : escapePercent;
-        GetComponent<AnimalStateIcon>().IconColor(escapePercent);
         if(escapePercent >= 20)
             animator.SetTrigger("Turn");
 

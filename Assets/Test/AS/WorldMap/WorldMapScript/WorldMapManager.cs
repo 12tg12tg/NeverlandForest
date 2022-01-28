@@ -9,6 +9,9 @@ public class WorldMapManager : MonoBehaviour
     public WorldMapCamera worldMapCamera;
     public WorldMapGround ground;
 
+    [Header("월드맵 생성")]
+    public WorldMapMaker worldMapMaker;
+
     [Header("프리팹")]
     public GameObject nodePrefab;
     public GameObject linePrefab;
@@ -18,33 +21,31 @@ public class WorldMapManager : MonoBehaviour
     public int column;
     public int row;
 
-    private WorldMap worldMap;
 
-    private void Start()
+    public void Init()
     {
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapData);
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
-        worldMap = gameObject.AddComponent<WorldMap>();
-        worldMap.Init(column, row, nodePrefab, linePrefab, fogPrefab);
+        worldMapMaker.Init(column, row, nodePrefab, linePrefab, fogPrefab);
         if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행
         {
-            StartCoroutine(worldMap.InitMap(() => {
+            StartCoroutine(worldMapMaker.InitMap(() => {
                 NodeLinkToPlayer();
                 player.Init();
                 worldMapCamera.FollowPlayer();
                 if (ground != null)
-                    ground.CreateTree(worldMap.Edges, worldMap.Maps);
+                    ground.CreateTree(worldMapMaker.Edges, worldMapMaker.Maps);
             }));
         }
         else
         {
-            worldMap.LoadWorldMap(loadData);
+            worldMapMaker.LoadWorldMap(loadData);
             NodeLinkToPlayer();
             player.ComeBackWorldMap();
             worldMapCamera.FollowPlayer(() =>
             {
-                worldMap.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
+                worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
             });
             if (ground != null)
                 ground.Load();
@@ -53,7 +54,7 @@ public class WorldMapManager : MonoBehaviour
 
     private void NodeLinkToPlayer()
     {
-        var maps = worldMap.Maps;
+        var maps = worldMapMaker.Maps;
         for (int i = 0; i < column; i++)
         {
             for (int j = 0; j < row; j++)

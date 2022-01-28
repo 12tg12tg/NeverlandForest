@@ -30,8 +30,6 @@ public class WorldMapGround : MonoBehaviour
     public float intervalTree;
     public float num;
 
-    public GameObject testCube;
-
     private readonly List<WorldMapTreeInfo> treeList = new List<WorldMapTreeInfo>();
 
     public void CreateTree(List<Edge> edges, WorldMapNode[][] nodes)

@@ -44,7 +44,7 @@ public class DungeonSystem : MonoBehaviour
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
-    public WorldMap worldMap;
+    public WorldMapMaker worldMap;
     
 
 
@@ -351,9 +351,9 @@ public class DungeonSystem : MonoBehaviour
                         switch (eventObj.eventType)
                         {
                             case DunGeonEvent.Battle:
-                                //var createBt = eventObj as BattleData;
-                                //var obj = createBt.CreateObj(battleObjPrefab);
-                                //eventObjInstanceList.Add(obj.gameObject);
+                                var createBt = eventObj as BattleData;
+                                var obj = createBt.CreateObj(battleObjPrefab);
+                                eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
                                 var createGt = eventObj as GatheringData;
@@ -490,7 +490,7 @@ public class DungeonSystem : MonoBehaviour
             RoomObject obj;
             if (room.RoomType == DunGeonRoomType.MainRoom)
             {
-                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                      , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -498,7 +498,7 @@ public class DungeonSystem : MonoBehaviour
             }
             else
             {
-                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                 , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -550,7 +550,7 @@ public class DungeonSystem : MonoBehaviour
         //objectInfo2.roomIdx = lastRoom.roomIdx;
         //dungeonRoomObjectList.Add(lastObj);
 
-        mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 3000f, 0f);
+        //mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 3000f, 0f);
     }
 }
 

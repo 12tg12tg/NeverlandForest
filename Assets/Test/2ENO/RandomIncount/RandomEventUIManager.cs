@@ -14,45 +14,50 @@ public class RandomEventUIManager : MonoBehaviour
     public static RandomEventUIManager Instance => instance;
 
     //Instance
+    [Header("각종버튼(이미지)들, 정보창")]
     public BottomInfoUI info;
     public BottomInfoUI info2page;
     public List<BottomItemButtonUI> itemButtons;
     public List<BottomItemButtonUI> itemButtons2page;
-
     public List<RandomEventItem> rewardItemButtons;
     public List<GameObject> windows;
+
+    public GameObject itemInfo;
     public List<GameObject> rewardOrCheck;
+    public RectTransform closeBtn;
 
     //Vars
     [HideInInspector] public ButtonState buttonState;
 
     //PopUpWindow
+    [Header("팝업창")]
     public bool isPopUp;
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
-    public RectTransform itemBox;
 
-    //closeBtn
-    public RectTransform closeBtn;
+    [HideInInspector] public RectTransform itemBox;
 
     // RandomEventData
-    public DataRandomEvent randomEventData;
+    [HideInInspector] public DataRandomEvent randomEventData;
 
     // RandomEventText
+    [Header("텍스트")]
     public List<GameObject> selectButtons;
     public TextMeshProUGUI eventDesc;
     public TextMeshProUGUI selectName;
     public TextMeshProUGUI selectDesc;
     public TextMeshProUGUI resultDesc;
-    public GameObject itemInfo;
+
+    [Header("외부 UI 및 기능 끄기")]
+    public GameObject minimap;
+    public GameObject inventory;
+    public GameObject worldmap;
+    public GameObject playerMove;
 
     private List<DataAllItem> rewardItemList = new();
 
-    public DataAllItem selectInvenItem;
-    public DataAllItem selectRewardItem;
-
-
-    public bool isEventOn;
+    [HideInInspector] public DataAllItem selectInvenItem;
+    [HideInInspector] public DataAllItem selectRewardItem;
 
     private void Awake()
     {
@@ -78,11 +83,17 @@ public class RandomEventUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        isEventOn = true;
+        minimap.SetActive(false);
+        inventory.SetActive(false);
+        worldmap.SetActive(false);
+        playerMove.SetActive(false);
     }
     private void OnDisable()
     {
-        isEventOn = false;
+        minimap.SetActive(true);
+        inventory.SetActive(true);
+        worldmap.SetActive(true);
+        playerMove.SetActive(true);
     }
     private void Update()
     {

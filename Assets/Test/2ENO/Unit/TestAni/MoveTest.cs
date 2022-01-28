@@ -99,7 +99,7 @@ public class MoveTest : MonoBehaviour
         // 첫 터치 기준으로만 잡음
 
         var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        if (!isCoMove /* && !RandomEventUIManager.Instance.isEventOn*/)
+        if (!isCoMove)
         {
             if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
             {
@@ -151,6 +151,7 @@ public class MoveTest : MonoBehaviour
                         {
                             StopCoroutine(coHand);
                             coHand = null;
+                            RigOff();
                         }
                         coHand ??= StartCoroutine(HandShakeOn());
                         isHand = false;
@@ -171,11 +172,13 @@ public class MoveTest : MonoBehaviour
                         {
                             StopCoroutine(coHand);
                             coHand = null;
+                            RigOff();
                         }
                         coHand ??= StartCoroutine(HandShakeOn());
                         isHand = false;
                     }
                 }
+                // 캐릭터 둘이 거리가 가까워질때
                 else
                 {
                     if (!isHand)
@@ -190,8 +193,21 @@ public class MoveTest : MonoBehaviour
                     }
                 }
             }
+            // 터치 안누를때
             else
+            {
                 boySpeed = 0f;
+                if (!isHand)
+                {
+                    if (coHand != null)
+                    {
+                        StopCoroutine(coHand);
+                        coHand = null;
+                    }
+                    coHand ??= StartCoroutine(HandShakeOff());
+                    isHand = true;
+                }
+            }
 
             playerAnimationBoy.SetFloat("Speed", boySpeed);
             playerAnimationGirl.SetFloat("Speed", boySpeed);

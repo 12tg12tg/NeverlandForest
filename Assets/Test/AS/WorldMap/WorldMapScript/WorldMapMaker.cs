@@ -74,7 +74,7 @@ public struct Edge
         return true;
     }
 }
-public class WorldMap : MonoBehaviour
+public class WorldMapMaker : MonoBehaviour
 {
     // 미니맵을 사용하려 할 때 필요해서 열어놔야함
     [Header("프리팹")]
