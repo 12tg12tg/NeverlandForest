@@ -47,8 +47,10 @@ public class ScreenFixed : MonoBehaviour
 
             // TODO : 카메라가 추가될 때 하단에 추가해야 함(else 부분도)
             Camera.main.rect = rect;
-            uiCamera.rect = rect;
-            uiCamera2.rect = rect;
+            if (uiCamera != null)
+                uiCamera.rect = rect;
+            if (uiCamera2 != null)
+                uiCamera2.rect = rect;
         }
         else
         {
@@ -57,8 +59,10 @@ public class ScreenFixed : MonoBehaviour
             var rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight);
 
             Camera.main.rect = rect;
-            uiCamera.rect = rect;
-            uiCamera2.rect = rect;
+            if (uiCamera != null)
+                uiCamera.rect = rect;
+            if (uiCamera2 != null)
+                uiCamera2.rect = rect;
         }
 
         Debug.Log("화면 재정의 완료");
