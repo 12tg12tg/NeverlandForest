@@ -19,7 +19,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     // Vars
     public int initHp;
     private int sheild;
-    private int maxSheild;
+    public int maxSheild;
     private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
@@ -33,9 +33,10 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public List<Obstacle> obstacles = new List<Obstacle>();
 
     // Property
-    public int Sheild { get => sheild; set => sheild = value; }
+    public int Shield { get => sheild; set => sheild = value; }
     public int Speed { get => BaseElem.Speed; } // 랜덤을 최소 < 속도 < 최대 내에서 뽑아주는 프로퍼티임.
     public bool IsBind { get; set; } // 사냥꾼 스킬
+    public bool IsBurn { get; set; } // 약초학자 스킬
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
@@ -66,16 +67,14 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public void OnAttacked(BattleCommand attacker)
     {
         var playerCommand = attacker as PlayerCommand;
-        var damage = playerCommand.skill.SkillTableElem.Damage;
 
         // Damage
-        CalcultateDamage(playerCommand.type, damage, out int curDamage, out int curSheildDamage);
-        Debug.Log($"{Pos}{name} 몬스터가 {baseElem.Name}에게 {curDamage}의 Hp 피해와 {curSheildDamage}의 실드 피해를 받았다.\n" +
+        CalcultateDamage(playerCommand, out int curDamage, out int curSheildDamage);
+        Debug.Log($"{Pos}{name} 몬스터가 {playerCommand.type}에게 {curDamage}의 Hp 피해와 {curSheildDamage}의 실드 피해를 받았다.\n" +
             $"Hp : {Hp + curDamage} -> {Hp} // Sheild : {sheild + curSheildDamage} -> {sheild}");
-        uiLinker.UpdateHpBar(Hp, initHp);
-        uiLinker.UpdateSheild(sheild, maxSheild);
+        uiLinker.UpdateHpBar(Hp);
+        uiLinker.UpdateSheild(sheild);
         DeadCheak();
-
 
         // 만약 사냥꾼 이라면 바인드 디버프 추가.
         if (playerCommand.type == PlayerType.Boy)
@@ -108,24 +107,31 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                 }
             }
         }
+        // 약초학자
         else
         {
+            if(playerCommand.skill.SkillTableElem.name != "근거리")
+            {
+                IsBurn = true;
+            }
             DisableHitTrigger();
         }
     }
 
-    public void CalcultateDamage(PlayerType type, int damage, out int curDamage, out int curSheildDamage)
+    public void CalcultateDamage(PlayerCommand command, out int curDamage, out int curSheildDamage)
     {
         curDamage = 0;
         curSheildDamage = 0;
 
-        if (type == PlayerType.Boy)
+        var damage = command.skill.SkillTableElem.Damage;
+
+        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name != "근거리")
         {
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;
             Hp -= curDamage;
         }
-        else if(type == PlayerType.Girl)
+        else if(command.type == PlayerType.Girl)
         {
             sheild -= damage;
             if(sheild < 0)
@@ -162,7 +168,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         manager ??= BattleManager.Instance;
         command ??= new MonsterCommand(this);
 
-        uiLinker.Init(baseElem.type);
+        uiLinker.Init(baseElem);
         State = MonsterState.Idle;
     }
     private void EraseThis()
@@ -410,7 +416,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         DurationDecrease(obs);
 
         // 몬스터 죽었는지 체크
-        uiLinker.UpdateHpBar(Hp, initHp);
+        uiLinker.UpdateHpBar(Hp);
         DeadCheak();
     }
 

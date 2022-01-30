@@ -734,6 +734,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 930514209}
   m_CullTransparentMesh: 1
+--- !u!1 &1012481463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1012481465}
+  - component: {fileID: 1012481464}
+  m_Layer: 0
+  m_Name: CameraManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1012481464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012481463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cde55d0d5a46a454894979c31296ffd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  uiCamera: {fileID: 1593224234}
+  miniWorldMapCamera: {fileID: 0}
+--- !u!4 &1012481465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012481463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1064709112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2288,7 +2335,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1593224235}
   - component: {fileID: 1593224234}
-  - component: {fileID: 1593224233}
   m_Layer: 0
   m_Name: Camera_UI_Main
   m_TagString: Untagged
@@ -2296,14 +2342,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1593224233
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1593224232}
-  m_Enabled: 1
 --- !u!20 &1593224234
 Camera:
   m_ObjectHideFlags: 0
@@ -2355,7 +2393,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593224232}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.69225883, y: 10.428557, z: -16.244473}
+  m_LocalPosition: {x: -317, y: 10.428557, z: -16.244473}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2478,6 +2516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiCamera: {fileID: 1593224234}
   uiCamera2: {fileID: 1132332041}
+  uiCamera3: []
 --- !u!4 &1689945142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5986173605194942988, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
@@ -2557,10 +2596,22 @@ PrefabInstance:
       propertyPath: parent
       value: 
       objectReference: {fileID: 1319594978}
+    - target: {fileID: 8972891045538219362, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: prefabs.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972891045538219362, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: prefabs.Array.data[1]
+      value: 
+      objectReference: {fileID: 6517282223638928598, guid: c42b1e3d4a5db3b45a2916e380a86913, type: 3}
     - target: {fileID: 9076151087642714304, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: m_Name
       value: Temp GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9076151087642714306, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: cm
+      value: 
+      objectReference: {fileID: 1012481464}
     - target: {fileID: 9076151087642714307, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2734,6 +2785,10 @@ PrefabInstance:
     - target: {fileID: 5986173605124542005, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: m_Name
       value: BattlePack
+      objectReference: {fileID: 0}
+    - target: {fileID: 5986173605147149845, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
+      propertyPath: rt
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5986173605147149845, guid: 78704c143d911254fa60f1ffb717c16c, type: 3}
       propertyPath: uiManager

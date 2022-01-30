@@ -26,12 +26,12 @@ public class MonsterUILinker : MonoBehaviour
     public Sprite attackIcon;
     public Sprite cantMoveIcon;
 
-    public void Init(MonsterType type)
+    public void Init(MonsterTableElem elem)
     {
-        SetUI(type);
+        SetUI(elem);
     }
 
-    public void SetUI(MonsterType type)
+    public void SetUI(MonsterTableElem elem)
     {
         uiCanvas = BattleManager.Instance.uiCanvas;
         var monsterUI = UIPool.Instance.GetObject(UIPoolTag.MonsterUI);
@@ -42,13 +42,13 @@ public class MonsterUILinker : MonoBehaviour
         sheildImg = linkedUi.sheildImg;
         nextMoveDistance = linkedUi.nextMoveDistance;
         iconImg = linkedUi.iconImage;
-        linkedUi.Init(transform);
+        linkedUi.Init(transform, elem.sheild, elem.hp);
 
         hpBarOffset.y = GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y;
 
         linkedUi.offset = hpBarOffset;
 
-        SetRangeColor(type);
+        SetRangeColor(elem.type);
     }
     
     public void Release()
@@ -57,14 +57,14 @@ public class MonsterUILinker : MonoBehaviour
         UIPool.Instance.ReturnObject(UIPoolTag.MonsterUI, linkedUi.gameObject);
     }
 
-    public void UpdateHpBar(int curHp, int fullHp)
+    public void UpdateHpBar(int curHp)
     {
-        hpBarImage.fillAmount = (float)curHp / fullHp;
+        linkedUi.HpToken = curHp;
     }
 
-    public void UpdateSheild(int curS, int fulSild)
+    public void UpdateSheild(int curS)
     {
-        sheildImg.fillAmount = (float)curS / fulSild;
+        linkedUi.ShieldToken = curS;
     }
 
     public void UpdateCircleUI(MonsterCommand command)

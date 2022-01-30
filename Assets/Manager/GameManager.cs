@@ -49,7 +49,8 @@ public class GameManager : MonoBehaviour
         gm = this;
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
-        cm.mainCamera.GetComponent<WorldMapCamera>().Init();
+
+        cm?.mainCamera.GetComponent<WorldMapCamera>().Init();
         if (wm != null)
             wm.Init();
 
