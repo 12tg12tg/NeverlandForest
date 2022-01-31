@@ -56,7 +56,7 @@ public class DungeonSystem : MonoBehaviour
     private int startIndex;
     private int curDungeonRoomIndex;
 
-    private void Awake()
+    private void Start()
     {
         instance = this;
         Init();
