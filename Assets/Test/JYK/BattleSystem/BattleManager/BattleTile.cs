@@ -10,7 +10,7 @@ public class BattleTile : MonoBehaviour
 
     private TileMaker tileMaker;
     private IEnumerable<Tiles> targetTiles;
-    public bool isWaitingTileSelect;
+    [Header("유저의 타일 클릭을 기다리는 상황인지 확인")] public bool isWaitingTileSelect;
 
     private void Start()
     {

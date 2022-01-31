@@ -50,7 +50,7 @@ public class BottomUIManager : MonoBehaviour
     // 프로그래스
     public void UpdateProgress()
     {
-        int prog = BattleManager.Instance.Progress;
+        int prog = BattleManager.Instance.uiLink.Progress;
         if (prog == 0)
         {
             progressImg[0].enabled = false;

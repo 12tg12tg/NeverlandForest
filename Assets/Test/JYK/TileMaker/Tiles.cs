@@ -415,7 +415,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 //단일 타겟이라면 유효성 검사
                 if (!bm.tileLink.IsVaildTargetTile(this))
                 {
-                    manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
+                    manager.uiLink.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
                     return;
                 }
                 else
@@ -446,7 +446,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             BottomUIManager.Instance.curSkillButton.Cancle();
             BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
             manager.tileLink.EndTileClick();
-            manager.UpdateProgress(); 
+            manager.uiLink.UpdateProgress(); 
         }
     }
 

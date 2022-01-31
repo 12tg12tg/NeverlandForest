@@ -62,12 +62,12 @@ public class BattleOnGUI : MonoBehaviour
         if (GUI.Button(new Rect(Screen.width - 300, 0, 100, 50), "전투 종료"))
         {
             var list = new List<MonsterUnit>(manager.monsters);
-            list.AddRange(manager.wave1);
-            list.AddRange(manager.wave2);
-            list.AddRange(manager.wave3);
-            manager.wave1.Clear();
-            manager.wave2.Clear();
-            manager.wave3.Clear();
+            list.AddRange(manager.waveLink.wave1);
+            list.AddRange(manager.waveLink.wave2);
+            list.AddRange(manager.waveLink.wave3);
+            manager.waveLink.wave1.Clear();
+            manager.waveLink.wave2.Clear();
+            manager.waveLink.wave3.Clear();
             list.ToList().ForEach(n => { if (n != null) n.Release(); });
             manager.FSM.ChangeState(BattleState.Monster);
         }
