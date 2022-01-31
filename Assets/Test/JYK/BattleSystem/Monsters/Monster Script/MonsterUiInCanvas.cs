@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class MonsterUiInCanvas : MonoBehaviour
 {
+    [Header("최 상단 부모")]
     private Camera uiCamera;
     private Canvas canvas;
     private RectTransform rectParent;
@@ -14,17 +15,54 @@ public class MonsterUiInCanvas : MonoBehaviour
     [HideInInspector] public Vector3 offset = Vector3.zero;
     [HideInInspector] public Transform targetTr;
 
+    [Header("변경할 이미지, 색, 텍스트")]
     public Image rangeColor;
     public Image hpBarImg;
     public Image sheildImg;
     public TextMeshProUGUI nextMoveDistance;
     public Image iconImage;
-    private bool isInit;
 
+    [Header("프로그래스 바 토큰")]
+    public HorizontalLayoutGroup shieldLayoutGroup;
+    public HorizontalLayoutGroup hpLayoutGroup;
+    private List<MonsterProgressToken> shields = new List<MonsterProgressToken>();
+    private List<MonsterProgressToken> hps = new List<MonsterProgressToken>();
+
+    // Vars
+    private bool isInit;
     private bool moveUi;
     public bool UpdateUi { set => moveUi = value; }
+    public int ShieldToken
+    {
+        set
+        {
+            shieldLayoutGroup.enabled = false;
+            for (int i = 0; i < shields.Count; ++i)
+            {
+                if(i < value)
+                    shields[i].TokenOn();
+                else
+                    shields[i].TokenOff();
+            }
+        }
+    }
+    public int HpToken
+    {
+        set
+        {
+            hpLayoutGroup.enabled = false;
+            for (int i = 0; i < hps.Count; ++i)
+            {
+                if (i < value)
+                    hps[i].TokenOn();
+                else
+                    hps[i].TokenOff();
+            }
+        }
+    }
 
-    public void Init(Transform target)
+
+    public void Init(Transform target, int maxSheildGaugage, int maxHpGaugage)
     {
         canvas ??= GetComponentInParent<Canvas>();
         uiCamera ??= canvas.worldCamera;
@@ -32,10 +70,11 @@ public class MonsterUiInCanvas : MonoBehaviour
 
         targetTr = target;
         isInit = true;
-        SetNaturalState();
+        SetOriginalDisplay();
+        SetProgress(maxSheildGaugage, maxHpGaugage);
     }
 
-    public void SetNaturalState()
+    public void SetOriginalDisplay()
     {
         // 트랜스폼의 스케일, 회전값, 이미지 색상, 알파값 조정.
         nextMoveDistance.alpha = 1f;
@@ -45,11 +84,47 @@ public class MonsterUiInCanvas : MonoBehaviour
         nextMoveDistance.transform.localScale.Set(1f, 1f, 1f);
     }
 
+    public void SetProgress(int maxSheildGaugage, int maxHpGaugage)
+    {
+        shields.Clear();
+        for (int i = 0; i < maxSheildGaugage; i++)
+        {
+            var sheildToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
+            var tokenScript = sheildToken.GetComponent<MonsterProgressToken>();
+            sheildToken.transform.SetParent(shieldLayoutGroup.transform);
+            tokenScript.image.color = Color.yellow;
+            tokenScript.transform.localScale.Set(1f, 1f, 1f);
+            shields.Add(tokenScript);
+        }
+
+        hps.Clear();
+        for (int i = 0; i < maxHpGaugage; i++)
+        {
+            var hpToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
+            var tokenScript = hpToken.GetComponent<MonsterProgressToken>();
+            hpToken.transform.SetParent(hpLayoutGroup.transform);
+            tokenScript.image.color = Color.red;
+            tokenScript.transform.localScale.Set(1f, 1f, 1f);
+            hps.Add(tokenScript);
+        }
+    }
+
     public void Release()
     {
         targetTr = null;
         isInit = false;
-
+        shieldLayoutGroup.enabled = true;
+        hpLayoutGroup.enabled = true;
+        for (int i = 0; i < hps.Count; i++)
+        {
+            hps[i].TokenOn();
+            UIPool.Instance.ReturnObject(UIPoolTag.ProgressToken, hps[i].gameObject);
+        }
+        for (int i = 0; i < shields.Count; i++)
+        {
+            shields[i].TokenOn();
+            UIPool.Instance.ReturnObject(UIPoolTag.ProgressToken, shields[i].gameObject);
+        }
     }
 
     public void RepositionUi()
@@ -92,6 +167,5 @@ public class MonsterUiInCanvas : MonoBehaviour
                 MoveUi();
             }
         }
-
     }
 }

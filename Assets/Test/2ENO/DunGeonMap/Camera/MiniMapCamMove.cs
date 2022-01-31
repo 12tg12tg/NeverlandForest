@@ -51,9 +51,21 @@ public class MiniMapCamMove : MonoBehaviour
         var rect = canvas.GetComponent<RectTransform>().rect;
         var camera = GetComponent<Camera>();
 
-        IsExpand = toggle.isOn ? false : true;
-        minimapImg.anchoredPosition = toggle.isOn ? startPos : new Vector2(rect.width * 0.5f, -rect.height * 0.5f);
-        minimapImg.sizeDelta = toggle.isOn ? new Vector2(rect.width * 0.2f, rect.height * 0.3f) : new Vector2(rect.width * 0.9f, rect.height * 0.9f);
-        camera.fieldOfView = toggle.isOn ? 60f : 120f;
+        IsExpand = toggle.isOn;
+        if(IsExpand)
+        {
+            minimapImg.anchoredPosition = new Vector2(rect.width * 0.5f, -rect.height * 0.5f);
+            minimapImg.sizeDelta = new Vector2(rect.width * 0.9f, rect.height * 0.9f);
+            camera.fieldOfView = 120f;
+        }
+        else
+        {
+            minimapImg.anchoredPosition = startPos;
+            minimapImg.sizeDelta = new Vector2(rect.width * 0.2f, rect.height * 0.3f);
+            camera.fieldOfView = 60f;
+        }
     }
 }
+//minimapImg.anchoredPosition = !IsExpand ? startPos : new Vector2(rect.width * 0.5f, -rect.height * 0.5f);
+//minimapImg.sizeDelta = !IsExpand ? new Vector2(rect.width * 0.2f, rect.height * 0.3f) : new Vector2(rect.width * 0.9f, rect.height * 0.9f);
+//camera.fieldOfView = !IsExpand ? 60f : 120f;
