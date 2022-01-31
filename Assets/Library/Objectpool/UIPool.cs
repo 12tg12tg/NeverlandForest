@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum UIPoolTag
 {
-    MonsterUI,
+    MonsterUI, ProgressToken,
 }
 
 public class UIPool : CustomObjectPool<UIPoolTag>

@@ -33,10 +33,24 @@ public class BattleSettlement : State<BattleState>
             });
         });
 
-        //실드깍. 디버프 피깍.
-        manager.AllMonsterDebuffCheck();
+        // 약초학자 실드 회복 계산
+        manager.monsters.ForEach(n =>
+        {
+            if (!n.IsBurn)
+            {
+                n.Shield++;
+                if (n.Shield > n.maxSheild)
+                    n.Shield = n.maxSheild;
+                n.uiLinker.UpdateSheild(n.Shield);
+            }
+            else
+            {
+                n.IsBurn = false;
+            }
+        });
 
-        //다시 플레이어턴으로
+        // 실드깍. 디버프 피깍.
+        manager.AllMonsterDebuffCheck();
     }
 
     public override void Release()

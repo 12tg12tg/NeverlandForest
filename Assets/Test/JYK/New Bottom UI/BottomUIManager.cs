@@ -245,7 +245,7 @@ public class BottomUIManager : MonoBehaviour
 
     public void ItemBurn()
     {
-        if (selectItem.ItemTableElem.isBurn ==true && selectItem !=null)
+        if (selectItem.ItemTableElem.isBurn ==true)
         {
             if (selectItem == null)
                 return;
