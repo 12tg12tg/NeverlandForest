@@ -41,6 +41,7 @@ public class CampManager : MonoBehaviour
     public GameObject tent;
     public GameObject bush;
     public TextMeshProUGUI cookingText;
+    public TextMeshProUGUI producingText;
 
     public GameObject CookPanel;
 
@@ -292,6 +293,18 @@ public class CampManager : MonoBehaviour
 
             isGatheringMove = false;
         }
+      
+        if (rewardGameObjectList.Count>0)
+        {
+            for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+            {
+                Destroy(rewardGameObjectList[i]);
+            }
+        }
+        if (rewardGameObjectList.Count == 0)
+        {
+            rewardGameObjectList.Clear();
+        }
     }
 
     //BlueMoonInCamp
@@ -320,6 +333,17 @@ public class CampManager : MonoBehaviour
         diaryManager.OpenProduce();
         newBottomUi.SetActive(false);
     }
+   
+    public void MakeProduce()
+    {
+        if (diaryManager.craftIcon.fire.sprite != null &&
+              diaryManager.craftIcon.condiment.sprite != null &&
+              diaryManager.craftIcon.material.sprite != null)
+        {
+            diaryManager.CallMakeProduce();
+        }
+    }
+
     public void CloseProduceInCamp()
     {
         if (isProduceMove)
@@ -329,6 +353,11 @@ public class CampManager : MonoBehaviour
 
             isProduceMove = false;
         }
+    }
+    public void ReProduce()
+    {
+        OpenProduceInCamp();
+        diaryManager.CloseProduceReward();
     }
     //SceneChange
     public void GoWorldMap()
@@ -535,7 +564,6 @@ public class CampManager : MonoBehaviour
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);
             }
-            rewardList.Clear();
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -545,6 +573,12 @@ public class CampManager : MonoBehaviour
                 DiaryInventory.Instance.ItemButtonInit();
             }
         }
+        if (rewardList.Count == 0)
+        {
+            rewardList.Clear();
+
+        }
+
         for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
         {
             Destroy(rewardGameObjectList[i]);
@@ -556,6 +590,7 @@ public class CampManager : MonoBehaviour
         diaryManager.AllClose();
         diaryManager.gameObject.SetActive(false);
         newBottomUi.SetActive(true);
+        CloseGatheringInCamp();
     }
 
     public void BurnItemCheck()
@@ -570,9 +605,5 @@ public class CampManager : MonoBehaviour
             }
         }
 
-    }
-    public void Test()
-    {
-        Debug.Log($"rewardList");
     }
 }
