@@ -31,6 +31,9 @@ public class GatheringInCampRewardObject : MonoBehaviour
             item = value;
         }
     }
+
+    public bool isBlank =false;
+
     public void Awake()
     {
         SetRewardItemIcon();
@@ -54,14 +57,11 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //³ª¹«Åä¸·: 1 %
             stringid = $"ITEM_1";
-
-
         }
         else if (randNum == 2)
         {
             //¾¾¾Ñ: 1 %
             stringid = $"ITEM_3";
-
         }
         else if (randNum >= 3 && randNum <= 5)
         {
@@ -72,19 +72,18 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //¾àÃÊ: 5 %
             stringid = $"ITEM_4";
-
         }
         else if (randNum >= 11 && randNum <= 15)
         {
             // ¹ö¼¸: 5 %
             stringid = $"ITEM_6";
-
         }
         else
         {
             //²Î: 85 %
             Debug.Log("²Î");
             rewardIcon.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
+            isBlank = true;
         }
 
         if (stringid != string.Empty)
@@ -92,7 +91,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
             var newItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid))
             {
                 OwnCount = Random.Range(1, 3)
-
             };
             rewardIcon.sprite = newItem.ItemTableElem.IconSprite;
             item = newItem;

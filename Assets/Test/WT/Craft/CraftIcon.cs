@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -21,22 +20,45 @@ public class CraftIcon : MonoBehaviour
 
     public TextMeshProUGUI makingTime;
     string Time = null;
-    string result = string.Empty;
+    public string result = string.Empty;
     private AllItemTableElem materialobj0;
     private AllItemTableElem materialobj1;
     private AllItemTableElem materialobj2;
 
     private bool is0ok;
-    public bool Is0ok => is0ok;
+    public bool Is0ok
+    {
+        get  => is0ok;
+        set
+        {
+            is0ok = value;
+        }
+    }
     private bool is1ok;
-    public bool Is1ok => is1ok;
+    public bool Is1ok
+    {
+        get => is1ok;
+        set
+        {
+            is1ok = value;
+        }
+    }
     private bool is2ok;
-    public bool Is2ok => is2ok;
+    public bool Is2ok
+    {
+        get => is2ok;
+        set
+        {
+            is2ok = value;
+        }
+    }
 
     private int material0Num;
     private int material1Num;
     private int material2Num;
-
+    DataAllItem fireitem;
+    DataAllItem condimentitem;
+    DataAllItem materialitem;
     public void Awake()
     {
         table = DataTableManager.GetTable<CraftDataTable>();
@@ -53,6 +75,7 @@ public class CraftIcon : MonoBehaviour
         }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Craft);
         Init();
+     
     }
     public void Init()
     {
@@ -96,12 +119,14 @@ public class CraftIcon : MonoBehaviour
 
         Time = itemGoList[slot].Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+        CampManager.Instance.producingText.text = "제작 하기";
     }
     public void MakeProducing()
     {
-        var allitem= DataTableManager.GetTable<AllItemDataTable>();
-        var makeTime = int.Parse(Time);
+        var allitem = DataTableManager.GetTable<AllItemDataTable>();
+        var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
+        
         if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
@@ -124,66 +149,85 @@ public class CraftIcon : MonoBehaviour
                 }
             }
 
-            if (is0ok && is1ok && is2ok )
+            if (is0ok && is1ok && is2ok)
             {
-                ConsumeManager.TimeUp(makeTime);
 
-                var fireitem = new DataAllItem(list[material0Num]);
+                fireitem = new DataAllItem(list[material0Num]);
                 fireitem.OwnCount = 1;
-                Vars.UserData.RemoveItemData(fireitem);
                 if (materialobj1.id != "ITEM_0")
                 {
-                    var condimentitem = new DataAllItem(list[material1Num]);
+                    condimentitem = new DataAllItem(list[material1Num]);
                     condimentitem.OwnCount = 1;
-                    Vars.UserData.RemoveItemData(condimentitem);
                 }
                 if (materialobj2.id != "ITEM_0")
                 {
-                    var materialitem = new DataAllItem(list[material2Num]);
+                    materialitem = new DataAllItem(list[material2Num]);
                     materialitem.OwnCount = 1;
-                    Vars.UserData.RemoveItemData(materialitem);
                 }
+                
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
-                var ProducedItemId = DataTableManager.GetTable<CraftDataTable>().GetCraftId(result);
-                var table = DataTableManager.GetTable<AllItemDataTable>();
-                DiaryManager.Instacne.CraftResultItem = new DataAllItem(table.GetData<AllItemTableElem>(ProducedItemId));
+                var stringId = $"ITEM_{result}";
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitem.GetData<AllItemTableElem>(stringId));
                 DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
-
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
-                is0ok = false;
-                is1ok = false;
-                is2ok = false;
-                fire.sprite = null;
-                condiment.sprite = null;
-                material.sprite = null;
-                result = string.Empty;
-                makingTime.text = string.Empty;
-                Debug.Log("제작 완료");
+                if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
+                {
+                    Debug.Log("제작 완료");
+                    ConsumeManager.TimeUp(makeTime);
+                    Vars.UserData.uData.BonfireHour -= makeTime/60;
+                    CampManager.Instance.SetBonTime();
+                    Vars.UserData.RemoveItemData(fireitem);
+                    if (materialobj1.id != "ITEM_0")
+                    {
+                        Vars.UserData.RemoveItemData(condimentitem);
+                    }
+                    if (materialobj2.id != "ITEM_0")
+                    {
+                        Vars.UserData.RemoveItemData(materialitem);
+                    }
+                    DiaryManager.Instacne.OpenProduceReward();
+                }
+                else
+                {
+                    Debug.Log("가방이 가득찼다");
+                    CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
+                    CampManager.Instance.reconfirmPanelManager.OpenBagReconfirm();
+                }
 
-
-                DiaryManager.Instacne.OpenProduceReward();
             }
-            if (!is1ok || !is2ok)
+            else if (!is1ok)
             {
-                if (materialobj1.id== "ITEM_0")
+                if (materialobj1.id == "ITEM_0")
                 {
                     is1ok = true;
-
                 }
+                else
+                {
+                    CampManager.Instance.producingText.text = "재료가 부족합니다";
+                }
+            }
+            else if (!is2ok)
+            {
                 if (materialobj2.id == "ITEM_0")
                 {
                     is2ok = true;
                 }
+                else
+                {
+                    CampManager.Instance.producingText.text = "재료가 부족합니다";
+                }
             }
-            else
+
+
+            if (!is0ok)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
+          
         }
-
       
-
     }
-    
+
+   
 }
