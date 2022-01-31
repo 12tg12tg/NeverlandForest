@@ -34,11 +34,9 @@ public class BattleStart : State<BattleState>
         {
             // 플레이어 선공
             manager.isPlayerFirst = true;
-            manager.PrintMessage("몬스터 습격 대비!", startDelay, () => manager.WaitUntillSettingDone());
+            manager.PrintMessage("몬스터 습격 대비!", startDelay, () => manager.inputLink.WaitUntillSettingDone());
 
         }
-
-
     }
 
     public override void Release()

@@ -19,25 +19,27 @@ public class BattleManager : MonoBehaviour
 
     //Unit
     public List<MonsterUnit> monsters = new List<MonsterUnit>();
-    private List<MonsterUnit> wave1 = new List<MonsterUnit>();
-    private List<MonsterUnit> wave2 = new List<MonsterUnit>();
-    private List<MonsterUnit> wave3 = new List<MonsterUnit>();
+    public List<MonsterUnit> wave1 = new List<MonsterUnit>();
+    public List<MonsterUnit> wave2 = new List<MonsterUnit>();
+    public List<MonsterUnit> wave3 = new List<MonsterUnit>();
     public PlayerBattleController boy;
     public PlayerBattleController girl;
     private PlayerCommand boyInput;
     private PlayerCommand girlInput;
 
+    //Sub
+    public BattleInput inputLink;
+    public BattleWave waveLink;
+    public BattleTile tileLink;
+
     //Instance
     public Canvas uiCanvas;
-    [SerializeField] private BottomUIManager uiManager;
     public TileMaker tileMaker;
     public Image dragSlot;
     public BattleMessage message;
     public BattleMessage cautionMessage;
     public BattleFSM FSM;
 
-    //New Instance
-    [SerializeField] private Button battleStartBut;
 
     //Vars
     private int turn;
@@ -46,16 +48,13 @@ public class BattleManager : MonoBehaviour
     private const int middleOfStage = 4;
     private bool isDrag;
     private Queue<MonsterCommand> monsterQueue = new Queue<MonsterCommand>();
-    private IEnumerable<Tiles> targetTiles;
-    private bool isWaitingTileSelect;
-    private const float monsterSpeed = 10f;
     public bool isPlayerFirst;
     private int progress;
 
     //Property
     public int Progress => progress;
     public int Turn { get => turn; set => turn = value; }
-    public bool IsWaitingTileSelect { get => isWaitingTileSelect; }
+    public bool IsWaitingTileSelect { get => tileLink.isWaitingTileSelect; }
     public Queue<MonsterCommand> MonsterQueue { get => monsterQueue; }
     public bool IsDuringPlayerAction { get; set; }
 
@@ -244,27 +243,14 @@ public class BattleManager : MonoBehaviour
         girl.stats.Hp = (int)Vars.UserData.uData.HerbalistHp;
 
         //플레이어 배치
-        SetUnitOnTile(new Vector2(0, 0), girl.Stats);
-        SetUnitOnTile(new Vector2(1, 0), boy.Stats);
+        tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+        tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
 
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
     }
 
-    // 플레이어 입력 대기
-    public void WaitUntillSettingDone()
-    {
-        /* 전투시작 버튼 활성화
-           인벤토리에서 트랩류 스킬 테두리 On && 나머지 비활성화 */
-        battleStartBut.gameObject.SetActive(true);
-    }   
-    public void StartButton() // 버튼용 함수
-    {
-        battleStartBut.gameObject.SetActive(false);
 
-        var start = FSM.GetState(BattleState.Start) as BattleStart;
-        start.IsReadyDone = true;
-    }
 
     //Wave
     public bool IsAllWaveClear()
@@ -301,7 +287,7 @@ public class BattleManager : MonoBehaviour
             var tilePos = new Vector2(i, 6);
             tempForCoroutine.ObstacleAdd(tilePos);
             tempForCoroutine.SetMoveUi(true);
-            MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, 
+            tileLink.MoveUnitOnTile(tilePos, tempForCoroutine, tempForCoroutine.PlayMoveAnimation, 
                 () => { tempForCoroutine.PlayIdleAnimation(); tempForCoroutine.SetMoveUi(false); });
         }
         temp.Clear();
@@ -323,7 +309,6 @@ public class BattleManager : MonoBehaviour
 
         int count = waveList.Count;
         var remainWave = wave - curWave;
-        MonsterUnit temp;
 
         var basePos = tileMaker.GetTile(new Vector2(0, 6)).transform.position;
         var leftPos = tileMaker.GetTile(new Vector2(0, 5)).transform.position;
@@ -386,6 +371,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+
     //UI
     public void PrintMessage(string message, float time, UnityAction action)
     {
@@ -415,135 +401,6 @@ public class BattleManager : MonoBehaviour
     {
         dragSlot.gameObject.SetActive(false);
         isDrag = false;
-    }
-
-    //Tile
-    public void SetUnitOnTile(Vector2 tilePos, UnitBase unit)
-    {
-        var tile = tileMaker.GetTile(tilePos);
-
-        tile.Units_UnitAdd(unit);
-        unit.Pos = tilePos;
-
-        var dest = tile.CenterPos;
-        dest.y = unit.transform.position.y;
-        unit.transform.position = dest;
-    }
-
-    public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction, bool rotateFoward = true)
-    {
-        var preTile = monsterUnit.CurTile;
-        preTile.RemoveUnit(monsterUnit);
-
-        var tile = tileMaker.GetTile(tilePos);
-
-        tile.Units_UnitAdd(monsterUnit);
-        monsterUnit.Pos = tilePos;
-
-        MonsterUnit alreadyPlacedMonster = (tile.FrontMonster == monsterUnit) ? tile.BehindMonster : tile.FrontMonster;
-        bool isAlreadyBehind = tile.FrontMonster == monsterUnit;
-
-        if (tile.Units_UnitCount() == 2)
-        {
-            if(isAlreadyBehind)
-            {
-                // 원래 놓인 몬스터가 뒤쪽이었던 경우.
-                //  1) 새 몬스터를 앞포지션으로 이동시킴.
-
-                var frontDest = tile.FrontPos;
-                frontDest.y = tile.FrontMonster.transform.position.y;
-
-                StartCoroutine(CoMoveMonster(monsterUnit, frontDest,
-                    moveStartAction, moveEndAction, rotateFoward));
-            }
-            else
-            {
-                // 원래 놓인 몬스터가 앞쪽이거나 중앙이었던 경우.
-                //  1) 새 몬스터를 뒷포지션으로 이동시킴.
-                //  2) 기존 몬스터를 앞포지션으로 이동시킴.
-
-                var behindDest = tile.BehindPos;
-                behindDest.y = tile.BehindMonster.transform.position.y;
-
-                StartCoroutine(CoMoveMonster(monsterUnit, behindDest,
-                    moveStartAction, moveEndAction, rotateFoward));
-
-                var frontDest = tile.FrontPos;
-                frontDest.y = tile.FrontMonster.transform.position.y;
-
-                if(frontDest != tile.FrontMonster.transform.position)
-                    StartCoroutine(CoMoveMonster(tile.FrontMonster, frontDest,
-                        tile.FrontMonster.PlayMoveAnimation, tile.FrontMonster.PlayIdleAnimation));
-            }
-        }
-        else
-        {
-            var dest = tile.CenterPos;
-            dest.y = monsterUnit.transform.position.y;
-            StartCoroutine(CoMoveMonster(monsterUnit, dest, moveStartAction, moveEndAction, rotateFoward));
-        }
-    }
-
-    public IEnumerator CoMoveMonster(MonsterUnit unit, Vector3 dest, UnityAction startAc, UnityAction endAc, bool haveToRotate = true)
-    {
-        var startRot = Quaternion.LookRotation(unit.transform.forward);
-        var destRot = Quaternion.LookRotation(dest - unit.transform.position);
-
-        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
-            yield return StartCoroutine(Utility.CoRotate(unit.transform, startRot, destRot, 0.3f));
-
-        yield return new WaitForSeconds(0.3f);
-
-        var speed = (haveToRotate) ? monsterSpeed : monsterSpeed * 2;
-
-        startAc?.Invoke();
-        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, speed, 0.3f));
-        endAc?.Invoke();
-
-        if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)
-            yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.3f));
-    }
-
-    public void DisplayMonsterTile(SkillRangeType range)
-    {
-        targetTiles = tileMaker.GetMonsterTiles();
-        foreach (var tile in targetTiles)
-        {
-            tile.HighlightCanAttackSign(range);
-        }
-    }
-
-    public void UndisplayMonsterTile()
-    {
-        targetTiles = tileMaker.GetMonsterTiles();
-        foreach (var tile in targetTiles)
-        {
-            tile.ResetHighlightExceptConfirm();
-        }
-    }
-
-    public void DisplayPlayerTile()
-    {
-        targetTiles = tileMaker.GetPlayerTiles();
-        foreach (var tile in targetTiles)
-        {
-            tile.HighlightCanConsumeSign();
-        }
-    }
-
-    public bool IsVaildTargetTile(Tiles tile)
-    {
-        return targetTiles.Contains(tile);
-    }
-
-    public void ReadyTileClick()
-    {
-        isWaitingTileSelect = true;
-    }
-
-    public void EndTileClick()
-    {
-        isWaitingTileSelect = false;
     }
 
     //Progress
@@ -651,130 +508,5 @@ public class BattleManager : MonoBehaviour
         }
 
         action?.Invoke();
-    }
-
-    private void OnGUI()
-    {
-        if (GUILayout.Button("블루문X, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            Init(false);
-        }
-        if (GUILayout.Button("블루문X, 마지막전투O", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            Init(false, true);
-        }
-        if (GUILayout.Button("블루문O, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            Init(true);
-        }
-
-        if(GUILayout.Button(" ← ", GUILayout.Width(200f), GUILayout.Height(200f)))
-        {
-            var monster0 = monsters[0];
-            var tile = monster0.CurTile;
-            Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y - 1));
-
-            MoveUnitOnTile(foward.index, monster0, null, null);
-        }
-        if (GUILayout.Button(" → ", GUILayout.Width(200f), GUILayout.Height(200f)))
-        {
-            var monster0 = monsters[0];
-            var tile = monster0.CurTile;
-            Tiles foward = tileMaker.GetTile(new Vector2(tile.index.x, tile.index.y + 1));
-
-            MoveUnitOnTile(foward.index, monster0, null, null);
-        }
-
-        if (GUILayout.Button("Lantern 2", GUILayout.Width(100), GUILayout.Height(100)))
-        {
-            ConsumeManager.ConsumeLantern(12);
-        }
-        if (GUILayout.Button("Lantern 3", GUILayout.Width(100), GUILayout.Height(100)))
-        {
-            ConsumeManager.FullingLantern(12);
-        }
-
-        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "올가미"))
-        {
-            uiManager.curObstacleType = ObstacleType.Lasso;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "부비트랩"))
-        {
-            if(!Inventory_Virtual.instance.isLasso)
-                uiManager.curObstacleType = ObstacleType.BoobyTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "나무트랩"))
-        {
-            if(!Inventory_Virtual.instance.isLasso)
-            uiManager.curObstacleType = ObstacleType.WoodenTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 300, 100, 100), "가시트랩"))
-        {
-            if(!Inventory_Virtual.instance.isLasso)
-            uiManager.curObstacleType = ObstacleType.ThornTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 400, 100, 100), "장애물"))
-        {
-            if(!Inventory_Virtual.instance.isLasso)
-            uiManager.curObstacleType = ObstacleType.Barrier;
-        }
-        if(GUI.Button(new Rect(Screen.width - 300, 0, 100, 50), "전투 종료"))
-        {
-            var list = new List<MonsterUnit>(monsters);
-            list.AddRange(wave1);
-            list.AddRange(wave2);
-            list.AddRange(wave3);
-            wave1.Clear();
-            wave2.Clear();
-            wave3.Clear();
-            list.ToList().ForEach(n => { if(n != null) n.Release(); });
-            FSM.ChangeState(BattleState.Monster);
-        }
-        if (GUI.Button(new Rect(Screen.width - 300, 50, 100, 50), "전투 종료 씬 전환"))
-        {
-            monsters.ForEach(n => n.Release());
-            SceneManager.LoadScene("As_RandomMap");
-        }
-
-        //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
-        //{
-        //    List<int> list = new List<int>(new int[] { 0, 1, 2, 3, 4, 5 });
-        //    Utility.Shuffle(list);
-        //    string str = "";
-        //    foreach (var item in list)
-        //    {
-        //        str += item + ", ";
-        //    }
-        //    Debug.Log(str);
-        //}
-        //if (GUILayout.Button("Move Monster"))
-        //{
-        //    StartCoroutine(BattleManager.Instance.MoveUnitOnTile(new Vector2(1, 0), monster[0]));
-        //}
-        //if(GUILayout.Button("Boy Clicked"))
-        //{
-        //    OpenSkillUI(PlayerType.Boy);
-        //}
-        //if (GUILayout.Button("Girl Clicked"))
-        //{
-        //    OpenSkillUI(PlayerType.Girl);
-        //}
-        //if(GUILayout.Button("Who First"))
-        //{
-        //    Debug.Log($"Boy : {boyInput.IsFirst} / {boyInput.IsSecond}");
-        //    Debug.Log($"Girl : {girlInput.IsFirst} / {girlInput.IsSecond}");
-        //}
-        //if(GUILayout.Button("Move 1 Foward"))
-        //{
-        //    var monster0 = monster[0];
-        //    var tile = monster0.CurTile;
-        //    Tiles foward;
-        //    if(tile.TryGetFowardTile(out foward, 1))
-        //    {
-        //        PlaceUnitOnTile(foward.index, monster0, true);
-        //    }
-        //}
-
-
     }
 }

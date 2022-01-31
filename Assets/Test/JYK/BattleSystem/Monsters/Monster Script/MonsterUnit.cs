@@ -102,7 +102,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
                     else
                     {
                         SetMoveUi(true);
-                        BattleManager.Instance.MoveUnitOnTile(backTile.index, this, null, () => SetMoveUi(false), false);
+                        BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null, () => SetMoveUi(false), false);
                     }
                 }
             }
@@ -125,7 +125,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
         var damage = command.skill.SkillTableElem.Damage;
 
-        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name != "근거리")
+        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name == "근거리")
         {
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;
@@ -151,8 +151,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             PlayDeadAnimation();
             State = MonsterState.Dead;
             uiLinker.Release();
-        }
-        
+        }      
     }
 
     // 초기화
@@ -299,7 +298,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             ObstacleAdd();
 
         SetMoveUi(true);
-        BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
+        BattleManager.Instance.tileLink.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
             () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); SetMoveUi(false); });
     }
 

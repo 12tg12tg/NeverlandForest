@@ -21,6 +21,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public bool isObstacle;
     [SerializeField]private List<UnitBase> units = new List<UnitBase>();
     public Obstacle obstacle = null;
+
     //Instance
     private TileMaker tileMaker;
     [Space(15)] // 장애물 이랑 구별 하려고 추가
@@ -111,20 +112,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     }
 
     //Half Tile
-    private void MoveUnitCenter(UnitBase unit)
-    {
-        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, CenterPos, 0.3f));
-    }
-    private void MoveUnitFront(UnitBase unit)
-    {
-        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, FrontPos, 0.3f));
-    }
-
-    private void MoveUnitBehind(UnitBase unit)
-    {
-        StartCoroutine(Utility.CoTranslate(unit.transform, unit.transform.position, BehindPos, 0.3f));
-    }
-
     public HalfTile WhichPartOfTile(Vector3 touchPos)
     {
         float x = touchPos.x;
@@ -134,27 +121,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         return (touchY > slopeY) ? HalfTile.Front : HalfTile.Behind;
     }
-
-    public void PutMonster(MonsterUnit monster)
-    {
-        if (Units_UnitCount() == 0)
-        {
-            Units_UnitAdd(monster);
-            monster.Pos = index;
-        }
-        else if (Units_UnitCount() == 1)
-        {
-            Units_UnitAdd(monster);
-            monster.Pos = index;
-            MoveUnitFront(units[0]);
-            MoveUnitBehind(units[1]);
-        }
-        else
-        {
-            Debug.LogError("Tile has monster more than 2.");
-        }
-    }
-
 
     //Highlight
     public void Clear()
@@ -249,18 +215,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         }
     }
 
-    /*
-    private void ReCalculateAffectedColor()
-    {
-        Color color = Color.clear;
-        if (affectedByBoy.isAffected)
-            color += boyColor;
-        if (affectedByGirl.isAffected)
-            color += girlColor;
-        this.confirmColor = color;
-    }
-    */ // (삭제됨) 색 더하기 함수. 공격 즉시 시행으로 바뀌면서 필요 없어짐.
-
     public void ConfirmAsTarget(PlayerType player, Vector3 touchPos, SkillRangeType skillType)
     {
         // 넘어온 정보를 바탕으로 AffectedInfo 재구성.
@@ -319,8 +273,8 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         var obstacleType = BottomUIManager.Instance.curObstacleType;
-
-        if (!BattleManager.Instance.IsWaitingTileSelect && obstacleType == ObstacleType.None)
+        var bm = BattleManager.Instance;
+        if (!bm.IsWaitingTileSelect && obstacleType == ObstacleType.None)
             return;
 
         if(obstacle != null && obstacleType != ObstacleType.None)
@@ -459,7 +413,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
             if (skill.SkillTableElem.range == SkillRangeType.One)
             {
                 //단일 타겟이라면 유효성 검사
-                if (!BattleManager.Instance.IsVaildTargetTile(this))
+                if (!bm.tileLink.IsVaildTargetTile(this))
                 {
                     manager.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
                     return;
@@ -491,7 +445,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
             BottomUIManager.Instance.curSkillButton.Cancle();
             BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
-            manager.EndTileClick();
+            manager.tileLink.EndTileClick();
             manager.UpdateProgress(); 
         }
     }

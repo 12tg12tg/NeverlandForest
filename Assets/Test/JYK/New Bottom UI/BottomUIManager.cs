@@ -13,6 +13,7 @@ public class BottomUIManager : MonoBehaviour
     public static BottomUIManager Instance => instance;
 
     //Instance
+    public BattleManager bm;
     public BottomInfoUI info;
     public List<BottomSkillButtonUI> skillButtons;
     public List<Button> tags;
@@ -39,6 +40,11 @@ public class BottomUIManager : MonoBehaviour
         instance = this;
         popUpWindow.gameObject.SetActive(false);
         SkillButtonInit();
+    }
+
+    private void Start()
+    {
+        bm = BattleManager.Instance;
     }
 
     // 프로그래스
@@ -101,8 +107,8 @@ public class BottomUIManager : MonoBehaviour
     {
         //Time.timeScale = 0.2f;
         this.curSkillButton = skillButton;
-        BattleManager.Instance.ReadyTileClick();
-        BattleManager.Instance.DisplayMonsterTile(curSkillButton.skill.SkillTableElem.range);
+        bm.tileLink.ReadyTileClick();
+        bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem.range);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
     }
@@ -111,8 +117,8 @@ public class BottomUIManager : MonoBehaviour
     {
         //Time.timeScale = 1f;
         curSkillButton = null;
-        BattleManager.Instance.EndTileClick();
-        BattleManager.Instance.UndisplayMonsterTile();
+        bm.tileLink.EndTileClick();
+        bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();
         tags.ForEach(n => n.interactable = true);
     }
