@@ -12,6 +12,7 @@ public class CampManager : MonoBehaviour
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public DiaryManager diaryManager;
+    public GameObject testPrehab;
     public GameObject newBottomUi;
 
     public Camera campminimapCamera;
@@ -40,6 +41,7 @@ public class CampManager : MonoBehaviour
     public GameObject tent;
     public GameObject bush;
     public TextMeshProUGUI cookingText;
+    public TextMeshProUGUI producingText;
 
     public GameObject CookPanel;
 
@@ -291,6 +293,18 @@ public class CampManager : MonoBehaviour
 
             isGatheringMove = false;
         }
+      
+        if (rewardGameObjectList.Count>0)
+        {
+            for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+            {
+                Destroy(rewardGameObjectList[i]);
+            }
+        }
+        if (rewardGameObjectList.Count == 0)
+        {
+            rewardGameObjectList.Clear();
+        }
     }
 
     //BlueMoonInCamp
@@ -319,6 +333,17 @@ public class CampManager : MonoBehaviour
         diaryManager.OpenProduce();
         newBottomUi.SetActive(false);
     }
+   
+    public void MakeProduce()
+    {
+        if (diaryManager.craftIcon.fire.sprite != null &&
+              diaryManager.craftIcon.condiment.sprite != null &&
+              diaryManager.craftIcon.material.sprite != null)
+        {
+            diaryManager.CallMakeProduce();
+        }
+    }
+
     public void CloseProduceInCamp()
     {
         if (isProduceMove)
@@ -328,6 +353,11 @@ public class CampManager : MonoBehaviour
 
             isProduceMove = false;
         }
+    }
+    public void ReProduce()
+    {
+        OpenProduceInCamp();
+        diaryManager.CloseProduceReward();
     }
     //SceneChange
     public void GoWorldMap()
@@ -458,8 +488,10 @@ public class CampManager : MonoBehaviour
         Debug.Log($"gatheringTime{gatheringTime}");
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
-            reward.transform.parent = diaryManager.gatheringParent.transform;
+            //reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
+            reward = Instantiate(testPrehab, diaryManager.gatheringParent.transform);
+
+            //reward.transform.parent = diaryManager.gatheringParent.transform;
             gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
             rewardGameObjectList.Add(reward);
         }
@@ -527,21 +559,10 @@ public class CampManager : MonoBehaviour
     {
         if (rewardList.Count > 0)
         {
-            for (int i = 0; i < rewardList.Count; i++)
+            for (int i = rewardList.Count-1; i>= 0 ; i--)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);
-            }
-            rewardList.Clear();
-
-            for (int i = 0; i < rewardGameObjectList.Count; i++)
-            {
-                rewardGameObjectList.RemoveAt(i);
-                rewardList.RemoveAt(i);
-            }
-            if (rewardGameObjectList.Count == 0)
-            {
-                rewardGameObjectList.Clear();
             }
             if (BottomUIManager.Instance != null)
             {
@@ -552,9 +573,24 @@ public class CampManager : MonoBehaviour
                 DiaryInventory.Instance.ItemButtonInit();
             }
         }
+        if (rewardList.Count == 0)
+        {
+            rewardList.Clear();
+
+        }
+
+        for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+        {
+            Destroy(rewardGameObjectList[i]);
+        }
+        if (rewardGameObjectList.Count == 0)
+        {
+            rewardGameObjectList.Clear();
+        }
         diaryManager.AllClose();
         diaryManager.gameObject.SetActive(false);
         newBottomUi.SetActive(true);
+        CloseGatheringInCamp();
     }
 
     public void BurnItemCheck()
@@ -569,9 +605,5 @@ public class CampManager : MonoBehaviour
             }
         }
 
-    }
-    public void Test()
-    {
-        Debug.Log($"rewardList");
     }
 }

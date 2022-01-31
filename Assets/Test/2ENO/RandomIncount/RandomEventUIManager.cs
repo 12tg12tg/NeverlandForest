@@ -35,7 +35,7 @@ public class RandomEventUIManager : MonoBehaviour
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
 
-    [HideInInspector] public RectTransform itemBox;
+    /*[HideInInspector]*/ public RectTransform itemBox;
 
     // RandomEventData
     [HideInInspector] public DataRandomEvent randomEventData;
@@ -97,11 +97,10 @@ public class RandomEventUIManager : MonoBehaviour
     }
     private void Update()
     {
-        var touchPos = MultiTouch.Instance.TouchPos;
-
-        if (MultiTouch.Instance.TouchCount > 0)
+        var touchPos = GameManager.Manager.MultiTouch;
+        if (touchPos.TouchCount > 0)
         {
-            if (!IsContainPos(touchPos) && !ISContainItemBox(touchPos) && isPopUp == true)
+            if (!IsContainPos(touchPos.PrimaryStartPos) && !ISContainItemBox(touchPos.PrimaryStartPos) && isPopUp == true)
                 isPopUp = false;
         }
 
@@ -126,12 +125,14 @@ public class RandomEventUIManager : MonoBehaviour
     }
     private bool IsContainPos(Vector2 pos)
     {
-        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
+        var camera = GameManager.Manager.cm.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
     }
 
     private bool ISContainItemBox(Vector2 pos)
     {
-        return RectTransformUtility.RectangleContainsScreenPoint(itemBox, pos);
+        var camera = GameManager.Manager.cm.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(itemBox, pos, camera);
     }
 
     public void EventInit(DataRandomEvent data)
@@ -416,3 +417,19 @@ public class RandomEventUIManager : MonoBehaviour
         return 0;
     }
 }
+//var npos = camera.ScreenToViewportPoint(itemBox.position);
+//var wpos = camera.WorldToViewportPoint(itemBox.position);
+//var wposS = camera.WorldToScreenPoint(itemBox.position);
+//var pp = itemBox.position;
+//Debug.Log($"{itemBox.rect.position}, {itemBox.anchoredPosition}, {itemBox.position}, {npos}, {pos}, {wpos}, {wposS}");
+//Debug.Log($"{itemBox.rect.position} {pos}");
+//return RectTransformUtility.ScreenPointToLocalPointInRectangle(itemBox, pos);
+//return RectTransformUtility.ScreenPointToWorldPointInRectangle(itemBox, pos, camera,out _);
+
+
+
+
+
+
+
+

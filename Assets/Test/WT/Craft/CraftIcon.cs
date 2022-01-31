@@ -97,11 +97,11 @@ public class CraftIcon : MonoBehaviour
         Time = itemGoList[slot].Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
     }
-    public void MakeCooking()
+    public void MakeProducing()
     {
-        var allitem = DataTableManager.GetTable<AllItemDataTable>();
+        var allitem= DataTableManager.GetTable<AllItemDataTable>();
         var makeTime = int.Parse(Time);
-        var list = Vars.UserData.HaveAllItemList;
+        var list = Vars.UserData.HaveAllItemList; //인벤토리
         if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
@@ -124,23 +124,32 @@ public class CraftIcon : MonoBehaviour
                 }
             }
 
-            if (is0ok && is1ok && is2ok)
+            if (is0ok && is1ok && is2ok )
             {
                 ConsumeManager.TimeUp(makeTime);
-                ConsumeManager.RecoveryHunger(20);
 
                 var fireitem = new DataAllItem(list[material0Num]);
                 fireitem.OwnCount = 1;
-
-                var condimentitem = new DataAllItem(list[material1Num]);
-                condimentitem.OwnCount = 1;
-
-                var materialitem = new DataAllItem(list[material2Num]);
-                materialitem.OwnCount = 1;
-
                 Vars.UserData.RemoveItemData(fireitem);
-                Vars.UserData.RemoveItemData(condimentitem);
-                Vars.UserData.RemoveItemData(materialitem);
+                if (materialobj1.id != "ITEM_0")
+                {
+                    var condimentitem = new DataAllItem(list[material1Num]);
+                    condimentitem.OwnCount = 1;
+                    Vars.UserData.RemoveItemData(condimentitem);
+                }
+                if (materialobj2.id != "ITEM_0")
+                {
+                    var materialitem = new DataAllItem(list[material2Num]);
+                    materialitem.OwnCount = 1;
+                    Vars.UserData.RemoveItemData(materialitem);
+                }
+                DiaryManager.Instacne.produceInventory.ItemButtonInit();
+                var ProducedItemId = DataTableManager.GetTable<CraftDataTable>().GetCraftId(result);
+                var table = DataTableManager.GetTable<AllItemDataTable>();
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(table.GetData<AllItemTableElem>(ProducedItemId));
+                DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
+
+                DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
                 is0ok = false;
                 is1ok = false;
@@ -151,13 +160,30 @@ public class CraftIcon : MonoBehaviour
                 result = string.Empty;
                 makingTime.text = string.Empty;
                 Debug.Log("제작 완료");
-                //DiaryManager.Instacne.OpenProduce();
-                //제작 리워드창 만들어야 함
+
+
+                DiaryManager.Instacne.OpenProduceReward();
+            }
+            if (!is1ok || !is2ok)
+            {
+                if (materialobj1.id== "ITEM_0")
+                {
+                    is1ok = true;
+
+                }
+                if (materialobj2.id == "ITEM_0")
+                {
+                    is2ok = true;
+                }
             }
             else
             {
-                CampManager.Instance.cookingText.text = "재료가 부족합니다";
+                CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
         }
+
+      
+
     }
+    
 }

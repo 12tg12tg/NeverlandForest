@@ -27,9 +27,21 @@ public class DiaryManager : MonoBehaviour
     public GameObject gatheringInDungeonReward;
     public GameObject CookingRotationPanel;
     public GameObject CookingRewardPanel;
+    public GameObject produceRewardPanel;
 
     public Button rotationButton;
     public RecipeIcon recipeIcon;
+    public CraftIcon craftIcon;
+    public Image craftResultItemImage;
+    private DataAllItem craftResultItem;
+    public DataAllItem CraftResultItem
+    {
+        get => craftResultItem;
+        set
+        {
+            craftResultItem = value;
+        }
+    }
 
     public DiaryInventory produceInventory;
     public DiaryInventory cookInventory;
@@ -138,6 +150,22 @@ public class DiaryManager : MonoBehaviour
         CookingRewardPanel.SetActive(false);
 
     }
+
+    public void CallMakeProduce()
+    {
+        craftIcon.MakeProducing();
+        produceInventory.ItemButtonInit();
+    }
+    public void OpenProduceReward()
+    {
+        produceRewardPanel.SetActive(true);
+    }
+    public void CloseProduceReward()
+    {
+        produceRewardPanel.SetActive(false);
+
+    }
+
     public void AllClose()
     {
         producePanel.SetActive(false);

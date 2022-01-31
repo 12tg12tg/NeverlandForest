@@ -11,7 +11,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     public DataPlayerSkill skill;                       // 담고있는 스킬정보
 
     [SerializeField] private Image skillImg;
-    [SerializeField] private TextMeshProUGUI costTxt;   //스킬 정보를 바탕으로 구성
+    [SerializeField] private TextMeshProUGUI costTxt;   // 스킬 정보를 바탕으로 구성
 
     [SerializeField] private Button cover;
     [SerializeField] private Button below;              // 활성화/비활성화할 버튼
@@ -19,14 +19,14 @@ public class BottomSkillButtonUI : MonoBehaviour
     [SerializeField] private RectTransform coverRt;
     private CanvasScaler cs;
     private float height;
-    private Vector3 openOffset;                         // Open/Close용 크기 계산
+    private Vector2 openOffset;                         // Open/Close용 크기 계산
 
     // Property
-    private Vector3 OpenOffset
+    private Vector2 OpenOffset
     {
         get
         {
-            if(openOffset == Vector3.zero)
+            if(openOffset == Vector2.zero)
             {
                 CalculateOffset();
             }
@@ -49,10 +49,8 @@ public class BottomSkillButtonUI : MonoBehaviour
         cs = GetComponentInParent<CanvasScaler>();
         var size = Utility.RelativeRectSize(cs, coverRt);
         height = size.y;
-        openOffset = new Vector3(0f, height * 3 / 8, 0f);
-        Debug.Log($"{height}, {coverRt.sizeDelta.y}");
+        openOffset = new Vector2(0f, height * 3 / 8);
     }
-
 
     public void MakeUnclickable()
     {
@@ -74,7 +72,7 @@ public class BottomSkillButtonUI : MonoBehaviour
         {
             cover.interactable = false;
             BottomUIManager.Instance.IntoSkillState(this);
-            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.position, coverRt.position + OpenOffset, 0.3f,
+            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition + OpenOffset, 0.3f,
                 () => { below.interactable = true; }));
         }
     }
@@ -83,7 +81,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     {
         below.interactable = false;
         BottomUIManager.Instance.ExitSkillState();
-        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.position, coverRt.position - OpenOffset, 0.3f,
+        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition - OpenOffset, 0.3f,
             () => { cover.interactable = true; }));
     }
 }

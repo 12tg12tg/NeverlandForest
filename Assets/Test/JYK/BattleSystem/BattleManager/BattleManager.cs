@@ -77,15 +77,12 @@ public class BattleManager : MonoBehaviour
         girl.command = girlInput;
     }
 
-
     private void Update()
     {
         if (isDrag)
         {
             dragSlot.transform.position = multiTouch.TouchPos;
         }
-
-        //Debug.Log($"{boyInput.IsUpdated} / {girlInput.IsUpdated}");
     }
 
     // 초기화
@@ -738,7 +735,6 @@ public class BattleManager : MonoBehaviour
             monsters.ForEach(n => n.Release());
             SceneManager.LoadScene("As_RandomMap");
         }
-
 
         //if (GUILayout.Button("테스트 셔플", GUILayout.Width(200f), GUILayout.Height(100f)))
         //{
