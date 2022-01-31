@@ -51,7 +51,6 @@ public class ReconfirmPanelManager : MonoBehaviour
     }
     public void OpenBagReconfirm()
     {
-        AllClose();
         bagisFullReconfirm.SetActive(true);
     }
     public void OpenRandomEventfirm()

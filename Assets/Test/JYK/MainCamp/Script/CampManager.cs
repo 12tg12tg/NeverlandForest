@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
@@ -295,8 +294,8 @@ public class CampManager : MonoBehaviour
 
             isGatheringMove = false;
         }
-      
-        if (rewardGameObjectList.Count>0)
+
+        if (rewardGameObjectList.Count > 0)
         {
             for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
             {
@@ -336,17 +335,11 @@ public class CampManager : MonoBehaviour
         diaryManager.OpenProduce();
         newBottomUi.SetActive(false);
     }
-   
+
     public void MakeProduce()
     {
-        if (diaryManager.craftIcon.fire.sprite != null &&
-              diaryManager.craftIcon.condiment.sprite != null &&
-              diaryManager.craftIcon.material.sprite != null)
-        {
-            diaryManager.CallMakeProduce();
-        }
+        diaryManager.CallMakeProduce();
     }
-
     public void CloseProduceInCamp()
     {
         if (isProduceMove)
@@ -359,10 +352,10 @@ public class CampManager : MonoBehaviour
     }
     public void ReProduce()
     {
-        OpenProduceInCamp();
         diaryManager.CloseProduceReward();
-        reconfirmPanelManager.AllClose();
+        reconfirmPanelManager.bagisFullReconfirm.gameObject.SetActive(false);
         reconfirmPanelManager.gameObject.SetActive(false);
+        OpenProduceInCamp();
     }
     //SceneChange
     public void GoWorldMap()
@@ -486,7 +479,7 @@ public class CampManager : MonoBehaviour
             {
                 isBlankCheckList.Add(reward);
             }
-           
+
             gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
             rewardGameObjectList.Add(reward);
         }
@@ -527,16 +520,16 @@ public class CampManager : MonoBehaviour
             Vars.UserData.AddItemData(selectItem);
             for (int i = 0; i < rewardList.Count; i++)
             {
-                if (rewardList[i] ==selectItem)
+                if (rewardList[i] == selectItem)
                 {
                     rewardList.RemoveAt(i);
                 }
             }
-            if (rewardList.Count==0)
+            if (rewardList.Count == 0)
             {
                 rewardList.Clear();
             }
-           
+
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -564,7 +557,7 @@ public class CampManager : MonoBehaviour
     {
         if (rewardList.Count > 0)
         {
-            for (int i = rewardList.Count-1; i>= 0 ; i--)
+            for (int i = rewardList.Count - 1; i >= 0; i--)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);

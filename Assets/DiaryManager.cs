@@ -301,7 +301,7 @@ public class DiaryManager : MonoBehaviour
         AllClose();
         gameObject.SetActive(false);
         CampManager.Instance.CloseProduceInCamp();
-      CampManager.Instance.newBottomUi.SetActive(true);
+        CampManager.Instance.newBottomUi.SetActive(true);
         if (BottomUIManager.Instance != null)
         {
             BottomUIManager.Instance.ItemListInit();

@@ -190,9 +190,9 @@ public class CraftIcon : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("∞°πÊ¿Ã ∞°µÊ√°¥Ÿ");
                     CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
                     CampManager.Instance.reconfirmPanelManager.OpenBagReconfirm();
+                    Debug.Log("∞°πÊ¿Ã ∞°µÊ√°¥Ÿ");
                 }
 
             }
