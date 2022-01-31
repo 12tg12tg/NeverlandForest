@@ -15,6 +15,7 @@ public class BattleAction : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.ItemListInit();
         if (manager.MonsterActionQueue.Count <= 0)
         {
             if (manager.isPlayerFirst)

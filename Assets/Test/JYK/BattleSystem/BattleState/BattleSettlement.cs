@@ -16,6 +16,7 @@ public class BattleSettlement : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.ItemListInit();
         //몇턴.
         manager.uiLink.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
         {

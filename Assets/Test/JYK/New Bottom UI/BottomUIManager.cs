@@ -13,27 +13,36 @@ public class BottomUIManager : MonoBehaviour
     public static BottomUIManager Instance => instance;
 
     //Instance
-    public BattleManager bm;
+    [HideInInspector] public BattleManager bm;
+    [Header("왼쪽 정보 창 연결")]
     public BottomInfoUI info;
+    [Header("우측 12개 아이콘 연결")]
     public List<BottomSkillButtonUI> skillButtons;
+    public List<BottomItemButtonUI> itemButtons;
+
+    [Header("우측 두 개 분류 태그 연결")]
     public List<Button> tags;
+
+    [Header("전투시에만 활성화할 플레이어 진행도 연결")]
     public GameObject progress;
     [SerializeField] private List<Image> progressImg;
-    public List<BottomItemButtonUI> itemButtons;
 
     //Vars
     [HideInInspector] public ButtonState buttonState;
     [HideInInspector] public BottomSkillButtonUI curSkillButton;
-    [HideInInspector] public ObstacleType curObstacleType;
 
     private bool isBoySkillDone;
     private bool isGirlSkillDone;
 
     //PopUpWindow
-    public bool isPopUp;
+    [Header("팝업 On/Off 확인")] public bool isPopUp;
+    [Header("팝업 관련 연결")]
     public RectTransform popUpWindow;
     public DataAllItem selectItem;
     public RectTransform selectedItemRect;
+
+    [Header("배틀을 위한 UI Linker")]
+    public TrapSelecter battleLinker;
 
     private void Awake()
     {
@@ -209,31 +218,42 @@ public class BottomUIManager : MonoBehaviour
         }
     }
 
-    public void ItemUse()
+    public void ItemUse() // 버튼 클릭 함수
     {
         if (selectItem == null)
             return;
 
-        if(selectItem.ItemTableElem.type == "INSTALLATION")
+        // 1. 배틀 상태
+        if (GameManager.Manager.State == GameState.Battle)
         {
-            // 설치류 아이템일경우 동작
+            if (selectItem.ItemTableElem.type == "INSTALLATION")
+            {
+                // 설치류 아이템일경우 동작
+                battleLinker.WaitUntilTrapTileSelect(selectItem);
+            }
+            else if (selectItem.ItemTableElem.stat_Hp > 0)
+            {
+                // 소비 아이템일경우 동작
+            }
         }
-        else if(selectItem.ItemTableElem.stat_Hp > 0)
+        // 2. 그 밖의 상태
+        else
         {
-            // 소비 아이템일경우 동작
+            var allItem = new DataAllItem(selectItem);
+            allItem.OwnCount = 1;
+            if (Vars.UserData.RemoveItemData(allItem))
+            {
+                popUpWindow.gameObject.SetActive(false);
+                selectItem = null;
+                isPopUp = false;
+            }
+            ItemListInit();
         }
-
-        var allItem = new DataAllItem(selectItem);
-        allItem.OwnCount = 1;
-        if (Vars.UserData.RemoveItemData(allItem))
-        {
-            popUpWindow.gameObject.SetActive(false);
-            selectItem = null;
-            isPopUp = false;
-        }
-        ItemListInit();
     }
-    public void ItemDump()
+
+
+
+    public void ItemDump() // 버튼 클릭 함수
     {
         if (selectItem == null)
             return;

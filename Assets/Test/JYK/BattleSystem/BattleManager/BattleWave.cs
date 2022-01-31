@@ -24,10 +24,13 @@ public class BattleWave : MonoBehaviour
     {
         return wave1.Count == 0 && wave2.Count == 0 && wave3.Count == 0;
     }
-    public bool IsReadyToNextWave()
+    public bool IsReadyToNextWave(List<MonsterUnit> nextWave)
     {
         for (int i = 0; i < 3; i++)
         {
+            if (nextWave[i] == null)
+                continue;
+
             var tile = tileMaker.GetTile(new Vector2(i, 6));
             if (!tile.CanStand)
                 return false;
@@ -113,7 +116,16 @@ public class BattleWave : MonoBehaviour
     {
         if (curWave == 3)
             return;
-        if (!IsReadyToNextWave())
+
+        List<MonsterUnit> nextWave = null;
+        if (curWave == 0)
+            nextWave = wave1;
+        else if (curWave == 1)
+            nextWave = wave2;
+        else if (curWave == 2)
+            nextWave = wave3;
+
+        if (!IsReadyToNextWave(nextWave))
             return;
         if (manager.turn != 1 && manager.turn - manager.preWaveTurn < 1)
             return;

@@ -16,6 +16,7 @@ public class BattleMonsterTurn : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.ItemListInit();
         // 1. 행동할 몬스터가 있는지 확인
         var list = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if (list.Count == 0)

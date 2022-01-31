@@ -28,9 +28,11 @@ public class TileMaker : MonoBehaviour
 
     //Property
     public HalfTile LastHalfTile { get; set; }
+    public Tiles LastSelectedTile { get; set; }
     public Vector3 LastClickPos { get; set; }
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
+    public bool IsWaitingToSelectTrapTile { get; set; }
 
     //Vars
     public Color blueColor;
@@ -335,6 +337,8 @@ public class TileMaker : MonoBehaviour
                 return null;
         }
     }    
+
+
 
     // 타일 속성 변경
     //public void SetAllTileMiddleState()

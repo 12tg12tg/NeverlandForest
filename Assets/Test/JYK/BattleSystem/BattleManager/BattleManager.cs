@@ -322,7 +322,7 @@ public class BattleManager : MonoBehaviour
 
     public void AllMonsterDebuffCheck(UnityAction action = null)
     {
-        var monster = monsters.Where(x => x.obstacles != null)
+        var monster = monsters.Where(x => x.obsDebuffs != null)
                               .Select(x => x)
                               .ToList();
 

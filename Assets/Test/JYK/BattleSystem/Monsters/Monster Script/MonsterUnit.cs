@@ -30,7 +30,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     private const float actionDelay = 0.5f;
     [Header("반드시 테이블에서의 몬스터 아이디 입력")]
     public string monsterID;
-    public List<Obstacle> obstacles = new List<Obstacle>();
+    public List<ObstacleDebuff> obsDebuffs = new List<ObstacleDebuff>();
 
     // Property
     public int Shield { get => sheild; set => sheild = value; }
@@ -365,19 +365,19 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
 
     // Debuff
-    public void ObstacleAdd()
+    public void ObstacleAdd() // 이동시 체크
     {
         var goalTile = TileMaker.Instance.GetTile(command.target);
         var movableTilesOtherRow = TileMaker.Instance.GetMovablePathTiles(CurTile, goalTile);
-        var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).Select(x => x).ToList();
+        var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).ToList();
         
         for (int i = obstacleList.Count - 1; i >= 0; i--)
         {
-            var ob = new Obstacle(obstacleList[i].obstacle);
-            obstacles.Add(ob);
+            var ob = new ObstacleDebuff(obstacleList[i].obstacle, this);
+            obsDebuffs.Add(ob);
             obstacleList[i].obstacle = null;
             
-            if (ob.type == ObstacleType.BoobyTrap)
+            if (ob.elem.obstacleType == TrapTag.BoobyTrap)
             {
                 command.target = obstacleList[i].index;
                 return;
@@ -385,48 +385,52 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
         }
     }
 
-    public void ObstacleAdd(Vector2 pos)
+    public void ObstacleAdd(Vector2 pos) // Wave 진입 시 체크
     {
         var goalTile = TileMaker.Instance.GetTile(pos);
 
         if (goalTile.obstacle != null)
         {
-            var ob = new Obstacle(goalTile.obstacle);
-            obstacles.Add(ob);
+            var ob = new ObstacleDebuff(goalTile.obstacle, this);
+            obsDebuffs.Add(ob);
             goalTile.obstacle = null;
         }
     }
 
     public void ObstacleHit()
     {
+        // 올가미, 나무트랩, 가시트랩 중 트랩류만 가져오기.
         var totalDamage = 0;
-        var obs = obstacles.Where(x => x.trapDamage != 0)
+        var debuffs = obsDebuffs.Where(x => x.trapDamage != 0)
                            .Select(x => x)
                            .ToList();
 
-        if (obs.Count == 0) // 올가미나 장벽만 있는 경우는 리턴
+        if (debuffs.Count == 0)
             return;
 
-        obs.ForEach(x => totalDamage += x.trapDamage);
-        Debug.Log($"현재 Hp:{Hp} - {totalDamage} = {Hp -= totalDamage}");
-        //monster[i].Hp -= totalDamage; // 위 디버그 지우면 얘 풀면 됨
+        debuffs.ForEach(x => totalDamage += x.trapDamage);
+        Debug.Log($"트랩 데미지 : {totalDamage}");
+        Hp -= totalDamage;
+
+        //애니메이션 재생 & 파티클 재생
+        PlayHitAnimation();
 
         // 장애물 지속턴이 0이하가 됐을 때 없애는 용도
-        DurationDecrease(obs);
+        DurationDecrease(debuffs);
 
         // 몬스터 죽었는지 체크
         uiLinker.UpdateHpBar(Hp);
         DeadCheak();
     }
 
-    private void DurationDecrease(List<Obstacle> obs)
+    private void DurationDecrease(List<ObstacleDebuff> debuffs)
     {
-        obs.ForEach(x => x.duration -= 1);
-        for (int i = 0; i < obs.Count; i++)
+        debuffs.ForEach(x => x.duration -= 1);
+        for (int i = 0; i < debuffs.Count; i++)
         {
-            if (obs[i].duration < 1)
+            if (debuffs[i].duration < 1)
             {
-                obstacles.Remove(obs[i]);
+                obsDebuffs.Remove(debuffs[i]);
             }
         }
     }

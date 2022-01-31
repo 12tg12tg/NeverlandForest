@@ -35,30 +35,7 @@ public class BattleOnGUI : MonoBehaviour
             ConsumeManager.FullingLantern(12);
         }
 
-        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "올가미"))
-        {
-            BottomUIManager.Instance.curObstacleType = ObstacleType.Lasso;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "부비트랩"))
-        {
-            if (!Inventory_Virtual.instance.isLasso)
-                BottomUIManager.Instance.curObstacleType = ObstacleType.BoobyTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "나무트랩"))
-        {
-            if (!Inventory_Virtual.instance.isLasso)
-                BottomUIManager.Instance.curObstacleType = ObstacleType.WoodenTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 300, 100, 100), "가시트랩"))
-        {
-            if (!Inventory_Virtual.instance.isLasso)
-                BottomUIManager.Instance.curObstacleType = ObstacleType.ThornTrap;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 400, 100, 100), "장애물"))
-        {
-            if (!Inventory_Virtual.instance.isLasso)
-                BottomUIManager.Instance.curObstacleType = ObstacleType.Barrier;
-        }
+
         if (GUI.Button(new Rect(Screen.width - 300, 0, 100, 50), "전투 종료"))
         {
             var list = new List<MonsterUnit>(manager.monsters);
