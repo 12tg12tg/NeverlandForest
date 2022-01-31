@@ -93,7 +93,6 @@ public class DungeonSystem : MonoBehaviour
         }
 
         roomManager = new RoomTool();
-        //roomManager.text = text;
 
         //if (dungeonSystemData.curDungeonData != null)
         ConvertEventDataType();

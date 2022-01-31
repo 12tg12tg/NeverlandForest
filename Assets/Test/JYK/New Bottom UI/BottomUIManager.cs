@@ -132,6 +132,7 @@ public class BottomUIManager : MonoBehaviour
             {
                 if (!IsContainPos(touchPos))
                 {
+                    itemButtons.ForEach(n => n.IsSelect = false);
                     popUpWindow.gameObject.SetActive(false);
                     isPopUp = false;
                 }
@@ -145,11 +146,13 @@ public class BottomUIManager : MonoBehaviour
     }
     private bool IsContainPos(Vector2 pos)
     {
-        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos);
+        var camera = GameManager.Manager.cm.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
     }
     private bool IsContainItemRect(Vector2 pos)
     {
-        return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos);
+        var camera = GameManager.Manager.cm.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
     }
 
     public void SkillButtonInit() // 스킬아이콘 12개 세팅 : 태그 버튼 + 자동 활성화를 위한 함수
@@ -210,6 +213,16 @@ public class BottomUIManager : MonoBehaviour
     {
         if (selectItem == null)
             return;
+
+        if(selectItem.ItemTableElem.type == "INSTALLATION")
+        {
+            // 설치류 아이템일경우 동작
+        }
+        else if(selectItem.ItemTableElem.stat_Hp > 0)
+        {
+            // 소비 아이템일경우 동작
+        }
+
         var allItem = new DataAllItem(selectItem);
         allItem.OwnCount = 1;
         if (Vars.UserData.RemoveItemData(allItem))
@@ -238,7 +251,7 @@ public class BottomUIManager : MonoBehaviour
 
     public void ItemBurn()
     {
-        if (selectItem.ItemTableElem.isBurn ==true && selectItem !=null)
+        if (selectItem.ItemTableElem.isBurn ==true)
         {
             if (selectItem == null)
                 return;

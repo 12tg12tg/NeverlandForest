@@ -31,6 +31,9 @@ public class CampManager : MonoBehaviour
     public TextMeshProUGUI bonTimeText;
     public TextMeshProUGUI sleepTimeText;
     public TextMeshProUGUI gatheringTimeText;
+    public TextMeshProUGUI gatheringRewardText;
+
+    private List<GameObject> isBlankCheckList = new List<GameObject>();
 
     //CampCook
     Vector3 StartPos;
@@ -41,6 +44,7 @@ public class CampManager : MonoBehaviour
     public GameObject tent;
     public GameObject bush;
     public TextMeshProUGUI cookingText;
+    public TextMeshProUGUI producingText;
 
     public GameObject CookPanel;
 
@@ -196,7 +200,6 @@ public class CampManager : MonoBehaviour
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
-        // SceneManager.LoadScene("Wt_Scene");
         StartCookingInCamp();
     }
 
@@ -292,6 +295,19 @@ public class CampManager : MonoBehaviour
 
             isGatheringMove = false;
         }
+      
+        if (rewardGameObjectList.Count>0)
+        {
+            for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+            {
+                Destroy(rewardGameObjectList[i]);
+            }
+        }
+        if (rewardGameObjectList.Count == 0)
+        {
+            rewardGameObjectList.Clear();
+        }
+        diaryManager.gatheringInCampReward.SetActive(false);
     }
 
     //BlueMoonInCamp
@@ -320,6 +336,17 @@ public class CampManager : MonoBehaviour
         diaryManager.OpenProduce();
         newBottomUi.SetActive(false);
     }
+   
+    public void MakeProduce()
+    {
+        if (diaryManager.craftIcon.fire.sprite != null &&
+              diaryManager.craftIcon.condiment.sprite != null &&
+              diaryManager.craftIcon.material.sprite != null)
+        {
+            diaryManager.CallMakeProduce();
+        }
+    }
+
     public void CloseProduceInCamp()
     {
         if (isProduceMove)
@@ -329,6 +356,13 @@ public class CampManager : MonoBehaviour
 
             isProduceMove = false;
         }
+    }
+    public void ReProduce()
+    {
+        OpenProduceInCamp();
+        diaryManager.CloseProduceReward();
+        reconfirmPanelManager.AllClose();
+        reconfirmPanelManager.gameObject.SetActive(false);
     }
     //SceneChange
     public void GoWorldMap()
@@ -408,22 +442,8 @@ public class CampManager : MonoBehaviour
         var count = mapPos.transform.childCount;
         var lastIdx = count - 1;
         var last = mapPos.transform.GetChild(lastIdx);
-
         var x = (first.position.x + last.position.x) / 2;
-
         campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
-    }
-    public void OnOffBluemoonObject()
-    {
-        isBlueMoon = !isBlueMoon;
-        if (isBlueMoon)
-        {
-            bluemoonObject.SetActive(true);
-        }
-        else
-        {
-            bluemoonObject.SetActive(false);
-        }
     }
 
     public void SetGatheringTime()
@@ -451,6 +471,8 @@ public class CampManager : MonoBehaviour
     }
     public void GatheringInCamp()
     {
+        gatheringRewardText.text = "Å½»ö ¼º°ø!";
+
         var haveMinute = Vars.UserData.uData.BonfireHour * 60;
         haveMinute -= gatheringTime;
         Vars.UserData.uData.BonfireHour = haveMinute / 60;
@@ -459,10 +481,12 @@ public class CampManager : MonoBehaviour
         Debug.Log($"gatheringTime{gatheringTime}");
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            //reward = Instantiate(diaryManager.gatheringRewardPrheb.gameObject);
             reward = Instantiate(testPrehab, diaryManager.gatheringParent.transform);
-
-            //reward.transform.parent = diaryManager.gatheringParent.transform;
+            if (reward.GetComponent<GatheringInCampRewardObject>().isBlank == true)
+            {
+                isBlankCheckList.Add(reward);
+            }
+           
             gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
             rewardGameObjectList.Add(reward);
         }
@@ -474,11 +498,22 @@ public class CampManager : MonoBehaviour
                 Debug.Log($"itemReward{rewardList[i].ItemTableElem.name}");
             }
         }
+        if (isBlankCheckList.Count == (int)(gatheringTime / 30))
+        {
+            Debug.Log("ÀüºÎ²Î");
+            gatheringRewardText.text = "µüÈ÷ ÁÖ¿ï°Ô ¾ø³×";
+        }
+        Debug.Log($"²Î °¹¼ö : {isBlankCheckList.Count}");
         Debug.Log($"º¸»ó°¹¼ö : {rewardList.Count}");
+
+        for (int i = isBlankCheckList.Count - 1; i >= 0; i--)
+        {
+            isBlankCheckList.RemoveAt(i);
+        }
+        isBlankCheckList.Clear();
         gatheringTime = 0;
         SetGatheringTime();
         SetBonTime();
-
     }
 
     public void GetItem()
@@ -487,7 +522,6 @@ public class CampManager : MonoBehaviour
         {
             gatheringRewardList[i].IsSelect = false;
         }
-
         if (selectItem != null)
         {
             Vars.UserData.AddItemData(selectItem);
@@ -535,7 +569,6 @@ public class CampManager : MonoBehaviour
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);
             }
-            rewardList.Clear();
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -545,6 +578,12 @@ public class CampManager : MonoBehaviour
                 DiaryInventory.Instance.ItemButtonInit();
             }
         }
+        if (rewardList.Count == 0)
+        {
+            rewardList.Clear();
+
+        }
+
         for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
         {
             Destroy(rewardGameObjectList[i]);
@@ -556,6 +595,7 @@ public class CampManager : MonoBehaviour
         diaryManager.AllClose();
         diaryManager.gameObject.SetActive(false);
         newBottomUi.SetActive(true);
+        CloseGatheringInCamp();
     }
 
     public void BurnItemCheck()
@@ -570,9 +610,5 @@ public class CampManager : MonoBehaviour
             }
         }
 
-    }
-    public void Test()
-    {
-        Debug.Log($"rewardList");
     }
 }

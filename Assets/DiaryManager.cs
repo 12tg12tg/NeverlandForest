@@ -27,9 +27,21 @@ public class DiaryManager : MonoBehaviour
     public GameObject gatheringInDungeonReward;
     public GameObject CookingRotationPanel;
     public GameObject CookingRewardPanel;
+    public GameObject produceRewardPanel;
 
     public Button rotationButton;
     public RecipeIcon recipeIcon;
+    public CraftIcon craftIcon;
+    public Image craftResultItemImage;
+    private DataAllItem craftResultItem;
+    public DataAllItem CraftResultItem
+    {
+        get => craftResultItem;
+        set
+        {
+            craftResultItem = value;
+        }
+    }
 
     public DiaryInventory produceInventory;
     public DiaryInventory cookInventory;
@@ -52,8 +64,6 @@ public class DiaryManager : MonoBehaviour
     }
     private static DiaryManager instance;
     public static DiaryManager Instacne => instance;
-
-
 
     public void Awake()
     {
@@ -87,7 +97,9 @@ public class DiaryManager : MonoBehaviour
 
         var gatheringinDungeon = gatheringInDungeonTag.gameObject.GetComponent<Button>();
         gatheringinDungeon.onClick.AddListener(() => OpenGatheringInDungeon());
-    
+
+       craftResultItemImage.GetComponent<Button>().onClick.AddListener(() => GetItem());
+
     }
     public void OpenCookingRotation()
     {
@@ -138,6 +150,22 @@ public class DiaryManager : MonoBehaviour
         CookingRewardPanel.SetActive(false);
 
     }
+
+    public void CallMakeProduce()
+    {
+        craftIcon.MakeProducing();
+        produceInventory.ItemButtonInit();
+    }
+    public void OpenProduceReward()
+    {
+        produceRewardPanel.SetActive(true);
+    }
+    public void CloseProduceReward()
+    {
+        produceRewardPanel.SetActive(false);
+
+    }
+
     public void AllClose()
     {
         producePanel.SetActive(false);
@@ -252,5 +280,31 @@ public class DiaryManager : MonoBehaviour
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(true);
     }
-  
+    public void GetItem()
+    {
+        var item = CraftResultItem;
+        if (item != null)
+        {
+            Vars.UserData.AddItemData(item);
+        }
+        produceInventory.ItemButtonInit();
+        CraftResultItem = null;
+        craftIcon.Is0ok = false;
+        craftIcon.Is1ok = false;
+        craftIcon.Is2ok = false;
+        craftIcon.fire.sprite = null;
+        craftIcon.condiment.sprite = null;
+        craftIcon.material.sprite = null;
+        craftIcon.result = string.Empty;
+        craftIcon.makingTime.text = string.Empty;
+        CloseProduceReward();
+        AllClose();
+        gameObject.SetActive(false);
+        CampManager.Instance.CloseProduceInCamp();
+      CampManager.Instance.newBottomUi.SetActive(true);
+        if (BottomUIManager.Instance != null)
+        {
+            BottomUIManager.Instance.ItemListInit();
+        }
+    }
 }

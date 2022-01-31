@@ -114,12 +114,9 @@ public class RandomEventUIManager : MonoBehaviour
             if (popUpWindow.gameObject.activeSelf)
             {
                 popUpWindow.gameObject.SetActive(false);
-                for (int i = 0; i < itemButtons.Count; i++)
-                {
-                    selectInvenItem = null;
-                    itemButtons[i].IsSelect = false;
-                    itemButtons2page[i].IsSelect = false;
-                }
+                selectInvenItem = null;
+                itemButtons.ForEach(n => n.IsSelect = false);
+                itemButtons2page.ForEach(n => n.IsSelect = false);
             }
         }
     }
@@ -224,9 +221,7 @@ public class RandomEventUIManager : MonoBehaviour
         rewardItemList.Clear();
         for (int i = 0; i < selectButtons.Count; i++)
         {
-            var btnObj = selectButtons[i];
-
-            var button = btnObj.GetComponent<Button>();
+            var button = selectButtons[i].GetComponent<Button>();
             button.onClick.RemoveAllListeners();
         }
     }
@@ -243,7 +238,6 @@ public class RandomEventUIManager : MonoBehaviour
             {
                 Debug.LogError("수치 이상!");
             }
-
             rewardItemButtons[i].Init(itemList[i]);
         }
     }
