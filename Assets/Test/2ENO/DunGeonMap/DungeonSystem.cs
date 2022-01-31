@@ -9,7 +9,7 @@ public class DungeonSystem : MonoBehaviour
     private static DungeonSystem instance;
     public static DungeonSystem Instance => instance;
 
-    RoomTool roomManager;
+    RoomTool roomTool;
     private List<GameObject> eventObjInstanceList = new List<GameObject>();
     private DungeonRoom beforeDungeonRoom;
 
@@ -50,13 +50,13 @@ public class DungeonSystem : MonoBehaviour
     public RandomEventUIManager rndUi;
     public MoveTest playerMove;
     public MiniMapCamMove minimapCam;
+    public GameObject DungeonCanvas;
 
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
-    private int curDungeonRoomIndex;
 
-    private void Awake()
+    private void Start()
     {
         instance = this;
         Init();
@@ -65,8 +65,25 @@ public class DungeonSystem : MonoBehaviour
         minimapCam.Init();
     }
 
+    public void EndInit()
+    {
+        dungeonPlayerGirl.gameObject.SetActive(false);
+        dungeonPlayerBoy.gameObject.SetActive(false);
+        foreach (var obj in eventObjInstanceList)
+        {
+            Destroy(obj);
+        }
+        eventObjInstanceList.Clear();
+        roomGenerate.EndInit();
+        DungeonCanvas.SetActive(false);
+        playerMove.gameObject.SetActive(false);
+    }
+
     public void Init()
     {
+        DungeonCanvas.SetActive(true);
+        playerMove.gameObject.SetActive(true);
+
         // 현재 불러올 맵 데이터가 없을 때
         if (Vars.UserData.AllDungeonData.Count <= 0)
             GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
@@ -80,25 +97,30 @@ public class DungeonSystem : MonoBehaviour
         {
             Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
         }
-
         // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
-        if (Vars.UserData.dungeonReStart)
+        else if (Vars.UserData.dungeonReStart)
         {
             Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
             Vars.UserData.dungeonReStart = false;
         }
+        // 클리어한 방 다시 돌아올때, 플레이어 위치만 방 첫 위치로
+        else if(!Vars.UserData.dungeonReStart)
+        {
+            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
+            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
+        }
+
         if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
         {
             dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
         }
 
-        roomManager = new RoomTool();
+        roomTool = new RoomTool();
+        if (dungeonSystemData.curDungeonRoomData != null)
+            ConvertEventDataType();
 
-        //if (dungeonSystemData.curDungeonData != null)
-        ConvertEventDataType();
         DungeonRoomSetting();
         worldMap.InitWorldMiniMap();
-
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         // TODO: 임시! 가라로 해놓은거
@@ -120,47 +142,6 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.uData.Date++;
         }
     }
-
-    //void Start()
-    //{
-    //    // 현재 불러올 맵 데이터가 없을 때
-    //    if (Vars.UserData.AllDungeonData.Count <= 0)
-    //        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-
-    //    dungeonPlayerGirl.gameObject.SetActive(false);
-    //    dungeonPlayerBoy.gameObject.SetActive(false);
-
-    //    curDungeonIndex = Vars.UserData.curDungeonIndex;
-    //    startIndex = Vars.UserData.dungeonStartIdx;
-    //    if(Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
-    //    {
-    //        Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
-    //    }
-
-    //    // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
-    //    if (Vars.UserData.dungeonReStart)
-    //    {
-    //        Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
-    //        Vars.UserData.dungeonReStart = false;
-    //    }
-    //    if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
-    //    {
-    //        dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
-    //    }
-
-    //    roomManager = new RoomTool();
-    //    //roomManager.text = text;
-
-    //    //if (dungeonSystemData.curDungeonData != null)
-    //    ConvertEventDataType();
-    //    DungeonRoomSetting();
-    //    worldMap.InitWorldMiniMap();
-
-
-    //    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-    //    // TODO: 임시! 가라로 해놓은거
-    //    GameManager.Manager.State = GameState.Dungeon;
-    //}
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
@@ -215,15 +196,16 @@ public class DungeonSystem : MonoBehaviour
             if(dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
                 Vars.UserData.WorldMapPlayerData.isClear = true;
-                Vars.UserData.curDungeonIndex = Vector2.zero;
-                Vars.UserData.AllDungeonData.Clear();
+                //Vars.UserData.curDungeonIndex = Vector2.zero;
+                //Vars.UserData.AllDungeonData.Clear();
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
             }
             beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
-            dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
+            dungeonSystemData.curDungeonRoomData = roomTool.GetNextRoom(dungeonSystemData.curDungeonRoomData);
 
+            roomGenerate.RoadListClear();
             roomGenerate.RoomPrefabSet(dungeonSystemData.curDungeonRoomData);
             EventObjectCreate(dungeonSystemData.curDungeonRoomData);
 
@@ -247,13 +229,13 @@ public class DungeonSystem : MonoBehaviour
                 // 방 한칸 지날때마다 30분씩 지남
                 ConsumeManager.TimeUp(0, 1);
                 beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
-                dungeonSystemData.curDungeonRoomData = roomManager.GetNextRoom(dungeonSystemData.curDungeonRoomData);
+                dungeonSystemData.curDungeonRoomData = roomTool.GetNextRoom(dungeonSystemData.curDungeonRoomData);
                 CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
             }
             else
             {
                 beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
-                dungeonSystemData.curDungeonRoomData = roomManager.GetBeforeRoom(dungeonSystemData.curDungeonRoomData);
+                dungeonSystemData.curDungeonRoomData = roomTool.GetBeforeRoom(dungeonSystemData.curDungeonRoomData);
                 CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
             }
         }
@@ -262,7 +244,6 @@ public class DungeonSystem : MonoBehaviour
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
-
     //Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
 
     // 세이브 후 로드할때 이벤트 타입이 부모타입으로 바뀌어있는걸 다시 변경
@@ -273,13 +254,13 @@ public class DungeonSystem : MonoBehaviour
 
         while (array[curIdx].nextRoomIdx != -1)
         {
-            EventDataInit(array[curIdx].eventObjDataList);
+            EventDataTypeInit(array[curIdx].eventObjDataList);
             curIdx = array[curIdx].nextRoomIdx;
         }
 
         dungeonSystemData.curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData;
     }
-    public void EventDataInit(List<EventData> eventList)
+    public void EventDataTypeInit(List<EventData> eventList)
     {
         List<EventData> newList = new List<EventData>();
         for (int i = 0; i < eventList.Count; i++)
@@ -348,9 +329,9 @@ public class DungeonSystem : MonoBehaviour
                         switch (eventObj.eventType)
                         {
                             case DunGeonEvent.Battle:
-                                var createBt = eventObj as BattleData;
-                                var obj = createBt.CreateObj(battleObjPrefab);
-                                eventObjInstanceList.Add(obj.gameObject);
+                                //var createBt = eventObj as BattleData;
+                                //var obj = createBt.CreateObj(battleObjPrefab);
+                                //eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
                                 var createGt = eventObj as GatheringData;
@@ -390,7 +371,7 @@ public class DungeonSystem : MonoBehaviour
                         }
                     }
                 }
-                roomData = roomManager.GetNextRoom(roomData);
+                roomData = roomTool.GetNextRoom(roomData);
             }
         }
         else
@@ -539,15 +520,6 @@ public class DungeonSystem : MonoBehaviour
         minimapCam.rightVec = rightPos;
         minimapCam.topVec = topPos;
         minimapCam.bottomVec = bottomPos;
-
-        //var lastRoom = dungeonSystemData.dungeonRoomArray[curIdx];
-        //var lastObj = Instantiate(mainRoomPrefab, new Vector3(lastRoom.Pos.x, lastRoom.Pos.y, 0f)
-        //             , Quaternion.identity, mapPos.transform);
-        //var objectInfo2 = lastObj.GetComponent<RoomObject>();
-        //objectInfo2.roomIdx = lastRoom.roomIdx;
-        //dungeonRoomObjectList.Add(lastObj);
-
-        //mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 3000f, 0f);
     }
 }
 
@@ -808,4 +780,46 @@ public class DungeonSystem : MonoBehaviour
 //        //int curIdx = roomData.roomIdx;
 //        //while (dungeonSystemData.dungeonRoomArray[curIdx])
 //    }
+//}
+
+
+//void Start()
+//{
+//    // 현재 불러올 맵 데이터가 없을 때
+//    if (Vars.UserData.AllDungeonData.Count <= 0)
+//        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+
+//    dungeonPlayerGirl.gameObject.SetActive(false);
+//    dungeonPlayerBoy.gameObject.SetActive(false);
+
+//    curDungeonIndex = Vars.UserData.curDungeonIndex;
+//    startIndex = Vars.UserData.dungeonStartIdx;
+//    if(Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
+//    {
+//        Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
+//    }
+
+//    // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
+//    if (Vars.UserData.dungeonReStart)
+//    {
+//        Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
+//        Vars.UserData.dungeonReStart = false;
+//    }
+//    if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
+//    {
+//        dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
+//    }
+
+//    roomManager = new RoomTool();
+//    //roomManager.text = text;
+
+//    //if (dungeonSystemData.curDungeonData != null)
+//    ConvertEventDataType();
+//    DungeonRoomSetting();
+//    worldMap.InitWorldMiniMap();
+
+
+//    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+//    // TODO: 임시! 가라로 해놓은거
+//    GameManager.Manager.State = GameState.Dungeon;
 //}

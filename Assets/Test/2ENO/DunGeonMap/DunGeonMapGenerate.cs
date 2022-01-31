@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 using System.Linq;
 
 public enum DirectionInho
@@ -18,7 +16,6 @@ public enum DirectionInho
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
-    //private int startIdx = 100;
     private int col = 20;
 
     private int roomCount = 4;
@@ -29,12 +26,6 @@ public class DunGeonMapGenerate : MonoBehaviour
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
-
-    public void Init(DungeonSystem system)
-    {
-        //if(dungeonSystem == null)
-        //    dungeonSystem = system;
-    }
 
     public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {

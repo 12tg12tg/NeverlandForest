@@ -9,19 +9,32 @@ public class NewRoomControl : MonoBehaviour
     //private List<Vector3> posCheckList = new();
 
     // TODO : 일단 임시?
-    public List<NewRoomInstance> prefabList = new List<NewRoomInstance>();
-    public List<NewRoomInstance> roomList = new List<NewRoomInstance>();
+    [SerializeField] private List<NewRoomInstance> prefabList = new List<NewRoomInstance>();
+    private List<NewRoomInstance> roomList = new List<NewRoomInstance>();
     // 임시 Pool
-    public List<NewRoomInstance> pool = new List<NewRoomInstance>();
+    private List<NewRoomInstance> pool = new List<NewRoomInstance>();
 
+    private List<int> roadNumList = new List<int>();
+
+    public void EndInit()
+    {
+        gameObject.SetActive(false);
+    }
+    public void RoadListClear()
+    {
+        roadNumList.Clear();
+    }
 
     public void RoomPrefabSet(DungeonRoom curDungeonRoom)
     {
+        gameObject.SetActive(true);
+
         var roadCount = curDungeonRoom.roadCount;
         if (curDungeonRoom.RoomType == DunGeonRoomType.MainRoom)
             roadCount = 1;
 
-        var roadNumList = RoomListSet(roadCount);
+        if(roadNumList.Count <= 0)
+            roadNumList = RoomListSet(roadCount);
 
         if (pool.Count <= 0)
         {
@@ -58,7 +71,7 @@ public class NewRoomControl : MonoBehaviour
                 roomPrefab = roomObj;
             }
 
-            // 첫 시작방이면
+            // Number 1 방
             if (roomList.Count <= 0)
             {
                 roomPrefab.gameObject.SetActive(true);
@@ -69,7 +82,7 @@ public class NewRoomControl : MonoBehaviour
                 spawnPos = roomPrefab.transform.GetChild(0).position;
                 objPosList.Add(roomPrefab.transform.GetChild(1).position);
             }
-            // 이후 방
+            // 2부터의 방
             else
             {
                 var newPosition = NewPos(roomList[i - 1].gameObject);
