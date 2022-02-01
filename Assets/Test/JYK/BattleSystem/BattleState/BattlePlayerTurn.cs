@@ -15,6 +15,7 @@ public class BattlePlayerTurn : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.SkillButtonInit();
         BottomUIManager.Instance.ItemListInit();
         isMessageOff = false;
         manager.uiLink.ResetProgress();

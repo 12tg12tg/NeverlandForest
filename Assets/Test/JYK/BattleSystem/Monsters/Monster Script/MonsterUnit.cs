@@ -9,18 +9,17 @@ public enum MonsterState
     Idle, DoSomething, Dead
 }
 
-public class MonsterUnit : UnitBase, IAttackable, IAttackReady
+public class MonsterUnit : UnitBase, IAttackable
 {
     // Component
-    private Animator animator;
-    public Collider trigger;
+    [SerializeField] private Animator animator;
     public MonsterUILinker uiLinker;
+    public MonsterTrigger triggerLinker;
 
     // Vars
     public int initHp;
     private int sheild;
     public int maxSheild;
-    private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
     public MonsterCommand command;
@@ -28,9 +27,15 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public bool isActionDone;
     private float delayTimer;
     private const float actionDelay = 0.5f;
-    [Header("반드시 테이블에서의 몬스터 아이디 입력")]
+    [Header("반드시 테이블에서의 몬스터 아이디 설정")]
     public string monsterID;
+
+    [Header("디버프 확인")]
     public List<ObstacleDebuff> obsDebuffs = new List<ObstacleDebuff>();
+    public bool stepOnBoobyTrap;
+    public Obstacle ownBoobyTrap;
+    public bool isPause;
+    public bool isMove;
 
     // Property
     public int Shield { get => sheild; set => sheild = value; }
@@ -40,13 +45,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
-
-    // Start & Awake
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        uiLinker = GetComponent<MonsterUILinker>();
-    }
 
     // Update
     private void Update()
@@ -114,7 +112,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             {
                 IsBurn = true;
             }
-            DisableHitTrigger();
+            triggerLinker.DisableHitTrigger();
         }
     }
 
@@ -151,6 +149,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             PlayDeadAnimation();
             State = MonsterState.Dead;
             uiLinker.Release();
+            CurTile.RemoveUnit(this);
         }      
     }
 
@@ -172,7 +171,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
     private void EraseThis()
     {
-        CurTile.RemoveUnit(this);
         manager.monsters.Remove(this);
     }
 
@@ -260,6 +258,9 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
     public void Move()
     {
+        isMove = true;
+        stepOnBoobyTrap = false;
+
         // 우선 같은 행에서 이동거리 타일이 비어있는지 확인
         var indexX = Pos.x;
         var indexY = Pos.y - command.nextMove;
@@ -294,12 +295,26 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }
         }
 
-        if(moveFoward) // 직선이동할때만 트랩 계산
-            ObstacleAdd();
+        if (moveFoward) // 직선이동할때만 트랩 계산
+        {
+            triggerLinker.EnableMoveTrigger();
+            CheckBoobyTrapOnLoad();
+            //ObstacleAdd();
+        }
 
         SetMoveUi(true);
         BattleManager.Instance.tileLink.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
-            () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); SetMoveUi(false); });
+            () => { 
+                uiLinker.DisapearCircleUI(command, null);
+                isActionDone = true;
+                PlayIdleAnimation();
+                SetMoveUi(false);
+                isMove = false;
+                if (stepOnBoobyTrap)
+                    BoobyTrap();
+                if (moveFoward)
+                    triggerLinker.DisableMoveTrigger();
+            });
     }
 
     public void SetMoveUi(bool moveUi)
@@ -318,6 +333,11 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
     public void PlayHitAnimation()
     {
+        // 자신이 움직이다가 맞은 경우 - 멈춘다.
+        if (isMove)
+        {
+            isPause = true;
+        }
         animator.SetTrigger("Damaged");
     }
     public void PlayMoveAnimation()
@@ -353,36 +373,46 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }));
     }
 
-    // Trigger Enable
-    public void EnableHitTrigger()
+    public void EndHit()
     {
-        trigger.enabled = true;
-    }
-
-    public void DisableHitTrigger()
-    {
-        trigger.enabled = false;
+        if (isPause)
+        {
+            isPause = false;
+            PlayMoveAnimation();
+        }
     }
 
     // Debuff
-    public void ObstacleAdd() // 이동시 체크
+    public void BoobyTrap()
     {
+        // 부비트랩 Release하고, 맞는 애니메이션 재생 및 이펙트 재생, 데미지 감소
+        stepOnBoobyTrap = false;
+        PlayHitAnimation();
+        var damage = ownBoobyTrap.elem.trapDamage;
+        Hp -= damage;
+        uiLinker.UpdateHpBar(Hp);
+        DeadCheak();
+        ownBoobyTrap.Release();
+    }
+
+    public void CheckBoobyTrapOnLoad()
+    {
+        // 부비트랩으로 인한 목적지 수정
         var goalTile = TileMaker.Instance.GetTile(command.target);
         var movableTilesOtherRow = TileMaker.Instance.GetMovablePathTiles(CurTile, goalTile);
         var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).ToList();
-        
+
         for (int i = obstacleList.Count - 1; i >= 0; i--)
         {
-            var ob = new ObstacleDebuff(obstacleList[i].obstacle, this);
-            obsDebuffs.Add(ob);
-            obstacleList[i].obstacle = null;
-            
-            if (ob.elem.obstacleType == TrapTag.BoobyTrap)
+            if (obstacleList[i].obstacle.elem.obstacleType == TrapTag.BoobyTrap)
             {
+                stepOnBoobyTrap = true;
+                ownBoobyTrap = obstacleList[i].obstacle;
                 command.target = obstacleList[i].index;
                 return;
             }
         }
+
     }
 
     public void ObstacleAdd(Vector2 pos) // Wave 진입 시 체크

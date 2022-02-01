@@ -5,26 +5,51 @@ using UnityEngine;
 public class MonsterTrigger : MonoBehaviour
 {
     private PlayerAction boyAction;
-    private MonsterUnit monsterUnit;
+    [SerializeField] private MonsterUnit monsterUnit;
+
+    [SerializeField] private Collider arrowTrigger;
+    [SerializeField] private Collider moveTrigger;
 
     private void Start()
     {
-        monsterUnit = gameObject.GetComponent<MonsterUnit>();
         boyAction = BattleManager.Instance.boy.FSM.GetState(CharacterBattleState.Action) as PlayerAction;
-        if(boyAction == null || monsterUnit == null)
-            Debug.LogError("Somthing is null");
+        if(boyAction == null)
+            Debug.LogError("BoyAction is null");
     }
 
+    // Trigger Enable
+    public void EnableHitTrigger()
+    {
+        arrowTrigger.enabled = true;
+    }
+
+    public void DisableHitTrigger()
+    {
+        arrowTrigger.enabled = false;
+    }
+
+    public void EnableMoveTrigger()
+    {
+        moveTrigger.enabled = true;
+    }
+
+    public void DisableMoveTrigger()
+    {
+        moveTrigger.enabled = false;
+    }
+
+
+    // Event Func
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.layer == LayerMask.NameToLayer("Arrow"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Arrow"))
         {
             if (BattleManager.Instance.boy.command.skill.SkillTableElem.name == "집중공격")
             {
-                if(other.GetComponent<Arrow>().isFinalShot)
+                if (other.GetComponent<Arrow>().isFinalShot)
                 {
                     boyAction.isAttackMotionEnd = true;
-                    monsterUnit.trigger.enabled = false;
+                    DisableHitTrigger();
                 }
                 monsterUnit.PlayHitAnimation();
                 monsterUnit.OnAttacked(BattleManager.Instance.boy.command);
@@ -32,10 +57,33 @@ public class MonsterTrigger : MonoBehaviour
             else
             {
                 boyAction.isAttackMotionEnd = true;
-                monsterUnit.trigger.enabled = false;
+                DisableHitTrigger();
             }
-        }        
+        }
         else if (other.CompareTag("Trap"))
-            Destroy(other.gameObject);
+        {
+            var obs = other.GetComponent<Obstacle>();
+            obs.tile.obstacle = null;
+
+            switch (obs.type)
+            {
+                case TrapTag.Snare:
+                case TrapTag.WoodenTrap:
+                case TrapTag.ThornTrap:
+                    var debuff = new ObstacleDebuff(obs, monsterUnit);
+                    monsterUnit.obsDebuffs.Add(debuff);
+
+                    monsterUnit.PlayHitAnimation();
+                    break;
+
+
+                case TrapTag.BoobyTrap:
+                    break;
+                case TrapTag.Fence:
+                    break;
+            }
+
+
+        }
     }
 }

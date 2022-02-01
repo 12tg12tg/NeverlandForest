@@ -226,6 +226,7 @@ public class BottomUIManager : MonoBehaviour
         // 1. 배틀 상태
         if (GameManager.Manager.State == GameState.Battle)
         {
+            popUpWindow.gameObject.SetActive(false); // use/dump 팝업 끄기
             if (selectItem.ItemTableElem.type == "INSTALLATION")
             {
                 // 설치류 아이템일경우 동작

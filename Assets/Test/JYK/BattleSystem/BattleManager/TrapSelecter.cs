@@ -42,7 +42,7 @@ public class TrapSelecter : MonoBehaviour
         {
             // 1) 타일 선택 대기
             tm.IsWaitingToSelectTrapTile = true;
-            bm.uiLink.PrintCaution($"설치할 타일을 클릭하세요. {prog} / {count}", 1f, 0.2f, null);
+            bm.uiLink.PrintCaution($"설치할 타일을 클릭하세요. {prog} / {count}", 1f, 0.5f, null);
             DisPlayTrapableTile(curObstacleType, prog);
 
             yield return new WaitUntil(() => !tm.IsWaitingToSelectTrapTile);
@@ -55,8 +55,20 @@ public class TrapSelecter : MonoBehaviour
             var tile = tm.LastSelectedTile;
             InstallTrapOnTile(obs, tile, prog);
 
-            // 4) 다음 으로.
+            // 4) 진행도 + 1
             ++prog;
+
+            // 5) 아이템 소모
+            var allItem = new DataAllItem(curItem);
+            allItem.OwnCount = 1;
+            if (Vars.UserData.RemoveItemData(allItem))
+            {
+                bottomUI.popUpWindow.gameObject.SetActive(false);
+                bottomUI.selectItem = null;
+                bottomUI.isPopUp = false;
+            }
+            bottomUI.ItemListInit();
+
             yield return null;
         }
 
@@ -161,12 +173,12 @@ public class TrapSelecter : MonoBehaviour
 
                 if (progress == 0)
                 {
-                    obs.Init();
+                    obs.Init(tile);
                     lastSnareTile = tile;
                 }
                 else
                 {
-                    obs.Init(lastSnareTile.obstacle);
+                    obs.Init(tile, lastSnareTile.obstacle);
                 }
                 break;
 
@@ -181,7 +193,7 @@ public class TrapSelecter : MonoBehaviour
                 pos = tile.transform.position;
                 pos.y = obs.transform.position.y;
                 obs.transform.position = pos;
-                obs.Init();
+                obs.Init(tile);
                 break;
 
 
@@ -202,7 +214,7 @@ public class TrapSelecter : MonoBehaviour
                 pos.y = obs.transform.position.y;
                 obs.transform.position = pos;
 
-                obs.Init();
+                obs.Init(tile);
                 break;
             default:
                 break;

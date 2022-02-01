@@ -96,7 +96,7 @@ public class BattleTile : MonoBehaviour
         var speed = (haveToRotate) ? monsterSpeed : monsterSpeed * 2;
 
         startAc?.Invoke();
-        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, speed, 0.3f));
+        yield return StartCoroutine(Utility.CoTranslate(unit.transform, dest, speed, 0.3f, null, true));
         endAc?.Invoke();
 
         if (haveToRotate && Quaternion.Angle(startRot, destRot) > 0f)

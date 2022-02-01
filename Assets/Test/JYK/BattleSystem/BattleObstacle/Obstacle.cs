@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class ObstacleDebuff
 {
@@ -40,17 +41,20 @@ public class ObstacleDebuff
 }
 
 [Serializable]
-public class Obstacle : MonoBehaviour
+public class Obstacle : MonoBehaviour, IPointerClickHandler
 {
-    [Header("설치물 타입")]
+    [Header("설치 타일 확인")]
+    public Tiles tile;
+
+    [Header("설치물 타입 확인")]
     public TrapTag type;
     public AllItemTableElem elem;
 
-    [Header("장애물 속성")]
+    [Header("장애물 속성 확인")]
     public Obstacle another;                // 아직 반대쪽이 남아있는 경우 존재.
     public ObstacleDebuff anotherDebuff;    // 반대쪽이 먼저 걸린 경우 존재.
 
-    [Header("장벽 체력")]
+    [Header("장벽 체력 확인")]
     public int hp;
 
     private void Start()
@@ -58,7 +62,8 @@ public class Obstacle : MonoBehaviour
         var elems = DataTableManager.GetTable<AllItemDataTable>().data.Values;
         foreach (var elem in elems)
         {
-            if((elem as AllItemTableElem).obstacleType == type)
+            if((elem as AllItemTableElem).type.Equals("INSTALLATION")
+                && (elem as AllItemTableElem).obstacleType == type)
             {
                 this.elem = elem as AllItemTableElem;
                 break;
@@ -66,8 +71,9 @@ public class Obstacle : MonoBehaviour
         }
     }
 
-    public void Init(Obstacle another = null)
+    public void Init(Tiles tile, Obstacle another = null)
     {
+        this.tile = tile;
         switch (type)
         {
             case TrapTag.Snare:
@@ -91,8 +97,30 @@ public class Obstacle : MonoBehaviour
 
     public void Release()
     {
+        tile = null;
         another = null;
         anotherDebuff = null;
         TrapPool.Instance.ReturnObject(type, gameObject);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(BattleManager.Instance.FSM.curState == BattleState.Start
+            && !TileMaker.Instance.IsWaitingToSelectTrapTile)
+        {
+            if (type == TrapTag.Snare)
+            {
+                another.tile.obstacle = null;
+                another.Release();
+            }
+
+            tile.obstacle = null;
+            Release();
+            var newItem = new DataAllItem(elem);
+            newItem.OwnCount = 1;
+            Vars.UserData.AddItemData(newItem);
+
+            BottomUIManager.Instance.ItemListInit();
+        }
     }
 }

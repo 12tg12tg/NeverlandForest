@@ -834,10 +834,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9220383817017491247}
   - component: {fileID: 9220383817024442575}
-  - component: {fileID: 1332837144032885741}
   - component: {fileID: 7848955563663305559}
-  - component: {fileID: -4635787041119084762}
   - component: {fileID: 2606669802353808720}
+  - component: {fileID: 1332837144032885741}
+  - component: {fileID: -4635787041119084762}
   - component: {fileID: -1949735183627475427}
   m_Layer: 0
   m_Name: 5 Spikeder
@@ -906,24 +906,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1332837144032885741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9220383817017189135}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec8461d150dc5044ab7c92c16a12c9f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trigger: {fileID: 7848955563663305559}
-  uiLinker: {fileID: 0}
-  initHp: 0
-  isActionDone: 0
-  monsterID: 5
-  obstacles: []
 --- !u!136 &7848955563663305559
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -938,6 +920,38 @@ CapsuleCollider:
   m_Height: 1.68
   m_Direction: 1
   m_Center: {x: 0, y: 0.84, z: 0}
+--- !u!65 &2606669802353808720
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220383817017189135}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 0.24, y: 0.37, z: 0.19}
+  m_Center: {x: 0, y: 0.12, z: 0}
+--- !u!114 &1332837144032885741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220383817017189135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec8461d150dc5044ab7c92c16a12c9f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 9220383817024442575}
+  uiLinker: {fileID: -1949735183627475427}
+  triggerLinker: {fileID: -4635787041119084762}
+  initHp: 0
+  maxSheild: 0
+  isActionDone: 0
+  monsterID: 5
 --- !u!114 &-4635787041119084762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,19 +964,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db45d907192e8934eb951b06bc06f07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &2606669802353808720
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9220383817017189135}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.24, y: 0.37, z: 0.19}
-  m_Center: {x: 0, y: 0.12, z: 0}
+  monsterUnit: {fileID: 1332837144032885741}
+  arrowTrigger: {fileID: 7848955563663305559}
+  moveTrigger: {fileID: 2606669802353808720}
 --- !u!114 &-1949735183627475427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -975,7 +979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06db6325dca078c42a09b9fc17fdb616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hpBarPrefab: {fileID: 492793071959783573, guid: 7cf966c9405d4294d9681de7da26e0fa, type: 3}
   linkedUi: {fileID: 0}
   hpBarOffset: {x: 0, y: 2.2, z: 0}
   longRange: {r: 0.18382876, g: 0.764151, b: 0.42942175, a: 1}

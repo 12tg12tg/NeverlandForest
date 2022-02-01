@@ -20,6 +20,7 @@ public class BattleStart : State<BattleState>
     public override void Init()
     {
         BottomUIManager.Instance.ItemListInit();
+        BottomUIManager.Instance.ItemButtonInit();
         BottomUIManager.Instance.progress.SetActive(true);
         manager.uiLink.ResetProgress();
         isReadyDone = false;
