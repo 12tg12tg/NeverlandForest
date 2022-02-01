@@ -99,7 +99,6 @@ public class TableEditor : EditorWindow
         itemData["OBSTACLE_HP"] = EditorGUILayout.TextField("Obstacle_HP", itemData["OBSTACLE_HP"]);
         itemData["TRAP_DAMAGE"] = EditorGUILayout.TextField("Trap_Damage", itemData["TRAP_DAMAGE"]);
         itemData["DURATION"] = EditorGUILayout.TextField("Duration", itemData["DURATION"]);
-        itemData["INSTALLATION_NUMBER"] = EditorGUILayout.TextField("Installation_Number", itemData["INSTALLATION_NUMBER"]);
     }
 
     private void ViewConsumableData(List<Dictionary<string, string>> consumList)

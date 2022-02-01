@@ -18,7 +18,6 @@ public class AllItemTableElem : DataTableElemBase
     public int obstacleHp;
     public int trapDamage;
     public int duration;
-    public int InstallationOfNumber;
     
     private string iconID;
     private Sprite iconSprite;
@@ -49,7 +48,6 @@ public class AllItemTableElem : DataTableElemBase
         trapDamage = int.Parse(data["TRAP_DAMAGE"]);
         trapDamage = trapDamage == -999 ? 0 : trapDamage;
         duration = int.Parse(data["DURATION"]);
-        InstallationOfNumber = int.Parse(data["INSTALLATION_NUMBER"]);
 
         iconID = data["ICON_ID"];
         iconSprite = Resources.Load<Sprite>($"Icons/{iconID}");
