@@ -64,13 +64,17 @@ public class MonsterTrigger : MonoBehaviour
         {
             var obs = other.GetComponent<Obstacle>();
             obs.tile.obstacle = null;
-
+            ObstacleDebuff debuff;
             switch (obs.type)
             {
                 case TrapTag.Snare:
+                    debuff = new ObstacleDebuff(obs, monsterUnit);
+                    monsterUnit.obsDebuffs.Add(debuff);
+                    break;
+
                 case TrapTag.WoodenTrap:
                 case TrapTag.ThornTrap:
-                    var debuff = new ObstacleDebuff(obs, monsterUnit);
+                    debuff = new ObstacleDebuff(obs, monsterUnit);
                     monsterUnit.obsDebuffs.Add(debuff);
 
                     monsterUnit.PlayHitAnimation();

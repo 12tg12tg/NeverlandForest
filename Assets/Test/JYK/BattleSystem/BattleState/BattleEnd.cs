@@ -18,12 +18,10 @@ public class BattleEnd : State<BattleState>
 
     public override void Release()
     {
-        Debug.Log("Battle End Release");
     }
 
     public override void Update()
     {
-        Debug.Log("Battle End Update");
     }
     public override void FixedUpdate()
     {

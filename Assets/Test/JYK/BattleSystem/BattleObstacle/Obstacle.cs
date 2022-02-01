@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[Serializable]
 public class ObstacleDebuff
 {
     // 주인
@@ -16,9 +17,9 @@ public class ObstacleDebuff
     public int duration;
 
     // 올가미 관련
-    private ObstacleDebuff another;
+    public ObstacleDebuff another;
 
-    public MonsterUnit anotherUnit { get => another.owner; }
+    public MonsterUnit anotherUnit { get => another?.owner; }
 
     public ObstacleDebuff(Obstacle obs, MonsterUnit owner)
     {
@@ -35,6 +36,7 @@ public class ObstacleDebuff
         else if(obs.anotherDebuff != null)
         {
             another = obs.anotherDebuff;
+            another.another = this;
         }
         obs.Release();
     }

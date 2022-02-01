@@ -89,20 +89,7 @@ public class MonsterUnit : UnitBase, IAttackable
             }
             if (playerCommand.skill.SkillTableElem.name == "넉 백")
             {
-                Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
-
-                if (backTile != null)
-                {
-                    if (/*올가미가 있으면서 반대쪽 몬스터가 있다면*/ false)
-                    {
-
-                    }
-                    else
-                    {
-                        SetMoveUi(true);
-                        BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null, () => SetMoveUi(false), false);
-                    }
-                }
+                PushBack(true);
             }
         }
         // 약초학자
@@ -113,6 +100,61 @@ public class MonsterUnit : UnitBase, IAttackable
                 IsBurn = true;
             }
             triggerLinker.DisableHitTrigger();
+        }
+    }
+
+    private void PushBack(bool isOwner)
+    {
+        UnityAction afterPushBack = () => { SetMoveUi(false); AfterPushBack(isOwner); };
+
+        Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
+        if (backTile != null && backTile.CanStand)
+        {
+            Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
+            SetMoveUi(true);
+            BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
+                afterPushBack, false);
+        }
+
+        if (isOwner)
+        {
+            var snares = obsDebuffs.Where((n) => n.elem.obstacleType == TrapTag.Snare);
+            var linkedSnares = (from n in snares
+                               where n.anotherUnit != null
+                               select n).ToList();
+            var anothers = (from n in linkedSnares
+                            select n.anotherUnit).Distinct().ToList();
+
+            foreach (var mySnareDebuff in linkedSnares) // 서로의 디버프리스트에서 올가미 디버프 제거
+            {
+                mySnareDebuff.anotherUnit.obsDebuffs.Remove(mySnareDebuff.another);
+                obsDebuffs.Remove(mySnareDebuff);
+            }
+
+            foreach (var another in anothers) // 한번만 밀리도록 따로 순회
+            {
+                another.PushBack(false);
+            }
+        }
+    }
+
+    private void AfterPushBack(bool isOwner)
+    {
+        if(command.actionType == MonsterActionType.Attack)
+        {
+            var range = (int)type + 1;
+            if(CurTile.index.y > range)
+            {
+                if (isOwner)
+                {
+                    command.actionType = MonsterActionType.None;
+                    uiLinker.SetCantMove();
+                }
+                else
+                {
+                    SetActionCommand();
+                }
+            }
         }
     }
 
@@ -218,7 +260,7 @@ public class MonsterUnit : UnitBase, IAttackable
             // 4) 최대 사거리를 넘어서는지 확인
             //      4) 넘어선다면 최대 사거리 까지로 정정.
             var curMoveLen = BaseElem.Speed;
-            int rangeTile = (int)BaseElem.type + 1; // 공격 가능한 사거리의 타일
+            int rangeTile = (int)type + 1; // 공격 가능한 사거리의 타일
             var dest = Pos.y - curMoveLen;
             if (dest < rangeTile)
             {

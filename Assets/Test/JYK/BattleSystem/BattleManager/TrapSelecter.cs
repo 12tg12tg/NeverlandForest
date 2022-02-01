@@ -59,16 +59,18 @@ public class TrapSelecter : MonoBehaviour
             ++prog;
 
             // 5) 아이템 소모
-            var allItem = new DataAllItem(curItem);
-            allItem.OwnCount = 1;
-            if (Vars.UserData.RemoveItemData(allItem))
+            if (curObstacleType != TrapTag.Snare || (curObstacleType == TrapTag.Snare && prog == 2))
             {
-                bottomUI.popUpWindow.gameObject.SetActive(false);
-                bottomUI.selectItem = null;
-                bottomUI.isPopUp = false;
+                var allItem = new DataAllItem(curItem);
+                allItem.OwnCount = 1;
+                if (Vars.UserData.RemoveItemData(allItem))
+                {
+                    bottomUI.popUpWindow.gameObject.SetActive(false);
+                    bottomUI.selectItem = null;
+                    bottomUI.isPopUp = false;
+                }
+                bottomUI.ItemListInit();
             }
-            bottomUI.ItemListInit();
-
             yield return null;
         }
 
@@ -93,7 +95,7 @@ public class TrapSelecter : MonoBehaviour
             case TrapTag.Snare:
                 for (int i = 0; i < count; i++)
                 {
-                    bool notPlayerTile = list[i].index.y != 0;
+                    bool notPlayerTileAndStartLine = list[i].index.y != 0 && list[i].index.y != 6;
                     bool selectable;
 
                     if(progress == 0)
@@ -113,7 +115,7 @@ public class TrapSelecter : MonoBehaviour
                             && Mathf.Abs((int)list[i].index.x - (int)lastSnareTile.index.x) == 1f;
                     }
 
-                    if (notPlayerTile && selectable)
+                    if (notPlayerTileAndStartLine && selectable)
                     {
                         list[i].HighlightCanAttackSign(SkillRangeType.Tile);
                     }
@@ -125,9 +127,9 @@ public class TrapSelecter : MonoBehaviour
             case TrapTag.ThornTrap:
                 for (int i = 0; i < count; i++)
                 {
-                    bool notPlayerTile = list[i].index.y != 0;
+                    bool notPlayerTileAndStartLine = list[i].index.y != 0 && list[i].index.y != 6;
                     bool selectable = list[i].obstacle == null;
-                    if(notPlayerTile && selectable)
+                    if(notPlayerTileAndStartLine && selectable)
                     {
                         list[i].HighlightCanAttackSign(SkillRangeType.Tile);
                     }
@@ -137,7 +139,7 @@ public class TrapSelecter : MonoBehaviour
             case TrapTag.Fence:
                 for (int i = 0; i < count; i++)
                 {
-                    bool notPlayerTile = list[i].index.y != 0;
+                    bool notPlayerTileAndStartLine = list[i].index.y != 0 && list[i].index.y != 6;
                     bool notStartLine = list[i].index.y != 6;
 
                     int col = (int)list[i].index.y;
@@ -148,7 +150,7 @@ public class TrapSelecter : MonoBehaviour
                         && tile1.obstacle == null
                         && tile2.obstacle == null;
 
-                    if (notPlayerTile && notStartLine && selectable)
+                    if (notPlayerTileAndStartLine && notStartLine && selectable)
                     {
                         list[i].HighlightCanAttackSign(SkillRangeType.Tile);
                     }
