@@ -12,21 +12,20 @@ public class MiniMapCamMove : MonoBehaviour
     public Canvas canvas;
 
     private Vector2 startPos;
+    private Vector2 startSize;
     private bool IsExpand { get; set; }
 
     //private Vector3 curRoomPos;
 
     private void Awake()
     {
-        var rect = canvas.GetComponent<RectTransform>().rect;
-        minimapImg.sizeDelta = new Vector2(rect.width * 0.2f, rect.height * 0.3f);
+        Init();
     }
 
     public void Init()
     {
+        startSize = minimapImg.sizeDelta;
         startPos = minimapImg.anchoredPosition;
-        var rect = canvas.GetComponent<RectTransform>().rect;
-        minimapImg.sizeDelta = new Vector2(rect.width * 0.2f, rect.height * 0.3f);
     }
 
     void Update()
@@ -61,7 +60,7 @@ public class MiniMapCamMove : MonoBehaviour
         else
         {
             minimapImg.anchoredPosition = startPos;
-            minimapImg.sizeDelta = new Vector2(rect.width * 0.2f, rect.height * 0.3f);
+            minimapImg.sizeDelta = startSize;
             camera.fieldOfView = 60f;
         }
     }

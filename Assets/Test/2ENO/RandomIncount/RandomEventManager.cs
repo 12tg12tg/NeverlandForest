@@ -128,7 +128,7 @@ public class RandomEventManager : MonoBehaviour
             }
 
             // 특정 이벤트 확정반환 테스트코드
-            //roomData.randomEventID = "27";
+            //roomData.randomEventID = "4";
         }
     }
 

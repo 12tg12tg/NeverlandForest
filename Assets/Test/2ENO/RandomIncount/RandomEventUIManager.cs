@@ -173,7 +173,7 @@ public class RandomEventUIManager : MonoBehaviour
             // 이벤트 데이터의 i 인덱스 selectString으로 초기화
             nameText.text = randomEventData.selectName[i];
             // 이벤트 데이터에서 i 인덱스 is선택값 이 true 면 초기화 아니면 비공개 defaultText로 표시
-            infoText.text = randomEventData.SelectInfos[i];
+            infoText.text = randomEventData.selectInfos[i];
         }
     }
 
