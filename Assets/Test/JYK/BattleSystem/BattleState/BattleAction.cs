@@ -15,7 +15,8 @@ public class BattleAction : State<BattleState>
 
     public override void Init()
     {
-        if (manager.MonsterQueue.Count <= 0)
+        BottomUIManager.Instance.ItemListInit();
+        if (manager.MonsterActionQueue.Count <= 0)
         {
             if (manager.isPlayerFirst)
                 FSM.ChangeState(BattleState.Settlement);
@@ -25,7 +26,7 @@ public class BattleAction : State<BattleState>
         }
         else
         {
-            curMonsterCommand = manager.MonsterQueue.Dequeue();
+            curMonsterCommand = manager.MonsterActionQueue.Dequeue();
             curMonsterCommand.attacker.DoCommand();
         }
     }
@@ -39,7 +40,7 @@ public class BattleAction : State<BattleState>
     {
         if (curMonsterCommand.attacker.State == MonsterState.Idle)
         {
-            if (manager.MonsterQueue.Count <= 0)
+            if (manager.MonsterActionQueue.Count <= 0)
             {
                 if (manager.isPlayerFirst)
                     FSM.ChangeState(BattleState.Settlement);
@@ -48,7 +49,7 @@ public class BattleAction : State<BattleState>
                 return;
             }
 
-            curMonsterCommand = manager.MonsterQueue.Dequeue();
+            curMonsterCommand = manager.MonsterActionQueue.Dequeue();
             curMonsterCommand.attacker.DoCommand();
         }
 

@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class DiaryInventory : MonoBehaviour
 {
-
     public enum ButtonState { Item, Skill }
-
-    //Instance
+    [Header("인스턴스")]
     public BottomInfoUI info;
     public List<BottomItemButtonUI> itemButtons;
     private static DiaryInventory instance;
@@ -17,7 +15,7 @@ public class DiaryInventory : MonoBehaviour
     //Vars
     [HideInInspector] public ButtonState buttonState;
 
-    private void Awake()
+    private void Start()
     {
         instance = this;
     }

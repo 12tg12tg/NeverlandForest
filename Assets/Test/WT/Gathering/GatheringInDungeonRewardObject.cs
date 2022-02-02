@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 public class GatheringInDungeonRewardObject : MonoBehaviour
 {
+    private DataAllItem item;
+    private bool isSelect;
+    [Header("버튼,아이콘")]
     public Button rewardButton;
     public Image rewardIcon;
-    private DataAllItem item;
     public Image selectedImg;
-    private bool isSelect;
-    public  DataAllItem staticData;
     public bool IsSelect
     {
         get => isSelect;
@@ -22,22 +22,16 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     }
     public DataAllItem Item
     {
-        get
-        {
-            return item;
-        }
+        get => item;
         set
         {
             item = value;
         }
     }
-   
     public void ItemButtonClick()
     {
         GatheringSystem.Instance.SelectedItem = item;
-        Debug.Log($"{item} {staticData}");
         IsSelect = true;
-
     }
     public void Init(DataAllItem data)
     {
@@ -48,11 +42,9 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
         }
         else
         {
-            staticData = new DataAllItem(data);
-            item = staticData;
+            item = new DataAllItem(data);
             AllItemTableElem elem = data.ItemTableElem;
             rewardIcon.sprite = elem.IconSprite;
         }
     }
-   
 }

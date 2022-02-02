@@ -16,15 +16,16 @@ public class BattleSettlement : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.ItemListInit();
         //몇턴.
-        manager.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
+        manager.uiLink.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
         {
             var turn = ++manager.Turn;
 
             // 웨이브 업데이트 ( 알아서 조건 확인 후웨이브 업데이트 함. )
-            manager.UpdateWave();
+            manager.waveLink.UpdateWave();
 
-            manager.PrintMessage($"{manager.Turn}턴 시작", 0.8f, () =>
+            manager.uiLink.PrintMessage($"{manager.Turn}턴 시작", 0.8f, () =>
             {
                 if(manager.isPlayerFirst)
                     FSM.ChangeState(BattleState.Player);

@@ -19,14 +19,16 @@ public class BattleStart : State<BattleState>
 
     public override void Init()
     {
+        BottomUIManager.Instance.ItemListInit();
+        BottomUIManager.Instance.ItemButtonInit();
         BottomUIManager.Instance.progress.SetActive(true);
-        manager.ResetProgress();
+        manager.uiLink.ResetProgress();
         isReadyDone = false;
         if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2)
         {
             // 몬스터 선공
             manager.isPlayerFirst = false;
-            manager.PrintMessage("몬스터 습격!", startDelay, () => isReadyDone = true);
+            manager.uiLink.PrintMessage("몬스터 습격!", startDelay, () => isReadyDone = true);
 
             
         }
@@ -34,11 +36,9 @@ public class BattleStart : State<BattleState>
         {
             // 플레이어 선공
             manager.isPlayerFirst = true;
-            manager.PrintMessage("몬스터 습격 대비!", startDelay, () => manager.WaitUntillSettingDone());
+            manager.uiLink.PrintMessage("몬스터 습격 대비!", startDelay, () => manager.inputLink.WaitUntillSettingDone());
 
         }
-
-
     }
 
     public override void Release()
@@ -64,8 +64,8 @@ public class BattleStart : State<BattleState>
                 action = () => FSM.ChangeState(BattleState.Monster);
             }
 
-            manager.PrintMessage($"{manager.Turn}턴 시작", 0.8f,
-                () => { manager.UpdateWave(); manager.AllMonsterDebuffCheck(action); }); 
+            manager.uiLink.PrintMessage($"{manager.Turn}턴 시작", 0.8f,
+                () => { manager.waveLink.UpdateWave(); manager.AllMonsterDebuffCheck(action); }); 
         }
     }
 

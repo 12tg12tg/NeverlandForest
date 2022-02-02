@@ -9,18 +9,17 @@ public enum MonsterState
     Idle, DoSomething, Dead
 }
 
-public class MonsterUnit : UnitBase, IAttackable, IAttackReady
+public class MonsterUnit : UnitBase, IAttackable
 {
     // Component
-    private Animator animator;
-    public Collider trigger;
+    [SerializeField] private Animator animator;
     public MonsterUILinker uiLinker;
+    public MonsterTrigger triggerLinker;
 
     // Vars
     public int initHp;
     private int sheild;
     public int maxSheild;
-    private int speed;
     private MonsterType type;
     protected MonsterTableElem baseElem;
     public MonsterCommand command;
@@ -28,9 +27,15 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public bool isActionDone;
     private float delayTimer;
     private const float actionDelay = 0.5f;
-    [Header("반드시 테이블에서의 몬스터 아이디 입력")]
+    [Header("반드시 테이블에서의 몬스터 아이디 설정")]
     public string monsterID;
-    public List<Obstacle> obstacles = new List<Obstacle>();
+
+    [Header("디버프 확인")]
+    public List<ObstacleDebuff> obsDebuffs = new List<ObstacleDebuff>();
+    public bool stepOnBoobyTrap;
+    public Obstacle ownBoobyTrap;
+    public bool isPause;
+    public bool isMove;
 
     // Property
     public int Shield { get => sheild; set => sheild = value; }
@@ -40,13 +45,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
-
-    // Start & Awake
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-        uiLinker = GetComponent<MonsterUILinker>();
-    }
 
     // Update
     private void Update()
@@ -91,20 +89,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }
             if (playerCommand.skill.SkillTableElem.name == "넉 백")
             {
-                Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
-
-                if (backTile != null)
-                {
-                    if (/*올가미가 있으면서 반대쪽 몬스터가 있다면*/ false)
-                    {
-
-                    }
-                    else
-                    {
-                        SetMoveUi(true);
-                        BattleManager.Instance.MoveUnitOnTile(backTile.index, this, null, () => SetMoveUi(false), false);
-                    }
-                }
+                PushBack(true);
             }
         }
         // 약초학자
@@ -114,7 +99,62 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             {
                 IsBurn = true;
             }
-            DisableHitTrigger();
+            triggerLinker.DisableHitTrigger();
+        }
+    }
+
+    private void PushBack(bool isOwner)
+    {
+        UnityAction afterPushBack = () => { SetMoveUi(false); AfterPushBack(isOwner); };
+
+        Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
+        if (backTile != null && backTile.CanStand)
+        {
+            Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
+            SetMoveUi(true);
+            BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
+                afterPushBack, false);
+        }
+
+        if (isOwner)
+        {
+            var snares = obsDebuffs.Where((n) => n.elem.obstacleType == TrapTag.Snare);
+            var linkedSnares = (from n in snares
+                               where n.anotherUnit != null
+                               select n).ToList();
+            var anothers = (from n in linkedSnares
+                            select n.anotherUnit).Distinct().ToList();
+
+            foreach (var mySnareDebuff in linkedSnares) // 서로의 디버프리스트에서 올가미 디버프 제거
+            {
+                mySnareDebuff.anotherUnit.obsDebuffs.Remove(mySnareDebuff.another);
+                obsDebuffs.Remove(mySnareDebuff);
+            }
+
+            foreach (var another in anothers) // 한번만 밀리도록 따로 순회
+            {
+                another.PushBack(false);
+            }
+        }
+    }
+
+    private void AfterPushBack(bool isOwner)
+    {
+        if(command.actionType == MonsterActionType.Attack)
+        {
+            var range = (int)type + 1;
+            if(CurTile.index.y > range)
+            {
+                if (isOwner)
+                {
+                    command.actionType = MonsterActionType.None;
+                    uiLinker.SetCantMove();
+                }
+                else
+                {
+                    SetActionCommand();
+                }
+            }
         }
     }
 
@@ -125,7 +165,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
         var damage = command.skill.SkillTableElem.Damage;
 
-        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name != "근거리")
+        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name == "근거리")
         {
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;
@@ -151,8 +191,8 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             PlayDeadAnimation();
             State = MonsterState.Dead;
             uiLinker.Release();
-        }
-        
+            CurTile.RemoveUnit(this);
+        }      
     }
 
     // 초기화
@@ -173,7 +213,6 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
     private void EraseThis()
     {
-        CurTile.RemoveUnit(this);
         manager.monsters.Remove(this);
     }
 
@@ -221,7 +260,7 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             // 4) 최대 사거리를 넘어서는지 확인
             //      4) 넘어선다면 최대 사거리 까지로 정정.
             var curMoveLen = BaseElem.Speed;
-            int rangeTile = (int)BaseElem.type + 1; // 공격 가능한 사거리의 타일
+            int rangeTile = (int)type + 1; // 공격 가능한 사거리의 타일
             var dest = Pos.y - curMoveLen;
             if (dest < rangeTile)
             {
@@ -261,6 +300,9 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
 
     public void Move()
     {
+        isMove = true;
+        stepOnBoobyTrap = false;
+
         // 우선 같은 행에서 이동거리 타일이 비어있는지 확인
         var indexX = Pos.x;
         var indexY = Pos.y - command.nextMove;
@@ -295,12 +337,26 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }
         }
 
-        if(moveFoward) // 직선이동할때만 트랩 계산
-            ObstacleAdd();
+        if (moveFoward) // 직선이동할때만 트랩 계산
+        {
+            triggerLinker.EnableMoveTrigger();
+            CheckBoobyTrapOnLoad();
+            //ObstacleAdd();
+        }
 
         SetMoveUi(true);
-        BattleManager.Instance.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
-            () => { uiLinker.DisapearCircleUI(command, null); isActionDone = true; PlayIdleAnimation(); SetMoveUi(false); });
+        BattleManager.Instance.tileLink.MoveUnitOnTile(command.target, this, PlayMoveAnimation,
+            () => { 
+                uiLinker.DisapearCircleUI(command, null);
+                isActionDone = true;
+                PlayIdleAnimation();
+                SetMoveUi(false);
+                isMove = false;
+                if (stepOnBoobyTrap)
+                    BoobyTrap();
+                if (moveFoward)
+                    triggerLinker.DisableMoveTrigger();
+            });
     }
 
     public void SetMoveUi(bool moveUi)
@@ -319,6 +375,11 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
     }
     public void PlayHitAnimation()
     {
+        // 자신이 움직이다가 맞은 경우 - 멈춘다.
+        if (isMove)
+        {
+            isPause = true;
+        }
         animator.SetTrigger("Damaged");
     }
     public void PlayMoveAnimation()
@@ -354,80 +415,94 @@ public class MonsterUnit : UnitBase, IAttackable, IAttackReady
             }));
     }
 
-    // Trigger Enable
-    public void EnableHitTrigger()
+    public void EndHit()
     {
-        trigger.enabled = true;
-    }
-
-    public void DisableHitTrigger()
-    {
-        trigger.enabled = false;
+        if (isPause)
+        {
+            isPause = false;
+            PlayMoveAnimation();
+        }
     }
 
     // Debuff
-    public void ObstacleAdd()
+    public void BoobyTrap()
     {
+        // 부비트랩 Release하고, 맞는 애니메이션 재생 및 이펙트 재생, 데미지 감소
+        stepOnBoobyTrap = false;
+        PlayHitAnimation();
+        var damage = ownBoobyTrap.elem.trapDamage;
+        Hp -= damage;
+        uiLinker.UpdateHpBar(Hp);
+        DeadCheak();
+        ownBoobyTrap.Release();
+    }
+
+    public void CheckBoobyTrapOnLoad()
+    {
+        // 부비트랩으로 인한 목적지 수정
         var goalTile = TileMaker.Instance.GetTile(command.target);
         var movableTilesOtherRow = TileMaker.Instance.GetMovablePathTiles(CurTile, goalTile);
-        var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).Select(x => x).ToList();
-        
+        var obstacleList = movableTilesOtherRow.Where(x => x.obstacle != null).ToList();
+
         for (int i = obstacleList.Count - 1; i >= 0; i--)
         {
-            var ob = new Obstacle(obstacleList[i].obstacle);
-            obstacles.Add(ob);
-            obstacleList[i].obstacle = null;
-            
-            if (ob.type == ObstacleType.BoobyTrap)
+            if (obstacleList[i].obstacle.elem.obstacleType == TrapTag.BoobyTrap)
             {
+                stepOnBoobyTrap = true;
+                ownBoobyTrap = obstacleList[i].obstacle;
                 command.target = obstacleList[i].index;
                 return;
             }
         }
+
     }
 
-    public void ObstacleAdd(Vector2 pos)
+    public void ObstacleAdd(Vector2 pos) // Wave 진입 시 체크
     {
         var goalTile = TileMaker.Instance.GetTile(pos);
 
         if (goalTile.obstacle != null)
         {
-            var ob = new Obstacle(goalTile.obstacle);
-            obstacles.Add(ob);
+            var ob = new ObstacleDebuff(goalTile.obstacle, this);
+            obsDebuffs.Add(ob);
             goalTile.obstacle = null;
         }
     }
 
     public void ObstacleHit()
     {
+        // 올가미, 나무트랩, 가시트랩 중 트랩류만 가져오기.
         var totalDamage = 0;
-        var obs = obstacles.Where(x => x.trapDamage != 0)
+        var debuffs = obsDebuffs.Where(x => x.trapDamage != 0)
                            .Select(x => x)
                            .ToList();
 
-        if (obs.Count == 0) // 올가미나 장벽만 있는 경우는 리턴
+        if (debuffs.Count == 0)
             return;
 
-        obs.ForEach(x => totalDamage += x.trapDamage);
-        Debug.Log($"현재 Hp:{Hp} - {totalDamage} = {Hp -= totalDamage}");
-        //monster[i].Hp -= totalDamage; // 위 디버그 지우면 얘 풀면 됨
+        debuffs.ForEach(x => totalDamage += x.trapDamage);
+        Debug.Log($"트랩 데미지 : {totalDamage}");
+        Hp -= totalDamage;
+
+        //애니메이션 재생 & 파티클 재생
+        PlayHitAnimation();
 
         // 장애물 지속턴이 0이하가 됐을 때 없애는 용도
-        DurationDecrease(obs);
+        DurationDecrease(debuffs);
 
         // 몬스터 죽었는지 체크
         uiLinker.UpdateHpBar(Hp);
         DeadCheak();
     }
 
-    private void DurationDecrease(List<Obstacle> obs)
+    private void DurationDecrease(List<ObstacleDebuff> debuffs)
     {
-        obs.ForEach(x => x.duration -= 1);
-        for (int i = 0; i < obs.Count; i++)
+        debuffs.ForEach(x => x.duration -= 1);
+        for (int i = 0; i < debuffs.Count; i++)
         {
-            if (obs[i].duration < 1)
+            if (debuffs[i].duration < 1)
             {
-                obstacles.Remove(obs[i]);
+                obsDebuffs.Remove(debuffs[i]);
             }
         }
     }

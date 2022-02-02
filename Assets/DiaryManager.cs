@@ -4,53 +4,35 @@ using UnityEngine;
 using UnityEngine.UI;
 public class DiaryManager : MonoBehaviour
 {
-    public Image produce;
-    public Image cooking;
-    public Image sleeping;
-    public Image gatheringInCamp;
-    public Image battleTag;
-    public Image huntTag;
-    public Image gatheringInDungeonTag;
+    [Header("태그관련")]
+    public Image produceTagImage;
+    public Image cookingTagImage;
+    public Image sleepingTagImage;
+    public Image gatheringInCampTagImage;
+    public Image battleTagImage;
+    public Image huntTagImage;
+    public Image gatheringInDungeonTagImage;
 
+    [Header("판넬관련")]
     public GameObject producePanel;
     public GameObject cookingPanel;
     public GameObject sleepingPanel;
     public GameObject gatheringIncCampPanel;
-    public GameObject gatheringInCampReward;
-
-    public GatheringInCampRewardObject gatheringRewardPrheb;
-    public GameObject gatheringParent;
-
+    public GameObject gatheringInCampRewardPanel;
     public GameObject battleRewardPanel;
     public GameObject huntRewardPanel;
     public GameObject gatheringInDungeonPanel;
-    public GameObject gatheringInDungeonReward;
+    public GameObject gatheringInDungeonRewardPanel;
     public GameObject CookingRotationPanel;
     public GameObject CookingRewardPanel;
     public GameObject produceRewardPanel;
 
-    public Button rotationButton;
-    public RecipeIcon recipeIcon;
-    public CraftIcon craftIcon;
-    public Image craftResultItemImage;
-    private DataAllItem craftResultItem;
-    public DataAllItem CraftResultItem
-    {
-        get => craftResultItem;
-        set
-        {
-            craftResultItem = value;
-        }
-    }
+    [Header("캠프채집, 프리햅,부모위치")]
+    public GatheringInCampRewardObject gatheringRewardPrheb;
+    public GameObject gatheringParent;
 
-    public DiaryInventory produceInventory;
-    public DiaryInventory cookInventory;
-    public DiaryInventory sleepInventory;
-    public DiaryInventory gatheringInventory;
-    public DiaryInventory gatheringrewardInventory;
-    public DiaryInventory gatheringInDungeonrewardInventory;
-
-    private bool isRotation=false;
+    [Header("캠프요리관련")]
+    private bool isRotation = false;
     public bool IsRotation
     {
         get
@@ -62,47 +44,70 @@ public class DiaryManager : MonoBehaviour
             isRotation = value;
         }
     }
+    public Button rotationButton;
+    public RecipeIcon recipeIcon;
+    [Header("캠프제작관련")]
+    public CraftIcon craftIcon;
+    public Image craftResultItemImage;
+    private DataAllItem craftResultItem;
+    public DataAllItem CraftResultItem
+    {
+        get => craftResultItem;
+        set
+        {
+            craftResultItem = value;
+        }
+    }
+    [Header("다이어리인벤토리")]
+    public DiaryInventory produceInventory;
+    public DiaryInventory cookInventory;
+    public DiaryInventory sleepInventory;
+    public DiaryInventory gatheringInventory;
+    public DiaryInventory gatheringrewardInventory;
+    public DiaryInventory gatheringInDungeonrewardInventory;
+   
     private static DiaryManager instance;
     public static DiaryManager Instacne => instance;
 
-    public void Awake()
+    public void Start()
     {
         instance = this;
-        produce.gameObject.AddComponent<Button>();
-        cooking.gameObject.AddComponent<Button>();
-        sleeping.gameObject.AddComponent<Button>();
-        gatheringInCamp.gameObject.AddComponent<Button>();
+        produceTagImage.gameObject.AddComponent<Button>();
+        cookingTagImage.gameObject.AddComponent<Button>();
+        sleepingTagImage.gameObject.AddComponent<Button>();
+        gatheringInCampTagImage.gameObject.AddComponent<Button>();
 
-        battleTag.gameObject.AddComponent<Button>();
-        huntTag.gameObject.AddComponent<Button>();
-        gatheringInDungeonTag.gameObject.AddComponent<Button>();
+        battleTagImage.gameObject.AddComponent<Button>();
+        huntTagImage.gameObject.AddComponent<Button>();
+        gatheringInDungeonTagImage.gameObject.AddComponent<Button>();
 
-        var produceTag = produce.gameObject.GetComponent<Button>();
-        produceTag.onClick.AddListener(() => OpenProduce());
+        var produceTagButton = produceTagImage.gameObject.GetComponent<Button>();
+        produceTagButton.onClick.AddListener(() => OpenProduce());
 
-        var cookingTag = cooking.gameObject.GetComponent<Button>();
-        cookingTag.onClick.AddListener(() => OpenCooking());
+        var cookingTagButton = cookingTagImage.gameObject.GetComponent<Button>();
+        cookingTagButton.onClick.AddListener(() => OpenCooking());
 
-        var sleepingTag = sleeping.gameObject.GetComponent<Button>();
-        sleepingTag.onClick.AddListener(() => OpenSleeping());
+        var sleepingTagButton = sleepingTagImage.gameObject.GetComponent<Button>();
+        sleepingTagButton.onClick.AddListener(() => OpenSleeping());
 
-        var gatheringInCampTag = gatheringInCamp.gameObject.GetComponent<Button>();
-        gatheringInCampTag.onClick.AddListener(() => OpenGatheringInCamp());
+        var gatheringInCampTagButton = gatheringInCampTagImage.gameObject.GetComponent<Button>();
+        gatheringInCampTagButton.onClick.AddListener(() => OpenGatheringInCamp());
 
-        var battle = battleTag.gameObject.GetComponent<Button>();
-        battle.onClick.AddListener(() => OpenBattleReward());
+        var battleTagButton = battleTagImage.gameObject.GetComponent<Button>();
+        battleTagButton.onClick.AddListener(() => OpenBattleReward());
 
-        var hunt = huntTag.gameObject.GetComponent<Button>();
-        hunt.onClick.AddListener(() => OpenHuntReward());
+        var huntTagButton = huntTagImage.gameObject.GetComponent<Button>();
+        huntTagButton.onClick.AddListener(() => OpenHuntReward());
 
-        var gatheringinDungeon = gatheringInDungeonTag.gameObject.GetComponent<Button>();
-        gatheringinDungeon.onClick.AddListener(() => OpenGatheringInDungeon());
+        var gatheringinDungeonTagButton = gatheringInDungeonTagImage.gameObject.GetComponent<Button>();
+        gatheringinDungeonTagButton.onClick.AddListener(() => OpenGatheringInDungeon());
 
-        if (craftResultItemImage!=null)
+        if (craftResultItemImage != null)
         {
             craftResultItemImage.GetComponent<Button>().onClick.AddListener(() => GetItem());
         }
     }
+
     public void OpenCookingRotation()
     {
         if (isRotation)
@@ -117,15 +122,12 @@ public class DiaryManager : MonoBehaviour
 
             }
         }
-      
     }
     public void CallMakeCook()
     {
         recipeIcon.MakeCooking();
         cookInventory.ItemButtonInit();
     }
-
-
     public void CloseCookingRotation()
     {
         isRotation = false;
@@ -152,7 +154,6 @@ public class DiaryManager : MonoBehaviour
         CookingRewardPanel.SetActive(false);
 
     }
-
     public void CallMakeProduce()
     {
         craftIcon.MakeProducing();
@@ -167,7 +168,6 @@ public class DiaryManager : MonoBehaviour
         produceRewardPanel.SetActive(false);
 
     }
-
     public void AllClose()
     {
         producePanel.SetActive(false);
@@ -177,10 +177,9 @@ public class DiaryManager : MonoBehaviour
         battleRewardPanel.SetActive(false);
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(false);
-        gatheringInCampReward.SetActive(false);
+        gatheringInCampRewardPanel.SetActive(false);
 
     }
-
     public void OpenProduce()
     {
         producePanel.SetActive(true);
@@ -203,7 +202,6 @@ public class DiaryManager : MonoBehaviour
         gatheringInDungeonPanel.SetActive(false);
         cookInventory.ItemButtonInit();
     }
-
     public void OpenSleeping()
     {
         producePanel.SetActive(false);
@@ -235,7 +233,7 @@ public class DiaryManager : MonoBehaviour
         battleRewardPanel.SetActive(false);
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(false);
-        gatheringInCampReward.SetActive(true);
+        gatheringInCampRewardPanel.SetActive(true);
         gatheringrewardInventory.ItemButtonInit();
     }
     public void OpenGatheringInDungeonReward()
@@ -247,8 +245,8 @@ public class DiaryManager : MonoBehaviour
         battleRewardPanel.SetActive(false);
         huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(true);
-        gatheringInCampReward.SetActive(false);
-        gatheringInDungeonReward.SetActive(true);
+        gatheringInCampRewardPanel.SetActive(false);
+        gatheringInDungeonRewardPanel.SetActive(true);
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
 

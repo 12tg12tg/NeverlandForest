@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Text;
 public class RecipeObject : MonoBehaviour
-{   
+{
+    private StringBuilder sb = new StringBuilder();
     public int Slot { get; set; }
     public TextMeshProUGUI RecipeText;
    
-    private StringBuilder sb =new StringBuilder();
     public void Init(RecipeDataTable elem, string id)
     {
         var result = elem.GetData<RecipeTableElem>(id).result_ID;

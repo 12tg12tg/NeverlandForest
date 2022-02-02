@@ -70,7 +70,7 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
         var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
         foreach (var target in neverChangeMonsterList)
         {
-            target.EnableHitTrigger();
+            target.triggerLinker.EnableHitTrigger();
         }
         
         //몬스터 맞고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.

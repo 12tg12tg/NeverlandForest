@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,37 +8,45 @@ using UnityEngine.UI;
 
 public class RecipeIcon : MonoBehaviour
 {
-    public RecipeObj itemPrehab;
-    public ScrollRect scrollRect;
-
     private List<RecipeObj> itemGoList = new List<RecipeObj>();
     private int selectedSlot = -1;
-    public const int MaxitemCount = 100;
+    private const int MaxitemCount = 100;
     private RecipeDataTable table;
+    private AllItemTableElem fireobj;
+    private AllItemTableElem condimentobj;
+    private AllItemTableElem materialobj;
+    private string Time = null;
+    private string result = string.Empty;
+    private bool isfireok;
+    private bool iscondimentok;
+    private bool ismaterialok;
+    private int fireNum;
+    private int condimentNum;
+    private int materialNum;
+    private DataAllItem fireitem;
+    private DataAllItem condimentitem;
+    private DataAllItem materialitem;
+    private DataAllItem resultitem;
+    private AllItemDataTable allitemTable;
+
+    public RecipeObj itemPrehab;
+    public ScrollRect scrollRect;
+    public TextMeshProUGUI makingTime;
 
     public Image fire;
     public Image condiment;
     public Image material;
 
-    public TextMeshProUGUI makingTime;
-    string[] Time = null;
-    string result = string.Empty;
-    private AllItemTableElem fireobj;
-    private AllItemTableElem condimentobj;
-    private AllItemTableElem materialobj;
-
-    private bool isfireok;
     public bool Isfireok => isfireok;
-    private bool iscondimentok;
     public bool Iscondimentok => iscondimentok;
-    private bool ismaterialok;
     public bool Ismaterialok => ismaterialok;
+  
+    public void Start()
+    {
+        Init();
+    }
 
-    private int fireNum ;
-    private int condimentNum ;
-    private int materialNum ;
-
-    public void Awake()
+    public void Init()
     {
         table = DataTableManager.GetTable<RecipeDataTable>();
         for (int i = 0; i < MaxitemCount; i++)
@@ -54,10 +61,6 @@ public class RecipeIcon : MonoBehaviour
             button.onClick.AddListener(() => OnChangedSelection(item.Slot));
         }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
-        Init();
-    }
-    public void Init()
-    {
         SetAllItems();
     }
     public void SetAllItems()
@@ -66,7 +69,6 @@ public class RecipeIcon : MonoBehaviour
         {
             item.gameObject.SetActive(false);
         }
-
         var itemList = Vars.UserData.HaveRecipeIDList;
 
         for (int i = 0; i < itemList.Count; i++)
@@ -82,29 +84,29 @@ public class RecipeIcon : MonoBehaviour
     }
     public void OnChangedSelection(int slot)
     {
-        var allitem = DataTableManager.GetTable<AllItemDataTable>();
-        // 누른 레시피의 조합을 보여주자.
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
         var condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
         var materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
-        fire.sprite = allitem.GetData<AllItemTableElem>(fireid).IconSprite;
-        condiment.sprite = allitem.GetData<AllItemTableElem>(condimentid).IconSprite;
-        material.sprite = allitem.GetData<AllItemTableElem>(materialid).IconSprite;
+
+        fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
+        condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+        material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
         result = itemGoList[slot].Result;
 
-        fireobj = allitem.GetData<AllItemTableElem>(fireid);
-        condimentobj = allitem.GetData<AllItemTableElem>(condimentid);
-        materialobj = allitem.GetData<AllItemTableElem>(materialid);
+        fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
+        condimentobj = allitemTable.GetData<AllItemTableElem>(condimentid);
+        materialobj = allitemTable.GetData<AllItemTableElem>(materialid);
 
         Time = itemGoList[slot].Time;
-        makingTime.text = $"제작 시간은 {Time[0]}:{Time[1]}:{Time[2]} 입니다. ";
+        makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+        CampManager.Instance.cookingText.text = "요리 하기";
     }
     public void MakeCooking()
     {
-        var allitem = DataTableManager.GetTable<AllItemDataTable>();
-        var makeTime = int.Parse(Time[0]) * 60 + int.Parse(Time[1]);
+        var makeTime = int.Parse(Time);
         var list = Vars.UserData.HaveAllItemList;
-        if (result!=null)
+        if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -125,24 +127,58 @@ public class RecipeIcon : MonoBehaviour
                     materialNum = i;
                 }
             }
+            if (!isfireok)
+            {
+                CampManager.Instance.cookingText.text = "재료가 부족합니다";
+            }
+            else if (!iscondimentok)
+            {
+                iscondimentok = true;
+                var stringid = "ITEM_0";
+                condimentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid));
+            }
+            else if (!ismaterialok)
+            {
+                ismaterialok = true;
+                var stringid = "ITEM_0";
+                materialitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid));
+            }
 
             if (isfireok && iscondimentok && ismaterialok)
             {
-                ConsumeManager.TimeUp(makeTime);
-                ConsumeManager.RecoveryHunger(20);
-                
-                var fireitem = new DataAllItem(list[fireNum]);
+
+                fireitem = new DataAllItem(list[fireNum]);
                 fireitem.OwnCount = 1;
 
-                var condimentitem = new DataAllItem(list[condimentNum]);
-                condimentitem.OwnCount = 1;
+                if (condimentitem ==null)
+                {
+                    condimentitem = new DataAllItem(list[condimentNum]);
+                    condimentitem.OwnCount = 1;
+                }
+                if (materialitem == null)
+                {
+                    materialitem = new DataAllItem(list[materialNum]);
+                    materialitem.OwnCount = 1;
+                }
 
-                var materialitem = new DataAllItem(list[materialNum]);
-                materialitem.OwnCount = 1;
+                var stringId = $"ITEM_{result}";
+                resultitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
 
-                Vars.UserData.RemoveItemData(fireitem);
-                Vars.UserData.RemoveItemData(condimentitem);
-                Vars.UserData.RemoveItemData(materialitem);
+                if (fireitem.itemId != "ITEM_0")
+                {
+                    Vars.UserData.RemoveItemData(fireitem);
+                }
+                if (condimentitem.itemId != "ITEM_0")
+                {
+                    Vars.UserData.RemoveItemData(condimentitem);
+                }
+                if (materialitem.itemId != "ITEM_0")
+                {
+                    Vars.UserData.RemoveItemData(materialitem);
+                }
+
+                ConsumeManager.TimeUp(makeTime);
+                ConsumeManager.RecoveryHunger(20);
 
                 isfireok = false;
                 iscondimentok = false;
@@ -154,10 +190,6 @@ public class RecipeIcon : MonoBehaviour
                 makingTime.text = string.Empty;
                 Debug.Log("요리 완료");
                 DiaryManager.Instacne.OpenCookingReward();
-            }
-            else
-            {
-                CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
         }
     }

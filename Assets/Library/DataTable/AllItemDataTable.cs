@@ -14,11 +14,10 @@ public class AllItemTableElem : DataTableElemBase
     public bool isBurn;
     public float burn_recovery;
     public int stat_Hp;
-    public ObstacleType obstacleType;
+    public TrapTag obstacleType;
     public int obstacleHp;
     public int trapDamage;
     public int duration;
-    public int InstallationOfNumber;
     
     private string iconID;
     private Sprite iconSprite;
@@ -44,11 +43,11 @@ public class AllItemTableElem : DataTableElemBase
         isBurn = Convert.ToBoolean(int.Parse(data["BURN"]));
         burn_recovery =float.Parse(data["BURN_RECOVERY"]);
         stat_Hp = int.Parse(data["STAT_HP"]);
-        obstacleType = (ObstacleType)int.Parse(data["OBSTACLE_TYPE"]);
+        obstacleType = (TrapTag)int.Parse(data["OBSTACLE_TYPE"]);
         obstacleHp = int.Parse(data["OBSTACLE_HP"]);
         trapDamage = int.Parse(data["TRAP_DAMAGE"]);
+        trapDamage = trapDamage == -999 ? 0 : trapDamage;
         duration = int.Parse(data["DURATION"]);
-        InstallationOfNumber = int.Parse(data["INSTALLATION_NUMBER"]);
 
         iconID = data["ICON_ID"];
         iconSprite = Resources.Load<Sprite>($"Icons/{iconID}");
@@ -61,6 +60,7 @@ public class AllItemTableElem : DataTableElemBase
 
 public class AllItemDataTable : DataTableBase
 {
+    public List<SerializeDictionary<string, string>> sc;
     public AllItemDataTable()
     {
         csvFilePath = "AllItemDataTable";
@@ -69,6 +69,7 @@ public class AllItemDataTable : DataTableBase
     {
         data.Clear();
         var list = Resources.Load<ScriptableObjectDataBase>(csvFilePath);
+        sc = list.sc;
         foreach (var line in list.sc)
         {
             var elem = new AllItemTableElem(line);

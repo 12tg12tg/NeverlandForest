@@ -6,16 +6,9 @@ using UnityEngine.Events;
 
 public class MonsterUILinker : MonoBehaviour
 {
-    public GameObject hpBarPrefab;
-
-    // Component
-    private Canvas uiCanvas;
-
     // Instance
-    public MonsterUiInCanvas linkedUi;
+    [HideInInspector] public MonsterUiInCanvas linkedUi;
     private Image rangeImg;
-    private Image hpBarImage;
-    private Image sheildImg;
     private Image iconImg;
     private TextMeshProUGUI nextMoveDistance;
 
@@ -25,6 +18,9 @@ public class MonsterUILinker : MonoBehaviour
     public Color shortRange;
     public Sprite attackIcon;
     public Sprite cantMoveIcon;
+    public Sprite snareIcon;
+    public Sprite bleed1Icon;
+    public Sprite bleed2Icon;
 
     public void Init(MonsterTableElem elem)
     {
@@ -33,13 +29,10 @@ public class MonsterUILinker : MonoBehaviour
 
     public void SetUI(MonsterTableElem elem)
     {
-        uiCanvas = BattleManager.Instance.uiCanvas;
         var monsterUI = UIPool.Instance.GetObject(UIPoolTag.MonsterUI);
         linkedUi = monsterUI.GetComponent<MonsterUiInCanvas>();
 
         rangeImg = linkedUi.rangeColor;
-        hpBarImage = linkedUi.hpBarImg;
-        sheildImg = linkedUi.sheildImg;
         nextMoveDistance = linkedUi.nextMoveDistance;
         iconImg = linkedUi.iconImage;
         linkedUi.Init(transform, elem.sheild, elem.hp);
@@ -100,7 +93,7 @@ public class MonsterUILinker : MonoBehaviour
         {
             case MonsterActionType.None:
                 StartCoroutine(AlphaDisappear(iconImg,
-                    () => { iconImg.color = Color.yellow; iconImg.enabled = false; action?.Invoke(); }));
+                    () => { iconImg.color = Color.red; iconImg.enabled = false; action?.Invoke(); }));
                 break;
 
             case MonsterActionType.Attack:

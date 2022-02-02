@@ -17,8 +17,6 @@ public class MonsterUiInCanvas : MonoBehaviour
 
     [Header("변경할 이미지, 색, 텍스트")]
     public Image rangeColor;
-    public Image hpBarImg;
-    public Image sheildImg;
     public TextMeshProUGUI nextMoveDistance;
     public Image iconImage;
 
@@ -27,6 +25,9 @@ public class MonsterUiInCanvas : MonoBehaviour
     public HorizontalLayoutGroup hpLayoutGroup;
     private List<MonsterProgressToken> shields = new List<MonsterProgressToken>();
     private List<MonsterProgressToken> hps = new List<MonsterProgressToken>();
+
+    [Header("디버프 표시 정보")]
+    public List<Image> debuffUIs;
 
     // Vars
     private bool isInit;
@@ -78,7 +79,7 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         // 트랜스폼의 스케일, 회전값, 이미지 색상, 알파값 조정.
         nextMoveDistance.alpha = 1f;
-        iconImage.color = Color.yellow;
+        iconImage.color = Color.red;
         iconImage.transform.rotation = Quaternion.identity;
         iconImage.transform.localScale.Set(1f, 1f, 1f);
         nextMoveDistance.transform.localScale.Set(1f, 1f, 1f);
@@ -151,6 +152,7 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         var monsters = BattleManager.Instance.monsters;
         var list = from n in monsters
+                   where n.State != MonsterState.Dead
                    select n.uiLinker.linkedUi;
         foreach (var ui in list)
         {

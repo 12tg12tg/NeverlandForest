@@ -3,14 +3,13 @@ using UnityEngine.UI;
 
 public class StaminaBar : MonoBehaviour
 {
+    [Header("슬라이더 셋팅")]
     public Slider slider;
     public RectTransform sliderRect;
-    public Slider laternSlider;
-    public CampManager campManager;
+
     public void Start()
     {
         ChangeableStaminaChange();
-      
     }
     void Update()
     {
@@ -26,7 +25,7 @@ public class StaminaBar : MonoBehaviour
 
     public void OnGUI()
     {
-        if (GUILayout.Button("RecoverTiredness"))
+        /*if (GUILayout.Button("RecoverTiredness"))
         {
             ConsumeManager.RecoveryTiredness();
         }
@@ -67,10 +66,7 @@ public class StaminaBar : MonoBehaviour
         {
             ConsumeManager.ConsumeLantern(1);
         }
-        //if (GUILayout.Button("BlueMoonObj_OnOff"))
-        //{
-        //    campManager.OnOffBluemoonObject();
-        //}
+       
         if (GUILayout.Button("DayNightChange"))
         {
             ConsumeManager.TimeUp(0, 13);
@@ -82,6 +78,6 @@ public class StaminaBar : MonoBehaviour
         if (GUILayout.Button("BonFireDown"))
         {
             ConsumeManager.ConsumeBonfireTime(0, 1);
-        }
+        }*/
     }
 }

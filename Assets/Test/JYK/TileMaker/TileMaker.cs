@@ -28,9 +28,11 @@ public class TileMaker : MonoBehaviour
 
     //Property
     public HalfTile LastHalfTile { get; set; }
+    public Tiles LastSelectedTile { get; set; }
     public Vector3 LastClickPos { get; set; }
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
+    public bool IsWaitingToSelectTrapTile { get; set; }
 
     //Vars
     public Color blueColor;
@@ -298,12 +300,29 @@ public class TileMaker : MonoBehaviour
     }
 
 
-    public IEnumerable<Tiles> GetMonsterTiles()
+    public IEnumerable<Tiles> GetMonsterTiles(PlayerSkillTableElem skill)
     {
-        var list = from n in tileList
-                   where n.HaveUnit && n.index.y != 0
-                   select n;
-        return list;
+        if(skill.name.Equals("근거리"))
+        {
+            return from n in tileList where n.HaveUnit && n.index.y == 1 select n;
+        }
+
+        switch (skill.player)
+        {
+            case PlayerType.Boy:
+                return from n in tileList
+                       where n.HaveUnit && n.index.y != 0
+                       select n;
+
+            case PlayerType.Girl:
+                int currentLantern = (int)Vars.UserData.uData.lanternState;
+                return from n in tileList
+                       where n.HaveUnit && n.index.y > 0 && n.index.y <= lanternToCol[currentLantern]
+                       select n;
+
+            default:
+                return null;
+        }
     }
 
     public IEnumerable<Tiles> GetPlayerTiles()
@@ -335,16 +354,6 @@ public class TileMaker : MonoBehaviour
                 return null;
         }
     }    
-
-    // 타일 속성 변경
-    //public void SetAllTileMiddleState()
-    //{
-    //    var count = tileList.Count;
-    //    for (int i = 0; i < count; i++)
-    //    {
-    //        tileList[i].SetMiddleState();
-    //    }
-    //}
 
     public void SetAllTileSoftClear()
     {
