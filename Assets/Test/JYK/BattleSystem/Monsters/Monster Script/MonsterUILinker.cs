@@ -18,6 +18,9 @@ public class MonsterUILinker : MonoBehaviour
     public Color shortRange;
     public Sprite attackIcon;
     public Sprite cantMoveIcon;
+    public Sprite snareIcon;
+    public Sprite bleed1Icon;
+    public Sprite bleed2Icon;
 
     public void Init(MonsterTableElem elem)
     {

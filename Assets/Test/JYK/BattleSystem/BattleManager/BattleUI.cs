@@ -39,7 +39,7 @@ public class BattleUI : MonoBehaviour
 
     public void PrintCaution(string message, float time, float fadeDelay, UnityAction action)
     {
-        cautionMessage.PrintMessageFadeOut(message, 0.7f, 0.5f, null);
+        cautionMessage.PrintMessageFadeOut(message, 0.7f, 0.5f, action);
     }
 
     public void CreateTempSkillUiForDrag(DataPlayerSkill skill)

@@ -26,6 +26,9 @@ public class MonsterUiInCanvas : MonoBehaviour
     private List<MonsterProgressToken> shields = new List<MonsterProgressToken>();
     private List<MonsterProgressToken> hps = new List<MonsterProgressToken>();
 
+    [Header("디버프 표시 정보")]
+    public List<Image> debuffUIs;
+
     // Vars
     private bool isInit;
     private bool moveUi;

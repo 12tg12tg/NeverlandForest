@@ -8,12 +8,14 @@ public class BattleTile : MonoBehaviour
 {
     private const float monsterSpeed = 10f;
 
+    private BattleManager bm;
     private TileMaker tileMaker;
     private IEnumerable<Tiles> targetTiles;
     [Header("유저의 타일 클릭을 기다리는 상황인지 확인")] public bool isWaitingTileSelect;
 
     private void Start()
     {
+        bm = BattleManager.Instance;
         tileMaker = TileMaker.Instance;
     }
 
@@ -103,22 +105,23 @@ public class BattleTile : MonoBehaviour
             yield return StartCoroutine(Utility.CoRotate(unit.transform, destRot, startRot, 0.3f));
     }
 
-    public void DisplayMonsterTile(SkillRangeType range)
+    public void DisplayMonsterTile(PlayerSkillTableElem skill)
     {
-        targetTiles = tileMaker.GetMonsterTiles();
+        targetTiles = tileMaker.GetMonsterTiles(skill);
+        if(targetTiles.Count() == 0)
+        {
+            bm.uiLink.PrintCaution("스킬 범위 내에 몬스터가 없습니다.", 1f, 1f, 
+                () => BottomUIManager.Instance.curSkillButton?.Cancle());
+        }
         foreach (var tile in targetTiles)
         {
-            tile.HighlightCanAttackSign(range);
+            tile.HighlightCanAttackSign(skill.range);
         }
     }
 
     public void UndisplayMonsterTile()
     {
-        targetTiles = tileMaker.GetMonsterTiles();
-        foreach (var tile in targetTiles)
-        {
-            tile.ResetHighlightExceptConfirm();
-        }
+        tileMaker.SetAllTileSoftClear();
     }
 
     public bool IsVaildTargetTile(Tiles tile)

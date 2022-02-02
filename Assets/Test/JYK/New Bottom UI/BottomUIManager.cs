@@ -115,9 +115,9 @@ public class BottomUIManager : MonoBehaviour
     public void IntoSkillState(BottomSkillButtonUI skillButton)
     {
         //Time.timeScale = 0.2f;
-        this.curSkillButton = skillButton;
+        curSkillButton = skillButton;
         bm.tileLink.ReadyTileClick();
-        bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem.range);
+        bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
     }
