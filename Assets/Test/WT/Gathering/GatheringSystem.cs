@@ -51,7 +51,7 @@ public class GatheringSystem : MonoBehaviour
     public GameObject toolremainTime;
     public GameObject handremainTime;
 
-    public GatheringInDungeonRewardObject gatheringInDungeonRewardObject;
+    public GameObject gatheringInDungeonRewardObject;
     private List<GatheringInDungeonRewardObject> gatheringRewardList = 
         new List<GatheringInDungeonRewardObject>();
     private List<DataAllItem> rewardList = new List<DataAllItem>();
@@ -446,9 +446,8 @@ public class GatheringSystem : MonoBehaviour
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
 
-                subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+                subreward = Instantiate(gatheringInDungeonRewardObject, gatheringParent.transform);
                 subreward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.subitem);
-                subreward.transform.parent = gatheringParent.transform;
                 gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
                 rewardList.Add(curSelectedObj.subitem);
                 break;
@@ -460,9 +459,8 @@ public class GatheringSystem : MonoBehaviour
         }
         // 아이템 획득 준비 보상창에 생성하기
 
-        reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+        reward = Instantiate(gatheringInDungeonRewardObject, gatheringParent.transform);
         reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
-        reward.transform.parent = gatheringParent.transform;
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
         diaryManager.OpenGatheringInDungeonReward();
@@ -481,9 +479,8 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
-                subreward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+                subreward = Instantiate(gatheringInDungeonRewardObject, gatheringParent.transform);
                 subreward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.subitem);
-                subreward.transform.parent = gatheringParent.transform;
                 gatheringRewardList.Add(subreward.GetComponent<GatheringInDungeonRewardObject>());
                 rewardList.Add(curSelectedObj.subitem);
 
@@ -495,9 +492,8 @@ public class GatheringSystem : MonoBehaviour
                 break;
         }
         // 아이템 획득준비 보상창에 생성하기
-        reward = Instantiate(gatheringInDungeonRewardObject.gameObject);
+        reward = Instantiate(gatheringInDungeonRewardObject, gatheringParent.transform);
         reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
-        reward.transform.parent = gatheringParent.transform;
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
         diaryManager.OpenGatheringInDungeonReward();

@@ -98,8 +98,10 @@ public class DiaryManager : MonoBehaviour
         var gatheringinDungeon = gatheringInDungeonTag.gameObject.GetComponent<Button>();
         gatheringinDungeon.onClick.AddListener(() => OpenGatheringInDungeon());
 
-       craftResultItemImage.GetComponent<Button>().onClick.AddListener(() => GetItem());
-
+        if (craftResultItemImage!=null)
+        {
+            craftResultItemImage.GetComponent<Button>().onClick.AddListener(() => GetItem());
+        }
     }
     public void OpenCookingRotation()
     {
@@ -301,7 +303,7 @@ public class DiaryManager : MonoBehaviour
         AllClose();
         gameObject.SetActive(false);
         CampManager.Instance.CloseProduceInCamp();
-      CampManager.Instance.newBottomUi.SetActive(true);
+        CampManager.Instance.newBottomUi.SetActive(true);
         if (BottomUIManager.Instance != null)
         {
             BottomUIManager.Instance.ItemListInit();

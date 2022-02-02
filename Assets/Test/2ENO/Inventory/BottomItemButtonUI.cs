@@ -77,9 +77,9 @@ public class BottomItemButtonUI : MonoBehaviour
         {
             isBurn = value;
             if (isBurn)
-                selectedImg.color = Color.red;
+                type.color = Color.red;
             else
-                selectedImg.color = Color.white;
+                type.color = Color.white;
         }
     }
 
@@ -177,6 +177,25 @@ public class BottomItemButtonUI : MonoBehaviour
             case GameState.Cook:
                 break;
             case GameState.Camp:
+                BottomUIManager.Instance.info.Init(dataItem);
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
+                if (DiaryInventory.Instance != null)
+                {
+                    DiaryInventory.Instance.info.Init(dataItem);
+                    // 선택초기화
+                    for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
+                    {
+                        DiaryInventory.Instance.itemButtons[i].IsSelect = false;
+                    }
+                }
                 break;
             case GameState.Dungeon:
                 BottomUIManager.Instance.info.Init(dataItem);
@@ -204,15 +223,7 @@ public class BottomItemButtonUI : MonoBehaviour
                 break;
         }
 
-        if (DiaryInventory.Instance != null)
-        {
-            DiaryInventory.Instance.info.Init(dataItem);
-            // 선택초기화
-            for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
-            {
-                DiaryInventory.Instance.itemButtons[i].IsSelect = false;
-            }
-        }
+       
 
 
 

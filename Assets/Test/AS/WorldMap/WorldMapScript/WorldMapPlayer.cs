@@ -99,8 +99,16 @@ public class WorldMapPlayer : MonoBehaviour
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
         {
-            Vars.UserData.curDungeonIndex = goalIndex;
-            Vars.UserData.dungeonReStart = true;
+            if(Vars.UserData.curDungeonIndex == goalIndex)
+            {
+                Vars.UserData.dungeonReStart = false;
+            }
+            else
+            {
+                Vars.UserData.curDungeonIndex = goalIndex;
+                Vars.UserData.dungeonReStart = true;
+            }
+
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
             mapGenerator.DungeonGenerate(range, Vars.UserData.AllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
@@ -112,6 +120,11 @@ public class WorldMapPlayer : MonoBehaviour
         // 처음 만들떄
         else
         {
+            if(goalIndex.y - Vars.UserData.curDungeonIndex.y > 0)
+            {
+                Vars.UserData.AllDungeonData.Clear();
+            }
+
             Vars.UserData.curDungeonIndex = goalIndex;
             Vars.UserData.dungeonReStart = true;
             Vars.UserData.AllDungeonData.Add(goalIndex, new DungeonData());
