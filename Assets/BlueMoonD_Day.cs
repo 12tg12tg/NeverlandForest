@@ -5,7 +5,7 @@ using TMPro;
 
 public class BlueMoonD_Day : MonoBehaviour
 {
-    public void Awake()
+    public void Start()
     {
         GetBlueMoonDay();
     }

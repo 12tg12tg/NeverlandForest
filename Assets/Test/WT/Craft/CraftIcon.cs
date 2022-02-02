@@ -6,62 +6,59 @@ using UnityEngine.UI;
 
 public class CraftIcon : MonoBehaviour
 {
-    public CraftObj itemPrehab;
-    public ScrollRect scrollRect;
-
     private List<CraftObj> itemGoList = new List<CraftObj>();
     private int selectedSlot = -1;
-    public const int MaxitemCount = 100;
+    private const int MaxitemCount = 100;
     private CraftDataTable table;
+    private AllItemTableElem materialobj0;
+    private AllItemTableElem materialobj1;
+    private AllItemTableElem materialobj2;
+    private bool is0ok;
+    private bool is1ok;
+    private bool is2ok;
+    private int material0Num;
+    private int material1Num;
+    private int material2Num;
+    private DataAllItem fireitem;
+    private DataAllItem condimentitem;
+    private DataAllItem materialitem;
+    private string Time = null;
+    private AllItemDataTable allitemTable;
 
+    public CraftObj itemPrehab;
+    public ScrollRect scrollRect;
+    
     public Image fire;
     public Image condiment;
     public Image material;
 
     public TextMeshProUGUI makingTime;
-    string Time = null;
     public string result = string.Empty;
-    private AllItemTableElem materialobj0;
-    private AllItemTableElem materialobj1;
-    private AllItemTableElem materialobj2;
-
-    private bool is0ok;
     public bool Is0ok
     {
         get  => is0ok;
         set
-        {
-            is0ok = value;
-        }
+        {is0ok = value;}
     }
-    private bool is1ok;
     public bool Is1ok
     {
         get => is1ok;
-        set
-        {
-            is1ok = value;
-        }
+        set{is1ok = value;}
     }
-    private bool is2ok;
     public bool Is2ok
     {
         get => is2ok;
-        set
-        {
-            is2ok = value;
-        }
+        set {is2ok = value;}
     }
-
-    private int material0Num;
-    private int material1Num;
-    private int material2Num;
-    DataAllItem fireitem;
-    DataAllItem condimentitem;
-    DataAllItem materialitem;
-    public void Awake()
+    public void Start()
+    {
+        Init();
+    }
+    public void Init()
     {
         table = DataTableManager.GetTable<CraftDataTable>();
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+
         for (int i = 0; i < MaxitemCount; i++)
         {
             var item = Instantiate(itemPrehab, scrollRect.content);
@@ -74,11 +71,6 @@ public class CraftIcon : MonoBehaviour
             button.onClick.AddListener(() => OnChangedSelection(item.Slot));
         }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Craft);
-        Init();
-     
-    }
-    public void Init()
-    {
         SetAllItems();
     }
     public void SetAllItems()
@@ -103,19 +95,19 @@ public class CraftIcon : MonoBehaviour
     }
     public void OnChangedSelection(int slot)
     {
-        var allitem = DataTableManager.GetTable<AllItemDataTable>();
         // 누른 레시피의 조합을 보여주자.
         var fireid = $"ITEM_{(itemGoList[slot].Crafts[0])}";
         var condimentid = $"ITEM_{(itemGoList[slot].Crafts[1])}";
         var materialid = $"ITEM_{(itemGoList[slot].Crafts[2])}";
-        fire.sprite = allitem.GetData<AllItemTableElem>(fireid).IconSprite;
-        condiment.sprite = allitem.GetData<AllItemTableElem>(condimentid).IconSprite;
-        material.sprite = allitem.GetData<AllItemTableElem>(materialid).IconSprite;
+
+        fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
+        condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+        material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
         result = itemGoList[slot].Result;
 
-        materialobj0 = allitem.GetData<AllItemTableElem>(fireid);
-        materialobj1 = allitem.GetData<AllItemTableElem>(condimentid);
-        materialobj2 = allitem.GetData<AllItemTableElem>(materialid);
+        materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
+        materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
+        materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
 
         Time = itemGoList[slot].Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
@@ -123,10 +115,9 @@ public class CraftIcon : MonoBehaviour
     }
     public void MakeProducing()
     {
-        var allitem = DataTableManager.GetTable<AllItemDataTable>();
+        allitemTable  = DataTableManager.GetTable<AllItemDataTable>();
         var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
-        
         if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
@@ -167,7 +158,7 @@ public class CraftIcon : MonoBehaviour
                 
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
                 var stringId = $"ITEM_{result}";
-                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitem.GetData<AllItemTableElem>(stringId));
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitemTable .GetData<AllItemTableElem>(stringId));
                 DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
@@ -194,7 +185,6 @@ public class CraftIcon : MonoBehaviour
                     CampManager.Instance.reconfirmPanelManager.OpenBagReconfirm();
                     Debug.Log("가방이 가득찼다");
                 }
-
             }
             else if (!is1ok)
             {
@@ -218,16 +208,10 @@ public class CraftIcon : MonoBehaviour
                     CampManager.Instance.producingText.text = "재료가 부족합니다";
                 }
             }
-
-
             if (!is0ok)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
-          
         }
-      
     }
-
-   
 }

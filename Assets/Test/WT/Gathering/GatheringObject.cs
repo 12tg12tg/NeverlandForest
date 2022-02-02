@@ -10,11 +10,18 @@ public enum GatheringObjectType
 }
 public class GatheringObject : MonoBehaviour, IPointerClickHandler
 {
-    public EventData data;
-    public int roomIndex;
     private AllItemDataTable allitemTable;
-
+    private List<DataAllItem> allitemlist;
+    private Vector3 weedPos;
+    public EventData data;
+    [Header("방정보")]
+    public int roomIndex;
+    [Header("아이템관련")]
     public GatheringObjectType objectType;
+    public DataAllItem item;
+    public DataAllItem subitem;
+    public GatheringSystem gathering;
+    public int objId; //고유의 id
     public AllItemDataTable AllItemTable
     {
         get
@@ -22,16 +29,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
             return allitemTable;
         }
     }
-    public DataAllItem item;
-    public DataAllItem subitem;
-    private List<DataAllItem> allitemlist;
-    private Vector3 weedPos;
-   
-    public GatheringSystem gathering;
 
-    private string id;
-    private int rand;
-    public int objId; //고유의 id
     public void OnPointerClick(PointerEventData eventData)
     {
         gathering.GoGatheringObject(gameObject.transform.position);

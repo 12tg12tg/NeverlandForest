@@ -18,7 +18,7 @@ public class Combination : MonoBehaviour
 
     private string result;
     private AllItemTableElem item;
-    private string[] time;
+    private string time;
     private bool CookingStart = false;
     private int makeTime_Hour = 0;
     private int makeTime_Minute = 0;
@@ -53,7 +53,7 @@ public class Combination : MonoBehaviour
                     time = recipeTable.IsMakingTime(result); // 시간받아오고 
                                                              // time[0] :hour, time[1] : minute time[2] : second
                                                              //레시피에 등록되어있는 아이템을 하는경우 시간이 뜨면서 만들것인지 체크
-                    CheckCombinationText.text = $"제작 시간은 {time[0]}:{time[1]}:{time[2]} 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
+                    CheckCombinationText.text = $"제작 시간은 {time} 이 소모됩니다. 아이템을 제작 하시겠습니까 ? ";
                 }
             }
         }
@@ -82,12 +82,9 @@ public class Combination : MonoBehaviour
             //와이파이로 연결 되어 있을 때의 행동 (그냥 인터넷이 연결되어있을 때)
             if (recipeTable.IsCombine(condiment, material, out result, fire))
             {
-             
-                var hour = int.Parse(time[0]);
-                var minute = int.Parse(time[1]);
-                makeTime_Hour = hour;
+                var minute = int.Parse(time);
                 makeTime_Minute = minute;
-                var makeTime = 60 * hour + minute;
+                var makeTime =  minute;
                 var bonFireTime = Vars.UserData.uData.BonfireHour * 60;
 
                 if (bonFireTime >= makeTime)

@@ -2,13 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RecipeObj : MonoBehaviour
 {
+    private string[] recipes;
+    private string time;
+    private string result;
+
     public int Slot { get; set; }
     public Image image;
-    private string[] recipes;
     public string[] Recipes => recipes;
-    private string[] time;
-    public string[] Time => time;
-    private string result;
+    public string Time => time;
     public string Result => result;
     public void Init(RecipeDataTable elem, string id)
     {   
