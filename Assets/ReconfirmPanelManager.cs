@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class ReconfirmPanelManager : MonoBehaviour
 {
+    [Header("판넬들")]
     public GameObject battleReconfirm;
     public GameObject huntReconfirm;
     public GameObject gatheringInDungeonReconfirm;
     public GameObject bonFireReconfirm;
     public GameObject bagisFullReconfirm;
     public GameObject randomEventReconfirm;
-
+    [Header("다이어리")]
     public DiaryManager diaryManager;
 
-    public void Awake()
+    public void Start()
     {
         gameObject.SetActive(false);
         AllClose();
@@ -26,7 +27,6 @@ public class ReconfirmPanelManager : MonoBehaviour
         bonFireReconfirm.SetActive(false);
         bagisFullReconfirm.SetActive(false);
         randomEventReconfirm.SetActive(false);
-        diaryManager.AllClose();
     }
 
     public void OpenBattleReconfirm()
@@ -51,6 +51,7 @@ public class ReconfirmPanelManager : MonoBehaviour
     }
     public void OpenBagReconfirm()
     {
+        AllClose();
         bagisFullReconfirm.SetActive(true);
     }
     public void OpenRandomEventfirm()

@@ -7,16 +7,18 @@ public class GoCamp : MonoBehaviour
 {
     private bool haveWoodChip;
     private bool haveTreeBranch;
+    private AllItemDataTable allitem;
 
+    [Header("재확인")]
     public ReconfirmPanelManager reconfirmPanel;
     public GameObject godungeonReconfirm;
-
+    [Header("이미지 관련")]
     public Image woodchipImage;
     public Image treeBranchImage;
+    [Header("움직임 관련")]
     public MoveTest moveTest;
-    AllItemDataTable allitem;
 
-    public void Awake()
+    public void Start()
     {
         allitem = DataTableManager.GetTable<AllItemDataTable>();
         haveWoodChip = false;

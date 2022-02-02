@@ -6,12 +6,13 @@ using System.Linq;
 
 public class RecipeInfo : MonoBehaviour
 {
+    private List<RecipeObject> itemGoList = new List<RecipeObject>();
+    private RecipeDataTable table;
+    private int selectedSlot = -1;
+    private const int MaxItemCount = 100;
+
     public RecipeObject itemprehab;
     public ScrollRect scrollRect;
-    private List<RecipeObject> itemGoList = new List<RecipeObject>();
-    private int selectedSlot = -1;
-    public const int MaxItemCount = 100;
-    private RecipeDataTable table;
 
     public void Awake()
     {

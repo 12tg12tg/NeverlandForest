@@ -6,11 +6,6 @@ using UnityEngine.UI;
 public class BoyHpBar : MonoBehaviour
 {
     public Slider slider;
-    public void Start()
-    {
-       /* Debug.Log($" Vars.UserData.hunterHp { Vars.UserData.hunterHp }");
-        Debug.Log($"Vars.hunterMaxHp {Vars.hunterMaxHp}");*/
-    }
     void Update()
     {
         slider.value = Vars.UserData.uData.HunterHp / Vars.hunterMaxHp;

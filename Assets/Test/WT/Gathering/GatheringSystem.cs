@@ -3,60 +3,63 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+public enum GatheringType
+{
+    MainDunguen,
+    Path
+}
 public class GatheringSystem : MonoBehaviour
 {
-    //  public PlayerDungeonUnit manplayer;
-    public PlayerDungeonUnit womenplayer;
-    public PlayerDungeonUnit boyPlayer;
-
-    public DiaryManager diaryManager;
-
-    public GameObject gatheringPanel;
-    public TextMeshProUGUI gatheringtext;
-
-    public GameObject gatheringToolPanel;
-    public TextMeshProUGUI gatheringTooltext;
-
-    private List<GameObject> gatherings = new List<GameObject>();
-
-    public int testLanternLight = 0;
+   
+    [Header("플레이어")]
     private Animator playerAnimation;
     private Animator playerAnimationBoy;
-
-    //New
+    public PlayerDungeonUnit womenplayer;
+    public PlayerDungeonUnit boyPlayer;
+    [Header("다이어리,재확인")]
+    public DiaryManager diaryManager;
+    public ReconfirmPanelManager reconfirmPanelManager;
+    [Header("채집판넬관련")]
+    public GameObject gatheringPanel;
+    public GameObject gatheringToolPanel;
+    [Header("채집텍스트관련")]
+    public TextMeshProUGUI gatheringtext;
+    public TextMeshProUGUI gatheringTooltext;
     public TextMeshProUGUI gatheringLanternLeveltext;
     public TextMeshProUGUI gatheringToolConsumetext;
-    public Image toolImage;
     public TextMeshProUGUI gatheringToolCompleteTimeText;
     public TextMeshProUGUI toolName;
     public TextMeshProUGUI toolCount;
-
     public TextMeshProUGUI gatheringHandConsumeText;
-    public Image handimage;
     public TextMeshProUGUI handCompleteTimeText;
-    public ReconfirmPanelManager reconfirmPanelManager;
-    
-    public GameObject toolconsumeTime;
-    public GameObject handconsumeTime;
 
+    //New
+    [Header("채집이미지관련")]
+    public Image toolImage;
+    public Image handimage;
+    [Header("채집아이콘관련")]
     public GameObject toolitemicon;
     public GameObject handitemicon;
-
+    [Header("채집시간관련")]
+    public GameObject toolconsumeTime;
+    public GameObject handconsumeTime;
     public GameObject toolcompleteTime;
     public GameObject handcompleteTime;
-
+    public GameObject toolremainTime;
+    public GameObject handremainTime;
+    [Header("채집버튼관련")]
     public GameObject toolbutton;
     public GameObject handbutton;
 
-    public GameObject toolremainTime;
-    public GameObject handremainTime;
 
+    [Header("채집보상아이템관련")]
     public GameObject gatheringInDungeonRewardObject;
+
+    private List<GameObject> gatherings = new List<GameObject>();
     private List<GatheringInDungeonRewardObject> gatheringRewardList = 
         new List<GatheringInDungeonRewardObject>();
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     public GameObject gatheringParent;
-
     private DataAllItem selecteditem;
     public DataAllItem SelectedItem
     {
@@ -68,20 +71,11 @@ public class GatheringSystem : MonoBehaviour
     }
     private static GatheringSystem instance;
     public static GatheringSystem Instance => instance;
-    GameObject reward;
-    GameObject subreward;
-
-
-    public void Awake()
-    {
-        instance = this;
-    }
+    private GameObject reward;
+    private GameObject subreward;
     private bool isMove;
-    public enum GatheringType
-    {
-        MainDunguen,
-        Path
-    }
+   
+   
     public GatheringType curgatheringType = GatheringType.MainDunguen;
 
     private Coroutine coWomenMove;
@@ -109,10 +103,10 @@ public class GatheringSystem : MonoBehaviour
     }
     public void Start()
     {
+        instance = this;
         playerAnimation = womenplayer.GetComponent<Animator>();
         playerAnimationBoy = boyPlayer.GetComponent<Animator>();
     }
-  
     public void DeleteObj()
     {
         for (int i = 0; i < gatherings.Count; i++)
@@ -121,10 +115,9 @@ public class GatheringSystem : MonoBehaviour
         }
         gatherings.Clear();
     }
-
-    public void YesIGathering() //좋아 채집하겠어
+    public void YesIGathering()
     {
-        ToolPopUp(); //판넬이 켜지고 
+        ToolPopUp();
     }
     public void NoIDonGathering()
     {
@@ -132,12 +125,10 @@ public class GatheringSystem : MonoBehaviour
         boyPlayer.IsCoMove = true;
         if (coWomenMove == null)
         {
-            //PlayWalkAnimation();
             PlayWalkAnimationBoy();
         }
         coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
     }
-
     private void PopUp()
     {
         gatheringPanel.SetActive(true);
@@ -163,7 +154,6 @@ public class GatheringSystem : MonoBehaviour
             else
             {
                 gatheringLanternLeveltext.text += "(밝기가낮아 보정받지못합니다)";
-
             }
         }
         var lanternstate = ConsumeManager.CurLanternState;
@@ -510,7 +500,7 @@ public class GatheringSystem : MonoBehaviour
             Debug.Log("팝업껏다");
             gatheringToolPanel.SetActive(false);
             isMove = false;
-            diaryManager.gatheringInDungeonReward.SetActive(false);
+            diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         }
     }
     private static void GatheringTreeByTool()

@@ -2,12 +2,14 @@ using UnityEngine;
 using UnityEngine.UI;
 public class GatheringInCampRewardObject : MonoBehaviour
 {
-    public Button rewardButton;
-    public Image rewardIcon;
     private DataAllItem item;
-    public Image selectedImg;
     private bool isSelect;
     private string stringid = string.Empty;
+    private bool isBlank = false;
+    [Header("버튼 셋팅")]
+    public Button rewardButton;
+    public Image rewardIcon;
+    public Image selectedImg;
     public bool IsSelect
     {
         get => isSelect;
@@ -22,23 +24,21 @@ public class GatheringInCampRewardObject : MonoBehaviour
     }
     public DataAllItem Item
     {
-        get
-        {
-            return item;
-        }
+        get => item;
         set
         {
             item = value;
         }
     }
-
-    public bool isBlank =false;
-
-    public void Awake()
+    public bool IsBlank
+    {
+        get => IsBlank;
+        set { isBlank = value; }
+    }
+    public void Start()
     {
         SetRewardItemIcon();
     }
-
     public void SetRewardItemIcon()
     {
         //나무토막: 1 %
@@ -48,10 +48,7 @@ public class GatheringInCampRewardObject : MonoBehaviour
         // 버섯: 5 %
         //꽝: 85 %
         var randNum = Random.Range(1, 101);
-
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-
-
         //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
         if (randNum == 1)
         {
@@ -96,7 +93,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
             item = newItem;
             CampManager.Instance.RewardList.Add(item);
         }
-
     }
     public void ItemButtonClick()
     {

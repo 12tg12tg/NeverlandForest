@@ -22,24 +22,25 @@ struct RecipeCombine
 public class RecipeTableElem : DataTableElemBase
 {
     public string result_ID;
-    public string FireExist;
-    public string MSG;
-    public string Material;
+    public string name;
+    public int type;
+    public string material1;
+    public string material2;
+    public string material3;
 
-    public string Hour;
-    public string Mininute;
-    public string Second;
+    public float time;
+  
 
     public RecipeTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
+        name = data["NAME"];
+        type = int.Parse(data["TYPE"]);
         result_ID = data["RESULTID"];
-        FireExist = data["FIRE"];
-        MSG = data["MSG"];
-        Material = data["MATERIAL"];
-        Hour = data["HOUR"];
-        Mininute = data["MININUTE"];
-        Second = data["SECOND"];
+        material1 = data["Mat1"];
+        material2 = data["Mat2"];
+        material3 = data["Mat3"];
+        time = float.Parse(data["DURATION"]);
     }
 }
 
@@ -58,7 +59,7 @@ public class RecipeDataTable : DataTableBase
     public Dictionary<string, string[]> CombineListDictionary =
         new Dictionary<string, string[]>(); // 재료들의 번호를 가지고있는 diction
 
-    public Dictionary<string, string[]> MakingTimeDictionary = new Dictionary<string, string[]>();
+    public Dictionary<string, string> MakingTimeDictionary = new Dictionary<string, string>();
     //아이템 번호(Result)랑 시간에 대한 값들을 가지고 있다. 
 
     public override void Load()
@@ -73,9 +74,9 @@ public class RecipeDataTable : DataTableBase
             var elem = new RecipeTableElem(line);
             data.Add(elem.id, elem);
 
-            var id1 = byte.Parse(elem.FireExist);
-            var id2 = byte.Parse(elem.MSG);
-            var id3 = byte.Parse(elem.Material);
+            var id1 = byte.Parse(elem.material1);
+            var id2 = byte.Parse(elem.material2);
+            var id3 = byte.Parse(elem.material3);
 
             var combinekey = new RecipeCombine();
             combinekey.fire = id1;
@@ -83,25 +84,25 @@ public class RecipeDataTable : DataTableBase
             combinekey.material = id3;
             CombineDictionary.Add(combinekey.fullkey, elem.result_ID);
 
-            string[] recipe = new string[] { elem.FireExist, elem.MSG, elem.Material };
+            string[] recipe = new string[] { elem.material1, elem.material2, elem.material3 };
 
             CombineListDictionary.Add(elem.result_ID, recipe);
 
-            string[] TimeRecipe = new string[] { elem.Hour, elem.Mininute, elem.Second };
-            MakingTimeDictionary.Add(elem.result_ID, TimeRecipe);
+            string Time = elem.time.ToString();
+            MakingTimeDictionary.Add(elem.result_ID, Time);
         }
     }
 
-    public bool IsCombine(string msg,string material,out string result,string fireexist= "0")
+    public bool IsCombine(string material1, string material2,out string result,string material3 = "0")
     {
         var combinekey = new RecipeCombine();
-        combinekey.fire = byte.Parse(fireexist);
-        combinekey.msg = byte.Parse(msg);
-        combinekey.material = byte.Parse(material);
+        combinekey.fire = byte.Parse(material1);
+        combinekey.msg = byte.Parse(material2);
+        combinekey.material = byte.Parse(material3);
         return CombineDictionary.TryGetValue(combinekey.fullkey, out result);
     }
 
-    public string[] IsMakingTime(string key)
+    public string IsMakingTime(string key)
     {
         return MakingTimeDictionary[key];
     }

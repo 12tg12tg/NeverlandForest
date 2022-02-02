@@ -8,7 +8,6 @@ public enum DateEvent
     BlueMoon,
     WitchEffect,
 }
-
 public enum TimeState
 {
     None,
@@ -29,8 +28,6 @@ public enum LanternState
     Level3,
     Level4, //여기가 풀
 }
-
-
 public static class ConsumeManager
 {
     private static TimeState curTimeState;
@@ -45,8 +42,6 @@ public static class ConsumeManager
         set => curLanternState = value;
         get => curLanternState;
     }
-    
-
     public static void init()
     {
         TimeStateChange();

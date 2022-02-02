@@ -15,91 +15,365 @@ MonoBehaviour:
   sc:
   - keys:
     - ID
+    - NAME
+    - DESC
+    - TYPE
     - RESULTID
-    - FIRE
-    - MSG
-    - MATERIAL
-    - HOUR
-    - MININUTE
-    - SECOND
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
     values:
-    - RCP_0001
-    - 11
-    - 1
-    - 2
+    - RE_01
+    - Fired Mushroom
+    - "\uBC84\uC12F \uAD6C\uC774"
     - 5
-    - 1
-    - 0
-    - 0
-  - keys:
-    - ID
-    - RESULTID
-    - FIRE
-    - MSG
-    - MATERIAL
-    - HOUR
-    - MININUTE
-    - SECOND
-    values:
-    - RCP_0002
-    - 12
-    - 1
-    - 2
+    - 23
+    - 
+    - 
     - 6
-    - 1
-    - 30
-    - 0
-  - keys:
-    - ID
-    - RESULTID
-    - FIRE
-    - MSG
-    - MATERIAL
-    - HOUR
-    - MININUTE
-    - SECOND
-    values:
-    - RCP_0003
-    - 13
-    - 0
-    - 2
-    - 7
-    - 2
     - 0
     - 0
-  - keys:
-    - ID
-    - RESULTID
-    - FIRE
-    - MSG
-    - MATERIAL
-    - HOUR
-    - MININUTE
-    - SECOND
-    values:
-    - RCP_0004
-    - 14
-    - 1
-    - 2
-    - 8
-    - 2
-    - 30
-    - 0
-  - keys:
-    - ID
-    - RESULTID
-    - FIRE
-    - MSG
-    - MATERIAL
-    - HOUR
-    - MININUTE
-    - SECOND
-    values:
-    - RCP_0005
-    - 15
-    - 0
-    - 3
     - 10
-    - 3
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_02
+    - Fired Salty Mushroom
+    - "\uC9E0 \uBC84\uC12F \uAD6C\uC774"
+    - 5
+    - 24
+    - 
+    - 
+    - 6
+    - 10
+    - 0
+    - 15
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_03
+    - Fired Sweet Mushroom
+    - "\uB2E8 \uBC84\uC12F \uAD6C\uC774"
+    - 5
+    - 25
+    - 
+    - 
+    - 6
+    - 11
+    - 0
+    - 15
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_04
+    - Fired Meat
+    - "\uAD6C\uC6B4 \uACE0\uAE30"
+    - 5
+    - 26
+    - 
+    - 
+    - 7
     - 0
     - 0
+    - 20
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_05
+    - Fired Salty Meat
+    - "\uC9E0 \uAD6C\uC6B4\uACE0\uAE30"
+    - 5
+    - 27
+    - 
+    - 
+    - 7
+    - 10
+    - 0
+    - 25
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_06
+    - Fired Sweet Meat
+    - "\uB2E8 \uAD6C\uC6B4\uACE0\uAE30"
+    - 5
+    - 28
+    - 
+    - 
+    - 7
+    - 11
+    - 0
+    - 25
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_07
+    - Sunnyside Up
+    - "\uACC4\uB780\uD504\uB77C\uC774"
+    - 5
+    - 29
+    - 
+    - 
+    - 8
+    - 10
+    - 0
+    - 20
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_08
+    - Eggroll
+    - "\uACC4\uB780\uB9D0\uC774"
+    - 5
+    - 30
+    - 
+    - 
+    - 6
+    - 8
+    - 0
+    - 25
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_09
+    - Fried Mushegg
+    - "\uBC84\uC12F \uACC4\uB780 \uBCF6\uC74C"
+    - 5
+    - 31
+    - 
+    - 
+    - 6
+    - 8
+    - 10
+    - 30
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_10
+    - Boiled Egg
+    - "\uC0B6\uC740 \uACC4\uB780"
+    - 5
+    - 32
+    - 
+    - 
+    - 8
+    - 0
+    - 0
+    - 15
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_11
+    - Mush Steak
+    - "\uBC84\uC12F \uC2A4\uD14C\uC774\uD06C"
+    - 5
+    - 33
+    - 
+    - 
+    - 6
+    - 7
+    - 10
+    - 30
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_12
+    - Mush Meat Stick
+    - "\uBC84\uC12F \uACE0\uAE30 \uAF2C\uCE58"
+    - 5
+    - 34
+    - 
+    - 
+    - 6
+    - 7
+    - 0
+    - 25
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_13
+    - Pudding
+    - "\uD478\uB529"
+    - 5
+    - 35
+    - 
+    - 
+    - 8
+    - 11
+    - 0
+    - 25
+    - 30
+  - keys:
+    - ID
+    - NAME
+    - DESC
+    - TYPE
+    - RESULTID
+    - ASSET_ID
+    - ICON_ID
+    - Mat1
+    - Mat2
+    - Mat3
+    - STAT_STR
+    - DURATION
+    values:
+    - RE_14
+    - Egg Steak
+    - "\uC5D0\uADF8 \uC2A4\uD14C\uC774\uD06C"
+    - 5
+    - 36
+    - 
+    - 
+    - 7
+    - 6
+    - 0
+    - 25
+    - 30

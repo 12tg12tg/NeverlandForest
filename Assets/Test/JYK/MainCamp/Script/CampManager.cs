@@ -6,83 +6,74 @@ public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
     public static CampManager Instance => instance;
-
-    public RoomObject mainRoomPrefab;
-    public RoomObject roadPrefab;
-    public GameObject mapPos;
-    public DiaryManager diaryManager;
-    public GameObject testPrehab;
-    public GameObject newBottomUi;
-
-    public Camera campminimapCamera;
-    public GameObject minimapPanel;
-    public GameObject diaryRecipePanel;
-
-    private int curDungeonRoomIndex;
-
     private bool isBlueMoon = false;
-    public GameObject bluemoonObject;
-
     private float recoveryBonTime = 0;
     private float recoverySleepTime = 0;
     private float gatheringTime = 0;
-    public float RecoverySleepTime => recoverySleepTime;
-    public TextMeshProUGUI bonTimeText;
-    public TextMeshProUGUI sleepTimeText;
-    public TextMeshProUGUI gatheringTimeText;
-    public TextMeshProUGUI gatheringRewardText;
-
     private List<GameObject> isBlankCheckList = new List<GameObject>();
-
-    //CampCook
-    Vector3 StartPos;
-    Vector3 EndPos;
-    public GameObject camera;
-    public GameObject pot;
-    public GameObject workshop;
-    public GameObject tent;
-    public GameObject bush;
-    public TextMeshProUGUI cookingText;
-    public TextMeshProUGUI producingText;
-
-    public GameObject CookPanel;
-
+    private Vector3 StartPos;
+    private Vector3 EndPos;
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     private List<GameObject> rewardGameObjectList = new List<GameObject>();
-    public List<DataAllItem> RewardList
-    {
-        get
-        {
-            return rewardList;
-        }
-        set
-        {
-            rewardList = value;
-        }
-    }
     private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
+    private DataAllItem selectItem;
+    private GameObject reward;
 
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
 
-    public SimpleGesture simpleGesture;
-    //
+    [Header("미니맵 셋팅")]
+    public RoomObject mainRoomPrefab;
+    public RoomObject roadPrefab;
+    public GameObject mapPos;
+    public Camera campminimapCamera;
+    public GameObject minimapPanel;
+    private int curDungeonRoomIndex;
+    public GameObject camera;
+
+    [Header("다이어리 셋팅")]
+    public DiaryManager diaryManager;
+    public GameObject diaryRecipePanel;
+    public GameObject testPrehab;
+    public GameObject newBottomUi;
+    public GameObject CookPanel;
     public ReconfirmPanelManager reconfirmPanelManager;
-    private DataAllItem selectItem;
+
+    public float RecoverySleepTime => recoverySleepTime;
+    [Header("텍스트 관련")]
+    public TextMeshProUGUI bonTimeText;
+    public TextMeshProUGUI sleepTimeText;
+    public TextMeshProUGUI gatheringTimeText;
+    public TextMeshProUGUI gatheringRewardText;
+    public TextMeshProUGUI cookingText;
+    public TextMeshProUGUI producingText;
+
+    [Header("캠프오브젝트")]
+    public GameObject pot;
+    public GameObject workshop;
+    public GameObject tent;
+    public GameObject bush;
+    public GameObject bluemoonObject;
+    public List<DataAllItem> RewardList
+    {
+        get => rewardList;
+        set
+        {
+            rewardList = value;
+        }
+    }
+    [Header("요리제스처")]
+    public SimpleGesture simpleGesture;
     public DataAllItem SelectItem
     {
-        get
-        {
-            return selectItem;
-        }
+        get => selectItem;
         set
         {
             selectItem = value;
         }
     }
-    GameObject reward;
     public enum CampEvent
     {
         StartCook,
@@ -109,22 +100,23 @@ public class CampManager : MonoBehaviour
 
         EventBus<CampEvent>.ResetEventBus();
     }
-    public void Awake()
+    public void Start()
+    {
+        Init();
+    }
+    public void Init()
     {
         instance = this;
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+        GameManager.Manager.State = GameState.Camp;
         StartPos = camera.transform.position;
+
+        CreateMiniMapObject();
+        SetMinimapCamera();
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
     }
-    public void Start()
-    {
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-        CreateMiniMapObject();
-        SetMinimapCamera();
-        GameManager.Manager.State = GameState.Camp;
-    }
-
     //BonTime
     public void SetBonTime()
     {
@@ -215,7 +207,6 @@ public class CampManager : MonoBehaviour
         diaryManager.ChangeRotateButtonImage();
         Debug.Log(diaryManager.IsRotation);
     }
-
     public void CloseRotationPanel()
     {
         diaryManager.CloseCookingRotation();
@@ -306,7 +297,7 @@ public class CampManager : MonoBehaviour
         {
             rewardGameObjectList.Clear();
         }
-        diaryManager.gatheringInCampReward.SetActive(false);
+        diaryManager.gatheringInCampRewardPanel.SetActive(false);
     }
 
     //BlueMoonInCamp
@@ -475,7 +466,7 @@ public class CampManager : MonoBehaviour
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
             reward = Instantiate(testPrehab, diaryManager.gatheringParent.transform);
-            if (reward.GetComponent<GatheringInCampRewardObject>().isBlank == true)
+            if (reward.GetComponent<GatheringInCampRewardObject>().IsBlank == true)
             {
                 isBlankCheckList.Add(reward);
             }
