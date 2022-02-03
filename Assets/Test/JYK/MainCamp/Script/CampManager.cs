@@ -33,6 +33,13 @@ public class CampManager : MonoBehaviour
     private int curDungeonRoomIndex;
     public GameObject camera;
 
+    int left, right, top, bottom;
+    Vector3 leftPos = Vector3.zero;
+    Vector3 rightPos = Vector3.zero;
+    Vector3 topPos = Vector3.zero;
+    Vector3 bottomPos = Vector3.zero;
+
+
     [Header("다이어리 셋팅")]
     public DiaryManager diaryManager;
     public GameObject diaryRecipePanel;
@@ -383,13 +390,19 @@ public class CampManager : MonoBehaviour
 
         int curIdx = Vars.UserData.dungeonStartIdx;
         var curRoomIndex = curDungeonRoomIndex;
+
+        left = curIdx % 20;
+        right = curIdx % 20;
+        top = curIdx / 20;
+        bottom = curIdx / 20;
+        RoomObject obj;
         while (array[curIdx].nextRoomIdx != -1)
         {
             var room = array[curIdx];
             if (room.RoomType == DunGeonRoomType.MainRoom)
             {
                 //var mainRoomPrefab = DungeonSystem.
-                var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                      , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -401,7 +414,7 @@ public class CampManager : MonoBehaviour
             }
             else
             {
-                var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                 , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -411,6 +424,38 @@ public class CampManager : MonoBehaviour
                     mesh.material.color = Color.blue;
                 }
             }
+            if (curIdx == Vars.UserData.dungeonStartIdx)
+            {
+                leftPos = obj.transform.position;
+                rightPos = obj.transform.position;
+                topPos = obj.transform.position;
+                bottomPos = obj.transform.position;
+            }
+
+            if (curIdx != 0)
+            {
+                if (left > curIdx % 20)
+                {
+                    left = curIdx % 20;
+                    leftPos = obj.transform.position;
+                }
+                if (right < curIdx % 20)
+                {
+                    right = curIdx % 20;
+                    rightPos = obj.transform.position;
+                }
+                if (top > curIdx / 20)
+                {
+                    top = curIdx / 20;
+                    topPos = obj.transform.position;
+                }
+                if (bottom < curIdx / 20)
+                {
+                    bottom = curIdx / 20;
+                    bottomPos = obj.transform.position;
+                }
+            }
+
             curIdx = array[curIdx].nextRoomIdx;
         }
         var lastRoom = array[curIdx];
@@ -427,7 +472,8 @@ public class CampManager : MonoBehaviour
         var lastIdx = count - 1;
         var last = mapPos.transform.GetChild(lastIdx);
         var x = (first.position.x + last.position.x) / 2;
-        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
+        campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
+        //new Vector3(x, mapPos.transform.position.y + 10f, -47f);
     }
 
     public void SetGatheringTime()
