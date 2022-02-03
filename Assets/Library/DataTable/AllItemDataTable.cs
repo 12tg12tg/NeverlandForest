@@ -32,6 +32,7 @@ public class AllItemTableElem : DataTableElemBase
     {
         get { return prefab; }
     }
+
     public AllItemTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];

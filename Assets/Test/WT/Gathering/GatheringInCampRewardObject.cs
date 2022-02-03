@@ -32,7 +32,7 @@ public class GatheringInCampRewardObject : MonoBehaviour
     }
     public bool IsBlank
     {
-        get => IsBlank;
+        get => isBlank;
         set { isBlank = value; }
     }
     public void Start()
@@ -98,7 +98,7 @@ public class GatheringInCampRewardObject : MonoBehaviour
     {
         if (item != null)
         {
-            CampManager.Instance.SelectItem = item;
+            CampManager.Instance.selectItemList.Add(item);
             IsSelect = true;
         }
     }

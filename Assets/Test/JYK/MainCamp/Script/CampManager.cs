@@ -16,13 +16,14 @@ public class CampManager : MonoBehaviour
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     private List<GameObject> rewardGameObjectList = new List<GameObject>();
     private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
-    private DataAllItem selectItem;
     private GameObject reward;
 
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
+
+    public List<DataAllItem> selectItemList = new List<DataAllItem>();
 
     [Header("미니맵 셋팅")]
     public RoomObject mainRoomPrefab;
@@ -63,6 +64,7 @@ public class CampManager : MonoBehaviour
     public GameObject tent;
     public GameObject bush;
     public GameObject bluemoonObject;
+    public RecipeIcon diaryRecipeIcon;
     public List<DataAllItem> RewardList
     {
         get => rewardList;
@@ -73,14 +75,6 @@ public class CampManager : MonoBehaviour
     }
     [Header("요리제스처")]
     public SimpleGesture simpleGesture;
-    public DataAllItem SelectItem
-    {
-        get => selectItem;
-        set
-        {
-            selectItem = value;
-        }
-    }
     public enum CampEvent
     {
         StartCook,
@@ -198,6 +192,7 @@ public class CampManager : MonoBehaviour
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
+        diaryRecipeIcon.Init();
         StartCookingInCamp();
     }
 
@@ -552,21 +547,26 @@ public class CampManager : MonoBehaviour
         {
             gatheringRewardList[i].IsSelect = false;
         }
-        if (selectItem != null)
+        if (selectItemList.Count != 0)
         {
-            if (Vars.UserData.AddItemData(selectItem)!=false)
+            for (int i = 0; i < selectItemList.Count; i++)
             {
-                Vars.UserData.AddItemData(selectItem);
-                for (int i = 0; i < rewardList.Count; i++)
+                if (Vars.UserData.AddItemData(selectItemList[i]) != false)
                 {
-                    if (rewardList[i] == selectItem)
+                    Vars.UserData.AddItemData(selectItemList[i]);
+                    Vars.UserData.ExperienceListAdd(selectItemList[i].itemId);
+
+                    for (int j = rewardList.Count-1; j>=0; j--)
                     {
-                        rewardList.RemoveAt(i);
+                        if (rewardList[j] == selectItemList[i])
+                        {
+                            rewardList.RemoveAt(j);
+                        }
                     }
-                }
-                if (rewardList.Count == 0)
-                {
-                    rewardList.Clear();
+                    if (rewardList.Count == 0)
+                    {
+                        rewardList.Clear();
+                    }
                 }
             }
             diaryManager.gatheringInventory.ItemButtonInit();
@@ -580,17 +580,23 @@ public class CampManager : MonoBehaviour
             }
             for (int i = 0; i < rewardGameObjectList.Count; i++)
             {
-                if (selectItem == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
+                for (int j = 0; j < selectItemList.Count; j++)
                 {
-                    Destroy(rewardGameObjectList[i]);
-                    rewardGameObjectList.RemoveAt(i);
+                    if (selectItemList[j] == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
+                    {
+                        Destroy(rewardGameObjectList[i]);
+                        rewardGameObjectList.RemoveAt(i);
+                    }
                 }
             }
             if (rewardGameObjectList.Count == 0)
             {
                 rewardGameObjectList.Clear();
             }
-            selectItem = null;
+            for (int i = selectItemList.Count - 1; i >= 0; i--)
+            {
+                selectItemList.RemoveAt(i);
+            }
         }
     }
     public void AllItem()
@@ -600,6 +606,7 @@ public class CampManager : MonoBehaviour
             for (int i = rewardList.Count - 1; i >= 0; i--)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
+                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
                 rewardList.RemoveAt(i);
             }
             if (BottomUIManager.Instance != null)
