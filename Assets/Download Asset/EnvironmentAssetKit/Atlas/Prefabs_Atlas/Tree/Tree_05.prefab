@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 33916925048714988}
   - component: {fileID: 23082173835471528}
   - component: {fileID: 136098967398282018}
+  - component: {fileID: 3518626693543184149}
   m_Layer: 0
   m_Name: Tree_05
   m_TagString: Untagged
@@ -92,9 +93,33 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000352873293876}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 1.84
   m_Height: 8.43
   m_Direction: 1
   m_Center: {x: -0.02, y: 3.84, z: 0.04}
+--- !u!114 &3518626693543184149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000352873293876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65190969ba40cba4ea22cc238803e36e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    eventType: 0
+    eventBasePos: {x: 0, y: 0, z: 0}
+    isCreate: 0
+    objectPosition: {x: 0, y: 0, z: 0}
+    roomIndex: 0
+    gatheringtype: 0
+    randomEventID: 
+  roomIndex: 0
+  objectType: 0
+  gathering: {fileID: 0}
+  objId: 0

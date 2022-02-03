@@ -21,7 +21,6 @@ public class GatheringSystem : MonoBehaviour
     public ReconfirmPanelManager reconfirmPanelManager;
     [Header("Ã¤ÁýÆÇ³Ú°ü·Ã")]
     public GameObject gatheringPanel;
-    public GameObject gatheringToolPanel;
     [Header("Ã¤ÁýÅØ½ºÆ®°ü·Ã")]
     public TextMeshProUGUI gatheringtext;
     public TextMeshProUGUI gatheringTooltext;
@@ -232,7 +231,7 @@ public class GatheringSystem : MonoBehaviour
         }
         toolName.text = "µµ³¢";
         toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     private void PitGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý? 
     {
@@ -287,8 +286,8 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     private void HerbsGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý? 
     {
@@ -345,8 +344,8 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     private void MushroomGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý? 
     {
@@ -401,8 +400,8 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute+30).ToString() + "ºÐ";
         }
         toolName.text = "»ð";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/BrokenShovel");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/gloves");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     public void GoGatheringObject(Vector3 objectPos)
     {
@@ -490,6 +489,7 @@ public class GatheringSystem : MonoBehaviour
     }
     public void ClosePopup()
     {
+        diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         if (isMove)
         {
             boyPlayer.IsCoMove = true;
@@ -498,9 +498,7 @@ public class GatheringSystem : MonoBehaviour
             diaryManager.gameObject.SetActive(false);
             gatheringPanel.SetActive(false);
             Debug.Log("ÆË¾÷²¯´Ù");
-            gatheringToolPanel.SetActive(false);
             isMove = false;
-            diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         }
     }
     private static void GatheringTreeByTool()
@@ -633,6 +631,10 @@ public class GatheringSystem : MonoBehaviour
                     {
                         rewardList.RemoveAt(i);
                     }
+                    if (rewardList.Count == 0)
+                    {
+                        rewardList.Clear();
+                    }
                 }
             }
             else
@@ -663,9 +665,10 @@ public class GatheringSystem : MonoBehaviour
     }
     public void GetAllItem()
     {
-        for (int i = 0; i < rewardList.Count; i++)
+
+        for (int i = rewardList.Count - 1; i >= 0; i--)
         {
-            if (Vars.UserData.AddItemData(rewardList[i]) != false)
+            if (Vars.UserData.AddItemData(rewardList[i])!=false)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
                 rewardList.RemoveAt(i);
@@ -687,6 +690,7 @@ public class GatheringSystem : MonoBehaviour
             Destroy(subreward);
         }
         rewardList.Clear();
+        diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         ClosePopup();
     }
 }
