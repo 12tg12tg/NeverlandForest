@@ -30,7 +30,7 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     }
     public void ItemButtonClick()
     {
-        GatheringSystem.Instance.SelectedItem = item;
+        GatheringSystem.Instance.selecteditemList.Add(item);
         IsSelect = true;
     }
     public void Init(DataAllItem data)

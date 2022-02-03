@@ -547,7 +547,7 @@ public class CampManager : MonoBehaviour
         {
             gatheringRewardList[i].IsSelect = false;
         }
-        if (selectItemList.Count != 0)
+        if (selectItemList.Count > 0)
         {
             for (int i = 0; i < selectItemList.Count; i++)
             {

@@ -59,15 +59,7 @@ public class GatheringSystem : MonoBehaviour
         new List<GatheringInDungeonRewardObject>();
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     public GameObject gatheringParent;
-    private DataAllItem selecteditem;
-    public DataAllItem SelectedItem
-    {
-        get=> selecteditem;
-        set
-        {
-            selecteditem = value;
-        }
-    }
+    public List<DataAllItem>  selecteditemList = new List<DataAllItem>();
     private static GatheringSystem instance;
     public static GatheringSystem Instance => instance;
     private GameObject reward;
@@ -620,48 +612,61 @@ public class GatheringSystem : MonoBehaviour
         {
             gatheringRewardList[i].IsSelect = false;
         }
-        if (selecteditem != null)
+        if (selecteditemList.Count >0)
         {
-            if (Vars.UserData.AddItemData(selecteditem) != false)
+            for (int i = 0; i < selecteditemList.Count; i++)
             {
-                Vars.UserData.AddItemData(selecteditem);
-                for (int i = 0; i < rewardList.Count; i++)
+                if (Vars.UserData.AddItemData(selecteditemList[i]) != false)
                 {
-                    if (rewardList[i] ==selecteditem)
+                    Vars.UserData.AddItemData(selecteditemList[i]);
+                    for (int j = rewardList.Count-1; j>=0 ; j--)
                     {
-                        rewardList.RemoveAt(i);
+                        if (rewardList[j] == selecteditemList[i])
+                        {
+                            rewardList.RemoveAt(j);
+                        }
+                       
                     }
                     if (rewardList.Count == 0)
                     {
                         rewardList.Clear();
                     }
                 }
+                else
+                {
+                    reconfirmPanelManager.gameObject.SetActive(true);
+                    reconfirmPanelManager.OpenBagReconfirmInGathering();
+                }
             }
-            else
-            {
-                reconfirmPanelManager.gameObject.SetActive(true);
-                reconfirmPanelManager.OpenBagReconfirm();
-            }
+           
         }
         diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
-        if (reward!=null)
+        for (int i = 0; i < selecteditemList.Count; i++)
         {
-            if (selecteditem == reward.GetComponent<GatheringInDungeonRewardObject>().Item)
-            {   
-                Destroy(reward);
-            }
-        }
-      
-        if (subreward!=null)
-        {
-            if (selecteditem == subreward.GetComponent<GatheringInDungeonRewardObject>().Item)
+            if (reward != null)
             {
-                Destroy(subreward);
+                if (selecteditemList[i] == reward.GetComponent<GatheringInDungeonRewardObject>().Item)
+                {
+                    Destroy(reward);
+                }
+            }
+            if (subreward != null)
+            {
+                if (selecteditemList[i] == subreward.GetComponent<GatheringInDungeonRewardObject>().Item)
+                {
+                    Destroy(subreward);
+                }
             }
         }
-        
-        selecteditem = null;
+        for (int i = selecteditemList.Count - 1; i >= 0; i--)
+        {
+            selecteditemList.RemoveAt(i);
+        }
+        if (selecteditemList.Count==0)
+        {
+            selecteditemList.Clear();
+        }
     }
     public void GetAllItem()
     {
@@ -676,7 +681,7 @@ public class GatheringSystem : MonoBehaviour
             else
             {
                 reconfirmPanelManager.gameObject.SetActive(true);
-                reconfirmPanelManager.OpenBagReconfirm();
+                reconfirmPanelManager.OpenBagReconfirmInGathering();
             }
             diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
             BottomUIManager.Instance.ItemListInit();

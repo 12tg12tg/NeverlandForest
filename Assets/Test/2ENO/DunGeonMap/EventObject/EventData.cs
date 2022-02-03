@@ -20,7 +20,7 @@ public class EventData
 public class GatheringData : EventData
 {
     public int offSetBasePos;
-
+    GatheringObject gatheringObj;
     public GatheringObject CreateObj(GatheringObject obj, GatheringSystem system)
     {
         if(eventBasePos.Equals(Vector3.zero))
@@ -36,10 +36,25 @@ public class GatheringData : EventData
             return gatheringObj2;
         }
         var objPos = new Vector3(eventBasePos.x + offSetBasePos, eventBasePos.y, eventBasePos.z );
-        var gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-        obj.objectType = gatheringtype;
+        switch (obj.objectType)
+        {
+            case GatheringObjectType.Tree:
+                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                break;
+            case GatheringObjectType.Pit:
+                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(90f, 0f, 0f)));
+                break;
+            case GatheringObjectType.Herbs:
+                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                break;
+            case GatheringObjectType.Mushroom:
+                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                break;
+            default:
+                break;
+        }
         gatheringObj.Init(system, this, roomIndex);
-
+        obj.objectType = gatheringtype;
         objectPosition = objPos;
         isCreate = true;
         return gatheringObj;
