@@ -70,13 +70,14 @@ public class MonsterTrigger : MonoBehaviour
                 case TrapTag.Snare:
                     debuff = new ObstacleDebuff(obs, monsterUnit);
                     monsterUnit.obsDebuffs.Add(debuff);
+                    monsterUnit.uiLinker.UpdateDebuffs(monsterUnit.obsDebuffs);
                     break;
 
                 case TrapTag.WoodenTrap:
                 case TrapTag.ThornTrap:
                     debuff = new ObstacleDebuff(obs, monsterUnit);
                     monsterUnit.obsDebuffs.Add(debuff);
-
+                    monsterUnit.uiLinker.UpdateDebuffs(monsterUnit.obsDebuffs);
                     monsterUnit.PlayHitAnimation();
                     break;
 
@@ -86,8 +87,6 @@ public class MonsterTrigger : MonoBehaviour
                 case TrapTag.Fence:
                     break;
             }
-
-
         }
     }
 }

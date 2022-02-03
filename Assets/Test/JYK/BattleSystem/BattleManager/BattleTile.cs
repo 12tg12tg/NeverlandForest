@@ -33,10 +33,15 @@ public class BattleTile : MonoBehaviour
 
     public void MoveUnitOnTile(Vector2 tilePos, MonsterUnit monsterUnit, UnityAction moveStartAction, UnityAction moveEndAction, bool rotateFoward = true)
     {
+        var tile = tileMaker.GetTile(tilePos);
+        if (tile.Units_UnitCount() == 2) // 만의 하나 추가할 수 없는 상황이 온다면
+        {
+            moveEndAction?.Invoke();
+            return;
+        }
+
         var preTile = monsterUnit.CurTile;
         preTile.RemoveUnit(monsterUnit);
-
-        var tile = tileMaker.GetTile(tilePos);
 
         tile.Units_UnitAdd(monsterUnit);
         monsterUnit.Pos = tilePos;
@@ -77,7 +82,7 @@ public class BattleTile : MonoBehaviour
                         tile.FrontMonster.PlayMoveAnimation, tile.FrontMonster.PlayIdleAnimation));
             }
         }
-        else
+        else if (tile.Units_UnitCount() == 1)
         {
             var dest = tile.CenterPos;
             dest.y = monsterUnit.transform.position.y;

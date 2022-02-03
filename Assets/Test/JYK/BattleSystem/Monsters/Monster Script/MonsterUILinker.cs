@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class MonsterUILinker : MonoBehaviour
 {
@@ -60,6 +61,36 @@ public class MonsterUILinker : MonoBehaviour
         linkedUi.ShieldToken = curS;
     }
 
+    public void UpdateDebuffs(List<ObstacleDebuff> debuffs)
+    {
+        int count = linkedUi.debuffUIs.Count;
+        int num = debuffs.Count;
+        for (int i = 0; i < count; i++)
+        {
+            var img = linkedUi.debuffUIs[i];
+            if (i < num)
+            {
+                img.enabled = true;
+                switch (debuffs[i].elem.obstacleType)
+                {
+                    case TrapTag.Snare:
+                        img.sprite = snareIcon;
+                        break;
+                    case TrapTag.WoodenTrap:
+                        img.sprite = bleed1Icon;
+                        break;
+                    case TrapTag.ThornTrap:
+                        img.sprite = bleed2Icon;
+                        break;
+                }
+            }
+            else
+            {
+                img.enabled = false;
+            }
+        }
+    }
+
     public void UpdateCircleUI(MonsterCommand command)
     {
         switch (command.actionType)
@@ -93,7 +124,7 @@ public class MonsterUILinker : MonoBehaviour
         {
             case MonsterActionType.None:
                 StartCoroutine(AlphaDisappear(iconImg,
-                    () => { iconImg.color = Color.red; iconImg.enabled = false; action?.Invoke(); }));
+                    () => { iconImg.color = Color.white; iconImg.enabled = false; action?.Invoke(); }));
                 break;
 
             case MonsterActionType.Attack:

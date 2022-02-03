@@ -73,13 +73,14 @@ public class MonsterUiInCanvas : MonoBehaviour
         isInit = true;
         SetOriginalDisplay();
         SetProgress(maxSheildGaugage, maxHpGaugage);
+        debuffUIs.ForEach(n => n.enabled = false);
     }
 
     public void SetOriginalDisplay()
     {
         // 트랜스폼의 스케일, 회전값, 이미지 색상, 알파값 조정.
         nextMoveDistance.alpha = 1f;
-        iconImage.color = Color.red;
+        iconImage.color = Color.white;
         iconImage.transform.rotation = Quaternion.identity;
         iconImage.transform.localScale.Set(1f, 1f, 1f);
         nextMoveDistance.transform.localScale.Set(1f, 1f, 1f);

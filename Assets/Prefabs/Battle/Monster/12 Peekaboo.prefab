@@ -278,6 +278,11 @@ MonoBehaviour:
   maxSheild: 0
   isActionDone: 0
   monsterID: 12
+  obsDebuffs: []
+  stepOnBoobyTrap: 0
+  ownBoobyTrap: {fileID: 0}
+  isPause: 0
+  isMove: 0
 --- !u!114 &8842988888026203872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,8 +314,11 @@ MonoBehaviour:
   hpBarOffset: {x: 0, y: 2.2, z: 0}
   longRange: {r: 0.18382876, g: 0.764151, b: 0.42942175, a: 1}
   shortRange: {r: 0.24363652, g: 0.37679905, b: 0.6886792, a: 1}
-  attackIcon: {fileID: 21300000, guid: bb47b9d7c39ce384fa12e8bc02d2ad9f, type: 3}
-  cantMoveIcon: {fileID: 21300000, guid: 05add1be4c6d6f649a59e9977f51e76a, type: 3}
+  attackIcon: {fileID: 21300000, guid: e6b7677d6fa4c3d4292c373605302db1, type: 3}
+  cantMoveIcon: {fileID: 21300000, guid: b772ba38a6b6f42499077829bf6dd1f6, type: 3}
+  snareIcon: {fileID: 21300000, guid: d6a251181681aa94c905c3d72d8dd922, type: 3}
+  bleed1Icon: {fileID: 21300000, guid: dfb63a086717dff479e2e5f018015b57, type: 3}
+  bleed2Icon: {fileID: 21300000, guid: d728e6a7328a12a4aa0e279835030cd9, type: 3}
 --- !u!1 &2143963233178108556
 GameObject:
   m_ObjectHideFlags: 0
