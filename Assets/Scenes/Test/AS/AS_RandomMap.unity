@@ -11091,7 +11091,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -4.2647934, y: 0}
+  m_AnchoredPosition: {x: -4.264786, y: 0}
   m_SizeDelta: {x: 0.4043, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982026372
@@ -15720,7 +15720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 2117095899}
   uiCamera: {fileID: 1740014750}
-  miniWorldMapCamera: {fileID: 0}
+  miniWorldMapCamera: {fileID: 312235309}
 --- !u!4 &1606960405
 Transform:
   m_ObjectHideFlags: 0
@@ -16159,8 +16159,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1666043215}
   sliderRect: {fileID: 1960594035}
-  laternSlider: {fileID: 1761434720}
-  campManager: {fileID: 0}
 --- !u!114 &1666043215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20604,31 +20602,30 @@ MonoBehaviour:
   womenplayer: {fileID: 4935466034000115639}
   boyPlayer: {fileID: 8073720700360075657}
   diaryManager: {fileID: 4622761566147407207}
+  reconfirmPanelManager: {fileID: 880488743}
   gatheringPanel: {fileID: 887364343}
-  gatheringtext: {fileID: 1039577366}
   gatheringToolPanel: {fileID: 539122690}
+  gatheringtext: {fileID: 1039577366}
   gatheringTooltext: {fileID: 1080206184}
-  testLanternLight: 0
   gatheringLanternLeveltext: {fileID: 4622761565280687220}
   gatheringToolConsumetext: {fileID: 4622761565109379965}
-  toolImage: {fileID: 4622761565856821611}
   gatheringToolCompleteTimeText: {fileID: 4622761565100645187}
   toolName: {fileID: 4622761565407805686}
   toolCount: {fileID: 4622761564478991908}
   gatheringHandConsumeText: {fileID: 4622761564481309255}
-  handimage: {fileID: 4622761566100612142}
   handCompleteTimeText: {fileID: 4622761565165231928}
-  reconfirmPanelManager: {fileID: 880488743}
-  toolconsumeTime: {fileID: 4622761565109379967}
-  handconsumeTime: {fileID: 4622761564481309273}
+  toolImage: {fileID: 4622761565856821611}
+  handimage: {fileID: 4622761566100612142}
   toolitemicon: {fileID: 149965609}
   handitemicon: {fileID: 1511120705}
+  toolconsumeTime: {fileID: 4622761565109379967}
+  handconsumeTime: {fileID: 4622761564481309273}
   toolcompleteTime: {fileID: 4622761565100645189}
   handcompleteTime: {fileID: 4622761565165231930}
-  toolbutton: {fileID: 4622761565567196550}
-  handbutton: {fileID: 4622761564533689518}
   toolremainTime: {fileID: 4622761565565954779}
   handremainTime: {fileID: 4622761564582978069}
+  toolbutton: {fileID: 4622761565567196550}
+  handbutton: {fileID: 4622761564533689518}
   gatheringInDungeonRewardObject: {fileID: 6223633937943863052, guid: 8cfaa51a499d5274089dcbfc5938ab8f, type: 3}
   gatheringParent: {fileID: 4622761566198862834}
   curgatheringType: 0
@@ -26053,6 +26050,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc026e3d56036db44a719dc3f47406c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bm: {fileID: 0}
   info: {fileID: 698883428690197912}
   skillButtons:
   - {fileID: 698883429988909735}
@@ -26067,9 +26065,6 @@ MonoBehaviour:
   - {fileID: 698883428697437901}
   - {fileID: 698883430283919174}
   - {fileID: 698883429048767074}
-  tags: []
-  progress: {fileID: 0}
-  progressImg: []
   itemButtons:
   - {fileID: 8760266739712715002}
   - {fileID: 4018544456758809843}
@@ -26083,12 +26078,15 @@ MonoBehaviour:
   - {fileID: 3136799018086853345}
   - {fileID: 3075787608842125188}
   - {fileID: 156690617262881369}
+  tags: []
+  progress: {fileID: 0}
+  progressImg: []
   buttonState: 0
   curSkillButton: {fileID: 0}
-  curObstacleType: 0
   isPopUp: 0
   popUpWindow: {fileID: 8285671218246767182}
   selectedItemRect: {fileID: 0}
+  battleLinker: {fileID: 0}
 --- !u!114 &698883430261930226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40492,8 +40490,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761564534570522}
   sliderRect: {fileID: 4622761565330866933}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761564534570524
 RectTransform:
   m_ObjectHideFlags: 0
@@ -43026,8 +43022,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761564613391936}
   sliderRect: {fileID: 4622761565955018911}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761564613391938
 RectTransform:
   m_ObjectHideFlags: 0
@@ -45375,10 +45369,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrehab: {fileID: 2123871128203476435, guid: 9749155537ae50a42879411f2ac66430, type: 3}
   scrollRect: {fileID: 4622761566090622223}
+  makingTime: {fileID: 4622761566449854715}
   fire: {fileID: 4622761565948873397}
   condiment: {fileID: 4622761564473417014}
   material: {fileID: 4622761566176082853}
-  makingTime: {fileID: 4622761566449854715}
 --- !u!114 &4622761564729251865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47334,10 +47328,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemPrehab: {fileID: 2123871128203476435, guid: 9749155537ae50a42879411f2ac66430, type: 3}
   scrollRect: {fileID: 4622761565933370848}
+  makingTime: {fileID: 4622761565946609485}
   fire: {fileID: 4622761564899336843}
   condiment: {fileID: 4622761564515170314}
   material: {fileID: 4622761566009349766}
-  makingTime: {fileID: 4622761565946609485}
 --- !u!224 &4622761564788840438
 RectTransform:
   m_ObjectHideFlags: 0
@@ -48143,8 +48137,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761564847430839}
   sliderRect: {fileID: 4622761566456226022}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761564847430793
 RectTransform:
   m_ObjectHideFlags: 0
@@ -55971,8 +55963,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761565145167244}
   sliderRect: {fileID: 4622761565693559481}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761565145167246
 RectTransform:
   m_ObjectHideFlags: 0
@@ -57452,8 +57442,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761565216247430}
   sliderRect: {fileID: 4622761565567006395}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761565216247448
 RectTransform:
   m_ObjectHideFlags: 0
@@ -58874,8 +58862,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761565238055984}
   sliderRect: {fileID: 4622761565861968488}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761565238055986
 RectTransform:
   m_ObjectHideFlags: 0
@@ -75162,8 +75148,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761565830766629}
   sliderRect: {fileID: 4622761564756815229}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761565830766631
 RectTransform:
   m_ObjectHideFlags: 0
@@ -83649,8 +83633,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761566093871271}
   sliderRect: {fileID: 4622761565765749861}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761566093871289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -85563,27 +85545,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dadbb71b48e03ba44b0c7d89ea2fbfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  produce: {fileID: 4622761564490062410}
-  cooking: {fileID: 4622761565393627969}
-  sleeping: {fileID: 4622761566079141356}
-  gatheringInCamp: {fileID: 4622761565241379615}
-  battleTag: {fileID: 4622761565693310974}
-  huntTag: {fileID: 4622761565238285432}
-  gatheringInDungeonTag: {fileID: 4622761565783368836}
+  produceTagImage: {fileID: 0}
+  cookingTagImage: {fileID: 0}
+  sleepingTagImage: {fileID: 0}
+  gatheringInCampTagImage: {fileID: 0}
+  battleTagImage: {fileID: 0}
+  huntTagImage: {fileID: 0}
+  gatheringInDungeonTagImage: {fileID: 0}
   producePanel: {fileID: 4622761566221992622}
   cookingPanel: {fileID: 4622761566497979772}
   sleepingPanel: {fileID: 4622761565169617842}
   gatheringIncCampPanel: {fileID: 4622761566375845595}
-  gatheringInCampReward: {fileID: 4622761564455543929}
-  gatheringRewardPrheb: {fileID: 7636210221295621731, guid: 5f50f557e4875f74b8a81ef7f27a2549, type: 3}
-  gatheringParent: {fileID: 4622761565053090186}
+  gatheringInCampRewardPanel: {fileID: 0}
   battleRewardPanel: {fileID: 4622761565152982773}
   huntRewardPanel: {fileID: 4622761566423669800}
   gatheringInDungeonPanel: {fileID: 4622761565204278944}
-  gatheringInDungeonReward: {fileID: 4622761565858830819}
+  gatheringInDungeonRewardPanel: {fileID: 0}
   CookingRotationPanel: {fileID: 4622761564492255514}
   CookingRewardPanel: {fileID: 4622761565341184118}
   produceRewardPanel: {fileID: 0}
+  gatheringRewardPrheb: {fileID: 7636210221295621731, guid: 5f50f557e4875f74b8a81ef7f27a2549, type: 3}
+  gatheringParent: {fileID: 4622761565053090186}
   rotationButton: {fileID: 4622761565583077547}
   recipeIcon: {fileID: 4622761564788840437}
   craftIcon: {fileID: 0}
@@ -89179,8 +89161,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761566253213089}
   sliderRect: {fileID: 4622761564483399928}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761566253213091
 RectTransform:
   m_ObjectHideFlags: 0
@@ -89866,8 +89846,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 4622761566269247466}
   sliderRect: {fileID: 4622761565216945507}
-  laternSlider: {fileID: 0}
-  campManager: {fileID: 0}
 --- !u!224 &4622761566269247468
 RectTransform:
   m_ObjectHideFlags: 0

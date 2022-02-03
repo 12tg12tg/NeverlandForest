@@ -7,7 +7,8 @@ using System.IO;
 public class TableEditor : EditorWindow
 {
     private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable",
-        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable", "RandomEventTable","CraftDataTable" };
+        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable",
+        "RandomEventTable", "CraftDataTable", "TutorialStoryDataTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -76,6 +77,8 @@ public class TableEditor : EditorWindow
                 break;
             case "CraftDataTable":
                 ViewCraftData(tableList);
+                break;
+            case "TutorialStoryDataTable":
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
