@@ -9,8 +9,8 @@ public class DungeonSystem : MonoBehaviour
     private static DungeonSystem instance;
     public static DungeonSystem Instance => instance;
 
-    RoomTool roomTool;
-    private List<GameObject> eventObjInstanceList = new List<GameObject>();
+    public RoomTool roomTool;
+    //private List<GameObject> eventObjInstanceList = new List<GameObject>();
     private DungeonRoom beforeDungeonRoom;
 
     // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
@@ -22,27 +22,25 @@ public class DungeonSystem : MonoBehaviour
 
     [Header("프리팹, 인스턴스")]
     public NewRoomControl roomGenerate;
-    public BattleObject battleObjPrefab;
     //public HuntingObject huntingObjPrefab;
-    public GameObject huntingObjPrefab;
-    public RandomEventObject randomEventObjPrefab;
-    public GatheringObject treeObj;
-    public GatheringObject pitObj;
-    public GatheringObject herbsObj;
-    public GatheringObject mushroomObj;
+    //public BattleObject battleObjPrefab;
+    //public GameObject huntingObjPrefab;
+    //public RandomEventObject randomEventObjPrefab;
+    //public GatheringObject treeObj;
+    //public GatheringObject pitObj;
+    //public GatheringObject herbsObj;
+    //public GatheringObject mushroomObj;
     
 
     [Header("플레이어, 다른시스템")]
     public PlayerDungeonUnit dungeonPlayerGirl;
     public PlayerDungeonUnit dungeonPlayerBoy;
     public GatheringSystem gatheringSystem;
+    public MinimapGenerate minimapGenerate;
+    public EventObjectGenerate eventObjectGenerate;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     [Header("맵 생성(오브젝트)관련")]
-    public RoomObject mainRoomPrefab;
-    public RoomObject roadPrefab;
-    public GameObject mapPos;
-    public List<RoomObject> dungeonRoomObjectList = new List<RoomObject>();
     public WorldMapMaker worldMap;
 
     [Header("기타")]
@@ -59,6 +57,7 @@ public class DungeonSystem : MonoBehaviour
     private void Start()
     {
         instance = this;
+        eventObjectGenerate.Init();
         Init();
         rndUi.Init();
         playerMove.Init();
@@ -69,11 +68,7 @@ public class DungeonSystem : MonoBehaviour
     {
         dungeonPlayerGirl.gameObject.SetActive(false);
         dungeonPlayerBoy.gameObject.SetActive(false);
-        foreach (var obj in eventObjInstanceList)
-        {
-            Destroy(obj);
-        }
-        eventObjInstanceList.Clear();
+        eventObjectGenerate.EventObjectClear();
         roomGenerate.EndInit();
         DungeonCanvas.SetActive(false);
         playerMove.gameObject.SetActive(false);
@@ -146,7 +141,7 @@ public class DungeonSystem : MonoBehaviour
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
     {
-        CreateMiniMapObject();
+        minimapGenerate.CreateMiniMapObject();
         dungeonPlayerGirl.gameObject.SetActive(true);
         dungeonPlayerBoy.gameObject.SetActive(true);
 
@@ -160,7 +155,7 @@ public class DungeonSystem : MonoBehaviour
             dungeonSystemData.curDungeonRoomData = dungeonSystemData.dungeonRoomArray[startIndex];
         }
 
-        EventObjectCreate(dungeonSystemData.curDungeonRoomData);
+        eventObjectGenerate.EventObjectCreate(dungeonSystemData.curDungeonRoomData);
         CurrentRoomInMinimap(dungeonSystemData.curDungeonRoomData, beforeDungeonRoom);
 
         if (dungeonSystemData.curPlayerGirlData.curRoomNumber == -1)
@@ -187,13 +182,9 @@ public class DungeonSystem : MonoBehaviour
     {
         if (isRoomEnd)
         {
-            foreach (var obj in eventObjInstanceList)
-            {
-                Destroy(obj);
-            }
-            eventObjInstanceList.Clear();
+            eventObjectGenerate.EventObjectClear();
 
-            if(dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
+            if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
                 Vars.UserData.WorldMapPlayerData.isClear = true;
                 //Vars.UserData.curDungeonIndex = Vector2.zero;
@@ -207,7 +198,7 @@ public class DungeonSystem : MonoBehaviour
 
             roomGenerate.RoadListClear();
             roomGenerate.RoomPrefabSet(dungeonSystemData.curDungeonRoomData);
-            EventObjectCreate(dungeonSystemData.curDungeonRoomData);
+            eventObjectGenerate.EventObjectCreate(dungeonSystemData.curDungeonRoomData);
 
             var newPos1 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z + 0.5f);
             var newPos2 = new Vector3(roomGenerate.spawnPos.x, roomGenerate.spawnPos.y, roomGenerate.spawnPos.z - 0.5f);
@@ -316,121 +307,121 @@ public class DungeonSystem : MonoBehaviour
     }
 
     // 현재 방 정보만 가지고 이벤트 오브젝트 생성
-    public void EventObjectCreate(DungeonRoom roomData)
-    {
-        // 길방의 오브젝트들 생성
-        if (roomData.RoomType == DunGeonRoomType.SubRoom)
-        {
-            while (roomData.RoomType != DunGeonRoomType.MainRoom)
-            {
-                foreach (var eventObj in roomData.eventObjDataList)
-                {
-                    {
-                        switch (eventObj.eventType)
-                        {
-                            case DunGeonEvent.Battle:
-                                //var createBt = eventObj as BattleData;
-                                //var obj = createBt.CreateObj(battleObjPrefab);
-                                //eventObjInstanceList.Add(obj.gameObject);
-                                break;
-                            case DunGeonEvent.Gathering:
-                                var createGt = eventObj as GatheringData;
-                                GatheringObject obj2;
-                                switch (eventObj.gatheringtype)
-                                {
-                                    case GatheringObjectType.Tree:
-                                        obj2 = createGt.CreateObj(treeObj, gatheringSystem);
-                                        eventObjInstanceList.Add(obj2.gameObject);
-                                        break;
-                                    case GatheringObjectType.Pit:
-                                        obj2 = createGt.CreateObj(pitObj, gatheringSystem);
-                                        eventObjInstanceList.Add(obj2.gameObject);
-                                        break;
-                                    case GatheringObjectType.Herbs:
-                                        obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
-                                        eventObjInstanceList.Add(obj2.gameObject);
-                                        break;
-                                    case GatheringObjectType.Mushroom:
-                                        obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
-                                        eventObjInstanceList.Add(obj2.gameObject);
-                                        break;
-                                }
-                                break;
-                            case DunGeonEvent.Hunt:
-                                var createHt = eventObj as HuntingData;
-                                var obj3 = createHt.CreateObj(huntingObjPrefab);
-                                eventObjInstanceList.Add(obj3.gameObject);
-                                break;
-                            case DunGeonEvent.RandomIncount:
-                                var createRi = eventObj as RandomIncountData;
-                                var obj4 = createRi.CreateObj(randomEventObjPrefab);
-                                eventObjInstanceList.Add(obj4.gameObject);
-                                break;
-                            case DunGeonEvent.SubStory:
-                                break;
-                        }
-                    }
-                }
-                roomData = roomTool.GetNextRoom(roomData);
-            }
-        }
-        else
-        {
-            foreach (var eventObj in roomData.eventObjDataList)
-            {
-                {
-                    switch (eventObj.eventType)
-                    {
-                        case DunGeonEvent.Battle:
-                            //var createBt = eventObj as BattleData;
-                            //var obj = createBt.CreateObj(battleObjPrefab);
-                            //eventObjInstanceList.Add(obj.gameObject);
-                            break;
-                        case DunGeonEvent.Gathering:
-                            var createGt = eventObj as GatheringData;
-                            GatheringObject obj2;
-                            switch (eventObj.gatheringtype)
-                            {
-                                case GatheringObjectType.Tree:
-                                    obj2 = createGt.CreateObj(treeObj, gatheringSystem);
-                                    eventObjInstanceList.Add(obj2.gameObject);
-                                    break;
-                                case GatheringObjectType.Pit:
-                                    obj2 = createGt.CreateObj(pitObj, gatheringSystem);
-                                    eventObjInstanceList.Add(obj2.gameObject);
-                                    break;
-                                case GatheringObjectType.Herbs:
-                                    obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
-                                    eventObjInstanceList.Add(obj2.gameObject);
-                                    break;
-                                case GatheringObjectType.Mushroom:
-                                    obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
-                                    eventObjInstanceList.Add(obj2.gameObject);
-                                    break;
-                            }
+    //public void EventObjectCreate(DungeonRoom roomData)
+    //{
+    //    // 길방의 오브젝트들 생성
+    //    if (roomData.RoomType == DunGeonRoomType.SubRoom)
+    //    {
+    //        while (roomData.RoomType != DunGeonRoomType.MainRoom)
+    //        {
+    //            foreach (var eventObj in roomData.eventObjDataList)
+    //            {
+    //                {
+    //                    switch (eventObj.eventType)
+    //                    {
+    //                        case DunGeonEvent.Battle:
+    //                            //var createBt = eventObj as BattleData;
+    //                            //var obj = createBt.CreateObj(battleObjPrefab);
+    //                            //eventObjInstanceList.Add(obj.gameObject);
+    //                            break;
+    //                        case DunGeonEvent.Gathering:
+    //                            var createGt = eventObj as GatheringData;
+    //                            GatheringObject obj2;
+    //                            switch (eventObj.gatheringtype)
+    //                            {
+    //                                case GatheringObjectType.Tree:
+    //                                    obj2 = createGt.CreateObj(treeObj, gatheringSystem);
+    //                                    eventObjInstanceList.Add(obj2.gameObject);
+    //                                    break;
+    //                                case GatheringObjectType.Pit:
+    //                                    obj2 = createGt.CreateObj(pitObj, gatheringSystem);
+    //                                    eventObjInstanceList.Add(obj2.gameObject);
+    //                                    break;
+    //                                case GatheringObjectType.Herbs:
+    //                                    obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
+    //                                    eventObjInstanceList.Add(obj2.gameObject);
+    //                                    break;
+    //                                case GatheringObjectType.Mushroom:
+    //                                    obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
+    //                                    eventObjInstanceList.Add(obj2.gameObject);
+    //                                    break;
+    //                            }
+    //                            break;
+    //                        case DunGeonEvent.Hunt:
+    //                            var createHt = eventObj as HuntingData;
+    //                            var obj3 = createHt.CreateObj(huntingObjPrefab);
+    //                            eventObjInstanceList.Add(obj3.gameObject);
+    //                            break;
+    //                        case DunGeonEvent.RandomIncount:
+    //                            var createRi = eventObj as RandomIncountData;
+    //                            var obj4 = createRi.CreateObj(randomEventObjPrefab);
+    //                            eventObjInstanceList.Add(obj4.gameObject);
+    //                            break;
+    //                        case DunGeonEvent.SubStory:
+    //                            break;
+    //                    }
+    //                }
+    //            }
+    //            roomData = roomTool.GetNextRoom(roomData);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        foreach (var eventObj in roomData.eventObjDataList)
+    //        {
+    //            {
+    //                switch (eventObj.eventType)
+    //                {
+    //                    case DunGeonEvent.Battle:
+    //                        //var createBt = eventObj as BattleData;
+    //                        //var obj = createBt.CreateObj(battleObjPrefab);
+    //                        //eventObjInstanceList.Add(obj.gameObject);
+    //                        break;
+    //                    case DunGeonEvent.Gathering:
+    //                        var createGt = eventObj as GatheringData;
+    //                        GatheringObject obj2;
+    //                        switch (eventObj.gatheringtype)
+    //                        {
+    //                            case GatheringObjectType.Tree:
+    //                                obj2 = createGt.CreateObj(treeObj, gatheringSystem);
+    //                                eventObjInstanceList.Add(obj2.gameObject);
+    //                                break;
+    //                            case GatheringObjectType.Pit:
+    //                                obj2 = createGt.CreateObj(pitObj, gatheringSystem);
+    //                                eventObjInstanceList.Add(obj2.gameObject);
+    //                                break;
+    //                            case GatheringObjectType.Herbs:
+    //                                obj2 = createGt.CreateObj(herbsObj, gatheringSystem);
+    //                                eventObjInstanceList.Add(obj2.gameObject);
+    //                                break;
+    //                            case GatheringObjectType.Mushroom:
+    //                                obj2 = createGt.CreateObj(mushroomObj, gatheringSystem);
+    //                                eventObjInstanceList.Add(obj2.gameObject);
+    //                                break;
+    //                        }
 
-                            break;
-                        case DunGeonEvent.Hunt:
-                            var createHt = eventObj as HuntingData;
-                            var obj3 = createHt.CreateObj(huntingObjPrefab);
-                            eventObjInstanceList.Add(obj3.gameObject);
-                            break;
-                        case DunGeonEvent.RandomIncount:
-                            var createRi = eventObj as RandomIncountData;
-                            var obj4 = createRi.CreateObj(randomEventObjPrefab);
-                            eventObjInstanceList.Add(obj4.gameObject);
-                            break;
-                        case DunGeonEvent.SubStory:
-                            break;
-                    }
-                }
-            }
-        }
-    }
+    //                        break;
+    //                    case DunGeonEvent.Hunt:
+    //                        var createHt = eventObj as HuntingData;
+    //                        var obj3 = createHt.CreateObj(huntingObjPrefab);
+    //                        eventObjInstanceList.Add(obj3.gameObject);
+    //                        break;
+    //                    case DunGeonEvent.RandomIncount:
+    //                        var createRi = eventObj as RandomIncountData;
+    //                        var obj4 = createRi.CreateObj(randomEventObjPrefab);
+    //                        eventObjInstanceList.Add(obj4.gameObject);
+    //                        break;
+    //                    case DunGeonEvent.SubStory:
+    //                        break;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     public void CurrentRoomInMinimap(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
-        var obj = dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
+        var obj = minimapGenerate.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
         var mesh = obj.gameObject.GetComponent<MeshRenderer>();
         mesh.material.color = Color.blue;
 
@@ -438,88 +429,12 @@ public class DungeonSystem : MonoBehaviour
             return;
         if (beforeRoom.IsCheck == true)
         {
-            var obj2 = dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
+            var obj2 = minimapGenerate.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
             var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
             mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
             new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
         }
-    }
-
-    public void CreateMiniMapObject()
-    {
-
-        int curIdx = startIndex;
-        int left, right, top, bottom;
-        Vector3 leftPos = Vector3.zero;
-        Vector3 rightPos = Vector3.zero;
-        Vector3 topPos = Vector3.zero;
-        Vector3 bottomPos = Vector3.zero;
-
-        left = curIdx % 20;
-        right = curIdx % 20;
-        top = curIdx / 20;
-        bottom = curIdx / 20;
-
-        /*dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx*/
-        while ( curIdx != -1)
-        {
-            var room = dungeonSystemData.dungeonRoomArray[curIdx];
-            RoomObject obj;
-            if (room.RoomType == DunGeonRoomType.MainRoom)
-            {
-                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                     , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                dungeonRoomObjectList.Add(obj);
-            }
-            else
-            {
-                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                dungeonRoomObjectList.Add(obj);
-            }
-            if(curIdx == startIndex)
-            {
-                leftPos = obj.transform.position;
-                rightPos = obj.transform.position;
-                topPos = obj.transform.position;
-                bottomPos = obj.transform.position;
-            }
-
-            if (curIdx != 0)
-            {
-                if (left > curIdx % 20)
-                {
-                    left = curIdx % 20;
-                    leftPos = obj.transform.position;
-                }
-                if (right < curIdx % 20)
-                {
-                    right = curIdx % 20;
-                    rightPos = obj.transform.position;
-                }
-                if (top > curIdx / 20)
-                {
-                    top = curIdx / 20;
-                    topPos = obj.transform.position;
-                }
-                if (bottom < curIdx / 20)
-                {
-                    bottom = curIdx / 20;
-                    bottomPos = obj.transform.position;
-                }
-            }
-            curIdx = dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx;
-        }
-
-        minimapCam.leftVec = leftPos;
-        minimapCam.rightVec = rightPos;
-        minimapCam.topVec = topPos;
-        minimapCam.bottomVec = bottomPos;
     }
 }
 

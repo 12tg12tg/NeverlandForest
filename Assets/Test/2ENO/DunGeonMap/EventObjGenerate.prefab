@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3481429756527816146
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3481429756527816148}
+  - component: {fileID: 3481429756527816147}
+  m_Layer: 0
+  m_Name: EventObjGenerate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3481429756527816148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481429756527816146}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 150, z: -500}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3481429756527816147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481429756527816146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca9a92438439714990acba27cf46df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleObjPrefab: {fileID: -5142030714397656426, guid: 9f97925efcbdc8c40a04daa6b4cedd10, type: 3}
+  huntingObjPrefab: {fileID: 5930361870545918583, guid: 5192b2383ee467942bc08fa5ab7104e4, type: 3}
+  randomEventObjPrefab: {fileID: 7387319835836890263, guid: 2614c16b0e2319242825c5aef42d5d74, type: 3}
+  treeObj: {fileID: 996525636475923809, guid: 108b3e4a3de43e2478493c21f583bd53, type: 3}
+  pitObj: {fileID: -559228705734403707, guid: 99a95287072042c4c8e783490ce9ef04, type: 3}
+  herbsObj: {fileID: -3375949545043474010, guid: e889b003abf071a479935f0219bcd21d, type: 3}
+  mushroomObj: {fileID: 3367083845483867604, guid: 9c122a6c575deac47b0d47cd3ce65c4a, type: 3}
