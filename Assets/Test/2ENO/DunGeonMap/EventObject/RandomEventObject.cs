@@ -15,10 +15,6 @@ public class RandomEventObject : MonoBehaviour
         randomEventID = eventID;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-    }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.tag is "Player")

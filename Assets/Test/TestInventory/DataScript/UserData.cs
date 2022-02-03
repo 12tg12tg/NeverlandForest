@@ -21,6 +21,8 @@ public class UserData
     public Vector2 curDungeonIndex;
     public int dungeonStartIdx = 100;
     public bool dungeonReStart;
+    // 랜덤이벤트 데이터, 세이브 로드
+
 
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();

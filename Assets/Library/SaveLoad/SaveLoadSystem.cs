@@ -13,6 +13,7 @@ using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 using CraftSaveDataCurrentVersion = CraftSaveData_0;
+using RandomEventSaveDataCurrentVersion = RandomEventSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -45,6 +46,7 @@ public static class SaveLoadSystem
         WorldMapPlayerData,
         ConsumableData,
         Craft,
+        RandomEvent,
     }
 
     private static bool isInit;
@@ -309,6 +311,14 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.RandomEvent:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -372,6 +382,12 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.Craft:
                 while (!(data is CraftSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.RandomEvent:
+                while (!(data is RandomEventSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

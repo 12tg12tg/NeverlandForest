@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.Linq;
+
+public class RandomEventSaveData_0 : SaveDataBase
+{
+    public List<string> allEventIDs = new List<string>();
+    public List<string> useEventIDs = new List<string>();
+    public List<List<string>> selectInfos = new List<List<string>>(); 
+}
+
 public class DataRandomEvent
 {
     private string eventID;
@@ -48,24 +56,8 @@ public class DataRandomEvent
             return failInfo;
         }
     }
-
     // 이벤트의 선택지 클릭시, 해당 선택지에 대한 피드백 정보가 이후부터는 공개된다.
     public List<string> selectInfos = new List<string>();
-    //public List<string> SelectInfos
-    //{
-    //    get
-    //    {
-    //        if (selectInfos == null)
-    //        {
-    //            selectInfos = new List<string>();
-    //            selectInfos.Add("선택되지 않은 선택지입니다");
-    //            selectInfos.Add("선택되지 않은 선택지입니다");
-    //            selectInfos.Add("선택되지 않은 선택지입니다");
-    //        }
-    //        return selectInfos;
-    //    }
-    //    set => selectInfos = value;
-    //}
 
     private bool isSucessFeedBack;
     private List<bool> isInsufficiency = new List<bool>() { false, false, false };
@@ -77,12 +69,40 @@ public class DataRandomEvent
     public List<DataAllItem> rewardItems = new();
     public int selectBtnCount;
 
-    private List<string> feedBackStringSelect1 = new();
-    private List<string> feedBackStringSelect2 = new();
-    private List<string> feedBackStringSelect3 = new();
-
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
+
+    public DataRandomEvent(DataRandomEvent data)
+    {
+        eventID = data.eventID;
+        eventName = data.eventName;
+        eventDesc = data.eventDesc;
+        selectName.AddRange(data.selectName);
+        sucessDesc.AddRange(data.sucessDesc);
+        failDesc.AddRange(data.failDesc);
+        sucess1Info = data.sucess1Info;
+        fail1Info = data.fail1Info;
+        sucess2Info = data.sucess2Info;
+        fail2Info = data.fail2Info;
+        sucess3Info = data.sucess3Info;
+        fail3Info = data.fail3Info;
+
+        sucessInfo.AddRange(data.sucessInfo);
+    }
+    //private string eventID;
+    //public string eventName;
+    //public string eventDesc;
+    //public List<string> selectName = new List<string>();
+    //public List<string> sucessDesc = new List<string>();
+    //public List<string> failDesc = new List<string>();
+    //public string sucess1Info;
+    //public string fail1Info;
+    //public string sucess2Info;
+    //public string fail2Info;
+    //public string sucess3Info;
+    //public string fail3Info;
+
+    //private List<string> sucessInfo;
 
     public DataRandomEvent(RandomEventTableElem data)
     {
@@ -160,7 +180,7 @@ public class DataRandomEvent
             var sb = new StringBuilder();
             sb.Append(SucessInfo[i]);
             if(!string.IsNullOrEmpty(FailInfo[i]))
-                sb.Append($" / {FailInfo[i]}");
+                sb.Append($" || {FailInfo[i]}");
 
             selectInfos.Add(sb.ToString());
         }
@@ -420,7 +440,7 @@ public class DataRandomEvent
         var sb2 = new StringBuilder();
         sb2.Append(SucessInfo[selectNum - 1]);
         if (!string.IsNullOrEmpty(FailInfo[selectNum - 1]))
-            sb2.Append($" / {FailInfo[selectNum - 1]}");
+            sb2.Append($" || {FailInfo[selectNum - 1]}");
 
         selectInfos[selectNum - 1] = sb2.ToString();
     }

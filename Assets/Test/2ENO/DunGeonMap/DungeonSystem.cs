@@ -10,7 +10,6 @@ public class DungeonSystem : MonoBehaviour
     public static DungeonSystem Instance => instance;
 
     public RoomTool roomTool;
-    //private List<GameObject> eventObjInstanceList = new List<GameObject>();
     private DungeonRoom beforeDungeonRoom;
 
     // 던전 세팅, 불러오기에 필요한 모든 데이터를 이걸통해 관리!
@@ -85,12 +84,12 @@ public class DungeonSystem : MonoBehaviour
         {
             Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
             Vars.UserData.dungeonReStart = false;
+            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
+            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
         }
         // 클리어한 방 다시 돌아올때, 플레이어 위치만 방 첫 위치로
         else if(!Vars.UserData.dungeonReStart)
         {
-            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
-            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
         }
 
         if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
@@ -223,7 +222,6 @@ public class DungeonSystem : MonoBehaviour
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
-    //Vars.UserData.curDungeonRoomIdx = dungeonSystemData.curDungeonRoomData.roomIdx;
 
     // 세이브 후 로드할때 이벤트 타입이 부모타입으로 바뀌어있는걸 다시 변경
     public void ConvertEventDataType()
@@ -312,8 +310,6 @@ public class DungeonSystem : MonoBehaviour
         }
     }
 }
-
-
 
 //switch(roomData.roadCount)
 //{

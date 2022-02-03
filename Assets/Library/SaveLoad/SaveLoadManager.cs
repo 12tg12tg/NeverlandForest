@@ -13,6 +13,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     WorldMapPlayerData_0 worldMapPlayerData;
     ConsumableSaveData_0 consumableSaveData;
     CraftSaveData_0 craftSaveData;
+    RandomEventSaveData_0 randomEvent;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -83,6 +84,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveOption()
     {
     }
+
+    private void SaveRandomEvent()
+    {
+        randomEvent = new RandomEventSaveData_0();
+
+    }
+
     private void SaveDungeonMap()
     {
         dungeonMapData = new DungeonMapSaveData_0();
