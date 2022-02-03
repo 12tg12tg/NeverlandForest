@@ -508,19 +508,22 @@ public class CampManager : MonoBehaviour
         }
         if (selectItem != null)
         {
-            Vars.UserData.AddItemData(selectItem);
-            for (int i = 0; i < rewardList.Count; i++)
+            if (Vars.UserData.AddItemData(selectItem)!=false)
             {
-                if (rewardList[i] == selectItem)
+                Vars.UserData.AddItemData(selectItem);
+                for (int i = 0; i < rewardList.Count; i++)
                 {
-                    rewardList.RemoveAt(i);
+                    if (rewardList[i] == selectItem)
+                    {
+                        rewardList.RemoveAt(i);
+                    }
+                }
+                if (rewardList.Count == 0)
+                {
+                    rewardList.Clear();
                 }
             }
-            if (rewardList.Count == 0)
-            {
-                rewardList.Clear();
-            }
-
+            diaryManager.gatheringInventory.ItemButtonInit();
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
