@@ -40,6 +40,64 @@ public class UserData
     public int maxInventoryItemCount = 12;
     private readonly List<DataAllItem> haveAllItemList = new List<DataAllItem>();
     public ReadOnlyCollection<DataAllItem> HaveAllItemList => haveAllItemList.AsReadOnly();
+    public List<string> experienceHaveItemList = new List<string>();
+    //기록하는 함수
+
+    public void ExperienceListAdd(string itemid) //ITEM_
+    {
+        if (!experienceHaveItemList.Contains(itemid))
+        {
+            experienceHaveItemList.Add(itemid);
+            Debug.Log($"itemid{ itemid}");
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ItemExperience);
+            UpdateRecipe();
+        }
+        else
+        {
+            Debug.Log("이미 획득해봄");
+        }
+    }
+
+    public void AddRecipeList(string resultId)  //RE_01
+    {
+        var userRecipeDataList = Vars.UserData.HaveRecipeIDList;
+        if (!userRecipeDataList.Contains(resultId))
+        {
+            userRecipeDataList.Add(resultId);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
+        }
+    }
+
+    public void UpdateRecipe()
+    {
+        var recipeTable = DataTableManager.GetTable<RecipeDataTable>();
+        var idList = recipeTable.allRecipeIdList;
+        var resultIdDic = recipeTable.allRecipeDictionary;
+      
+        for (int i = 0; i < idList.Count; i++)
+        {
+            var resultid = resultIdDic[idList[i]];
+            var materials = recipeTable.GetCombination(resultid);
+            bool isExperience = true;
+            for (int j = 0; j < materials.Length; j++)
+            {
+                if (materials[j] == "0")
+                    continue;
+                var stringid = $"ITEM_{materials[j]}";
+                if (!experienceHaveItemList.Contains(stringid))
+                {
+                    isExperience = false;
+                    break;
+                }
+            }
+            if (isExperience)
+            {   
+                AddRecipeList(recipeTable.GetRecipeId(resultid));
+            }
+        }
+    }
+
+
     public bool AddItemData(DataAllItem newItem)
     {
         // 칸 하나를 전부 차지한 경우의 개수
@@ -118,7 +176,7 @@ public class UserData
                             else
                                 spaceCount = 0;
 
-                            if(maxInventoryItemCount < (myInventoryFullCount + myInventorySpaceCount + spaceCount))
+                            if (maxInventoryItemCount < (myInventoryFullCount + myInventorySpaceCount + spaceCount))
                             {
                                 myItem.OwnCount--;
                                 newItem.OwnCount++;
@@ -138,10 +196,10 @@ public class UserData
                     haveAllItemList.Add(getItem);
 
                     var newItemSpare = (newItem.InvenRemainCount == 0) ? 0 : 1;
-                    if(spareInvenCount - (newItem.InvenFullCount + newItemSpare) < 0)
+                    if (spareInvenCount - (newItem.InvenFullCount + newItemSpare) < 0)
                     {
                         var overInvenCount = (newItem.InvenFullCount + newItemSpare) - spareInvenCount;
-                        if(newItem.InvenRemainCount == 0)
+                        if (newItem.InvenRemainCount == 0)
                         {
                             overOwnCount = newItem.ItemTableElem.limitCount * overInvenCount;
                         }
@@ -174,11 +232,11 @@ public class UserData
         }
         else
         {
-            if(removeItem.OwnCount < 0)
+            if (removeItem.OwnCount < 0)
                 haveAllItemList[index].OwnCount += removeItem.OwnCount;
             else
                 haveAllItemList[index].OwnCount -= removeItem.OwnCount;
-            if(haveAllItemList[index].OwnCount <= 0)
+            if (haveAllItemList[index].OwnCount <= 0)
             {
                 haveAllItemList.RemoveAt(index);
                 Debug.Log("아이템 삭제됨");

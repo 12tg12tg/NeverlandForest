@@ -14,6 +14,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     ConsumableSaveData_0 consumableSaveData;
     CraftSaveData_0 craftSaveData;
     RandomEventSaveData_0 randomEvent;
+    ItemExperienceSaveData_0 itemExperienceSaveData;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -46,6 +47,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Craft:
                 SaveCraft();
                 break;
+            case SaveLoadSystem.SaveType.ItemExperience:
+                SaveExperience();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -75,6 +79,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Craft:
                 LoadCraft();
+                break;
+            case SaveLoadSystem.SaveType.ItemExperience:
+                LoadExperience();
                 break;
         }
     }
@@ -160,6 +167,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(craftSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
 
     }
+    private void SaveExperience()
+    {
+        itemExperienceSaveData = new ItemExperienceSaveData_0();
+        itemExperienceSaveData.haveItemExperience = Vars.UserData.experienceHaveItemList;
+        SaveLoadSystem.Save(itemExperienceSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+
+    }
     private void SaveTime()
     {
         //timeData = new TimeSaveData_0();
@@ -212,6 +226,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.HaveCraftIDList = craftSaveData.haveCraft;
         }
     }
+
+    private void LoadExperience()
+    {
+        itemExperienceSaveData = (ItemExperienceSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+        if (itemExperienceSaveData != null)
+        {
+            Vars.UserData.experienceHaveItemList = itemExperienceSaveData.haveItemExperience;
+        }
+    }
+
     private void LoadTime()
     {
         //timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);

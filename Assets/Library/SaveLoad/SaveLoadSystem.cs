@@ -14,6 +14,7 @@ using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 using CraftSaveDataCurrentVersion = CraftSaveData_0;
 using RandomEventSaveDataCurrentVersion = RandomEventSaveData_0;
+using ExperienceSaveDataCurrentVersion = ItemExperienceSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -47,6 +48,7 @@ public static class SaveLoadSystem
         ConsumableData,
         Craft,
         RandomEvent,
+        ItemExperience,
     }
 
     private static bool isInit;
@@ -316,6 +318,11 @@ public static class SaveLoadSystem
                 {
                     case 0:
                         return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
+            case SaveType.ItemExperience:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<ExperienceSaveDataCurrentVersion>(json);
                     default:
                         return null;
                 }
@@ -388,6 +395,8 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.RandomEvent:
                 while (!(data is RandomEventSaveDataCurrentVersion))
+            case SaveType.ItemExperience:
+                while (!(data is ExperienceSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

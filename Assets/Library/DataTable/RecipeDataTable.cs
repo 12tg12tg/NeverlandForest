@@ -60,6 +60,9 @@ public class RecipeDataTable : DataTableBase
         new Dictionary<string, string[]>(); // 재료들의 번호를 가지고있는 diction
 
     public Dictionary<string, string> MakingTimeDictionary = new Dictionary<string, string>();
+
+    public Dictionary<string, string> allRecipeDictionary = new Dictionary<string, string>();
+    public List<string> allRecipeIdList = new List<string>();
     //아이템 번호(Result)랑 시간에 대한 값들을 가지고 있다. 
 
     public override void Load()
@@ -73,6 +76,7 @@ public class RecipeDataTable : DataTableBase
         {
             var elem = new RecipeTableElem(line);
             data.Add(elem.id, elem);
+            allRecipeIdList.Add(elem.id);
 
             var id1 = byte.Parse(elem.material1);
             var id2 = byte.Parse(elem.material2);
@@ -87,6 +91,8 @@ public class RecipeDataTable : DataTableBase
             string[] recipe = new string[] { elem.material1, elem.material2, elem.material3 };
 
             CombineListDictionary.Add(elem.result_ID, recipe);
+
+            allRecipeDictionary.Add(elem.id, elem.result_ID);
 
             string Time = elem.time.ToString();
             MakingTimeDictionary.Add(elem.result_ID, Time);
@@ -106,8 +112,6 @@ public class RecipeDataTable : DataTableBase
     {
         return MakingTimeDictionary[key];
     }
-
-
 
     public string[] GetCombination(string key)
     {

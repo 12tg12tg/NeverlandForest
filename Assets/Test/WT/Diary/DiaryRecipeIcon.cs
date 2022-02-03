@@ -34,10 +34,10 @@ public class DiaryRecipeIcon : MonoBehaviour
             button.onClick.AddListener(() => OnChangedDiarySelection(item.Slot));
         }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
-        Init();
     }
     public void Init()
     {
+       
         SetAllItems();
     }
     public void SetAllItems()
