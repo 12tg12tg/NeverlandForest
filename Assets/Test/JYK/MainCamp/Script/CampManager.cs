@@ -103,9 +103,9 @@ public class CampManager : MonoBehaviour
     }
     public void Start()
     {
-        Init();
+        CampInit();
     }
-    public void Init()
+    public void CampInit()
     {
         instance = this;
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
@@ -201,7 +201,7 @@ public class CampManager : MonoBehaviour
         var potPos = pot.transform.position;
         EndPos = new Vector3(potPos.x + 1f, potPos.y + 2f, potPos.z - 3f);
 
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenCookInCamp));
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
     }
     public void RotateButtonCheck()
     {
@@ -218,7 +218,7 @@ public class CampManager : MonoBehaviour
     {
         if (isCookMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             CloseRotationPanel();
             newBottomUi.SetActive(true);
 
@@ -269,7 +269,7 @@ public class CampManager : MonoBehaviour
     {
         var bushPos = bush.transform.position;
         EndPos = new Vector3(bushPos.x, bushPos.y + 2f, bushPos.z - 5f);
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenGatheringInCamp));
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
     }
     public void OpenGatheringInCamp()
     {
@@ -282,7 +282,7 @@ public class CampManager : MonoBehaviour
     {
         if (isGatheringMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             newBottomUi.SetActive(true);
 
             isGatheringMove = false;
@@ -319,7 +319,7 @@ public class CampManager : MonoBehaviour
     {
         var workPos = workshop.transform.position;
         EndPos = new Vector3(workPos.x, workPos.y + 2f, workPos.z - 5f);
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenProduceInCamp));
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
     }
     public void OpenProduceInCamp()
     {
@@ -337,7 +337,7 @@ public class CampManager : MonoBehaviour
     {
         if (isProduceMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             newBottomUi.SetActive(true);
 
             isProduceMove = false;

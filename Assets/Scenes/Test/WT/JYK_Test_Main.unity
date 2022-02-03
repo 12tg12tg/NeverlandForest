@@ -4460,6 +4460,29 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100307576}
   m_CullTransparentMesh: 1
+--- !u!1 &100375689 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2339715130487120304, guid: 9c06adc57681c1e4aae3f1bf22c75887, type: 3}
+  m_PrefabInstance: {fileID: 8171334222778750123}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &100375690 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2339715130496635860, guid: 9c06adc57681c1e4aae3f1bf22c75887, type: 3}
+  m_PrefabInstance: {fileID: 8171334222778750123}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &100375692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100375689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7bef55a6f219b947b2b7196c18b6798, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  girlAnimator: {fileID: 100375690}
 --- !u!1 &101389848
 GameObject:
   m_ObjectHideFlags: 0
@@ -64981,6 +65004,29 @@ MonoBehaviour:
   m_FlexibleWidth: 1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!1 &1690965596 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7647636560171398128, guid: 7dc91c660d903d149a68596c52244a00, type: 3}
+  m_PrefabInstance: {fileID: 6729712952773388687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1690965597 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7647636560180871554, guid: 7dc91c660d903d149a68596c52244a00, type: 3}
+  m_PrefabInstance: {fileID: 6729712952773388687}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1690965599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1690965596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a817acd52ca67a49a6daade4c05fa51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boyAnimator: {fileID: 1690965597}
 --- !u!1 &1691255432
 GameObject:
   m_ObjectHideFlags: 0
@@ -70537,6 +70583,7 @@ MonoBehaviour:
   gatheringInDungeonReconfirm: {fileID: 1025783584}
   bonFireReconfirm: {fileID: 306975389}
   bagisFullReconfirm: {fileID: 893657194}
+  bagisFullInGathering: {fileID: 0}
   randomEventReconfirm: {fileID: 1726093347}
   diaryManager: {fileID: 1405726640}
 --- !u!224 &1826281226 stripped
