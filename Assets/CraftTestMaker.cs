@@ -18,8 +18,6 @@ public class CraftTestMaker : MonoBehaviour
         GetRecipeList();
         GetCraftList();*/
     }
-
-  
     public void SetRecipeResultList()
     {
         // 23~35
@@ -57,31 +55,6 @@ public class CraftTestMaker : MonoBehaviour
                 SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
             }
         }
-
-
-/*
-        랜덤한 숫자를 뽑는데 레시피정보를 전부 들고있는 List에서 
-        뽑아서 보상으로 주고 해당 레시피가 기존이 있던게 아니라면 더해주고 
-        List에서 뺀다. 기존에 있던거면 꽝
-
-        var userRecipeData = Vars.UserData.HaveRecipeIDList;
-        var rand = Random.Range(0, userRecipeData.Count-1);
-        var recipeid = recipeTable.GetRecipeId(recipeResultList[rand]);
-        if (!userRecipeData.Contains(recipeid))
-        {
-            userRecipeData.Add(recipeid);
-            recipeResultList.RemoveAt(rand);
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
-        }
-        else
-        {
-            Debug.log("꽝");
-        }
-*/
-
-
-
-
     }
     public void GetCraftList()
     {

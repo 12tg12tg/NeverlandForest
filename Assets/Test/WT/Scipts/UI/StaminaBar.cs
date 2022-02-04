@@ -9,16 +9,17 @@ public class StaminaBar : MonoBehaviour
 
     public void Start()
     {
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         ChangeableStaminaChange();
     }
     void Update()
     {
-        slider.value = (float)Vars.UserData.uData.CurStamina / (float)Vars.maxStamina;
+        slider.value = Vars.UserData.uData.Tiredness / Vars.maxStamina;
     }
     private void ChangeableStaminaChange()
     {
         Vector3 temp = sliderRect.localScale;
-        var changeValue = ((float)Vars.UserData.uData.ChangeableMaxStamina / (float)Vars.maxStamina);
+        var changeValue = (Vars.UserData.uData.ChangeableMaxStamina / Vars.maxStamina);
         temp.x = changeValue;
         sliderRect.localScale = temp;
     }

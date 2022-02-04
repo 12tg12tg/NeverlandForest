@@ -286,6 +286,7 @@ public class DiaryManager : MonoBehaviour
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
+            Vars.UserData.ExperienceListAdd(item.itemId);
         }
         produceInventory.ItemButtonInit();
         CraftResultItem = null;
