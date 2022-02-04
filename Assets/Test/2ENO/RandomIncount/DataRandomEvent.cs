@@ -6,14 +6,14 @@ using System.Linq;
 
 public class RandomEventSaveData_0 : SaveDataBase
 {
-    public List<string> allEventIDs = new List<string>();
     public List<string> useEventIDs = new List<string>();
-    public List<List<string>> selectInfos = new List<List<string>>(); 
+    public List<DataRandomEvent> randomEventAllData = new List<DataRandomEvent>();
+    public bool isFirst = true;
 }
 
 public class DataRandomEvent
 {
-    private string eventID;
+    public string eventID;
     public string eventName;
     public string eventDesc;
     public List<string> selectName = new List<string>();
@@ -26,36 +26,20 @@ public class DataRandomEvent
     public string sucess3Info;
     public string fail3Info;
 
-    private List<string> sucessInfo;
+    private List<string> sucessInfo = new List<string>();
     public List<string> SucessInfo
     {
-        get
-        {
-            if(sucessInfo == null)
-            {
-                sucessInfo = new List<string>();
-                sucessInfo.Add("발견하지 않은 이벤트입니다");
-                sucessInfo.Add("발견하지 않은 이벤트입니다");
-                sucessInfo.Add("발견하지 않은 이벤트입니다");
-            }
-            return sucessInfo;
-        }
+        get => sucessInfo;
+        set => sucessInfo = value;
     }
-    private List<string> failInfo;
+    private List<string> failInfo = new List<string>();
     public List<string> FailInfo
     {
-        get
-        {
-            if (failInfo == null)
-            {
-                failInfo = new List<string>();
-                failInfo.Add("발견하지 않은 이벤트입니다");
-                failInfo.Add("발견하지 않은 이벤트입니다");
-                failInfo.Add("발견하지 않은 이벤트입니다");
-            }
-            return failInfo;
-        }
+        get => failInfo;
+        set => failInfo = value;
     }
+    public int selectBtnCount;
+
     // 이벤트의 선택지 클릭시, 해당 선택지에 대한 피드백 정보가 이후부터는 공개된다.
     public List<string> selectInfos = new List<string>();
 
@@ -66,20 +50,26 @@ public class DataRandomEvent
     public string resultInfo;
     public string selectResultDesc;
     public int curSelectNum;
+    [System.NonSerialized]
     public List<DataAllItem> rewardItems = new();
-    public int selectBtnCount;
 
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
 
+    public DataRandomEvent() { }
+
     public DataRandomEvent(DataRandomEvent data)
     {
+        selectName.Clear();
+        sucessDesc.Clear();
+        failDesc.Clear();
+
         eventID = data.eventID;
         eventName = data.eventName;
         eventDesc = data.eventDesc;
-        selectName.AddRange(data.selectName);
-        sucessDesc.AddRange(data.sucessDesc);
-        failDesc.AddRange(data.failDesc);
+        selectName = data.selectName;
+        sucessDesc = data.sucessDesc;
+        failDesc = data.failDesc;
         sucess1Info = data.sucess1Info;
         fail1Info = data.fail1Info;
         sucess2Info = data.sucess2Info;
@@ -87,22 +77,15 @@ public class DataRandomEvent
         sucess3Info = data.sucess3Info;
         fail3Info = data.fail3Info;
 
-        sucessInfo.AddRange(data.sucessInfo);
-    }
-    //private string eventID;
-    //public string eventName;
-    //public string eventDesc;
-    //public List<string> selectName = new List<string>();
-    //public List<string> sucessDesc = new List<string>();
-    //public List<string> failDesc = new List<string>();
-    //public string sucess1Info;
-    //public string fail1Info;
-    //public string sucess2Info;
-    //public string fail2Info;
-    //public string sucess3Info;
-    //public string fail3Info;
+        selectBtnCount = data.selectBtnCount;
 
-    //private List<string> sucessInfo;
+        SucessInfo = data.sucessInfo;
+        FailInfo = data.failInfo;
+        selectInfos = data.selectInfos;
+
+        var randomTable = DataTableManager.GetTable<RandomEventTable>();
+        eventData = randomTable.GetData<RandomEventTableElem>(eventID);
+    }
 
     public DataRandomEvent(RandomEventTableElem data)
     {
@@ -159,6 +142,13 @@ public class DataRandomEvent
         eventData = data;
         eventName = data.name;
 
+        sucessInfo.Add("발견되지 않은 이벤트입니다");
+        sucessInfo.Add("발견되지 않은 이벤트입니다");
+        sucessInfo.Add("발견되지 않은 이벤트입니다");
+        failInfo.Add("발견되지 않은 이벤트입니다");
+        failInfo.Add("발견되지 않은 이벤트입니다");
+        failInfo.Add("발견되지 않은 이벤트입니다");
+
         if (data.sucess1Chance == 0)
             selectBtnCount = 0;
         else if (data.sucess2Chance == 0)
@@ -210,6 +200,11 @@ public class DataRandomEvent
             Debug.Log("잘못된 선택번호 들어옴");
             return;
         }
+        if(RandomEventUIManager.Instance.curOperatorFeedback == selectNum)
+        {
+            return;
+        }
+
         DataInit();
         curSelectNum = selectNum;
         int eventSucessChance = 0;
@@ -305,9 +300,7 @@ public class DataRandomEvent
             {
                 case EventFeedBackType.Stamina:
                     // 소비값 부족시 예외처리
-                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var stamina = eventVals[i];
-
                     if (stamina < 0)
                     {
                         if (Vars.UserData.uData.CurStamina + stamina <= 0)
@@ -315,10 +308,8 @@ public class DataRandomEvent
                         else
                             ConsumeManager.RecoveryTiredness(stamina);
                     }
-                    
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
-
                     tempStr = $"스테미나수치 : {stamina} ";
                     break;
                 case EventFeedBackType.Hp:
@@ -359,7 +350,6 @@ public class DataRandomEvent
                     sb.Append(tempStr);
                     break;
                 case EventFeedBackType.LanternGage:
-                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var lanternGage = eventVals[i];
                     ConsumeManager.ConsumeLantern(-lanternGage);
                     tempStr = $"랜턴수치 : {lanternGage}\n";
@@ -367,8 +357,8 @@ public class DataRandomEvent
 
                     break;
                 case EventFeedBackType.TurnConsume:
-                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var turnConsume = eventVals[i];
+                    ConsumeManager.TimeUp(0, turnConsume);
                     tempStr = $"턴 소비 {turnConsume}\n";
                     sb.Append(tempStr);
 
@@ -443,6 +433,11 @@ public class DataRandomEvent
             sb2.Append($" || {FailInfo[selectNum - 1]}");
 
         selectInfos[selectNum - 1] = sb2.ToString();
+
+        // 두번클릭 방지
+        RandomEventUIManager.Instance.curOperatorFeedback = selectNum;
+
+        RandomEventManager.Instance.SaveEventData();
     }
 
     public void DataDefaultEventExit()

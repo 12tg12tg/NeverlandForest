@@ -22,34 +22,58 @@ public class RandomEventManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this);
-            init();
         }
         isStart = true;
     }
-
-    void init()
+    public void init()
     {
-        var randomTable = DataTableManager.GetTable<RandomEventTable>();
-
-        foreach (var data in randomTable.data)
+        if (Vars.UserData.isRandomDataLoad)
         {
-            var elem = (data.Value) as RandomEventTableElem;
-            var rndEvent = new DataRandomEvent(elem);
-            allDataList.Add(rndEvent);
+            foreach (var data in Vars.UserData.randomEventDatas)
+            {
+                var newRndData = new DataRandomEvent(data);
+                allDataList.Add(newRndData);
+            }
+
+            var list = from data in allDataList
+                       join dt in Vars.UserData.useEventID on data.EventData.id equals dt
+                       select data;
+
+            randomEventPool.AddRange(list);
         }
+        else
+        {
+            // all 데이터 로드, 기본 분기
+            var randomTable = DataTableManager.GetTable<RandomEventTable>();
+            foreach (var data in randomTable.data)
+            {
+                var elem = (data.Value) as RandomEventTableElem;
+                var rndEvent = new DataRandomEvent(elem);
+                allDataList.Add(rndEvent);
+            }
 
-        var list = from data in allDataList
-                   where data.EventData.eventCondition == RandomEventCondition.Always
-                   select data;
+            // Pool에 넣는건 실시간으로 진행상황에 따라 넣고, 새로 던전 시작할때마다 풀에있는걸 가져가서 세팅
+            var list = from data in allDataList
+                       where data.EventData.eventCondition == RandomEventCondition.Always
+                       select data;
 
-        // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
-        randomEventPool.AddRange(list);
+            // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
+            randomEventPool.AddRange(list);
+        }
     }
 
-
-    public void LoadEventData()
+    public void SaveEventData()
     {
-        // 세이브 로드 매니저에서 관리하는게 나을수도
+        Vars.UserData.randomEventDatas.Clear();
+        Vars.UserData.useEventID.Clear();
+
+        Vars.UserData.randomEventDatas.AddRange(allDataList);
+        foreach(var id in randomEventPool)
+        {
+            Vars.UserData.useEventID.Add(id.EventData.id);
+        }
+
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
     }
 
     public void RemoveEventInPool(DataRandomEvent evtData)

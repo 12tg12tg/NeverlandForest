@@ -23,7 +23,7 @@ public class RandomEventObject : MonoBehaviour
             DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             var rndEvent = RandomEventManager.Instance.GetEventData(randomEventID);
             RandomEventUIManager.Instance.EventInit(rndEvent);
-
+            
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             Destroy(gameObject);
         }

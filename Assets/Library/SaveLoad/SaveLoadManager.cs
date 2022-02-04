@@ -50,6 +50,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.ItemExperience:
                 SaveExperience();
                 break;
+            case SaveLoadSystem.SaveType.RandomEvent:
+                SaveRandomEvent();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -83,6 +86,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.ItemExperience:
                 LoadExperience();
                 break;
+            case SaveLoadSystem.SaveType.RandomEvent:
+                LoadRandomEvent();
+                break;
         }
     }
     private void SavePlayer()
@@ -96,13 +102,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     {
         randomEvent = new RandomEventSaveData_0();
 
+        randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
+        randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
+        randomEvent.isFirst = Vars.UserData.isFirst;
+
+        SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
     }
 
     private void SaveDungeonMap()
     {
         dungeonMapData = new DungeonMapSaveData_0();
-        //var list = new List<DungeonRoom>();
-        //var rList = new List<DungeonRoom[]>();
         var pList = new List<PlayerDungeonUnitData>();
         var pList2 = new List<PlayerDungeonUnitData>();
         var iList = new List<Vector2>();
@@ -115,14 +124,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         foreach (var data in Vars.UserData.AllDungeonData)
         {
-            //list.Add(data.Value.curDungeonData);
-            //rList.Add(data.Value.dungeonRoomArray);
             pList.Add(data.Value.curPlayerGirlData);
             pList2.Add(data.Value.curPlayerBoyData);
             iList.Add(data.Key);
             rList2.Add(data.Value.dungeonRoomList);
         }
-        //dungeonMapData.dungeonRoomArray = rList;
         dungeonMapData.curPlayerGirlData = pList;
         dungeonMapData.curPlayerBoyData = pList2;
         dungeonMapData.dungeonIndex = iList;
@@ -131,12 +137,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
-
-    //dungeonMapData.dungeonRoomList = ArrayConvertList(Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray);
-    // = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curDungeonData;
-    //dungeonMapData.curPlayerData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curPlayerData;
-    //dungeonMapData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-    //dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
 
     private List<DungeonRoom> ArrayConvertList(DungeonRoom[] array)
     {
@@ -269,6 +269,17 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonMapData.curDungeonRoomIndex];
 
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
+        }
+    }
+
+    private void LoadRandomEvent()
+    {
+        randomEvent = (RandomEventSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
+        if(randomEvent != null)
+        {
+            Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
+            Vars.UserData.useEventID = randomEvent.useEventIDs;
+            Vars.UserData.isFirst = randomEvent.isFirst;
         }
     }
 

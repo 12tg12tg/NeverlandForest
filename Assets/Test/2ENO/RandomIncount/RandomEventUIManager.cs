@@ -57,7 +57,8 @@ public class RandomEventUIManager : MonoBehaviour
     private List<DataAllItem> rewardItemList = new();
 
     [HideInInspector] public DataAllItem selectInvenItem;
-    [HideInInspector] public DataAllItem selectRewardItem;
+    [HideInInspector] public List<DataAllItem> selectRewardItems = new List<DataAllItem>();
+    [HideInInspector] public int curOperatorFeedback = -1;
 
     private void Awake()
     {
@@ -146,6 +147,7 @@ public class RandomEventUIManager : MonoBehaviour
 
     private void SelectInit()
     {
+        curOperatorFeedback = -1;
         int j = selectButtons.Count - 1;
         for (int i = 0; i < selectButtons.Count; i++)
         {
@@ -244,19 +246,33 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void GetSelectItem()
     {
-        if (rewardItemList.Count <= 0 || selectRewardItem == null || selectRewardItem.OwnCount <= 0)
+        if (rewardItemList.Count <= 0 || selectRewardItems.Count == 0)
             return;
 
-        Vars.UserData.AddItemData(selectRewardItem);
-        ItemListInit();
-        if (selectRewardItem.OwnCount <= 0)
+        for (int i = 0; i < selectRewardItems.Count; i++)
         {
-            var index = rewardItemList.FindIndex(x => x.itemId == selectRewardItem.itemId);
-            rewardItemList.RemoveAt(index);
-            info.Init();
-            info2page.Init();
+            Vars.UserData.AddItemData(selectRewardItems[i]);
+            ItemListInit();
+            if(selectRewardItems[i].OwnCount <= 0)
+            {
+                var index = rewardItemList.FindIndex(x => x.itemId == selectRewardItems[i].itemId);
+                rewardItemList.RemoveAt(index);
+                info.Init();
+                info2page.Init();
+            }
+            RewardItemLIstInit(rewardItemList);
         }
-        RewardItemLIstInit(rewardItemList);
+
+        //Vars.UserData.AddItemData(selectRewardItem);
+        //ItemListInit();
+        //if (selectRewardItem.OwnCount <= 0)
+        //{
+        //    var index = rewardItemList.FindIndex(x => x.itemId == selectRewardItem.itemId);
+        //    rewardItemList.RemoveAt(index);
+        //    info.Init();
+        //    info2page.Init();
+        //}
+        //RewardItemLIstInit(rewardItemList);
     }
 
     public void GetAllItems()

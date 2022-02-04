@@ -230,7 +230,6 @@ public static class SaveLoadSystem
         switch (saveType)
         {
             case SaveType.Player:
-
                 switch (version)
                 {
                     case 0:
@@ -240,9 +239,7 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Option:
-
                 switch (version)
                 {
                     case 0:
@@ -252,18 +249,15 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Recipe:
-
                 switch (version)
                 {
                     case 0:
-                       
+
                         return JsonConvert.DeserializeObject<RecipeSaveDataCurrentVersion>(json);
                     default:
                         return null;
                 }
-
             case SaveType.Time:
                 switch (version)
                 {
@@ -313,11 +307,6 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-            case SaveType.RandomEvent:
-                switch (version)
-                {
-                    case 0:
-                        return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
             case SaveType.ItemExperience:
                 switch (version)
                 {
@@ -326,12 +315,18 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.RandomEvent:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
-
     }
-
     public static SaveDataBase VersionUpdate(SaveType saveType, SaveDataBase data)
     {
         switch (saveType)
@@ -395,6 +390,10 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.RandomEvent:
                 while (!(data is RandomEventSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
             case SaveType.ItemExperience:
                 while (!(data is ExperienceSaveDataCurrentVersion))
                 {

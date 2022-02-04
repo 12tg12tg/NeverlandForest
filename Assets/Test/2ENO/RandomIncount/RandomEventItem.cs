@@ -52,10 +52,11 @@ public class RandomEventItem : MonoBehaviour
 
         RandomEventUIManager.Instance.info.Init(dataItem);
         RandomEventUIManager.Instance.info2page.Init(dataItem);
-        RandomEventUIManager.Instance.selectRewardItem = null;
-        // 선택초기화
-        RandomEventUIManager.Instance.rewardItemButtons.ForEach(n => n.isSelect = false);
-        IsSelect = true;
-        RandomEventUIManager.Instance.selectRewardItem = dataItem;
+        
+        IsSelect = !IsSelect;
+        if(IsSelect)
+            RandomEventUIManager.Instance.selectRewardItems.Add(dataItem);
+        else
+            RandomEventUIManager.Instance.selectRewardItems.Remove(dataItem);
     }
 }
