@@ -7,6 +7,7 @@ public enum SaveDataName
     TextWorldMapDataPath,
     TextWorldMapPlayerDataPath,
     TextDungeonMapPath,
+    TextRandomEventPath,
 }
 
 public class SaveDataDelete : MonoBehaviour
