@@ -96,10 +96,19 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
+
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
+        if(!Vars.UserData.isFirst)
+        {
+            Vars.UserData.isRandomDataLoad = true;
+        }
+        RandomEventManager.Instance.init();
+        Vars.UserData.isFirst = false;
+
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
         {
-            if(Vars.UserData.curDungeonIndex == goalIndex)
+            if (Vars.UserData.curDungeonIndex == goalIndex)
             {
                 Vars.UserData.dungeonReStart = false;
             }
@@ -120,7 +129,7 @@ public class WorldMapPlayer : MonoBehaviour
         // 처음 만들떄
         else
         {
-            if(goalIndex.y - Vars.UserData.curDungeonIndex.y > 0)
+            if (goalIndex.y - Vars.UserData.curDungeonIndex.y > 0)
             {
                 Vars.UserData.AllDungeonData.Clear();
             }
@@ -134,6 +143,8 @@ public class WorldMapPlayer : MonoBehaviour
                 coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             });
+
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
         }
     }
     private void PlayerClearWorldMap()

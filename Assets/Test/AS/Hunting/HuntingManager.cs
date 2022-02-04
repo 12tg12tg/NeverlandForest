@@ -46,26 +46,18 @@ public class HuntingManager : MonoBehaviour
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.Hunting, Hunting);
     }
 
-    //private void Start()
-    //{
-    //    //Init();
-
-    //    // TODO : 삭제 예정
-    //    TestGizmos();
-    //}
-
     private void OnGUI()
     {
         if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
         {
             tileMaker.InitMakeTiles();
             Init();
-            animal.InitEscapingPercentage();
         }
     }
 
     public void Init()
     {
+        // 이 부분은 최초 실행 때만 하는 것인지 사냥이 시작될 때 마다 해야하는 것인지 모르겠음
         var count = tileMaker.transform.childCount;
         tiles = new HuntTile[count];
         for (int i = 0; i < count; i++)
@@ -73,17 +65,20 @@ public class HuntingManager : MonoBehaviour
             tiles[i] = tileMaker.transform.GetChild(i).GetComponent<HuntTile>();
         }
 
-        InitHuntPercentage();
+        huntPlayers.Init();
 
+        // 플레이어들 위치 잡기
         huntPlayers.hunter.transform.position =
-            tiles.Where(x => x.index.Equals(huntPlayers.CurrentIndex))
+            tiles.Where(x => x.index.Equals(huntPlayers.CurHunterIndex))
                  .Select(x => x.transform.position).FirstOrDefault();
 
-        // TODO : 현재 안쓰는 중(사냥에서 월드미니맵을 보여주지 않는게 확정되면 지울 예정)
-        if (worldMap != null)
-        {
-            worldMap.InitWorldMiniMap();
-        }
+        huntPlayers.herbalist.transform.position =
+            tiles.Where(x => x.index.Equals(huntPlayers.curHerbalistIndex))
+                 .Select(x => x.transform.position).FirstOrDefault();
+
+        // 사냥 및 발각확률 초기화
+        InitHuntPercentage();
+        animal.InitEscapingPercentage();
     }
 
     private void InitHuntPercentage()
@@ -127,6 +122,7 @@ public class HuntingManager : MonoBehaviour
         huntButtonText.text = "사냥" + "\n" + $"성공 {totalHuntPercent}%";
         popupText.text = $"현재 확률 : {totalHuntPercent}%" + "\n" + "사냥하시겠습니까";
     }
+
     private void GetItem()
     {
         // 추후 동물이 얻을 수 있는 아이템 리스트가 생기면 거기에서 가져오게끔 변경 예정
@@ -178,23 +174,4 @@ public class HuntingManager : MonoBehaviour
     }
 
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
-
-    public void OnDrawGizmos()
-    {
-        if (testPos[0].Equals(Vector3.zero))
-            return;
-        for (int i = 0; i < testPos.Length; i++)
-        {
-            Gizmos.DrawSphere(testPos[i], 0.2f);
-        }
-    }
-    private void TestGizmos()
-    {
-        for (int i = 0; i < 1000; i++)
-        {
-            var rndAngle2 = Random.Range(0, 181);
-            var rndAnimalRange2 = Random.Range(3.6f, 4.6f);
-            testPos[i] = animal.transform.position - Quaternion.Euler(new Vector3(0f, rndAngle2, 0f)) * Vector3.forward * rndAnimalRange2;
-        }
-    }
 }

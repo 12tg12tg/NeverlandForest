@@ -13,7 +13,7 @@ Shader "Custom/MonsterShader"
         SubShader
         {
             Tags { "RenderType" = "Opaque" }
-            LOD 200
+            LOD 300
 
             CGPROGRAM
             // Physically based Standard lighting model, and enable shadows on all light types

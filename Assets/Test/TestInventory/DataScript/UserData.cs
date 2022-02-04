@@ -22,6 +22,12 @@ public class UserData
     public int dungeonStartIdx = 100;
     public bool dungeonReStart;
 
+    // 랜덤이벤트 데이터, 세이브 로드
+    public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
+    public List<string> useEventID = new List<string>();
+    public bool isRandomDataLoad;
+    public bool isFirst = true;
+
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
     //Experienced Craft
@@ -102,8 +108,6 @@ public class UserData
         int myInventoryFullCount = 0;
         // 칸 하나를 일부 차지한 경우의 개수
         int myInventorySpaceCount = 0;
-
-
 
         foreach (var myItem in haveAllItemList)
         {

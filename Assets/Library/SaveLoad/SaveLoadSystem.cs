@@ -12,6 +12,7 @@ using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 using CraftSaveDataCurrentVersion = CraftSaveData_0;
+using RandomEventSaveDataCurrentVersion = RandomEventSaveData_0;
 using ExperienceSaveDataCurrentVersion = ItemExperienceSaveData_0;
 
 //=========================================================================================
@@ -44,6 +45,7 @@ public static class SaveLoadSystem
         WorldMapPlayerData,
         ConsumableData,
         Craft,
+        RandomEvent,
         ItemExperience,
     }
 
@@ -226,7 +228,6 @@ public static class SaveLoadSystem
         switch (saveType)
         {
             case SaveType.Player:
-
                 switch (version)
                 {
                     case 0:
@@ -236,9 +237,7 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Option:
-
                 switch (version)
                 {
                     case 0:
@@ -248,13 +247,11 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Recipe:
-
                 switch (version)
                 {
                     case 0:
-                       
+
                         return JsonConvert.DeserializeObject<RecipeSaveDataCurrentVersion>(json);
                     default:
                         return null;
@@ -307,12 +304,18 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.RandomEvent:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
-
     }
-
     public static SaveDataBase VersionUpdate(SaveType saveType, SaveDataBase data)
     {
         switch (saveType)
@@ -363,6 +366,12 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.Craft:
                 while (!(data is CraftSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.RandomEvent:
+                while (!(data is RandomEventSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }
