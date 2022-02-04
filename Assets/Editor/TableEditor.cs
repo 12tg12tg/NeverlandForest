@@ -7,7 +7,8 @@ using System.IO;
 public class TableEditor : EditorWindow
 {
     private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable",
-        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable", "RandomEventTable","CraftDataTable" };
+        "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable",
+        "RandomEventTable", "CraftDataTable", "TutorialStoryDataTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -76,6 +77,8 @@ public class TableEditor : EditorWindow
                 break;
             case "CraftDataTable":
                 ViewCraftData(tableList);
+                break;
+            case "TutorialStoryDataTable":
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
@@ -263,14 +266,14 @@ public class TableEditor : EditorWindow
         randomData["FAIL2DESC"] = EditorGUILayout.TextField("FAIL2DESC", randomData["FAIL2DESC"]);
         randomData["SELECT3NAME"] = EditorGUILayout.TextField("SELECT3NAME", randomData["SELECT3NAME"]);
         randomData["SUCESS3CHANCE"] = EditorGUILayout.TextField("SUCESS3CHANCE", randomData["SUCESS3CHANCE"]);
-        randomData["SUCESS3TYPE"] = EditorGUILayout.TextField("SUCESS3TYPE", randomData["SUCESS3TYPE"]);
-        randomData["SUCESS3ID"] = EditorGUILayout.TextField("SUCESS3ID", randomData["SUCESS3ID"]);
-        randomData["SUCESS3VAL"] = EditorGUILayout.TextField("SUCESS3VAL", randomData["SUCESS3VAL"]);
-        randomData["SUCESS3DESC"] = EditorGUILayout.TextField("SUCESS3DESC", randomData["SUCESS3DESC"]);
-        randomData["FAIL3TYPE"] = EditorGUILayout.TextField("FAIL3TYPE", randomData["FAIL3TYPE"]);
-        randomData["FAIL3ID"] = EditorGUILayout.TextField("FAIL3ID", randomData["FAIL3ID"]);
-        randomData["FAIL3VAL"] = EditorGUILayout.TextField("FAIL3VAL", randomData["FAIL3VAL"]);
-        randomData["FAIL3DESC"] = EditorGUILayout.TextField("FAIL3DESC", randomData["FAIL3DESC"]);
+        //randomData["SUCESS3TYPE"] = EditorGUILayout.TextField("SUCESS3TYPE", randomData["SUCESS3TYPE"]);
+        //randomData["SUCESS3ID"] = EditorGUILayout.TextField("SUCESS3ID", randomData["SUCESS3ID"]);
+        //randomData["SUCESS3VAL"] = EditorGUILayout.TextField("SUCESS3VAL", randomData["SUCESS3VAL"]);
+        //randomData["SUCESS3DESC"] = EditorGUILayout.TextField("SUCESS3DESC", randomData["SUCESS3DESC"]);
+        //randomData["FAIL3TYPE"] = EditorGUILayout.TextField("FAIL3TYPE", randomData["FAIL3TYPE"]);
+        //randomData["FAIL3ID"] = EditorGUILayout.TextField("FAIL3ID", randomData["FAIL3ID"]);
+        //randomData["FAIL3VAL"] = EditorGUILayout.TextField("FAIL3VAL", randomData["FAIL3VAL"]);
+        //randomData["FAIL3DESC"] = EditorGUILayout.TextField("FAIL3DESC", randomData["FAIL3DESC"]);
     }
 
     private void ViewCraftData(List<Dictionary<string, string>> craftList)

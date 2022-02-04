@@ -15,10 +15,6 @@ public class RandomEventObject : MonoBehaviour
         randomEventID = eventID;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-    }
-
     private void OnTriggerExit(Collider other)
     {
         if (other.tag is "Player")
@@ -27,7 +23,7 @@ public class RandomEventObject : MonoBehaviour
             DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             var rndEvent = RandomEventManager.Instance.GetEventData(randomEventID);
             RandomEventUIManager.Instance.EventInit(rndEvent);
-
+            
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             Destroy(gameObject);
         }

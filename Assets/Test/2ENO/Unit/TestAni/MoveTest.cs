@@ -277,28 +277,6 @@ public class MoveTest : MonoBehaviour
 
     public void AnimationChange()
     {
-        //if (isMove)
-        //    PlayWalkAnimation();
-        //else
-        //    PlayIdleAnimation();
         playerAnimationBoy.SetFloat("Speed", boySpeed);
-    }
-
-    private void PlayWalkAnimation()
-    {
-        if (curAnimation == PlayerMoveAnimation.Walk)
-            return;
-        curAnimation = PlayerMoveAnimation.Walk;
-        playerAnimationBoy.SetTrigger("Walk");
-        playerAnimationGirl.SetTrigger("Walk");
-    }
-
-    private void PlayIdleAnimation()
-    {
-        if (curAnimation == PlayerMoveAnimation.Idle)
-            return;
-        curAnimation = PlayerMoveAnimation.Idle;
-        playerAnimationBoy.SetTrigger("Idle");
-        playerAnimationGirl.SetTrigger("Idle");
     }
 }

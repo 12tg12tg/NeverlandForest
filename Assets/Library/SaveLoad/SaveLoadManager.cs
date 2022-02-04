@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 public class SaveLoadManager : Singleton<SaveLoadManager>
@@ -13,6 +11,8 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     WorldMapPlayerData_0 worldMapPlayerData;
     ConsumableSaveData_0 consumableSaveData;
     CraftSaveData_0 craftSaveData;
+    RandomEventSaveData_0 randomEvent;
+    ItemExperienceSaveData_0 itemExperienceSaveData;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -30,9 +30,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Recipe:
                 SaveRecipe();
                 break;
-            case SaveLoadSystem.SaveType.Time:
-                SaveTime();
-                break;
             case SaveLoadSystem.SaveType.DungeonMap:
                 SaveDungeonMap();
                 break;
@@ -44,6 +41,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Craft:
                 SaveCraft();
+                break;
+            case SaveLoadSystem.SaveType.ItemExperience:
+                SaveExperience();
+                break;
+            case SaveLoadSystem.SaveType.RandomEvent:
+                SaveRandomEvent();
+                break;
+            case SaveLoadSystem.SaveType.ConsumableData:
+                SaveConsumableData();
                 break;
         }
     }
@@ -60,9 +66,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Recipe:
                 LoadRecipe();
                 break;
-            case SaveLoadSystem.SaveType.Time:
-                LoadTime();
-                break;
             case SaveLoadSystem.SaveType.DungeonMap:
                 LoadDungeonMap();
                 break;
@@ -75,6 +78,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Craft:
                 LoadCraft();
                 break;
+            case SaveLoadSystem.SaveType.ItemExperience:
+                LoadExperience();
+                break;
+            case SaveLoadSystem.SaveType.RandomEvent:
+                LoadRandomEvent();
+                break;
+            case SaveLoadSystem.SaveType.ConsumableData:
+                LoadConsumableData();
+                break;
         }
     }
     private void SavePlayer()
@@ -83,11 +95,21 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveOption()
     {
     }
+
+    private void SaveRandomEvent()
+    {
+        randomEvent = new RandomEventSaveData_0();
+
+        randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
+        randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
+        randomEvent.isFirst = Vars.UserData.isFirst;
+
+        SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
+    }
+
     private void SaveDungeonMap()
     {
         dungeonMapData = new DungeonMapSaveData_0();
-        //var list = new List<DungeonRoom>();
-        //var rList = new List<DungeonRoom[]>();
         var pList = new List<PlayerDungeonUnitData>();
         var pList2 = new List<PlayerDungeonUnitData>();
         var iList = new List<Vector2>();
@@ -100,14 +122,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         foreach (var data in Vars.UserData.AllDungeonData)
         {
-            //list.Add(data.Value.curDungeonData);
-            //rList.Add(data.Value.dungeonRoomArray);
             pList.Add(data.Value.curPlayerGirlData);
             pList2.Add(data.Value.curPlayerBoyData);
             iList.Add(data.Key);
             rList2.Add(data.Value.dungeonRoomList);
         }
-        //dungeonMapData.dungeonRoomArray = rList;
         dungeonMapData.curPlayerGirlData = pList;
         dungeonMapData.curPlayerBoyData = pList2;
         dungeonMapData.dungeonIndex = iList;
@@ -117,18 +136,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
 
-    //dungeonMapData.dungeonRoomList = ArrayConvertList(Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray);
-    // = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curDungeonData;
-    //dungeonMapData.curPlayerData = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].curPlayerData;
-    //dungeonMapData.dungeonRoomArray = Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-    //dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
-
     private List<DungeonRoom> ArrayConvertList(DungeonRoom[] array)
     {
         List<DungeonRoom> list = new List<DungeonRoom>();
         // Ω√¿€ ¿Œµ¶Ω∫
         int curIdx = 100;
-        while(array[curIdx].nextRoomIdx != -1)
+        while (array[curIdx].nextRoomIdx != -1)
         {
             list.Add(array[curIdx]);
             curIdx = array[curIdx].nextRoomIdx;
@@ -152,11 +165,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(craftSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
 
     }
-    private void SaveTime()
+    private void SaveExperience()
     {
-        //timeData = new TimeSaveData_0();
-        //timeData.makeTime = Vars.UserData.MakeList;
-        //SaveLoadSystem.Save(timeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
+        itemExperienceSaveData = new ItemExperienceSaveData_0();
+        itemExperienceSaveData.haveItemExperience = Vars.UserData.experienceHaveItemList;
+        SaveLoadSystem.Save(itemExperienceSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+
     }
     private void SaveWorldMapData()
     {
@@ -175,11 +189,18 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     private void SaveConsumableData()
     {
         consumableSaveData = new ConsumableSaveData_0();
-        consumableSaveData.curStamina = Vars.UserData.uData.CurStamina;
         consumableSaveData.curIngameHour = Vars.UserData.uData.CurIngameHour;
         consumableSaveData.curIngameMinute = Vars.UserData.uData.CurIngameMinute;
-        consumableSaveData.curTimeState =ConsumeManager.CurTimeState;
+
+        consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
+        consumableSaveData.curlanternstate = ConsumeManager.CurLanternState;
+
         consumableSaveData.date = Vars.UserData.uData.Date;
+        consumableSaveData.tiredness = Vars.UserData.uData.Tiredness;
+        consumableSaveData.hunger = Vars.UserData.uData.Hunger;
+        consumableSaveData.bonfireTime = Vars.UserData.uData.BonfireHour;
+        SaveLoadSystem.Save(consumableSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
+
     }
 
     private void LoadPlayer()
@@ -204,13 +225,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.HaveCraftIDList = craftSaveData.haveCraft;
         }
     }
-    private void LoadTime()
+
+    private void LoadExperience()
     {
-        //timeData = (TimeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Time);
-        //if (timeData != null)
-        //{
-        //    Vars.UserData.MakeList = timeData.makeTime;
-        //}
+        itemExperienceSaveData = (ItemExperienceSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+        if (itemExperienceSaveData != null)
+        {
+            Vars.UserData.experienceHaveItemList = itemExperienceSaveData.haveItemExperience;
+        }
     }
     private void LoadDungeonMap()
     {
@@ -227,27 +249,35 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
                 ListConvertArray(dungeonMapData.dungeonRoomList[i], dungeonData.dungeonRoomArray);
 
-                if(!Vars.UserData.AllDungeonData.ContainsKey(dungeonMapData.dungeonIndex[i]))
+                if (!Vars.UserData.AllDungeonData.ContainsKey(dungeonMapData.dungeonIndex[i]))
                 {
                     Vars.UserData.AllDungeonData.Add(dungeonMapData.dungeonIndex[i], dungeonData);
                 }
             }
             Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
-            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData = 
+            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData =
                 Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonMapData.curDungeonRoomIndex];
 
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }
     }
-
+    private void LoadRandomEvent()
+    {
+        randomEvent = (RandomEventSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
+        if(randomEvent != null)
+        {
+            Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
+            Vars.UserData.useEventID = randomEvent.useEventIDs;
+            Vars.UserData.isFirst = randomEvent.isFirst;
+        }
+    }
     private void ListConvertArray(List<DungeonRoom> list, DungeonRoom[] array)
     {
-        foreach(var data in list)
+        foreach (var data in list)
         {
             array[data.roomIdx] = data;
         }
     }
-
     private void LoadWorldMapNode()
     {
         worldMapSaveData = (WorldMapData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapData);
@@ -271,11 +301,16 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         consumableSaveData = (ConsumableSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
         if (consumableSaveData != null)
         {
-            Vars.UserData.uData.CurStamina = consumableSaveData.curStamina;
+            Vars.UserData.uData.Tiredness = consumableSaveData.tiredness;
             Vars.UserData.uData.CurIngameHour = consumableSaveData.curIngameHour;
             Vars.UserData.uData.CurIngameMinute = consumableSaveData.curIngameMinute;
-            Vars.UserData.uData.Date = consumableSaveData.date;
+
             ConsumeManager.CurTimeState = consumableSaveData.curTimeState;
+            ConsumeManager.CurLanternState = consumableSaveData.curlanternstate;
+
+            Vars.UserData.uData.Date = consumableSaveData.date;
+            Vars.UserData.uData.Hunger = consumableSaveData.hunger;
+            Vars.UserData.uData.BonfireHour   = consumableSaveData.bonfireTime;
         }
     }
 }

@@ -138,11 +138,11 @@ public class DiaryManager : MonoBehaviour
     {
         if (IsRotation)
         {
-           rotationButton.image.sprite = Resources.Load<Sprite>($"Icons/plus"); 
+           rotationButton.image.sprite = Resources.Load<Sprite>($"UI/plus"); 
         }
         else
         {
-            rotationButton.image.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
+            rotationButton.image.sprite = Resources.Load<Sprite>($"UI/xsymbol");
         }
     }
     public void OpenCookingReward()
@@ -286,6 +286,7 @@ public class DiaryManager : MonoBehaviour
         if (item != null)
         {
             Vars.UserData.AddItemData(item);
+            Vars.UserData.ExperienceListAdd(item.itemId);
         }
         produceInventory.ItemButtonInit();
         CraftResultItem = null;

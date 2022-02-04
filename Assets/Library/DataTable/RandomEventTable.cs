@@ -72,6 +72,13 @@ public class RandomEventTableElem : DataTableElemBase
     public List<int> fail3Val = new();
     public string fail3Desc;
 
+    public string sucess1Info;
+    public string fail1Info;
+    public string sucess2Info;
+    public string fail2Info;
+    public string sucess3Info;
+    public string fail3Info;
+
     public RandomEventTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
@@ -205,6 +212,13 @@ public class RandomEventTableElem : DataTableElemBase
                 fail3Val.Add(int.Parse(dt));
         }
         fail3Desc = data["FAIL3DESC"];
+
+        sucess1Info = data["SUCESS1INFO"];
+        fail1Info = data["FAIL1INFO"];
+        sucess2Info = data["SUCESS2INFO"];
+        fail2Info = data["FAIL2INFO"];
+        sucess3Info = data["SUCESS3INFO"];
+        fail3Info = data["FAIL3INFO"];
     }
 }
 

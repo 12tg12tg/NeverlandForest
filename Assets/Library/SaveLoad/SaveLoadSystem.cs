@@ -7,12 +7,13 @@ using System.Text;
 using PlayerSaveDataCurrentVersion = PlayerSaveData_1;
 using OptionSaveDataCurrentVersion = OptionSaveData_0;
 using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
-using TimeSaveDataCurrentVersion = TimeSaveData_0;
 using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
 using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
 using ConsumableSaveDataCurrentVersion = ConsumableSaveData_0;
 using CraftSaveDataCurrentVersion = CraftSaveData_0;
+using RandomEventSaveDataCurrentVersion = RandomEventSaveData_0;
+using ExperienceSaveDataCurrentVersion = ItemExperienceSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -39,12 +40,13 @@ public static class SaveLoadSystem
         Player,
         Option,
         Recipe,
-        Time,
         DungeonMap,
         WorldMapData,
         WorldMapPlayerData,
         ConsumableData,
         Craft,
+        RandomEvent,
+        ItemExperience,
     }
 
     private static bool isInit;
@@ -226,7 +228,6 @@ public static class SaveLoadSystem
         switch (saveType)
         {
             case SaveType.Player:
-
                 switch (version)
                 {
                     case 0:
@@ -236,9 +237,7 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Option:
-
                 switch (version)
                 {
                     case 0:
@@ -248,24 +247,12 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
             case SaveType.Recipe:
-
                 switch (version)
                 {
                     case 0:
-                       
+
                         return JsonConvert.DeserializeObject<RecipeSaveDataCurrentVersion>(json);
-                    default:
-                        return null;
-                }
-
-            case SaveType.Time:
-                switch (version)
-                {
-                    case 0:
-
-                        return JsonConvert.DeserializeObject<TimeSaveDataCurrentVersion>(json);
                     default:
                         return null;
                 }
@@ -309,12 +296,26 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.ItemExperience:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<ExperienceSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
+            case SaveType.RandomEvent:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<RandomEventSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
-
     }
-
     public static SaveDataBase VersionUpdate(SaveType saveType, SaveDataBase data)
     {
         switch (saveType)
@@ -335,13 +336,6 @@ public static class SaveLoadSystem
 
             case SaveType.Recipe:
                 while (!(data is RecipeSaveDataCurrentVersion))
-                {
-                    data = data.VersionUp();
-                }
-                return data;
-
-            case SaveType.Time:
-                while (!(data is TimeSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }
@@ -372,6 +366,18 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.Craft:
                 while (!(data is CraftSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.RandomEvent:
+                while (!(data is RandomEventSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.ItemExperience:
+                while (!(data is ExperienceSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

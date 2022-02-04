@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,6 +39,7 @@ public class BottomUIManager : MonoBehaviour
     public RectTransform popUpWindow;
     public DataAllItem selectItem;
     public RectTransform selectedItemRect;
+    public GameObject burnButton;
 
     [Header("배틀을 위한 UI Linker")]
     public TrapSelecter battleLinker;
@@ -48,12 +48,33 @@ public class BottomUIManager : MonoBehaviour
     {
         instance = this;
         popUpWindow.gameObject.SetActive(false);
+        burnButton.SetActive(false);
         SkillButtonInit();
     }
 
     private void Start()
     {
         bm = BattleManager.Instance;
+        switch (GameManager.Manager.State)
+        {
+            case GameState.None:
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.Hunt:
+                break;
+            case GameState.Gathering:
+                break;
+            case GameState.Cook:
+                break;
+            case GameState.Camp:
+                burnButton.SetActive(true);
+                break;
+            case GameState.Dungeon:
+                break;
+            default:
+                break;
+        }
     }
 
     // 프로그래스
@@ -65,12 +86,12 @@ public class BottomUIManager : MonoBehaviour
             progressImg[0].enabled = false;
             progressImg[1].enabled = false;
         }
-        else if(prog == 1)
+        else if (prog == 1)
         {
             progressImg[0].enabled = true;
             progressImg[1].enabled = false;
         }
-        else if(prog == 2)
+        else if (prog == 2)
         {
             progressImg[0].enabled = true;
             progressImg[1].enabled = true;
@@ -80,7 +101,7 @@ public class BottomUIManager : MonoBehaviour
     // 스킬 버튼
     public void InteractiveSkillButton(PlayerType type, bool interactive)
     {
-        if(type == PlayerType.Boy)
+        if (type == PlayerType.Boy)
         {
             isBoySkillDone = !interactive;
         }
@@ -279,17 +300,16 @@ public class BottomUIManager : MonoBehaviour
 
     public void ItemBurn()
     {
-        if (selectItem.ItemTableElem.isBurn ==true)
+        if (selectItem == null)
+            return;
+        if (selectItem.ItemTableElem.isBurn == true)
         {
-            if (selectItem == null)
-                return;
-
             var allItem = new DataAllItem(selectItem);
             allItem.OwnCount = 1;
             var bonminute = Vars.UserData.uData.BonfireHour * 60;
             bonminute += selectItem.ItemTableElem.burn_recovery;
             Vars.UserData.uData.BonfireHour = bonminute / 60;
-           
+
             if (Vars.UserData.RemoveItemData(allItem))
             {
                 popUpWindow.gameObject.SetActive(false);

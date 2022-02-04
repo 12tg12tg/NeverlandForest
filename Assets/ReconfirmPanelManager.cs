@@ -10,6 +10,7 @@ public class ReconfirmPanelManager : MonoBehaviour
     public GameObject gatheringInDungeonReconfirm;
     public GameObject bonFireReconfirm;
     public GameObject bagisFullReconfirm;
+    public GameObject bagisFullInGathering;
     public GameObject randomEventReconfirm;
     [Header("다이어리")]
     public DiaryManager diaryManager;
@@ -53,6 +54,11 @@ public class ReconfirmPanelManager : MonoBehaviour
     {
         AllClose();
         bagisFullReconfirm.SetActive(true);
+    }
+    public void OpenBagReconfirmInGathering()
+    {
+        AllClose();
+        bagisFullInGathering.SetActive(true);
     }
     public void OpenRandomEventfirm()
     {

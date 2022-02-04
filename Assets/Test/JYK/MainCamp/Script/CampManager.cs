@@ -16,13 +16,14 @@ public class CampManager : MonoBehaviour
     private List<DataAllItem> rewardList = new List<DataAllItem>();
     private List<GameObject> rewardGameObjectList = new List<GameObject>();
     private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
-    private DataAllItem selectItem;
     private GameObject reward;
 
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
+
+    public List<DataAllItem> selectItemList = new List<DataAllItem>();
 
     [Header("미니맵 셋팅")]
     public RoomObject mainRoomPrefab;
@@ -32,6 +33,13 @@ public class CampManager : MonoBehaviour
     public GameObject minimapPanel;
     private int curDungeonRoomIndex;
     public GameObject camera;
+
+    int left, right, top, bottom;
+    Vector3 leftPos = Vector3.zero;
+    Vector3 rightPos = Vector3.zero;
+    Vector3 topPos = Vector3.zero;
+    Vector3 bottomPos = Vector3.zero;
+
 
     [Header("다이어리 셋팅")]
     public DiaryManager diaryManager;
@@ -56,6 +64,7 @@ public class CampManager : MonoBehaviour
     public GameObject tent;
     public GameObject bush;
     public GameObject bluemoonObject;
+    public RecipeIcon diaryRecipeIcon;
     public List<DataAllItem> RewardList
     {
         get => rewardList;
@@ -66,14 +75,6 @@ public class CampManager : MonoBehaviour
     }
     [Header("요리제스처")]
     public SimpleGesture simpleGesture;
-    public DataAllItem SelectItem
-    {
-        get => selectItem;
-        set
-        {
-            selectItem = value;
-        }
-    }
     public enum CampEvent
     {
         StartCook,
@@ -100,15 +101,19 @@ public class CampManager : MonoBehaviour
 
         EventBus<CampEvent>.ResetEventBus();
     }
+    public void Awake()
+    {
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
+        GameManager.Manager.State = GameState.Camp;
+    }
     public void Start()
     {
-        Init();
+        CampInit();
     }
-    public void Init()
+    public void CampInit()
     {
         instance = this;
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-        GameManager.Manager.State = GameState.Camp;
         StartPos = camera.transform.position;
 
         CreateMiniMapObject();
@@ -167,7 +172,8 @@ public class CampManager : MonoBehaviour
     {
         var tentPos = tent.transform.position;
         EndPos = new Vector3(tentPos.x, tentPos.y + 2f, tentPos.z - 5f);
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenSleepInCamp));
+        bonTimeText.gameObject.SetActive(false);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenSleepInCamp));
     }
     public void OpenSleepInCamp()
     {
@@ -184,6 +190,7 @@ public class CampManager : MonoBehaviour
             newBottomUi.SetActive(true);
             isSleepMove = false;
         }
+        bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
 
@@ -191,6 +198,7 @@ public class CampManager : MonoBehaviour
     public void OpenCookScene(object[] vals)
     {
         if (vals.Length != 0) return;
+        diaryRecipeIcon.Init();
         StartCookingInCamp();
     }
 
@@ -198,8 +206,8 @@ public class CampManager : MonoBehaviour
     {
         var potPos = pot.transform.position;
         EndPos = new Vector3(potPos.x + 1f, potPos.y + 2f, potPos.z - 3f);
-
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenCookInCamp));
+        bonTimeText.gameObject.SetActive(false);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
     }
     public void RotateButtonCheck()
     {
@@ -216,12 +224,13 @@ public class CampManager : MonoBehaviour
     {
         if (isCookMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             CloseRotationPanel();
-            newBottomUi.SetActive(true);
 
             isCookMove = false;
         }
+        bonTimeText.gameObject.SetActive(true);
+        newBottomUi.SetActive(true);
     }
     public void OpenCookInCamp()
     {
@@ -267,7 +276,8 @@ public class CampManager : MonoBehaviour
     {
         var bushPos = bush.transform.position;
         EndPos = new Vector3(bushPos.x, bushPos.y + 2f, bushPos.z - 5f);
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenGatheringInCamp));
+        bonTimeText.gameObject.SetActive(false);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
     }
     public void OpenGatheringInCamp()
     {
@@ -280,11 +290,11 @@ public class CampManager : MonoBehaviour
     {
         if (isGatheringMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
-            newBottomUi.SetActive(true);
-
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             isGatheringMove = false;
         }
+        bonTimeText.gameObject.SetActive(true);
+        newBottomUi.SetActive(true);
 
         if (rewardGameObjectList.Count > 0)
         {
@@ -317,7 +327,8 @@ public class CampManager : MonoBehaviour
     {
         var workPos = workshop.transform.position;
         EndPos = new Vector3(workPos.x, workPos.y + 2f, workPos.z - 5f);
-        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 3f, OpenProduceInCamp));
+        bonTimeText.gameObject.SetActive(false);
+        StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
     }
     public void OpenProduceInCamp()
     {
@@ -335,11 +346,12 @@ public class CampManager : MonoBehaviour
     {
         if (isProduceMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
-            newBottomUi.SetActive(true);
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
 
             isProduceMove = false;
         }
+        bonTimeText.gameObject.SetActive(true);
+        newBottomUi.SetActive(true);
     }
     public void ReProduce()
     {
@@ -383,13 +395,19 @@ public class CampManager : MonoBehaviour
 
         int curIdx = Vars.UserData.dungeonStartIdx;
         var curRoomIndex = curDungeonRoomIndex;
+
+        left = curIdx % 20;
+        right = curIdx % 20;
+        top = curIdx / 20;
+        bottom = curIdx / 20;
+        RoomObject obj;
         while (array[curIdx].nextRoomIdx != -1)
         {
             var room = array[curIdx];
             if (room.RoomType == DunGeonRoomType.MainRoom)
             {
                 //var mainRoomPrefab = DungeonSystem.
-                var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                      , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -401,7 +419,7 @@ public class CampManager : MonoBehaviour
             }
             else
             {
-                var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
+                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
                 , Quaternion.identity, mapPos.transform);
                 var objectInfo = obj.GetComponent<RoomObject>();
                 objectInfo.roomIdx = room.roomIdx;
@@ -411,6 +429,38 @@ public class CampManager : MonoBehaviour
                     mesh.material.color = Color.blue;
                 }
             }
+            if (curIdx == Vars.UserData.dungeonStartIdx)
+            {
+                leftPos = obj.transform.position;
+                rightPos = obj.transform.position;
+                topPos = obj.transform.position;
+                bottomPos = obj.transform.position;
+            }
+
+            if (curIdx != 0)
+            {
+                if (left > curIdx % 20)
+                {
+                    left = curIdx % 20;
+                    leftPos = obj.transform.position;
+                }
+                if (right < curIdx % 20)
+                {
+                    right = curIdx % 20;
+                    rightPos = obj.transform.position;
+                }
+                if (top > curIdx / 20)
+                {
+                    top = curIdx / 20;
+                    topPos = obj.transform.position;
+                }
+                if (bottom < curIdx / 20)
+                {
+                    bottom = curIdx / 20;
+                    bottomPos = obj.transform.position;
+                }
+            }
+
             curIdx = array[curIdx].nextRoomIdx;
         }
         var lastRoom = array[curIdx];
@@ -427,7 +477,8 @@ public class CampManager : MonoBehaviour
         var lastIdx = count - 1;
         var last = mapPos.transform.GetChild(lastIdx);
         var x = (first.position.x + last.position.x) / 2;
-        campminimapCamera.transform.position = new Vector3(x, mapPos.transform.position.y + 10f, -47f);
+        campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
+        //new Vector3(x, mapPos.transform.position.y + 10f, -47f);
     }
 
     public void SetGatheringTime()
@@ -506,21 +557,29 @@ public class CampManager : MonoBehaviour
         {
             gatheringRewardList[i].IsSelect = false;
         }
-        if (selectItem != null)
+        if (selectItemList.Count > 0)
         {
-            Vars.UserData.AddItemData(selectItem);
-            for (int i = 0; i < rewardList.Count; i++)
+            for (int i = 0; i < selectItemList.Count; i++)
             {
-                if (rewardList[i] == selectItem)
+                if (Vars.UserData.AddItemData(selectItemList[i]) != false)
                 {
-                    rewardList.RemoveAt(i);
+                    Vars.UserData.AddItemData(selectItemList[i]);
+                    Vars.UserData.ExperienceListAdd(selectItemList[i].itemId);
+
+                    for (int j = rewardList.Count-1; j>=0; j--)
+                    {
+                        if (rewardList[j] == selectItemList[i])
+                        {
+                            rewardList.RemoveAt(j);
+                        }
+                    }
+                    if (rewardList.Count == 0)
+                    {
+                        rewardList.Clear();
+                    }
                 }
             }
-            if (rewardList.Count == 0)
-            {
-                rewardList.Clear();
-            }
-
+            diaryManager.gatheringInventory.ItemButtonInit();
             if (BottomUIManager.Instance != null)
             {
                 BottomUIManager.Instance.ItemListInit();
@@ -531,17 +590,23 @@ public class CampManager : MonoBehaviour
             }
             for (int i = 0; i < rewardGameObjectList.Count; i++)
             {
-                if (selectItem == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
+                for (int j = 0; j < selectItemList.Count; j++)
                 {
-                    Destroy(rewardGameObjectList[i]);
-                    rewardGameObjectList.RemoveAt(i);
+                    if (selectItemList[j] == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
+                    {
+                        Destroy(rewardGameObjectList[i]);
+                        rewardGameObjectList.RemoveAt(i);
+                    }
                 }
             }
             if (rewardGameObjectList.Count == 0)
             {
                 rewardGameObjectList.Clear();
             }
-            selectItem = null;
+            for (int i = selectItemList.Count - 1; i >= 0; i--)
+            {
+                selectItemList.RemoveAt(i);
+            }
         }
     }
     public void AllItem()
@@ -551,6 +616,7 @@ public class CampManager : MonoBehaviour
             for (int i = rewardList.Count - 1; i >= 0; i--)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
+                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
                 rewardList.RemoveAt(i);
             }
             if (BottomUIManager.Instance != null)
