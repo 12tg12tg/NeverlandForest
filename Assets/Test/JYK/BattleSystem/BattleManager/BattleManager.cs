@@ -315,7 +315,7 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-
+                BottomUIManager.Instance.IsSkillLock = false;
             }
         }
     }

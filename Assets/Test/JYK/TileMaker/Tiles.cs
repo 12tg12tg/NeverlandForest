@@ -328,7 +328,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 //manager.DoCommand(item as DataConsumable);
             }
 
-            BottomUIManager.Instance.curSkillButton.Cancle();
+            BottomUIManager.Instance.curSkillButton.Cancle_UseSkill();
             BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
             bm.tileLink.EndTileClick();
             bm.uiLink.UpdateProgress(); 

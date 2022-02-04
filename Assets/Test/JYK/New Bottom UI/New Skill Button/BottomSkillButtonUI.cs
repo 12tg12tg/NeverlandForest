@@ -6,6 +6,7 @@ using TMPro;
 
 public class BottomSkillButtonUI : MonoBehaviour
 {
+    private BottomUIManager bottomUiManager;
     public Button ownButton;
 
     public DataPlayerSkill skill;                       // 담고있는 스킬정보
@@ -20,22 +21,15 @@ public class BottomSkillButtonUI : MonoBehaviour
     private CanvasScaler cs;
     private float height;
     private Vector2 openOffset;                         // Open/Close용 크기 계산
+    private bool isCalculateOffset;
 
     // Property
-    private Vector2 OpenOffset
-    {
-        get
-        {
-            if(openOffset == Vector2.zero)
-            {
-                CalculateOffset();
-            }
-            return openOffset;
-        } 
-    }
+    private Vector2 CoverOrigianlPos { get; set; }
+    private Vector2 CoverOpenPos { get; set; }
 
     public void Init(DataPlayerSkill skill)
     {
+        bottomUiManager ??= BottomUIManager.Instance;
         cover.interactable = true;
         below.interactable = false;
 
@@ -66,13 +60,21 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void IntoSkillStage() // 버튼
     {
-        BottomUIManager.Instance.info.Init(skill);
+        if(!isCalculateOffset)
+        {
+            isCalculateOffset = true;
+            CalculateOffset();
+            CoverOrigianlPos = coverRt.anchoredPosition;
+            CoverOpenPos = CoverOrigianlPos + openOffset;
+        }
 
-        if(GameManager.Manager.State == GameState.Battle && BattleManager.Instance.FSM.curState == BattleState.Player)
+        bottomUiManager.info.Init(skill);
+
+        if(!bottomUiManager.IsSkillLock)
         {
             cover.interactable = false;
-            BottomUIManager.Instance.IntoSkillState(this);
-            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition + OpenOffset, 0.3f,
+            bottomUiManager.IntoSkillState(this);
+            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
                 () => { below.interactable = true; }));
         }
     }
@@ -80,8 +82,15 @@ public class BottomSkillButtonUI : MonoBehaviour
     public void Cancle() // 버튼
     {
         below.interactable = false;
-        BottomUIManager.Instance.ExitSkillState();
-        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition - OpenOffset, 0.3f,
+        bottomUiManager.ExitSkillState(true);
+        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f,
             () => { cover.interactable = true; }));
+    }
+
+    public void Cancle_UseSkill()
+    {
+        below.interactable = false;
+        bottomUiManager.ExitSkillState(false);
+        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f, null));
     }
 }

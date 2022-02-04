@@ -28,6 +28,9 @@ public class BattleDirecting : MonoBehaviour
     private int defaultLayer;
     private Color origianlColorLight;
     public Color darknessColorLight;
+    private Coroutine coStartBeDark;
+    private Coroutine coEndBeLight;
+    private const float lightChangeTime = 0.6f;
 
     private List<MonsterUnit> shaderChangeUnit = new List<MonsterUnit>();
     private List<MonsterUnit> layerChangeUnit = new List<MonsterUnit>();
@@ -48,15 +51,39 @@ public class BattleDirecting : MonoBehaviour
     public void SetTimescaleAndShader(PlayerSkillTableElem skill)
     {
         Time.timeScale = 0.4f;
-        mainLight.color = darknessColorLight;
         ShaderChange(skill);
+
+        if (coStartBeDark != null)
+        {
+            StopCoroutine(coStartBeDark);
+            coStartBeDark = null;
+        }
+        if (coEndBeLight != null)
+        {
+            StopCoroutine(coEndBeLight);
+            coEndBeLight = null;
+        }
+        var lightColor = mainLight.color;
+        coStartBeDark = StartCoroutine(CoLightChange(lightColor, darknessColorLight, lightChangeTime, () => coStartBeDark = null));
     }
 
     public void ResetTimescaleAndShader()
     {
         Time.timeScale = 1f;
-        mainLight.color = origianlColorLight;
         ShaderReset();
+
+        if (coStartBeDark != null)
+        {
+            StopCoroutine(coStartBeDark);
+            coStartBeDark = null;
+        }
+        if (coEndBeLight != null)
+        {
+            StopCoroutine(coEndBeLight);
+            coEndBeLight = null;
+        }
+        var lightColor = mainLight.color;
+        coEndBeLight = StartCoroutine(CoLightChange(lightColor, origianlColorLight, lightChangeTime, ()=> coEndBeLight = null));
     }
 
     public void ShaderChange(PlayerSkillTableElem skill)
@@ -110,10 +137,20 @@ public class BattleDirecting : MonoBehaviour
         shaderChangeUnit.Clear();
     }
 
-    //public IEnumerator LightChange(Color start, Color end, UnityAction action, float time)
-    //{
-
-    //}
+    public IEnumerator CoLightChange(Color start, Color end, float time, UnityAction action)
+    {
+        var startTime = Time.realtimeSinceStartup;
+        var endTime = startTime + time;
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
+            var color = Color.Lerp(start, end, ratio);
+            mainLight.color = color;
+            yield return null;
+        }
+        mainLight.color = end;
+        action?.Invoke();
+    }
 
 
     // 함정 설치 관련 함수 =====================================================================

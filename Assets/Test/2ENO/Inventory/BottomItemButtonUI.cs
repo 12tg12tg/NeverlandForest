@@ -117,7 +117,8 @@ public class BottomItemButtonUI : MonoBehaviour
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if (BattleManager.Instance.FSM.curState == BattleState.Start)
+                if (BattleManager.Instance.FSM.curState == BattleState.Start
+                     && BattleManager.Instance.isPlayerFirst)
                 {
                     if (elem.type == "INSTALLATION" && (elem.id != $"ITEM_{18}"))
                     {
