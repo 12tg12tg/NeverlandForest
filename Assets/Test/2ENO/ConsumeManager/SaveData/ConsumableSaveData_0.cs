@@ -8,7 +8,7 @@ public class ConsumableSaveData_0 : SaveDataBase
     public float curIngameMinute;
 
     public TimeState curTimeState;
-    public LanternState curlanternstate;
+    public float curLanternCount;
 
     public int date;
     public float tiredness;

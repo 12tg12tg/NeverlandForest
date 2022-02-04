@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
             wm.Init();
 
         DontDestroyOnLoad(this);
+        ConsumeManager.init();
         //MonsterPool.Instance.Init();
     }
 
