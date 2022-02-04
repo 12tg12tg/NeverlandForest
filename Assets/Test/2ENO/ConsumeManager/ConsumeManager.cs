@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum DateEvent
@@ -21,12 +19,12 @@ public enum LivingState
     GameOver
 }
 public enum LanternState
-{   
+{
     None,
     Level1,
     Level2,
     Level3,
-    Level4, 
+    Level4,
 }
 public static class ConsumeManager
 {
@@ -59,7 +57,7 @@ public static class ConsumeManager
 
     public static void GetthingHunger(int hungercount)
     {
-        if (Vars.UserData.uData.ChangeableMaxStamina >0)
+        if (Vars.UserData.uData.ChangeableMaxStamina > 0)
         {
             Vars.UserData.uData.Hunger += hungercount;
             ChangeableMaxStaminChange();
@@ -69,23 +67,23 @@ public static class ConsumeManager
     public static void RecoveryHunger(int hungercount)
     {
         Vars.UserData.uData.Hunger -= hungercount;
-        if (Vars.UserData.uData.Hunger<0)
+        if (Vars.UserData.uData.Hunger < 0)
         {
             Vars.UserData.uData.Hunger = 0;
         }
         ChangeableMaxStaminChange();
         SaveConsumableData();
     }
-    public static void  RecoveryTiredness() 
+    public static void RecoveryTiredness()
     {
         var time = CampManager.Instance.RecoverySleepTime;
-        var rimittime = Vars.UserData.uData.BonfireHour *60;
-        if (rimittime>=time)
+        var rimittime = Vars.UserData.uData.BonfireHour * 60;
+        if (rimittime >= time)
         {
             if (Vars.UserData.uData.Tiredness < Vars.UserData.uData.ChangeableMaxStamina)
             {
                 var recoverValue = Vars.UserData.uData.ChangeableMaxStamina - Vars.UserData.uData.Tiredness;
-                var afterValue = Vars.UserData.uData.ChangeableMaxStamina / 10; 
+                var afterValue = Vars.UserData.uData.ChangeableMaxStamina / 10;
                 var finalValue = time / 30 * afterValue;
                 if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
                 {
@@ -110,7 +108,7 @@ public static class ConsumeManager
     public static void RecoveryTiredness(float recoverTired)
     {
         Vars.UserData.uData.Tiredness += recoverTired;
-        if (Vars.UserData.uData.Tiredness>100)
+        if (Vars.UserData.uData.Tiredness > 100)
         {
             Vars.UserData.uData.Tiredness = 100;
         }
@@ -139,29 +137,39 @@ public static class ConsumeManager
     }
     public static void FullingLantern(int oil)
     {
-        if (Vars.UserData.uData.LanternCount<18)
+        if (Vars.UserData.uData.LanternCount < 18)
         {
             Vars.UserData.uData.LanternCount += oil;
             LanternStateChange();
         }
         SaveConsumableData();
     }
-    private static void RecoverHp(PlayerType type,float recovery)
+    private static void RecoverHp(float recoveryAmount)
     {
-        if (type == PlayerType.Boy)
+        Vars.UserData.uData.HunterHp += recoveryAmount;
+        if (Vars.UserData.uData.HunterHp > Vars.hunterMaxHp)
         {
-            Vars.UserData.uData.HunterHp += recovery;
-            if (Vars.UserData.uData.HunterHp >Vars.hunterMaxHp)
-            {
-                Vars.UserData.uData.HunterHp = Vars.hunterMaxHp;
-            }
+            Vars.UserData.uData.HunterHp = Vars.hunterMaxHp;
         }
         SaveConsumableData();
-
     }
+    private static void GetDamage(float damage)
+    {
+        Vars.UserData.uData.HunterHp -= damage;
+        if (Vars.UserData.uData.HunterHp < 0)
+        {
+            Vars.UserData.uData.HunterHp = 0;
+            EventBus<LivingState>.Publish(LivingState.GameOver);
+            CostDataReset();
+        }
+        SaveConsumableData();
+    }
+
+
+
     public static void ConsumeLantern(int oil)
     {
-        if (Vars.UserData.uData.LanternCount>0)
+        if (Vars.UserData.uData.LanternCount > 0)
         {
             Vars.UserData.uData.LanternCount -= oil;
             LanternStateChange();
@@ -239,16 +247,16 @@ public static class ConsumeManager
         SaveConsumableData();
     }
     private static void TimeStateChange()
-    {   
-        if(Vars.UserData.uData.CurIngameHour <= 12)
+    {
+        if (Vars.UserData.uData.CurIngameHour <= 12)
         {
-            if(curTimeState != TimeState.DayTime)
+            if (curTimeState != TimeState.DayTime)
             {
                 EventBus<TimeState>.Publish(TimeState.DayTime);
             }
             curTimeState = TimeState.DayTime;
         }
-        else if(Vars.UserData.uData.CurIngameHour <= 24)
+        else if (Vars.UserData.uData.CurIngameHour <= 24)
         {
             if (curTimeState != TimeState.NightTime)
             {
@@ -259,19 +267,19 @@ public static class ConsumeManager
         SaveConsumableData();
     }
 
-    public static void TimeUp(float minute, float hour=0)
+    public static void TimeUp(float minute, float hour = 0)
     {
         Vars.UserData.uData.CurIngameHour += hour;
         Vars.UserData.uData.CurIngameMinute += minute;
         float consumeTotalMinute = 60 * hour + minute;
         float consumeStamina = consumeTotalMinute / 30;
         GettingTired(consumeStamina);
-        while(Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
+        while (Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
         {
             Vars.UserData.uData.CurIngameMinute -= Vars.maxIngameMinute;
             Vars.UserData.uData.CurIngameHour++;
         }
-        while(Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
+        while (Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
         {
             Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
             DateUp();
@@ -279,7 +287,7 @@ public static class ConsumeManager
         TimeStateChange();
         SaveConsumableData();
     }
-    public static void RecoveryTimeUp(int minute, int hour=0)
+    public static void RecoveryTimeUp(int minute, int hour = 0)
     {
         Vars.UserData.uData.CurIngameHour += hour;
         Vars.UserData.uData.CurIngameMinute += minute;
@@ -299,27 +307,27 @@ public static class ConsumeManager
     public static void DateUp()
     {
         Vars.UserData.uData.Date++;
-        if(Vars.UserData.uData.Date % 15 == 0)
+        if (Vars.UserData.uData.Date % 15 == 0)
         {
             EventBus<DateEvent>.Publish(DateEvent.BlueMoon);
         }
 
-        if(Vars.UserData.uData.Date > 2)
+        if (Vars.UserData.uData.Date > 2)
         {
             EventBus<DateEvent>.Publish(DateEvent.WitchEffect);
         }
         SaveConsumableData();
     }
-    public static void ConsumeBonfireTime(float minute, float hour =0)
+    public static void ConsumeBonfireTime(float minute, float hour = 0)
     {
         var totalTime = Vars.UserData.uData.BonfireHour * 60;
         totalTime -= minute;
         totalTime -= 60 * hour;
-        if (totalTime<0)
+        if (totalTime < 0)
         {
             totalTime = 0;
         }
-        Vars.UserData.uData.BonfireHour = totalTime/60;
+        Vars.UserData.uData.BonfireHour = totalTime / 60;
         SaveConsumableData();
     }
     public static void RecoveryBonFire(float minute, float hour = 0)
