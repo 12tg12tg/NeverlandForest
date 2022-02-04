@@ -53,6 +53,9 @@ public static class DataTableManager
         craftTable.Load();
         tables.Add(typeof(CraftDataTable), craftTable);
 
+        var stroyTable = new TutorialStoryDataTable();
+        stroyTable.Load();
+        tables.Add(typeof(TutorialStoryDataTable), stroyTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase

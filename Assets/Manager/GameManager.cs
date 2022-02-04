@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
     public WorldMapManager wm;
     [Header("카메라")]
     public CameraManager cm;
+    [Header("튜토리얼")]
+    public TutorialManager tm;
     // Vars
     private GameState state;
     [Header("UI")]
@@ -50,7 +52,25 @@ public class GameManager : MonoBehaviour
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
 
-        cm?.mainCamera.GetComponent<WorldMapCamera>().Init();
+        // TODO : 해당 부분 정리 필요
+        if(cm != null)
+        {
+            if (cm.mainCamera != null)
+            {
+                var wmCamera = cm.mainCamera.GetComponent<WorldMapCamera>();
+                if (wmCamera != null)
+                    wmCamera.Init();
+            }
+
+            if (cm.miniWorldMapCamera != null)
+            {
+                var wmmCamera = cm.miniWorldMapCamera.GetComponent<WorldMapCamera>();
+                if (wmmCamera != null)
+                {
+                    wmmCamera.Init();
+                }
+            }
+        }
         if (wm != null)
             wm.Init();
 
