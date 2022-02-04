@@ -47,6 +47,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.RandomEvent:
                 SaveRandomEvent();
+                break;
             case SaveLoadSystem.SaveType.ConsumableData:
                 SaveConsumableData();
                 break;

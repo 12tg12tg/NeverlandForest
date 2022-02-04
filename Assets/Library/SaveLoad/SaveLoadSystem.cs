@@ -256,15 +256,6 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-            case SaveType.Time:
-                switch (version)
-                {
-                    case 0:
-
-                        return JsonConvert.DeserializeObject<TimeSaveDataCurrentVersion>(json);
-                    default:
-                        return null;
-                }
             case SaveType.DungeonMap:
                 switch (version)
                 {

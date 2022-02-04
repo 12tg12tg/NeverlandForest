@@ -144,7 +144,7 @@ public static class ConsumeManager
         }
         SaveConsumableData();
     }
-    private static void RecoverHp(float recoveryAmount)
+    public static void RecoverHp(float recoveryAmount)
     {
         Vars.UserData.uData.HunterHp += recoveryAmount;
         if (Vars.UserData.uData.HunterHp > Vars.hunterMaxHp)
@@ -153,7 +153,7 @@ public static class ConsumeManager
         }
         SaveConsumableData();
     }
-    private static void GetDamage(float damage)
+    public static void GetDamage(float damage)
     {
         Vars.UserData.uData.HunterHp -= damage;
         if (Vars.UserData.uData.HunterHp < 0)
@@ -164,8 +164,6 @@ public static class ConsumeManager
         }
         SaveConsumableData();
     }
-
-
 
     public static void ConsumeLantern(int oil)
     {

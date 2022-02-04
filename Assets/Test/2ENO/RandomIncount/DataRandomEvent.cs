@@ -313,9 +313,17 @@ public class DataRandomEvent
                     tempStr = $"스테미나수치 : {stamina} ";
                     break;
                 case EventFeedBackType.Hp:
-                    // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var hp = eventVals[i];
-                    Vars.UserData.uData.HunterHp += hp;
+                    if (hp > 0)
+                        ConsumeManager.RecoverHp(hp);
+                    else
+                    {
+                        if(Vars.UserData.uData.HunterHp + hp <= 0)
+                            isInsufficiency[selectNum - 1] = true;
+                        else
+                            ConsumeManager.GetDamage(-hp);
+                    }
+
                     tempStr = $"HP수치 : {hp}\n";
                     sb.Append(tempStr);
 
