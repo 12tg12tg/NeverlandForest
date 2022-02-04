@@ -11,6 +11,8 @@ public class BottomItemButtonUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI count;
     [SerializeField] private Image selectedImg;
     [SerializeField] private Image type;
+    [SerializeField] private Button ownButton;
+    [SerializeField] private Image shadeCover;
 
     private bool isSelect;
     public bool IsSelect
@@ -145,6 +147,16 @@ public class BottomItemButtonUI : MonoBehaviour
 
     }
 
+    public void Interactive(bool interactive)
+    {
+        ownButton.interactable = interactive;
+
+        var color = shadeCover.color;
+        color.a = interactive ? 0f : 0.3f;
+
+        shadeCover.color = color;
+    }
+
     public void ItemButtonClick()
     {
         if (dataItem == null)
@@ -152,13 +164,13 @@ public class BottomItemButtonUI : MonoBehaviour
 
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
+        BottomUIManager.Instance.info.Init(dataItem);
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if(BattleManager.Instance.FSM.curState == BattleState.Start && IsInstallation
+                if (BattleManager.Instance.FSM.curState == BattleState.Start && IsInstallation
                     || BattleManager.Instance.FSM.curState == BattleState.Player && IsConsumable)
                 {
-                    BottomUIManager.Instance.info.Init(dataItem);
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                     BottomUIManager.Instance.isPopUp = true;
@@ -177,7 +189,6 @@ public class BottomItemButtonUI : MonoBehaviour
             case GameState.Cook:
                 break;
             case GameState.Camp:
-                BottomUIManager.Instance.info.Init(dataItem);
                 BottomUIManager.Instance.selectItem = dataItem;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;
@@ -198,7 +209,6 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Dungeon:
-                BottomUIManager.Instance.info.Init(dataItem);
                 BottomUIManager.Instance.selectItem = dataItem;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;

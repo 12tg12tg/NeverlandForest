@@ -191,6 +191,13 @@ public class BottomUIManager : MonoBehaviour
     }
 
     // 아이템 버튼
+    public void ItemButtonsInteractive(bool interactive)
+    {
+        popUpWindow.gameObject.SetActive(false);
+        isPopUp = false;
+        itemButtons.ForEach(n => n.Interactive(interactive));
+    }
+
     public void ItemButtonInit()
     {
         info.Init();

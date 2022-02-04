@@ -28,6 +28,7 @@ public class TrapSelecter : MonoBehaviour
     {
         curItem = item;
         curObstacleType = item.ItemTableElem.obstacleType;
+        bm.directLink.HideArrow();
         StartCoroutine(CoWaitUntilSelectTrapTile());
     }
 
@@ -73,7 +74,7 @@ public class TrapSelecter : MonoBehaviour
             }
             yield return null;
         }
-
+        bm.directLink.ShowArrow(true);
         bm.inputLink.EnableStartButton();
     }
 

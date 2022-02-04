@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -147,6 +148,15 @@ public class BattleWave : MonoBehaviour
         else if (curWave == 3)
         {
             StartWave(3);
+        }
+    }
+
+    public void SetAllMonsterFollowUI(bool moveUI)
+    {
+        var list = wave1.Union(wave2).Union(wave3).Where(n => n != null);
+        foreach (var unit in list)
+        {
+            unit.SetMoveUi(moveUI);
         }
     }
 }

@@ -10,17 +10,17 @@ public static class Vars
     // Skill Info
     public static List<DataPlayerSkill> boySkillList;
     public static List<DataPlayerSkill> girlSkillList;
-    public static List<DataPlayerSkill> BoySkillList 
-    { 
+    public static List<DataPlayerSkill> BoySkillList
+    {
         get
         {
-            if(boySkillList == null)
+            if (boySkillList == null)
             {
                 MakeSkillList();
             }
             return boySkillList;
         }
-    } 
+    }
     public static List<DataPlayerSkill> GirlSkillList
     {
         get

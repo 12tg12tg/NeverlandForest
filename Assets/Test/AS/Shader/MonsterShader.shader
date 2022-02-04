@@ -7,13 +7,12 @@ Shader "Custom/MonsterShader"
         _Glossiness("Smoothness", Range(0,1)) = 0.5
         _Metallic("Metallic", Range(0,1)) = 0.0
         _Value("Value", Range(0,1)) = 1.0
-        [KeywordEnum(Off,On,Black)] _UseGray("Use Gray?", Float) = 0.0
-        [Toggle(GRAY)] _Gray("Gray", Float) = 1.0
+        [KeywordEnum(Off, On, Black)] _UseGray("Set State", Float) = 0.0
     }
         SubShader
         {
             Tags { "RenderType" = "Opaque" }
-            LOD 200
+            LOD 300
 
             CGPROGRAM
             // Physically based Standard lighting model, and enable shadows on all light types
@@ -22,10 +21,7 @@ Shader "Custom/MonsterShader"
             // Use shader model 3.0 target, to get nicer looking lighting
             #pragma target 3.0
 
-            #pragma shader_feature _USEGRAY_OFF _USEGRAY_ON _USEGRAY_BLACK
-
-            #pragma shader_feature GRAY
-            
+            #pragma shader_feature _USEGRAY_OFF _USEGRAY_ON _USEGRAY_BLACK        
 
         sampler2D _MainTex;
 
@@ -51,11 +47,6 @@ Shader "Custom/MonsterShader"
             // Albedo comes from a texture tinted by color
             fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             o.Albedo = c.rgb;
-#ifdef GRAY
-            float t;
-            t = 0.3 * c.r + 0.59 * c.g + 0.11 * c.b;
-            o.Albedo = t;
-#endif
 
 #if _USEGRAY_ON
             float e;
