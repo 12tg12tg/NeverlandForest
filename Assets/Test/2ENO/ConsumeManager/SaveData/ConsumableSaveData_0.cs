@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class ConsumableSaveData_0 : SaveDataBase
 {
-    public float curStamina;
     public float curIngameHour;
     public float curIngameMinute;
-    public TimeState curTimeState;
-    public int date;
 
+    public TimeState curTimeState;
+    public LanternState curlanternstate;
+
+    public int date;
+    public float tiredness;
+    public int hunger;
+    public float bonfireTime;
 }

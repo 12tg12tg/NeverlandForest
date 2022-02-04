@@ -7,7 +7,6 @@ using System.Text;
 using PlayerSaveDataCurrentVersion = PlayerSaveData_1;
 using OptionSaveDataCurrentVersion = OptionSaveData_0;
 using RecipeSaveDataCurrentVersion = RecipeSaveData_0;
-using TimeSaveDataCurrentVersion = TimeSaveData_0;
 using DungeonSaveDataCurrentVersion = DungeonMapSaveData_0;
 using WorldMapNodeSaveDataCurrentVersion = WorldMapData_0;
 using WorldMapPlayerSaveDataCurrentVersion = WorldMapPlayerData_0;
@@ -41,7 +40,6 @@ public static class SaveLoadSystem
         Player,
         Option,
         Recipe,
-        Time,
         DungeonMap,
         WorldMapData,
         WorldMapPlayerData,
@@ -347,13 +345,6 @@ public static class SaveLoadSystem
 
             case SaveType.Recipe:
                 while (!(data is RecipeSaveDataCurrentVersion))
-                {
-                    data = data.VersionUp();
-                }
-                return data;
-
-            case SaveType.Time:
-                while (!(data is TimeSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

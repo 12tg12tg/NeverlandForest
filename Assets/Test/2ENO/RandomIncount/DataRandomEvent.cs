@@ -303,7 +303,7 @@ public class DataRandomEvent
                     var stamina = eventVals[i];
                     if (stamina < 0)
                     {
-                        if (Vars.UserData.uData.CurStamina + stamina <= 0)
+                        if (Vars.UserData.uData.Tiredness + stamina <= 0)
                             isInsufficiency[selectNum-1] = true;
                         else
                             ConsumeManager.RecoveryTiredness(stamina);
@@ -316,7 +316,6 @@ public class DataRandomEvent
                     // 컨숨 매니저에 우탁이가 추가한 클래스 활용해서 값 수정
                     var hp = eventVals[i];
                     Vars.UserData.uData.HunterHp += hp;
-                    Vars.UserData.uData.HerbalistHp += hp;
                     tempStr = $"HP수치 : {hp}\n";
                     sb.Append(tempStr);
 
