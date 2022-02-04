@@ -193,7 +193,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         consumableSaveData.curIngameMinute = Vars.UserData.uData.CurIngameMinute;
 
         consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
-        consumableSaveData.curlanternstate = ConsumeManager.CurLanternState;
+        consumableSaveData.curLanternCount = Vars.UserData.uData.LanternCount;
 
         consumableSaveData.date = Vars.UserData.uData.Date;
         consumableSaveData.tiredness = Vars.UserData.uData.Tiredness;
@@ -306,7 +306,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.uData.CurIngameMinute = consumableSaveData.curIngameMinute;
 
             ConsumeManager.CurTimeState = consumableSaveData.curTimeState;
-            ConsumeManager.CurLanternState = consumableSaveData.curlanternstate;
+            Vars.UserData.uData.LanternCount = consumableSaveData.curLanternCount;
 
             Vars.UserData.uData.Date = consumableSaveData.date;
             Vars.UserData.uData.Hunger = consumableSaveData.hunger;
