@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class BattleDirecting : MonoBehaviour
@@ -18,68 +19,101 @@ public class BattleDirecting : MonoBehaviour
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private RectTransform arrowButton;
 
+    [Header("어둡기 조정")]
+    public Light mainLight;
     private const float cameraMovetime = 0.7f;
+    private Shader customShader;
+    private Shader standardShader;
+    private int highlightLayer;
+    private int defaultLayer;
+    private Color origianlColorLight;
+    public Color darknessColorLight;
 
+    private List<MonsterUnit> shaderChangeUnit = new List<MonsterUnit>();
+    private List<MonsterUnit> layerChangeUnit = new List<MonsterUnit>();
+
+    private void Start()
+    {
+        customShader = Shader.Find("Custom/MonsterShader");
+        standardShader = Shader.Find("Standard");
+
+        highlightLayer = LayerMask.NameToLayer("Highlight");
+        defaultLayer = LayerMask.NameToLayer("Default");
+
+        origianlColorLight = mainLight.color;
+    }
 
 
     // 어둠 / 슬로우 관련 함수 =====================================================================
-    public void StartSkillSelect()
+    public void SetTimescaleAndShader(PlayerSkillTableElem skill)
     {
-        Time.timeScale = 0.5f;
-
+        Time.timeScale = 0.4f;
+        mainLight.color = darknessColorLight;
+        ShaderChange(skill);
     }
 
-    public void EndSkillSelect()
+    public void ResetTimescaleAndShader()
     {
         Time.timeScale = 1f;
-
+        mainLight.color = origianlColorLight;
+        ShaderReset();
     }
 
-    public void ShaderChange()
+    public void ShaderChange(PlayerSkillTableElem skill)
     {
-        //string shaderName = "Mobile/Unlit (Supports Lightmap)";
+        layerChangeUnit.Clear();
+        shaderChangeUnit.Clear();
 
-        //GameObject sampleObject;
+        var monsters = bm.waveLink.AliveMonsters;
+        var rangedTiles = TileMaker.Instance.GetMonsterTiles(skill);
+        foreach (var tiles in rangedTiles)
+        {
+            foreach (var unit in tiles.Units)
+            {
+                if(unit != null)
+                    layerChangeUnit.Add(unit as MonsterUnit);
+            }
+        }
 
+        foreach (var monster in monsters)
+        {
+            if(layerChangeUnit.Contains(monster))
+            {
+                Utility.ChangeLayerIncludeChildren(monster.transform, highlightLayer);
+            }
+            else
+            {
+                shaderChangeUnit.Add(monster);
+                var ren = monster.mesh;
+                ren.material.shader = customShader;
+                ren.material.color = Color.gray;
+            }
+        }
 
-        //MeshRenderer ren = sampleObject.GetComponent<MeshRenderer>();   // 일단 MeshRenderer 컴포넌트를 얻고
-
-        //ren.material.shader = Shader.Find(shaderName);                  // 쉐이더를 찾아(이름으로) 변경
     }
 
-    public void ShaderMetChange()
+    public void ShaderReset()
     {
-        //void TestOnOff()
-        //{
-        //    var mt = gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material;
-        //    switch (keyValue)
-        //    {
-        //        case 1:
-        //            mt.EnableKeyword("_USEGRAY_ON");
-        //            mt.DisableKeyword("_USEGRAY_OFF");
-        //            mt.DisableKeyword("_USEGRAY_BLACK");
-        //            break;
-        //        case 2:
-        //            mt.DisableKeyword("_USEGRAY_ON");
-        //            mt.EnableKeyword("_USEGRAY_OFF");
-        //            mt.DisableKeyword("_USEGRAY_BLACK");
-        //            break;
-        //        case 3:
-        //            mt.DisableKeyword("_USEGRAY_ON");
-        //            mt.DisableKeyword("_USEGRAY_OFF");
-        //            mt.EnableKeyword("_USEGRAY_BLACK");
-        //            break;
-        //    }
-        //}
-        //void TestToggle()
-        //{
-        //    isGray = !isGray;
-        //    float value = isGray ? 1f : 0f;
-        //    Debug.Log(value);
-        //    var mt = gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material;
-        //    mt.SetFloat("GRAY", value);
-        //}
+        foreach (var monster in layerChangeUnit)
+        {
+            Utility.ChangeLayerIncludeChildren(monster.transform, defaultLayer);
+        }
+
+        foreach (var monster in shaderChangeUnit)
+        {
+            var ren = monster.mesh;
+            ren.material.shader = standardShader;
+            ren.material.color = Color.white;
+        }
+
+        layerChangeUnit.Clear();
+        shaderChangeUnit.Clear();
     }
+
+    //public IEnumerator LightChange(Color start, Color end, UnityAction action, float time)
+    //{
+
+    //}
 
 
     // 함정 설치 관련 함수 =====================================================================

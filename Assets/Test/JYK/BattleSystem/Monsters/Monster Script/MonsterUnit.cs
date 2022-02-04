@@ -12,6 +12,7 @@ public enum MonsterState
 public class MonsterUnit : UnitBase, IAttackable
 {
     // Component
+    public SkinnedMeshRenderer mesh;
     [SerializeField] private Animator animator;
     public MonsterUILinker uiLinker;
     public MonsterTrigger triggerLinker;
@@ -45,6 +46,11 @@ public class MonsterUnit : UnitBase, IAttackable
     public MonsterState State { get; set; }
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
+
+    private void Awake()
+    {
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+    }
 
     // Update
     private void Update()

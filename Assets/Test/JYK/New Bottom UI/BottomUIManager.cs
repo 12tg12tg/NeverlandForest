@@ -135,8 +135,8 @@ public class BottomUIManager : MonoBehaviour
 
     public void IntoSkillState(BottomSkillButtonUI skillButton)
     {
-        //Time.timeScale = 0.2f;
         curSkillButton = skillButton;
+        bm.directLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
         bm.tileLink.ReadyTileClick();
         bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
@@ -145,8 +145,8 @@ public class BottomUIManager : MonoBehaviour
 
     public void ExitSkillState()
     {
-        //Time.timeScale = 1f;
         curSkillButton = null;
+        bm.directLink.ResetTimescaleAndShader();
         bm.tileLink.EndTileClick();
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();

@@ -72,7 +72,6 @@ public class BottomSkillButtonUI : MonoBehaviour
         {
             cover.interactable = false;
             BottomUIManager.Instance.IntoSkillState(this);
-            BattleManager.Instance.directLink.StartSkillSelect();
             StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition + OpenOffset, 0.3f,
                 () => { below.interactable = true; }));
         }
@@ -80,7 +79,6 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void Cancle() // ¹öÆ°
     {
-        BattleManager.Instance.directLink.EndSkillSelect();
         below.interactable = false;
         BottomUIManager.Instance.ExitSkillState();
         StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition - OpenOffset, 0.3f,
