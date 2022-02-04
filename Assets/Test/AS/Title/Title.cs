@@ -1,38 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 
 public class Title : MonoBehaviour
 {
     private Coroutine coTapToStart;
-    public TextMeshProUGUI startText;
-    public GameObject panel;
+    private bool isStart = false;
 
-    private void Start()
-    {
-        coTapToStart ??= StartCoroutine(CoAlphaMax(() => coTapToStart = null));
-    }
+    public TextMeshProUGUI startText;
+    public Image panel;
+    public Image fadeOut;
+
     private void Update()
     {
-        if(coTapToStart == null && GameManager.Manager.MultiTouch.TouchCount > 0)
+        coTapToStart ??= StartCoroutine(CoStartTextFadeIn(() => {
+            coTapToStart = null;
+            isStart = true;
+        }));
+
+        if (isStart && GameManager.Manager.MultiTouch.TouchCount > 0)
         {
-            gameObject.SetActive(false);
+            StartCoroutine(CoFadeOut(() => {
+                gameObject.SetActive(false);
+                GameManager.Manager.tm.Init();
+            }));
         }
     }
-    public IEnumerator CoAlphaMax(UnityAction action)
+
+    private IEnumerator CoStartTextFadeIn(UnityAction action)
     {
-        var newColor = new Color(1, 1, 1, 0);
-        var value = 1 / 255f;
-        while (newColor.a < 1)
+        var white = new Color(1, 1, 1, 0);
+        var black = Color.clear;
+
+        var time = 1f;
+        var timer = 0f;
+        while (timer < time)
         {
-            newColor.a += value;
-            startText.color = newColor;
-            yield return new WaitForSeconds(0.01f);
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            var value = Mathf.Lerp(0, 1, ratio);
+            startText.color = white;
+            panel.color = black;
+            white.a = value;
+            black.a = value / 2;
+            yield return null;
         }
-        yield return new WaitForSeconds(0.1f);
-        panel.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        action?.Invoke();
+    }
+
+    private IEnumerator CoFadeOut(UnityAction action)
+    {
+        var black = Color.clear;
+
+        var time = 1f;
+        var timer = 0f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            var value = Mathf.Lerp(0, 1, ratio);
+            black.a = value;
+            fadeOut.color = black;
+            yield return null;
+        }
+        yield return new WaitForSeconds(1f);
         action?.Invoke();
     }
 }

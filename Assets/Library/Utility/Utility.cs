@@ -9,7 +9,7 @@ using System.IO;
 
 public class Utility
 {
-    public static IEnumerator CoRotate(Transform transform, Quaternion start, Quaternion end, float time)
+    public static IEnumerator CoRotate(Transform transform, Quaternion start, Quaternion end, float time, UnityAction action = null)
     {
         float timer = 0f;
         while (timer < time)
@@ -20,7 +20,35 @@ public class Utility
             yield return null;
         }
         transform.rotation = end;
+        action?.Invoke();
     }
+
+    public static IEnumerator CoRotateLoop(Transform transform, Quaternion start, Quaternion end, float time, UnityAction action = null, UnityAction action2 = null)
+    {
+        float timer = 0f;
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.rotation = Quaternion.Lerp(start, end, ratio);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = end;
+        action?.Invoke();
+
+        timer = 0f;
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            transform.rotation = Quaternion.Lerp(end, start, ratio);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        transform.rotation = start;
+
+        action2?.Invoke();
+    }
+
 
     public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {

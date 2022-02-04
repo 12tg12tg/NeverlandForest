@@ -11,19 +11,21 @@ public class HuntPlayer : UnitBase
     public GameObject bowHand;
     public GameObject bowBack;
     private Coroutine coHunterMove;
-    private Vector2 currentIndex;
-    public Vector2 CurrentIndex => currentIndex;
+    private Vector2 curHunterIndex;
+    public Vector2 CurHunterIndex => curHunterIndex;
 
     [Header("약초학자")]
     public GameObject herbalist;
     public Animator herbalistAnimation;
+    public readonly Vector2 curHerbalistIndex = Vector2.zero;
 
     [Header("공용")]
     private int life = 2;
     public int Life { get => life; set => life = value; }
-    private void Start()
+    public void Init()
     {
-        currentIndex = Vector2.right; // 인덱스 1,0 이라는 의미.. 최초 시작 왼쪽 가운데
+        // 사냥 플레이어 초기화에 필요한 것들 추가해야 함
+        curHunterIndex = Vector2.right;
     }
 
     public void Move(Vector2 index, Vector3 pos, bool isOnBush)
@@ -32,14 +34,14 @@ public class HuntPlayer : UnitBase
         // 동물이 플레이어를 발견 할 확률 증가
         var isForward = false;
         // 현재 위치에서 뒤로 이동, 2칸 앞으로 이동, 같은 칸, 대각선 2칸 이동 막음
-        if (index.y <= currentIndex.y - 1 ||
-            index.y >= currentIndex.y + 2 ||
-            index.Equals(currentIndex) ||
-            Mathf.Abs(index.x - currentIndex.x) > 1)
+        if (index.y <= curHunterIndex.y - 1 ||
+            index.y >= curHunterIndex.y + 2 ||
+            index.Equals(curHunterIndex) ||
+            Mathf.Abs(index.x - curHunterIndex.x) > 1)
             return;
 
         // index의 y 값 비교를 통해서 앞으로 한칸 전진 했는지 판단 가능
-        if (index.y.Equals(currentIndex.y + 1) && coHunterMove == null)
+        if (index.y.Equals(curHunterIndex.y + 1) && coHunterMove == null)
         {
             isForward = true;
             // 동물이 도망칠 확률 업
@@ -50,7 +52,7 @@ public class HuntPlayer : UnitBase
         if (coHunterMove == null)
         {
             hunterAnimation.SetTrigger("Walk");
-            currentIndex = index;
+            curHunterIndex = index;
         }
         coHunterMove ??= StartCoroutine(Utility.CoTranslateLookFoward(hunter.transform, hunter.transform.position, pos, 1f, () =>
         {

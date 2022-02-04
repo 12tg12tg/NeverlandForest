@@ -5,29 +5,24 @@ using TMPro;
 
 public class TutorialManager : MonoBehaviour
 {
-    private MainTutorial mainTutorial = new MainTutorial();
-    private ContentsTutorial contentsTutorial;
-
+    public MainTutorial mainTutorial = new MainTutorial();
+    public ContentsTutorial contentsTutorial = new ContentsTutorial();
     public TutorialPlayer tutorialPlayer;
-
     public TMP_Text text;
 
-    public void OnGUI()
+    public void Init()
     {
-        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "스토리 튜토리얼"))
-        {
-            StartCoroutine(mainTutorial.CoTutorialStory(text));
-        }
+        mainTutorial.Init();
+        contentsTutorial.Init();
+        CheckMainTutorial();
     }
 
     public void CheckMainTutorial()
     {
-        switch (tutorialPlayer.curMainTutorialStage)
+        switch (mainTutorial.MainTutorialStage)
         {
-            case MainTutorialStage.None:
             case MainTutorialStage.Story:
-                StartCoroutine(mainTutorial.CoTutorialStory(text));
-                tutorialPlayer.curMainTutorialStage = MainTutorialStage.Battle;
+                StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text));
                 break;
             case MainTutorialStage.Battle:
                 break;
@@ -45,5 +40,6 @@ public class TutorialManager : MonoBehaviour
                 tutorialPlayer.isMainTutorial = false;
                 break;
         }
+        mainTutorial.NextMainTutorial();
     }
 }

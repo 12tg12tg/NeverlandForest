@@ -4,6 +4,5 @@ using UnityEngine;
 
 public class TutorialPlayer : MonoBehaviour
 {
-    public MainTutorialStage curMainTutorialStage = MainTutorialStage.None;
     public bool isMainTutorial;
 }

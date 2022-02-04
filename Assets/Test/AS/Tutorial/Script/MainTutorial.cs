@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum MainTutorialStage
 {
-    None,
     Story,
     Battle,
     Move,
@@ -17,11 +16,23 @@ public enum MainTutorialStage
 
 public class MainTutorial
 {
-    public MainTutorialStage mainTutorialStage = MainTutorialStage.None;
+    public MainTutorialStage MainTutorialStage { get; private set; } = MainTutorialStage.Story;
 
-    public void NextStage(MainTutorialStage stage)
+    public TutorialStory tutorialStory = new TutorialStory();
+
+
+    public void Init()
     {
-        mainTutorialStage = stage;
+        // 저장된 데이터 가져오기
+        //MainTutorialStage = ???
+    }
+
+    public void NextMainTutorial()
+    {
+        if (MainTutorialStage != MainTutorialStage.Clear)
+        {
+            MainTutorialStage++;
+        }
     }
 
     public IEnumerator CoTutorialStory(TMP_Text text)
@@ -34,11 +45,25 @@ public class MainTutorial
             for (int j = 0; j < description.Length; j++)
             {
                 text.text += description[j];
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.15f);
             }
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1f);
+
+            float time = 1f;
+            float timer = 0f;
+
+            while (timer < time)
+            {
+                timer += Time.deltaTime;
+                var ratio = timer / time;
+                var curColor = text.color;
+                curColor.a = Mathf.Lerp(1, 0, ratio);
+                text.color = curColor;
+                yield return null;
+            }
 
             text.text = "";
+            text.color = Color.white;
         }
     }
 }

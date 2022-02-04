@@ -2,18 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ContentsTutorialStage
+public class ContentsTutorialProceed
 {
-    None,
-    Hunt,
-    RandomEvent,
-    Note,
-    BlueMoon,
-    Clear,
+    public bool Hunt { get; set; } = false;
+    public bool RandomEvent { get; set; } = false;
+    public bool Note { get; set; } = false;
+    public bool BlueMoon { get; set; } = false;
 }
-
 
 public class ContentsTutorial
 {
-    public ContentsTutorialStage contentsTutorialStage;
+    public ContentsTutorialProceed contentsTutorialProceed;
+    public void Init()
+    {
+        // 저장된 데이터 가져오기
+        //ContentsTutorialStage = ???
+    }
 }
