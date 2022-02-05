@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
     public BattleTile tileLink;
     public BattleUI uiLink;
     public BattleDirecting directLink;
+    public BattleDrag dragLink;
 
     //Instance
     [Header("몬스터 관련 UI 캔버스 연결")]

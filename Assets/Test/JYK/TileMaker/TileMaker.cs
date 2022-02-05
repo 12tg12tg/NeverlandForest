@@ -35,7 +35,7 @@ public class TileMaker : MonoBehaviour
     public bool IsWaitingToSelectTrapTile { get; set; }
 
     //Vars
-    public Color blueColor;
+    public Color dragColor;
     public Color consumeColor;
     public Color targetColor;
     public Color noneColor;
@@ -299,7 +299,6 @@ public class TileMaker : MonoBehaviour
         return list;
     }
 
-
     public IEnumerable<Tiles> GetMonsterTiles(PlayerSkillTableElem skill)
     {
         if(skill.name.Equals("근거리"))
@@ -406,45 +405,11 @@ public class TileMaker : MonoBehaviour
         return list;
     }
 
-    public IEnumerable<Tiles> GetNear8Tiles(Vector2 center)
-    {
-        var centerTile = GetTile(center);
-        var list = from n in tileList
-                   where 
-                   n.index.x >= center.x - 1 && 
-                   n.index.x <= center.x + 1 && 
-                   n.index.y >= center.y - 1 &&
-                   n.index.y <= center.y + 1 && 
-                   n != centerTile 
-                   && n.index.y != 0
-                   select n;
-        return list;
-    }
 
-    public IEnumerable<Tiles> GetNearUpDownTiles(Vector2 center)
+    // 하이라이트 표시
+    public void SetAllTileMiddleState(SkillRangeType skillType)
     {
-        var centerTile = GetTile(center);
-        var list = from n in tileList
-                   where
-                   n.index.x >= center.x - 1 &&
-                   n.index.x <= center.x + 1 &&
-                   n.index.y == center.y &&
-                   n != centerTile &&
-                   n.index.y != 0
-                   select n;
-        return list;
-    }
-    public IEnumerable<Tiles> GetNearRowTiles(Vector2 center)
-    {
-        var centerTile = GetTile(center);
-        var list = from n in tileList
-                   where
-                   n.index.x >= 0 &&
-                   n.index.x <= 2 &&
-                   n.index.y == center.y &&
-                   n.index.y != 0
-                   select n;
-        return list;
+        tileList.ForEach((n) => n.SetMiddleState(skillType));
     }
 
 }

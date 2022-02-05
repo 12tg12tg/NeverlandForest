@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BottomSkillButtonUI : MonoBehaviour
+public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private BattleManager bm;
     private BottomUIManager bottomUiManager;
     public Button ownButton;
 
@@ -29,6 +31,7 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void Init(DataPlayerSkill skill)
     {
+        bm ??= BattleManager.Instance;
         bottomUiManager ??= BottomUIManager.Instance;
         cover.interactable = true;
         below.interactable = false;
@@ -40,10 +43,14 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void CalculateOffset()
     {
+        isCalculateOffset = true;
+
         cs = GetComponentInParent<CanvasScaler>();
         var size = Utility.RelativeRectSize(cs, coverRt);
         height = size.y;
         openOffset = new Vector2(0f, height * 3 / 8);
+        CoverOrigianlPos = coverRt.anchoredPosition;
+        CoverOpenPos = CoverOrigianlPos + openOffset;
     }
 
     public void MakeUnclickable()
@@ -61,12 +68,7 @@ public class BottomSkillButtonUI : MonoBehaviour
     public void IntoSkillStage() // ¹öÆ°
     {
         if(!isCalculateOffset)
-        {
-            isCalculateOffset = true;
             CalculateOffset();
-            CoverOrigianlPos = coverRt.anchoredPosition;
-            CoverOpenPos = CoverOrigianlPos + openOffset;
-        }
 
         bottomUiManager.info.Init(skill);
 
@@ -92,5 +94,44 @@ public class BottomSkillButtonUI : MonoBehaviour
         below.interactable = false;
         bottomUiManager.ExitSkillState(false);
         StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f, null));
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!isCalculateOffset)
+            CalculateOffset();
+
+        if (!bottomUiManager.IsSkillLock)
+        {
+            bm.dragLink.Init(this);
+            bottomUiManager.info.Init(skill);
+
+            cover.interactable = false;
+            bottomUiManager.IntoSkillState(this);
+            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
+                () => { below.interactable = true; }));
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (bm.dragLink.isDrag)
+        {
+            bm.dragLink.UpdatePos(eventData.position);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (bm.dragLink.lastDrapTile != null)
+        {
+            bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill);
+
+            bottomUiManager.curSkillButton.Cancle_UseSkill();
+            bottomUiManager.InteractiveSkillButton(skill.SkillTableElem.player, false);
+
+            bm.uiLink.UpdateProgress();
+        }
+        bm.dragLink.Release();
     }
 }
