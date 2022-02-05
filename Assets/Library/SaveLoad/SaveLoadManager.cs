@@ -13,6 +13,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     CraftSaveData_0 craftSaveData;
     RandomEventSaveData_0 randomEvent;
     ItemExperienceSaveData_0 itemExperienceSaveData;
+    BattleSaveData_0 battleData;
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -51,6 +52,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.ConsumableData:
                 SaveConsumableData();
                 break;
+            case SaveLoadSystem.SaveType.Battle:
+                SaveBattleData();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -86,6 +90,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.ConsumableData:
                 LoadConsumableData();
+                break;
+            case SaveLoadSystem.SaveType.Battle:
+                LoadBattleData();
                 break;
         }
     }
@@ -202,6 +209,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(consumableSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
 
     }
+    private void SaveBattleData()
+    {
+        battleData = new BattleSaveData_0();
+        battleData.arrowType = Vars.UserData.arrowType;
+
+        SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
+    }
 
     private void LoadPlayer()
     {
@@ -311,6 +325,19 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.uData.Date = consumableSaveData.date;
             Vars.UserData.uData.Hunger = consumableSaveData.hunger;
             Vars.UserData.uData.BonfireHour   = consumableSaveData.bonfireTime;
+        }
+    }
+
+    private void LoadBattleData()
+    {
+        battleData = (BattleSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
+        if (battleData != null)
+        {
+            Vars.UserData.arrowType = battleData.arrowType;
+        }
+        else
+        {
+            Vars.UserData.arrowType = ArrowType.Normal; 
         }
     }
 }

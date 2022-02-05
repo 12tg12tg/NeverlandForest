@@ -355,7 +355,12 @@ public class BattleManager : MonoBehaviour
         var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
-            uiLink.PrintMessage($"½Â¸®!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
+            uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
+                {
+                    /*º¸»óÃ¢ ¶ç¿ì±â*/
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                    SceneManager.LoadScene("AS_RandomMap");
+                });
         }
         else
         {
@@ -393,5 +398,15 @@ public class BattleManager : MonoBehaviour
         }
 
         action?.Invoke();
+    }
+
+    public AllItemTableElem GetCurrentArrowElem()
+    {
+        if (Vars.UserData.arrowType == ArrowType.Normal)
+            return DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_20");
+        else if (Vars.UserData.arrowType == ArrowType.Iron)
+            return DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_21");
+        else
+            return null;
     }
 }

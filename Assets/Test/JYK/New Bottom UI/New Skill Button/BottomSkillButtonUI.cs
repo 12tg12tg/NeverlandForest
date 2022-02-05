@@ -5,6 +5,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum SkillButtonType
+{
+    None, Swap, Info,
+}
+
 public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private BattleManager bm;
@@ -24,10 +29,30 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
     private float height;
     private Vector2 openOffset;                         // Open/Close용 크기 계산
     private bool isCalculateOffset;
+    [SerializeField] private SkillButtonType buttonType;
 
     // Property
     private Vector2 CoverOrigianlPos { get; set; }
     private Vector2 CoverOpenPos { get; set; }
+
+    public void Init()
+    {
+        bm ??= BattleManager.Instance;
+        bottomUiManager ??= BottomUIManager.Instance;
+        cover.interactable = true;
+        below.interactable = false;
+
+        if(buttonType == SkillButtonType.Swap)
+        {
+            var arrow = bm.GetCurrentArrowElem();
+            skillImg.sprite = arrow.IconSprite;
+        }
+        else if(buttonType == SkillButtonType.Info)
+        {
+            var oil = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_19");
+            skillImg.sprite = oil.IconSprite;
+        }
+    }
 
     public void Init(DataPlayerSkill skill)
     {

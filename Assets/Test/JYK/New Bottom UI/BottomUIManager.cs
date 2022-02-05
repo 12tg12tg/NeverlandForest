@@ -205,6 +205,9 @@ public class BottomUIManager : MonoBehaviour
         var list = Vars.BoySkillList;
         int count = list.Count;
 
+        skillButtons[0].Init();
+        skillButtons[6].Init();
+
         int buttonIndex = 1;
         for (int i = 0; i < count; i++)
         {

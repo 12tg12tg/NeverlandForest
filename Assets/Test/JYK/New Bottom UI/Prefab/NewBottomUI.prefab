@@ -1422,7 +1422,8 @@ MonoBehaviour:
   popUpWindow: {fileID: 8285671217074346572}
   selectedItemRect: {fileID: 0}
   burnButton: {fileID: 1624609542}
-  battleLinker: {fileID: 4785888076866507125}
+  trapSelector: {fileID: 0}
+  selectItemSlotNum: 0
 --- !u!1 &698883429151533099
 GameObject:
   m_ObjectHideFlags: 0
@@ -3884,6 +3885,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 698883429398468166}
     m_Modifications:
+    - target: {fileID: 3606551458954202405, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202405, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551459624204445, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: buttonType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3606551459624204446, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3980,6 +3993,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3606551459643063243, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
 --- !u!224 &4305412343650038329 stripped
@@ -4005,6 +4022,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 698883430538676089}
     m_Modifications:
+    - target: {fileID: 3606551458954202405, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202405, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551459624204445, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: buttonType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3606551459624204446, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -4099,6 +4128,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3606551459643063236, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551459643063243, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

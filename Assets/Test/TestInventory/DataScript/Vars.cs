@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum Localization { Korean, English }
 
-
 public static class Vars
 {
     // Skill Info
