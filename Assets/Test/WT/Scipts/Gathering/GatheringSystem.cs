@@ -130,7 +130,7 @@ public class GatheringSystem : MonoBehaviour
     }
     private void ToolPopUp()
     {
-        diaryManager.gameObject.SetActive(true);
+        dungeonrewarddiaryManager.gameObject.SetActive(true);
         dungeonrewarddiaryManager.OpenGatheringInDungeon();
         if (ConsumeManager.CurTimeState ==TimeState.DayTime)
         {

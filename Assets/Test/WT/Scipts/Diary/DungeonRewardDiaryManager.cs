@@ -48,7 +48,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     }
     public void OpenGatheringInDungeonReward()
     {
-        gatheringInDungeonPanel.SetActive(true);
+        gatheringInDungeonRewardPanel.SetActive(true);
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
    
