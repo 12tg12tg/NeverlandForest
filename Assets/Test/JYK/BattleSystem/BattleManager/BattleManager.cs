@@ -55,6 +55,11 @@ public class BattleManager : MonoBehaviour
     [Header("선공 / 후공 확인")]
     public bool isPlayerFirst;
 
+    [Header("몬스터 그룹 설정")]
+    public bool selectMonster;
+    public int customGroup;
+    public int customWave;
+
     //Property
     public int Turn { get => turn; set => turn = value; }
     public bool IsWaitingTileSelect { get => tileLink.isWaitingTileSelect; }
@@ -104,6 +109,20 @@ public class BattleManager : MonoBehaviour
             {
                 curGroup = Random.Range(0, 4);
             }
+        }
+
+        if(selectMonster)
+        {
+            curGroup = customGroup;
+            waveLink.totalWave = customWave;
+            if (curGroup > 6)
+                curGroup = 6;
+            else if (curGroup < 0)
+                curGroup = 0;
+            if (waveLink.totalWave < 2)
+                waveLink.totalWave = 2;
+            else if (waveLink.totalWave > 3)
+                waveLink.totalWave = 3;
         }
     }
     private void VarInit()

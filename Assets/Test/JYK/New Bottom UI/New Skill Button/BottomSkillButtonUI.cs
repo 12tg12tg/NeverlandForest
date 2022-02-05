@@ -123,7 +123,11 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (bm.dragLink.lastDrapTile != null)
+        if (bm.dragLink.lastDrapTile == null)
+        {
+            bottomUiManager.curSkillButton?.Cancle();
+        }
+        else if (bm.dragLink.lastDrapTile.isHighlight)
         {
             bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill);
 
@@ -131,6 +135,10 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
             bottomUiManager.InteractiveSkillButton(skill.SkillTableElem.player, false);
 
             bm.uiLink.UpdateProgress();
+        }
+        else if (!bm.dragLink.lastDrapTile.isHighlight)
+        {
+            bottomUiManager.curSkillButton.Cancle();
         }
         bm.dragLink.Release();
     }

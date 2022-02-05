@@ -875,7 +875,7 @@ MonoBehaviour:
   bm: {fileID: 7469303928238158227}
   tm: {fileID: 7469303929048296704}
   bottomManager: {fileID: 0}
-  lastDragPos: {x: 0, y: 0}
+  lastDragWorldPos: {x: 0, y: 0, z: 0}
   lastDrapTile: {fileID: 0}
   curDragSkill: {fileID: 0}
   dragSlot: {fileID: 7469303929247193009}
@@ -1050,7 +1050,7 @@ RectTransform:
   m_Children:
   - {fileID: 8967806338138854162}
   m_Father: {fileID: 7469303928233507244}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1249,7 +1249,7 @@ RectTransform:
   - {fileID: 7469303927963258791}
   - {fileID: 7469303929247193009}
   m_Father: {fileID: 7469303928233507244}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1410,7 +1410,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.65
+  m_fontSize: 52.45
   m_fontSizeBase: 29.65
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1954,8 +1954,8 @@ Transform:
   - {fileID: 7469303928860506762}
   - {fileID: 7469303928303910282}
   - {fileID: 5504822257922335774}
-  - {fileID: 7469303927528810832}
   - {fileID: 2177793232284284222}
+  - {fileID: 7469303927528810832}
   - {fileID: 154122845827425989}
   - {fileID: 3799742262179682164}
   - {fileID: 1454333327}
@@ -2043,6 +2043,9 @@ MonoBehaviour:
   preWaveTurn: 0
   curGroup: 0
   isPlayerFirst: 0
+  selectMonster: 0
+  customGroup: 0
+  customWave: 0
 --- !u!1 &7469303928303910281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2300,7 +2303,7 @@ MonoBehaviour:
   behindMaterial: {fileID: 2100000, guid: c51ec890c12330a4ba5e8e0cde14a774, type: 2}
   frontEdgeMaterial: {fileID: 2100000, guid: abe28b1c7d665cf4785ca681e2aa9bd9, type: 2}
   behindEdgeMaterial: {fileID: 2100000, guid: b7ea37a05b92ab146b7c832c55d6cf1e, type: 2}
-  dragColor: {r: 0, g: 0, b: 0, a: 0}
+  dragColor: {r: 1, g: 0.5330188, b: 0.5330188, a: 1}
   consumeColor: {r: 0, g: 1, b: 0.0006520748, a: 1}
   targetColor: {r: 1, g: 0.07623239, b: 0, a: 1}
   noneColor: {r: 1, g: 1, b: 1, a: 0}
@@ -2325,7 +2328,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7469303929247193009
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2344,8 +2347,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 585.7676, y: -252.43756}
-  m_SizeDelta: {x: 95.1248, y: 95.1248}
+  m_AnchoredPosition: {x: 598.95, y: -265.62}
+  m_SizeDelta: {x: 68.77, y: 68.77}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8944082747373769948
 MonoBehaviour:
@@ -2433,8 +2436,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_AnchoredPosition: {x: 0.00017452, y: -0.000002861}
+  m_SizeDelta: {x: 53.14, y: 53.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7469303929270256096
 CanvasRenderer:
