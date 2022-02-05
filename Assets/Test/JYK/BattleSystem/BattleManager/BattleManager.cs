@@ -56,9 +56,7 @@ public class BattleManager : MonoBehaviour
     public bool isPlayerFirst;
 
     [Header("몬스터 그룹 설정")]
-    public bool selectMonster;
-    public int customGroup;
-    public int customWave;
+    public CustomBattle customBattle;
 
     //Property
     public int Turn { get => turn; set => turn = value; }
@@ -71,7 +69,6 @@ public class BattleManager : MonoBehaviour
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);
-
     }
 
     private void Start()
@@ -84,30 +81,25 @@ public class BattleManager : MonoBehaviour
     // 초기화
     public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
-        // 1. Grade & Wave
-        //  마지막방전투인지 일반전투인지를 판단하고,
-        //  중반이 지나갔는지 아닌지를 판단하고,
-        GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
-
-        // 2. 변수 초기화
+        // 1. 변수 초기화
         VarInit();
 
-        // 3. 몬스터 (랜덤뽑기) & 배치
-        if (!selectMonster)
+        if (!customBattle.useCustomMode)
         {
+            // 2. Grade & Wave
+            //  마지막방전투인지 일반전투인지를 판단하고,
+            //  중반이 지나갔는지 아닌지를 판단하고,
+            GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
+
+            // 3. 몬스터 (랜덤뽑기) & 배치
             MonsterInit(isBlueMoonBattle, isEndOfDeongun);
         }
         else
         {
-            if (customGroup >= 4 && customGroup <= 6)
-            {
-                MonsterInit(false, true);
-            }
-            else
-            {
-                MonsterInit(false, false);
-            }
+            // 2~3. Custom Init
+            CustomInit();
         }
+
         waveLink.SetWavePosition(waveLink.wave1);
         waveLink.SetWavePosition(waveLink.wave2);
         waveLink.SetWavePosition(waveLink.wave3);
@@ -122,6 +114,52 @@ public class BattleManager : MonoBehaviour
 
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
+    }
+
+    private void CustomInit()
+    {
+        monsters.Clear();
+        waveLink.wave1.Clear();
+        waveLink.wave2.Clear();
+        waveLink.wave3.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            waveLink.wave1.Add(null);
+            waveLink.wave2.Add(null);
+            waveLink.wave3.Add(null);
+        }
+
+        List<MonsterUnit> realWave;
+        List<bool> existList;
+        List<MonsterPoolTag> customWave;
+        waveLink.totalWave = customBattle.waveNum;
+
+        for (int i = 0; i < waveLink.totalWave; i++)
+        {
+            if (i == 0)
+            {
+                realWave = waveLink.wave1;
+                customWave = customBattle.cwave1;
+                existList = customBattle.haveMonster1;
+            }
+            else if (i == 1)
+            {
+                realWave = waveLink.wave2;
+                customWave = customBattle.cwave2;
+                existList = customBattle.haveMonster2;
+            }
+            else
+            {
+                realWave = waveLink.wave3;
+                customWave = customBattle.cwave3;
+                existList = customBattle.haveMonster3;
+            }
+
+            if(existList[i])
+            {
+                realWave[i] = FindMonsterToId((int)customWave[i]);
+            }
+        }
     }
 
     private void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
@@ -153,19 +191,19 @@ public class BattleManager : MonoBehaviour
             }
         }
 
-        if(selectMonster)
-        {
-            curGroup = customGroup;
-            waveLink.totalWave = customWave;
-            if (curGroup > 6)
-                curGroup = 6;
-            else if (curGroup < 0)
-                curGroup = 0;
-            if (waveLink.totalWave < 2)
-                waveLink.totalWave = 2;
-            else if (waveLink.totalWave > 3)
-                waveLink.totalWave = 3;
-        }
+        //if(isCustomMode)
+        //{
+        //    curGroup = customGroup;
+        //    waveLink.totalWave = customWave;
+        //    if (curGroup > 6)
+        //        curGroup = 6;
+        //    else if (curGroup < 0)
+        //        curGroup = 0;
+        //    if (waveLink.totalWave < 2)
+        //        waveLink.totalWave = 2;
+        //    else if (waveLink.totalWave > 3)
+        //        waveLink.totalWave = 3;
+        //}
     }
     private void VarInit()
     {
@@ -174,7 +212,7 @@ public class BattleManager : MonoBehaviour
         waveLink.curWave = 0;
         IsDuringPlayerAction = false;
         GameManager.Manager.State = GameState.Battle;
-    }  
+    }
 
     private void MonsterInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {

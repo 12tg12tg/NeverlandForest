@@ -621,6 +621,58 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 658804723}
   m_CullTransparentMesh: 1
+--- !u!1 &767257775
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 767257777}
+  - component: {fileID: 767257776}
+  m_Layer: 0
+  m_Name: Temp Custom Info
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &767257776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767257775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16b2c4ee6055179499deb6434d5a9850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  useCustomMode: 1
+  waveNum: 2
+  haveMonster1: 010001
+  haveMonster2: 010100
+  haveMonster3: 000000
+  cwave1: 020000000000000002000000
+  cwave2: 030000000300000000000000
+  cwave3: 000000000000000000000000
+--- !u!4 &767257777
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767257775}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -308.84482, y: 11.678945, z: 115.80645}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &831999381
 GameObject:
   m_ObjectHideFlags: 0
@@ -2627,6 +2679,10 @@ PrefabInstance:
       value: BattlePack
       objectReference: {fileID: 0}
     - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: customInfo
+      value: 
+      objectReference: {fileID: 767257776}
+    - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
       propertyPath: customWave
       value: 2
       objectReference: {fileID: 0}
@@ -2635,8 +2691,24 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: customBattle
+      value: 
+      objectReference: {fileID: 767257776}
+    - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
       propertyPath: selectMonster
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: customWave1.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: customWave2.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7469303928238158227, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: customWave3.Array.size
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
