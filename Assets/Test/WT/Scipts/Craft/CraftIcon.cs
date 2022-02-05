@@ -164,6 +164,7 @@ public class CraftIcon : MonoBehaviour
 
                 if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
                 {
+                    Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
                     Debug.Log("제작 완료");
                     ConsumeManager.TimeUp(makeTime);
                     Vars.UserData.uData.BonfireHour -= makeTime/60;
