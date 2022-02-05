@@ -29,7 +29,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
     private float height;
     private Vector2 openOffset;                         // Open/Close용 크기 계산
     private bool isCalculateOffset;
-    [SerializeField] private SkillButtonType buttonType;
+    public SkillButtonType buttonType;
 
     // Property
     private Vector2 CoverOrigianlPos { get; set; }
@@ -80,6 +80,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void MakeUnclickable()
     {
+        if (buttonType == SkillButtonType.Info)
+            return;
+
         ownButton.interactable = false;
         skillImg.color = new Color(0.4f, 0.4f, 0.4f);
     }
@@ -90,8 +93,22 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         skillImg.color = Color.white;
     }
 
+    public void SwapArrow()
+    {
+
+    }
+
     public void IntoSkillStage() // 버튼
     {
+        if(buttonType == SkillButtonType.Swap)
+        {
+            SwapArrow();
+            return;
+        }
+        else if(buttonType == SkillButtonType.Info)
+            return;
+
+
         if(!isCalculateOffset)
             CalculateOffset();
 

@@ -66,6 +66,9 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
+        // 배틀정보 불러오기
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
+
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);

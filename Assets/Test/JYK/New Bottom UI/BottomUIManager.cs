@@ -82,6 +82,17 @@ public class BottomUIManager : MonoBehaviour
         }
     }
 
+    // 버튼 활성화 / 비활성화
+    public void ButtonInteractive(bool interactive)
+    {
+        var list = GetComponentsInChildren<Button>();
+        foreach (var button in list)
+        {
+            button.interactable = interactive;
+        }
+    }
+
+
     // 프로그래스
     public void UpdateProgress()
     {
