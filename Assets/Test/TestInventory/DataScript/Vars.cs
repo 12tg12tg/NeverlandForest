@@ -70,7 +70,7 @@ public static class Vars
                 {
                     var stringId = $"ITEM_{tempItemNum}";
                     var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = newItem.ItemTableElem.limitCount;
+                    newItem.OwnCount = 3;//newItem.ItemTableElem.limitCount;
                     tempItemNum += 1;
                     userData.AddItemData(newItem);
                 }

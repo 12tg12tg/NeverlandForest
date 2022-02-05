@@ -18,6 +18,8 @@ public class BottomUIManager : MonoBehaviour
     [Header("우측 12개 아이콘 연결")]
     public List<BottomSkillButtonUI> skillButtons;
     public List<BottomItemButtonUI> itemButtons;
+    public BottomSkillButtonUI arrowInfo;
+    public BottomSkillButtonUI oilInfo;
 
     [Header("우측 두 개 분류 태그 연결")]
     public List<Button> tags;
@@ -54,11 +56,12 @@ public class BottomUIManager : MonoBehaviour
         instance = this;
         popUpWindow.gameObject.SetActive(false);
         burnButton.SetActive(false);
-        SkillButtonInit();
     }
 
     private void Start()
     {
+        SkillButtonInit();
+
         bm = BattleManager.Instance;
         switch (GameManager.Manager.State)
         {
@@ -80,6 +83,13 @@ public class BottomUIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    // 스킬소모아이콘 업데이트
+    public void UpdateCostInfo()
+    {
+        arrowInfo.UpdateCostInfo();
+        oilInfo.UpdateCostInfo();
     }
 
     // 버튼 활성화 / 비활성화
@@ -132,7 +142,7 @@ public class BottomUIManager : MonoBehaviour
     {
         skillButtons.ForEach(n =>
         {
-            if (n.skill?.SkillTableElem.player == PlayerType.Boy)
+            if (n.skill?.SkillTableElem.player == PlayerType.Boy || n.buttonType == SkillButtonType.Swap)
             {
                 if (isBoySkillDone)
                     n.MakeUnclickable();
@@ -231,6 +241,8 @@ public class BottomUIManager : MonoBehaviour
         {
             skillButtons[buttonIndex++].Init(list[i]);
         }
+
+        UpdateSkillInteractive();
     }
 
     // 아이템 버튼

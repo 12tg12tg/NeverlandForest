@@ -26,7 +26,7 @@ public class ObstacleDebuff
     {
         this.owner = owner;
         elem = obs.elem;
-        trapDamage = obs.elem.trapDamage;
+        trapDamage = obs.elem.damage;
         duration = obs.elem.duration;
         if(obs.another != null)
         {

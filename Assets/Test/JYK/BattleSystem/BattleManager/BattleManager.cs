@@ -33,6 +33,7 @@ public class BattleManager : MonoBehaviour
     public BattleUI uiLink;
     public BattleDirecting directLink;
     public BattleDrag dragLink;
+    public BattleCost costLink;
 
     //Instance
     [Header("몬스터 관련 UI 캔버스 연결")]
@@ -66,9 +67,6 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        // 배틀정보 불러오기
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
-
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);
@@ -320,15 +318,17 @@ public class BattleManager : MonoBehaviour
         {
             command = boyInput;
             attacker = boy;
+            costLink.CostArrow(skill);
         }
         else
         {
             command = girlInput;
             attacker = girl;
+            costLink.CostLanternOrOil(skill);
         }
+        BottomUIManager.Instance.UpdateCostInfo();
 
         command.Create(target, skill);
-
         attacker.TurnInit(ActionType.Skill);
     }
 
@@ -401,15 +401,5 @@ public class BattleManager : MonoBehaviour
         }
 
         action?.Invoke();
-    }
-
-    public AllItemTableElem GetCurrentArrowElem()
-    {
-        if (Vars.UserData.arrowType == ArrowType.Normal)
-            return DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_20");
-        else if (Vars.UserData.arrowType == ArrowType.Iron)
-            return DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_21");
-        else
-            return null;
     }
 }

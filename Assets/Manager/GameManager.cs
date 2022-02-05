@@ -74,6 +74,10 @@ public class GameManager : MonoBehaviour
         if (wm != null)
             wm.Init();
 
+        // ·Îµå
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
+
+
         DontDestroyOnLoad(this);
         ConsumeManager.init();
         //MonsterPool.Instance.Init();
