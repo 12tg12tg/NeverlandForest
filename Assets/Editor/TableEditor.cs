@@ -100,7 +100,7 @@ public class TableEditor : EditorWindow
         itemData["STAT_HP"] = EditorGUILayout.TextField("Stat_HP", itemData["STAT_HP"]);
         itemData["OBSTACLE_TYPE"] = EditorGUILayout.TextField("Obstacle_Type", itemData["OBSTACLE_TYPE"]);
         itemData["OBSTACLE_HP"] = EditorGUILayout.TextField("Obstacle_HP", itemData["OBSTACLE_HP"]);
-        itemData["TRAP_DAMAGE"] = EditorGUILayout.TextField("Trap_Damage", itemData["TRAP_DAMAGE"]);
+        itemData["DAMAGE"] = EditorGUILayout.TextField("Damage", itemData["DAMAGE"]);
         itemData["DURATION"] = EditorGUILayout.TextField("Duration", itemData["DURATION"]);
     }
 

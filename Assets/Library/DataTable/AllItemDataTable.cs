@@ -46,7 +46,7 @@ public class AllItemTableElem : DataTableElemBase
         stat_Hp = int.Parse(data["STAT_HP"]);
         obstacleType = (TrapTag)int.Parse(data["OBSTACLE_TYPE"]);
         obstacleHp = int.Parse(data["OBSTACLE_HP"]);
-        trapDamage = int.Parse(data["TRAP_DAMAGE"]);
+        trapDamage = int.Parse(data["DAMAGE"]);
         trapDamage = trapDamage == -999 ? 0 : trapDamage;
         duration = int.Parse(data["DURATION"]);
 

@@ -159,6 +159,8 @@ public class BattleManager : MonoBehaviour
                 if (existList[k])
                 {
                     realWave[k] = FindMonsterToId((int)customWave[k]);
+                    realWave[k].Pos = new Vector2(k, 6);
+                    realWave[k].SetActionCommand();
                 }
             }
         }
@@ -192,20 +194,6 @@ public class BattleManager : MonoBehaviour
                 curGroup = Random.Range(0, 4);
             }
         }
-
-        //if(isCustomMode)
-        //{
-        //    curGroup = customGroup;
-        //    waveLink.totalWave = customWave;
-        //    if (curGroup > 6)
-        //        curGroup = 6;
-        //    else if (curGroup < 0)
-        //        curGroup = 0;
-        //    if (waveLink.totalWave < 2)
-        //        waveLink.totalWave = 2;
-        //    else if (waveLink.totalWave > 3)
-        //        waveLink.totalWave = 3;
-        //}
     }
     private void VarInit()
     {
