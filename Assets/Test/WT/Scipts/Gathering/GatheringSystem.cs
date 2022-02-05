@@ -619,6 +619,7 @@ public class GatheringSystem : MonoBehaviour
                 if (Vars.UserData.AddItemData(selecteditemList[i]) != false)
                 {
                     Vars.UserData.AddItemData(selecteditemList[i]);
+                    Vars.UserData.ExperienceListAdd(selecteditemList[i].itemId);
                     for (int j = rewardList.Count-1; j>=0 ; j--)
                     {
                         if (rewardList[j] == selecteditemList[i])
@@ -676,6 +677,7 @@ public class GatheringSystem : MonoBehaviour
             if (Vars.UserData.AddItemData(rewardList[i])!=false)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
+                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
                 rewardList.RemoveAt(i);
             }
             else

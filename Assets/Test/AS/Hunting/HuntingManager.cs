@@ -133,6 +133,7 @@ public class HuntingManager : MonoBehaviour
         newItem.OwnCount = Random.Range(1, 5);
         getItemImage.sprite = item.IconSprite;
         Vars.UserData.AddItemData(newItem);
+        Vars.UserData.ExperienceListAdd(newItem.itemId);
     }
 
     public void Shooting()
