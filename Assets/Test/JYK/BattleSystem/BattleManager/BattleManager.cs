@@ -154,10 +154,12 @@ public class BattleManager : MonoBehaviour
                 customWave = customBattle.cwave3;
                 existList = customBattle.haveMonster3;
             }
-
-            if(existList[i])
+            for (int k = 0; k < 3; k++)
             {
-                realWave[i] = FindMonsterToId((int)customWave[i]);
+                if (existList[k])
+                {
+                    realWave[k] = FindMonsterToId((int)customWave[k]);
+                }
             }
         }
     }
