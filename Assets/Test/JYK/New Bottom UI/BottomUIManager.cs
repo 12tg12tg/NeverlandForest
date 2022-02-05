@@ -44,6 +44,9 @@ public class BottomUIManager : MonoBehaviour
     [Header("배틀을 위한 UI Linker")]
     public TrapSelecter battleLinker;
 
+    [Header("아이템 선택 슬롯")]
+    public int selectItemSlotNum;
+
     private void Awake()
     {
         instance = this;
