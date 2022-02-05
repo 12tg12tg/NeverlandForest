@@ -30,10 +30,26 @@ public class GatheringData : EventData
         }
         if(isCreate)
         {
-            var gatheringObj2 = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 90f, 0f)));
-            gatheringObj2.Init(system, this, roomIndex);
+            switch (obj.objectType)
+            {
+                case GatheringObjectType.Tree:
+                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                    break;
+                case GatheringObjectType.Pit:
+                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(90f, 0f, 0f)));
+                    break;
+                case GatheringObjectType.Herbs:
+                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                    break;
+                case GatheringObjectType.Mushroom:
+                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
+                    break;
+                default:
+                    break;
+            }
+            gatheringObj.Init(system, this, roomIndex);
             obj.objectType = gatheringtype;
-            return gatheringObj2;
+            return gatheringObj;
         }
         var objPos = new Vector3(eventBasePos.x + offSetBasePos, eventBasePos.y, eventBasePos.z );
         switch (obj.objectType)
@@ -83,7 +99,7 @@ public class HuntingData : EventData
             huntingObj2.Init(this, roomIndex);
             return huntingObj2;
         }
-        var objPos = new Vector3(eventBasePos.x - 2.5f, eventBasePos.y + 1f, eventBasePos.z);
+        var objPos = new Vector3(eventBasePos.x, eventBasePos.y + 1f, eventBasePos.z);
         var gameObj2 = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f,90f,0f)));
         gameObj2.layer = LayerMask.NameToLayer("EventObject");
         var boxCol2 = gameObj2.AddComponent<BoxCollider>();

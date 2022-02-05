@@ -18,6 +18,7 @@ public class GatheringSystem : MonoBehaviour
     public PlayerDungeonUnit boyPlayer;
     [Header("다이어리,재확인")]
     public DiaryManager diaryManager;
+    public DungeonRewardDiaryManager dungeonrewarddiaryManager;
     public ReconfirmPanelManager reconfirmPanelManager;
     [Header("채집판넬관련")]
     public GameObject gatheringPanel;
@@ -129,8 +130,8 @@ public class GatheringSystem : MonoBehaviour
     }
     private void ToolPopUp()
     {
-        diaryManager.gameObject.SetActive(true);
-        diaryManager.OpenGatheringInDungeon();
+        dungeonrewarddiaryManager.gameObject.SetActive(true);
+        dungeonrewarddiaryManager.OpenGatheringInDungeon();
         if (ConsumeManager.CurTimeState ==TimeState.DayTime)
         {
             gatheringLanternLeveltext.text = "랜턴" + Vars.UserData.uData.lanternState.ToString();
@@ -444,7 +445,7 @@ public class GatheringSystem : MonoBehaviour
         reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
-        diaryManager.OpenGatheringInDungeonReward();
+        dungeonrewarddiaryManager.OpenGatheringInDungeonReward();
     }
     public void NoTool()
     {
@@ -477,11 +478,11 @@ public class GatheringSystem : MonoBehaviour
         reward.GetComponent<GatheringInDungeonRewardObject>().Init(curSelectedObj.item);
         gatheringRewardList.Add(reward.GetComponent<GatheringInDungeonRewardObject>());
         rewardList.Add(curSelectedObj.item);
-        diaryManager.OpenGatheringInDungeonReward();
+        dungeonrewarddiaryManager.OpenGatheringInDungeonReward();
     }
     public void ClosePopup()
     {
-        diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
+        dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         if (isMove)
         {
             boyPlayer.IsCoMove = true;
@@ -619,6 +620,7 @@ public class GatheringSystem : MonoBehaviour
                 if (Vars.UserData.AddItemData(selecteditemList[i]) != false)
                 {
                     Vars.UserData.AddItemData(selecteditemList[i]);
+                    Vars.UserData.ExperienceListAdd(selecteditemList[i].itemId);
                     for (int j = rewardList.Count-1; j>=0 ; j--)
                     {
                         if (rewardList[j] == selecteditemList[i])
@@ -640,7 +642,7 @@ public class GatheringSystem : MonoBehaviour
             }
            
         }
-        diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+        dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
         for (int i = 0; i < selecteditemList.Count; i++)
         {
@@ -676,6 +678,7 @@ public class GatheringSystem : MonoBehaviour
             if (Vars.UserData.AddItemData(rewardList[i])!=false)
             {
                 Vars.UserData.AddItemData(rewardList[i]);
+                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
                 rewardList.RemoveAt(i);
             }
             else
@@ -683,7 +686,7 @@ public class GatheringSystem : MonoBehaviour
                 reconfirmPanelManager.gameObject.SetActive(true);
                 reconfirmPanelManager.OpenBagReconfirmInGathering();
             }
-            diaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+            dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
             BottomUIManager.Instance.ItemListInit();
         }
         if (reward != null)
@@ -695,7 +698,7 @@ public class GatheringSystem : MonoBehaviour
             Destroy(subreward);
         }
         rewardList.Clear();
-        diaryManager.gatheringInDungeonRewardPanel.SetActive(false);
+        dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
         ClosePopup();
     }
 }

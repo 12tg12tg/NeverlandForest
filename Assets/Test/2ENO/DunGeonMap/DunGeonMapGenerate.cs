@@ -24,6 +24,8 @@ public class DunGeonMapGenerate : MonoBehaviour
     public DirectionInho direction;
 
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
+    public DungeonRoom[] tutorialRoomArray = new DungeonRoom[4];
+
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
 
@@ -44,7 +46,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         if(mapArrayData == null)
         {
-            StartCoroutine(MapCorutine(action));
+            StartCoroutine(MapGenerateCorutine(action));
         }
         else
         {
@@ -83,12 +85,12 @@ public class DunGeonMapGenerate : MonoBehaviour
             case DunGeonEvent.Gathering:
                 if (curRoom.RoomType == DunGeonRoomType.MainRoom)
                 {
-                    curRoom.gatheringCount = 2/*Random.Range(0, 3)*/;
+                    curRoom.gatheringCount = 2;
                     for (int i = 0; i < curRoom.gatheringCount; i++)
                     {
                         var gatheringData1 = new GatheringData();
                         gatheringData1.eventType = DunGeonEvent.Gathering;
-                        gatheringData1.offSetBasePos = (-3 + (i * 3));
+                        gatheringData1.offSetBasePos = (-8 + (i * 16));
                         gatheringData1.roomIndex = curRoom.roomIdx;
                         gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(0, 4);
                         eventData.Add(gatheringData1);
@@ -125,14 +127,14 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
     }
 
-    IEnumerator MapCorutine(UnityAction action)
+    IEnumerator MapGenerateCorutine(UnityAction action)
     {
         MapInit();
         while (remainMainRoom > 0)
         {
             // 다시 초기화
             MapInit();
-            TestMapSet(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
+            CreateMapArray(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
             yield return null;
         }
 
@@ -141,14 +143,6 @@ public class DunGeonMapGenerate : MonoBehaviour
         DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DungeonEventGenerate(dungeonRoomArray);
 
-        //var list = dungeonRoomArray.Where(x => x.eventList.FindIndex(y => y == DunGeonEvent.RandomIncount) != -1).ToList();
-
-        //// TODO : 코루틴안에 코루틴..
-        //for (int i = 0; i < list.Count;)
-        //{
-        //    yield return StartCoroutine(RandomEventManager.Instance.CreateRandomEvent(list[i].randomEventData));
-        //    i++;
-        //}
         action?.Invoke();
 
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
@@ -165,10 +159,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             }
             else
             {
-                if(i==100)
-                {
-                    int a = 100;
-                }
                 var row = i % col;
                 var colum = i / col;
                 dungeonRoomArray[i].Pos = new Vector2(-500f + row * distance * 15f, -1200f + colum * distance * 15f);
@@ -177,7 +167,59 @@ public class DunGeonMapGenerate : MonoBehaviour
         remainMainRoom = roomCount;
     }
 
-    public void TestMapSet(int curIdx,int beforeIdx, DirectionInho lastDir, int roadCount)
+    public void CreateTutorialMapArray()
+    {
+        // MapInit()
+        for (int i = 0; i < tutorialRoomArray.Length; i++)
+        {
+            tutorialRoomArray[i] = new DungeonRoom();
+            tutorialRoomArray[i].IsCheck = false;
+            if (i == 0)
+            {
+                tutorialRoomArray[i].Pos = new Vector2(-500f, -1200f);
+            }
+            else
+            {
+                var row = i % col;
+                var colum = i / col;
+                tutorialRoomArray[i].Pos = new Vector2(-500f + row * distance * 15f, -1200f + colum * distance * 15f);
+            }
+        }
+
+        tutorialRoomArray[0].IsCheck = true;
+        tutorialRoomArray[0].RoomType = DunGeonRoomType.MainRoom;
+        tutorialRoomArray[0].SetEvent(DunGeonEvent.Battle);
+        tutorialRoomArray[0].beforeRoomIdx = -1;
+
+        tutorialRoomArray[1].IsCheck = true;
+        tutorialRoomArray[1].RoomType = DunGeonRoomType.SubRoom;
+        tutorialRoomArray[1].SetEvent(DunGeonEvent.Empty);
+
+        tutorialRoomArray[2].IsCheck = true;
+        tutorialRoomArray[2].RoomType = DunGeonRoomType.SubRoom;
+        tutorialRoomArray[2].SetEvent(DunGeonEvent.Gathering);
+
+        tutorialRoomArray[3].IsCheck = true;
+        tutorialRoomArray[3].RoomType = DunGeonRoomType.MainRoom;
+        tutorialRoomArray[3].SetEvent(DunGeonEvent.Empty);
+        tutorialRoomArray[3].nextRoomIdx = -1;
+
+        for (int i = 0; i < 4; i++)
+        {
+            tutorialRoomArray[i].roomIdx = i;
+            if (i != 0)
+                tutorialRoomArray[i].beforeRoomIdx = i - 1;
+
+            if(i != 3)
+                tutorialRoomArray[i].nextRoomIdx = i + 1;
+        }
+
+        DunGeonRoomSetting.DungeonRoadCount(tutorialRoomArray[0], tutorialRoomArray);
+        DunGeonRoomSetting.DungeonPathRoomCountSet(tutorialRoomArray[0], tutorialRoomArray);
+        DungeonEventGenerate(tutorialRoomArray);
+
+    }
+    public void CreateMapArray(int curIdx,int beforeIdx, DirectionInho lastDir, int roadCount)
     {
         if (remainMainRoom <= 0)
             return;
@@ -218,7 +260,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                 dungeonRoomArray[curIdx].eventList.Add(DunGeonEvent.Battle);
                 return;
             }
-            TestMapSet(nextId, curIdx, curDir, rndCount);
+            CreateMapArray(nextId, curIdx, curDir, rndCount);
         }
         // 길방 생성
         else
@@ -248,7 +290,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                 nextId = NextRoomId(curIdx, curDir);
             }
             dungeonRoomArray[curIdx].nextRoomIdx = nextId;
-            TestMapSet(nextId, curIdx, curDir, roadCount);
+            CreateMapArray(nextId, curIdx, curDir, roadCount);
         }
         return;
     }
@@ -329,31 +371,4 @@ public class DunGeonMapGenerate : MonoBehaviour
         return result;
     }
 }
-//public void CreateMapObject()
-//{
-//    int curIdx = startIdx;
-//    while(dungeonRoomArray[curIdx].nextRoomIdx != -1)
-//    {
-//        var room = dungeonRoomArray[curIdx];
-//        if (room.RoomType == DunGeonRoomType.MainRoom)
-//        {
-//            var obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
-//                 , Quaternion.identity, mapPos.transform);
-//            var objectInfo = obj.GetComponent<RoomObject>();
-//            objectInfo.text.SetText(GetText(room));
-//            objectInfo.roomIdx = room.roomIdx;
-//            dungeonRoomObjectList.Add(obj);
-//        }
-//        else
-//        {
-//            var obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, room.Pos.y, 0f)
-//            , Quaternion.identity, mapPos.transform);
-//            var objectInfo = obj.GetComponent<RoomObject>();
-//            objectInfo.text.SetText(GetText(room));
-//            objectInfo.roomIdx = room.roomIdx;
-//            dungeonRoomObjectList.Add(obj);
-//        }
-//        curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
-//    }
-//    mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
-//}
+

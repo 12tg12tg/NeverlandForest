@@ -257,6 +257,7 @@ public class RandomEventUIManager : MonoBehaviour
         for (int i = 0; i < selectRewardItems.Count; i++)
         {
             Vars.UserData.AddItemData(selectRewardItems[i]);
+            Vars.UserData.ExperienceListAdd(selectRewardItems[i].itemId);
             ItemListInit();
             if(selectRewardItems[i].OwnCount <= 0)
             {
@@ -280,6 +281,7 @@ public class RandomEventUIManager : MonoBehaviour
         for (int i = 0; i < rewardItemList.Count; i++)
         {
             Vars.UserData.AddItemData(rewardItemList[i]);
+            Vars.UserData.ExperienceListAdd(rewardItemList[i].itemId);
             ItemListInit();
             if(rewardItemList[i].OwnCount <= 0)
             {

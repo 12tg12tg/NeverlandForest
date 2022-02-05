@@ -6,7 +6,7 @@ public class DiarySkill : MonoBehaviour
     private static DiarySkill instance;
     public static DiarySkill Instance => instance;
 
-   [Header("왼쪽 정보 창 연결")]
+    [Header("왼쪽 정보 창 연결")]
     public DiarySkillInfoUI info;
     [Header("우측 12개 아이콘 연결")]
     public List<DiarySkillButtonUi> skillButtons;
