@@ -32,6 +32,7 @@ public class BattleManager : MonoBehaviour
     public BattleTile tileLink;
     public BattleUI uiLink;
     public BattleDirecting directLink;
+    public BattleDrag dragLink;
 
     //Instance
     [Header("몬스터 관련 UI 캔버스 연결")]
@@ -54,6 +55,9 @@ public class BattleManager : MonoBehaviour
     [Header("선공 / 후공 확인")]
     public bool isPlayerFirst;
 
+    [Header("몬스터 그룹 설정")]
+    public CustomBattle customBattle;
+
     //Property
     public int Turn { get => turn; set => turn = value; }
     public bool IsWaitingTileSelect { get => tileLink.isWaitingTileSelect; }
@@ -65,7 +69,6 @@ public class BattleManager : MonoBehaviour
         instance = this;
         boyInput = new PlayerCommand(boy, PlayerType.Boy);
         girlInput = new PlayerCommand(girl, PlayerType.Girl);
-
     }
 
     private void Start()
@@ -76,6 +79,93 @@ public class BattleManager : MonoBehaviour
     }
 
     // 초기화
+    public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    {
+        // 1. 변수 초기화
+        VarInit();
+
+        if (!customBattle.useCustomMode)
+        {
+            // 2. Grade & Wave
+            //  마지막방전투인지 일반전투인지를 판단하고,
+            //  중반이 지나갔는지 아닌지를 판단하고,
+            GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
+
+            // 3. 몬스터 (랜덤뽑기) & 배치
+            MonsterInit(isBlueMoonBattle, isEndOfDeongun);
+        }
+        else
+        {
+            // 2~3. Custom Init
+            CustomInit();
+        }
+
+        waveLink.SetWavePosition(waveLink.wave1);
+        waveLink.SetWavePosition(waveLink.wave2);
+        waveLink.SetWavePosition(waveLink.wave3);
+
+        // 플레이어 스탯 전달받기
+        // Vars 전역 저장소에서 불러오기.
+        boy.stats.Hp = (int)Vars.UserData.uData.HunterHp;
+
+        //플레이어 배치
+        tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+        tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
+
+        //배틀상태 Start
+        FSM.ChangeState(BattleState.Start);
+    }
+
+    private void CustomInit()
+    {
+        monsters.Clear();
+        waveLink.wave1.Clear();
+        waveLink.wave2.Clear();
+        waveLink.wave3.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            waveLink.wave1.Add(null);
+            waveLink.wave2.Add(null);
+            waveLink.wave3.Add(null);
+        }
+
+        List<MonsterUnit> realWave;
+        List<bool> existList;
+        List<MonsterPoolTag> customWave;
+        waveLink.totalWave = customBattle.waveNum;
+
+        for (int i = 0; i < waveLink.totalWave; i++)
+        {
+            if (i == 0)
+            {
+                realWave = waveLink.wave1;
+                customWave = customBattle.cwave1;
+                existList = customBattle.haveMonster1;
+            }
+            else if (i == 1)
+            {
+                realWave = waveLink.wave2;
+                customWave = customBattle.cwave2;
+                existList = customBattle.haveMonster2;
+            }
+            else
+            {
+                realWave = waveLink.wave3;
+                customWave = customBattle.cwave3;
+                existList = customBattle.haveMonster3;
+            }
+            for (int k = 0; k < 3; k++)
+            {
+                if (existList[k])
+                {
+                    realWave[k] = FindMonsterToId((int)customWave[k]);
+                    realWave[k].Pos = new Vector2(k, 6);
+                    realWave[k].SetActionCommand();
+                }
+            }
+        }
+    }
+
     private void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
         if (isBlueMoonBattle)
@@ -113,6 +203,7 @@ public class BattleManager : MonoBehaviour
         IsDuringPlayerAction = false;
         GameManager.Manager.State = GameState.Battle;
     }
+
     private void MonsterInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
         monsters.Clear();
@@ -169,9 +260,8 @@ public class BattleManager : MonoBehaviour
         else
         {
             // 일반 배틀
-            int randWaveCount = Random.Range(2, 4);
             List<MonsterUnit> temp = null;
-            for (int i = 0; i < waveLink.curWave; i++)
+            for (int i = 0; i < waveLink.totalWave; i++)
             {
                 if (i == 0)
                     temp = waveLink.wave1;
@@ -211,35 +301,6 @@ public class BattleManager : MonoBehaviour
             wave[colIndex].SetActionCommand();
         }
     }
-    public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
-    {
-        // 1. Grade & Wave
-        //  마지막방전투인지 일반전투인지를 판단하고,
-        //  중반이 지나갔는지 아닌지를 판단하고,
-        GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
-
-        // 2. 변수 초기화
-        VarInit();
-
-        // 3. 몬스터 (랜덤뽑기) & 배치
-        MonsterInit(isBlueMoonBattle, isEndOfDeongun);
-
-        waveLink.SetWavePosition(waveLink.wave1);
-        waveLink.SetWavePosition(waveLink.wave2);
-        waveLink.SetWavePosition(waveLink.wave3);
-
-        // 플레이어 스탯 전달받기
-        // Vars 전역 저장소에서 불러오기.
-        boy.stats.Hp = (int)Vars.UserData.uData.HunterHp;
-
-        //플레이어 배치
-        tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
-        tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
-
-        //배틀상태 Start
-        FSM.ChangeState(BattleState.Start);
-    }
-
 
     //Command
     public void ClearCommand()
@@ -315,7 +376,7 @@ public class BattleManager : MonoBehaviour
             }
             else
             {
-
+                BottomUIManager.Instance.IsSkillLock = false;
             }
         }
     }

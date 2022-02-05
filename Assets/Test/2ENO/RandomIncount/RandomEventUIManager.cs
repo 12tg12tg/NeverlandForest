@@ -59,6 +59,8 @@ public class RandomEventUIManager : MonoBehaviour
     [HideInInspector] public DataAllItem selectInvenItem;
     [HideInInspector] public List<DataAllItem> selectRewardItems = new List<DataAllItem>();
     [HideInInspector] public int curOperatorFeedback = -1;
+    [HideInInspector] public bool isRaneomEventOn;
+    [HideInInspector] public int selectSlotNum;
 
     private void Awake()
     {
@@ -88,6 +90,7 @@ public class RandomEventUIManager : MonoBehaviour
         inventory.SetActive(false);
         worldmap.SetActive(false);
         playerMove.SetActive(false);
+        isRaneomEventOn = true;
     }
     private void OnDisable()
     {
@@ -95,6 +98,7 @@ public class RandomEventUIManager : MonoBehaviour
         inventory.SetActive(true);
         worldmap.SetActive(true);
         playerMove.SetActive(true);
+        isRaneomEventOn = false;
     }
     private void Update()
     {
@@ -140,7 +144,7 @@ public class RandomEventUIManager : MonoBehaviour
         windows[0].SetActive(true);
         windows[1].SetActive(false);
         confirmPanel.gameObject.SetActive(false);
-        closeBtn.gameObject.SetActive(false);
+        closeBtn.gameObject.SetActive(true);
         eventDesc.text = randomEventData.eventDesc;
         SelectInit();
     }
@@ -183,7 +187,6 @@ public class RandomEventUIManager : MonoBehaviour
     {
         windows[0].SetActive(false);
         windows[1].SetActive(true);
-        closeBtn.gameObject.SetActive(true);
 
         resultDesc.text = randomEventData.resultInfo;
         selectName.text = randomEventData.selectName[randomEventData.curSelectNum - 1];
@@ -217,8 +220,8 @@ public class RandomEventUIManager : MonoBehaviour
     }
     public void EventExitInit()
     {
-        gameObject.SetActive(false);
         // 이벤트 데이터 값중 유지되면 안되는 것들 모두 초기화
+
         randomEventData.DataDefaultEventExit();
         rewardItemList.Clear();
         for (int i = 0; i < selectButtons.Count; i++)
@@ -226,6 +229,8 @@ public class RandomEventUIManager : MonoBehaviour
             var button = selectButtons[i].GetComponent<Button>();
             button.onClick.RemoveAllListeners();
         }
+        gameObject.SetActive(false);
+        BottomUIManager.Instance.ItemListInit();
     }
     public void RewardItemLIstInit(List<DataAllItem> itemList)
     {
@@ -262,17 +267,7 @@ public class RandomEventUIManager : MonoBehaviour
             }
             RewardItemLIstInit(rewardItemList);
         }
-
-        //Vars.UserData.AddItemData(selectRewardItem);
-        //ItemListInit();
-        //if (selectRewardItem.OwnCount <= 0)
-        //{
-        //    var index = rewardItemList.FindIndex(x => x.itemId == selectRewardItem.itemId);
-        //    rewardItemList.RemoveAt(index);
-        //    info.Init();
-        //    info2page.Init();
-        //}
-        //RewardItemLIstInit(rewardItemList);
+        selectRewardItems.Clear();
     }
 
     public void GetAllItems()
@@ -280,6 +275,7 @@ public class RandomEventUIManager : MonoBehaviour
         if (rewardItemList.Count <= 0)
             return;
 
+        selectRewardItems.Clear();
         var removeList = new List<string>();
         for (int i = 0; i < rewardItemList.Count; i++)
         {
@@ -326,8 +322,8 @@ public class RandomEventUIManager : MonoBehaviour
         int count = list1.Count;
         for (int i = 0; i < count; i++)
         {
-            itemButtons[i].Init(list1[i]);
-            itemButtons2page[i].Init(list1[i]);
+            itemButtons[i].Init(list1[i], i);
+            itemButtons2page[i].Init(list1[i], i);
         }
     }
 

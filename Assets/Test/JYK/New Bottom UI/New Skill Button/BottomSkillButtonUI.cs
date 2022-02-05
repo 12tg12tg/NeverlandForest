@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class BottomSkillButtonUI : MonoBehaviour
+public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    private BattleManager bm;
+    private BottomUIManager bottomUiManager;
     public Button ownButton;
 
     public DataPlayerSkill skill;                       // 담고있는 스킬정보
@@ -20,22 +23,16 @@ public class BottomSkillButtonUI : MonoBehaviour
     private CanvasScaler cs;
     private float height;
     private Vector2 openOffset;                         // Open/Close용 크기 계산
+    private bool isCalculateOffset;
 
     // Property
-    private Vector2 OpenOffset
-    {
-        get
-        {
-            if(openOffset == Vector2.zero)
-            {
-                CalculateOffset();
-            }
-            return openOffset;
-        } 
-    }
+    private Vector2 CoverOrigianlPos { get; set; }
+    private Vector2 CoverOpenPos { get; set; }
 
     public void Init(DataPlayerSkill skill)
     {
+        bm ??= BattleManager.Instance;
+        bottomUiManager ??= BottomUIManager.Instance;
         cover.interactable = true;
         below.interactable = false;
 
@@ -46,10 +43,14 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void CalculateOffset()
     {
+        isCalculateOffset = true;
+
         cs = GetComponentInParent<CanvasScaler>();
         var size = Utility.RelativeRectSize(cs, coverRt);
         height = size.y;
         openOffset = new Vector2(0f, height * 3 / 8);
+        CoverOrigianlPos = coverRt.anchoredPosition;
+        CoverOpenPos = CoverOrigianlPos + openOffset;
     }
 
     public void MakeUnclickable()
@@ -66,24 +67,79 @@ public class BottomSkillButtonUI : MonoBehaviour
 
     public void IntoSkillStage() // 버튼
     {
-        BottomUIManager.Instance.info.Init(skill);
+        if(!isCalculateOffset)
+            CalculateOffset();
 
-        if(GameManager.Manager.State == GameState.Battle && BattleManager.Instance.FSM.curState == BattleState.Player)
+        bottomUiManager.info.Init(skill);
+
+        if(!bottomUiManager.IsSkillLock)
         {
             cover.interactable = false;
-            BottomUIManager.Instance.IntoSkillState(this);
-            BattleManager.Instance.directLink.StartSkillSelect();
-            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition + OpenOffset, 0.3f,
+            bottomUiManager.IntoSkillState(this);
+            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
                 () => { below.interactable = true; }));
         }
     }
 
     public void Cancle() // 버튼
     {
-        BattleManager.Instance.directLink.EndSkillSelect();
         below.interactable = false;
-        BottomUIManager.Instance.ExitSkillState();
-        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, coverRt.anchoredPosition - OpenOffset, 0.3f,
+        bottomUiManager.ExitSkillState(true);
+        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f,
             () => { cover.interactable = true; }));
+    }
+
+    public void Cancle_UseSkill()
+    {
+        below.interactable = false;
+        bottomUiManager.ExitSkillState(false);
+        StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f, null));
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        if (!isCalculateOffset)
+            CalculateOffset();
+
+        if (!bottomUiManager.IsSkillLock)
+        {
+            bm.dragLink.Init(this);
+            bottomUiManager.info.Init(skill);
+
+            cover.interactable = false;
+            bottomUiManager.IntoSkillState(this);
+            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
+                () => { below.interactable = true; }));
+        }
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        if (bm.dragLink.isDrag)
+        {
+            bm.dragLink.UpdatePos(eventData.position);
+        }
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        if (bm.dragLink.lastDrapTile == null)
+        {
+            bottomUiManager.curSkillButton?.Cancle();
+        }
+        else if (bm.dragLink.lastDrapTile.isHighlight)
+        {
+            bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill);
+
+            bottomUiManager.curSkillButton.Cancle_UseSkill();
+            bottomUiManager.InteractiveSkillButton(skill.SkillTableElem.player, false);
+
+            bm.uiLink.UpdateProgress();
+        }
+        else if (!bm.dragLink.lastDrapTile.isHighlight)
+        {
+            bottomUiManager.curSkillButton.Cancle();
+        }
+        bm.dragLink.Release();
     }
 }

@@ -9,9 +9,20 @@ public enum MonsterState
     Idle, DoSomething, Dead
 }
 
+[System.Flags]
+public enum NearMovableTile
+{
+    None = 0,
+    Up = 1 << 0,
+    Down = 1 << 1,
+    Back = 1 << 2,
+    ALL = Up | Down | Back
+}
+
 public class MonsterUnit : UnitBase, IAttackable
 {
     // Component
+    public SkinnedMeshRenderer mesh;
     [SerializeField] private Animator animator;
     public MonsterUILinker uiLinker;
     public MonsterTrigger triggerLinker;
@@ -37,6 +48,9 @@ public class MonsterUnit : UnitBase, IAttackable
     public bool isPause;
     public bool isMove;
 
+    public Coroutine moveCoroutine;
+    public UnityAction afterMove;
+
     // Property
     public int Shield { get => sheild; set => sheild = value; }
     public int Speed { get => BaseElem.Speed; } // 랜덤을 최소 < 속도 < 최대 내에서 뽑아주는 프로퍼티임.
@@ -46,13 +60,18 @@ public class MonsterUnit : UnitBase, IAttackable
     public MonsterType Type { get => type; }
     public MonsterTableElem BaseElem { get => baseElem; }
 
+    private void Awake()
+    {
+        mesh = GetComponentInChildren<SkinnedMeshRenderer>();
+    }
+
     // Update
     private void Update()
     {
-        if(isActionDone)
+        if (isActionDone)
         {
             delayTimer += Time.deltaTime;
-            if(delayTimer > actionDelay)
+            if (delayTimer > actionDelay)
             {
                 delayTimer = 0f;
                 isActionDone = false;
@@ -89,125 +108,226 @@ public class MonsterUnit : UnitBase, IAttackable
             }
             if (playerCommand.skill.SkillTableElem.name == "넉 백")
             {
-                PushBack();
+                PushBack(true);
             }
         }
         // 약초학자
         else
         {
-            if(playerCommand.skill.SkillTableElem.name != "근거리")
+            if (playerCommand.skill.SkillTableElem.name != "근거리")
             {
                 IsBurn = true;
+            }
+            if (playerCommand.skill.SkillTableElem.name == "위협 발산")
+            {
+                KickoutAnyWhere();
             }
             triggerLinker.DisableHitTrigger();
         }
     }
 
-    private bool CanMoveBackTile(int distance, out Tiles backTile)
+    private NearMovableTile FindNearMovableTile()
     {
-        backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + distance));
-        return backTile != null && backTile.CanStand;
-    }
+        TileMaker tm = TileMaker.Instance;
+        int x = (int)CurTile.index.x;
+        int y = (int)CurTile.index.y;
 
-    private void PushBack_UseAllSnareStack(bool isOwner)
-    {
-        var list = (from n in obsDebuffs
-                   where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
-                   select n).ToList();
-
-        int count = list.Count();
-        count = count == 0 ? 1 : count;
-
-
-        for (int i = count; i > 0; i--)
+        NearMovableTile e = NearMovableTile.None;
+        var upTile = tm.GetTile(new Vector2(x + 1, y));
+        var downTile = tm.GetTile(new Vector2(x - 1, y));
+        var backTile = tm.GetTile(new Vector2(x, y + 1));
+        if (upTile != null && upTile.CanStand)
         {
-            if(CanMoveBackTile(i, out Tiles backTile))
-            {
-                Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
-                SetMoveUi(true);
-                BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
-                    () => { SetMoveUi(false); AfterPushBack(isOwner); }, false);
-                break;
-            }
+            e |= NearMovableTile.Up;
+        }
+        if (downTile != null && downTile.CanStand)
+        {
+            e |= NearMovableTile.Down;
+        }
+        if (backTile != null && backTile.CanStand)
+        {
+            e |= NearMovableTile.Back;
         }
 
-        foreach (var snare in list)
-        {
-            obsDebuffs.Remove(snare);
-        }
-        uiLinker.UpdateDebuffs(obsDebuffs);
+        return e;
     }
 
-    private void FindSnarelinkedUnit(List<MonsterUnit> linker)
+    private void KickoutAnyWhere()
     {
-        var list = from n in obsDebuffs
-                   where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
-                   select n.anotherUnit;
+        UnityAction afterKickOut;
+        Vector2 destTile;
+        int x = (int)CurTile.index.x;
+        int y = (int)CurTile.index.y;
 
-        foreach (var unit in list)
+        var movable = FindNearMovableTile();
+        if ((movable & NearMovableTile.Up) != 0
+            && (movable & NearMovableTile.Down) != 0)
         {
-            if(!linker.Contains(unit))
+            afterKickOut = () => { SetMoveUi(false); };
+            var rand = Random.Range(0, 2);
+            if (rand == 0)
             {
-                linker.Add(unit);
-                unit.FindSnarelinkedUnit(linker);
-            }
-        }
-    }
-
-    private void PushBack()
-    {
-        List<MonsterUnit> linkers = new List<MonsterUnit>();
-        linkers.Add(this);
-
-        FindSnarelinkedUnit(linkers);
-        Debug.Log($"용의자 : {linkers.Count}명");
-        foreach (var unit in linkers)
-        {
-            if(unit == this)
-            {
-                unit.PushBack_UseAllSnareStack(true);
+                // 위로 보내기
+                destTile = new Vector2(x + 1, y);
             }
             else
             {
-                unit.PushBack_UseAllSnareStack(false);
+                // 아래로 보내기
+                destTile = new Vector2(x - 1, y);
             }
         }
-
-        //예전방식
+        else if ((movable & NearMovableTile.Up) != 0)
         {
-            //UnityAction afterPushBack = () => { SetMoveUi(false); AfterPushBack(isOwner); };
+            // 위로 보내기
+            afterKickOut = () => { SetMoveUi(false); };
+            destTile = new Vector2(x + 1, y);
+        }
+        else if ((movable & NearMovableTile.Down) != 0)
+        {
+            // 아래로 보내기
+            afterKickOut = () => SetMoveUi(false);
+            destTile = new Vector2(x - 1, y);
+        }
+        else if ((movable & NearMovableTile.Back) != 0)
+        {
+            // 뒤로 보내기
+            afterKickOut = () => { SetMoveUi(false); AfterPushBack(false); };
+            destTile = new Vector2(x, y + 1);
+        }
+        else
+            return;
 
-            //Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
-            //if (backTile != null && backTile.CanStand)
+        SetMoveUi(true);
+        BattleManager.Instance.tileLink.KickOutUnitOnTile(destTile, this, null,
+            afterKickOut);
+    }
+
+    // 스택 방식
+    //private bool CanMoveBackTile(int distance, out Tiles backTile)
+    //{
+    //    backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + distance));
+    //    return backTile != null && backTile.CanStand;
+    //}
+
+    //private void PushBack_UseAllSnareStack(bool isOwner)
+    //{
+    //    var list = (from n in obsDebuffs
+    //               where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
+    //               select n).ToList();
+
+    //    int count = list.Count();
+    //    count = count == 0 ? 1 : count;
+
+
+    //    for (int i = count; i > 0; i--)
+    //    {
+    //        if(CanMoveBackTile(i, out Tiles backTile))
+    //        {
+    //            Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
+    //            SetMoveUi(true);
+    //            BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
+    //                () => { SetMoveUi(false); AfterPushBack(isOwner); }, false);
+    //            break;
+    //        }
+    //    }
+
+    //    foreach (var snare in list)
+    //    {
+    //        obsDebuffs.Remove(snare);
+    //    }
+    //    uiLinker.UpdateDebuffs(obsDebuffs);
+    //}
+
+    //private void FindSnarelinkedUnit(List<MonsterUnit> linker)
+    //{
+    //    var list = from n in obsDebuffs
+    //               where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
+    //               select n.anotherUnit;
+
+    //    foreach (var unit in list)
+    //    {
+    //        if(!linker.Contains(unit))
+    //        {
+    //            linker.Add(unit);
+    //            unit.FindSnarelinkedUnit(linker);
+    //        }
+    //    }
+    //}
+
+    private void PushBack(bool isOwner)
+    {
+        //스택형
+        {
+            //List<MonsterUnit> linkers = new List<MonsterUnit>();
+            //linkers.Add(this);
+
+            //FindSnarelinkedUnit(linkers);
+            //foreach (var unit in linkers)
             //{
-            //    Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
-            //    SetMoveUi(true);
-            //    BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
-            //        afterPushBack, false);
-            //}
-
-            //if (isOwner)
-            //{
-            //    var snares = obsDebuffs.Where((n) => n.elem.obstacleType == TrapTag.Snare);
-            //    var linkedSnares = (from n in snares
-            //                       where n.anotherUnit != null
-            //                       select n).ToList();
-            //    var anothers = (from n in linkedSnares
-            //                    select n.anotherUnit).Distinct().ToList();
-
-            //    foreach (var mySnareDebuff in linkedSnares) // 서로의 디버프리스트에서 올가미 디버프 제거
+            //    if(unit == this)
             //    {
-            //        mySnareDebuff.anotherUnit.obsDebuffs.Remove(mySnareDebuff.another);
-            //        mySnareDebuff.anotherUnit.uiLinker.UpdateDebuffs(mySnareDebuff.anotherUnit.obsDebuffs);
-            //        obsDebuffs.Remove(mySnareDebuff);
-            //        uiLinker.UpdateDebuffs(obsDebuffs);
+            //        unit.PushBack_UseAllSnareStack(true);
             //    }
-
-            //    foreach (var another in anothers) // 한번만 밀리도록 따로 순회
+            //    else
             //    {
-            //        another.PushBack(false);
+            //        unit.PushBack_UseAllSnareStack(false);
             //    }
             //}
+        }
+
+        //하나씩 소모하는 방식
+
+        UnityAction afterPushBack = () => { SetMoveUi(false); AfterPushBack(isOwner); };
+
+        Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
+        if (backTile != null && backTile.CanStand)
+        {
+            SetMoveUi(true);
+            BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
+                afterPushBack, false);
+        }
+
+        if (isOwner)
+        {
+            // 하나만 소모
+            var linkedSnares = from n in obsDebuffs
+                              where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
+                              select n;
+            if (linkedSnares.Count() != 0)
+            {
+                var firstSnare = linkedSnares.First();
+                var anotherDebuff = firstSnare.another;
+                var anotherUnit = firstSnare.anotherUnit;
+
+                anotherUnit.obsDebuffs.Remove(anotherDebuff);
+                anotherUnit.uiLinker.UpdateDebuffs(anotherUnit.obsDebuffs);
+
+                obsDebuffs.Remove(firstSnare);
+                uiLinker.UpdateDebuffs(obsDebuffs);
+
+                anotherUnit.PushBack(false);
+            }
+            // 주석친 부분은 올가미 모두 소모하며 한번만 밀리는 코드
+            {
+                //var linkedSnares = (from n in obsDebuffs
+                //                    where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
+                //                    select n).ToList();
+                //var anothers = (from n in linkedSnares
+                //                select n.anotherUnit).Distinct().ToList();
+
+                //foreach (var mySnareDebuff in linkedSnares) // 서로의 디버프리스트에서 올가미 디버프 제거
+                //{
+                //    mySnareDebuff.anotherUnit.obsDebuffs.Remove(mySnareDebuff.another);
+                //    mySnareDebuff.anotherUnit.uiLinker.UpdateDebuffs(mySnareDebuff.anotherUnit.obsDebuffs);
+                //    obsDebuffs.Remove(mySnareDebuff);
+                //    uiLinker.UpdateDebuffs(obsDebuffs);
+                //}
+
+                //foreach (var another in anothers) // 한번만 밀리도록 따로 순회
+                //{
+                //    another.PushBack(false);
+                //}
+            }
         }
     }
 
@@ -274,12 +394,18 @@ public class MonsterUnit : UnitBase, IAttackable
         int count = obsDebuffs.Count;
         for (int i = 0; i < count; i++)
         {
-            if(obsDebuffs[i].elem.obstacleType == TrapTag.Snare
-                && obsDebuffs[i].anotherUnit != null)
+            if(obsDebuffs[i].elem.obstacleType == TrapTag.Snare)
             {
-                var anotherUnit = obsDebuffs[i].anotherUnit;
-                anotherUnit.obsDebuffs.Remove(obsDebuffs[i].another);
-                anotherUnit.uiLinker.UpdateDebuffs(anotherUnit.obsDebuffs);
+                if (obsDebuffs[i].anotherUnit != null)
+                {
+                    var anotherUnit = obsDebuffs[i].anotherUnit;
+                    anotherUnit.obsDebuffs.Remove(obsDebuffs[i].another);
+                    anotherUnit.uiLinker.UpdateDebuffs(anotherUnit.obsDebuffs);
+                }
+                else if(obsDebuffs[i].another == null)
+                {
+                    obsDebuffs[i].oppositeSnare.Release();
+                }
             }
         }
     }

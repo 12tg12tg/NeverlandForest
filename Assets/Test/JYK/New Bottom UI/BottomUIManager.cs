@@ -30,6 +30,8 @@ public class BottomUIManager : MonoBehaviour
     [HideInInspector] public ButtonState buttonState;
     [HideInInspector] public BottomSkillButtonUI curSkillButton;
 
+    public bool IsSkillLock { get; set; } = true;
+
     private bool isBoySkillDone;
     private bool isGirlSkillDone;
 
@@ -42,7 +44,10 @@ public class BottomUIManager : MonoBehaviour
     public GameObject burnButton;
 
     [Header("배틀을 위한 UI Linker")]
-    public TrapSelecter battleLinker;
+    public TrapSelecter trapSelector;
+
+    [Header("아이템 선택 슬롯")]
+    public int selectItemSlotNum;
 
     private void Awake()
     {
@@ -135,18 +140,21 @@ public class BottomUIManager : MonoBehaviour
 
     public void IntoSkillState(BottomSkillButtonUI skillButton)
     {
-        //Time.timeScale = 0.2f;
         curSkillButton = skillButton;
+        IsSkillLock = true;
+        bm.directLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
         bm.tileLink.ReadyTileClick();
         bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
     }
 
-    public void ExitSkillState()
+    public void ExitSkillState(bool isButton)
     {
-        //Time.timeScale = 1f;
+        IsSkillLock = !isButton;
+
         curSkillButton = null;
+        bm.directLink.ResetTimescaleAndShader();
         bm.tileLink.EndTileClick();
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();
@@ -258,7 +266,7 @@ public class BottomUIManager : MonoBehaviour
             if (selectItem.ItemTableElem.type == "INSTALLATION")
             {
                 // 설치류 아이템일경우 동작
-                battleLinker.WaitUntilTrapTileSelect(selectItem);
+                trapSelector.WaitUntilTrapTileSelect(selectItem);
             }
             else if (selectItem.ItemTableElem.stat_Hp > 0)
             {

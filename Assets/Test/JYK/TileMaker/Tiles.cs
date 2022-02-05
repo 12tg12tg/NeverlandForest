@@ -46,8 +46,8 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     public IEnumerable<UnitBase> Units { get => from n in units where n != null select n; }
 
     //Vars
-    private bool isHighlight;
-    private bool isHighlightConsume;
+    public bool isHighlight;
+    //private bool isHighlightConsume;
     private Color confirmColor;
     private Color boyColor;
     private Color girlColor;
@@ -131,7 +131,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         affectedByBoy.isAffected = false;
         affectedByGirl.isAffected = false;
         isHighlight = false;
-        isHighlightConsume = false;
+        //isHighlightConsume = false;
         ren.material.color = tileMaker.noneColor;
         center.material.color = tileMaker.noneColor;
         edge.material.color = tileMaker.noneColor;
@@ -139,11 +139,41 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     public void HighlightSkillRange()
     {
-        // For Drag
-        center.material.color = tileMaker.blueColor;
+        // 드래그 지점 타일에서의 범위 스킬로 표시되는 경우. 수동적인 표시.
+        center.material.color = tileMaker.dragColor;
     }
 
-    public void HighlightCanAttackSign(SkillRangeType range)
+    public void HighlightSkillRange(SkillRangeType range, Vector3 dragWorldPos) // 드래그중인 스킬 범위 내부표시
+    {
+        // For Drag
+        switch (range)
+        {
+            case SkillRangeType.One:
+                if (Units_UnitCount() == 1)
+                    center.material.color = tileMaker.dragColor;
+                else
+                {
+                    var whichPart = WhichPartOfTile(dragWorldPos);
+                    if (whichPart == HalfTile.Front)
+                        front.material.color = tileMaker.dragColor;
+                    else
+                        behind.material.color = tileMaker.dragColor;
+                }
+                break;
+            case SkillRangeType.Tile:
+                center.material.color = tileMaker.dragColor;
+                break;
+
+            case SkillRangeType.Line:
+            case SkillRangeType.Lantern:
+                var rangedTiles = tileMaker.GetSkillRangedTiles(index, range);
+                foreach (var tile in rangedTiles)
+                    tile.HighlightSkillRange();
+                break;
+        }
+    }
+
+    public void HighlightCanAttackSign(SkillRangeType range) // 빨간 테두리 표시
     {
         // Both drag and click
         isHighlight = true;
@@ -164,17 +194,17 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         }
     }
 
-    public void HighlightCanConsumeSign()
-    {
-        // Both drag and click
-        isHighlightConsume = true;
-        edge.material.color = tileMaker.consumeColor;
-    }
+    //public void HighlightCanConsumeSign()
+    //{
+    //    // Both drag and click
+    //    isHighlightConsume = true;
+    //    edge.material.color = tileMaker.consumeColor;
+    //}
 
-    public void ResetHighlightExceptConfirm()
+    public void ResetHighlightExceptConfirm() // 스킬 사용 이후 호출.
     {
         isHighlight = false;
-        isHighlightConsume = false;
+        //isHighlightConsume = false;
 
         center.material.color = tileMaker.noneColor;
         front.material.color = tileMaker.noneColor;
@@ -246,18 +276,21 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         ResetHighlightExceptConfirm();
     }
 
-    //public void SetMiddleState()
-    //{
-    //    //드래그 중 일때만 호출.
-    //    //하이라이트를 초기화하진 않으나, 마우스 드래그중에 표시되는 블루 프린트를 없앤다.
-    //    center.material.color = tileMaker.noneColor;
-    //    if (isHighlightAttack)
-    //        HighlightCanAttackSign();
-    //    if (isHighlightConsume)
-    //        HighlightCanConsumeSign();
-    //    if (affectedByBoy.isAffected || affectedByGirl.isAffected)
-    //        ResetHighlightExceptConfirm();
-    //}
+    public void SetMiddleState(SkillRangeType skillType)
+    {
+        //드래그 중 일때만 호출.
+        //하이라이트를 초기화하진 않으나, 마우스 드래그중에 표시되는 블루 프린트를 없앤다.
+        center.material.color = tileMaker.noneColor;
+        front.material.color = tileMaker.noneColor;
+        behind.material.color = tileMaker.noneColor;
+
+        if (isHighlight)
+            HighlightCanAttackSign(skillType);
+        //if (isHighlightConsume)
+        //    HighlightCanConsumeSign();
+        //if (affectedByBoy.isAffected || affectedByGirl.isAffected)
+        //    ResetHighlightExceptConfirm();
+    }
 
     public void RemoveUnit(UnitBase unit)
     {
@@ -295,30 +328,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
             var actionType = BottomUIManager.Instance.buttonState;
 
-            if (skill.SkillTableElem.range == SkillRangeType.One)
-            {
-                //단일 타겟이라면 유효성 검사
-                if (!bm.tileLink.IsVaildTargetTile(this))
-                {
-                    bm.uiLink.PrintCaution("단일 타겟 스킬은 반드시 대상을 지정해야 합니다.", 0.7f, 0.5f, null);
-                    return;
-                }
-                else
-                {
-                    tileMaker.AffectedTileCancle(skill.SkillTableElem.player);
-                    tileMaker.LastClickPos = eventData.pointerCurrentRaycast.worldPosition;
-                }
-            }
-            else
-            {
-                //범위 스킬이라면
-                //  0) affectedPlayer가 같은 기존 확정 범위 색 모두 없애기.
-                //  1) 범위 계산 후 타일 리스트를 만들어서.
-                //  2) tile.Confirm(color) 함수 호출하기.
-                //  3) affectedPlayer 설정하기.
-
-            }
-
             if (actionType == BottomUIManager.ButtonState.Skill)
             {
                 bm.DoCommand(skill.SkillTableElem.player, index, skill);
@@ -328,7 +337,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
                 //manager.DoCommand(item as DataConsumable);
             }
 
-            BottomUIManager.Instance.curSkillButton.Cancle();
+            BottomUIManager.Instance.curSkillButton.Cancle_UseSkill();
             BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
             bm.tileLink.EndTileClick();
             bm.uiLink.UpdateProgress(); 

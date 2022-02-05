@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewRoomControl : MonoBehaviour
+public class NewRoomGenerate : MonoBehaviour
 {
     public Vector3 spawnPos;
     public List<Vector3> objPosList = new List<Vector3>();
     //private List<Vector3> posCheckList = new();
 
     // TODO : 일단 임시?
-    [SerializeField] private List<NewRoomInstance> prefabList = new List<NewRoomInstance>();
+    [SerializeField] private List<NewRoomInstance> mainPrefabList = new List<NewRoomInstance>();
+    [SerializeField] private List<NewRoomInstance> subPrefabList = new List<NewRoomInstance>();
+
     private List<NewRoomInstance> roomList = new List<NewRoomInstance>();
     // 임시 Pool
     private List<NewRoomInstance> pool = new List<NewRoomInstance>();
@@ -30,20 +32,35 @@ public class NewRoomControl : MonoBehaviour
         gameObject.SetActive(true);
 
         var roadCount = curDungeonRoom.roadCount;
+        bool isMain = false;
         if (curDungeonRoom.RoomType == DunGeonRoomType.MainRoom)
+        {
             roadCount = 1;
+            isMain = true;
+        }
 
         if(roadNumList.Count <= 0)
-            roadNumList = RoomListSet(roadCount);
+            roadNumList = RoomListSet(roadCount, isMain);
 
         if (pool.Count <= 0)
         {
             // 현재 만들어진 프리팹 돌면서 한개씩 미리 생성해놓기
-            for (int i = 0; i < prefabList.Count; i++)
+            for (int i = 0; i < subPrefabList.Count; i++)
             {
-                var roomObj = Instantiate(prefabList[i], transform);
+                var roomObj = Instantiate(subPrefabList[i], transform);
                 roomObj.prefabId = i;
                 roomObj.isActive = false;
+                roomObj.isMain = false;
+                roomObj.gameObject.SetActive(false);
+                pool.Add(roomObj);
+            }
+
+            for(int i=0; i< mainPrefabList.Count; i++)
+            {
+                var roomObj = Instantiate(mainPrefabList[i], transform);
+                roomObj.prefabId = i;
+                roomObj.isActive = false;
+                roomObj.isMain = true;
                 roomObj.gameObject.SetActive(false);
                 pool.Add(roomObj);
             }
@@ -60,16 +77,34 @@ public class NewRoomControl : MonoBehaviour
         // 길방 수만큼 만듬 (메인은 1)
         for (int i = 0; i < roadCount; i++)
         {
-            var roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isActive == false);
-            if (roomPrefab == null)
+            NewRoomInstance roomPrefab;
+            if(roadCount == 1)
             {
-                var roomObj = Instantiate(prefabList[roadNumList[i]], transform);
-                roomObj.prefabId = roadNumList[i];
-                roomObj.isActive = false;
-                roomObj.gameObject.SetActive(false);
-                pool.Add(roomObj);
-                roomPrefab = roomObj;
+                roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isMain == true && x.isActive == false);
+                if (roomPrefab == null)
+                {
+                    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
+                    roomObj.prefabId = roadNumList[i];
+                    roomObj.isActive = false;
+                    roomObj.gameObject.SetActive(false);
+                    pool.Add(roomObj);
+                    roomPrefab = roomObj;
+                }
             }
+            else
+            {
+                roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isActive == false);
+                if (roomPrefab == null)
+                {
+                    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
+                    roomObj.prefabId = roadNumList[i];
+                    roomObj.isActive = false;
+                    roomObj.gameObject.SetActive(false);
+                    pool.Add(roomObj);
+                    roomPrefab = roomObj;
+                }
+            }
+            
 
             // Number 1 방
             if (roomList.Count <= 0)
@@ -141,16 +176,21 @@ public class NewRoomControl : MonoBehaviour
         return newPos;
     }
 
-    private List<int> RoomListSet(int roadCount)
+    private List<int> RoomListSet(int roadCount, bool isMain)
     {
         List<int> prefabNumberList = new List<int>();
         // 지금은 0 ~ 2 넘버 프리팹 3개 - 존재하니 이 사이에서 숫자 뽑음
         // 연속해서 이어지지만 않으면 중복도 상관 x
         // 검사 : 이전과 현재 비교
+        int rangeNum;
+        if (isMain)
+            rangeNum = mainPrefabList.Count;
+        else
+            rangeNum = subPrefabList.Count;
 
         for (int i = 0; i < roadCount; i++)
         {
-            var randumNum = Random.Range(0, 3);
+            var randumNum = Random.Range(0, rangeNum);
             if(prefabNumberList.Count <= 0)
                 prefabNumberList.Add(randumNum);
             else

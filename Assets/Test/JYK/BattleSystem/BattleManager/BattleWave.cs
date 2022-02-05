@@ -15,6 +15,10 @@ public class BattleWave : MonoBehaviour
     public int totalWave;
     public int curWave;
 
+    public IEnumerable<MonsterUnit> AliveMonsters
+        => manager.monsters.Union(wave1).Union(wave2).Union(wave3).Where(n => n != null);
+
+
     private void Start()
     {
         manager = BattleManager.Instance;
@@ -153,7 +157,7 @@ public class BattleWave : MonoBehaviour
 
     public void SetAllMonsterFollowUI(bool moveUI)
     {
-        var list = wave1.Union(wave2).Union(wave3).Where(n => n != null);
+        var list = AliveMonsters;
         foreach (var unit in list)
         {
             unit.SetMoveUi(moveUI);
