@@ -72,21 +72,41 @@ public class DiaryRecipe : MonoBehaviour
     public void OnChangedSelection(int slot)
     {
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
-        var condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
-        var materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
+        var fireid = string.Empty;
+        var condimentid = string.Empty;
+        var materialid = string.Empty;
+        if (itemGoList[slot].Recipes != null)
+        {
+            if (itemGoList[slot].Recipes[0] != null)
+            {
+                fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
+                material0.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
+            }
+            if (itemGoList[slot].Recipes[1] != null)
+            {
+                condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
+                material1.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+            }
+            if (itemGoList[slot].Recipes[2] != null)
+            {
+                materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
+                material2.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+            }
+            if (itemGoList[slot].Result != null)
+            {
+                result = itemGoList[slot].Result;
+                var resultid = $"ITEM_{result}";
 
-        material0.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
-        material1.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
-        material2.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
-        result = itemGoList[slot].Result;
-        var resultid = $"ITEM_{result}";
+                recipecookImage.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+                Time = itemGoList[slot].Time;
+                makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+                resultName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+                cookeffect.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+                description.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+            }
 
-        recipecookImage.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
-        Time = itemGoList[slot].Time;
-        makingTime.text = $"제작 시간은 {Time}분 입니다. ";
-        resultName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
-        cookeffect.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
-        description.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+        }
+
+
     }
 }
