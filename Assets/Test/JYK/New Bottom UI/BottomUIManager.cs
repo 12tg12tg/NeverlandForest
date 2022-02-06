@@ -13,6 +13,7 @@ public class BottomUIManager : MonoBehaviour
 
     //Instance
     [HideInInspector] public BattleManager bm;
+    [HideInInspector] public TileMaker tm;
     [Header("왼쪽 정보 창 연결")]
     public BottomInfoUI info;
     [Header("우측 12개 아이콘 연결")]
@@ -56,6 +57,7 @@ public class BottomUIManager : MonoBehaviour
         SkillButtonInit();
 
         bm = BattleManager.Instance;
+        tm = TileMaker.Instance;
         switch (GameManager.Manager.State)
         {
             case GameState.None:
@@ -91,6 +93,9 @@ public class BottomUIManager : MonoBehaviour
         var list = GetComponentsInChildren<Button>();
         foreach (var button in list)
         {
+            var skillbut =  button.transform.parent.GetComponent<BottomSkillButtonUI>();
+            if (skillbut != null && skillbut.buttonType == SkillButtonType.Info)
+                continue;
             button.interactable = interactive;
         }
     }
@@ -134,7 +139,7 @@ public class BottomUIManager : MonoBehaviour
     {
         curSkillButton = skillButton;
         IsSkillLock = true;
-        bm.directLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
+        bm.directingLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
         bm.tileLink.ReadyTileClick();
         bm.tileLink.DisplaySkillTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
@@ -146,7 +151,7 @@ public class BottomUIManager : MonoBehaviour
         IsSkillLock = !isButton;
 
         curSkillButton = null;
-        bm.directLink.ResetTimescaleAndShader();
+        bm.directingLink.ResetTimescaleAndShader();
         bm.tileLink.EndTileClick();
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();

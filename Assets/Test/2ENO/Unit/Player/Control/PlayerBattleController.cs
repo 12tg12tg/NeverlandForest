@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // 사용자가 어떤 입력을 했을 때, 그에 해당하는 정보를 넘겨주거나, 동작을 실행시키거나 하는 클래스
 // 배틀 시스템에 필요한 정보를 넘겨주고, 배틀 시스템에서 캐릭터 유닛의 상태에 따라 턴 넘겨주고 등등
@@ -37,7 +38,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
 
     public void TurnInit(ActionType action)
     {
-        FSM.ChangeState(CharacterBattleState.Action); // 공격 애니메이션 재생 시작
+        FSM.ChangeState(CharacterBattleState.Action); // Action Init에서 공격 애니메이션 재생 시작
         manager.IsDuringPlayerAction = true;
 
         if (action == ActionType.Skill)
@@ -53,9 +54,9 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
 
     private IEnumerator CoActionCommand()
     {
-        //현재 스킬 정보에 따른 예외처리
-        //1) 커맨드가 스킬인가 아이템인가?
-        //2) 커맨드가 공격스킬인가 충전스킬인가?
+        // 스킵버튼 잠시 비활성화
+        var skipButton = manager.uiLink.turnSkipButton.GetComponent<Button>();
+        skipButton.interactable = false;
 
         //스킬 범위 바닥 타일 표시
         var tiles = tileMaker.GetSkillRangedTiles(command.target, command.skill.SkillTableElem.range);
@@ -102,11 +103,23 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
             yield return new WaitForSeconds(1.5f);
         }
 
+        // 소모 값 소모
+        if (playerType == PlayerType.Boy)
+        {
+            manager.costLink.CostArrow(command.skill);
+        }
+        else
+        {
+            manager.costLink.CostLanternOrOil(command.skill);
+        }
+        BottomUIManager.Instance.UpdateCostInfo();
+
         // 발판색 삭제 및 배틀상태전환 및 일일히 승리 확인.
         foreach (var tile in tiles)
             tile.CancleConfirmTarget(playerType);
 
         FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행
+        skipButton.interactable = true;
         manager.EndOfPlayerAction();
     }
 

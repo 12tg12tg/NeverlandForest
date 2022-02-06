@@ -33,6 +33,7 @@ public class TileMaker : MonoBehaviour
     public Vector2 LastDropPos { get; set; }
     public Tiles LastDropTile { get => GetTile(LastDropPos); }
     public bool IsWaitingToSelectTrapTile { get; set; }
+    public bool IsWaitingToHeal { get; set; }
 
     //Vars
     public Color dragColor;
@@ -259,8 +260,8 @@ public class TileMaker : MonoBehaviour
 
         var samplePosX = sample.transform.position.x;
 
-        var trans = manager.uiLink.lanternUITarget;
-        var transPos = manager.uiLink.lanternUITarget.position;
+        var trans = manager.uiLink.lanternUI_Target;
+        var transPos = manager.uiLink.lanternUI_Target.position;
         transPos.x = samplePosX;
 
         trans.position = transPos;

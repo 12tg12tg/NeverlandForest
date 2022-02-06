@@ -13,12 +13,6 @@ public class BattleDirecting : MonoBehaviour
     [SerializeField] private Transform monsterVeiwDest;
     [SerializeField] private Transform battleVeiwDest;
 
-    [Header("화살표 위치 / UI Camera / Canvas")]
-    [SerializeField] private Transform arrowPos;
-    [SerializeField] private Camera uiCamera;
-    [SerializeField] private Canvas uiCanvas;
-    [SerializeField] private RectTransform arrowButton;
-
     [Header("어둡기 조정")]
     public Light mainLight;
     private const float cameraMovetime = 0.7f;
@@ -34,6 +28,7 @@ public class BattleDirecting : MonoBehaviour
 
     private List<MonsterUnit> shaderChangeUnit = new List<MonsterUnit>();
     private List<MonsterUnit> layerChangeUnit = new List<MonsterUnit>();
+    private PlayerBattleController attacker;
 
     private void Start()
     {
@@ -90,10 +85,11 @@ public class BattleDirecting : MonoBehaviour
     {
         layerChangeUnit.Clear();
         shaderChangeUnit.Clear();
+        attacker = skill.player == PlayerType.Boy ? bm.boy : bm.girl;
 
         var monsters = bm.waveLink.AliveMonsters;
         var rangedTiles = TileMaker.Instance.GetSKillTiles(skill);
-        foreach (var tiles in rangedTiles)
+        foreach (var tiles in rangedTiles) // 빛 받을 리스트 생성
         {
             foreach (var unit in tiles.Units)
             {
@@ -102,7 +98,7 @@ public class BattleDirecting : MonoBehaviour
             }
         }
 
-        foreach (var monster in monsters)
+        foreach (var monster in monsters) // 리스트 기반으로 빛 또는 쉐이더 조정
         {
             if(layerChangeUnit.Contains(monster))
             {
@@ -116,16 +112,22 @@ public class BattleDirecting : MonoBehaviour
                 ren.material.color = Color.gray;
             }
         }
+
+        // 플레이어 빛 추가
+        Utility.ChangeLayerIncludeChildren(attacker.transform, highlightLayer);
     }
 
     public void ShaderReset()
     {
-        foreach (var monster in layerChangeUnit)
+        // 플레이어 빛 원래대로
+        Utility.ChangeLayerIncludeChildren(attacker.transform, defaultLayer);
+
+        foreach (var monster in layerChangeUnit) // 빛 원래대로
         {
             Utility.ChangeLayerIncludeChildren(monster.transform, defaultLayer);
         }
 
-        foreach (var monster in shaderChangeUnit)
+        foreach (var monster in shaderChangeUnit) // 쉐이더 원래대로
         {
             var ren = monster.mesh;
             ren.material.shader = standardShader;
@@ -152,60 +154,25 @@ public class BattleDirecting : MonoBehaviour
     }
 
 
-    // 함정 설치 관련 함수 =====================================================================
-    public void ShowArrow(bool buttonForVeiwMonsterSide)
-    {
-        arrowButton.gameObject.SetActive(true);
-
-        // 월드 카메라에서의 좌표 전환 - 스크린 좌표 얻기
-        var screenPos = Camera.main.WorldToScreenPoint(arrowPos.position);
-
-        if (screenPos.z < 0.0f)
-            screenPos *= -1.0f;
-
-        // 캔버스 기준으로 스크린 좌표 재해석
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.transform as RectTransform, screenPos, uiCamera, out Vector2 localPos);
-
-        // 캔버스 내의 rect transform의 지역좌표 설정
-        arrowButton.localPosition = localPos;
-
-        // 화살표 방향 결정 및 연결 함수 관리
-        if(!buttonForVeiwMonsterSide)
-        {
-            arrowButton.rotation = Quaternion.Euler(0f, 0f, 180f);
-            arrowButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            arrowButton.GetComponent<Button>().onClick.AddListener(ShowBattleSide);
-        }
-        else
-        {
-            arrowButton.rotation = Quaternion.identity;
-            arrowButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            arrowButton.GetComponent<Button>().onClick.AddListener(ShowMonsterSide);
-        }
-    }
-
-    public void HideArrow()
-    {
-        arrowButton.gameObject.SetActive(false);
-    }
-
+    // 카메라 이동 관련 함수 =====================================================================
     public void ShowMonsterSide()
     {
         bm.inputLink.SetActivateStartButton(false);
-        HideArrow();
+        bm.uiLink.HideArrow();
+        bm.uiLink.HideLanternRange();
         LockCommand();
         iTween.MoveTo(battleCamera.gameObject, iTween.Hash(
             "position", monsterVeiwDest.position,
             "time", cameraMovetime,
             "easetype", "easeOutCirc",
-            "oncompletetarget", gameObject,
+            "oncompletetarget", bm.uiLink.gameObject,
             "oncomplete", "ShowArrow",
             "oncompleteparams", false));
     }
     
     public void ShowBattleSide()
     {
-        HideArrow();
+        bm.uiLink.HideArrow();
         iTween.MoveTo(battleCamera.gameObject, iTween.Hash(
             "position", battleVeiwDest.position,
             "time", cameraMovetime,
@@ -228,6 +195,7 @@ public class BattleDirecting : MonoBehaviour
     {
         bm.inputLink.SetActivateStartButton(true);
         UnlockCommand();
-        ShowArrow(true);
+        bm.uiLink.ShowArrow(true);
+        bm.uiLink.ShowLanternRange();
     }
 }

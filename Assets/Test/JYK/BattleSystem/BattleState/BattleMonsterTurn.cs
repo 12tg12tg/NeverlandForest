@@ -9,6 +9,7 @@ public class BattleMonsterTurn : State<BattleState>
     private BattleManager manager;
     private float timer = 0;
     private bool canEndState;
+    private bool noMonster;
     public BattleMonsterTurn(BattleManager manager)
     {
         this.manager = manager;
@@ -18,14 +19,20 @@ public class BattleMonsterTurn : State<BattleState>
     {
         BottomUIManager.Instance.ItemListInit();
         // 1. 행동할 몬스터가 있는지 확인
-        var list = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
-        if (list.Count == 0)
+        noMonster = false;
+        var stageMonster = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
+        if (stageMonster.Count == 0)
         {
             if(manager.waveLink.IsAllWaveClear())
                 manager.uiLink.PrintMessage($"승리!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
             else
             {
-                manager.uiLink.PrintMessage("행동할 몬스터 없음!", 1f, () => canEndState = true);
+                noMonster = true;
+                manager.uiLink.PrintMessage("행동할 몬스터 없음!", 1f, 
+                    () =>
+                    {
+                        canEndState = true;
+                    });
             }
         }
         else
@@ -34,14 +41,13 @@ public class BattleMonsterTurn : State<BattleState>
 
             manager.MonsterActionQueue.Clear();
 
-            foreach (var monster in list)
+            foreach (var monster in stageMonster)
             {
                 var command = monster.command;
                 if (command != null)
                     manager.MonsterActionQueue.Enqueue(command);
             }
 
-            /*큐 정렬기준 에 따라 순서 정하기 - 조건 확인 후 업데이트*/
         }
     }
 
@@ -55,10 +61,20 @@ public class BattleMonsterTurn : State<BattleState>
         if (canEndState)
         {
             timer += Time.deltaTime;
-            if (timer > 1f)
+            if (timer > 1.2f) // 1초에서 1.2초로 늘림. 창 닫기기전에 Settlement에서 창을 다시 호출해버려서 결국 바로 닫기고 코루틴 중단됬었음.
             {
                 timer = 0f;
-                FSM.ChangeState(BattleState.Action);
+                if (!noMonster)
+                {
+                    FSM.ChangeState(BattleState.Action);
+                }
+                else
+                {
+                    if (manager.isPlayerFirst)
+                        FSM.ChangeState(BattleState.Settlement);
+                    else
+                        FSM.ChangeState(BattleState.Player);
+                }
             }
         }
     }

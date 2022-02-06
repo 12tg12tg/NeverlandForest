@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattlePlayerTurn : State<BattleState>
 {
@@ -18,6 +19,7 @@ public class BattlePlayerTurn : State<BattleState>
         bottomUiManager ??= BottomUIManager.Instance;
         bottomUiManager.SkillButtonInit();
         bottomUiManager.ItemListInit();
+        manager.uiLink.turnSkipButton.SetActive(true);
         manager.uiLink.ResetProgress();
         manager.ClearCommand();
         manager.uiLink.PrintMessage("플레이어 턴", messageTime, () =>

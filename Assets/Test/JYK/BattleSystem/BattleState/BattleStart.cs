@@ -21,12 +21,14 @@ public class BattleStart : State<BattleState>
     {
         BottomUIManager.Instance.ItemListInit();
         BottomUIManager.Instance.ItemButtonInit();
-        manager.uiLink.progressTrans.SetActive(true);
         manager.uiLink.ResetProgress();
+        manager.uiLink.ShowLanternRange();
+
         isReadyDone = false;
         if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2)
         {
             // 몬스터 선공
+            manager.uiLink.progressTrans.SetActive(true);
             manager.isPlayerFirst = false;
             manager.uiLink.PrintMessage("몬스터 습격!", startDelay, () => isReadyDone = true);
 

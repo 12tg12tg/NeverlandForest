@@ -29,6 +29,30 @@ public class CustomBattleEditor : Editor
         EditorGUILayout.Space();
 
         EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("화살 수", GUILayout.Width(80));
+        cb.arrowNum = EditorGUILayout.IntField(cb.arrowNum, GUILayout.Width(120));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("쇠화살 수", GUILayout.Width(80));
+        cb.ironArrowNum = EditorGUILayout.IntField(cb.ironArrowNum, GUILayout.Width(120));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("오일 수", GUILayout.Width(80));
+        cb.oilNum = EditorGUILayout.IntField(cb.oilNum, GUILayout.Width(120));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.BeginHorizontal();
+        var lantern = cb.lanternCount;
+        EditorGUILayout.LabelField("랜턴 밝기", GUILayout.Width(80));
+        cb.lanternCount = (int)EditorGUILayout.Slider(lantern, 1, 18, GUILayout.Width(160));
+        EditorGUILayout.EndHorizontal();
+
+        EditorGUILayout.Space();
+        EditorGUILayout.Space();
+
+        EditorGUILayout.BeginHorizontal();
         for (int i = 0; i < 3; i++)
         {
             EditorGUILayout.BeginVertical();
