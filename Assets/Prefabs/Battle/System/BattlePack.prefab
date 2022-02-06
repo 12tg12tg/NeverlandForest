@@ -372,6 +372,51 @@ Transform:
   m_Father: {fileID: 7469303928233507244}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2190083798110783333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8797439166156973659}
+  - component: {fileID: 8900434305078527219}
+  m_Layer: 0
+  m_Name: BattleCost
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8797439166156973659
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2190083798110783333}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7469303928238158225}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8900434305078527219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2190083798110783333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9edb694e1af45147a1f19694a241b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bm: {fileID: 7469303928238158227}
 --- !u!1 &3333671179248310201
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +670,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7469303928238158225}
-  m_RootOrder: 5
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3799742262198448785
 MonoBehaviour:
@@ -1998,8 +2043,9 @@ Transform:
   - {fileID: 3799742263623143015}
   - {fileID: 3799742262351584644}
   - {fileID: 643358078077872125}
-  - {fileID: 3799742262198448784}
+  - {fileID: 8797439166156973659}
   - {fileID: 6511255051631306945}
+  - {fileID: 3799742262198448784}
   m_Father: {fileID: 7469303928233507244}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2037,15 +2083,14 @@ MonoBehaviour:
   uiLink: {fileID: 3799742262351584645}
   directLink: {fileID: 8169405463868919443}
   dragLink: {fileID: 4474218142414250575}
+  costLink: {fileID: 8900434305078527219}
   uiCanvas: {fileID: 7692840720711255578}
   FSM: {fileID: 7469303928238158226}
   turn: 0
   preWaveTurn: 0
   curGroup: 0
   isPlayerFirst: 0
-  selectMonster: 0
-  customGroup: 0
-  customWave: 0
+  customBattle: {fileID: 0}
 --- !u!1 &7469303928303910281
 GameObject:
   m_ObjectHideFlags: 0

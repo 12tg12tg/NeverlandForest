@@ -232,7 +232,12 @@ public class BattleTile : MonoBehaviour
         if(targetTiles.Count() == 0)
         {
             bm.uiLink.PrintCaution("스킬 범위 내에 몬스터가 없습니다.", 1f, 0.5f, 
-                () => BottomUIManager.Instance.curSkillButton?.Cancle());
+                () =>
+                {
+                    BottomUIManager.Instance.curSkillButton?.Cancle();
+                    if (bm.dragLink.isDrag)
+                        bm.dragLink.Release();
+                });
         }
         foreach (var tile in targetTiles)
         {

@@ -33,6 +33,7 @@ public class BattleManager : MonoBehaviour
     public BattleUI uiLink;
     public BattleDirecting directLink;
     public BattleDrag dragLink;
+    public BattleCost costLink;
 
     //Instance
     [Header("¸ó½ºÅÍ °ü·Ã UI Äµ¹ö½º ¿¬°á")]
@@ -317,15 +318,17 @@ public class BattleManager : MonoBehaviour
         {
             command = boyInput;
             attacker = boy;
+            costLink.CostArrow(skill);
         }
         else
         {
             command = girlInput;
             attacker = girl;
+            costLink.CostLanternOrOil(skill);
         }
+        BottomUIManager.Instance.UpdateCostInfo();
 
         command.Create(target, skill);
-
         attacker.TurnInit(ActionType.Skill);
     }
 
@@ -355,7 +358,12 @@ public class BattleManager : MonoBehaviour
         var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
-            uiLink.PrintMessage($"½Â¸®!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
+            uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
+                {
+                    /*º¸»óÃ¢ ¶ç¿ì±â*/
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                    SceneManager.LoadScene("AS_RandomMap");
+                });
         }
         else
         {

@@ -5,31 +5,80 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum SkillButtonType
+{
+    None, Swap, Info,
+}
+
 public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private BattleManager bm;
     private BottomUIManager bottomUiManager;
+
+    [Header("자신의 버튼 연결")]
     public Button ownButton;
 
+
+    [Header("스킬 및 재료 정보 UI 연결")]
     public DataPlayerSkill skill;                       // 담고있는 스킬정보
-
     [SerializeField] private Image skillImg;
-    [SerializeField] private TextMeshProUGUI costTxt;   // 스킬 정보를 바탕으로 구성
+    [SerializeField] private TextMeshProUGUI costItemCount;
 
+    [Header("덮개 및 하단 버튼 연결")]
     [SerializeField] private Button cover;
     [SerializeField] private Button below;              // 활성화/비활성화할 버튼
 
+    [Header("덮개 크기 계산을 위한 연결")]
     [SerializeField] private RectTransform coverRt;
     private CanvasScaler cs;
     private float height;
     private Vector2 openOffset;                         // Open/Close용 크기 계산
     private bool isCalculateOffset;
+    public SkillButtonType buttonType;
 
     // Property
     private Vector2 CoverOrigianlPos { get; set; }
     private Vector2 CoverOpenPos { get; set; }
 
-    public void Init(DataPlayerSkill skill)
+    public void Init() // 제일 앞 스킬 버튼 (부여된 스킬 없는) 초기화
+    {
+        bm ??= BattleManager.Instance;
+        bottomUiManager ??= BottomUIManager.Instance;
+        cover.interactable = true;
+        below.interactable = false;
+
+        if (bm == null)
+            return;
+        if(buttonType == SkillButtonType.Swap)
+        {
+
+            var arrow = bm.costLink.GetCurrentArrowElem();
+            skillImg.sprite = arrow.IconSprite;
+            costItemCount.text = bm.costLink.NumberOfArrows().ToString();
+        }
+        else if(buttonType == SkillButtonType.Info)
+        {
+            var oil = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_19");
+            skillImg.sprite = oil.IconSprite;
+            costItemCount.text = bm.costLink.NumberOfOil().ToString();
+        }
+    }
+
+    public void UpdateCostInfo()
+    {
+        if (buttonType == SkillButtonType.Swap)
+        {
+            var arrow = bm.costLink.GetCurrentArrowElem();
+            skillImg.sprite = arrow.IconSprite;
+            costItemCount.text = bm.costLink.NumberOfArrows().ToString();
+        }
+        else if (buttonType == SkillButtonType.Info)
+        {
+            costItemCount.text = bm.costLink.NumberOfOil().ToString();
+        }
+    }
+
+    public void Init(DataPlayerSkill skill) // 스킬을 지닌 버튼 초기화
     {
         bm ??= BattleManager.Instance;
         bottomUiManager ??= BottomUIManager.Instance;
@@ -38,7 +87,6 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
         this.skill = skill;
         skillImg.sprite = skill.SkillTableElem.IconSprite;
-        costTxt.text = skill.SkillTableElem.cost.ToString();
     }
 
     public void CalculateOffset()
@@ -55,6 +103,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void MakeUnclickable()
     {
+        if (buttonType == SkillButtonType.Info)
+            return;
+
         ownButton.interactable = false;
         skillImg.color = new Color(0.4f, 0.4f, 0.4f);
     }
@@ -65,19 +116,69 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         skillImg.color = Color.white;
     }
 
+    public void SwapArrow()
+    {
+        var otherArrow = bm.costLink.GetOtherArrowElem();
+
+        bool haveOne = false;
+
+        if ((Vars.UserData.arrowType == ArrowType.Iron && bm.costLink.HaveArrowNow())
+            || (Vars.UserData.arrowType == ArrowType.Normal && bm.costLink.HaveIronArrowNow()))
+        {
+            haveOne = true;
+        }
+
+        // 다른 화살이 있다면
+        if(haveOne)
+        {
+            skillImg.sprite = otherArrow.IconSprite;
+            if (Vars.UserData.arrowType == ArrowType.Normal)
+                Vars.UserData.arrowType = ArrowType.Iron;
+            else
+                Vars.UserData.arrowType = ArrowType.Normal;
+            UpdateCostInfo();
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+        }
+    }
+
     public void IntoSkillStage() // 버튼
     {
-        if(!isCalculateOffset)
+        // 스킬버튼이 아닌 경우 예외처리.
+        if(buttonType == SkillButtonType.Swap)
+        {
+            SwapArrow();
+            return;
+        }
+        else if(buttonType == SkillButtonType.Info)
+            return;
+
+        // 계산 안되있으면 첫 계산.
+        if (!isCalculateOffset)
             CalculateOffset();
 
+        // 스킬 정보 갱신
         bottomUiManager.info.Init(skill);
-
-        if(!bottomUiManager.IsSkillLock)
+        if (!bottomUiManager.IsSkillLock)
         {
-            cover.interactable = false;
-            bottomUiManager.IntoSkillState(this);
-            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
-                () => { below.interactable = true; }));
+            // 스킬에 대한 소모값이 없는 경우.
+            if (!bm.costLink.CheckCanUseSkill(skill, out string cautionMessage))
+            {
+                var offset = new Vector2(0f, height * 1 / 8);
+                var alittleOpenPos = CoverOrigianlPos + offset;
+
+                bm.uiLink.PrintCaution(cautionMessage, 0.75f, 0.3f, null);
+
+                StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, alittleOpenPos, 0.15f,
+                    () => { StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.15f, null)); }));
+            }
+            else
+            {
+                cover.interactable = false;
+                bottomUiManager.IntoSkillState(this);
+                StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
+                    () => { below.interactable = true; }));
+
+            }
         }
     }
 
@@ -101,15 +202,36 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         if (!isCalculateOffset)
             CalculateOffset();
 
+        if (!ownButton.interactable)
+            return;
+
+        if (buttonType != SkillButtonType.None)
+            return;
+
+        bottomUiManager.info.Init(skill);
         if (!bottomUiManager.IsSkillLock)
         {
-            bm.dragLink.Init(this);
-            bottomUiManager.info.Init(skill);
+            // 스킬에 대한 소모값이 없는 경우.
+            if (!bm.costLink.CheckCanUseSkill(skill, out string cautionMessage))
+            {
+                var offset = new Vector2(0f, height * 1 / 8);
+                var alittleOpenPos = CoverOrigianlPos + offset;
 
-            cover.interactable = false;
-            bottomUiManager.IntoSkillState(this);
-            StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
-                () => { below.interactable = true; }));
+                bm.uiLink.PrintCaution(cautionMessage, 0.75f, 0.3f, null);
+
+                StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, alittleOpenPos, 0.15f,
+                    () => { StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.15f,
+                                () => bm.dragLink.Release())); }));
+            }
+            else
+            {
+                bm.dragLink.Init(this);
+
+                cover.interactable = false;
+                bottomUiManager.IntoSkillState(this);
+                StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
+                    () => { below.interactable = true; }));
+            }
         }
     }
 
@@ -138,7 +260,8 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
         else if (!bm.dragLink.lastDrapTile.isHighlight)
         {
-            bottomUiManager.curSkillButton.Cancle();
+            if(bottomUiManager.curSkillButton != null)
+                bottomUiManager.curSkillButton.Cancle();
         }
         bm.dragLink.Release();
     }

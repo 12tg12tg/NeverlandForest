@@ -52,8 +52,8 @@ public class GameManager : MonoBehaviour
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
 
-        // TODO : 해당 부분 정리 필요
-        if(cm != null)
+        // TODO : 해당 부분 정리 필요?
+        if (cm != null)
         {
             if (cm.mainCamera != null)
             {
@@ -73,6 +73,10 @@ public class GameManager : MonoBehaviour
         }
         if (wm != null)
             wm.Init();
+
+        // 로드
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
+
 
         DontDestroyOnLoad(this);
         ConsumeManager.init();

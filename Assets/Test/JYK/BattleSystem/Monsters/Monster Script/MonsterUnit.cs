@@ -120,7 +120,8 @@ public class MonsterUnit : UnitBase, IAttackable
             }
             if (playerCommand.skill.SkillTableElem.name == "위협 발산")
             {
-                KickoutAnyWhere();
+                if(State != MonsterState.Dead)
+                    KickoutAnyWhere();
             }
             triggerLinker.DisableHitTrigger();
         }
@@ -277,7 +278,13 @@ public class MonsterUnit : UnitBase, IAttackable
 
         //하나씩 소모하는 방식
 
-        UnityAction afterPushBack = () => { SetMoveUi(false); AfterPushBack(isOwner); };
+        UnityAction afterPushBack = () => 
+            {
+                SetMoveUi(false);
+                AfterPushBack(isOwner); 
+                if(State == MonsterState.Dead)
+                    CurTile.RemoveUnit(this);
+            };
 
         Tiles backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + 1));
         if (backTile != null && backTile.CanStand)
@@ -646,7 +653,7 @@ public class MonsterUnit : UnitBase, IAttackable
         // 부비트랩 Release하고, 맞는 애니메이션 재생 및 이펙트 재생, 데미지 감소
         stepOnBoobyTrap = false;
         PlayHitAnimation();
-        var damage = ownBoobyTrap.elem.trapDamage;
+        var damage = ownBoobyTrap.elem.damage;
         Hp -= damage;
         uiLinker.UpdateHpBar(Hp);
         DeadCheak();
