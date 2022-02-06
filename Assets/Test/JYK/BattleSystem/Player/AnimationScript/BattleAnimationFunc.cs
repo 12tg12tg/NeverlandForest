@@ -125,7 +125,7 @@ public class BattleAnimationFunc : MonoBehaviour
         foreach (var monster in list)
         {
             var go = ProjectilePool.Instance.GetObject(ProjectileTag.LightExplosion);
-            var pos = go.transform.position = monster.transform.position;
+            var pos = monster.transform.position;
             var ren = monster.GetComponentInChildren<SkinnedMeshRenderer>();
             var maxY = ren.bounds.max.y;
             pos.y = maxY;

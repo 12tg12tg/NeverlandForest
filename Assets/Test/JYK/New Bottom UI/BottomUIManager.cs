@@ -289,6 +289,7 @@ public class BottomUIManager : MonoBehaviour
         if (GameManager.Manager.State == GameState.Battle)
         {
             popUpWindow.gameObject.SetActive(false); // use/dump 팝업 끄기
+            isPopUp = false;
             if (selectItem.ItemTableElem.type == "INSTALLATION")
             {
                 // 설치류 아이템일경우 동작
@@ -297,7 +298,7 @@ public class BottomUIManager : MonoBehaviour
             else if (selectItem.ItemTableElem.stat_Hp > 0)
             {
                 // 소비 아이템일경우 동작
-                ConsumeManager.RecoverHp(selectItem.ItemTableElem.stat_Hp);
+                bm.costLink.CostForRecovery(selectItem); // 회복 코루틴 동작 후 알아서 배틀 커맨드 증가시킬것임.
             }
         }
         // 2. 그 밖의 상태

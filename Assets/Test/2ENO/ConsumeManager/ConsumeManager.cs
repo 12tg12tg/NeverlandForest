@@ -162,11 +162,11 @@ public static class ConsumeManager
     public static void ConsumeLantern(int oil)
     {
         Vars.UserData.uData.LanternCount -= oil;
-        if (Vars.UserData.uData.LanternCount <0)
+        if (Vars.UserData.uData.LanternCount < 0)
         {
             Vars.UserData.uData.LanternCount = 0;
-            LanternStateChange();
         }
+        LanternStateChange();
         SaveConsumableData();
     }
     public static void FullingLantern(int oil)
@@ -175,8 +175,8 @@ public static class ConsumeManager
         if (Vars.UserData.uData.LanternCount > 17)
         {
             Vars.UserData.uData.LanternCount = 17;
-            LanternStateChange();
         }
+        LanternStateChange();
         SaveConsumableData();
     }
     private static void LanternStateChange()

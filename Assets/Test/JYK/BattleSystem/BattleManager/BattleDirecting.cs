@@ -116,7 +116,6 @@ public class BattleDirecting : MonoBehaviour
                 ren.material.color = Color.gray;
             }
         }
-
     }
 
     public void ShaderReset()

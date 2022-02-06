@@ -245,13 +245,64 @@ public class BattleCost : MonoBehaviour
         else
         {
             var curLanternCount = Vars.UserData.uData.LanternCount;
-            ConsumeManager.ConsumeLantern((int)skill.SkillTableElem.cost);
+            ConsumeManager.ConsumeLantern(skill.SkillTableElem.cost);
             Debug.Log($"원래 랜턴양 {curLanternCount}에서 {Vars.UserData.uData.LanternCount}로 줄어듦.");
         }
     }
 
     public void CostForRecovery(DataAllItem item)
     {
+        StartCoroutine(CoHeal(item));
+    }
+
+    private IEnumerator CoHeal(DataAllItem item)
+    {
+        // 파티클 재생 - 2개
+        Particle script;
+        bool isAction = false;
+        bool particleEnd = false;
+        if (bm.boy.FSM.curState != CharacterBattleState.Death)
+        {
+            var go = ProjectilePool.Instance.GetObject(ProjectileTag.Heal);
+            script = go.GetComponent<Particle>();
+            var pos = bm.boy.transform.position;
+            pos.y = 0.02f;
+            go.transform.position = pos;
+
+            isAction = true;
+            script.Init(() => particleEnd = true);
+        }
+        if(bm.girl.FSM.curState != CharacterBattleState.Death)
+        {
+            var go = ProjectilePool.Instance.GetObject(ProjectileTag.Heal);
+            script = go.GetComponent<Particle>();
+            var pos = bm.girl.transform.position;
+            pos.y = 0.02f;
+            go.transform.position = pos;
+
+            if (!isAction)
+            {
+                isAction = true;
+                script.Init(() => particleEnd = true);
+            }
+            else
+            {
+                script.Init();
+            }
+        }
+
+        yield return new WaitUntil(() => particleEnd); // 대기
+
+        // 체력 회복
         ConsumeManager.RecoverHp(item.ItemTableElem.stat_Hp);
+
+        // 아이템 소모
+        var allItem = new DataAllItem(item);
+        allItem.OwnCount = 1;
+        Vars.UserData.RemoveItemData(allItem);
+        BottomUIManager.Instance.ItemListInit();
+
+        bm.uiLink.UpdateProgress();
+        bm.EndOfPlayerAction();
     }
 }

@@ -349,6 +349,11 @@ public class TileMaker : MonoBehaviour
         }
     }    
 
+    public IEnumerable<Tiles> GetPlayerTiles()
+    {
+        return from n in tileList where n.Units.Any(m => m is PlayerStats) select n;
+    }
+
     public void SetAllTileSoftClear()
     {
         tileList.ForEach((n) => n.ResetHighlightExceptConfirm());
