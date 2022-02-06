@@ -94,11 +94,13 @@ public class HuntPlayer : UnitBase
     public void HuntFailAnimation()
     {
         hunterAnimation.SetTrigger("Fail");
+        herbalistAnimation.transform.localRotation = Quaternion.Euler(Vector3.zero);
         herbalistAnimation.SetTrigger("Fail");
     }
     public void HuntSuccessAnimation()
     {
         hunterAnimation.SetTrigger("Success");
+        herbalistAnimation.transform.localRotation = Quaternion.Euler(Vector3.zero);
         herbalistAnimation.SetTrigger("Success");
     }
 

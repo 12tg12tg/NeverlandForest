@@ -212,11 +212,6 @@ public class HuntingManager : MonoBehaviour
     }
 
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
-
-    public void NextTutorialStep()
-    {
-        huntTutorial.TutorialStep++;
-        Debug.Log(huntTutorial.TutorialStep);
-    }
+    public void NextTutorialStep() => huntTutorial.TutorialStep++;
     public void TutorialSetActiveFalse() => huntTutorial.SetActive(false);
 }

@@ -173,7 +173,7 @@ public class HuntTutorial : MonoBehaviour
         var viewPos = uiCamera.WorldToViewportPoint(target.position);
 
         blackout.GetComponent<Image>().sprite = rect;
-        var offset = new Vector2(5f, 5f);
+        var offset = new Vector2(10f, 10f);
         blackout.sizeDelta = target.sizeDelta + offset;
 
         viewPos.x *= canvasRt.width;

@@ -30,9 +30,8 @@ public class WorldMapCamera : MonoBehaviour
         {
             distance = 50f;
             maxDistance = 200f;
-            Debug.Log(transform.position);
             startPos = transform.position;
-            startX = startPos.x - distance * 0.3f;
+            startX = startPos.x - distance * 0.1f;
         }
     }
 
@@ -70,7 +69,11 @@ public class WorldMapCamera : MonoBehaviour
 
         // 월드맵에서 사용자가 던전맵을 클리어 하면 노드 이동과 함께 실행
         var startPos = new Vector3(playerPos.position.x - 10f, transform.position.y, transform.position.z);
-        var endPos = Vars.UserData.WorldMapPlayerData.isClear || !isInit ? new Vector3(distance - 5f, 0f, 0f) + startPos : Vector3.zero + startPos;
+        var isClear = Vars.UserData.WorldMapPlayerData.isClear;
+        
+        var endPos = isClear || !isInit ? 
+            new Vector3(distance - 5f, 0f, 0f) + startPos : 
+            Vector3.zero + startPos;
 
         coCameraMove ??= StartCoroutine(
             Utility.CoTranslate(transform, startPos, endPos, 1f,
@@ -80,4 +83,6 @@ public class WorldMapCamera : MonoBehaviour
                 action?.Invoke();
             }));
     }
+
+    public void RunDungoen() => isInit = true;
 }
