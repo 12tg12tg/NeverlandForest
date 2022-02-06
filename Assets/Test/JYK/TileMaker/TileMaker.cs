@@ -254,19 +254,16 @@ public class TileMaker : MonoBehaviour
     // 랜턴 범위 계산
     public void MoveLanternRange()
     {
-        switch (Vars.UserData.uData.lanternState)
-        {
-            case LanternState.None:
-                break;
-            case LanternState.Level1:
-                break;
-            case LanternState.Level2:
-                break;
-            case LanternState.Level3:
-                break;
-            case LanternState.Level4:
-                break;
-        }
+        int lanternRange = lanternToCol[(int)Vars.UserData.uData.lanternState];
+        var sample = GetTile(new Vector2(0f, lanternRange));
+
+        var samplePosX = sample.transform.position.x;
+
+        var trans = manager.uiLink.lanternUITarget;
+        var transPos = manager.uiLink.lanternUITarget.position;
+        transPos.x = samplePosX;
+
+        trans.position = transPos;
     }
 
 
