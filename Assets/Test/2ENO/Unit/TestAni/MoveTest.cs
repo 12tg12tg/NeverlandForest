@@ -9,18 +9,16 @@ public class MoveTest : MonoBehaviour
     private Animator playerAnimationBoy;
     private Animator playerAnimationGirl;
     
-    private PlayerMoveAnimation curAnimation;
     private MultiTouch multiTouch;
     private float speed = 10f;
 
     public bool isCoMove;
 
-    public GameObject playerBoy;
-    public GameObject playerGirl;
+    public PlayerDungeonUnit playerBoy;
+    public PlayerDungeonUnit playerGirl;
 
     // 달리기 움직임 및 손잡기 관련
     public float boySpeed;
-    private float girlSpeed;
     private bool isRunReady;
     private bool isRun;
     private bool isHand;
@@ -33,27 +31,8 @@ public class MoveTest : MonoBehaviour
     private List<RigLayer> girlRiglayers;
 
     private Coroutine coHand;
-    //void Start()
-    //{
-    //    multiTouch = GameManager.Manager.MultiTouch;
-    //    playerAnimationBoy = playerBoy.GetComponent<Animator>();
-    //    playerAnimationGirl = playerGirl.GetComponent<Animator>();
 
-    //    rigBuilder = playerGirl.GetComponent<RigBuilder>();
-    //    girlRiglayers = rigBuilder.layers;
-
-    //    foreach (var obj in girlRiglayers)
-    //        obj.active = false;
-
-    //    boyRig = playerBoy.GetComponentInChildren<Rig>();
-    //    girlRigs = playerGirl.GetComponentsInChildren<Rig>();
-    //    boyRight = playerBoy.GetComponent<IKControl>();
-
-    //    // 0 active = 오른쪽 방향
-    //    // 1 active = 왼쪽방향 이동기준
-    //    girlRiglayers[1].active = true;
-    //    boyRight.isRight = false;
-    //}
+    private float tutorialTime;
 
     public void Init()
     {
@@ -78,7 +57,6 @@ public class MoveTest : MonoBehaviour
     }
 
     // 임시
-
     //if (MultiTouch.Instance.IsTap)
     //{
     //    moveSpeed *= 5f;
@@ -91,96 +69,150 @@ public class MoveTest : MonoBehaviour
     //    moveSpeed *= 5f;
     //}
 
-
     void Update()
     {
-        // 레이캐스트 필요
-        // UI가 아닐 때 동작하게끔 만들어야함
-        // 첫 터치 기준으로만 잡음
-
         //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        if (!isCoMove)
+
+        if (TutorialDungeonStep.Instance.tutorialStep == 2 || TutorialDungeonStep.Instance.tutorialStep == 4 ||
+            TutorialDungeonStep.Instance.tutorialStep == 6)
+            return;
+
+        if (multiTouch != null)
         {
-            if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
+            if (!isCoMove)
             {
-                boySpeed = Input.GetAxis("MouseAxes");
-                boySpeed *= speed;
-                if (EventSystem.current.IsPointerOverGameObject())
-                    return;
-                // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
-                var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
-                var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
-                if (playerXPos + 0.05f < touchXPos)
+                if (multiTouch.TouchCount > 0 /*&& isRayCol*/)
                 {
-                    if (!isTurn)
-                        RigOff();
-                    isTurn = true;
+                    boySpeed = Input.GetAxis("MouseAxes");
+                    boySpeed *= speed;
+                    if (EventSystem.current.IsPointerOverGameObject())
+                        return;
+                    // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
+                    var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
+                    var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
+                    if (playerXPos + 0.05f < touchXPos)
+                    {
+                        if (TutorialDungeonStep.Instance.tutorialStep == 3 &&
+                            playerBoy.transform.position.x >= DungeonSystem.Instance.roomGenerate.roomList[0].endPosVector.x)
+                            return;
 
-                    var pos = boySpeed * Time.deltaTime * Vector3.right;
-                    playerBoy.transform.position += pos;
-                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+                        if(TutorialDungeonStep.Instance.tutorialStep == 3)
+                        {
+                            if (TutorialDungeonStep.Instance.tutorialCount == 0)
+                            {
+                                tutorialTime += Time.deltaTime;
 
+                                if (tutorialTime > 1.3f)
+                                {
+                                    TutorialDungeonStep.Instance.tutorialCount++;
+                                    tutorialTime = 0f;
+                                }
+                            }
+                        }
+
+                        if (!isTurn)
+                            RigOff();
+                        isTurn = true;
+
+                        var pos = boySpeed * Time.deltaTime * Vector3.right;
+                        playerBoy.transform.position += pos;
+                        playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+
+                    }
+                    else if (playerXPos - 0.05f > touchXPos)
+                    {
+                        if (playerBoy.transform.position.x <= DungeonSystem.Instance.roomGenerate.spawnPos.x)
+                            return;
+
+                        if (TutorialDungeonStep.Instance.tutorialStep == 3)
+                        {
+                            if (TutorialDungeonStep.Instance.tutorialCount == 1)
+                            {
+                                tutorialTime += Time.deltaTime;
+
+                                if (tutorialTime > 1.3f)
+                                {
+                                    TutorialDungeonStep.Instance.tutorialCount++;
+                                    tutorialTime = 0f;
+                                    TutorialDungeonStep.Instance.NextStep();
+                                }
+                            }
+                        }
+
+                        if (isTurn)
+                            RigOff();
+                        isTurn = false;
+
+                        var pos = boySpeed * Time.deltaTime * -Vector3.right;
+                        playerBoy.transform.position += pos;
+                        playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 270, 0f));
+
+                    }
+                    else
+                        boySpeed = 0f;
+
+                    // Girl Move
+                    if (playerBoy.transform.position.x > playerGirl.transform.position.x + 1.15f)
+                    {
+                        girlRiglayers[1].active = false;
+                        girlRiglayers[0].active = true;
+                        boyRight.isRight = true;
+                        var pos = boySpeed * Time.deltaTime * Vector3.right;
+                        playerGirl.transform.position += pos;
+                        playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+
+                        if (isHand)
+                        {
+                            if (coHand != null)
+                            {
+                                StopCoroutine(coHand);
+                                coHand = null;
+                                RigOff();
+                            }
+                            coHand ??= StartCoroutine(HandShakeOn());
+                            isHand = false;
+                        }
+                    }
+                    else if (playerBoy.transform.position.x < playerGirl.transform.position.x - 1.15f)
+                    {
+                        girlRiglayers[1].active = true;
+                        girlRiglayers[0].active = false;
+                        boyRight.isRight = false;
+                        var pos = boySpeed * Time.deltaTime * -Vector3.right;
+                        playerGirl.transform.position += pos;
+                        playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 270f, 0f));
+
+                        if (isHand)
+                        {
+                            if (coHand != null)
+                            {
+                                StopCoroutine(coHand);
+                                coHand = null;
+                                RigOff();
+                            }
+                            coHand ??= StartCoroutine(HandShakeOn());
+                            isHand = false;
+                        }
+                    }
+                    // 캐릭터 둘이 거리가 가까워질때
+                    else
+                    {
+                        if (!isHand)
+                        {
+                            if (coHand != null)
+                            {
+                                StopCoroutine(coHand);
+                                coHand = null;
+                            }
+                            coHand ??= StartCoroutine(HandShakeOff());
+                            isHand = true;
+                        }
+                    }
                 }
-                else if (playerXPos - 0.05f > touchXPos)
-                {
-                    if (isTurn)
-                        RigOff();
-                    isTurn = false;
-
-                    var pos = boySpeed * Time.deltaTime * -Vector3.right;
-                    playerBoy.transform.position += pos;
-                    playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 270, 0f));
-
-                }
+                // 터치 안누를때
                 else
+                {
                     boySpeed = 0f;
-
-                // Girl Move
-                if (playerBoy.transform.position.x > playerGirl.transform.position.x + 1.15f)
-                {
-                    girlRiglayers[1].active = false;
-                    girlRiglayers[0].active = true;
-                    boyRight.isRight = true;
-                    var pos = boySpeed * Time.deltaTime * Vector3.right;
-                    playerGirl.transform.position += pos;
-                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
-
-                    if (isHand)
-                    {
-                        if (coHand != null)
-                        {
-                            StopCoroutine(coHand);
-                            coHand = null;
-                            RigOff();
-                        }
-                        coHand ??= StartCoroutine(HandShakeOn());
-                        isHand = false;
-                    }
-                }
-                else if (playerBoy.transform.position.x < playerGirl.transform.position.x - 1.15f)
-                {
-                    girlRiglayers[1].active = true;
-                    girlRiglayers[0].active = false;
-                    boyRight.isRight = false;
-                    var pos = boySpeed * Time.deltaTime * -Vector3.right;
-                    playerGirl.transform.position += pos;
-                    playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 270f, 0f));
-
-                    if (isHand)
-                    {
-                        if (coHand != null)
-                        {
-                            StopCoroutine(coHand);
-                            coHand = null;
-                            RigOff();
-                        }
-                        coHand ??= StartCoroutine(HandShakeOn());
-                        isHand = false;
-                    }
-                }
-                // 캐릭터 둘이 거리가 가까워질때
-                else
-                {
                     if (!isHand)
                     {
                         if (coHand != null)
@@ -192,30 +224,15 @@ public class MoveTest : MonoBehaviour
                         isHand = true;
                     }
                 }
+
+                playerAnimationBoy.SetFloat("Speed", boySpeed);
+                playerAnimationGirl.SetFloat("Speed", boySpeed);
             }
-            // 터치 안누를때
             else
             {
-                boySpeed = 0f;
-                if (!isHand)
-                {
-                    if (coHand != null)
-                    {
-                        StopCoroutine(coHand);
-                        coHand = null;
-                    }
-                    coHand ??= StartCoroutine(HandShakeOff());
-                    isHand = true;
-                }
+                RigOff();
+                isHand = true;
             }
-
-            playerAnimationBoy.SetFloat("Speed", boySpeed);
-            playerAnimationGirl.SetFloat("Speed", boySpeed);
-        }
-        else
-        {
-            RigOff();
-            isHand = true;
         }
     }
 

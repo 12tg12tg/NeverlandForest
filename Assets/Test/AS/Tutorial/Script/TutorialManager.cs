@@ -25,8 +25,10 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text));
                 break;
             case MainTutorialStage.Battle:
+
                 break;
             case MainTutorialStage.Move:
+
                 break;
             case MainTutorialStage.Lanturn:
                 break;

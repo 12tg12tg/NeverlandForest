@@ -66,4 +66,10 @@ public class MainTutorial
             text.color = Color.white;
         }
     }
+
+    public IEnumerator CoTutorialStep1Move()
+    {
+        
+        yield return null;
+    }
 }
