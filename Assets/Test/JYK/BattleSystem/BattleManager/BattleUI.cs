@@ -13,6 +13,9 @@ public class BattleUI : MonoBehaviour
     public BattleMessage cautionMessage;
     public Image dragSlot;
 
+    [Header("랜턴 범위 표시 이미지 연결")]
+    public Transform lanternUITarget;
+
     [Header("드래그 중 인지 확인")]
     public bool isDrag;
 

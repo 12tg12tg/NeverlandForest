@@ -251,6 +251,24 @@ public class TileMaker : MonoBehaviour
         return plane;
     }
 
+    // 랜턴 범위 계산
+    public void MoveLanternRange()
+    {
+        switch (Vars.UserData.uData.lanternState)
+        {
+            case LanternState.None:
+                break;
+            case LanternState.Level1:
+                break;
+            case LanternState.Level2:
+                break;
+            case LanternState.Level3:
+                break;
+            case LanternState.Level4:
+                break;
+        }
+    }
+
 
     // 타일 반환
     public Tiles GetTile(Vector2 position)
