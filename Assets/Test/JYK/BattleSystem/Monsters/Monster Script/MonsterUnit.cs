@@ -97,7 +97,7 @@ public class MonsterUnit : UnitBase, IAttackable
         if (playerCommand.type == PlayerType.Boy)
         {
             // 부가효과
-            if (playerCommand.skill.SkillTableElem.name != "근거리")
+            if (!manager.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
             {
                 if (command.actionType == MonsterActionType.Move)
                 {
@@ -106,7 +106,7 @@ public class MonsterUnit : UnitBase, IAttackable
                     uiLinker.SetCantMove();
                 }
             }
-            if (playerCommand.skill.SkillTableElem.name == "넉 백")
+            if (playerCommand.skill.SkillTableElem.id == manager.costLink.skillID_knockBackAttack) // 넉백
             {
                 PushBack(true);
             }
@@ -114,11 +114,11 @@ public class MonsterUnit : UnitBase, IAttackable
         // 약초학자
         else
         {
-            if (playerCommand.skill.SkillTableElem.name != "근거리")
+            if (!manager.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
             {
                 IsBurn = true;
             }
-            if (playerCommand.skill.SkillTableElem.name == "위협 발산")
+            if (playerCommand.skill.SkillTableElem.id == manager.costLink.skillID_threatEmission) // 위협발산
             {
                 if(State != MonsterState.Dead)
                     KickoutAnyWhere();
@@ -365,7 +365,7 @@ public class MonsterUnit : UnitBase, IAttackable
 
         var damage = command.skill.SkillTableElem.Damage;
 
-        if (command.type == PlayerType.Boy || command.skill.SkillTableElem.name == "근거리")
+        if (command.type == PlayerType.Boy || manager.costLink.skillIDs_NearAttack.Contains(command.skill.SkillTableElem.id))
         {
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;

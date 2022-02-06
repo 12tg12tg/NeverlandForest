@@ -19,23 +19,23 @@ public class UserInputPanel : MonoBehaviour
 
     public void Init(PlayerCommand first, PlayerCommand second)
     {
-        if (first == null)
-            return;
+        //if (first == null)
+        //    return;
 
-        firstInput.gameObject.SetActive(true);
-        if (first.actionType == ActionType.Skill)
-            firstInput.Init(first.type, first.skill);
-        else
-            firstInput.Init(first.type, first.item);
+        //firstInput.gameObject.SetActive(true);
+        //if (first.actionType == ActionType.Skill)
+        //    firstInput.Init(first.type, first.skill);
+        //else
+        //    firstInput.Init(first.type, first.item);
 
-        if (second == null)
-            return;
+        //if (second == null)
+        //    return;
 
-        secondInput.gameObject.SetActive(true);
-        if (second.actionType == ActionType.Skill)
-            secondInput.Init(second.type, second.skill);
-        else
-            secondInput.Init(second.type, second.item);
+        //secondInput.gameObject.SetActive(true);
+        //if (second.actionType == ActionType.Skill)
+        //    secondInput.Init(second.type, second.skill);
+        //else
+        //    secondInput.Init(second.type, second.item);
     }
 
     public void Clear()

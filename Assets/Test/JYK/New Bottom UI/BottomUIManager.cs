@@ -165,7 +165,7 @@ public class BottomUIManager : MonoBehaviour
         IsSkillLock = true;
         bm.directLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
         bm.tileLink.ReadyTileClick();
-        bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem);
+        bm.tileLink.DisplaySkillTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
     }
@@ -297,6 +297,7 @@ public class BottomUIManager : MonoBehaviour
             else if (selectItem.ItemTableElem.stat_Hp > 0)
             {
                 // 소비 아이템일경우 동작
+                ConsumeManager.RecoverHp(selectItem.ItemTableElem.stat_Hp);
             }
         }
         // 2. 그 밖의 상태

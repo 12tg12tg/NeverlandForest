@@ -92,12 +92,12 @@ public class BattleDirecting : MonoBehaviour
         shaderChangeUnit.Clear();
 
         var monsters = bm.waveLink.AliveMonsters;
-        var rangedTiles = TileMaker.Instance.GetMonsterTiles(skill);
+        var rangedTiles = TileMaker.Instance.GetSKillTiles(skill);
         foreach (var tiles in rangedTiles)
         {
             foreach (var unit in tiles.Units)
             {
-                if(unit != null)
+                if(unit != null && unit is MonsterUnit)
                     layerChangeUnit.Add(unit as MonsterUnit);
             }
         }

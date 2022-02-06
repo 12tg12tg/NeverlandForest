@@ -64,7 +64,7 @@ public class BattleDrag : MonoBehaviour
         {
             lastDragWorldPos = hit.point;
             lastDrapTile = hit.transform.GetComponent<Tiles>();
-            if (lastDrapTile.isHighlight) // 선택가능 타일일 때만 범위 표시
+            if (lastDrapTile.isHighlight || lastDrapTile.isHighlightConsume) // 선택가능 타일일 때만 범위 표시
             {
                 tm.SetAllTileMiddleState(curDragSkill.skill.SkillTableElem.range);
                 lastDrapTile.HighlightSkillRange(curDragSkill.skill.SkillTableElem.range, lastDragWorldPos);

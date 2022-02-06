@@ -299,9 +299,9 @@ public class TileMaker : MonoBehaviour
         return list;
     }
 
-    public IEnumerable<Tiles> GetMonsterTiles(PlayerSkillTableElem skill)
+    public IEnumerable<Tiles> GetSKillTiles(PlayerSkillTableElem skill)
     {
-        if(skill.name.Equals("근거리"))
+        if(manager.costLink.skillIDs_NearAttack.Contains(skill.id)) // 근거리
         {
             return from n in tileList where n.HaveUnit && n.index.y == 1 select n;
         }
@@ -314,6 +314,9 @@ public class TileMaker : MonoBehaviour
                        select n;
 
             case PlayerType.Girl:
+                if (skill.id == manager.costLink.skillID_chargeOil) // 오일충전
+                    return from n in tileList where n.index == Vector2.zero select n;
+                
                 int currentLantern = (int)Vars.UserData.uData.lanternState;
                 return from n in tileList
                        where n.HaveUnit && n.index.y > 0 && n.index.y <= lanternToCol[currentLantern]
@@ -322,14 +325,6 @@ public class TileMaker : MonoBehaviour
             default:
                 return null;
         }
-    }
-
-    public IEnumerable<Tiles> GetPlayerTiles()
-    {
-        var list = from n in tileList
-                   where n.index.y == 0 && n.HaveUnit
-                   select n;
-        return list;
     }
 
     public IEnumerable<Tiles> GetSkillRangedTiles(Vector2 choicesTile, SkillRangeType rangeType)

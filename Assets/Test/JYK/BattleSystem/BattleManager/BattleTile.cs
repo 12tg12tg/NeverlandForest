@@ -226,9 +226,10 @@ public class BattleTile : MonoBehaviour
         unit.afterMove = null;
     }
 
-    public void DisplayMonsterTile(PlayerSkillTableElem skill)
+    public void DisplaySkillTile(PlayerSkillTableElem skill)
     {
-        targetTiles = tileMaker.GetMonsterTiles(skill);
+        targetTiles = tileMaker.GetSKillTiles(skill);
+
         if(targetTiles.Count() == 0)
         {
             bm.uiLink.PrintCaution("스킬 범위 내에 몬스터가 없습니다.", 1f, 0.5f, 
@@ -239,9 +240,13 @@ public class BattleTile : MonoBehaviour
                         bm.dragLink.Release();
                 });
         }
+
         foreach (var tile in targetTiles)
         {
-            tile.HighlightCanAttackSign(skill.range);
+            if (skill.id == bm.costLink.skillID_chargeOil) // 오일 충전
+                tile.HighlightCanConsumeSign();
+            else
+                tile.HighlightCanAttackSign(skill.range);
         }
     }
 

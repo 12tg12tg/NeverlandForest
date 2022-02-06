@@ -157,7 +157,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         bottomUiManager.info.Init(skill);
         if (!bottomUiManager.IsSkillLock)
         {
-            // 스킬에 대한 소모값이 없는 경우.
+            // 스킬에 대한 소모값이 부족한 경우.
             if (!bm.costLink.CheckCanUseSkill(skill, out string cautionMessage))
             {
                 var offset = new Vector2(0f, height * 1 / 8);
@@ -165,6 +165,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
                 bm.uiLink.PrintCaution(cautionMessage, 0.75f, 0.3f, null);
 
+                // 깔짝
                 StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, alittleOpenPos, 0.15f,
                     () => { StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.15f, null)); }));
             }
@@ -246,7 +247,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         {
             bottomUiManager.curSkillButton?.Cancle();
         }
-        else if (bm.dragLink.lastDrapTile.isHighlight)
+        else if (bm.dragLink.lastDrapTile.isHighlight || bm.dragLink.lastDrapTile.isHighlightConsume)
         {
             bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill);
 
@@ -255,7 +256,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
             bm.uiLink.UpdateProgress();
         }
-        else if (!bm.dragLink.lastDrapTile.isHighlight)
+        else if (!bm.dragLink.lastDrapTile.isHighlight && !bm.dragLink.lastDrapTile.isHighlightConsume)
         {
             if(bottomUiManager.curSkillButton != null)
                 bottomUiManager.curSkillButton.Cancle();

@@ -40,7 +40,8 @@ public class PlayerSkillTableElem : DataTableElemBase
                 damage += (int)Vars.UserData.uData.lanternState;
             }
 
-            if (player == PlayerType.Boy && name != "±Ù°Å¸®" && Vars.UserData.arrowType == ArrowType.Iron)
+            if (player == PlayerType.Boy && Vars.UserData.arrowType == ArrowType.Iron
+                && !BattleManager.Instance.costLink.skillIDs_NearAttack.Contains(id))
             {
                 damage += BattleManager.Instance.costLink.ironArrowElem.damage;
             }

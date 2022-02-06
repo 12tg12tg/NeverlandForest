@@ -368,7 +368,7 @@ public class BattleManager : MonoBehaviour
         else
         {
             IsDuringPlayerAction = false;
-            if (boyInput.IsUpdated && girlInput.IsUpdated)
+            if (uiLink.Progress == 2)
             {
                 BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Boy, true);
                 BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Girl, true);

@@ -37,7 +37,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
 
     public void TurnInit(ActionType action)
     {
-        FSM.ChangeState(CharacterBattleState.Action);
+        FSM.ChangeState(CharacterBattleState.Action); // 공격 애니메이션 재생 시작
         manager.IsDuringPlayerAction = true;
 
         if (action == ActionType.Skill)
@@ -65,31 +65,42 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         }
         tileMaker.SetAllTileSoftClear();
 
-        //몬스터 맞을 준비. 콜라이더 켜기
-        var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
-        var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
-        foreach (var target in neverChangeMonsterList)
+        if (command.skill.SkillTableElem.id == manager.costLink.skillID_chargeOil) // 오일 충전
         {
-            target.triggerLinker.EnableHitTrigger();
-        }
-        
-        //몬스터 맞고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.
-        var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
-        yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
-        playerActionState.isAttackMotionEnd = false;
+            // 충전 애니 끝나고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.
+            var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
+            yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
+            playerActionState.isAttackMotionEnd = false;
 
-        // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
-        if (command.skill.SkillTableElem.name != "집중공격"
-            /*&& command.skill.SkillTableElem.name != "위협 발산"*/)
+            yield return new WaitForSeconds(1.5f);
+        }
+        else
         {
+            //몬스터 맞을 준비. 콜라이더 켜기
+            var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+            var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
             foreach (var target in neverChangeMonsterList)
             {
-                target.PlayHitAnimation();
-                target.OnAttacked(command);
+                target.triggerLinker.EnableHitTrigger();
             }
-        }
 
-        yield return new WaitForSeconds(1.5f);
+            //몬스터 맞고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.
+            var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
+            yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
+            playerActionState.isAttackMotionEnd = false;
+
+            // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
+            if (command.skill.SkillTableElem.id != manager.costLink.skillID_focusAttack) // 집중공격아닐 때
+            {
+                foreach (var target in neverChangeMonsterList)
+                {
+                    target.PlayHitAnimation();
+                    target.OnAttacked(command);
+                }
+            }
+
+            yield return new WaitForSeconds(1.5f);
+        }
 
         // 발판색 삭제 및 배틀상태전환 및 일일히 승리 확인.
         foreach (var tile in tiles)

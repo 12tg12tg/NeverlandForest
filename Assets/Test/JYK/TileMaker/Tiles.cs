@@ -47,7 +47,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
     //Vars
     public bool isHighlight;
-    //private bool isHighlightConsume;
+    public bool isHighlightConsume;
     private Color confirmColor;
     private Color boyColor;
     private Color girlColor;
@@ -131,7 +131,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         affectedByBoy.isAffected = false;
         affectedByGirl.isAffected = false;
         isHighlight = false;
-        //isHighlightConsume = false;
+        isHighlightConsume = false;
         ren.material.color = tileMaker.noneColor;
         center.material.color = tileMaker.noneColor;
         edge.material.color = tileMaker.noneColor;
@@ -194,17 +194,17 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         }
     }
 
-    //public void HighlightCanConsumeSign()
-    //{
-    //    // Both drag and click
-    //    isHighlightConsume = true;
-    //    edge.material.color = tileMaker.consumeColor;
-    //}
+    public void HighlightCanConsumeSign()
+    {
+        // Both drag and click
+        isHighlightConsume = true;
+        edge.material.color = tileMaker.consumeColor;
+    }
 
     public void ResetHighlightExceptConfirm() // 스킬 사용 이후 호출.
     {
         isHighlight = false;
-        //isHighlightConsume = false;
+        isHighlightConsume = false;
 
         center.material.color = tileMaker.noneColor;
         front.material.color = tileMaker.noneColor;
@@ -286,8 +286,8 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
 
         if (isHighlight)
             HighlightCanAttackSign(skillType);
-        //if (isHighlightConsume)
-        //    HighlightCanConsumeSign();
+        if (isHighlightConsume)
+            HighlightCanConsumeSign();
         //if (affectedByBoy.isAffected || affectedByGirl.isAffected)
         //    ResetHighlightExceptConfirm();
     }
@@ -308,7 +308,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!isHighlight)
+        if (!isHighlight && !isHighlightConsume)
             return;
 
         if (!bm.IsWaitingTileSelect && !tileMaker.IsWaitingToSelectTrapTile)

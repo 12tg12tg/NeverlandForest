@@ -4,19 +4,30 @@ using UnityEngine;
 
 public class BattleCost : MonoBehaviour
 {
+    [Header("매니저 연결")]
     [SerializeField] private BattleManager bm;
-    public readonly string oilID = "ITEM_19";
-    public readonly string arrowID = "ITEM_20";
-    public readonly string ironArrowID = "ITEM_21";
+
+    [Header("특수 스킬 ID 입력")]
+    public readonly string[] skillIDs_NearAttack = new string[] { "0", "5" };
+    public readonly string skillID_knockBackAttack = "2";
+    public readonly string skillID_focusAttack = "4";
+    public readonly string skillID_threatEmission = "8";
+    public readonly string skillID_chargeOil = "9";
+
+    [Header("특수 아이템 ID 입력")]
+    public readonly string itemID_oil = "ITEM_19";
+    public readonly string itemID_arrow = "ITEM_20";
+    public readonly string itemID_ironArrow = "ITEM_21";
+
     [HideInInspector] public AllItemTableElem oilElem;
     [HideInInspector] public AllItemTableElem arrowElem;
     [HideInInspector] public AllItemTableElem ironArrowElem;
 
     private void Start()
     {
-        oilElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(oilID);
-        arrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(arrowID);
-        ironArrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(ironArrowID);
+        oilElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_oil);
+        arrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_arrow);
+        ironArrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_ironArrow);
     }
 
     // 화살 elme 얻기
@@ -47,7 +58,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == arrowID)
+            if (item.itemId == itemID_arrow)
             {
                 return true;
             }
@@ -60,7 +71,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == ironArrowID)
+            if (item.itemId == itemID_ironArrow)
             {
                 return true;
             }
@@ -73,7 +84,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == oilID)
+            if (item.itemId == itemID_oil)
             {
                 return true;
             }
@@ -98,7 +109,7 @@ public class BattleCost : MonoBehaviour
         }
         else
         {
-            if(skill.SkillTableElem.name == "오일 충전")
+            if(skill.SkillTableElem.id == skillID_chargeOil) // 오일 충전
             {
                 cautionMessage = "스킬에 필요한 오일이 부족합니다.";
                 return CheckOil(skill);
@@ -124,7 +135,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == arrowID)
+            if (item.itemId == itemID_arrow)
             {
                 total += item.OwnCount;
             }
@@ -138,7 +149,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == ironArrowID)
+            if (item.itemId == itemID_ironArrow)
             {
                 total += item.OwnCount;
             }
@@ -152,7 +163,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == oilID)
+            if (item.itemId == itemID_oil)
             {
                 total += item.OwnCount;
             }
@@ -166,7 +177,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == arrowID)
+            if (item.itemId == itemID_arrow)
             {
                 total += item.OwnCount;
             }
@@ -180,7 +191,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == ironArrowID)
+            if (item.itemId == itemID_ironArrow)
             {
                 total += item.OwnCount;
             }
@@ -194,7 +205,7 @@ public class BattleCost : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == oilID)
+            if (item.itemId == itemID_oil)
             {
                 total += item.OwnCount;
             }
@@ -224,7 +235,7 @@ public class BattleCost : MonoBehaviour
 
     public void CostLanternOrOil(DataPlayerSkill skill)
     {
-        if(skill.SkillTableElem.name == "오일 충전")
+        if(skill.SkillTableElem.id == skillID_chargeOil) // 오일 충전
         {
             var dataItem = new DataAllItem(oilElem);
             dataItem.OwnCount = skill.SkillTableElem.cost;
@@ -233,7 +244,14 @@ public class BattleCost : MonoBehaviour
         }
         else
         {
-            Vars.UserData.uData.LanternCount -= skill.SkillTableElem.cost;
+            var curLanternCount = Vars.UserData.uData.LanternCount;
+            ConsumeManager.ConsumeLantern((int)skill.SkillTableElem.cost);
+            Debug.Log($"원래 랜턴양 {curLanternCount}에서 {Vars.UserData.uData.LanternCount}로 줄어듦.");
         }
+    }
+
+    public void CostForRecovery(DataAllItem item)
+    {
+        ConsumeManager.RecoverHp(item.ItemTableElem.stat_Hp);
     }
 }

@@ -167,4 +167,14 @@ public class BattleAnimationFunc : MonoBehaviour
         }
         lanternLight.range = destRange;
     }
+    public void Charge()
+    {
+        var chargeSkillElem = DataTableManager.GetTable<PlayerSkillTable>().GetData<PlayerSkillTableElem>(BattleManager.Instance.costLink.skillID_chargeOil);
+        var chargeAmount = chargeSkillElem.Damage;
+        var curLanternCount = Vars.UserData.uData.LanternCount;
+        ConsumeManager.FullingLantern(chargeAmount);
+
+        actionState.isAttackMotionEnd = true;
+        Debug.Log($"원래 랜턴양 {curLanternCount}에서 {Vars.UserData.uData.LanternCount}로 충전됨.");
+    }
 }
