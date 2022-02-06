@@ -19,6 +19,9 @@ public class BattleCost : MonoBehaviour
     public readonly string itemID_arrow = "ITEM_20";
     public readonly string itemID_ironArrow = "ITEM_21";
 
+    [Header("Æ®·¦ »ý¼º±â")]
+    public TrapSelecter trapSelector;
+
     [HideInInspector] public AllItemTableElem oilElem;
     [HideInInspector] public AllItemTableElem arrowElem;
     [HideInInspector] public AllItemTableElem ironArrowElem;

@@ -13,7 +13,7 @@ public class BattleEnd : State<BattleState>
     public override void Init()
     {
         BottomUIManager.Instance.ItemListInit();
-        BottomUIManager.Instance.progress.SetActive(false);
+        manager.uiLink.progressTrans.SetActive(false);
     }
 
     public override void Release()

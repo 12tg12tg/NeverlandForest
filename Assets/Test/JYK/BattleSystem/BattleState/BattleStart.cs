@@ -21,7 +21,7 @@ public class BattleStart : State<BattleState>
     {
         BottomUIManager.Instance.ItemListInit();
         BottomUIManager.Instance.ItemButtonInit();
-        BottomUIManager.Instance.progress.SetActive(true);
+        manager.uiLink.progressTrans.SetActive(true);
         manager.uiLink.ResetProgress();
         isReadyDone = false;
         if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2)

@@ -636,7 +636,6 @@ RectTransform:
   - {fileID: 698883429487643593}
   - {fileID: 698883429324579899}
   - {fileID: 8285671217074346572}
-  - {fileID: 8866420142327495889}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -749,16 +748,17 @@ MonoBehaviour:
   - {fileID: 503912759551186104}
   - {fileID: 565486951807615461}
   - {fileID: 3412262469242881087}
-  tags: []
-  progress: {fileID: 0}
-  progressImg: []
+  arrowInfo: {fileID: 4305412343650038330}
+  oilInfo: {fileID: 4305412343332709668}
+  tags:
+  - {fileID: 698883429893937442}
+  - {fileID: 698883430405650280}
   buttonState: 0
   curSkillButton: {fileID: 0}
   isPopUp: 0
   popUpWindow: {fileID: 8285671217074346572}
   selectedItemRect: {fileID: 0}
   burnButton: {fileID: 1624609542}
-  trapSelector: {fileID: 0}
   selectItemSlotNum: 0
 --- !u!1 &698883429151533099
 GameObject:
@@ -2444,55 +2444,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &6224784771560532997
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8866420142327495889}
-  - component: {fileID: 4785888076866507125}
-  m_Layer: 5
-  m_Name: CoForBattle
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &8866420142327495889
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6224784771560532997}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 698883429085278463}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &4785888076866507125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6224784771560532997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2237363a6205a6d4195250b7cdd3e36f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6317346284746831637
 GameObject:
   m_ObjectHideFlags: 0
@@ -3266,6 +3217,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 698883429398468166}
     m_Modifications:
+    - target: {fileID: 2961048472641012999, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551459624204445, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: buttonType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3606551459624204446, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -3387,6 +3346,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 698883430538676089}
     m_Modifications:
+    - target: {fileID: 2961048472641012999, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202404, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Color.b
+      value: 0.105882354
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202404, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Color.g
+      value: 0.62352943
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202404, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Color.r
+      value: 0.83137256
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551458954202405, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3606551459624204445, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
+      propertyPath: buttonType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3606551459624204446, guid: bc07d4cfada634a4bb812e3580ca57ed, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

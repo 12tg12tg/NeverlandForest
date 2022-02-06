@@ -24,10 +24,6 @@ public class BottomUIManager : MonoBehaviour
     [Header("우측 두 개 분류 태그 연결")]
     public List<Button> tags;
 
-    [Header("전투시에만 활성화할 플레이어 진행도 연결")]
-    public GameObject progress;
-    [SerializeField] private List<Image> progressImg;
-
     //Vars
     [HideInInspector] public ButtonState buttonState;
     [HideInInspector] public BottomSkillButtonUI curSkillButton;
@@ -44,9 +40,6 @@ public class BottomUIManager : MonoBehaviour
     public DataAllItem selectItem;
     public RectTransform selectedItemRect;
     public GameObject burnButton;
-
-    [Header("배틀을 위한 UI Linker")]
-    public TrapSelecter trapSelector;
 
     [Header("아이템 선택 슬롯")]
     public int selectItemSlotNum;
@@ -99,28 +92,6 @@ public class BottomUIManager : MonoBehaviour
         foreach (var button in list)
         {
             button.interactable = interactive;
-        }
-    }
-
-
-    // 프로그래스
-    public void UpdateProgress()
-    {
-        int prog = BattleManager.Instance.uiLink.Progress;
-        if (prog == 0)
-        {
-            progressImg[0].enabled = false;
-            progressImg[1].enabled = false;
-        }
-        else if (prog == 1)
-        {
-            progressImg[0].enabled = true;
-            progressImg[1].enabled = false;
-        }
-        else if (prog == 2)
-        {
-            progressImg[0].enabled = true;
-            progressImg[1].enabled = true;
         }
     }
 
@@ -293,7 +264,7 @@ public class BottomUIManager : MonoBehaviour
             if (selectItem.ItemTableElem.type == "INSTALLATION")
             {
                 // 설치류 아이템일경우 동작
-                trapSelector.WaitUntilTrapTileSelect(selectItem);
+                bm.costLink.trapSelector.WaitUntilTrapTileSelect(selectItem);
             }
             else if (selectItem.ItemTableElem.stat_Hp > 0)
             {

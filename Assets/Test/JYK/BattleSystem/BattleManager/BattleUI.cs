@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class BattleUI : MonoBehaviour
 {
     private MultiTouch mt;
+    private BattleManager bm;
 
     [Header("UI 연결")]
     public BattleMessage message;
@@ -19,12 +20,17 @@ public class BattleUI : MonoBehaviour
     [Header("드래그 중 인지 확인")]
     public bool isDrag;
 
+    [Header("전투시에만 활성화할 플레이어 진행도 연결")]
+    public GameObject progressTrans;
+    [SerializeField] private List<Image> progressImg;
+
     private int progress;
     public int Progress { get => progress; }
 
     private void Start()
     {
         mt = MultiTouch.Instance;
+        bm = BattleManager.Instance;
     }
 
     private void Update()
@@ -69,12 +75,33 @@ public class BattleUI : MonoBehaviour
     public void UpdateProgress()
     {
         progress++;
-        BottomUIManager.Instance.UpdateProgress();
+        UpdateProgressUI();
     }
 
     public void ResetProgress()
     {
         progress = 0;
-        BottomUIManager.Instance.UpdateProgress();
+        UpdateProgressUI();
+    }
+
+    // 프로그래스
+    private void UpdateProgressUI()
+    {
+        int prog = BattleManager.Instance.uiLink.Progress;
+        if (prog == 0)
+        {
+            progressImg[0].enabled = false;
+            progressImg[1].enabled = false;
+        }
+        else if (prog == 1)
+        {
+            progressImg[0].enabled = true;
+            progressImg[1].enabled = false;
+        }
+        else if (prog == 2)
+        {
+            progressImg[0].enabled = true;
+            progressImg[1].enabled = true;
+        }
     }
 }
