@@ -17,14 +17,12 @@ public class GatheringSystem : MonoBehaviour
     public PlayerDungeonUnit womenplayer;
     public PlayerDungeonUnit boyPlayer;
     [Header("다이어리,재확인")]
-    public DiaryManager diaryManager;
     public DungeonRewardDiaryManager dungeonrewarddiaryManager;
     public ReconfirmPanelManager reconfirmPanelManager;
     [Header("채집판넬관련")]
     public GameObject gatheringPanel;
     [Header("채집텍스트관련")]
     public TextMeshProUGUI gatheringtext;
-    public TextMeshProUGUI gatheringTooltext;
     public TextMeshProUGUI gatheringLanternLeveltext;
     public TextMeshProUGUI gatheringToolConsumetext;
     public TextMeshProUGUI gatheringToolCompleteTimeText;
@@ -488,7 +486,7 @@ public class GatheringSystem : MonoBehaviour
             boyPlayer.IsCoMove = true;
             playerAnimationBoy.speed = 0.5f;
             playerAnimationBoy.SetTrigger("Pick");
-            diaryManager.gameObject.SetActive(false);
+            dungeonrewarddiaryManager.gameObject.SetActive(false);
             gatheringPanel.SetActive(false);
             Debug.Log("팝업껏다");
             isMove = false;

@@ -27,7 +27,7 @@ public class CraftIcon : MonoBehaviour
 
     public CraftObj itemPrehab;
     public ScrollRect scrollRect;
-    
+
     public Image fire;
     public Image condiment;
     public Image material;
@@ -36,19 +36,19 @@ public class CraftIcon : MonoBehaviour
     public string result = string.Empty;
     public bool Is0ok
     {
-        get  => is0ok;
+        get => is0ok;
         set
-        {is0ok = value;}
+        { is0ok = value; }
     }
     public bool Is1ok
     {
         get => is1ok;
-        set{is1ok = value;}
+        set { is1ok = value; }
     }
     public bool Is2ok
     {
         get => is2ok;
-        set {is2ok = value;}
+        set { is2ok = value; }
     }
     public void Start()
     {
@@ -115,7 +115,7 @@ public class CraftIcon : MonoBehaviour
     }
     public void MakeProducing()
     {
-        allitemTable  = DataTableManager.GetTable<AllItemDataTable>();
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
         if (result != null)
@@ -155,10 +155,10 @@ public class CraftIcon : MonoBehaviour
                     materialitem = new DataAllItem(list[material2Num]);
                     materialitem.OwnCount = 1;
                 }
-                
+
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
                 var stringId = $"ITEM_{result}";
-                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitemTable .GetData<AllItemTableElem>(stringId));
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
                 DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
@@ -167,7 +167,7 @@ public class CraftIcon : MonoBehaviour
                     Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
                     Debug.Log("제작 완료");
                     ConsumeManager.TimeUp(makeTime);
-                    Vars.UserData.uData.BonfireHour -= makeTime/60;
+                    Vars.UserData.uData.BonfireHour -= makeTime / 60;
                     CampManager.Instance.SetBonTime();
                     Vars.UserData.RemoveItemData(fireitem);
                     if (materialobj1.id != "ITEM_0")
@@ -212,6 +212,64 @@ public class CraftIcon : MonoBehaviour
             if (!is0ok)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
+            }
+        }
+    }
+
+    public void FillterByTool()
+    {
+        foreach (var item in itemGoList)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        var itemList = Vars.UserData.HaveCraftIDList;
+
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
+            if (type == 0 || type == 1)
+            {
+                itemGoList[i].Init(table, itemList[i]);
+                itemGoList[i].gameObject.SetActive(true);
+            }
+        }
+    }
+    public void FillterByBattle()
+    {
+        foreach (var item in itemGoList)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        var itemList = Vars.UserData.HaveCraftIDList;
+
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
+            if (type == 4)
+            {
+                itemGoList[i].Init(table, itemList[i]);
+                itemGoList[i].gameObject.SetActive(true);
+            }
+        }
+    }
+    public void FillterByHerb()
+    {
+        foreach (var item in itemGoList)
+        {
+            item.gameObject.SetActive(false);
+        }
+
+        var itemList = Vars.UserData.HaveCraftIDList;
+
+        for (int i = 0; i < itemList.Count; i++)
+        {
+            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
+            if (type == 5)
+            {
+                itemGoList[i].Init(table, itemList[i]);
+                itemGoList[i].gameObject.SetActive(true);
             }
         }
     }

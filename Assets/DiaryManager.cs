@@ -155,7 +155,9 @@ public class DiaryManager : MonoBehaviour
         sleepingPanel.SetActive(false);
         gatheringIncCampPanel.SetActive(false);
         gatheringInCampRewardPanel.SetActive(false);
-
+        CookingRotationPanel.SetActive(false);
+        CookingRewardPanel.SetActive(false);
+        produceRewardPanel.SetActive(false);
     }
     public void OpenProduce()
     {
@@ -215,4 +217,7 @@ public class DiaryManager : MonoBehaviour
             BottomUIManager.Instance.ItemListInit();
         }
     }
+
+  
+
 }
