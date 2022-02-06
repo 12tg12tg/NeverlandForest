@@ -35,9 +35,11 @@ public class HuntingManager : MonoBehaviour
     private int totalHuntPercent;
 
     private bool isHunted = false;
-
-    // 테스트
-    public Vector3[] testPos = new Vector3[1000];
+    
+    [Header("튜토리얼")]
+    private HuntTutorial huntTutorial;
+    public RectTransform target;
+    public Button disableUI;
 
     private void OnEnable()
     {
@@ -52,6 +54,22 @@ public class HuntingManager : MonoBehaviour
         {
             tileMaker.InitMakeTiles();
             Init();
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "튜토리얼"))
+        {
+            tileMaker.InitMakeTiles();
+            Init();
+
+            var isTutorialProceed = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
+            if (!isTutorialProceed)
+            {
+                TutorialInit();
+                StartCoroutine(huntTutorial.CoHuntTutorial());
+            }
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "다음"))
+        {
+            huntTutorial.TutorialStep++;
         }
     }
 
@@ -81,6 +99,21 @@ public class HuntingManager : MonoBehaviour
         animal.InitEscapingPercentage();
     }
 
+    private void TutorialInit()
+    {
+        huntTutorial = gameObject.AddComponent<HuntTutorial>();
+        huntTutorial.huntPlayers = huntPlayers;
+        huntTutorial.tile = tiles.Where(x => x.bush != null && (int)x.index.y == 1).Select(x => x).FirstOrDefault();
+        huntTutorial.tile.huntingManager = this;
+        target.GetComponent<Button>().onClick.AddListener(TutorialSetActiveFalse);
+        var huntButton = huntButtonText.gameObject.transform.parent.GetComponent<Button>();
+        huntButton.onClick.AddListener(NextTutorialStep);
+        huntButton.interactable = false;
+        huntTutorial.huntButton = huntButton;
+        disableUI.interactable = false;
+        huntTutorial.target = target;
+    }
+
     private void InitHuntPercentage()
     {
         //TODO : 랜턴 + 낮/밤 = 빛 기능 추가시 변경 예정
@@ -99,9 +132,10 @@ public class HuntingManager : MonoBehaviour
             step == 2 ? 7 :
             step == 3 ? 5 : 4) * step;
 
-        huntButtonText.text = "사냥" + "\n" + $"성공 {huntPercent}%";
-        popupText.text = $"현재 확률 : {huntPercent}%" + "\n" + "사냥하시겠습니까";
+        HuntPercentagePrint(huntPercentUp);
     }
+
+    
 
     private void OnDestroy()
     {
@@ -119,8 +153,12 @@ public class HuntingManager : MonoBehaviour
     {
         huntPercent = (bool)vals[0] && vals.Length.Equals(2) ? huntPercent + huntPercentUp : huntPercent;
         totalHuntPercent = huntPercent + bushHuntPercent;
-        huntButtonText.text = "사냥" + "\n" + $"성공 {totalHuntPercent}%";
-        popupText.text = $"현재 확률 : {totalHuntPercent}%" + "\n" + "사냥하시겠습니까";
+        HuntPercentagePrint(totalHuntPercent);
+    }
+    private void HuntPercentagePrint(int perccent)
+    {
+        huntButtonText.text = "사냥" + "\n" + $"성공 {perccent}%";
+        popupText.text = $"현재 확률 : {perccent}%" + "\n" + "사냥하시겠습니까";
     }
 
     private void GetItem()
@@ -140,6 +178,8 @@ public class HuntingManager : MonoBehaviour
         totalHuntPercent = huntPercent + bushHuntPercent;
         var rnd = Random.Range(0f, 1f);
         var succeeded = isHunted = rnd < totalHuntPercent * 0.01f;
+        if (huntTutorial != null) // 튜토리얼 진행중 이라면
+            succeeded = isHunted = true;
         var pos = animal.transform.position;
         var rndAngle = Random.Range(0, 181);
         var rndAnimalRange = Random.Range(3.6f, 4.6f);
@@ -162,6 +202,12 @@ public class HuntingManager : MonoBehaviour
             getItemImage.gameObject.SetActive(true);
             textTMP.text = "Hunting Success";
             GetItem();
+
+            if (huntTutorial != null) // 튜토리얼 진행중 이라면
+            {
+                huntTutorial.TutorialStep++;
+                Debug.Log(huntTutorial.TutorialStep);
+            }
         }
         else
         {
@@ -174,4 +220,11 @@ public class HuntingManager : MonoBehaviour
     }
 
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
+
+    public void NextTutorialStep()
+    {
+        huntTutorial.TutorialStep++;
+        Debug.Log(huntTutorial.TutorialStep);
+    }
+    public void TutorialSetActiveFalse() => huntTutorial.SetActive(false);
 }

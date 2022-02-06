@@ -12,7 +12,7 @@ public class ContentsTutorialProceed
 
 public class ContentsTutorial
 {
-    public ContentsTutorialProceed contentsTutorialProceed;
+    public ContentsTutorialProceed contentsTutorialProceed = new ContentsTutorialProceed();
     public void Init()
     {
         // 저장된 데이터 가져오기
