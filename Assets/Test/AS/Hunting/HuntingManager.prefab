@@ -1355,50 +1355,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &6035672266532246949
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6035672266532246948}
-  - component: {fileID: 6035672266532246951}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6035672266532246948
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6035672266532246949}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6035672267036798875}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6035672266532246951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6035672266532246949}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50b612c66a2d5b34f8ac665fa81650c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6035672266597917601
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,11 +2047,11 @@ MonoBehaviour:
   tileMaker: {fileID: 6035672267579806451}
   animal: {fileID: 6035672267036798874}
   result: {fileID: 6035672265915130612}
-  worldMap: {fileID: 0}
   getItemImage: {fileID: 6035672267098051177}
   huntButtonText: {fileID: 6035672265775223743}
   popupText: {fileID: 6035672266820778934}
   target: {fileID: 6035672267244020863}
+  disableUI: {fileID: 0}
 --- !u!1 &6035672267036798855
 GameObject:
   m_ObjectHideFlags: 0
@@ -2127,7 +2083,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3591854868554076043}
-  - {fileID: 6035672266532246948}
   m_Father: {fileID: 6035672267034211417}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

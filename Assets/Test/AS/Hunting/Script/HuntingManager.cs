@@ -19,7 +19,6 @@ public class HuntingManager : MonoBehaviour
     public HuntTilesMaker tileMaker;
     public Animal animal;
     public GameObject result;
-    public WorldMapMaker worldMap;
 
     // UI
     public Image getItemImage;
@@ -36,8 +35,8 @@ public class HuntingManager : MonoBehaviour
 
     private bool isHunted = false;
     
-    [Header("Æ©Åä¸®¾ó")]
     private HuntTutorial huntTutorial;
+    [Header("Æ©Åä¸®¾ó")]
     public RectTransform target;
     public Button disableUI;
 
@@ -54,11 +53,6 @@ public class HuntingManager : MonoBehaviour
         {
             tileMaker.InitMakeTiles();
             Init();
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "Æ©Åä¸®¾ó"))
-        {
-            tileMaker.InitMakeTiles();
-            Init();
 
             var isTutorialProceed = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
             if (!isTutorialProceed)
@@ -66,10 +60,6 @@ public class HuntingManager : MonoBehaviour
                 TutorialInit();
                 StartCoroutine(huntTutorial.CoHuntTutorial());
             }
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "´ÙÀ½"))
-        {
-            huntTutorial.TutorialStep++;
         }
     }
 
@@ -101,6 +91,7 @@ public class HuntingManager : MonoBehaviour
 
     private void TutorialInit()
     {
+        BottomUIManager.Instance.ButtonInteractive(false);
         huntTutorial = gameObject.AddComponent<HuntTutorial>();
         huntTutorial.huntPlayers = huntPlayers;
         huntTutorial.tile = tiles.Where(x => x.bush != null && (int)x.index.y == 1).Select(x => x).FirstOrDefault();

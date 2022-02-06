@@ -18,7 +18,10 @@ public class HuntTutorial : MonoBehaviour
     private RectTransform handIcon;
     private RectTransform dialogBox;
     private TMP_Text dialogText;
-    private Image blackout;
+    private RectTransform blackout;
+
+    private Sprite rect;
+    private Sprite circle;
 
     private DialogBoxObject dialogBoxObj;
 
@@ -36,9 +39,13 @@ public class HuntTutorial : MonoBehaviour
 
     private void Awake()
     {
-        dialogBox = GameManager.Manager.tm.dialogBox;
-        handIcon = GameManager.Manager.tm.handIcon;
-        blackout = GameManager.Manager.tm.blackout;
+        var tm = GameManager.Manager.tm;
+        dialogBox = tm.dialogBox;
+        handIcon = tm.handIcon;
+        blackout = tm.blackout;
+        rect = tm.rect;
+        circle = tm.circle;
+
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
@@ -121,6 +128,9 @@ public class HuntTutorial : MonoBehaviour
         SetActive(true, true, true);
         var sizeX = tile.GetComponent<MeshRenderer>().bounds.size.x;
 
+        blackout.GetComponent<Image>().sprite = circle;
+        blackout.sizeDelta = new Vector2(120f, 120f);
+
         dialogBoxObj.up.SetActive(false);
         dialogBoxObj.left.SetActive(true);
 
@@ -133,9 +143,13 @@ public class HuntTutorial : MonoBehaviour
         scrPos.y *= canvasRt.height;
 
         boxPos.x *= canvasRt.width;
-        boxPos.x += arrowSize + boxWidth * 0.6f;
+        var tileOffset = (int)tile.index.x > 0 ? (int)tile.index.x > 1 ? 0.6f : 0.7f : 0.8f;
+        boxPos.x += arrowSize + boxWidth * tileOffset;
         boxPos.y *= canvasRt.height;
 
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
 
@@ -144,6 +158,7 @@ public class HuntTutorial : MonoBehaviour
     public void BushExplain()
     {
         SetActive(true, true);
+        blackout.sizeDelta = Vector2.zero;
         dialogText.text = "부쉬 설명";
     }
     public void HuntingExplain()
@@ -157,10 +172,18 @@ public class HuntTutorial : MonoBehaviour
         var target = GetComponentInChildren<RepositionUI>().GetComponent<RectTransform>();
         var viewPos = uiCamera.WorldToViewportPoint(target.position);
 
+        blackout.GetComponent<Image>().sprite = rect;
+        var offset = new Vector2(5f, 5f);
+        blackout.sizeDelta = target.sizeDelta + offset;
+
         viewPos.x *= canvasRt.width;
         viewPos.y *= canvasRt.height;
         viewPos.y += target.rect.height / 2;
         handIcon.anchoredPosition = viewPos;
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(viewPos.x, viewPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = viewPos;
 
         viewPos.x -= boxWidth / 2;
         viewPos.y += arrowSize + boxHeight - target.rect.height / 2;
@@ -171,9 +194,9 @@ public class HuntTutorial : MonoBehaviour
     public void HuntSuccessExplain()
     {
         SetActive(true, false, true);
+        blackout.sizeDelta = Vector2.zero;
 
         var uiCamera = GameManager.Manager.cm.uiCamera;
-
         var viewPos = uiCamera.WorldToViewportPoint(target.position);
 
         viewPos.x *= canvasRt.width;

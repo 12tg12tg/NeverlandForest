@@ -14,8 +14,12 @@ public class TutorialManager : MonoBehaviour
     [Header("UI")]
     public RectTransform handIcon;
     public RectTransform dialogBox;
+    public RectTransform blackout;
     public TMP_Text dialogBoxText;
-    public Image blackout;
+
+    [Header("스프라이트")]
+    public Sprite rect;
+    public Sprite circle;
 
     public void Init()
     {
