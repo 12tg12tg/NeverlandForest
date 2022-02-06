@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 // 배틀 시스템에 필요한 정보를 넘겨주고, 배틀 시스템에서 캐릭터 유닛의 상태에 따라 턴 넘겨주고 등등
 // 배틀 시스템이 실시간으로 플레이어 캐릭터 상태를 체크하는게 아닌 캐릭터에서 자신의 상태변화를 배틀에 알려주는방식
 
-public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDropHandler
+public class PlayerBattleController : MonoBehaviour, IDropHandler
 {
     /* 캐릭터 보유 스킬, 능력치(스텟, 버프디버프 여부 등), 착용 장비 등에 대한 정보 및 값 수정
     캐릭터 전투상태 정보 ( 공격전 준비, 공격후 대기, 죽음 ) */
@@ -79,7 +79,8 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
         playerActionState.isAttackMotionEnd = false;
 
         // 모든타겟 OnAttacked 실행 -> 이때, OnAttacked에 시간이 걸리는 동작이 필요할경우 기다렸다 다음 진행하는 방식 고려
-        if (command.skill.SkillTableElem.name != "집중공격")
+        if (command.skill.SkillTableElem.name != "집중공격"
+            /*&& command.skill.SkillTableElem.name != "위협 발산"*/)
         {
             foreach (var target in neverChangeMonsterList)
             {
@@ -96,16 +97,6 @@ public class PlayerBattleController : MonoBehaviour, IPointerClickHandler, IDrop
 
         FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행
         manager.EndOfPlayerAction();
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (manager.FSM.curState != BattleState.Player)
-            return;
-
-        if (command.IsUpdated || manager.IsDuringPlayerAction)
-            return;
-
     }
 
     public void OnDrop(PointerEventData eventData)

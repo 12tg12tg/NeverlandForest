@@ -40,6 +40,11 @@ public class PlayerSkillTableElem : DataTableElemBase
                 damage += (int)Vars.UserData.uData.lanternState;
             }
 
+            if (player == PlayerType.Boy && name != "±Ù°Å¸®" && Vars.UserData.arrowType == ArrowType.Iron)
+            {
+                damage += BattleManager.Instance.costLink.ironArrowElem.damage;
+            }
+
             return damage;
         }
     }

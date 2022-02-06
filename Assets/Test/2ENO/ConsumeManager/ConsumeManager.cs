@@ -44,6 +44,8 @@ public static class ConsumeManager
     {
         TimeStateChange();
         LanternStateChange();
+        Debug.Log($"{Vars.UserData.uData.LanternCount}");
+        Debug.Log($"{Vars.UserData.uData.lanternState}");
     }
     public static void SaveConsumableData()
     {
@@ -135,15 +137,7 @@ public static class ConsumeManager
     {
         Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
     }
-    public static void FullingLantern(int oil)
-    {
-        if (Vars.UserData.uData.LanternCount < 18)
-        {
-            Vars.UserData.uData.LanternCount += oil;
-            LanternStateChange();
-        }
-        SaveConsumableData();
-    }
+   
     public static void RecoverHp(float recoveryAmount)
     {
         Vars.UserData.uData.HunterHp += recoveryAmount;
@@ -167,13 +161,23 @@ public static class ConsumeManager
 
     public static void ConsumeLantern(int oil)
     {
-        if (Vars.UserData.uData.LanternCount > 0)
+        Vars.UserData.uData.LanternCount -= oil;
+        if (Vars.UserData.uData.LanternCount <0)
         {
-            Vars.UserData.uData.LanternCount -= oil;
+            Vars.UserData.uData.LanternCount = 0;
             LanternStateChange();
         }
         SaveConsumableData();
-
+    }
+    public static void FullingLantern(int oil)
+    {
+        Vars.UserData.uData.LanternCount += oil;
+        if (Vars.UserData.uData.LanternCount > 17)
+        {
+            Vars.UserData.uData.LanternCount = 17;
+            LanternStateChange();
+        }
+        SaveConsumableData();
     }
     private static void LanternStateChange()
     {

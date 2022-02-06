@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NewRoomInstance : MonoBehaviour
 {
-    public int prefabId;
-    public bool isActive;
+    [HideInInspector] public int prefabId;
+    [HideInInspector] public bool isMain;
+    [HideInInspector] public bool isActive;
 }

@@ -56,7 +56,7 @@ public class MonsterTableElem : DataTableElemBase
         minSpeed = int.Parse(data["SPEED_MIN"]);
         maxSpeed = int.Parse(data["SPEED_MAX"]);
         dodge = int.Parse(data["DODGE"]);
-        iconSprite = Resources.Load<Sprite>($"icons/{iconID}");
+        iconSprite = Resources.Load<Sprite>($"Monsters/{iconID}");
     }
 }
 

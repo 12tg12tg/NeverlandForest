@@ -226,5 +226,12 @@ public class Utility
         action?.Invoke();
     }
 
-
+    public static void ChangeLayerIncludeChildren(Transform transform, int layer)
+    {
+        transform.gameObject.layer = layer;
+        foreach (Transform child in transform)
+        {
+            ChangeLayerIncludeChildren(child, layer);
+        }
+    }
 }

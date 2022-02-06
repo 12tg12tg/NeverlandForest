@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum Localization { Korean, English }
 
-
 public static class Vars
 {
     // Skill Info
@@ -66,15 +65,16 @@ public static class Vars
                 userData = new UserData();
 
                 //인벤토리에서 테스트로 사용할 아이템 리스트
-                int tempItemNum = 1;
-                for (int i = 0; i < 6; i++)
+                int tempItemNum = 19;
+                for (int i = 0; i < 4; i++)
                 {
                     var stringId = $"ITEM_{tempItemNum}";
                     var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = Random.Range(1, 5);
+                    newItem.OwnCount = 3;//newItem.ItemTableElem.limitCount;
                     tempItemNum += 1;
                     userData.AddItemData(newItem);
                 }
+                // 올가미류
                 tempItemNum = 14;
                 for (int i = 0; i < 5; i++)
                 {

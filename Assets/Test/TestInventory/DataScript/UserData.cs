@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
 
+public enum ArrowType { None, Normal, Iron }
+
 public class UserData
 {
     /*
@@ -10,6 +12,7 @@ public class UserData
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     */
     //Item Info
+    public ArrowType arrowType;
 
     //World Info
     public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();

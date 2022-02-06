@@ -23,7 +23,7 @@ public class DungeonSystem : MonoBehaviour
     public PlayerDungeonUnit dungeonPlayerGirl;
     public PlayerDungeonUnit dungeonPlayerBoy;
     public GatheringSystem gatheringSystem;
-    public NewRoomControl roomGenerate;
+    public NewRoomGenerate roomGenerate;
     public MinimapGenerate minimapGenerate;
     public EventObjectGenerate eventObjectGenerate;
 

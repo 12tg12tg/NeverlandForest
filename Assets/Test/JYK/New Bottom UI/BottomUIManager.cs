@@ -18,6 +18,8 @@ public class BottomUIManager : MonoBehaviour
     [Header("우측 12개 아이콘 연결")]
     public List<BottomSkillButtonUI> skillButtons;
     public List<BottomItemButtonUI> itemButtons;
+    public BottomSkillButtonUI arrowInfo;
+    public BottomSkillButtonUI oilInfo;
 
     [Header("우측 두 개 분류 태그 연결")]
     public List<Button> tags;
@@ -29,6 +31,8 @@ public class BottomUIManager : MonoBehaviour
     //Vars
     [HideInInspector] public ButtonState buttonState;
     [HideInInspector] public BottomSkillButtonUI curSkillButton;
+
+    public bool IsSkillLock { get; set; } = true;
 
     private bool isBoySkillDone;
     private bool isGirlSkillDone;
@@ -42,18 +46,22 @@ public class BottomUIManager : MonoBehaviour
     public GameObject burnButton;
 
     [Header("배틀을 위한 UI Linker")]
-    public TrapSelecter battleLinker;
+    public TrapSelecter trapSelector;
+
+    [Header("아이템 선택 슬롯")]
+    public int selectItemSlotNum;
 
     private void Awake()
     {
         instance = this;
         popUpWindow.gameObject.SetActive(false);
         burnButton.SetActive(false);
-        SkillButtonInit();
     }
 
     private void Start()
     {
+        SkillButtonInit();
+
         bm = BattleManager.Instance;
         switch (GameManager.Manager.State)
         {
@@ -76,6 +84,24 @@ public class BottomUIManager : MonoBehaviour
                 break;
         }
     }
+
+    // 스킬소모아이콘 업데이트
+    public void UpdateCostInfo()
+    {
+        arrowInfo.UpdateCostInfo();
+        oilInfo.UpdateCostInfo();
+    }
+
+    // 버튼 활성화 / 비활성화
+    public void ButtonInteractive(bool interactive)
+    {
+        var list = GetComponentsInChildren<Button>();
+        foreach (var button in list)
+        {
+            button.interactable = interactive;
+        }
+    }
+
 
     // 프로그래스
     public void UpdateProgress()
@@ -116,7 +142,7 @@ public class BottomUIManager : MonoBehaviour
     {
         skillButtons.ForEach(n =>
         {
-            if (n.skill?.SkillTableElem.player == PlayerType.Boy)
+            if (n.skill?.SkillTableElem.player == PlayerType.Boy || n.buttonType == SkillButtonType.Swap)
             {
                 if (isBoySkillDone)
                     n.MakeUnclickable();
@@ -135,18 +161,21 @@ public class BottomUIManager : MonoBehaviour
 
     public void IntoSkillState(BottomSkillButtonUI skillButton)
     {
-        //Time.timeScale = 0.2f;
         curSkillButton = skillButton;
+        IsSkillLock = true;
+        bm.directLink.SetTimescaleAndShader(curSkillButton.skill.SkillTableElem);
         bm.tileLink.ReadyTileClick();
         bm.tileLink.DisplayMonsterTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
     }
 
-    public void ExitSkillState()
+    public void ExitSkillState(bool isButton)
     {
-        //Time.timeScale = 1f;
+        IsSkillLock = !isButton;
+
         curSkillButton = null;
+        bm.directLink.ResetTimescaleAndShader();
         bm.tileLink.EndTileClick();
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();
@@ -197,6 +226,9 @@ public class BottomUIManager : MonoBehaviour
         var list = Vars.BoySkillList;
         int count = list.Count;
 
+        skillButtons[0].Init();
+        skillButtons[6].Init();
+
         int buttonIndex = 1;
         for (int i = 0; i < count; i++)
         {
@@ -209,6 +241,8 @@ public class BottomUIManager : MonoBehaviour
         {
             skillButtons[buttonIndex++].Init(list[i]);
         }
+
+        UpdateSkillInteractive();
     }
 
     // 아이템 버튼
@@ -258,7 +292,7 @@ public class BottomUIManager : MonoBehaviour
             if (selectItem.ItemTableElem.type == "INSTALLATION")
             {
                 // 설치류 아이템일경우 동작
-                battleLinker.WaitUntilTrapTileSelect(selectItem);
+                trapSelector.WaitUntilTrapTileSelect(selectItem);
             }
             else if (selectItem.ItemTableElem.stat_Hp > 0)
             {

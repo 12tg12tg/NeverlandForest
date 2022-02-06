@@ -17,6 +17,7 @@ public class ObstacleDebuff
     public int duration;
 
     // 올가미 관련
+    public Obstacle oppositeSnare;
     public ObstacleDebuff another;
 
     public MonsterUnit anotherUnit { get => another?.owner; }
@@ -25,18 +26,19 @@ public class ObstacleDebuff
     {
         this.owner = owner;
         elem = obs.elem;
-        trapDamage = obs.elem.trapDamage;
+        trapDamage = obs.elem.damage;
         duration = obs.elem.duration;
         if(obs.another != null)
         {
-            var otherSide = obs.another;
-            otherSide.anotherDebuff = this;
-            otherSide.another = null;
+            oppositeSnare = obs.another;
+            oppositeSnare.anotherDebuff = this;
+            oppositeSnare.another = null;
         }
         else if(obs.anotherDebuff != null)
         {
             another = obs.anotherDebuff;
             another.another = this;
+            oppositeSnare = null;
         }
         obs.Release();
     }
