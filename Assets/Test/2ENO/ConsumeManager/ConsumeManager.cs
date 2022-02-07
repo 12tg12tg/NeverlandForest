@@ -147,16 +147,18 @@ public static class ConsumeManager
         }
         SaveConsumableData();
     }
-    public static void GetDamage(float damage)
+    public static bool GetDamage(float damage)
     {
         Vars.UserData.uData.HunterHp -= damage;
         if (Vars.UserData.uData.HunterHp < 0)
         {
             Vars.UserData.uData.HunterHp = 0;
-            EventBus<LivingState>.Publish(LivingState.GameOver);
             CostDataReset();
+            SaveConsumableData();
+            return true;
         }
         SaveConsumableData();
+        return false;
     }
 
     public static void ConsumeLantern(int oil)
