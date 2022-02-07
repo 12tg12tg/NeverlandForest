@@ -394,8 +394,8 @@ public class WorldMapMaker : MonoBehaviour
             fog.layer = LayerMask.NameToLayer("WorldMap");
             var posX = (fog.transform.localScale.x * 10f) - (this.posX / 2);
 
-            var addPos = isMiniMap? 
-                new Vector3(offset, 0f, offset) : 
+            var addPos = isMiniMap ?
+                new Vector3(offset - this.posX * 2.2f, 0f, offset - posZ * 2) :
                 Vector3.zero;
 
             var endPos = Vector3.zero - new Vector3(posX, 0f, 0f) - addPos;

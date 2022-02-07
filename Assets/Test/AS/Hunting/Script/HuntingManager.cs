@@ -18,10 +18,10 @@ public class HuntingManager : MonoBehaviour
     public HuntPlayer huntPlayers;
     public HuntTilesMaker tileMaker;
     public Animal animal;
-    public GameObject result;
 
     // UI
-    public Image getItemImage;
+    public GameObject failPopUp;
+    public GameObject successPopUp;
     public TMP_Text huntButtonText;
     public TMP_Text popupText;
 
@@ -54,12 +54,18 @@ public class HuntingManager : MonoBehaviour
             tileMaker.InitMakeTiles();
             Init();
 
-            var isTutorialProceed = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
-            if (!isTutorialProceed)
+            huntPlayers.IsTutorialClear = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
+            if (!huntPlayers.IsTutorialClear)
             {
                 TutorialInit();
                 StartCoroutine(huntTutorial.CoHuntTutorial());
             }
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "사냥시작"))
+        {
+            tileMaker.InitMakeTiles();
+            Init();
+            huntPlayers.IsTutorialClear = true;
         }
     }
 
@@ -148,7 +154,7 @@ public class HuntingManager : MonoBehaviour
     }
     private void HuntPercentagePrint(int perccent)
     {
-        huntButtonText.text = "사냥" + "\n" + $"성공 {perccent}%";
+        huntButtonText.text = $"성공 {perccent}%" + "\n" + "사냥하기";
         popupText.text = $"현재 확률 : {perccent}%" + "\n" + "사냥하시겠습니까";
     }
 
@@ -160,7 +166,7 @@ public class HuntingManager : MonoBehaviour
         var item = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(stringId);
         var newItem = new DataAllItem(item);
         newItem.OwnCount = Random.Range(1, 5);
-        getItemImage.sprite = item.IconSprite;
+        //getItemImage.sprite = item.IconSprite;
         Vars.UserData.AddItemData(newItem);
         Vars.UserData.ExperienceListAdd(newItem.itemId);
     }
@@ -186,13 +192,10 @@ public class HuntingManager : MonoBehaviour
     public void LookOnTarget() => huntPlayers.ShootAnimation(animal.transform.position);
     private void Hunting(object[] vals)
     {
-        var textTMP = result.GetComponentInChildren<TMP_Text>();
         if (isHunted)
         {
             huntPlayers.HuntSuccessAnimation();
             animal.AnimalDead();
-            getItemImage.gameObject.SetActive(true);
-            textTMP.text = "Hunting Success";
             GetItem();
 
             if (huntTutorial != null) // 튜토리얼 진행중 이라면
@@ -205,10 +208,10 @@ public class HuntingManager : MonoBehaviour
         {
             huntPlayers.HuntFailAnimation();
             animal.AnimalRunAway();
-            textTMP.text = "Hunting Fail";
         }
+        var resultPopUp = isHunted ? successPopUp : failPopUp;
+        animal.AnimalMove(isHunted, () => resultPopUp.SetActive(true));
         huntPlayers.ReturnBow();
-        animal.AnimalMove(isHunted, () => result.SetActive(true));
     }
 
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");

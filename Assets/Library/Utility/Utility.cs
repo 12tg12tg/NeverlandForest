@@ -235,7 +235,7 @@ public class Utility
         }
     }
 
-    public static IEnumerator FadeIn(RectTransform img, RectTransform bg, Canvas screen)
+    public static IEnumerator FadeIn(RectTransform img, RectTransform bg, Canvas screen, UnityAction action = null)
     {
         bg.gameObject.SetActive(true);
 
@@ -257,9 +257,11 @@ public class Utility
             timer += Time.deltaTime;
             yield return null;
         }
+
+        action?.Invoke();
     }
 
-    public static IEnumerator FadeOut(RectTransform img, RectTransform bg, Canvas screen)
+    public static IEnumerator FadeOut(RectTransform img, RectTransform bg, Canvas screen, UnityAction action = null)
     {
         // 화면 가로 사이즈 가져오기
         var width = screen.GetComponent<RectTransform>().sizeDelta.x;
@@ -281,5 +283,7 @@ public class Utility
         }
 
         bg.gameObject.SetActive(false);
+
+        action?.Invoke();
     }
 }

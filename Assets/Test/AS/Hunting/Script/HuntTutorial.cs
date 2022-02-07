@@ -198,9 +198,10 @@ public class HuntTutorial : MonoBehaviour
 
         var uiCamera = GameManager.Manager.cm.uiCamera;
         var viewPos = uiCamera.WorldToViewportPoint(target.position);
-
+        Debug.Log(viewPos);
         viewPos.x *= canvasRt.width;
         viewPos.y *= canvasRt.height;
+        Debug.Log(viewPos);
 
         handIcon.anchoredPosition = viewPos;
 
