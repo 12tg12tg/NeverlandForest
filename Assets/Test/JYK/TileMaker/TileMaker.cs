@@ -396,9 +396,10 @@ public class TileMaker : MonoBehaviour
         return GetTile(pos).Units;
     }
 
-    public IEnumerable<MonsterUnit> GetTargetList(Vector2 targetPos, SkillRangeType rangeType)
+    public IEnumerable<MonsterUnit> GetTargetList(Vector2 targetPos, SkillRangeType rangeType, bool isDrag)
     {
         var tiles = GetSkillRangedTiles(targetPos, rangeType);
+        var inputPos = (isDrag) ? manager.dragLink.lastDragWorldPos : LastClickPos;
         IEnumerable<MonsterUnit> list = null;
         switch (rangeType)
         {
@@ -406,7 +407,7 @@ public class TileMaker : MonoBehaviour
                 list = from tile in tiles
                        from n in tile.Units
                        where (tile.Units_UnitCount() == 1)? true : 
-                                (tile.WhichPartOfTile(LastClickPos) == HalfTile.Front ? n == tile.FrontMonster : n == tile.BehindMonster)
+                                (tile.WhichPartOfTile(inputPos) == HalfTile.Front ? n == tile.FrontMonster : n == tile.BehindMonster)
                        select n as MonsterUnit;
                 break;
             case SkillRangeType.Tile:

@@ -359,7 +359,7 @@ public class BattleManager : MonoBehaviour
         girlInput.Clear();
     }
 
-    public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill)
+    public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill, bool isDrag)
     {
         PlayerCommand command;
         PlayerBattleController attacker;
@@ -375,7 +375,7 @@ public class BattleManager : MonoBehaviour
         }
 
         command.Create(target, skill);
-        attacker.TurnInit(ActionType.Skill);
+        attacker.TurnInit(ActionType.Skill, isDrag);
     }
 
     public void EndOfPlayerAction()
@@ -386,7 +386,7 @@ public class BattleManager : MonoBehaviour
         {
             if (waveLink.IsAllWaveClear())
             {
-                uiLink.turnSkipButton.SetActive(false);
+                uiLink.turnSkipTrans.SetActive(false);
                 uiLink.progressTrans.SetActive(false);
                 uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
                     {
@@ -405,12 +405,12 @@ public class BattleManager : MonoBehaviour
                 if (isPlayerFirst)
                 {
                     FSM.ChangeState(BattleState.Monster);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
                 else
                 {
                     FSM.ChangeState(BattleState.Settlement);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
             }
         }
@@ -425,12 +425,12 @@ public class BattleManager : MonoBehaviour
                 if (isPlayerFirst)
                 {
                     FSM.ChangeState(BattleState.Monster);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
                 else
                 {
                     FSM.ChangeState(BattleState.Settlement);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
             }
             else

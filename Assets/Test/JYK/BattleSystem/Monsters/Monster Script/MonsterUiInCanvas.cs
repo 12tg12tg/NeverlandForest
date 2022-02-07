@@ -10,12 +10,16 @@ public class MonsterUiInCanvas : MonoBehaviour
     private Camera uiCamera;
     private Canvas canvas;
     private RectTransform rectParent;
-    [SerializeField] private RectTransform ui;
+    public RectTransform rt;
 
-    [HideInInspector] public Vector3 offset = Vector3.zero;
+    [HideInInspector] public Vector2 offset2D = new Vector2(0f, 21f);
     [HideInInspector] public Transform targetTr;
 
     [Header("변경할 이미지, 색, 텍스트")]
+    public Sprite range_Near;
+    public Sprite range_Far;
+    public Sprite token_Sheild;
+    public Sprite token_Hp;
     public Image rangeColor;
     public TextMeshProUGUI nextMoveDistance;
     public Image iconImage;
@@ -63,7 +67,7 @@ public class MonsterUiInCanvas : MonoBehaviour
     }
 
 
-    public void Init(Transform target, int maxSheildGaugage, int maxHpGaugage)
+    public void Init(Transform target, MonsterTableElem monsterElem)
     {
         canvas ??= GetComponentInParent<Canvas>();
         uiCamera ??= canvas.worldCamera;
@@ -72,8 +76,9 @@ public class MonsterUiInCanvas : MonoBehaviour
         targetTr = target;
         isInit = true;
         SetOriginalDisplay();
-        SetProgress(maxSheildGaugage, maxHpGaugage);
+        SetProgress(monsterElem.sheild, monsterElem.hp);
         debuffUIs.ForEach(n => n.enabled = false);
+        rangeColor.sprite = (monsterElem.type == MonsterType.Near) ? range_Near : range_Far;
     }
 
     public void SetOriginalDisplay()
@@ -94,7 +99,7 @@ public class MonsterUiInCanvas : MonoBehaviour
             var sheildToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
             var tokenScript = sheildToken.GetComponent<MonsterProgressToken>();
             sheildToken.transform.SetParent(shieldLayoutGroup.transform);
-            tokenScript.image.color = Color.yellow;
+            tokenScript.image.sprite = token_Sheild;
             tokenScript.transform.localScale.Set(1f, 1f, 1f);
             shields.Add(tokenScript);
         }
@@ -105,7 +110,7 @@ public class MonsterUiInCanvas : MonoBehaviour
             var hpToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
             var tokenScript = hpToken.GetComponent<MonsterProgressToken>();
             hpToken.transform.SetParent(hpLayoutGroup.transform);
-            tokenScript.image.color = Color.red;
+            tokenScript.image.sprite = token_Hp;
             tokenScript.transform.localScale.Set(1f, 1f, 1f);
             hps.Add(tokenScript);
         }
@@ -131,7 +136,7 @@ public class MonsterUiInCanvas : MonoBehaviour
 
     public void RepositionUi()
     {
-        var screenPos = Camera.main.WorldToScreenPoint(targetTr.position + offset);
+        var screenPos = Camera.main.WorldToScreenPoint(targetTr.position);
 
         if (screenPos.z < 0.0f)
         {
@@ -140,7 +145,7 @@ public class MonsterUiInCanvas : MonoBehaviour
 
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out Vector2 localPos);
 
-        ui.localPosition = localPos;
+        rt.localPosition = localPos;
     }
 
     public void MoveUi()
@@ -161,14 +166,14 @@ public class MonsterUiInCanvas : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (isInit)
         {
-            if (moveUi)
-            {
-                MoveUi();
-            }
+            //if (moveUi)
+            //{
+                RepositionUi();
+            //}
         }
     }
 }

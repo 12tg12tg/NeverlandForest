@@ -9,23 +9,22 @@ public class MonsterUILinker : MonoBehaviour
 {
     // Instance
     [HideInInspector] public MonsterUiInCanvas linkedUi;
-    private Image rangeImg;
     private Image iconImg;
     private TextMeshProUGUI nextMoveDistance;
+    [HideInInspector] public MonsterUnit monsterUnit;
+    [SerializeField] private Transform hpBarPos;
 
     // Vars
-    public Vector3 hpBarOffset = new Vector3(0f, 2.2f, 0f);
-    public Color longRange;
-    public Color shortRange;
     public Sprite attackIcon;
     public Sprite cantMoveIcon;
     public Sprite snareIcon;
     public Sprite bleed1Icon;
     public Sprite bleed2Icon;
 
-    public void Init(MonsterTableElem elem)
+    public void Init(MonsterUnit unit)
     {
-        SetUI(elem);
+        monsterUnit = unit;
+        SetUI(unit.BaseElem);
     }
 
     public void SetUI(MonsterTableElem elem)
@@ -33,16 +32,9 @@ public class MonsterUILinker : MonoBehaviour
         var monsterUI = UIPool.Instance.GetObject(UIPoolTag.MonsterUI);
         linkedUi = monsterUI.GetComponent<MonsterUiInCanvas>();
 
-        rangeImg = linkedUi.rangeColor;
         nextMoveDistance = linkedUi.nextMoveDistance;
         iconImg = linkedUi.iconImage;
-        linkedUi.Init(transform, elem.sheild, elem.hp);
-
-        hpBarOffset.y = GetComponentInChildren<SkinnedMeshRenderer>().bounds.size.y;
-
-        linkedUi.offset = hpBarOffset;
-
-        SetRangeColor(elem.type);
+        linkedUi.Init(hpBarPos, elem);
     }
     
     public void Release()
@@ -157,20 +149,6 @@ public class MonsterUILinker : MonoBehaviour
             }
             ));
     }
-
-    public void SetRangeColor(MonsterType type)
-    {
-        switch (type)
-        {
-            case MonsterType.Near:
-                rangeImg.color = shortRange;
-                break;
-            case MonsterType.Far:
-                rangeImg.color = longRange;
-                break;
-        }
-    }
-
 
     // UI 기능 함수 (코루틴)
     private readonly Vector3 startScale = new Vector3(0.2f, 0.2f, 0.2f);

@@ -53,7 +53,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
     }
 
     // 자신의 스킬 사용
-    public void TurnInit(ActionType action)
+    public void TurnInit(ActionType action, bool isDrag)
     {
         FSM.ChangeState(CharacterBattleState.Action); // Action Init에서 공격 애니메이션 재생 시작
         manager.IsDuringPlayerAction = true;
@@ -61,7 +61,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         if (action == ActionType.Skill)
         {
             //스킬사용
-            StartCoroutine(CoActionCommand());
+            StartCoroutine(CoActionCommand(isDrag));
         }
         else
         {
@@ -69,17 +69,22 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         }
     }
 
-    private IEnumerator CoActionCommand()
+    private IEnumerator CoActionCommand(bool isDrag)
     {
+        // 입력 방식 갱신
+        manager.inputLink.isLastInputDrag = isDrag;
+
         // 스킵버튼 잠시 비활성화
-        var skipButton = manager.uiLink.turnSkipButton.GetComponent<Button>();
-        skipButton.interactable = false;
+        manager.uiLink.turnSkipButton.interactable = false;
 
         //스킬 범위 바닥 타일 표시
         var tiles = tileMaker.GetSkillRangedTiles(command.target, command.skill.SkillTableElem.range);
         foreach (var tile in tiles)
         {
-            tile.ConfirmAsTarget(command.type, tileMaker.LastClickPos, command.skill.SkillTableElem.range);
+            if(isDrag)
+                tile.ConfirmAsTarget(command.type, manager.dragLink.lastDragWorldPos, command.skill.SkillTableElem.range);
+            else
+                tile.ConfirmAsTarget(command.type, tileMaker.LastClickPos, command.skill.SkillTableElem.range);
         }
         tileMaker.SetAllTileSoftClear();
 
@@ -95,7 +100,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         else
         {
             //몬스터 맞을 준비. 콜라이더 켜기
-            var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+            var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range, isDrag);
             var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
             foreach (var target in neverChangeMonsterList)
             {
@@ -136,7 +141,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
             tile.CancleConfirmTarget(playerType);
 
         FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행
-        skipButton.interactable = true;
+        manager.uiLink.turnSkipButton.interactable = true;
         manager.EndOfPlayerAction();
     }
 

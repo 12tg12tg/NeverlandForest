@@ -80,8 +80,7 @@ public class BattleAnimationFunc : MonoBehaviour
         // Å¸ÀÏ·Î½ò²¨³Ä(ºóÅ¸ÀÏ¿¡µµ È­»ìÀÌ³¯¶ó°¨)
         // ¼¼¹æ ½ò²¨³Ä
         // ¸ó½ºÅÍ ¿¡°Ô ½ò²¨³Ä
-        var list = TileMaker.Instance.GetSkillRangedTiles(controller.command.target, controller.command.skill.SkillTableElem.range);
-        var monsterList = TileMaker.Instance.GetTargetList(controller.command.target, controller.command.skill.SkillTableElem.range);
+        var monsterList = TileMaker.Instance.GetTargetList(controller.command.target, controller.command.skill.SkillTableElem.range, false);
         foreach (var monster in monsterList)
         {
             var renderer = monster.GetComponentInChildren<SkinnedMeshRenderer>();
@@ -121,7 +120,8 @@ public class BattleAnimationFunc : MonoBehaviour
     {
         StartCoroutine(CoLightDown());
         var command = controller.command;
-        var list = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range);
+        var isDrag = BattleManager.Instance.inputLink.isLastInputDrag;
+        var list = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range, isDrag);
         foreach (var monster in list)
         {
             var go = ProjectilePool.Instance.GetObject(ProjectileTag.LightExplosion);

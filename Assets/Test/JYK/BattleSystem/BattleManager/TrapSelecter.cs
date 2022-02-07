@@ -35,6 +35,7 @@ public class TrapSelecter : MonoBehaviour
     public IEnumerator CoWaitUntilSelectTrapTile()
     {
         bm.inputLink.DisableStartButton();
+        bottomUI.tags.ForEach(n => n.interactable = false);
 
         // 인벤토리에서 설치물 아이템 클릭시 시작되는 코루틴.
         int count = curObstacleType == TrapTag.Snare ? 2 : 1;
@@ -72,10 +73,12 @@ public class TrapSelecter : MonoBehaviour
                 }
                 bottomUI.ItemListInit();
             }
+
             yield return null;
         }
         bm.uiLink.ShowArrow(true);
         bm.inputLink.EnableStartButton();
+        bottomUI.tags.ForEach(n => n.interactable = true);
     }
 
 
