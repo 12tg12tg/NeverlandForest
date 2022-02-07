@@ -45,6 +45,9 @@ public class BottomUIManager : MonoBehaviour
     [Header("아이템 선택 슬롯")]
     public int selectItemSlotNum;
 
+    [Header("던전 다이어리 패널")]
+    public GameObject dungeonDiaryPanel;
+
     private void Awake()
     {
         instance = this;
@@ -393,4 +396,30 @@ public class BottomUIManager : MonoBehaviour
         }
         return 0;
     }
+
+    public void OpenDungeonDiaryButton()
+    {
+        switch (GameManager.Manager.State)
+        {
+            case GameState.None:
+                break;
+            case GameState.Battle:
+                break;
+            case GameState.Hunt:
+                break;
+            case GameState.Gathering:
+                break;
+            case GameState.Cook:
+                break;
+            case GameState.Camp:
+                break;
+            case GameState.Dungeon:
+                gameObject.SetActive(false);
+                dungeonDiaryPanel.SetActive(true);
+                break;
+            default:
+                break;
+        }
+    }
+
 }
