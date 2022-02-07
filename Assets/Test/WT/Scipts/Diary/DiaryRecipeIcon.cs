@@ -51,7 +51,7 @@ public class DiaryRecipeIcon : MonoBehaviour
 
         for (int i = 0; i < itemList.Count; i++)
         {
-            itemGoList[i].Init(table, itemList[i]);
+            //itemGoList[i].Init(table, itemList[i]);
             itemGoList[i].gameObject.SetActive(true);
         }
         if (itemList.Count > 0)

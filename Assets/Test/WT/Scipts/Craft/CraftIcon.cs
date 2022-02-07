@@ -10,8 +10,6 @@ public class CraftIcon : MonoBehaviour
     public enum CraftButtonType {Tool,Battle,Herb};
 
     [SerializeField] private List<CraftObj> itemGoList = new List<CraftObj>();
-    private int selectedSlot = -1;
-    private const int MaxitemCount = 20;
     private CraftDataTable table;
     private AllItemTableElem materialobj0;
     private AllItemTableElem materialobj1;
