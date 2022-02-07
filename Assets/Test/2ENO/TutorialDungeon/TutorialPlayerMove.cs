@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 
-public class MoveTest : MonoBehaviour
+public class TutorialPlayerMove : MonoBehaviour
 {
     private Animator playerAnimationBoy;
     private Animator playerAnimationGirl;
-    
+
     private MultiTouch multiTouch;
     private float speed = 10f;
 
@@ -31,6 +31,11 @@ public class MoveTest : MonoBehaviour
     private List<RigLayer> girlRiglayers;
 
     private Coroutine coHand;
+
+    private float tutorialTime;
+
+    private MoveTutorial moveTutorial;
+
     public void Init()
     {
         multiTouch = GameManager.Manager.MultiTouch;
@@ -53,22 +58,15 @@ public class MoveTest : MonoBehaviour
         boyRight.isRight = false;
     }
 
-    // 임시
-    //if (MultiTouch.Instance.IsTap)
-    //{
-    //    moveSpeed *= 5f;
-    //}
-    //else
-    //{
-    //    //boyRig.weight = Mathf.Lerp(0f, 1f, moveSpeed);
-    //    //girlRig.weight = boyRig.weight;
-    //    //boyRight.weightf = boyRig.weight;
-    //    moveSpeed *= 5f;
-    //}
 
     void Update()
     {
-        //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
+        moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
+        if (moveTutorial != null && moveTutorial.TutorialStep != 2)
+        {
+            RigOff();
+            return;
+        }
         if (multiTouch != null)
         {
             if (!isCoMove)
@@ -84,6 +82,24 @@ public class MoveTest : MonoBehaviour
                     var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
                     if (playerXPos + 0.05f < touchXPos)
                     {
+                        if (moveTutorial != null && moveTutorial.TutorialStep == 2 &&
+                            playerBoy.transform.position.x >= DungeonSystem.Instance.roomGenerate.roomList[0].endPosVector.x)
+                            return;
+
+                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
+                        {
+                            if (moveTutorial.CommandSucess == 0)
+                            {
+                                tutorialTime += Time.deltaTime;
+
+                                if (tutorialTime > 1.0f)
+                                {
+                                    moveTutorial.CommandSucess++;
+                                    tutorialTime = 0f;
+                                }
+                            }
+                        }
+
                         if (!isTurn)
                             RigOff();
                         isTurn = true;
@@ -97,6 +113,21 @@ public class MoveTest : MonoBehaviour
                     {
                         if (playerBoy.transform.position.x <= DungeonSystem.Instance.roomGenerate.spawnPos.x)
                             return;
+
+                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
+                        {
+                            if (moveTutorial.CommandSucess == 1)
+                            {
+                                tutorialTime += Time.deltaTime;
+
+                                if (tutorialTime > 1.0f)
+                                {
+                                    moveTutorial.CommandSucess++;
+                                    tutorialTime = 0f;
+                                    moveTutorial.TutorialStep++;
+                                }
+                            }
+                        }
 
                         if (isTurn)
                             RigOff();
@@ -201,10 +232,10 @@ public class MoveTest : MonoBehaviour
         RigOn();
         var timer = 0f;
         var handSpeed = 10f;
-        while(timer < 1.1f)
+        while (timer < 1.1f)
         {
             boyRig.weight = Mathf.Lerp(0f, 1f, timer);
-            if(girlRiglayers[0].active == true)
+            if (girlRiglayers[0].active == true)
                 girlRigs[0].weight = boyRig.weight;
             else
                 girlRigs[1].weight = boyRig.weight;
@@ -255,3 +286,16 @@ public class MoveTest : MonoBehaviour
         playerAnimationBoy.SetFloat("Speed", boySpeed);
     }
 }
+
+// 임시
+//if (MultiTouch.Instance.IsTap)
+//{
+//    moveSpeed *= 5f;
+//}
+//else
+//{
+//    //boyRig.weight = Mathf.Lerp(0f, 1f, moveSpeed);
+//    //girlRig.weight = boyRig.weight;
+//    //boyRight.weightf = boyRig.weight;
+//    moveSpeed *= 5f;
+//}
