@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour
     public CameraManager cm;
     [Header("튜토리얼")]
     public TutorialManager tm;
+    [Header("던전")]
+    public DungeonSystem ds;
+
     // Vars
     private GameState state;
     [Header("UI")]
@@ -73,7 +76,8 @@ public class GameManager : MonoBehaviour
         }
         if (wm != null)
             wm.Init();
-
+        //if (ds != null)
+        //    ds.Init();
         // 로드
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
 
