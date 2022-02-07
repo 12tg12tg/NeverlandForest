@@ -43,6 +43,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         CreateTutorialMapArray();
         Vars.UserData.tutorialDungeonData.dungeonRoomArray = tutorialRoomArray;
 
+        DungeonSystem.Instance.TutorialInit();
         DungeonSystem.Instance.Init();
     }
 

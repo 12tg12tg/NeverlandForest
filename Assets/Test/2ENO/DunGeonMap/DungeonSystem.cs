@@ -45,8 +45,6 @@ public class DungeonSystem : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        tutorialManager = GameManager.Manager.tm;
-        tutorialManager.Init();
         EndInit();
         //Init();
     }
@@ -59,6 +57,12 @@ public class DungeonSystem : MonoBehaviour
         roomGenerate.EndInit();
         DungeonCanvas.SetActive(false);
         playerMove.gameObject.SetActive(false);
+    }
+
+    public void TutorialInit()
+    {
+        tutorialManager = GameManager.Manager.tm;
+        tutorialManager.Init();
     }
 
     public void Init()
@@ -76,7 +80,6 @@ public class DungeonSystem : MonoBehaviour
         {
             dungeonSystemData = Vars.UserData.tutorialDungeonData;
             startIndex = 0;
-
         }
         else
         {
