@@ -32,13 +32,15 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        gathering.GoGatheringObject(gameObject.transform.position);
-        gathering.curSelectedObj = this;
+        if (DungeonSystem.Instance.DungeonSystemData.curDungeonRoomData.roomIdx == roomIndex)
+        {
+            gathering.GoGatheringObject(gameObject.transform.position);
+            gathering.curSelectedObj = this;
 
-        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
-        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
-        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
-        //Destroy(gameObject);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
+            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
+        }
     }
     public void Init()
     {

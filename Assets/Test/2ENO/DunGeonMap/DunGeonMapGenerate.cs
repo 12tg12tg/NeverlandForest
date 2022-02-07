@@ -29,6 +29,23 @@ public class DunGeonMapGenerate : MonoBehaviour
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
 
+    public void OnGUI()
+    {
+        if (GUI.Button(new Rect(100, 300, 100, 75), "tutorialStart"))
+        {
+            TutorialDungeonGenerate();
+        }
+    }
+
+    public void TutorialDungeonGenerate()
+    {
+        Vars.UserData.isTutorialDungeon = true;
+        CreateTutorialMapArray();
+        Vars.UserData.tutorialDungeonData.dungeonRoomArray = tutorialRoomArray;
+
+        DungeonSystem.Instance.Init();
+    }
+
     public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {
         Debug.Log(range);
@@ -58,7 +75,12 @@ public class DunGeonMapGenerate : MonoBehaviour
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
-        int curIdx = Vars.UserData.dungeonStartIdx;
+        int curIdx;
+        if (Vars.UserData.isTutorialDungeon)
+            curIdx = 0;
+        else
+            curIdx = Vars.UserData.dungeonStartIdx;
+
         while(dungeonArray[curIdx].nextRoomIdx != -1)
         {
             // 현재방의 이벤트 리스트 (1개~2개) 돌면서 이벤트 오브젝트 정보 셋

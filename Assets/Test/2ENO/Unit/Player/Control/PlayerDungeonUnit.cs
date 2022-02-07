@@ -25,7 +25,7 @@ public class PlayerDungeonUnit : UnitBase
     private MultiTouch multiTouch;
     private float speed = 7f;
 
-    private int curRoomNumber = 0;
+    [SerializeField] private int curRoomNumber = 0;
 
     public MoveTest playerMove;
 
