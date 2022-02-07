@@ -10,6 +10,8 @@ public class MoveTutorial : MonoBehaviour
 
     public RectTransform target;
 
+    private GameObject dungeonCanvasRt;
+
     private Rect canvasRt;
     private RectTransform handIcon;
     private RectTransform dialogBox;
@@ -46,6 +48,8 @@ public class MoveTutorial : MonoBehaviour
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
+
+        dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
     }
 
     private void Update()
@@ -140,21 +144,43 @@ public class MoveTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = btnRect.sizeDelta + new Vector2(10f, 10f);
 
-        var pos = GameManager.Manager.cm.uiCamera.WorldToViewportPoint(btnRect.position);
+        var btnPos = GameManager.Manager.cm.uiCamera.WorldToViewportPoint(btnRect.position);
 
-        pos.x *= canvasRt.width;
-        pos.y *= canvasRt.height;
+        btnPos.x *= canvasRt.width;
+        btnPos.y *= canvasRt.height;
 
         var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
 
         var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
-        blackBg.anchoredPosition -= new Vector2(pos.x, pos.y) - blackout.anchoredPosition;
-        blackout.anchoredPosition = pos;
-        handIcon.anchoredPosition = pos;
+        blackBg.anchoredPosition -= new Vector2(btnPos.x, btnPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = btnPos;
+        handIcon.anchoredPosition = btnPos;
 
         dialogBox.anchoredPosition = boxPos;
         dialogText.text = "이동 연습 완료!";
         nextStepButton.GetComponentInChildren<TMP_Text>().text = "이동 완료";
+    }
+
+    public void TimeCostExplain()
+    {
+        SetActive(true, true, true);
+        target = dungeonCanvasRt.transform.GetChild(0).GetComponent<RectTransform>();
+
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.rect.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxOffset = boxWidth + arrowSize;
+
+        var boxPos = new Vector3(pos.x - boxOffset, pos.y);
+
+
+    }
+
+    public void LanternCostExplain()
+    {
+
     }
 
     public void MoveTutorialEnd()
