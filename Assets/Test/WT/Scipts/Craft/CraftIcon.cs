@@ -3,12 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Linq;
 
 public class CraftIcon : MonoBehaviour
-{
-    private List<CraftObj> itemGoList = new List<CraftObj>();
+{   
+    public enum CraftButtonType {Tool,Battle,Herb};
+
+    [SerializeField] private List<CraftObj> itemGoList = new List<CraftObj>();
     private int selectedSlot = -1;
-    private const int MaxitemCount = 100;
+    private const int MaxitemCount = 20;
     private CraftDataTable table;
     private AllItemTableElem materialobj0;
     private AllItemTableElem materialobj1;
@@ -25,15 +28,20 @@ public class CraftIcon : MonoBehaviour
     private string Time = null;
     private AllItemDataTable allitemTable;
 
-    public CraftObj itemPrehab;
-    public ScrollRect scrollRect;
-
+    private int page=1;
+    private CraftButtonType currentButtonType = CraftButtonType.Tool;
+    [HideInInspector]public CraftObj currentCraft;
+    private int maxPage;
     public Image fire;
     public Image condiment;
     public Image material;
 
     public TextMeshProUGUI makingTime;
     public string result = string.Empty;
+
+    [SerializeField] private Button previewButton;
+    [SerializeField] private Button nextButton;
+
     public bool Is0ok
     {
         get => is0ok;
@@ -56,60 +64,96 @@ public class CraftIcon : MonoBehaviour
     }
     public void Init()
     {
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Craft);
+
         table = DataTableManager.GetTable<CraftDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-
-        for (int i = 0; i < MaxitemCount; i++)
-        {
-            var item = Instantiate(itemPrehab, scrollRect.content);
-            item.Slot = i;
-            itemGoList.Add(item);
-            item.gameObject.AddComponent<Button>();
-            item.gameObject.SetActive(false);
-
-            var button = item.GetComponent<Button>();
-            button.onClick.AddListener(() => OnChangedSelection(item.Slot));
-        }
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Craft);
-        SetAllItems();
-    }
-    public void SetAllItems()
-    {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
-
         var itemList = Vars.UserData.HaveCraftIDList;
+        int type ;
+        var fillterList = itemList.Where(n =>
+        {
+            switch (currentButtonType)
+            {
+                case CraftButtonType.Tool:
+                    type = table.GetData<CraftTableElem>(n).type;
+                    return (type == 0 || type == 1);
+                case CraftButtonType.Battle:
+                    type = table.GetData<CraftTableElem>(n).type;
+                    return (type == 4);
+                case CraftButtonType.Herb:
+                    type = table.GetData<CraftTableElem>(n).type;
+                    return (type == 5);
+                default:
+                    return false;
+            }
+        }).ToList();
 
-        for (int i = 0; i < itemList.Count; i++)
+        maxPage = fillterList.Count / 5 + 1;
+
+        for (int i = 0; i < 5; i++)
         {
-            itemGoList[i].Init(table, itemList[i]);
-            itemGoList[i].gameObject.SetActive(true);
+            var index = i+5 *(page - 1);
+            if (index < fillterList.Count)
+            {
+                itemGoList[i].Init(table, fillterList[index], this);
+            }
+            else
+            {
+                itemGoList[i].Clear();
+            }
         }
-        if (itemList.Count > 0)
+        SetPageButton();
+    }
+    public void PreviewPageOpen()
+    {
+        if (page>1)
         {
-            selectedSlot = 0;
-            EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
+            page--;
+            SetPageButton();
         }
     }
-    public void OnChangedSelection(int slot)
+    public void NextPageOpen()
+    {
+        if (page< maxPage)
+        {
+            page++;
+            SetPageButton();
+        }
+    }
+    private void SetPageButton()
+    {
+        if (page==1)
+        {
+            previewButton.interactable = false;
+        }
+        else if (page ==maxPage)
+        {
+            nextButton.interactable = false;
+        }
+        else
+        {
+            previewButton.interactable = true;
+            nextButton.interactable = true;
+        }
+
+    }
+    public void OnChangedSelection()
     {
         // 누른 레시피의 조합을 보여주자.
-        var fireid = $"ITEM_{(itemGoList[slot].Crafts[0])}";
-        var condimentid = $"ITEM_{(itemGoList[slot].Crafts[1])}";
-        var materialid = $"ITEM_{(itemGoList[slot].Crafts[2])}";
+        var fireid = $"ITEM_{(currentCraft.Crafts[0])}";
+        var condimentid = $"ITEM_{(currentCraft.Crafts[1])}";
+        var materialid = $"ITEM_{(currentCraft.Crafts[2])}";
 
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
-        result = itemGoList[slot].Result;
+        result = currentCraft.Result;
 
         materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
         materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
 
-        Time = itemGoList[slot].Time;
+        Time = currentCraft.Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
         CampManager.Instance.producingText.text = "제작 하기";
     }
@@ -218,59 +262,20 @@ public class CraftIcon : MonoBehaviour
 
     public void FillterByTool()
     {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
-
-        var itemList = Vars.UserData.HaveCraftIDList;
-
-        for (int i = 0; i < itemList.Count; i++)
-        {
-            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
-            if (type == 0 || type == 1)
-            {
-                itemGoList[i].Init(table, itemList[i]);
-                itemGoList[i].gameObject.SetActive(true);
-            }
-        }
+        currentButtonType = CraftButtonType.Tool;
+        page = 1;
+        Init();
     }
     public void FillterByBattle()
     {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
-
-        var itemList = Vars.UserData.HaveCraftIDList;
-
-        for (int i = 0; i < itemList.Count; i++)
-        {
-            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
-            if (type == 4)
-            {
-                itemGoList[i].Init(table, itemList[i]);
-                itemGoList[i].gameObject.SetActive(true);
-            }
-        }
+        currentButtonType = CraftButtonType.Battle;
+        page = 1;
+        Init();
     }
     public void FillterByHerb()
     {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
-
-        var itemList = Vars.UserData.HaveCraftIDList;
-
-        for (int i = 0; i < itemList.Count; i++)
-        {
-            var type = DataTableManager.GetTable<CraftDataTable>().GetData<CraftTableElem>(itemList[i]).type;
-            if (type == 5)
-            {
-                itemGoList[i].Init(table, itemList[i]);
-                itemGoList[i].gameObject.SetActive(true);
-            }
-        }
+        currentButtonType = CraftButtonType.Herb;
+        page = 1;
+        Init();
     }
 }
