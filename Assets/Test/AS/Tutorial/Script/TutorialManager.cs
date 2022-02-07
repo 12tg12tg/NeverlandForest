@@ -15,6 +15,7 @@ public class TutorialManager : MonoBehaviour
     public RectTransform handIcon;
     public RectTransform dialogBox;
     public RectTransform blackout;
+    public Button nextStepButton;
     public TMP_Text dialogBoxText;
 
     [Header("스프라이트")]
@@ -25,7 +26,8 @@ public class TutorialManager : MonoBehaviour
     {
         mainTutorial.Init();
         contentsTutorial.Init();
-        CheckMainTutorial();
+        nextStepButton.gameObject.SetActive(false);
+        //CheckMainTutorial();
     }
 
     public void CheckMainTutorial()
@@ -36,10 +38,10 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text));
                 break;
             case MainTutorialStage.Battle:
-
                 break;
             case MainTutorialStage.Move:
-
+                mainTutorial.tutorialMove = gameObject.AddComponent<MoveTutorial>();
+                StartCoroutine(mainTutorial.tutorialMove.CoMoveTutorial());
                 break;
             case MainTutorialStage.Lanturn:
                 break;
@@ -54,5 +56,10 @@ public class TutorialManager : MonoBehaviour
                 break;
         }
         mainTutorial.NextMainTutorial();
+    }
+
+    public void NextStep()
+    {
+        mainTutorial.tutorialMove.TutorialStep++;
     }
 }

@@ -20,10 +20,12 @@ public class MainTutorial
 
     public TutorialStory tutorialStory = new TutorialStory();
 
+    public MoveTutorial tutorialMove;
+
     public void Init()
     {
         // 저장된 데이터 가져오기
-        //MainTutorialStage = ???
+        MainTutorialStage = MainTutorialStage.Move;
     }
 
     public void NextMainTutorial()
@@ -64,11 +66,5 @@ public class MainTutorial
             text.text = "";
             text.color = Color.white;
         }
-    }
-
-    public IEnumerator CoTutorialStep1Move()
-    {
-        
-        yield return null;
     }
 }

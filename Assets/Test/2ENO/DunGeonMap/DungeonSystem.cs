@@ -33,6 +33,7 @@ public class DungeonSystem : MonoBehaviour
     public MoveTest playerMove;
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
+    public TutorialManager tutorialManager;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
@@ -44,6 +45,8 @@ public class DungeonSystem : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        tutorialManager = GameManager.Manager.tm;
+        tutorialManager.Init();
         EndInit();
         //Init();
     }
@@ -73,6 +76,7 @@ public class DungeonSystem : MonoBehaviour
         {
             dungeonSystemData = Vars.UserData.tutorialDungeonData;
             startIndex = 0;
+
         }
         else
         {
@@ -180,7 +184,7 @@ public class DungeonSystem : MonoBehaviour
         {
             if (Vars.UserData.isTutorialDungeon)
             {
-                TutorialDungeonStep.Instance.NextStep();
+                tutorialManager.CheckMainTutorial();
             }
 
             eventObjectGenerate.EventObjectClear();
@@ -229,7 +233,7 @@ public class DungeonSystem : MonoBehaviour
             {
                 if (Vars.UserData.isTutorialDungeon)
                 {
-                    TutorialDungeonStep.Instance.NextStep();
+                    //MoveTutorial.Instance.NextStep();
                 }
 
                 ConsumeManager.TimeUp(0, 1);

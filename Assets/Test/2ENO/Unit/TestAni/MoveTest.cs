@@ -34,6 +34,8 @@ public class MoveTest : MonoBehaviour
 
     private float tutorialTime;
 
+    private MoveTutorial moveTutorial;
+
     public void Init()
     {
         multiTouch = GameManager.Manager.MultiTouch;
@@ -54,6 +56,8 @@ public class MoveTest : MonoBehaviour
         // 1 active = 왼쪽방향 이동기준
         girlRiglayers[1].active = true;
         boyRight.isRight = false;
+
+        
     }
 
     // 임시
@@ -72,11 +76,12 @@ public class MoveTest : MonoBehaviour
     void Update()
     {
         //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-
-        if (TutorialDungeonStep.Instance.tutorialStep == 2 || TutorialDungeonStep.Instance.tutorialStep == 4 ||
-            TutorialDungeonStep.Instance.tutorialStep == 6)
+        moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
+        if (moveTutorial != null && moveTutorial.TutorialStep != 2)
+        {
+            RigOff();
             return;
-
+        }
         if (multiTouch != null)
         {
             if (!isCoMove)
@@ -92,19 +97,19 @@ public class MoveTest : MonoBehaviour
                     var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
                     if (playerXPos + 0.05f < touchXPos)
                     {
-                        if (TutorialDungeonStep.Instance.tutorialStep == 3 &&
+                        if (moveTutorial != null &&  moveTutorial.TutorialStep == 2 &&
                             playerBoy.transform.position.x >= DungeonSystem.Instance.roomGenerate.roomList[0].endPosVector.x)
                             return;
 
-                        if(TutorialDungeonStep.Instance.tutorialStep == 3)
+                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
                         {
-                            if (TutorialDungeonStep.Instance.tutorialCount == 0)
+                            if (moveTutorial.CommandSucess == 0)
                             {
                                 tutorialTime += Time.deltaTime;
 
-                                if (tutorialTime > 1.3f)
+                                if (tutorialTime > 1.0f)
                                 {
-                                    TutorialDungeonStep.Instance.tutorialCount++;
+                                    moveTutorial.CommandSucess++;
                                     tutorialTime = 0f;
                                 }
                             }
@@ -124,17 +129,17 @@ public class MoveTest : MonoBehaviour
                         if (playerBoy.transform.position.x <= DungeonSystem.Instance.roomGenerate.spawnPos.x)
                             return;
 
-                        if (TutorialDungeonStep.Instance.tutorialStep == 3)
+                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
                         {
-                            if (TutorialDungeonStep.Instance.tutorialCount == 1)
+                            if (moveTutorial.CommandSucess == 1)
                             {
                                 tutorialTime += Time.deltaTime;
 
-                                if (tutorialTime > 1.3f)
+                                if (tutorialTime > 1.0f)
                                 {
-                                    TutorialDungeonStep.Instance.tutorialCount++;
+                                    moveTutorial.CommandSucess++;
                                     tutorialTime = 0f;
-                                    TutorialDungeonStep.Instance.NextStep();
+                                    moveTutorial.TutorialStep++;
                                 }
                             }
                         }
@@ -146,7 +151,6 @@ public class MoveTest : MonoBehaviour
                         var pos = boySpeed * Time.deltaTime * -Vector3.right;
                         playerBoy.transform.position += pos;
                         playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 270, 0f));
-
                     }
                     else
                         boySpeed = 0f;
