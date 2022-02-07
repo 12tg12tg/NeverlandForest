@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class HuntPlayer : UnitBase
 {
@@ -22,6 +23,10 @@ public class HuntPlayer : UnitBase
     [Header("공용")]
     private int life = 2;
     public int Life { get => life; set => life = value; }
+    public bool IsTutorialClear { get; set; } = false;
+    public HuntTile tutorialTile;
+    public Vector2 tutorialIndex;
+
     public void Init()
     {
         // 사냥 플레이어 초기화에 필요한 것들 추가해야 함
@@ -33,6 +38,7 @@ public class HuntPlayer : UnitBase
         // 플레이어가 이동하면 사냥 할 확률 증가(한칸 앞으로 이동 시 10프로, 은폐물에 숨었을 때 10프로)
         // 동물이 플레이어를 발견 할 확률 증가
         var isForward = false;
+        
         // 현재 위치에서 뒤로 이동, 2칸 앞으로 이동, 같은 칸, 대각선 2칸 이동 막음
         if (index.y <= curHunterIndex.y - 1 ||
             index.y >= curHunterIndex.y + 2 ||
@@ -65,14 +71,36 @@ public class HuntPlayer : UnitBase
         }));
     }
 
+    public void TutorialMove(UnityAction action)
+    {
+        EventBus<HuntingEvent>.Publish(HuntingEvent.PlayerMove, true, true);
+
+        if (coHunterMove == null)
+        {
+            hunterAnimation.SetTrigger("Walk");
+            curHunterIndex = tutorialTile.index;
+        }
+
+        coHunterMove ??= StartCoroutine(Utility.CoTranslateLookFoward(hunter.transform, hunter.transform.position, 
+            tutorialTile.transform.position, 1f, () => 
+            {
+                hunterAnimation.SetTrigger("Idle");
+                hunter.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+                coHunterMove = null;
+                action?.Invoke();
+            }));
+    }
+
     public void HuntFailAnimation()
     {
         hunterAnimation.SetTrigger("Fail");
+        herbalistAnimation.transform.localRotation = Quaternion.Euler(Vector3.zero);
         herbalistAnimation.SetTrigger("Fail");
     }
     public void HuntSuccessAnimation()
     {
         hunterAnimation.SetTrigger("Success");
+        herbalistAnimation.transform.localRotation = Quaternion.Euler(Vector3.zero);
         herbalistAnimation.SetTrigger("Success");
     }
 
@@ -82,7 +110,6 @@ public class HuntPlayer : UnitBase
         bowBack.SetActive(true);
         bowHand.SetActive(false);
     }
-
 
     public void ShootAnimation(Vector3 animalPos)
     {

@@ -77,8 +77,10 @@ public class Arrow : MonoBehaviour
         if (other.CompareTag("Animal"))
         {
             transform.GetChild(0).gameObject.SetActive(false);
+            GetComponent<CapsuleCollider>().enabled = false;
             hitArrow.SetActive(true);
             EventBus<HuntingEvent>.Publish(HuntingEvent.Hunting);
+
         }
         else if(other.CompareTag("Floor"))
         {

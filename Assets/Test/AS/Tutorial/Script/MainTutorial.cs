@@ -20,7 +20,6 @@ public class MainTutorial
 
     public TutorialStory tutorialStory = new TutorialStory();
 
-
     public void Init()
     {
         // 저장된 데이터 가져오기

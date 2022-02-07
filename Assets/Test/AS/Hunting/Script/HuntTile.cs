@@ -11,10 +11,26 @@ public class HuntTile : MonoBehaviour, IPointerClickHandler
     public MeshRenderer ren;
     public Vector2 index;
 
+    [HideInInspector]
+    public HuntingManager huntingManager;
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if ((int)index.y != 6)
+        if(!huntPlayers.IsTutorialClear)
+        {
+            if (huntPlayers.tutorialTile == null)
+                return;
+            if (huntPlayers.tutorialTile.index == index && huntingManager != null)
+            {
+                huntingManager.GetComponent<HuntTutorial>().TutorialStep++;
+                Debug.Log(huntingManager.GetComponent<HuntTutorial>().TutorialStep);
+                huntingManager = null;
+            }
+        }
+        else if ((int)index.y != 6)
+        {
             huntPlayers.Move(index, transform.position, bush != null);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
