@@ -40,6 +40,12 @@ public class RandomEventManager : MonoBehaviour
                        select data;
 
             randomEventPool.AddRange(list);
+
+            if (randomEventPool.Count <= 0)
+            {
+                Vars.UserData.isRandomDataLoad = false;
+                init();
+            }
         }
         else
         {
