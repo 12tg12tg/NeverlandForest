@@ -5,7 +5,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class HuntTilesMaker : MonoBehaviour
 {
-    public HuntPlayer huntPlayers;
+    public HuntingManager huntingManager;
     public GameObject bush;
     public Material[] bushMaterials;
 
@@ -19,12 +19,12 @@ public class HuntTilesMaker : MonoBehaviour
 
     public void InitMakeTiles()
     {
-        // ÀºÆó¹°
-        randomBush = new int[col - 2];
-        for (int i = 0; i < randomBush.Length; i++)
-        {
-            randomBush[i] = Random.Range(0, 3);
-        }
+        //// ÀºÆó¹°
+        //randomBush = new int[col - 2];
+        //for (int i = 0; i < randomBush.Length; i++)
+        //{
+        //    randomBush[i] = Random.Range(0, 3);
+        //}
 
         var bound = wholeTile.GetComponent<MeshRenderer>().bounds;
         var maxX = bound.max.x; //°¡·Î
@@ -62,20 +62,12 @@ public class HuntTilesMaker : MonoBehaviour
         var ren = plane.AddComponent<MeshRenderer>();
         var tile = plane.AddComponent<HuntTile>();
         tile.materials = bushMaterials;
-        tile.huntPlayers = huntPlayers;
+        tile.huntingManager = huntingManager;
         tile.index = index;
         tile.ren = ren;
-
-        // ÀºÆó¹°
-        var bushIndex = (int)index.y;
-        if(bushIndex > 0 && bushIndex < col - 1)
-        {
-            if(randomBush[bushIndex - 1].Equals((int)index.x))
-            {
-                var go = Instantiate(bush, tile.transform);
-                tile.bush = go.GetComponent<Bush>();
-            }
-        }
+        var go = Instantiate(bush, tile.transform);
+        //go.SetActive(false);
+        tile.bush = go.GetComponent<Bush>();
 
         var meshCol = plane.AddComponent<MeshCollider>();
 

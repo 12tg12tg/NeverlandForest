@@ -2,34 +2,108 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Animal : MonoBehaviour
 {
     public Animator animator;
-    public GameObject resultPopUp;
 
-    public int dangerIndex = 3;
     private bool isDanger = false;
+    public bool isRun = false;
+    private readonly int dangerIndex = 3;
+
     private int escapePercentUp = 3;
     private int escapePercent;
     public int EscapePercent => escapePercent;
 
-    //private void Awake()
-    //{
-    //    InitEscapingPercentage();
-    //}
-
+    [Header("UI")]
+    public Transform target;
+    public RectTransform warningBox;
+    public Sprite runAway;
+    public GameObject failPopUp;
+    public GameObject transparentWindow;
+    private Coroutine coFadeOut;
+    private readonly float delay = 1f;
+    private readonly Vector3 boxOffset = new Vector3(20f, 70f, 0f);
 
     private void OnEnable()
     {
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscapePercentUp, EscapingPercentageUp);
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.AnimalEscape, Escaping);
     }
-
+    private void OnDisable()
+    {
+        warningBox.gameObject.SetActive(false);
+    }
     private void OnDestroy()
     {
         EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.AnimalEscapePercentUp, EscapingPercentageUp);
         EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.AnimalEscape, Escaping);
+    }
+
+    public void Init()
+    {
+        isDanger = false;
+
+        //TODO : ·£ÅÏ + ³·/¹ã = ºû ±â´É Ãß°¡½Ã º¯°æ ¿¹Á¤
+        var lanternCount = Vars.UserData.uData.LanternCount;
+        var step =
+            lanternCount < 7 ? 1 :
+            lanternCount < 12 ? 2 :
+            lanternCount < 16 ? 3 : 4;
+        var lanternPercent = step == 1 ? Random.Range(2, 5) : Random.Range(2, 4);
+
+        escapePercent = lanternPercent * step;
+        
+        // µµ¸Á È®·ü¾÷Àº 3 * step
+        escapePercentUp = 3 * step;
+
+        Debug.Log($"±âº» µµ¸Á È®·ü:{escapePercent} µµ¸Á È®·ü¾÷:{escapePercentUp}");
+    }
+
+
+    private void MoveWarningBox()
+    {
+        warningBox.gameObject.SetActive(true);
+        StartCoroutine(WarningBoxUpdate());
+
+        if (coFadeOut != null)
+        {
+            StopCoroutine(coFadeOut);
+        }
+        coFadeOut = StartCoroutine(WarningBoxOff(() => coFadeOut = null));
+    }
+
+    private IEnumerator WarningBoxOff(UnityAction action = null)
+    {
+        var img = warningBox.GetComponent<Image>();
+        var temp = img.color = Color.white;
+        yield return new WaitForSeconds(delay * 2);
+
+        var timer = 0f;
+        while (timer < delay)
+        {
+            temp.a -= Time.deltaTime;
+            img.color = temp;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        warningBox.gameObject.SetActive(false);
+        action?.Invoke();
+    }
+
+    private IEnumerator WarningBoxUpdate()
+    {
+        while (warningBox.gameObject.activeSelf)
+        {
+            var viewPos = Camera.main.WorldToViewportPoint(target.position);
+            var canvas = warningBox.transform.parent.GetComponent<RectTransform>().rect;
+            viewPos.x *= canvas.width;
+            viewPos.y *= canvas.height;
+            warningBox.anchoredPosition = viewPos + boxOffset;
+
+            yield return null;
+        }
     }
 
     public void Escaping(object[] vals)
@@ -43,24 +117,27 @@ public class Animal : MonoBehaviour
 
         var isReducedLife = rnd < escapePercent * 0.01f;
         player.Life = isReducedLife ? player.Life - 1 : player.Life;
-
+        var index = (int)player.CurHunterIndex.y;
         // Ã¹¹ø Â° ÇÃ·¹ÀÌ¾îÀÇ Ä­°ú µ¿¹°ÀÇ Ä­ Á¦¿ÜÇÏ°í ÃÑ 5Ä­
         // 3Ä­ ³»¿¡¼­ 2¹ø ¹ß°¢µÇ°Å³ª 4Ä­ ÀÌÈÄ¿¡ 1¹øÀÌ¶óµµ ¹ß°¢µÇ¸é µ¿¹° µµ¸Á
-        if (player.Life == 0 || (player.CurHunterIndex.y > dangerIndex && isReducedLife))
+        if (player.Life == 0 || (index > dangerIndex && isReducedLife))
         {
             Debug.Log($"{rnd * 100} < ÇöÀç È®·ü: {escapePercent} µ¿¹° µµ¸Á ¼º°ø");
+            warningBox.GetComponent<Image>().sprite = runAway;
+            MoveWarningBox();
             AnimalRunAway();
-            AnimalMove(false);
-            resultPopUp.SetActive(true);
-            var tm = resultPopUp.transform.GetChild(0).GetChild(0).GetComponent<TMP_Text>();
-            tm.text = "The Animal Run Away";
+            AnimalMove(false, () => {
+                failPopUp.SetActive(true);
+                transparentWindow.SetActive(true);
+            });
 
             StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
         }
-        else if (player.Life.Equals(1) && player.CurHunterIndex.y < dangerIndex - 1 && !isDanger)
+        else if (player.Life.Equals(1) && index <= dangerIndex - 1 && !isDanger)
         {
             isDanger = true; // ÇÑ¹ø¸¸ ÇÏ±â À§ÇÔ
             Debug.Log($"{rnd * 100} < ÇöÀç È®·ü: {escapePercent} µ¿¹°¿¡°Ô ¹ß°¢µÉ »· Çß´Ù");
+            MoveWarningBox();
             animator.SetTrigger("Turn");
         }
         else
@@ -74,30 +151,13 @@ public class Animal : MonoBehaviour
             return;
 
         escapePercent = (bool)vals[0] ? escapePercent + escapePercentUp : escapePercent;
-        if(escapePercent >= 20)
-            animator.SetTrigger("Turn");
+        //if(escapePercent >= 20)
+        //    animator.SetTrigger("Turn");
 
         Debug.Log($"ÇöÀç µµ¸Á È®·ü:{escapePercent}");
     }
 
-    public void InitEscapingPercentage()
-    {
-        //TODO : ·£ÅÏ + ³·/¹ã = ºû ±â´É Ãß°¡½Ã º¯°æ ¿¹Á¤
-        var lanternCount = Vars.UserData.uData.LanternCount;
-        var step =
-            lanternCount < 7 ? 1 :
-            lanternCount < 12 ? 2 :
-            lanternCount < 16 ? 3 : 4;
-        var lanternPercent = step == 1 ? Random.Range(2, 5) : Random.Range(2, 4);
-
-        escapePercent = lanternPercent * step;
-
-        // µµ¸Á È®·ü¾÷Àº 3 * step
-        escapePercentUp *= step;
-
-        Debug.Log($"±âº» µµ¸Á È®·ü:{escapePercent}");
-    }
-
+    
 
     public void AnimalMove(bool isDead, UnityAction action = null)
     {
@@ -114,7 +174,7 @@ public class Animal : MonoBehaviour
     }
     public void AnimalRunAway()
     {
+        isRun = true;
         animator.SetTrigger("Run");
     }
-
 }

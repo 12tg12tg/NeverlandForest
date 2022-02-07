@@ -15,17 +15,22 @@ public enum HuntingEvent
 }
 public class HuntingManager : MonoBehaviour
 {
+    [Header("Actor")]
     public HuntPlayer huntPlayers;
-    public HuntTilesMaker tileMaker;
     public Animal animal;
 
-    // UI
+    [Header("Tile")]
+    public HuntTilesMaker tileMaker;
+    private HuntTile[] tiles;
+
+    [Header("UI")]
     public GameObject failPopUp;
     public GameObject successPopUp;
+    public GameObject transparentWindow;
     public TMP_Text huntButtonText;
-    public TMP_Text popupText;
 
-    private HuntTile[] tiles;
+    [Header("Production")]
+    public Production production;
 
     // 확률
     private int huntPercent;
@@ -34,11 +39,9 @@ public class HuntingManager : MonoBehaviour
     private int totalHuntPercent;
 
     private bool isHunted = false;
-    
+
+    // 튜토리얼
     private HuntTutorial huntTutorial;
-    [Header("튜토리얼")]
-    public RectTransform target;
-    public Button disableUI;
 
     private void OnEnable()
     {
@@ -46,11 +49,18 @@ public class HuntingManager : MonoBehaviour
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.PlayerMove, HuntPercentageUp);
         EventBus<HuntingEvent>.Subscribe(HuntingEvent.Hunting, Hunting);
     }
+    private void OnDestroy()
+    {
+        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.PlayerMove, OnBush);
+        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.PlayerMove, HuntPercentageUp);
+        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.Hunting, Hunting);
+    }
 
     private void OnGUI()
     {
         if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
         {
+            production.FadeOut();
             tileMaker.InitMakeTiles();
             Init();
 
@@ -63,7 +73,14 @@ public class HuntingManager : MonoBehaviour
         }
         if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "사냥시작"))
         {
+            production.FadeOut();
             tileMaker.InitMakeTiles();
+            Init();
+            huntPlayers.IsTutorialClear = true;
+        }
+        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "재시작"))
+        {
+            production.FadeOut();
             Init();
             huntPlayers.IsTutorialClear = true;
         }
@@ -71,13 +88,30 @@ public class HuntingManager : MonoBehaviour
 
     public void Init()
     {
-        // 이 부분은 최초 실행 때만 하는 것인지 사냥이 시작될 때 마다 해야하는 것인지 모르겠음
         var count = tileMaker.transform.childCount;
+
+        var randomBush = new int[tileMaker.col - 2];
+        for (int i = 0; i < randomBush.Length; i++)
+        {
+            randomBush[i] = Random.Range(0, 3);
+        }
+
         tiles = new HuntTile[count];
         for (int i = 0; i < count; i++)
         {
             tiles[i] = tileMaker.transform.GetChild(i).GetComponent<HuntTile>();
+            tiles[i].bush.gameObject.SetActive(false); // 현재 켜져있는 타일을 다시 꺼주고
+            
+            var bushIndex = (int)tiles[i].index.y;
+            if (bushIndex > 0 && bushIndex < tileMaker.col - 1)
+            {
+                if (randomBush[bushIndex - 1].Equals((int)tiles[i].index.x))
+                {
+                    tiles[i].bush.gameObject.SetActive(true); // 새롭게 랜덤으로 뽑힌 애들만 켜주도록..
+                }
+            }
         }
+
 
         huntPlayers.Init();
 
@@ -92,7 +126,7 @@ public class HuntingManager : MonoBehaviour
 
         // 사냥 및 발각확률 초기화
         InitHuntPercentage();
-        animal.InitEscapingPercentage();
+        animal.Init();
     }
 
     private void TutorialInit()
@@ -102,13 +136,10 @@ public class HuntingManager : MonoBehaviour
         huntTutorial.huntPlayers = huntPlayers;
         huntTutorial.tile = tiles.Where(x => x.bush != null && (int)x.index.y == 1).Select(x => x).FirstOrDefault();
         huntTutorial.tile.huntingManager = this;
-        target.GetComponent<Button>().onClick.AddListener(TutorialSetActiveFalse);
         var huntButton = huntButtonText.gameObject.transform.parent.GetComponent<Button>();
         huntButton.onClick.AddListener(NextTutorialStep);
         huntButton.interactable = false;
         huntTutorial.huntButton = huntButton;
-        disableUI.interactable = false;
-        huntTutorial.target = target;
     }
 
     private void InitHuntPercentage()
@@ -131,15 +162,9 @@ public class HuntingManager : MonoBehaviour
 
         HuntPercentagePrint(huntPercentUp);
     }
-
     
 
-    private void OnDestroy()
-    {
-        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.PlayerMove, OnBush);
-        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.PlayerMove, HuntPercentageUp);
-        EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.Hunting, Hunting);
-    }
+   
 
     private void OnBush(object[] vals)
     {
@@ -154,8 +179,8 @@ public class HuntingManager : MonoBehaviour
     }
     private void HuntPercentagePrint(int perccent)
     {
+        perccent = perccent > 100 ? 100 : perccent;
         huntButtonText.text = $"성공 {perccent}%" + "\n" + "사냥하기";
-        popupText.text = $"현재 확률 : {perccent}%" + "\n" + "사냥하시겠습니까";
     }
 
     private void GetItem()
@@ -210,11 +235,13 @@ public class HuntingManager : MonoBehaviour
             animal.AnimalRunAway();
         }
         var resultPopUp = isHunted ? successPopUp : failPopUp;
-        animal.AnimalMove(isHunted, () => resultPopUp.SetActive(true));
+        animal.AnimalMove(isHunted, () => {
+            resultPopUp.SetActive(true);
+            transparentWindow.SetActive(true);
+        });
         huntPlayers.ReturnBow();
     }
 
     public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
     public void NextTutorialStep() => huntTutorial.TutorialStep++;
-    public void TutorialSetActiveFalse() => huntTutorial.SetActive(false);
 }

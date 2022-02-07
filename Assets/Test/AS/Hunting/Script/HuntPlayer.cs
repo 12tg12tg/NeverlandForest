@@ -31,6 +31,7 @@ public class HuntPlayer : UnitBase
     {
         // 사냥 플레이어 초기화에 필요한 것들 추가해야 함
         curHunterIndex = Vector2.right;
+        life = 2;
     }
 
     public void Move(Vector2 index, Vector3 pos, bool isOnBush)
