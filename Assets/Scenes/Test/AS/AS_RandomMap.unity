@@ -5473,6 +5473,7 @@ MonoBehaviour:
   playerMove: {fileID: 1736684016}
   minimapCam: {fileID: 1289931476}
   DungeonCanvas: {fileID: 1239936674}
+  tutorialManager: {fileID: 0}
   worldMap: {fileID: 1995851672}
 --- !u!1 &390200373
 GameObject:
@@ -6111,6 +6112,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6318415838549628713, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318415839536682067, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 551.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318415839536682067, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100.55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318415839582676675, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 175.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 6318415839582676675, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 36.01
+      objectReference: {fileID: 0}
     - target: {fileID: 6348696052922820171, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -36346,6 +36367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a5253dd039a154aa8a8ebd5836fb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curRoomNumber: 0
   playerMove: {fileID: 1736684016}
 --- !u!1 &4955990361869274560
 GameObject:
@@ -44593,6 +44615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a5253dd039a154aa8a8ebd5836fb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  curRoomNumber: 0
   playerMove: {fileID: 1736684016}
 --- !u!136 &8073720700360075658
 CapsuleCollider:
