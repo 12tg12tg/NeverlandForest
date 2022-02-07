@@ -61,5 +61,6 @@ public class TutorialManager : MonoBehaviour
     public void NextStep()
     {
         mainTutorial.tutorialMove.TutorialStep++;
+        mainTutorial.tutorialMove.delay = 0f;
     }
 }

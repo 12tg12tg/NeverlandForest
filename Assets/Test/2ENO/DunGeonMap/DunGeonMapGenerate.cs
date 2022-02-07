@@ -72,6 +72,14 @@ public class DunGeonMapGenerate : MonoBehaviour
             action?.Invoke();
         }
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
+
+        int curIdx = Vars.UserData.dungeonStartIdx;
+        while(dungeonRoomArray[curIdx].nextRoomIdx != -1)
+        {
+            curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
+        }
+        Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
+
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)

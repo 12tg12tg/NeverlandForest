@@ -43,12 +43,13 @@ public class DungeonSystem : MonoBehaviour
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
+    private int lastIndex;
 
     private void Awake()
     {
         instance = this;
         EndInit();
-        Init();
+        //Init();
     }
     public void EndInit()
     {
@@ -91,6 +92,7 @@ public class DungeonSystem : MonoBehaviour
 
             curDungeonIndex = Vars.UserData.curDungeonIndex;
             startIndex = Vars.UserData.dungeonStartIdx;
+            lastIndex = Vars.UserData.dungeonLastIdx;
             // 첫 세이브에서 이거없으면 오류
             if (Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
             {
@@ -98,16 +100,21 @@ public class DungeonSystem : MonoBehaviour
             }
 
             // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
-            if (Vars.UserData.dungeonReStart)
+            if (Vars.UserData.isDungeonReStart)
             {
                 Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
-                Vars.UserData.dungeonReStart = false;
+                Vars.UserData.isDungeonReStart = false;
                 Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
                 Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
             }
             // 클리어한 방 다시 돌아올때, 플레이어 위치만 방 첫 위치로
-            else if (!Vars.UserData.dungeonReStart)
+            else if (Vars.UserData.isDungeonClear)
             {
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[lastIndex];
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData.eventList.Clear();
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData.eventObjDataList.Clear();
+                Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
+                Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
             }
 
             if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
@@ -132,6 +139,7 @@ public class DungeonSystem : MonoBehaviour
         if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = true;
+            Vars.UserData.isDungeonClear = true;
             SceneManager.LoadScene("AS_WorldMap");
             Vars.UserData.uData.Date++;
         }
@@ -141,7 +149,7 @@ public class DungeonSystem : MonoBehaviour
             SceneManager.LoadScene("AS_WorldMap");
             Vars.UserData.uData.Date++;
         }
-        if (GUI.Button(new Rect(100, 400, 100, 75), "Start"))
+        if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
         {
             Init();
         }
@@ -212,6 +220,7 @@ public class DungeonSystem : MonoBehaviour
                 else
                 {
                     Vars.UserData.WorldMapPlayerData.isClear = true;
+                    Vars.UserData.isDungeonClear = true;
                 }
                 SceneManager.LoadScene("AS_WorldMap");
                 return;

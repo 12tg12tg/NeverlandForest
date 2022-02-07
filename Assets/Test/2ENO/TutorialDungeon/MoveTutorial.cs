@@ -28,10 +28,10 @@ public class MoveTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    private float delay;
+    public float delay;
 
     private readonly int tutorialStepMove = 2;
-    private readonly int tutorialStepEnd = 3;
+    private readonly int tutorialStepMoveEnd = 3;
 
     public int CommandSucess { get; set; } = 0;
 
@@ -58,7 +58,7 @@ public class MoveTutorial : MonoBehaviour
         if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
             delay > 1f &&
             TutorialStep != tutorialStepMove &&
-            TutorialStep != tutorialStepEnd
+            TutorialStep != tutorialStepMoveEnd
             )
         {
             delay = 0f;
@@ -84,6 +84,7 @@ public class MoveTutorial : MonoBehaviour
         TimeCostExplain();
         yield return new WaitWhile(() => TutorialStep < 5);
 
+        LanternCostExplain();
         yield return new WaitWhile(() => TutorialStep < 6);
 
         MoveTutorialEnd();
@@ -168,24 +169,50 @@ public class MoveTutorial : MonoBehaviour
 
     public void TimeCostExplain()
     {
-        SetActive(true, true, true);
+        SetActive(true, true);
         target = dungeonCanvasRt.transform.GetChild(0).GetComponent<RectTransform>();
+        blackout.GetComponent<Image>().sprite = circle;
+        blackout.sizeDelta = target.sizeDelta;
 
         var uiCam = GameManager.Manager.cm.uiCamera;
-        var pos = uiCam.WorldToViewportPoint(target.rect.position);
+        var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
 
         var boxOffset = boxWidth + arrowSize;
 
-        var boxPos = new Vector3(pos.x - boxOffset, pos.y);
+        dialogBoxObj.right.SetActive(true);
 
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
 
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(pos.x, pos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "시간 코스트 설명";
     }
 
     public void LanternCostExplain()
     {
+        SetActive(true, true);
+        target = dungeonCanvasRt.transform.GetChild(1).GetComponent<RectTransform>();
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f,10f);
 
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+
+        var boxOffset = boxHeight + arrowSize;
+
+        dialogBoxObj.right.SetActive(false);
+        dialogBoxObj.up.SetActive(true);
+
+        var boxPos = new Vector2(pos.x , pos.y - boxOffset);
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(pos.x, pos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "랜턴 관련 설명";
     }
 
     public void MoveTutorialEnd()

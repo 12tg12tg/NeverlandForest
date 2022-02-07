@@ -78,8 +78,18 @@ public class WorldMapPlayer : MonoBehaviour
         }
     }
 
+    public void Return()
+    {
+        if (Vars.UserData.curNode.index != Vector2.zero)
+        {
+            // Null 뜸
+            PlayerWorldMap(Vars.UserData.curNode);
+        }
+    }
+
     public void PlayerWorldMap(WorldMapNode node)
     {
+        Vars.UserData.curNode = node;
         var goal = node.transform.position + new Vector3(0f, 0.5f, 0f);
         transform.LookAt(node.transform);
         GetComponent<Animator>().SetTrigger("Walk");
@@ -112,14 +122,14 @@ public class WorldMapPlayer : MonoBehaviour
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
         {
-            if (Vars.UserData.curDungeonIndex == goalIndex)
+            if(Vars.UserData.isDungeonClear && Vars.UserData.curDungeonIndex != goalIndex)
             {
-                Vars.UserData.dungeonReStart = false;
+                return;
             }
-            else
+            if (!Vars.UserData.isDungeonClear)
             {
+                Vars.UserData.isDungeonReStart = true;
                 Vars.UserData.curDungeonIndex = goalIndex;
-                Vars.UserData.dungeonReStart = true;
             }
 
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
@@ -138,8 +148,9 @@ public class WorldMapPlayer : MonoBehaviour
                 Vars.UserData.AllDungeonData.Clear();
             }
 
+            Vars.UserData.isDungeonClear = false;
             Vars.UserData.curDungeonIndex = goalIndex;
-            Vars.UserData.dungeonReStart = true;
+            Vars.UserData.isDungeonReStart = true;
             Vars.UserData.AllDungeonData.Add(goalIndex, new DungeonData());
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
             mapGenerator.DungeonGenerate(range, null, () =>

@@ -19,11 +19,15 @@ public class UserData
     public List<WorldMapTreeInfo> WorldMapTree { get; set; } = new List<WorldMapTreeInfo>();
     public WorldMapPlayerData WorldMapPlayerData { get; set; }
 
+    public WorldMapNode curNode;
+
     // 던전맵 데이터, 세이브 로드
     public SerializeDictionary<Vector2, DungeonData> AllDungeonData { get; set; } = new SerializeDictionary<Vector2, DungeonData>();
     public Vector2 curDungeonIndex;
     public int dungeonStartIdx = 100;
-    public bool dungeonReStart;
+    public int dungeonLastIdx;
+    public bool isDungeonReStart;
+    public bool isDungeonClear;
 
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
