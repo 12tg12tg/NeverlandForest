@@ -12,7 +12,7 @@ public class NewRoomGenerate : MonoBehaviour
     [SerializeField] private List<NewRoomInstance> mainPrefabList = new List<NewRoomInstance>();
     [SerializeField] private List<NewRoomInstance> subPrefabList = new List<NewRoomInstance>();
 
-    private List<NewRoomInstance> roomList = new List<NewRoomInstance>();
+    public List<NewRoomInstance> roomList = new List<NewRoomInstance>();
     // юс╫ц Pool
     private List<NewRoomInstance> pool = new List<NewRoomInstance>();
 
@@ -22,6 +22,11 @@ public class NewRoomGenerate : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    public void Init()
+    {
+        gameObject.SetActive(true);
+    }
+
     public void RoadListClear()
     {
         roadNumList.Clear();
@@ -158,7 +163,7 @@ public class NewRoomGenerate : MonoBehaviour
 
         for (int i = 0; i < childEnd.Length; i++)
         {
-            childEnd[i].roomNumber = i + 1;
+            childEnd[i].roomNumber = i;
             if (i == childEnd.Length - 1)
             {
                 childEnd[i].isLastPos = true;

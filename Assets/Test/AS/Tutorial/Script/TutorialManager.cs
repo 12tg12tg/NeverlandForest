@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -10,11 +11,23 @@ public class TutorialManager : MonoBehaviour
     public TutorialPlayer tutorialPlayer;
     public TMP_Text text;
 
+    [Header("UI")]
+    public RectTransform handIcon;
+    public RectTransform dialogBox;
+    public RectTransform blackout;
+    public Button nextStepButton;
+    public TMP_Text dialogBoxText;
+
+    [Header("스프라이트")]
+    public Sprite rect;
+    public Sprite circle;
+
     public void Init()
     {
         mainTutorial.Init();
         contentsTutorial.Init();
-        CheckMainTutorial();
+        nextStepButton.gameObject.SetActive(false);
+        //CheckMainTutorial();
     }
 
     public void CheckMainTutorial()
@@ -27,6 +40,8 @@ public class TutorialManager : MonoBehaviour
             case MainTutorialStage.Battle:
                 break;
             case MainTutorialStage.Move:
+                mainTutorial.tutorialMove = gameObject.AddComponent<MoveTutorial>();
+                StartCoroutine(mainTutorial.tutorialMove.CoMoveTutorial());
                 break;
             case MainTutorialStage.Lanturn:
                 break;
@@ -41,5 +56,10 @@ public class TutorialManager : MonoBehaviour
                 break;
         }
         mainTutorial.NextMainTutorial();
+    }
+
+    public void NextStep()
+    {
+        mainTutorial.tutorialMove.TutorialStep++;
     }
 }

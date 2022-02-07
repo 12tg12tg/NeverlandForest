@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationFunc : MonoBehaviour
 {
     public PlayerAction actionState;
-    public HuntingManager huntingSystem;
+    public HuntingManager huntingManager;
     public GatheringSystem gathringSystem;
     public GameObject arrow;
 
@@ -23,7 +23,7 @@ public class AnimationFunc : MonoBehaviour
     public void Shoot()
     {
         arrow.SetActive(false);
-        huntingSystem.Shooting();
+        huntingManager.Shooting();
     }
 
     public void GatherIngPickUpEnd()

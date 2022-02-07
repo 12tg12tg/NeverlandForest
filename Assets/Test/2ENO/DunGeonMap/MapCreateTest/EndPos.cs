@@ -7,10 +7,6 @@ public class EndPos : MonoBehaviour
     public bool isLastPos;
     public int roomNumber;
 
-    void Start()
-    {
-    }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,8 +15,8 @@ public class EndPos : MonoBehaviour
             var player = other.GetComponent<PlayerDungeonUnit>();
             if (isLastPos)
             {
-                DungeonSystem.Instance.ChangeRoomEvent(true, true);
                 player.CurRoomNumber = 0;
+                DungeonSystem.Instance.ChangeRoomEvent(true, true);
             }
         }
     }

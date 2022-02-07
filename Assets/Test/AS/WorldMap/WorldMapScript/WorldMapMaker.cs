@@ -88,7 +88,9 @@ public class WorldMapMaker : MonoBehaviour
 
     [Header("미니월드맵에서 쓰는 것들")]
     public Material material;
-    public GameObject miniMapLand;
+    public bool isMiniMap;
+    private GameObject fog;
+    private readonly float offset = 500f;
 
     // 노드의 모든 정보를 갖고있는 변수
     private WorldMapNode[][] maps;
@@ -388,19 +390,21 @@ public class WorldMapMaker : MonoBehaviour
     {
         if (date > witchFollowDate - 1)
         {
-            fogPrefab = Instantiate(fogPrefab);
-            fogPrefab.layer = LayerMask.NameToLayer("WorldMap");
-            var posX = (fogPrefab.transform.localScale.x * 10f) - (this.posX / 2);
-            var addPos = miniMapLand != null ? 
-                new Vector3(miniMapLand.transform.localScale.z * 10f, 0f, miniMapLand.transform.localScale.z * 10f) : 
+            fog = Instantiate(fogPrefab, transform);
+            fog.layer = LayerMask.NameToLayer("WorldMap");
+            var posX = (fog.transform.localScale.x * 10f) - (this.posX / 2);
+
+            var addPos = isMiniMap? 
+                new Vector3(offset, 0f, offset) : 
                 Vector3.zero;
+
             var endPos = Vector3.zero - new Vector3(posX, 0f, 0f) - addPos;
-            fogPrefab.transform.position = endPos;
+            fog.transform.position = endPos;
             NodeColorChange(beforeDate - witchFollowDate);
         }
         for (int i = witchFollowDate; i < date; i++)
         {
-            fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
+            fog.transform.position += new Vector3(posX, 0f, 0f);
         }
         //beforeDate = date;
     }
@@ -411,12 +415,12 @@ public class WorldMapMaker : MonoBehaviour
         {
             if (isMiniMap)
             {
-                fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
+                fog.transform.position += new Vector3(posX, 0f, 0f);
             }
             else
             {
                 var endPos = new Vector3(posX * (date - beforeDate), 0f, 0f);
-                var coMove = Utility.CoTranslate(fogPrefab.transform, fogPrefab.transform.position, fogPrefab.transform.position + endPos, 1f, () =>
+                var coMove = Utility.CoTranslate(fog.transform, fog.transform.position, fog.transform.position + endPos, 1f, () =>
                 {
                     NodeColorChange(date - witchFollowDate);
                     action?.Invoke();
@@ -433,12 +437,12 @@ public class WorldMapMaker : MonoBehaviour
     public void FogCheck() // 미니맵을 켰을 때(버튼 클릭 시) 실행되는 메서드
     {
         var date = Vars.UserData.uData.Date;
-        if (date == witchFollowDate)
+        if (date == witchFollowDate && fog == null)
             FogInit(date);
 
         for (int i = beforeDate; i < date; i++)
         {
-            fogPrefab.transform.position += new Vector3(posX, 0f, 0f);
+            fog.transform.position += new Vector3(posX, 0f, 0f);
         }
         //beforeDate = date;
     }
@@ -474,7 +478,7 @@ public class WorldMapMaker : MonoBehaviour
     }
     private void InitNode(out WorldMapNode node, Vector2 index, string LayerName)
     {
-        var go = Instantiate(nodePrefab, new Vector3(index.y * (posX + 10f) - 100f, 0f, index.x * posZ - 100f), Quaternion.identity);
+        var go = Instantiate(nodePrefab, new Vector3(index.y * (posX + 10f) - offset, 0f, index.x * posZ - offset), Quaternion.identity);
         go.transform.SetParent(gameObject.transform);
         go.layer = LayerMask.NameToLayer(LayerName);
         node = go.AddComponent<WorldMapNode>();

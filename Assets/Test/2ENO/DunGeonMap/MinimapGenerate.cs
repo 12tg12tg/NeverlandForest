@@ -11,7 +11,15 @@ public class MinimapGenerate : MonoBehaviour
 
     public void CreateMiniMapObject()
     {
-        int startIndex = Vars.UserData.dungeonStartIdx;
+        int startIndex;
+        if (Vars.UserData.isTutorialDungeon)
+        {
+            startIndex = 0;
+        }
+        else
+        {
+            startIndex = Vars.UserData.dungeonStartIdx;
+        }
         int curIdx = startIndex;
         int left, right, top, bottom;
         Vector3 leftPos = Vector3.zero;

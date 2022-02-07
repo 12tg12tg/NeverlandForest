@@ -188,7 +188,6 @@ public class Utility
 
     public static IEnumerator CoTranslateLookFoward(Transform transform, Vector3 start, Vector3 end, float time, UnityAction action = null)
     {
-        Debug.Log(transform.gameObject.name, transform.gameObject);
         float timer = 0f;
         end.y = 0;
         var dir = Vector3.Normalize(end - start);

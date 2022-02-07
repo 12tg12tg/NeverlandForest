@@ -20,11 +20,12 @@ public class MainTutorial
 
     public TutorialStory tutorialStory = new TutorialStory();
 
+    public MoveTutorial tutorialMove;
 
     public void Init()
     {
         // 저장된 데이터 가져오기
-        //MainTutorialStage = ???
+        MainTutorialStage = MainTutorialStage.Move;
     }
 
     public void NextMainTutorial()

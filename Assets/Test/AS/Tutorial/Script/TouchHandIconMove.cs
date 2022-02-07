@@ -9,7 +9,12 @@ public class TouchHandIconMove : MonoBehaviour
     private Coroutine coMove;
     private Quaternion startQuat = Quaternion.Euler(0f, 0f, -20f);
     private readonly float time = 0.5f;
-    
+
+    private void OnEnable()
+    {
+        coMove = null;
+    }
+
     private void Update()
     {
         var co = Utility.CoRotateLoop(transform, startQuat, Quaternion.identity, time, () => StartCoroutine(CoScale(time)), () => coMove = null);

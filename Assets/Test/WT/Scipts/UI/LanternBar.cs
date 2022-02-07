@@ -7,6 +7,7 @@ public class LanternBar : MonoBehaviour
 {
     public Slider slider;
     public Slider blight;
+    public Image day_correction;
     public void Start()
     {
         ConsumeManager.init(); 
@@ -33,6 +34,16 @@ public class LanternBar : MonoBehaviour
         else if (Vars.UserData.uData.lanternState == LanternState.None)
         {
             blight.value = 0f;
+        }
+
+
+        if (ConsumeManager.CurTimeState == TimeState.DayTime)
+        {
+            day_correction.gameObject.SetActive(true);
+        }
+        else
+        {
+            day_correction.gameObject.SetActive(false);
         }
     }
 }

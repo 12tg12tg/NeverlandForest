@@ -47,6 +47,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         cover.interactable = true;
         below.interactable = false;
 
+        if (bm == null)
+            return;
+
         if(buttonType == SkillButtonType.Swap)
         {
             var arrow = bm.costLink.GetCurrentArrowElem();
