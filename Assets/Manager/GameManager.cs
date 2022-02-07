@@ -77,7 +77,6 @@ public class GameManager : MonoBehaviour
         // ·Îµå
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
 
-
         DontDestroyOnLoad(this);
         ConsumeManager.init();
         //MonsterPool.Instance.Init();
