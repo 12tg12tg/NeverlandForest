@@ -390,9 +390,11 @@ public class BattleManager : MonoBehaviour
                 uiLink.progressTrans.SetActive(false);
                 uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
                     {
-                    /*º¸»óÃ¢ ¶ç¿ì±â*/
+                        /*º¸»óÃ¢ ¶ç¿ì±â*/
+                        boy.PlayWinAnimation();
+                        girl.PlayWinAnimation();
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                        SceneManager.LoadScene("AS_RandomMap");
+                        //SceneManager.LoadScene("AS_RandomMap");
                     });
             }
             else

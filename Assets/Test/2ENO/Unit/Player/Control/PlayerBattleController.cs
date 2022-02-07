@@ -36,6 +36,23 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         tileMaker = TileMaker.Instance;
     }
 
+    // Animation
+    public void PlayHitAnimation()
+    {
+        FSM.animator.SetTrigger("Hit");
+    }
+
+    public void PlayDeadAnimation()
+    {
+        FSM.animator.SetTrigger("Dead");
+    }
+
+    public void PlayWinAnimation()
+    {
+        FSM.animator.SetTrigger("Win");
+    }
+
+    // 자신의 스킬 사용
     public void TurnInit(ActionType action)
     {
         FSM.ChangeState(CharacterBattleState.Action); // Action Init에서 공격 애니메이션 재생 시작

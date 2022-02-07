@@ -22,7 +22,18 @@ public class PlayerStats : UnitBase, IAttackable
     {
         var attackUnit = attacker as MonsterCommand;
         var damage = attackUnit.attacker.Atk;
-        ConsumeManager.GetDamage(damage);
+        if(ConsumeManager.GetDamage(damage))
+        {
+            // 전투 끝
+            manager.boy.PlayDeadAnimation();
+            manager.girl.PlayDeadAnimation();
+        }
+        else
+        {
+            // 살아있음
+            controller.PlayHitAnimation();
+        }
+
         Debug.Log($"{controller.playerType}가 {attackUnit}에게 {damage}의 피해를 받다.");
         Debug.Log($"{Hp + damage} -> {Hp}");
     }
