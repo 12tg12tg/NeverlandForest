@@ -15,8 +15,8 @@ public class OptionPanelManager : MonoBehaviour
     public Sprite soundOnImage;
     public Sprite soundOffImage;
 
-    private bool isBgmOn;
-    private bool isSoundOn;
+    private bool isBgmOn =true;
+    private bool isSoundOn = true;
 
     public void Update()
     {
@@ -50,5 +50,13 @@ public class OptionPanelManager : MonoBehaviour
         }
     }
 
+    public void DungeonGiveUp()
+    {
+
+    }
+    public void ProgramDown()
+    {
+
+    }
 
 }
