@@ -8,6 +8,6 @@ public class BoyHpBar : MonoBehaviour
     public Slider slider;
     void Update()
     {
-        slider.value = Vars.UserData.uData.HunterHp / Vars.hunterMaxHp;
+        slider.value = Vars.UserData.uData.Hp / Vars.maxHp;
     }
 }

@@ -107,7 +107,7 @@ public class BattleManager : MonoBehaviour
 
         // 플레이어 스탯 전달받기
         // Vars 전역 저장소에서 불러오기.
-        boy.stats.Hp = (int)Vars.UserData.uData.HunterHp;
+        boy.stats.Hp = (int)Vars.UserData.uData.Hp;
 
         //플레이어 배치
         tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
