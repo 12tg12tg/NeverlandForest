@@ -31,11 +31,6 @@ public class MoveTest : MonoBehaviour
     private List<RigLayer> girlRiglayers;
 
     private Coroutine coHand;
-
-    private float tutorialTime;
-
-    private MoveTutorial moveTutorial;
-
     public void Init()
     {
         multiTouch = GameManager.Manager.MultiTouch;
@@ -56,8 +51,6 @@ public class MoveTest : MonoBehaviour
         // 1 active = 왼쪽방향 이동기준
         girlRiglayers[1].active = true;
         boyRight.isRight = false;
-
-        
     }
 
     // 임시
@@ -76,12 +69,6 @@ public class MoveTest : MonoBehaviour
     void Update()
     {
         //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
-        moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
-        if (moveTutorial != null && moveTutorial.TutorialStep != 2)
-        {
-            RigOff();
-            return;
-        }
         if (multiTouch != null)
         {
             if (!isCoMove)
@@ -97,24 +84,6 @@ public class MoveTest : MonoBehaviour
                     var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
                     if (playerXPos + 0.05f < touchXPos)
                     {
-                        if (moveTutorial != null &&  moveTutorial.TutorialStep == 2 &&
-                            playerBoy.transform.position.x >= DungeonSystem.Instance.roomGenerate.roomList[0].endPosVector.x)
-                            return;
-
-                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
-                        {
-                            if (moveTutorial.CommandSucess == 0)
-                            {
-                                tutorialTime += Time.deltaTime;
-
-                                if (tutorialTime > 1.0f)
-                                {
-                                    moveTutorial.CommandSucess++;
-                                    tutorialTime = 0f;
-                                }
-                            }
-                        }
-
                         if (!isTurn)
                             RigOff();
                         isTurn = true;
@@ -128,21 +97,6 @@ public class MoveTest : MonoBehaviour
                     {
                         if (playerBoy.transform.position.x <= DungeonSystem.Instance.roomGenerate.spawnPos.x)
                             return;
-
-                        if (moveTutorial != null && moveTutorial.TutorialStep == 2)
-                        {
-                            if (moveTutorial.CommandSucess == 1)
-                            {
-                                tutorialTime += Time.deltaTime;
-
-                                if (tutorialTime > 1.0f)
-                                {
-                                    moveTutorial.CommandSucess++;
-                                    tutorialTime = 0f;
-                                    moveTutorial.TutorialStep++;
-                                }
-                            }
-                        }
 
                         if (isTurn)
                             RigOff();

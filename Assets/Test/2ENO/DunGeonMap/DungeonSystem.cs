@@ -31,12 +31,14 @@ public class DungeonSystem : MonoBehaviour
     public Button campButton;
     public RandomEventUIManager rndUi;
     public MoveTest playerMove;
+    public TutorialPlayerMove tutorialMove;
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
-    public TutorialManager tutorialManager;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
+
+    private TutorialManager tutorialManager;
 
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
@@ -46,9 +48,8 @@ public class DungeonSystem : MonoBehaviour
     {
         instance = this;
         EndInit();
-        //Init();
+        Init();
     }
-
     public void EndInit()
     {
         dungeonPlayerGirl.gameObject.SetActive(false);
@@ -56,25 +57,22 @@ public class DungeonSystem : MonoBehaviour
         eventObjectGenerate.EventObjectClear();
         roomGenerate.EndInit();
         DungeonCanvas.SetActive(false);
-        playerMove.gameObject.SetActive(false);
+        //playerMove.gameObject.SetActive(false);
     }
 
     public void TutorialInit()
     {
         tutorialManager = GameManager.Manager.tm;
         tutorialManager.Init();
+        tutorialMove.Init();
     }
 
     public void Init()
     {
+        DungeonCanvas.SetActive(true);
         eventObjectGenerate.Init();
-        playerMove.Init();
         minimapCam.Init();
         roomGenerate.Init();
-        DungeonCanvas.SetActive(true);
-        playerMove.gameObject.SetActive(true);
-        dungeonPlayerGirl.gameObject.SetActive(false);
-        dungeonPlayerBoy.gameObject.SetActive(false);
 
         if(Vars.UserData.isTutorialDungeon)
         {
@@ -83,6 +81,8 @@ public class DungeonSystem : MonoBehaviour
         }
         else
         {
+            playerMove.gameObject.SetActive(true);
+            playerMove.Init();
             rndUi.Init();
 
             // 현재 불러올 맵 데이터가 없을 때
@@ -91,14 +91,16 @@ public class DungeonSystem : MonoBehaviour
 
             curDungeonIndex = Vars.UserData.curDungeonIndex;
             startIndex = Vars.UserData.dungeonStartIdx;
-            //if (Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
-            //{
-            //    //Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
-            //}
+            // 첫 세이브에서 이거없으면 오류
+            if (Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
+            {
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
+            }
+
             // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
             if (Vars.UserData.dungeonReStart)
             {
-                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = null;
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
                 Vars.UserData.dungeonReStart = false;
                 Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
                 Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
@@ -138,6 +140,10 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.WorldMapPlayerData.isClear = false;
             SceneManager.LoadScene("AS_WorldMap");
             Vars.UserData.uData.Date++;
+        }
+        if (GUI.Button(new Rect(100, 400, 100, 75), "Start"))
+        {
+            Init();
         }
     }
 

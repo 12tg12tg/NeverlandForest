@@ -261,6 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wm: {fileID: 0}
   cm: {fileID: 0}
+  tm: {fileID: 0}
   gameoverUI: {fileID: 6318415838549628713}
 --- !u!1001 &2563543519368238410
 PrefabInstance:
@@ -370,8 +371,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8375583174179435403, guid: a78246797c450164485d9bee4c9fea79, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 4696221850651074432, guid: da0a1cd5b14731e4d826fe8ec9672e0a, type: 2}
+    - target: {fileID: 8375583174179435403, guid: a78246797c450164485d9bee4c9fea79, type: 3}
       propertyPath: m_hasFontAssetChanged
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a78246797c450164485d9bee4c9fea79, type: 3}
