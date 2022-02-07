@@ -33,6 +33,7 @@ public class DungeonSystem : MonoBehaviour
     public MoveTest playerMove;
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
+    public TutorialManager tutorialManager;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
@@ -41,14 +42,11 @@ public class DungeonSystem : MonoBehaviour
     private Vector2 curDungeonIndex;
     private int startIndex;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
-        eventObjectGenerate.Init();
-        Init();
-        rndUi.Init();
-        playerMove.Init();
-        minimapCam.Init();
+        EndInit();
+        //Init();
     }
 
     public void EndInit()
@@ -61,40 +59,63 @@ public class DungeonSystem : MonoBehaviour
         playerMove.gameObject.SetActive(false);
     }
 
+    public void TutorialInit()
+    {
+        tutorialManager = GameManager.Manager.tm;
+        tutorialManager.Init();
+    }
+
     public void Init()
     {
+        eventObjectGenerate.Init();
+        playerMove.Init();
+        minimapCam.Init();
+        roomGenerate.Init();
         DungeonCanvas.SetActive(true);
         playerMove.gameObject.SetActive(true);
-
-        // 현재 불러올 맵 데이터가 없을 때
-        if (Vars.UserData.AllDungeonData.Count <= 0)
-            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-
         dungeonPlayerGirl.gameObject.SetActive(false);
         dungeonPlayerBoy.gameObject.SetActive(false);
 
-        curDungeonIndex = Vars.UserData.curDungeonIndex;
-        startIndex = Vars.UserData.dungeonStartIdx;
-        if (Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
+        if(Vars.UserData.isTutorialDungeon)
         {
-            Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
+            dungeonSystemData = Vars.UserData.tutorialDungeonData;
+            startIndex = 0;
         }
-        // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
-        else if (Vars.UserData.dungeonReStart)
+        else
         {
-            Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
-            Vars.UserData.dungeonReStart = false;
-            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
-            Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
-        }
-        // 클리어한 방 다시 돌아올때, 플레이어 위치만 방 첫 위치로
-        else if(!Vars.UserData.dungeonReStart)
-        {
-        }
+            rndUi.Init();
 
-        if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
-        {
-            dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
+            // 현재 불러올 맵 데이터가 없을 때
+            if (Vars.UserData.AllDungeonData.Count <= 0)
+                GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+
+            curDungeonIndex = Vars.UserData.curDungeonIndex;
+            startIndex = Vars.UserData.dungeonStartIdx;
+            //if (Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData == null)
+            //{
+            //    //Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray[startIndex];
+            //}
+            // 도망치거나 새로 도전할때 플레이어 현재방 위치 처음으로
+            if (Vars.UserData.dungeonReStart)
+            {
+                Vars.UserData.AllDungeonData[curDungeonIndex].curDungeonRoomData = null;
+                Vars.UserData.dungeonReStart = false;
+                Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerBoyData.curRoomNumber = -1;
+                Vars.UserData.AllDungeonData[curDungeonIndex].curPlayerGirlData.curRoomNumber = -1;
+            }
+            // 클리어한 방 다시 돌아올때, 플레이어 위치만 방 첫 위치로
+            else if (!Vars.UserData.dungeonReStart)
+            {
+            }
+
+            if (Vars.UserData.AllDungeonData[curDungeonIndex] != null)
+            {
+                dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
+            }
+            worldMap.InitWorldMiniMap();
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+            // TODO: 임시! 가라로 해놓은거
+            GameManager.Manager.State = GameState.Dungeon;
         }
 
         roomTool = new RoomTool();
@@ -102,11 +123,6 @@ public class DungeonSystem : MonoBehaviour
             ConvertEventDataType();
 
         DungeonRoomSetting();
-        worldMap.InitWorldMiniMap();
-
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-        // TODO: 임시! 가라로 해놓은거
-        GameManager.Manager.State = GameState.Dungeon;
     }
 
     public void OnGUI()
@@ -169,14 +185,28 @@ public class DungeonSystem : MonoBehaviour
     {
         if (isRoomEnd)
         {
+            if (Vars.UserData.isTutorialDungeon)
+            {
+                tutorialManager.CheckMainTutorial();
+            }
+
             eventObjectGenerate.EventObjectClear();
 
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
-                Vars.UserData.WorldMapPlayerData.isClear = true;
                 //Vars.UserData.curDungeonIndex = Vector2.zero;
                 //Vars.UserData.AllDungeonData.Clear();
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+
+                if (Vars.UserData.isTutorialDungeon)
+                {
+                    dungeonSystemData = null;
+                    // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
+                }
+                else
+                {
+                    Vars.UserData.WorldMapPlayerData.isClear = true;
+                }
                 SceneManager.LoadScene("AS_WorldMap");
                 return;
             }
@@ -202,9 +232,13 @@ public class DungeonSystem : MonoBehaviour
         }
         else
         {
-            if(isGoForward)
+            if (isGoForward)
             {
-                // 방 한칸 지날때마다 30분씩 지남
+                if (Vars.UserData.isTutorialDungeon)
+                {
+                    //MoveTutorial.Instance.NextStep();
+                }
+
                 ConsumeManager.TimeUp(0, 1);
                 beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
                 dungeonSystemData.curDungeonRoomData = roomTool.GetNextRoom(dungeonSystemData.curDungeonRoomData);

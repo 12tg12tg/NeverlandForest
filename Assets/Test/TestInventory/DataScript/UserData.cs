@@ -31,6 +31,10 @@ public class UserData
     public bool isRandomDataLoad;
     public bool isFirst = true;
 
+    // 튜토리얼 던전
+    public bool isTutorialDungeon;
+    public DungeonData tutorialDungeonData = new DungeonData();
+
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
     //Experienced Craft
