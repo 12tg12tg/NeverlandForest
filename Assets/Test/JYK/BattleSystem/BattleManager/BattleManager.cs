@@ -31,7 +31,7 @@ public class BattleManager : MonoBehaviour
     public BattleWave waveLink;
     public BattleTile tileLink;
     public BattleUI uiLink;
-    public BattleDirecting directLink;
+    public BattleDirecting directingLink;
     public BattleDrag dragLink;
     public BattleCost costLink;
 
@@ -165,6 +165,55 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
+
+        // È­»ì
+        DataAllItem temp;
+        int total = 0;
+        var inventory = Vars.UserData.HaveAllItemList;
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.arrowElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.arrowElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.arrowNum;
+        Vars.UserData.AddItemData(temp);
+
+        // ¼èÈ­»ì
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.ironArrowElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.ironArrowElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.ironArrowNum;
+        Vars.UserData.AddItemData(temp);
+
+        // ¿ÀÀÏ
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.oilElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.oilElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.oilNum;
+        Vars.UserData.AddItemData(temp);
+
+        // ·£ÅÏ¹à±â
+        ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
+        ConsumeManager.FullingLantern(customBattle.lanternCount);
     }
 
     private void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
@@ -318,38 +367,15 @@ public class BattleManager : MonoBehaviour
         {
             command = boyInput;
             attacker = boy;
-            costLink.CostArrow(skill);
         }
         else
         {
             command = girlInput;
             attacker = girl;
-            costLink.CostLanternOrOil(skill);
         }
-        BottomUIManager.Instance.UpdateCostInfo();
 
         command.Create(target, skill);
         attacker.TurnInit(ActionType.Skill);
-    }
-
-    public void DoCommand(DataAllItem item)
-    {
-        PlayerCommand command;
-        PlayerBattleController attacker;
-        //if (type == PlayerType.Boy)
-        //{
-        //    command = boyInput;
-        //    attacker = boy;
-        //}
-        //else
-        //{
-        //    command = girlInput;
-        //    attacker = girl;
-        //}
-
-        //command.Create(target, item);
-
-        //attacker.TurnInit(ActionType.Item);
     }
 
     public void EndOfPlayerAction()
@@ -358,12 +384,33 @@ public class BattleManager : MonoBehaviour
         var monsterlist = monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if(monsterlist.Count == 0)
         {
-            uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
-                {
+            if (waveLink.IsAllWaveClear())
+            {
+                uiLink.turnSkipButton.SetActive(false);
+                uiLink.progressTrans.SetActive(false);
+                uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
+                    {
                     /*º¸»óÃ¢ ¶ç¿ì±â*/
-                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                    SceneManager.LoadScene("AS_RandomMap");
-                });
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                        SceneManager.LoadScene("AS_RandomMap");
+                    });
+            }
+            else
+            {
+                IsDuringPlayerAction = false;
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Boy, true);
+                BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Girl, true);
+                if (isPlayerFirst)
+                {
+                    FSM.ChangeState(BattleState.Monster);
+                    uiLink.turnSkipButton.SetActive(false);
+                }
+                else
+                {
+                    FSM.ChangeState(BattleState.Settlement);
+                    uiLink.turnSkipButton.SetActive(false);
+                }
+            }
         }
         else
         {
@@ -376,10 +423,12 @@ public class BattleManager : MonoBehaviour
                 if (isPlayerFirst)
                 {
                     FSM.ChangeState(BattleState.Monster);
+                    uiLink.turnSkipButton.SetActive(false);
                 }
                 else
                 {
                     FSM.ChangeState(BattleState.Settlement);
+                    uiLink.turnSkipButton.SetActive(false);
                 }
             }
             else

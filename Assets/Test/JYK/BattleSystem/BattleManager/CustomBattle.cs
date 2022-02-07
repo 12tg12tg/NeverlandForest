@@ -14,4 +14,9 @@ public class CustomBattle : MonoBehaviour
     public List<MonsterPoolTag> cwave1;
     public List<MonsterPoolTag> cwave2;
     public List<MonsterPoolTag> cwave3;
+
+    public int arrowNum;
+    public int ironArrowNum;
+    public int oilNum;
+    public int lanternCount;
 }

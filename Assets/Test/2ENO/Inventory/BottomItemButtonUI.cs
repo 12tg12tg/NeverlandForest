@@ -7,6 +7,8 @@ using TMPro;
 
 public class BottomItemButtonUI : MonoBehaviour
 {
+    private TileMaker tm;
+
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI count;
     [SerializeField] private Image selectedImg;
@@ -90,6 +92,11 @@ public class BottomItemButtonUI : MonoBehaviour
     private DataAllItem dataItem;
 
     public DataAllItem DataItem { get => dataItem; }
+
+    private void Start()
+    {
+        tm = TileMaker.Instance;
+    }
 
     public void Init(DataAllItem data, int slot = -1)
     {
@@ -179,6 +186,12 @@ public class BottomItemButtonUI : MonoBehaviour
     public void ItemButtonClick()
     {
         if (dataItem == null)
+            return;
+
+        if (tm != null && tm.IsWaitingToSelectTrapTile) // 설치 코루틴 동작 중
+            return;
+
+        if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
             return;
 
         Vector3 uiVec = Vector3.zero;

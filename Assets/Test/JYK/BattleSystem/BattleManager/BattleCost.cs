@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleCost : MonoBehaviour
 {
     [Header("매니저 연결")]
     [SerializeField] private BattleManager bm;
+    [SerializeField] private TileMaker tm;
 
     [Header("특수 스킬 ID 입력")]
     public readonly string[] skillIDs_NearAttack = new string[] { "0", "5" };
@@ -249,6 +251,7 @@ public class BattleCost : MonoBehaviour
         {
             var curLanternCount = Vars.UserData.uData.LanternCount;
             ConsumeManager.ConsumeLantern(skill.SkillTableElem.cost);
+            bm.uiLink.UpdateLanternRange();
             Debug.Log($"원래 랜턴양 {curLanternCount}에서 {Vars.UserData.uData.LanternCount}로 줄어듦.");
         }
     }
@@ -260,6 +263,12 @@ public class BattleCost : MonoBehaviour
 
     private IEnumerator CoHeal(DataAllItem item)
     {
+        // 다른 아이템 클릭 못하도록
+        tm.IsWaitingToHeal = true;
+        // 스킵 못하도록
+        var skipButton = bm.uiLink.turnSkipButton.GetComponent<Button>();
+        skipButton.interactable = false;
+
         // 파티클 재생 - 2개
         Particle script;
         bool isAction = false;
@@ -307,5 +316,8 @@ public class BattleCost : MonoBehaviour
 
         bm.uiLink.UpdateProgress();
         bm.EndOfPlayerAction();
+
+        tm.IsWaitingToHeal = false;
+        skipButton.interactable = true;
     }
 }

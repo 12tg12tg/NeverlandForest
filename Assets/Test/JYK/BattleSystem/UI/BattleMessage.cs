@@ -12,7 +12,6 @@ public class BattleMessage : MonoBehaviour
     public void PrintMessage(string message, float time, UnityAction action)
     {
         gameObject.SetActive(true);
-
         StartCoroutine(CoNormalMessagePrintOut(message, time, action));
     }
 
