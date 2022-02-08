@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleTutorial : MonoBehaviour
 {
@@ -8,7 +9,20 @@ public class BattleTutorial : MonoBehaviour
     [SerializeField] private TileMaker tm;
     private BottomUIManager bottomUI;
 
+    [Header("마스크 재료 설정")]
+    [SerializeField] private Sprite rect;
+    [SerializeField] private Sprite circle;
+
+    [Header("마스크 & 배경")]
+    [SerializeField] private RectTransform mask;
+    [SerializeField] private Image maskImg;
+    [SerializeField] private GameObject background;
+    [SerializeField] private Transform fingerImg;
+    [SerializeField] private Transform descriptionBox;
+
     private bool tu_01_CamRightButton;
+    private bool isWaitingTouch;
+    private bool isTouched;
 
     private void Start()
     {
@@ -25,11 +39,18 @@ public class BattleTutorial : MonoBehaviour
         StartCoroutine(CoBattleTutorial());
     }
 
-
+    private void Update()
+    {
+        if(isWaitingTouch)
+        {
+            isWaitingTouch = false;
+            isTouched = GameManager.Manager.MultiTouch.IsTap;
+        }
+    }
 
     public void EndDutorial()
     {
-
+        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
     }
 
     private IEnumerator CoBattleTutorial()
@@ -40,6 +61,7 @@ public class BattleTutorial : MonoBehaviour
         // 웨이브 미리보기 버튼 클릭 유도 & 설명 띄우기
         bottomUI.ButtonInteractive(false);
         bm.uiLink.moveCameraRightButton.interactable = true;
+        SetFirstCommand();    
         yield return new WaitUntil(() => tu_01_CamRightButton);
 
         // 웨이브 미리보기 취소 클릭 유도 & 설명 띄우기
@@ -97,5 +119,14 @@ public class BattleTutorial : MonoBehaviour
         }
 
         EndDutorial();
+    }
+
+    private void SetFirstCommand()
+    {
+        mask.anchoredPosition = null;
+        maskImg.sprite = circle;
+        //background;
+        //fingerImg;
+        //descriptionBox;
     }
 }
