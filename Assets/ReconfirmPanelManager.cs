@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ReconfirmPanelManager : MonoBehaviour
 {
+    [Header("Popups")]
+    public GameObject rewardNotEmptyPopup;
+    public GameObject inventoryFullPopup;
+
     [Header("ÆÇ³Úµé")]
     public GameObject battleReconfirm;
     public GameObject huntReconfirm;
