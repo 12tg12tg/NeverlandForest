@@ -11,7 +11,6 @@ public class HuntTutorial : MonoBehaviour
     public HuntPlayer huntPlayers;
     public HuntTile tile;
 
-    public RectTransform target;
     public Button huntButton;
 
     private Rect canvasRt;
@@ -58,8 +57,8 @@ public class HuntTutorial : MonoBehaviour
             delay > 1f &&
             TutorialStep != TutorialStepTile &&
             TutorialStep != TutorialStepMove &&
-            TutorialStep != TutorialStepHunt &&
-            TutorialStep != TutorialStepSuccess)
+            TutorialStep != TutorialStepSuccess &&
+            TutorialStep != TutorialStepHunt)
         {
             delay = 0f;
             TutorialStep++;
@@ -96,11 +95,8 @@ public class HuntTutorial : MonoBehaviour
         HuntingExplain();
         yield return new WaitWhile(() => TutorialStep < 5);
 
-        // 사냥(예 눌러야 넘어감)
-        delay = 0f;
         HuntSuccessExplain();
         yield return new WaitWhile(() => TutorialStep < 6);
-
         // 사냥 도움말 팝업 설명(보류)
         delay = 0f;
         HuntHelpExplain();
@@ -193,22 +189,13 @@ public class HuntTutorial : MonoBehaviour
     }
     public void HuntSuccessExplain()
     {
-        SetActive(true, false, true);
-        blackout.sizeDelta = Vector2.zero;
-
-        var uiCamera = GameManager.Manager.cm.uiCamera;
-        var viewPos = uiCamera.WorldToViewportPoint(target.position);
-
-        viewPos.x *= canvasRt.width;
-        viewPos.y *= canvasRt.height;
-
-        handIcon.anchoredPosition = viewPos;
-
-        //dialogText.text = "사냥 성공 설명";
+        SetActive(false);
+        //blackout.sizeDelta = Vector2.zero;
     }
     public void HuntHelpExplain()
     {
         SetActive(true, true);
+        blackout.sizeDelta = Vector2.zero;
         dialogBoxObj.down.SetActive(false);
         var sizeUp = dialogBox.sizeDelta * 3;
         dialogBox.sizeDelta += sizeUp;

@@ -6,36 +6,33 @@ using UnityEngine.EventSystems;
 public class HuntTile : MonoBehaviour, IPointerClickHandler
 {
     public Bush bush;
-    public HuntPlayer huntPlayers;
+    public HuntingManager huntingManager;
     public Material[] materials;
     public MeshRenderer ren;
     public Vector2 index;
 
-    [HideInInspector]
-    public HuntingManager huntingManager;
-
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(!huntPlayers.IsTutorialClear)
+        var players = huntingManager.huntPlayers;
+        if (!players.IsTutorialClear)
         {
-            if (huntPlayers.tutorialTile == null)
+            if (players.tutorialTile == null)
                 return;
-            if (huntPlayers.tutorialTile.index == index && huntingManager != null)
+            if (players.tutorialTile.index == index/* && huntingManager != null*/)
             {
                 huntingManager.GetComponent<HuntTutorial>().TutorialStep++;
                 Debug.Log(huntingManager.GetComponent<HuntTutorial>().TutorialStep);
-                huntingManager = null;
             }
         }
-        else if ((int)index.y != 6)
+        else if ((int)index.y != 6 && !huntingManager.animal.isRun)
         {
-            huntPlayers.Move(index, transform.position, bush != null);
+            players.Move(index, transform.position, bush.gameObject.activeSelf);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && bush != null)
+        if (other.CompareTag("Player") && bush.gameObject.activeSelf)
         {
             var trans = bush.transform;
             var count = trans.childCount;
@@ -48,7 +45,7 @@ public class HuntTile : MonoBehaviour, IPointerClickHandler
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && bush != null)
+        if (other.CompareTag("Player") && bush.gameObject.activeSelf)
         {
             var trans = bush.transform;
             var count = trans.childCount;
