@@ -16,13 +16,13 @@ public enum MainTutorialStage
 
 public class MainTutorial
 {
-    public MainTutorialStage MainTutorialStage { get; private set; } = MainTutorialStage.Story;
+    public MainTutorialStage MainTutorialStage { get;  set; } = MainTutorialStage.Story;
 
     public TutorialStory tutorialStory = new TutorialStory();
 
     public MoveTutorial tutorialMove;
     public GatheringTutorial tutorialGathering;
-
+    public CampTutorial tutorialCamp;
     public void Init()
     {
         // 저장된 데이터 가져오기
