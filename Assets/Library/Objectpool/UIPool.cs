@@ -4,25 +4,26 @@ using UnityEngine;
 
 public enum UIPoolTag
 {
-    MonsterUI, ProgressToken,
+    MonsterUI, ProgressToken, DamageTxt
 }
 
 public class UIPool : CustomObjectPool<UIPoolTag>
 {
-    public Transform parent;
+    public Transform[] parents;
 
     protected override GameObject OnCreate(UIPoolTag key)
     {
         var index = (int)key;
-        var go = Instantiate(prefabs[index], parent);
+        var go = Instantiate(prefabs[index], parents[index]);
         go.SetActive(false);
         return go;
     }
 
-    protected override void OnGet(GameObject go)
+    protected override void OnGet(GameObject go, UIPoolTag key)
     {
+        var index = (int)key;
         go.SetActive(true);
-        go.transform.SetParent(parent);
+        go.transform.SetParent(parents[index]);
     }
 
     protected override void OnRelease(GameObject go)

@@ -318,7 +318,7 @@ public class DataRandomEvent
                         ConsumeManager.RecoverHp(hp);
                     else
                     {
-                        if(Vars.UserData.uData.HunterHp + hp <= 0)
+                        if(Vars.UserData.uData.Hp + hp <= 0)
                             isInsufficiency[selectNum - 1] = true;
                         else
                             ConsumeManager.GetDamage(-hp);

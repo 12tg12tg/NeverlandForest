@@ -266,8 +266,7 @@ public class BattleCost : MonoBehaviour
         // 다른 아이템 클릭 못하도록
         tm.IsWaitingToHeal = true;
         // 스킵 못하도록
-        var skipButton = bm.uiLink.turnSkipButton.GetComponent<Button>();
-        skipButton.interactable = false;
+        bm.uiLink.turnSkipButton.interactable = false;
 
         // 파티클 재생 - 2개
         Particle script;
@@ -314,10 +313,10 @@ public class BattleCost : MonoBehaviour
         Vars.UserData.RemoveItemData(allItem);
         BottomUIManager.Instance.ItemListInit();
 
-        bm.uiLink.UpdateProgress();
+        bm.uiLink.UpdateProgress(BattleUI.ProgressIcon.Potion);
         bm.EndOfPlayerAction();
 
         tm.IsWaitingToHeal = false;
-        skipButton.interactable = true;
+        bm.uiLink.turnSkipButton.interactable = true;
     }
 }

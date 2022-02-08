@@ -14,7 +14,7 @@ public class AffectedInfo
 }
 
 
-public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
+public class Tiles : MonoBehaviour, IPointerClickHandler
 {
     public MeshRenderer ren;
     public Vector2 index;
@@ -297,14 +297,6 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         Units_MonsterRemove(unit as MonsterUnit);
     }
 
-    //Drag Drop
-    public void OnDrop(PointerEventData eventData)
-    {
-        //Debug.Log($"Pointer is drop here to {eventData.pointerCurrentRaycast.worldPosition} Tile! ");
-        TileMaker.Instance.LastDropPos = index;
-        TileMaker.Instance.LastHalfTile = WhichPartOfTile(eventData.pointerCurrentRaycast.worldPosition);
-    }
-
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -323,24 +315,30 @@ public class Tiles : MonoBehaviour, IPointerClickHandler, IDropHandler
         // 2) 스킬사용중에 타일 클릭
         else
         {
+            // 레이케스트 조사
+            var ray = Camera.main.ScreenPointToRay(eventData.position);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, 50f, LayerMask.GetMask("Tile")))
+            {
+                tileMaker.LastClickPos = hit.point;
+            }
+
             var skill = BottomUIManager.Instance.curSkillButton.skill;
-            //var item = BottomUIManager.Instance.curSkillButton.item;
 
             var actionType = BottomUIManager.Instance.buttonState;
 
             if (actionType == BottomUIManager.ButtonState.Skill)
             {
-                bm.DoCommand(skill.SkillTableElem.player, index, skill);
-            }
-            else
-            {
-                //manager.DoCommand(item as DataConsumable);
+                bm.DoCommand(skill.SkillTableElem.player, index, skill, false);
             }
 
             BottomUIManager.Instance.curSkillButton.Cancle_UseSkill();
             BottomUIManager.Instance.InteractiveSkillButton(skill.SkillTableElem.player, false);
+
             bm.tileLink.EndTileClick();
-            bm.uiLink.UpdateProgress(); 
+
+            var progressIcon = skill.SkillTableElem.player == PlayerType.Boy ? BattleUI.ProgressIcon.Boy : BattleUI.ProgressIcon.Girl;
+            bm.uiLink.UpdateProgress(progressIcon); 
         }
     }
 

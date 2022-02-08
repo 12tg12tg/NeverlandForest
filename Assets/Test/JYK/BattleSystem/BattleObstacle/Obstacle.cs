@@ -61,6 +61,9 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
     [Header("장벽 체력 확인")]
     public int hp;
 
+    private bool isInit;
+    private SpriteRenderer sprite;
+
     private void Start()
     {
         var elems = DataTableManager.GetTable<AllItemDataTable>().data.Values;
@@ -73,10 +76,25 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
                 break;
             }
         }
+
+        if(type == TrapTag.Snare)
+        {
+            sprite = GetComponentInChildren<SpriteRenderer>();
+        }
+    }
+
+    private void Update()
+    {
+        if (isInit && type == TrapTag.Snare)
+        {
+            var rotate = Quaternion.LookRotation(sprite.transform.position - Camera.main.transform.position);
+            sprite.transform.rotation = rotate;
+        }
     }
 
     public void Init(Tiles tile, Obstacle another = null)
     {
+        isInit = true;
         this.tile = tile;
         switch (type)
         {
@@ -101,6 +119,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
 
     public void Release()
     {
+        isInit = false;
         tile = null;
         another = null;
         anotherDebuff = null;

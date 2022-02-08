@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class BattleInput : MonoBehaviour
 {
     [SerializeField] private Button battleStartBut;
+    public bool isLastInputDrag; // 애니메이션함수에서 타겟을 정할 때 드래그방식이었는지 터치방식이었는지 확인할 때 사용.
 
     public void WaitUntillSettingDone()    // 플레이어 입력 대기
     {

@@ -140,19 +140,19 @@ public static class ConsumeManager
    
     public static void RecoverHp(float recoveryAmount)
     {
-        Vars.UserData.uData.HunterHp += recoveryAmount;
-        if (Vars.UserData.uData.HunterHp > Vars.hunterMaxHp)
+        Vars.UserData.uData.Hp += recoveryAmount;
+        if (Vars.UserData.uData.Hp > Vars.maxHp)
         {
-            Vars.UserData.uData.HunterHp = Vars.hunterMaxHp;
+            Vars.UserData.uData.Hp = Vars.maxHp;
         }
         SaveConsumableData();
     }
     public static bool GetDamage(float damage)
     {
-        Vars.UserData.uData.HunterHp -= damage;
-        if (Vars.UserData.uData.HunterHp < 0)
+        Vars.UserData.uData.Hp -= damage;
+        if (Vars.UserData.uData.Hp < 0)
         {
-            Vars.UserData.uData.HunterHp = 0;
+            Vars.UserData.uData.Hp = 0;
             CostDataReset();
             SaveConsumableData();
             return true;
@@ -350,7 +350,7 @@ public static class ConsumeManager
         Vars.UserData.uData.LanternCount = 18;
         Vars.UserData.uData.Date = 0;
         Vars.UserData.uData.Tiredness = 100;
-        Vars.UserData.uData.HunterHp = 100f;
+        Vars.UserData.uData.Hp = Vars.maxHp;
         Vars.UserData.uData.BonfireHour = 3f;
     }
 }
