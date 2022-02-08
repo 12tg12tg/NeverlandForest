@@ -14,6 +14,7 @@ public class BottomInfoUI : MonoBehaviour
     public void Init()
     {
         img.sprite = null;
+        img.color = Color.clear;
         info_name.text = "정보 없음";
         info_description.text = "정보 없음";
     }
@@ -21,6 +22,8 @@ public class BottomInfoUI : MonoBehaviour
     public void Init(DataPlayerSkill skill)
     {
         img.sprite = skill.SkillTableElem.IconSprite;
+        img.color = Color.white;
+
         info_name.text = skill.SkillTableElem.name;
         info_description.text = skill.SkillTableElem.description;
     }
@@ -32,6 +35,8 @@ public class BottomInfoUI : MonoBehaviour
 
         var allItem = item;
         img.sprite = allItem.ItemTableElem.IconSprite;
+        img.color = Color.white;
+
         info_name.text = allItem.ItemTableElem.name;
         info_description.text = allItem.ItemTableElem.desc;
     }

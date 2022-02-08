@@ -65,6 +65,7 @@ public class CampManager : MonoBehaviour
     public GameObject bush;
     public GameObject bluemoonObject;
     public RecipeIcon diaryRecipeIcon;
+    public GameObject campbornfire;
     public List<DataAllItem> RewardList
     {
         get => rewardList;
@@ -105,12 +106,17 @@ public class CampManager : MonoBehaviour
     {
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         GameManager.Manager.State = GameState.Camp;
-        GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
-        GameManager.Manager.tm.CheckMainTutorial();
+        TutorialStart();
     }
     public void Start()
     {
         CampInit();
+    }
+    public void TutorialStart()
+    {
+        GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
+        GameManager.Manager.tm.CheckMainTutorial();
+
     }
     public void CampInit()
     {
@@ -172,15 +178,24 @@ public class CampManager : MonoBehaviour
     }
     public void StartSleepInCamp()
     {
+        campbornfire.SetActive(false);
         var tentPos = tent.transform.position;
         EndPos = new Vector3(tentPos.x, tentPos.y + 2f, tentPos.z - 5f);
         bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenSleepInCamp));
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+
+        }
     }
     public void OpenSleepInCamp()
     {
         isSleepMove = true;
         diaryManager.gameObject.SetActive(true);
+        diaryManager.campBonfire.SetActive(false);
+
         diaryManager.OpenSleeping();
         newBottomUi.SetActive(false);
     }
@@ -192,6 +207,8 @@ public class CampManager : MonoBehaviour
             newBottomUi.SetActive(true);
             isSleepMove = false;
         }
+        campbornfire.SetActive(true);
+
         bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
@@ -206,10 +223,17 @@ public class CampManager : MonoBehaviour
 
     public void StartCookingInCamp()
     {
+        campbornfire.SetActive(false);
+
         var potPos = pot.transform.position;
         EndPos = new Vector3(potPos.x + 1f, potPos.y + 2f, potPos.z - 3f);
         bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+        }
     }
     public void RotateButtonCheck()
     {
@@ -231,6 +255,8 @@ public class CampManager : MonoBehaviour
 
             isCookMove = false;
         }
+        campbornfire.SetActive(true);
+
         bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
@@ -238,6 +264,7 @@ public class CampManager : MonoBehaviour
     {
         isCookMove = true;
         diaryManager.gameObject.SetActive(true);
+        diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenCooking();
         newBottomUi.SetActive(false);
     }
@@ -276,25 +303,36 @@ public class CampManager : MonoBehaviour
     }
     public void StartGatheringInCamp()
     {
+        campbornfire.SetActive(false);
+
         var bushPos = bush.transform.position;
         EndPos = new Vector3(bushPos.x, bushPos.y + 2f, bushPos.z - 5f);
         bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+        }
     }
     public void OpenGatheringInCamp()
     {
         isGatheringMove = true;
         diaryManager.gameObject.SetActive(true);
+        diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenGatheringInCamp();
         newBottomUi.SetActive(false);
     }
     public void CloseGatheringInCamp()
     {
+
         if (isGatheringMove)
         {
             StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             isGatheringMove = false;
         }
+        campbornfire.SetActive(true);
+
         bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
 
@@ -327,15 +365,23 @@ public class CampManager : MonoBehaviour
     }
     public void StartProduceInCamp()
     {
+        campbornfire.SetActive(false);
+
         var workPos = workshop.transform.position;
         EndPos = new Vector3(workPos.x, workPos.y + 2f, workPos.z - 5f);
         bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+        }
     }
     public void OpenProduceInCamp()
     {
         isProduceMove = true;
         diaryManager.gameObject.SetActive(true);
+        diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenProduce();
         newBottomUi.SetActive(false);
     }
@@ -352,6 +398,8 @@ public class CampManager : MonoBehaviour
 
             isProduceMove = false;
         }
+        campbornfire.SetActive(true);
+
         bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
