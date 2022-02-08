@@ -275,6 +275,7 @@ public class BattleCost : MonoBehaviour
         if (bm.boy.FSM.curState != CharacterBattleState.Death)
         {
             var go = ProjectilePool.Instance.GetObject(ProjectileTag.Heal);
+            go.transform.SetParent(bm.projectileParent);
             script = go.GetComponent<Particle>();
             var pos = bm.boy.transform.position;
             pos.y = 0.02f;
@@ -286,6 +287,7 @@ public class BattleCost : MonoBehaviour
         if(bm.girl.FSM.curState != CharacterBattleState.Death)
         {
             var go = ProjectilePool.Instance.GetObject(ProjectileTag.Heal);
+            go.transform.SetParent(bm.projectileParent);
             script = go.GetComponent<Particle>();
             var pos = bm.girl.transform.position;
             pos.y = 0.02f;

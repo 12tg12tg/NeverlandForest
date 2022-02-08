@@ -53,7 +53,7 @@ public class Intro : MonoBehaviour
 
         Debug.Log("End Coroutine");
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene("JYK_Test_Main");
+        GameManager.Manager.LoadScene(GameScene.Camp);
     }
 
     IEnumerator CoFadeText()

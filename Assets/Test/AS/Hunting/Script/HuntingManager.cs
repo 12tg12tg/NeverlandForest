@@ -64,7 +64,7 @@ public class HuntingManager : MonoBehaviour
             tileMaker.InitMakeTiles();
             Init();
 
-            huntPlayers.IsTutorialClear = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
+            huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
             if (!huntPlayers.IsTutorialClear)
             {
                 TutorialInit();
@@ -242,6 +242,6 @@ public class HuntingManager : MonoBehaviour
         huntPlayers.ReturnBow();
     }
 
-    public void NextScene() => SceneManager.LoadScene("AS_RandomMap");
+    public void NextScene() => GameManager.Manager.LoadScene(GameScene.Dungeon);
     public void NextTutorialStep() => huntTutorial.TutorialStep++;
 }

@@ -131,7 +131,7 @@ public class Animal : MonoBehaviour
                 transparentWindow.SetActive(true);
             });
 
-            StartCoroutine(Utility.CoSceneChange("AS_RandomMap", 3f));
+            StartCoroutine(Utility.CoSceneChange(GameScene.Dungeon, 3f));
         }
         else if (player.Life.Equals(1) && index <= dangerIndex - 1 && !isDanger)
         {

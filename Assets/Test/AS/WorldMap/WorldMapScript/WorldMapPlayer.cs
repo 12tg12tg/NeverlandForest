@@ -26,7 +26,7 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Init()
     {
-        totalMap = GameManager.Manager.wm.worldMapMaker.GetComponentsInChildren<WorldMapNode>();
+        totalMap = GameManager.Manager.WorldManager.worldMapMaker.GetComponentsInChildren<WorldMapNode>();
         //totalMap = transform.GetComponentsInChildren<WorldMapNode>();
         currentIndex = totalMap[0].index;
         transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
@@ -48,7 +48,7 @@ public class WorldMapPlayer : MonoBehaviour
     public void ComeBackWorldMap()
     {
         // TODO : 씬 하나로 합치면 아래코드는 없어져도 될듯 함
-        totalMap = GameManager.Manager.wm.GetComponentsInChildren<WorldMapNode>();
+        totalMap = GameManager.Manager.WorldManager.GetComponentsInChildren<WorldMapNode>();
 
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
@@ -74,7 +74,7 @@ public class WorldMapPlayer : MonoBehaviour
 
             // 게임을 처음 켰는데 던전맵이고 던전맵에서 도망갔다면 딱 한번만 실행하면 되는데.. 
             // 다른 방법 생각이 안나서 이래 해둔상태
-            GameManager.Manager.cm.mainCamera.GetComponent<WorldMapCamera>().RunDungoen();
+            GameManager.Manager.CamManager.mainCamera.GetComponent<WorldMapCamera>().RunDungoen();
         }
     }
 
@@ -127,7 +127,7 @@ public class WorldMapPlayer : MonoBehaviour
             mapGenerator.DungeonGenerate(range, Vars.UserData.AllDungeonData[goalIndex].dungeonRoomArray,
                 () =>
                 {
-                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
                     GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 });
         }
@@ -145,7 +145,7 @@ public class WorldMapPlayer : MonoBehaviour
             var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
             mapGenerator.DungeonGenerate(range, null, () =>
             {
-                coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
                 GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             });
 

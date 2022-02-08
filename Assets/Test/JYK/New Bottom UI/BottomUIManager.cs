@@ -184,12 +184,12 @@ public class BottomUIManager : MonoBehaviour
     }
     private bool IsContainPos(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
     }
     private bool IsContainItemRect(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
     }
 

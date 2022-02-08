@@ -54,6 +54,7 @@ public class TrapSelecter : MonoBehaviour
 
             // 3) 타일 - 트랩 연결
             var obs = TrapPool.Instance.GetObject(curObstacleType).GetComponent<Obstacle>();
+            obs.transform.SetParent(bm.trapParent);
             var tile = tm.LastSelectedTile;
             InstallTrapOnTile(obs, tile, prog);
 

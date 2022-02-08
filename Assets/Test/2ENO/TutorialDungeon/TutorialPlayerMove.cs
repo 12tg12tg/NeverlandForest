@@ -61,7 +61,7 @@ public class TutorialPlayerMove : MonoBehaviour
 
     void Update()
     {
-        moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
+        moveTutorial = GameManager.Manager.TutoManager.mainTutorial.tutorialMove;
         if (moveTutorial != null && moveTutorial.TutorialStep != 2)
         {
             RigOff();

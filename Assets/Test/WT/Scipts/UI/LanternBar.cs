@@ -10,7 +10,7 @@ public class LanternBar : MonoBehaviour
     public Image day_correction;
     public void Start()
     {
-        ConsumeManager.init(); 
+        ConsumeManager.Init(); 
     }
     void Update()
     {

@@ -23,7 +23,7 @@ public class BattleObject : MonoBehaviour
             DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
             DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-            SceneManager.LoadScene("JYK_Test_Battle");
+            GameManager.Manager.LoadScene(GameScene.Battle);
             Destroy(gameObject);
         }
     }

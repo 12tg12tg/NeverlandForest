@@ -37,7 +37,7 @@ public class MoveTutorial : MonoBehaviour
 
     private void Awake()
     {
-        var tm = GameManager.Manager.tm;
+        var tm = GameManager.Manager.TutoManager;
         dialogBox = tm.dialogBox;
         handIcon = tm.handIcon;
         blackout = tm.blackout;
@@ -149,7 +149,7 @@ public class MoveTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = btnRect.sizeDelta + new Vector2(10f, 10f);
 
-        var btnPos = GameManager.Manager.cm.uiCamera.WorldToViewportPoint(btnRect.position);
+        var btnPos = GameManager.Manager.CamManager.uiCamera.WorldToViewportPoint(btnRect.position);
 
         btnPos.x *= canvasRt.width;
         btnPos.y *= canvasRt.height;
@@ -171,7 +171,7 @@ public class MoveTutorial : MonoBehaviour
         SetActive(true, true, true);
         target = dungeonCanvasRt.transform.GetChild(0).GetComponent<RectTransform>();
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.rect.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;

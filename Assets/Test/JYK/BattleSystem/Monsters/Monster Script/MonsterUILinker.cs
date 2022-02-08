@@ -30,8 +30,8 @@ public class MonsterUILinker : MonoBehaviour
     public void SetUI(MonsterTableElem elem)
     {
         var monsterUI = UIPool.Instance.GetObject(UIPoolTag.MonsterUI);
+        monsterUI.transform.SetParent(BattleManager.Instance.uiParent);
         linkedUi = monsterUI.GetComponent<MonsterUiInCanvas>();
-
         nextMoveDistance = linkedUi.nextMoveDistance;
         iconImg = linkedUi.iconImage;
         linkedUi.Init(hpBarPos, elem);

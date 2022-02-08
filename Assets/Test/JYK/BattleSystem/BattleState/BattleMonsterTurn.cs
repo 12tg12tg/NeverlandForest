@@ -24,7 +24,7 @@ public class BattleMonsterTurn : State<BattleState>
         if (stageMonster.Count == 0)
         {
             if(manager.waveLink.IsAllWaveClear())
-                manager.uiLink.PrintMessage($"½Â¸®!", 2.5f, () => SceneManager.LoadScene("AS_RandomMap"));
+                manager.uiLink.PrintMessage($"½Â¸®!", 2.5f, () => Debug.Log("#########################################################################################################################################################"));
             else
             {
                 noMonster = true;

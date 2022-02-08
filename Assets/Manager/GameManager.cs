@@ -18,74 +18,122 @@ public enum GameOverType
     WitchCaught,
 }
 
-public class GameManager : MonoBehaviour
+public enum GameScene
 {
-    // Managers
-    private static GameManager gm;
+    World, Dungeon, Hunt, Battle, Camp
+}
+
+public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
+{
+    // Singleton
     private SaveLoadManager sm;
     private MultiTouch mt;
-    [Header("월드맵")]
-    public WorldMapManager wm;
-    [Header("카메라")]
-    public CameraManager cm;
-    [Header("튜토리얼")]
-    public TutorialManager tm;
-    [Header("던전")]
-    public DungeonSystem ds;
+
+    // Managers
+    private static GameManager gm;
+    private WorldMapManager wm;
+    private CameraManager cm;
+    private TutorialManager tm;
 
     // Vars
     private GameState state;
-    [Header("UI")]
-    public GameObject gameoverUI;
+
+    [Header("UI 연결")]
+    [SerializeField] private GameObject gameoverUI;
     
 
-    // Property
-    public GameState State
+    private void Awake() // 게임 실행시 준비
     {
-        get => state;
-        set => this.state = value;
-    }
-    public static GameManager Manager => gm;
-    public MultiTouch MultiTouch => mt;
-    public SaveLoadManager SaveLoad => sm;
-
-    private void Awake()
-    {
-        gm = this;
-        mt = MultiTouch.Instance;
-        sm = SaveLoadManager.Instance;
+        SingletonInit();
 
         // TODO : 해당 부분 정리 필요?
-        if (cm != null)
+        if (CamManager != null)
         {
-            if (cm.mainCamera != null)
+            if (CamManager.mainCamera != null)
             {
-                var wmCamera = cm.mainCamera.GetComponent<WorldMapCamera>();
+                var wmCamera = CamManager.mainCamera.GetComponent<WorldMapCamera>();
                 if (wmCamera != null)
                     wmCamera.Init();
             }
 
-            if (cm.miniWorldMapCamera != null)
+            if (CamManager.miniWorldMapCamera != null)
             {
-                var wmmCamera = cm.miniWorldMapCamera.GetComponent<WorldMapCamera>();
+                var wmmCamera = CamManager.miniWorldMapCamera.GetComponent<WorldMapCamera>();
                 if (wmmCamera != null)
                 {
                     wmmCamera.Init();
                 }
             }
         }
-        if (wm != null)
-            wm.Init();
-        //if (ds != null)
-        //    ds.Init();
-        // 로드
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
+        if (WorldManager != null)
+            WorldManager.Init();
 
-        DontDestroyOnLoad(this);
-        ConsumeManager.init();
-        //MonsterPool.Instance.Init();
+        // 로드
+        LoadAllSavedata();
+
+        // 로드된 데이터를 기반으로 추가 전역 데이터 설정
+        ConsumeManager.Init();
+
+        // 오브젝트풀 생성
+        ObjectPoolInit();
     }
 
+    // 초기화 ======================================================================
+    private void SingletonInit()
+    {
+        gm = Instance;
+        mt = MultiTouch.Instance;
+        sm = SaveLoadManager.Instance;
+        DontDestroyOnLoad(this);
+    }
+    private void LoadAllSavedata()
+    {
+        int count = (int)SaveLoadSystem.SaveType.Count;
+        for (int i = 0; i < count; i++)
+        {
+            SaveLoadManager.Instance.Load((SaveLoadSystem.SaveType)i);
+        }
+    }
+    private void ObjectPoolInit()
+    {
+        MonsterPool.Instance.Init();
+        ProjectilePool.Instance.Init();
+        UIPool.Instance.Init();
+        TrapPool.Instance.Init();
+    }
+
+    // 씬 호출 ======================================================================
+    public void LoadScene(GameScene scene)
+    {
+        ReleaseValue();
+        switch (scene)
+        {
+            case GameScene.World:
+                SceneManager.LoadScene("AS_WorldMap");
+                break;
+            case GameScene.Dungeon:
+                SceneManager.LoadScene("AS_RandomMap");
+                break;
+            case GameScene.Hunt:
+                SceneManager.LoadScene("AS_Hunting");
+                break;
+            case GameScene.Battle:
+                SceneManager.LoadScene("JYK_Test_Battle");
+                break;
+            case GameScene.Camp:
+                SceneManager.LoadScene("JYK_Test_Main");
+                break;
+        }
+    }
+    private void ReleaseValue()
+    {
+        wm = null;
+        cm = null;
+        tm = null;
+    }
+
+
+    // 게임오버 ======================================================================
     public void GameOver(GameOverType type)
     {
         gameoverUI.SetActive(true);
@@ -104,8 +152,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-    public void GoToTitle() // 타이틀씬이 없어서 현재씬을 재시작 하는 형태로 되어있음
+    public void GoToTitle() // 버튼 클릭 함수 - 타이틀씬이 없어서 현재씬을 재시작 하는 형태로 되어있음
     {
         var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
         {
@@ -118,8 +165,7 @@ public class GameManager : MonoBehaviour
         });
         StartCoroutine(coScene);
     }
-
-    public void GoToGameEnd()
+    public void GoToGameEnd() // 버튼 클릭 함수
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -127,4 +173,51 @@ public class GameManager : MonoBehaviour
         Application.Quit();
 #endif
     }
+
+    // Property ======================================================================
+    public CameraManager CamManager
+    {
+        get
+        {
+            if (cm == null)
+            {
+                var go = (CameraManager)FindObjectOfType(typeof(CameraManager));
+                cm = go;
+            }
+            return cm;
+        }
+    }
+    public WorldMapManager WorldManager
+    {
+        get
+        {
+            if (wm == null)
+            {
+                var go = (WorldMapManager)FindObjectOfType(typeof(WorldMapManager));
+                wm = go;
+            }
+            return wm;
+        }
+    }
+    public TutorialManager TutoManager
+    {
+        get
+        {
+            if (tm == null)
+            {
+                var go = (TutorialManager)FindObjectOfType(typeof(TutorialManager));
+                tm = go;
+            }
+            return tm;
+        }
+    }
+    public GameState State
+    {
+        get => state;
+        set => this.state = value;
+    }
+    public static GameManager Manager => gm;
+    public MultiTouch MultiTouch => mt;
+    public SaveLoadManager SaveLoad => sm;
+
 }

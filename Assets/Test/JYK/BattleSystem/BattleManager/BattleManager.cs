@@ -34,6 +34,7 @@ public class BattleManager : MonoBehaviour
     public BattleDirecting directingLink;
     public BattleDrag dragLink;
     public BattleCost costLink;
+    public BattleTutorial tutorial;
 
     //Instance
     [Header("몬스터 관련 UI 캔버스 연결")]
@@ -41,6 +42,14 @@ public class BattleManager : MonoBehaviour
 
     [Header("배틀 FSM 연결")]
     public BattleFSM FSM;
+
+    //ObjectPool Parents
+    [Header("오브젝트풀 부모 오브젝트")]
+    public Transform monsterParent;
+    public Transform uiParent;
+    public Transform damageUiParent;
+    public Transform trapParent;
+    public Transform projectileParent;
 
     //Vars
     private const int middleOfStage = 4;
@@ -115,6 +124,105 @@ public class BattleManager : MonoBehaviour
 
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
+    }
+
+    public void TutorialInit()
+    {
+        monsters.Clear();
+        waveLink.wave1.Clear();
+        waveLink.wave2.Clear();
+        waveLink.wave3.Clear();
+        for (int i = 0; i < 3; i++)
+        {
+            waveLink.wave1.Add(null);
+            waveLink.wave2.Add(null);
+            waveLink.wave3.Add(null);
+        }
+
+        List<MonsterUnit> realWave;
+        List<bool> existList;
+        List<MonsterPoolTag> customWave;
+        waveLink.totalWave = customBattle.waveNum;
+
+        for (int i = 0; i < waveLink.totalWave; i++)
+        {
+            if (i == 0)
+            {
+                realWave = waveLink.wave1;
+                customWave = customBattle.cwave1;
+                existList = customBattle.haveMonster1;
+            }
+            else if (i == 1)
+            {
+                realWave = waveLink.wave2;
+                customWave = customBattle.cwave2;
+                existList = customBattle.haveMonster2;
+            }
+            else
+            {
+                realWave = waveLink.wave3;
+                customWave = customBattle.cwave3;
+                existList = customBattle.haveMonster3;
+            }
+            for (int k = 0; k < 3; k++)
+            {
+                if (existList[k])
+                {
+                    realWave[k] = FindMonsterToId((int)customWave[k]);
+                    realWave[k].Pos = new Vector2(k, 6);
+                    realWave[k].SetActionCommand();
+                }
+            }
+        }
+
+        // 화살
+        DataAllItem temp;
+        int total = 0;
+        var inventory = Vars.UserData.HaveAllItemList;
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.arrowElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.arrowElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.arrowNum;
+        Vars.UserData.AddItemData(temp);
+
+        // 쇠화살
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.ironArrowElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.ironArrowElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.ironArrowNum;
+        Vars.UserData.AddItemData(temp);
+
+        // 오일
+        foreach (var item in inventory)
+        {
+            if (item.itemId == costLink.oilElem.id)
+            {
+                total += item.OwnCount;
+            }
+        }
+        temp = new DataAllItem(costLink.oilElem);
+        temp.OwnCount = total;
+        Vars.UserData.RemoveItemData(temp);
+        temp.OwnCount = customBattle.oilNum;
+        Vars.UserData.AddItemData(temp);
+
+        // 랜턴밝기
+        ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
+        ConsumeManager.FullingLantern(customBattle.lanternCount);
     }
 
     private void CustomInit()
@@ -328,6 +436,7 @@ public class BattleManager : MonoBehaviour
     {
         var tag = (MonsterPoolTag)monsterId;
         var go = MonsterPool.Instance.GetObject(tag);
+        go.transform.SetParent(monsterParent);
         var unitSc = go.GetComponent<MonsterUnit>();
         unitSc.Init();
         return unitSc;

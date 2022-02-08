@@ -375,6 +375,7 @@ public class MonsterUnit : UnitBase, IAttackable
 
             // 데미지 UI 
             var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+            damageUI.transform.SetParent(BattleManager.Instance.damageUiParent);
             var script = damageUI.GetComponent<DamageUI>();
             script.Init(damageUiPos, curDamage, DamageUI.DamageType.Hp);
 
@@ -395,6 +396,7 @@ public class MonsterUnit : UnitBase, IAttackable
             if (curSheildDamage != 0)
             {
                 var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+                damageUI.transform.SetParent(BattleManager.Instance.damageUiParent);
                 var script = damageUI.GetComponent<DamageUI>();
                 script.Init(damageUiPos, curSheildDamage, DamageUI.DamageType.Sheild);
             }
@@ -402,6 +404,7 @@ public class MonsterUnit : UnitBase, IAttackable
             if(curDamage != 0) // HP도 깎은 경우
             {
                 var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+                damageUI.transform.SetParent(BattleManager.Instance.damageUiParent);
                 var script = damageUI.GetComponent<DamageUI>();
                 script.Init(damageUiPos, curDamage, DamageUI.DamageType.Hp);
             }

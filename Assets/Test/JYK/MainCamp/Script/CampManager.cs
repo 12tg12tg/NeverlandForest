@@ -363,7 +363,7 @@ public class CampManager : MonoBehaviour
     //SceneChange
     public void GoWorldMap()
     {
-        SceneManager.LoadScene("AS_WorldMap");
+        GameManager.Manager.LoadScene(GameScene.World);
     }
     public void GoDungeonCheck()
     {
@@ -377,7 +377,7 @@ public class CampManager : MonoBehaviour
 
     public void GoDungeon()
     {
-        SceneManager.LoadScene("AS_RandomMap");
+        GameManager.Manager.LoadScene(GameScene.Dungeon);
     }
     public void NoIdonGO()
     {

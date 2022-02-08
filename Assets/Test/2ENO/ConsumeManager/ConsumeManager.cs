@@ -40,21 +40,14 @@ public static class ConsumeManager
         set => curLanternState = value;
         get => curLanternState;
     }
-    public static void init()
+    public static void Init()
     {
         TimeStateChange();
         LanternStateChange();
-        Debug.Log($"{Vars.UserData.uData.LanternCount}");
-        Debug.Log($"{Vars.UserData.uData.lanternState}");
     }
     public static void SaveConsumableData()
     {
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ConsumableData);
-    }
-
-    public static void LoadConsumableData()
-    {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
     }
 
     public static void GetthingHunger(int hungercount)
@@ -184,7 +177,6 @@ public static class ConsumeManager
     private static void LanternStateChange()
     {
         var count = Vars.UserData.uData.LanternCount;
-        TimeStateChange();
         switch (curTimeState)
         {
             case TimeState.None:
@@ -199,7 +191,6 @@ public static class ConsumeManager
                 break;
         }
         Vars.UserData.uData.lanternState = curLanternState;
-        SaveConsumableData();
     }
 
     private static void SetDayLaternState(float count)
@@ -224,7 +215,6 @@ public static class ConsumeManager
         {
             curLanternState = LanternState.Level1;
         }
-        SaveConsumableData();
     }
     private static void SetNightLaternState(float count)
     {
@@ -248,7 +238,6 @@ public static class ConsumeManager
         {
             curLanternState = LanternState.None;
         }
-        SaveConsumableData();
     }
     private static void TimeStateChange()
     {
