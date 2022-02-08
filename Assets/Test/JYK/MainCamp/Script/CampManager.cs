@@ -105,6 +105,8 @@ public class CampManager : MonoBehaviour
     {
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         GameManager.Manager.State = GameState.Camp;
+        GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
+        GameManager.Manager.tm.CheckMainTutorial();
     }
     public void Start()
     {

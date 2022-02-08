@@ -10,11 +10,7 @@ public class GoCamp : MonoBehaviour
     private AllItemDataTable allitem;
 
     [Header("재확인")]
-    public ReconfirmPanelManager reconfirmPanel;
-    public GameObject godungeonReconfirm;
-    [Header("이미지 관련")]
-    public Image woodchipImage;
-    public Image treeBranchImage;
+    public GameObject setupCampSite;
     [Header("움직임 관련")]
     public MoveTest moveTest;
 
@@ -23,15 +19,10 @@ public class GoCamp : MonoBehaviour
         allitem = DataTableManager.GetTable<AllItemDataTable>();
         haveWoodChip = false;
         haveTreeBranch = false;
-        var woodchipStringId = $"ITEM_{1}";
-        var treebranchStringId = $"ITEM_{2}";
-        woodchipImage.sprite = allitem.GetData<AllItemTableElem>(woodchipStringId).IconSprite;
-        treeBranchImage.sprite = allitem.GetData<AllItemTableElem>(treebranchStringId).IconSprite;
     }
     public void OpenCampScene()
     {
-        reconfirmPanel.gameObject.SetActive(true);
-        godungeonReconfirm.SetActive(true);
+        setupCampSite.SetActive(true);
         moveTest.gameObject.SetActive(false);
         var list = Vars.UserData.HaveAllItemList;
         for (int i = 0; i < list.Count; i++)
