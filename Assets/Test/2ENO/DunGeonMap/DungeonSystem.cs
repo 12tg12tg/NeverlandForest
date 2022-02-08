@@ -192,6 +192,10 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = true;
         else
             campButton.interactable = false;
+
+        //TODO : 테스트용 코드
+        if (Vars.UserData.isTutorialDungeon)
+            ChangeRoomEvent(true, true);
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때
@@ -251,7 +255,7 @@ public class DungeonSystem : MonoBehaviour
             {
                 if (Vars.UserData.isTutorialDungeon)
                 {
-                    //MoveTutorial.Instance.NextStep();
+                    tutorialManager.CheckMainTutorial();
                 }
 
                 ConsumeManager.TimeUp(0, 1);

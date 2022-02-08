@@ -35,6 +35,7 @@ public class TutorialPlayerMove : MonoBehaviour
     private float tutorialTime;
 
     private MoveTutorial moveTutorial;
+    private GatheringTutorial gatheringTutorial;
 
     public void Init()
     {
@@ -62,9 +63,19 @@ public class TutorialPlayerMove : MonoBehaviour
     void Update()
     {
         moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
+        gatheringTutorial = GameManager.Manager.tm.mainTutorial.tutorialGathering;
+
+        if(gatheringTutorial != null/* && gatheringTutorial.TutorialStep != 7*/)
+        {
+            RigOff();
+            return;
+        }
+
         if (moveTutorial != null && moveTutorial.TutorialStep != 2)
         {
             RigOff();
+            playerAnimationBoy.SetFloat("Speed", 0);
+            playerAnimationGirl.SetFloat("Speed", 0);
             return;
         }
         if (multiTouch != null)

@@ -28,13 +28,22 @@ public class PlayerDungeonUnit : UnitBase
     [SerializeField] private int curRoomNumber = 0;
 
     public MoveTest playerMove;
+    public TutorialPlayerMove tutorialMove;
 
     public bool IsCoMove
     {
         set
-        { 
-            isCoMove = value;
-            playerMove.isCoMove = value;
+        {
+            if (playerMove != null)
+            {
+                isCoMove = value;
+                playerMove.isCoMove = value;
+            }
+            else if(tutorialMove != null)
+            {
+                isCoMove = value;
+                tutorialMove.isCoMove = value;
+            }
         }
         get => isCoMove;
     }
@@ -95,7 +104,10 @@ public class PlayerDungeonUnit : UnitBase
     public void CoMoveStop()
     {
         isCoMove = false;
-        playerMove.isCoMove = false;
+        if (playerMove != null)
+            playerMove.isCoMove = false;
+        else if (tutorialMove != null)
+            tutorialMove.isCoMove = false;
     }
 
     public void AnimationChange(bool isMove)

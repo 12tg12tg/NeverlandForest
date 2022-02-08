@@ -8,7 +8,7 @@ public class MoveTutorial : MonoBehaviour
 {
     public int TutorialStep { get; set; } = 0;
 
-    public RectTransform target;
+    private RectTransform target;
 
     private GameObject dungeonCanvasRt;
 
@@ -179,7 +179,7 @@ public class MoveTutorial : MonoBehaviour
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
 
-        var boxOffset = boxWidth + arrowSize;
+        var boxOffset = boxWidth + arrowSize + target.rect.width;
 
         dialogBoxObj.right.SetActive(true);
 
@@ -197,10 +197,12 @@ public class MoveTutorial : MonoBehaviour
         SetActive(true, true);
         target = dungeonCanvasRt.transform.GetChild(1).GetComponent<RectTransform>();
         blackout.GetComponent<Image>().sprite = rect;
-        blackout.sizeDelta = target.sizeDelta + new Vector2(10f,10f);
+        blackout.sizeDelta = new Vector2(300f,100f);
 
         var uiCam = GameManager.Manager.cm.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
 
         var boxOffset = boxHeight + arrowSize;
 
@@ -218,6 +220,7 @@ public class MoveTutorial : MonoBehaviour
     public void MoveTutorialEnd()
     {
         SetActive(false);
+        dialogBoxObj.up.SetActive(false);
         Destroy(this);
     }
 }

@@ -408,7 +408,10 @@ public class GatheringSystem : MonoBehaviour
             }
             boyPlayer.tag = "Untagged";
             coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f, 
-                () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f); }));
+                () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
+                    if (GameManager.Manager.tm.mainTutorial.tutorialGathering != null)
+                        GameManager.Manager.tm.mainTutorial.tutorialGathering.TutorialStep++;
+                }));
         }
     }
     public void YesTool()

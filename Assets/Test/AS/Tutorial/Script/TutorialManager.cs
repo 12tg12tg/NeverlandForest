@@ -46,6 +46,8 @@ public class TutorialManager : MonoBehaviour
             case MainTutorialStage.Lanturn:
                 break;
             case MainTutorialStage.Event:
+                mainTutorial.tutorialGathering = gameObject.AddComponent<GatheringTutorial>();
+                StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
                 break;
             case MainTutorialStage.Stamina:
                 break;

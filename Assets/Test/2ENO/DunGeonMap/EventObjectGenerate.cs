@@ -11,7 +11,7 @@ public class EventObjectGenerate : MonoBehaviour
     public GatheringObject pitObj;
     public GatheringObject herbsObj;
     public GatheringObject mushroomObj;
-    private List<GameObject> eventObjInstanceList = new List<GameObject>();
+    public List<GameObject> eventObjInstanceList = new List<GameObject>();
     private GatheringSystem gatheringSystem;
 
     public void Init()

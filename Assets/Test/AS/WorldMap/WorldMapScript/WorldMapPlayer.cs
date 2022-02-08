@@ -80,20 +80,89 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Return()
     {
-        if (Vars.UserData.curNode.index != Vector2.zero)
-        {
-            // Null 뜸
-            PlayerWorldMap(Vars.UserData.curNode);
-        }
+        if (!Vars.UserData.isDungeonClear)
+            return;
+
+        DungeonEnter(true, Vector3.zero, Vars.UserData.WorldMapPlayerData.currentIndex);
     }
 
+    public void DungeonEnter(bool isReturn, Vector3 goal, Vector2 goalIndex)
+    {
+        mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
+
+        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
+        if (!Vars.UserData.isFirst)
+        {
+            Vars.UserData.isRandomDataLoad = true;
+        }
+        RandomEventManager.Instance.init();
+        Vars.UserData.isFirst = false;
+
+        // 이미 맵이 만들어 졌을때
+        if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
+        {
+            if (Vars.UserData.isDungeonClear && Vars.UserData.curDungeonIndex != goalIndex)
+            {
+                return;
+            }
+            if (!Vars.UserData.isDungeonClear)
+            {
+                Vars.UserData.isDungeonReStart = true;
+                Vars.UserData.curDungeonIndex = goalIndex;
+            }
+
+            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
+            mapGenerator.DungeonGenerate(range, Vars.UserData.AllDungeonData[goalIndex].dungeonRoomArray,
+                () =>
+                {
+                    if (isReturn)
+                    {
+                        SceneManager.LoadScene("AS_RandomMap");
+                    }
+                    else
+                    {
+                        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                    }
+                });
+        }
+        // 처음 만들떄
+        else
+        {
+            if (goalIndex.y - Vars.UserData.curDungeonIndex.y > 0)
+            {
+                Vars.UserData.AllDungeonData.Clear();
+            }
+
+            Vars.UserData.isDungeonClear = false;
+            Vars.UserData.curDungeonIndex = goalIndex;
+            Vars.UserData.isDungeonReStart = true;
+            Vars.UserData.AllDungeonData.Add(goalIndex, new DungeonData());
+            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
+            mapGenerator.DungeonGenerate(range, null, () =>
+            {
+                if (isReturn)
+                {
+                    SceneManager.LoadScene("AS_RandomMap");
+                }
+                else
+                {
+                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
+                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                }
+            });
+
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
+        }
+
+    }
     public void PlayerWorldMap(WorldMapNode node)
     {
         Vars.UserData.curNode = node;
         var goal = node.transform.position + new Vector3(0f, 0.5f, 0f);
         transform.LookAt(node.transform);
         GetComponent<Animator>().SetTrigger("Walk");
-        mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
+       
         goalIndex = coMove == null ? node.index : goalIndex;
         goalPos = goal;
         startPos = transform.position;
@@ -119,48 +188,7 @@ public class WorldMapPlayer : MonoBehaviour
         RandomEventManager.Instance.init();
         Vars.UserData.isFirst = false;
 
-        // 이미 맵이 만들어 졌을때
-        if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
-        {
-            if(Vars.UserData.isDungeonClear && Vars.UserData.curDungeonIndex != goalIndex)
-            {
-                return;
-            }
-            if (!Vars.UserData.isDungeonClear)
-            {
-                Vars.UserData.isDungeonReStart = true;
-                Vars.UserData.curDungeonIndex = goalIndex;
-            }
-
-            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
-            mapGenerator.DungeonGenerate(range, Vars.UserData.AllDungeonData[goalIndex].dungeonRoomArray,
-                () =>
-                {
-                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
-                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-                });
-        }
-        // 처음 만들떄
-        else
-        {
-            if (goalIndex.y - Vars.UserData.curDungeonIndex.y > 0)
-            {
-                Vars.UserData.AllDungeonData.Clear();
-            }
-
-            Vars.UserData.isDungeonClear = false;
-            Vars.UserData.curDungeonIndex = goalIndex;
-            Vars.UserData.isDungeonReStart = true;
-            Vars.UserData.AllDungeonData.Add(goalIndex, new DungeonData());
-            var range = (int)(Vars.UserData.WorldMapPlayerData.goalIndex.y - Vars.UserData.WorldMapPlayerData.currentIndex.y);
-            mapGenerator.DungeonGenerate(range, null, () =>
-            {
-                coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, "AS_RandomMap", () => coMove = null));
-                GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            });
-
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
-        }
+        DungeonEnter(false, goal, goalIndex);
     }
     private void PlayerClearWorldMap()
     {

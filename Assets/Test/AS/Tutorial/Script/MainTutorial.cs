@@ -21,6 +21,7 @@ public class MainTutorial
     public TutorialStory tutorialStory = new TutorialStory();
 
     public MoveTutorial tutorialMove;
+    public GatheringTutorial tutorialGathering;
 
     public void Init()
     {
@@ -32,7 +33,10 @@ public class MainTutorial
     {
         if (MainTutorialStage != MainTutorialStage.Clear)
         {
-            MainTutorialStage++;
+            if (MainTutorialStage == MainTutorialStage.Move)
+                MainTutorialStage += 2;
+            else
+                MainTutorialStage++;
         }
     }
 

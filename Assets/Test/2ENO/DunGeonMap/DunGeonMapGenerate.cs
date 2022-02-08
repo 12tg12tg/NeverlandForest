@@ -132,7 +132,10 @@ public class DunGeonMapGenerate : MonoBehaviour
                     var gatheringData = new GatheringData();
                     gatheringData.eventType = DunGeonEvent.Gathering;
                     gatheringData.roomIndex = curRoom.roomIdx;
-                    gatheringData.gatheringtype =(GatheringObjectType)Random.Range(0, 4);
+                    if (Vars.UserData.isTutorialDungeon)
+                        gatheringData.gatheringtype = GatheringObjectType.Pit;
+                    else
+                        gatheringData.gatheringtype = (GatheringObjectType)Random.Range(0, 4);
                     curRoom.gatheringCount = 1;
                     gatheringData.offSetBasePos = 2;
                     eventData.Add(gatheringData);
