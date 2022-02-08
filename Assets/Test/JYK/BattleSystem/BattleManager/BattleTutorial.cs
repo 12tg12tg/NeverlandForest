@@ -8,28 +8,39 @@ public class BattleTutorial : MonoBehaviour
     [SerializeField] private TileMaker tm;
     private BottomUIManager bottomUI;
 
+    private bool tu_01_CamRightButton;
+
     private void Start()
     {
         bottomUI = BottomUIManager.Instance;
     }
+    public void Init()
+    {
+        tu_01_CamRightButton = false;
+    }
 
     public void StartDutorial()
     {
+        Init();
         StartCoroutine(CoBattleTutorial());
     }
+
+
 
     public void EndDutorial()
     {
 
     }
 
-    IEnumerator CoBattleTutorial()
+    private IEnumerator CoBattleTutorial()
     {
         // 웨이브 생성
         bm.TutorialInit();
 
         // 웨이브 미리보기 버튼 클릭 유도 & 설명 띄우기
-        yield return null;
+        bottomUI.ButtonInteractive(false);
+        bm.uiLink.moveCameraRightButton.interactable = true;
+        yield return new WaitUntil(() => tu_01_CamRightButton);
 
         // 웨이브 미리보기 취소 클릭 유도 & 설명 띄우기
 

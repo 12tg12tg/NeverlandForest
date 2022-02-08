@@ -36,10 +36,9 @@ public class BattleUI : MonoBehaviour
     [SerializeField] private Sprite potion_Icon;
 
     [Header("카메라 이동 화살표 위치")]
-    public Camera uiCamera;
     public Canvas uiCanvas;
-    [SerializeField] private Button moveCameraRightButton;
-    [SerializeField] private Button moveCameraLeftButton;
+    [SerializeField] public Button moveCameraRightButton;
+    [SerializeField] public Button moveCameraLeftButton;
 
     [Header("턴 넘기기 버튼")]
     public GameObject turnSkipTrans;
@@ -119,7 +118,7 @@ public class BattleUI : MonoBehaviour
             screenPos *= -1.0f;
 
         // 캔버스 기준으로 스크린 좌표 재해석
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.transform as RectTransform, screenPos, uiCamera, out Vector2 localPos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.transform as RectTransform, screenPos, uiCanvas.worldCamera, out Vector2 localPos);
 
         // 캔버스 내의 rect transform의 지역좌표 설정
         lantern_Image.localPosition = localPos;
@@ -129,8 +128,21 @@ public class BattleUI : MonoBehaviour
     // Progress
     public void UpdateProgress_Button() // 버튼 스킵용
     {
-        progress++;
-        UpdateProgressUI(ProgressIcon.X);
+        if (progress == 0)
+        {
+            progressImg[0].enabled = true;
+            progressImg[1].enabled = true;
+            progressImg[0].sprite = x_Icon;
+            progressImg[1].sprite = x_Icon;
+        }
+        else if (progress == 1)
+        {
+            progressImg[1].enabled = true;
+            progressImg[1].sprite = x_Icon;
+
+        }
+
+        progress = 2;
         bm.EndOfPlayerAction();
     }
 

@@ -139,41 +139,10 @@ public class BattleManager : MonoBehaviour
             waveLink.wave3.Add(null);
         }
 
-        List<MonsterUnit> realWave;
-        List<bool> existList;
-        List<MonsterPoolTag> customWave;
-        waveLink.totalWave = customBattle.waveNum;
+        waveLink.totalWave = 2;
 
-        for (int i = 0; i < waveLink.totalWave; i++)
-        {
-            if (i == 0)
-            {
-                realWave = waveLink.wave1;
-                customWave = customBattle.cwave1;
-                existList = customBattle.haveMonster1;
-            }
-            else if (i == 1)
-            {
-                realWave = waveLink.wave2;
-                customWave = customBattle.cwave2;
-                existList = customBattle.haveMonster2;
-            }
-            else
-            {
-                realWave = waveLink.wave3;
-                customWave = customBattle.cwave3;
-                existList = customBattle.haveMonster3;
-            }
-            for (int k = 0; k < 3; k++)
-            {
-                if (existList[k])
-                {
-                    realWave[k] = FindMonsterToId((int)customWave[k]);
-                    realWave[k].Pos = new Vector2(k, 6);
-                    realWave[k].SetActionCommand();
-                }
-            }
-        }
+        waveLink.wave1[1] = FindMonsterToId(0);
+        waveLink.wave2[1] = FindMonsterToId(1);
 
         // 화살
         DataAllItem temp;
@@ -189,22 +158,8 @@ public class BattleManager : MonoBehaviour
         temp = new DataAllItem(costLink.arrowElem);
         temp.OwnCount = total;
         Vars.UserData.RemoveItemData(temp);
-        temp.OwnCount = customBattle.arrowNum;
-        Vars.UserData.AddItemData(temp);
-
-        // 쇠화살
-        foreach (var item in inventory)
-        {
-            if (item.itemId == costLink.ironArrowElem.id)
-            {
-                total += item.OwnCount;
-            }
-        }
-        temp = new DataAllItem(costLink.ironArrowElem);
-        temp.OwnCount = total;
-        Vars.UserData.RemoveItemData(temp);
-        temp.OwnCount = customBattle.ironArrowNum;
-        Vars.UserData.AddItemData(temp);
+        temp.OwnCount = 20;
+        Vars.UserData.AddItemData(temp); // 20발
 
         // 오일
         foreach (var item in inventory)
@@ -218,11 +173,11 @@ public class BattleManager : MonoBehaviour
         temp.OwnCount = total;
         Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = customBattle.oilNum;
-        Vars.UserData.AddItemData(temp);
+        Vars.UserData.AddItemData(temp); // 4발
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
-        ConsumeManager.FullingLantern(customBattle.lanternCount);
+        ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
     }
 
     private void CustomInit()
@@ -322,6 +277,10 @@ public class BattleManager : MonoBehaviour
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
         ConsumeManager.FullingLantern(customBattle.lanternCount);
+
+        // Hp
+        Vars.maxHp = customBattle.hp;
+        ConsumeManager.CostDataReset();
     }
 
     private void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
