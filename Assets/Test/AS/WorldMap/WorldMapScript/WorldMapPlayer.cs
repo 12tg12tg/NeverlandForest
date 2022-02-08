@@ -80,6 +80,8 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void PlayerWorldMap(WorldMapNode node)
     {
+        if (coMove != null)
+            return;
         var goal = node.transform.position + new Vector3(0f, 0.5f, 0f);
         transform.LookAt(node.transform);
         GetComponent<Animator>().SetTrigger("Walk");
@@ -99,7 +101,6 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentPos = currentPos;
         data.goalPos = goalPos;
         data.startPos = startPos;
-
 
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
         if(!Vars.UserData.isFirst)

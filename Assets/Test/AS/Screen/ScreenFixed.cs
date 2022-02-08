@@ -17,11 +17,11 @@ public class ScreenFixed : MonoBehaviour
         SetResolution();
     }
 
-    private void OnGUI()
-    {
-        if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.5f, 100, 50), "SetScreen"))
-            SetResolution();
-    }
+    //private void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.5f, 100, 50), "SetScreen"))
+    //        SetResolution();
+    //}
 
     public void SetResolution()
     {
