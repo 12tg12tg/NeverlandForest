@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Production : MonoBehaviour
@@ -8,6 +9,7 @@ public class Production : MonoBehaviour
     public RectTransform img2;
     public RectTransform bg;
     public Canvas uiCanvas;
+    public TextMeshProUGUI asd;
 
     public void FadeIn()
     {
