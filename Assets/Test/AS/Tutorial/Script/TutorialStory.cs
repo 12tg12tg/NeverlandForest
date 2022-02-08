@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 public struct TutorialStory
 {
-    public IEnumerator CoTutorialStory(TMP_Text text)
+    public IEnumerator CoTutorialStory(TMP_Text text, UnityAction action)
     {
         var stroyTable = DataTableManager.GetTable<TutorialStoryDataTable>();
         for (int i = 0; i < stroyTable.ids.Count; i++)
@@ -35,5 +36,8 @@ public struct TutorialStory
             text.text = "";
             text.color = Color.white;
         }
+        yield return new WaitForSeconds(1f);
+
+        action?.Invoke();
     }
 }
