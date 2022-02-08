@@ -32,24 +32,26 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(GameManager.Manager.tm.mainTutorial.tutorialGathering != null)
+        switch (GameManager.Manager.State)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialGathering.TutorialStep++;
-            gathering.curSelectedObj = this;
-        }
-        else
-        {
-            if (DungeonSystem.Instance.DungeonSystemData.curDungeonRoomData.roomIdx == roomIndex)
-            {
-                gathering.GoGatheringObject(gameObject.transform.position);
-                gathering.curSelectedObj = this;
+            case GameState.Dungeon:
+                if (DungeonSystem.Instance.DungeonSystemData.curDungeonRoomData.roomIdx == roomIndex)
+                {
+                    gathering.GoGatheringObject(gameObject.transform.position);
+                    gathering.curSelectedObj = this;
 
-                DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
-                DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
-                DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
-            }
+                    DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].UseEvent(DunGeonEvent.Gathering);
+                    DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].eventObjDataList.Remove(data);
+                    DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[roomIndex].gatheringCount--;
+                }
+                break;
+            case GameState.Tutorial:
+                    GameManager.Manager.tm.mainTutorial.tutorialGathering.TutorialStep++;
+                    gathering.curSelectedObj = this;
+                break;
+            default:
+                break;
         }
-
     }
     public void Init()
     {

@@ -27,6 +27,8 @@ public class DiaryManager : MonoBehaviour
 
     [Header("Ä·ÇÁ¿ä¸®°ü·Ã")]
     private bool isRotation = false;
+    [Header("Ä·ÇÁ ¸ð´ÚºÒ")]
+    public GameObject campBonfire;
     public bool IsRotation
     {
         get
@@ -86,6 +88,12 @@ public class DiaryManager : MonoBehaviour
         {
             craftResultItemImage.GetComponent<Button>().onClick.AddListener(() => GetItem());
         }
+
+        if (GameManager.Manager.State ==GameState.Camp)
+        {
+            campBonfire.gameObject.SetActive(true);
+        }
+
     }
 
     public void OpenCookingRotation()

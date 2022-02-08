@@ -15,8 +15,7 @@ public class ReconfirmPanelManager : MonoBehaviour
     public GameObject bonFireReconfirm;
     public GameObject bagisFullReconfirm;
     public GameObject randomEventReconfirm;
-    [Header("다이어리")]
-    public DiaryManager diaryManager;
+ 
 
     public void Start()
     {
@@ -60,8 +59,8 @@ public class ReconfirmPanelManager : MonoBehaviour
     }
     public void OpenRandomEventfirm()
     {
-        AllClose();
         gameObject.SetActive(true);
+        AllClose();
         randomEventReconfirm.SetActive(true);
     }
 }

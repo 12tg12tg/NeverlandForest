@@ -8,9 +8,8 @@ using UnityEngine.SceneManagement;
 
 public enum GameState
 {
-    None, Battle, Hunt, Gathering, Cook, Camp, Dungeon
+    None, Battle, Hunt, Gathering, Cook, Camp, Dungeon,Tutorial
 }
-
 public enum GameOverType
 {
     BattleLoss,
@@ -80,6 +79,7 @@ public class GameManager : MonoBehaviour
         //    ds.Init();
         // ·Îµå
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Battle);
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
 
         DontDestroyOnLoad(this);
         ConsumeManager.init();

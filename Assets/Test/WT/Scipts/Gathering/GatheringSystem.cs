@@ -87,7 +87,7 @@ public class GatheringSystem : MonoBehaviour
         }
         return true;
     }
-    private int haveItemCount=0;
+    private int haveItemCount = 0;
 
     public void Start()
     {
@@ -105,6 +105,7 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesIGathering()
     {
+        gatheringPanel.SetActive(false);
         ToolPopUp();
     }
     public void NoIDonGathering()
@@ -405,9 +406,11 @@ public class GatheringSystem : MonoBehaviour
                 PlayWalkAnimationBoy();
             }
             boyPlayer.tag = "Untagged";
-            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f, 
-                () => { coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
-                    if (GameManager.Manager.tm.mainTutorial.tutorialGathering != null)
+            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f,
+                () =>
+                {
+                    coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
+                    if (GameManager.Manager.State == GameState.Tutorial)
                         GameManager.Manager.tm.mainTutorial.tutorialGathering.TutorialStep++;
                 }));
         }
@@ -512,15 +515,17 @@ public class GatheringSystem : MonoBehaviour
             }
         }
 
-        if (haveItemCount==0)
+        if (haveItemCount == 0)
         {
+            reconfirmPanelManager.gameObject.SetActive(false);
+            gatheringPanel.SetActive(false);
+
             if (isMove)
             {
                 boyPlayer.IsCoMove = true;
                 playerAnimationBoy.speed = 0.5f;
                 playerAnimationBoy.SetTrigger("Pick");
                 dungeonrewarddiaryManager.gameObject.SetActive(false);
-                gatheringPanel.SetActive(false);
                 Debug.Log("ÆË¾÷²¯´Ù");
                 dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
                 isMove = false;
@@ -528,9 +533,42 @@ public class GatheringSystem : MonoBehaviour
         }
         else
         {
+            reconfirmPanelManager.gameObject.SetActive(true);
             reconfirmPanelManager.OpenRandomEventfirm();
         }
+        BottomUIManager.Instance.ItemListInit();
     }
+    public void YesIfinishGathering()
+    {
+        reconfirmPanelManager.gameObject.SetActive(false);
+        gatheringPanel.SetActive(false);
+
+        if (isMove)
+        {
+            boyPlayer.IsCoMove = true;
+            playerAnimationBoy.speed = 0.5f;
+            playerAnimationBoy.SetTrigger("Pick");
+            dungeonrewarddiaryManager.gameObject.SetActive(false);
+            Debug.Log("ÆË¾÷²¯´Ù");
+            dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
+            isMove = false;
+        }
+        haveItemCount = 0;
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            gatheringRewardList[i].Item = null;
+            gatheringRewardList[i].IsSelect = false;
+            gatheringRewardList[i].IsHaveItem = false;
+            gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
+        }
+    }
+    public void NotYetGathering()
+    {
+        reconfirmPanelManager.gameObject.SetActive(false);
+
+    }
+
+
     private static void GatheringTreeByTool()
     {
         var lanternstate = ConsumeManager.CurLanternState;
@@ -677,7 +715,7 @@ public class GatheringSystem : MonoBehaviour
         }
         dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
-       
+
         for (int i = selecteditemList.Count - 1; i >= 0; i--)
         {
             selecteditemList.RemoveAt(i);
@@ -691,37 +729,34 @@ public class GatheringSystem : MonoBehaviour
             if (gatheringRewardList[i].IsSelect)
             {
                 gatheringRewardList[i].Item = null;
-                gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
                 gatheringRewardList[i].IsSelect = false;
+                gatheringRewardList[i].IsHaveItem = false;
+                gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
             }
         }
 
     }
     public void GetAllItem()
     {
-        for (int i = rewardList.Count - 1; i >= 0; i--)
-        {
-            if (Vars.UserData.AddItemData(rewardList[i]) != false)
-            {
-                Vars.UserData.AddItemData(rewardList[i]);
-                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
-                rewardList.RemoveAt(i);
-            }
-            else
-            {
-                reconfirmPanelManager.gameObject.SetActive(true);
-                reconfirmPanelManager.OpenBagReconfirmInGathering();
-            }
-            dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
-            BottomUIManager.Instance.ItemListInit();
-        }
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
-            gatheringRewardList[i].IsSelect = false;
+            if (gatheringRewardList[i].Item != null)
+            {
+                if (Vars.UserData.AddItemData(gatheringRewardList[i].Item) != false)
+                {
+                    Vars.UserData.AddItemData(gatheringRewardList[i].Item);
+                    Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
+                }
+            }
+        }
+        dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+        BottomUIManager.Instance.ItemListInit();
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
             gatheringRewardList[i].Item = null;
+            gatheringRewardList[i].IsSelect = false;
+            gatheringRewardList[i].IsHaveItem = false;
             gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
         }
-        rewardList.Clear();
-        dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
     }
 }
