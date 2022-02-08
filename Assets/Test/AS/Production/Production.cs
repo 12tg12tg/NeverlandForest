@@ -9,8 +9,6 @@ public class Production : MonoBehaviour
     public RectTransform img2;
     public RectTransform bg;
     public Canvas uiCanvas;
-    public TextMeshProUGUI asd;
-
     public void FadeIn()
     {
         img1.gameObject.SetActive(true);

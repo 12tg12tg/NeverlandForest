@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class RewardObject : MonoBehaviour
 {
     private DataAllItem item;
+    public DataAllItem Item { get => item; set => item = value; }
     private bool isSelect;
     public Image selectedImg;
 
@@ -28,6 +29,7 @@ public class RewardObject : MonoBehaviour
 
         }
     }
+
     public void ItemButtonClick()
     {
         if (item == null)
