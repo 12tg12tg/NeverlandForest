@@ -66,6 +66,7 @@ public class DungeonSystem : MonoBehaviour
         tutorialManager = GameManager.Manager.tm;
         tutorialManager.Init();
         tutorialMove.Init();
+        GameManager.Manager.State = GameState.Tutorial;
     }
 
     public void Init()
