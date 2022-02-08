@@ -196,4 +196,20 @@ public class RecipeIcon : MonoBehaviour
             }
         }
     }
+    public void PreviewPageOpen()
+    {
+        if (page > 1)
+        {
+            page--;
+            SetPageButton();
+        }
+    }
+    public void NextPageOpen()
+    {
+        if (page < maxPage)
+        {
+            page++;
+            SetPageButton();
+        }
+    }
 }

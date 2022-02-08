@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 public class RecipeObj : MonoBehaviour
 {   
-
     private string[] recipes;
     private string time;
     private string result;
