@@ -477,7 +477,7 @@ public class CampManager : MonoBehaviour
         var lastIdx = count - 1;
         var last = mapPos.transform.GetChild(lastIdx);
         var x = (first.position.x + last.position.x) / 2;
-        campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
+        //campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
         //new Vector3(x, mapPos.transform.position.y + 10f, -47f);
     }
 

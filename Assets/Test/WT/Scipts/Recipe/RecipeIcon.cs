@@ -8,9 +8,7 @@ using UnityEngine.UI;
 
 public class RecipeIcon : MonoBehaviour
 {
-    private List<RecipeObj> itemGoList = new List<RecipeObj>();
-    private int selectedSlot = -1;
-    private const int MaxitemCount = 100;
+    [SerializeField] private List<RecipeObj> itemGoList = new List<RecipeObj>();
     private RecipeDataTable table;
     private AllItemTableElem fireobj;
     private AllItemTableElem condimentobj;
@@ -29,18 +27,21 @@ public class RecipeIcon : MonoBehaviour
     private DataAllItem resultitem;
     private AllItemDataTable allitemTable;
 
-    public RecipeObj itemPrehab;
-    public ScrollRect scrollRect;
-    public TextMeshProUGUI makingTime;
+    private int page = 1;
+    [HideInInspector] public RecipeObj currentRecipe;
+    private int maxPage;
 
     public Image fire;
     public Image condiment;
     public Image material;
+    public TextMeshProUGUI makingTime;
+
+    [SerializeField] private Button previewButton;
+    [SerializeField] private Button nextButton;
 
     public bool Isfireok => isfireok;
     public bool Iscondimentok => iscondimentok;
     public bool Ismaterialok => ismaterialok;
-  
     public void Start()
     {
         Init();
@@ -48,57 +49,59 @@ public class RecipeIcon : MonoBehaviour
 
     public void Init()
     {
-        table = DataTableManager.GetTable<RecipeDataTable>();
-        for (int i = 0; i < MaxitemCount; i++)
-        {
-            var item = Instantiate(itemPrehab, scrollRect.content);
-            item.Slot = i;
-            itemGoList.Add(item);
-            item.gameObject.AddComponent<Button>();
-            item.gameObject.SetActive(false);
-
-            var button = item.GetComponent<Button>();
-            button.onClick.AddListener(() => OnChangedSelection(item.Slot));
-        }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
-        SetAllItems();
-    }
-    public void SetAllItems()
-    {
-        foreach (var item in itemGoList)
-        {
-            item.gameObject.SetActive(false);
-        }
+        table = DataTableManager.GetTable<RecipeDataTable>();
+        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+
         var itemList = Vars.UserData.HaveRecipeIDList;
 
-        for (int i = 0; i < itemList.Count; i++)
+        for (int i = 0; i < 5; i++)
         {
-            itemGoList[i].Init(table, itemList[i]);
-            itemGoList[i].gameObject.SetActive(true);
+            var index = i + 5 * (page - 1);
+            if (index< itemList.Count)
+            {
+                itemGoList[i].Init(table, itemList[index],this);
+            }
+            else
+            {
+                itemGoList[i].Clear();
+            }
         }
-        if (itemList.Count > 0)
+        SetPageButton();
+    }
+    public void SetPageButton()
+    {
+        if (page == 1)
         {
-            selectedSlot = 0;
-            EventSystem.current.SetSelectedGameObject(itemGoList[selectedSlot].gameObject);
+            previewButton.interactable = false;
+        }
+        else if (page == maxPage)
+        {
+            nextButton.interactable = false;
+        }
+        else
+        {
+            previewButton.interactable = true;
+            nextButton.interactable = true;
         }
     }
-    public void OnChangedSelection(int slot)
+    public void OnChangedSelection()
     {
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var fireid = $"ITEM_{(itemGoList[slot].Recipes[0])}";
-        var condimentid = $"ITEM_{(itemGoList[slot].Recipes[1])}";
-        var materialid = $"ITEM_{(itemGoList[slot].Recipes[2])}";
+        var fireid = $"ITEM_{(currentRecipe.Recipes[0])}";
+        var condimentid = $"ITEM_{(currentRecipe.Recipes[1])}";
+        var materialid = $"ITEM_{(currentRecipe.Recipes[2])}";
 
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
-        result = itemGoList[slot].Result;
+        result = currentRecipe.Result;
 
         fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
         condimentobj = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj = allitemTable.GetData<AllItemTableElem>(materialid);
 
-        Time = itemGoList[slot].Time;
+        Time = currentRecipe.Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
         CampManager.Instance.cookingText.text = "요리 하기";
     }
@@ -191,6 +194,22 @@ public class RecipeIcon : MonoBehaviour
                 Debug.Log("요리 완료");
                 DiaryManager.Instacne.OpenCookingReward();
             }
+        }
+    }
+    public void PreviewPageOpen()
+    {
+        if (page > 1)
+        {
+            page--;
+            SetPageButton();
+        }
+    }
+    public void NextPageOpen()
+    {
+        if (page < maxPage)
+        {
+            page++;
+            SetPageButton();
         }
     }
 }

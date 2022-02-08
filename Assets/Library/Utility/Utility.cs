@@ -234,4 +234,56 @@ public class Utility
             ChangeLayerIncludeChildren(child, layer);
         }
     }
+
+    public static IEnumerator FadeIn(RectTransform img, RectTransform bg, Canvas screen, UnityAction action = null)
+    {
+        bg.gameObject.SetActive(true);
+
+        // 화면 가로 사이즈 가져오기
+        var width = screen.GetComponent<RectTransform>().sizeDelta.x;
+        // 연출용 이미지 시작위치 잡아주기
+        var startPos = img.anchoredPosition = new Vector2(width / 2 + img.sizeDelta.x, 0f);
+        // 끝 위치 잡아주기
+        var endPos = new Vector2(-width / 2 - 5f, 0f);
+
+        // 고정된 시간
+        var time = 1f;
+        var timer = 0f;
+
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            img.anchoredPosition = Vector2.Lerp(startPos, -endPos, ratio);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        action?.Invoke();
+    }
+
+    public static IEnumerator FadeOut(RectTransform img, RectTransform bg, Canvas screen, UnityAction action = null)
+    {
+        // 화면 가로 사이즈 가져오기
+        var width = screen.GetComponent<RectTransform>().sizeDelta.x;
+        // 연출용 이미지 시작위치 잡아주기
+        var startPos = img.anchoredPosition = new Vector2(-width / 2, 0f);
+        // 끝 위치 잡아주기
+        var endPos = new Vector2(img.sizeDelta.x + width / 2 + 5f, 0f);
+
+        // 고정된 시간
+        var time = 1f;
+        var timer = 0f;
+
+        while (timer < time)
+        {
+            var ratio = timer / time;
+            img.anchoredPosition = Vector2.Lerp(startPos, -endPos, ratio);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        bg.gameObject.SetActive(false);
+
+        action?.Invoke();
+    }
 }

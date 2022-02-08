@@ -246,18 +246,22 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        //Debug.Log($"마지막 드랍 타일 : {bm.dragLink.lastDrapTile.index}");
+        //Debug.Log($"마지막 드랍 타일의 어느쪽? : {bm.dragLink.lastDrapTile.WhichPartOfTile(bm.dragLink.lastDragWorldPos)}");
+
         if (bm.dragLink.lastDrapTile == null)
         {
             bottomUiManager.curSkillButton?.Cancle();
         }
         else if (bm.dragLink.lastDrapTile.isHighlight || bm.dragLink.lastDrapTile.isHighlightConsume)
         {
-            bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill);
+            bm.DoCommand(skill.SkillTableElem.player, bm.dragLink.lastDrapTile.index, skill, true);
 
             bottomUiManager.curSkillButton.Cancle_UseSkill();
             bottomUiManager.InteractiveSkillButton(skill.SkillTableElem.player, false);
 
-            bm.uiLink.UpdateProgress();
+            var progressIcon = skill.SkillTableElem.player == PlayerType.Boy ? BattleUI.ProgressIcon.Boy : BattleUI.ProgressIcon.Girl;
+            bm.uiLink.UpdateProgress(progressIcon);
         }
         else if (!bm.dragLink.lastDrapTile.isHighlight && !bm.dragLink.lastDrapTile.isHighlightConsume)
         {

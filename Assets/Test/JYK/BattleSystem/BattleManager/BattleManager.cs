@@ -107,7 +107,7 @@ public class BattleManager : MonoBehaviour
 
         // 플레이어 스탯 전달받기
         // Vars 전역 저장소에서 불러오기.
-        boy.stats.Hp = (int)Vars.UserData.uData.HunterHp;
+        boy.stats.Hp = (int)Vars.UserData.uData.Hp;
 
         //플레이어 배치
         tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
@@ -359,7 +359,7 @@ public class BattleManager : MonoBehaviour
         girlInput.Clear();
     }
 
-    public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill)
+    public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill, bool isDrag)
     {
         PlayerCommand command;
         PlayerBattleController attacker;
@@ -375,7 +375,7 @@ public class BattleManager : MonoBehaviour
         }
 
         command.Create(target, skill);
-        attacker.TurnInit(ActionType.Skill);
+        attacker.TurnInit(ActionType.Skill, isDrag);
     }
 
     public void EndOfPlayerAction()
@@ -386,7 +386,7 @@ public class BattleManager : MonoBehaviour
         {
             if (waveLink.IsAllWaveClear())
             {
-                uiLink.turnSkipButton.SetActive(false);
+                uiLink.turnSkipTrans.SetActive(false);
                 uiLink.progressTrans.SetActive(false);
                 uiLink.PrintMessage($"승리!", 2.5f, () =>
                     {
@@ -405,12 +405,12 @@ public class BattleManager : MonoBehaviour
                 if (isPlayerFirst)
                 {
                     FSM.ChangeState(BattleState.Monster);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
                 else
                 {
                     FSM.ChangeState(BattleState.Settlement);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
             }
         }
@@ -425,12 +425,12 @@ public class BattleManager : MonoBehaviour
                 if (isPlayerFirst)
                 {
                     FSM.ChangeState(BattleState.Monster);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
                 else
                 {
                     FSM.ChangeState(BattleState.Settlement);
-                    uiLink.turnSkipButton.SetActive(false);
+                    uiLink.turnSkipTrans.SetActive(false);
                 }
             }
             else

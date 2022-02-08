@@ -21,13 +21,11 @@ public class RecipeInfo : MonoBehaviour
         for (int i = 0; i < MaxItemCount; i++)
         {
             var item = Instantiate(itemprehab, scrollRect.content);
-            item.Slot = i;
             itemGoList.Add(item);
             item.gameObject.AddComponent<Button>();
             item.gameObject.SetActive(false);
 
             var button = item.GetComponent<Button>();
-            button.onClick.AddListener(() => OnChangedSelection(item.Slot));
         }
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
         Init();
@@ -48,7 +46,6 @@ public class RecipeInfo : MonoBehaviour
 
         for (int i = 0; i < itemList.Count; i++)
         {
-            itemGoList[i].Init(table, itemList[i]);
             itemGoList[i].gameObject.SetActive(true);
         }
         if (itemList.Count > 0)
