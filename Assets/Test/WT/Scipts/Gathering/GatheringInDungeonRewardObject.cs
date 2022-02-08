@@ -4,6 +4,7 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
 {
     private DataAllItem item;
     private bool isSelect;
+    private bool isHaveItem;
     [Header("버튼,아이콘")]
     public Button rewardButton;
     public Image rewardIcon;
@@ -27,6 +28,15 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
             }
         }
     }
+    public bool IsHaveItem
+    {
+        get => isHaveItem;
+        set
+        {
+            isHaveItem = value;
+        }
+    }
+
     public DataAllItem Item
     {
         get => item;

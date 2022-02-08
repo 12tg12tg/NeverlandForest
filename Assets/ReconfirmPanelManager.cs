@@ -57,6 +57,7 @@ public class ReconfirmPanelManager : MonoBehaviour
     public void OpenRandomEventfirm()
     {
         AllClose();
+        gameObject.SetActive(true);
         randomEventReconfirm.SetActive(true);
     }
 }
