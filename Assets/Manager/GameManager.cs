@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("»ç¸Á");
             Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
             Vars.UserData.WorldMapPlayerData = default;
-            Vars.UserData.uData.Date = 0;
+            ConsumeManager.CostDataReset();
         });
         StartCoroutine(coScene);
     }

@@ -352,5 +352,6 @@ public static class ConsumeManager
         Vars.UserData.uData.Tiredness = 100;
         Vars.UserData.uData.Hp = Vars.maxHp;
         Vars.UserData.uData.BonfireHour = 3f;
+        SaveConsumableData();
     }
 }
