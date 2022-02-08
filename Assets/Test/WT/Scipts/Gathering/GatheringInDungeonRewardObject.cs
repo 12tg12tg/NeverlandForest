@@ -8,6 +8,7 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     public Button rewardButton;
     public Image rewardIcon;
     public Image selectedImg;
+    public Sprite selectedImage;
     public bool IsSelect
     {
         get => isSelect;
@@ -15,9 +16,15 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.blue;
-            else
+            {
                 selectedImg.color = Color.white;
+                selectedImg.sprite = selectedImage;
+            }
+            else
+            {
+                selectedImg.color = Color.clear;
+                selectedImg.sprite = null;
+            }
         }
     }
     public DataAllItem Item
@@ -30,8 +37,10 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     }
     public void ItemButtonClick()
     {
+        if (item == null)
+            return;
+        IsSelect = !IsSelect;
         GatheringSystem.Instance.selecteditemList.Add(item);
-        IsSelect = true;
     }
     public void Init(DataAllItem data)
     {
