@@ -81,6 +81,11 @@ public class MoveTutorial : MonoBehaviour
         MoveTutorialEndExplain();
         yield return new WaitWhile(() => TutorialStep < 4);
 
+        TimeCostExplain();
+        yield return new WaitWhile(() => TutorialStep < 5);
+
+        yield return new WaitWhile(() => TutorialStep < 6);
+
         MoveTutorialEnd();
     }
 

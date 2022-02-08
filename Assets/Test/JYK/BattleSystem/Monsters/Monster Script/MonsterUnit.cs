@@ -360,6 +360,8 @@ public class MonsterUnit : UnitBase, IAttackable
 
     public void CalcultateDamage(PlayerCommand command, out int curDamage, out int curSheildDamage)
     {
+        var damageUiPos = uiLinker.linkedUi.rt.localPosition;
+
         curDamage = 0;
         curSheildDamage = 0;
 
@@ -370,17 +372,39 @@ public class MonsterUnit : UnitBase, IAttackable
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;
             Hp -= curDamage;
+
+            // 데미지 UI 
+            var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+            var script = damageUI.GetComponent<DamageUI>();
+            script.Init(damageUiPos, curDamage, DamageUI.DamageType.Hp);
+
         }
         else if(command.type == PlayerType.Girl)
         {
             sheild -= damage;
-            if(sheild < 0)
+
+            if (sheild < 0)
             {
                 curDamage = -sheild;
                 sheild = 0;
                 Hp -= curDamage;
             }
             curSheildDamage = damage - curDamage;
+
+            // 데미지 UI 
+            if (curSheildDamage != 0)
+            {
+                var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+                var script = damageUI.GetComponent<DamageUI>();
+                script.Init(damageUiPos, curSheildDamage, DamageUI.DamageType.Sheild);
+            }
+
+            if(curDamage != 0) // HP도 깎은 경우
+            {
+                var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+                var script = damageUI.GetComponent<DamageUI>();
+                script.Init(damageUiPos, curDamage, DamageUI.DamageType.Hp);
+            }
         }
     }
 
@@ -431,7 +455,7 @@ public class MonsterUnit : UnitBase, IAttackable
         command ??= new MonsterCommand(this);
         obsDebuffs.Clear();
 
-        uiLinker.Init(baseElem);
+        uiLinker.Init(this);
         State = MonsterState.Idle;
     }
     private void EraseThis()

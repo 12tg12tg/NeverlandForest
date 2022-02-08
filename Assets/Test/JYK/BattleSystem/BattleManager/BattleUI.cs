@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class BattleUI : MonoBehaviour
 {
+    public enum ProgressIcon
+    {
+        Boy, Girl, X, Potion
+    }
+
     private MultiTouch mt;
     private BattleManager bm;
     private TileMaker tm;
@@ -25,15 +30,20 @@ public class BattleUI : MonoBehaviour
     [Header("전투시에만 활성화할 플레이어 진행도 연결")]
     public GameObject progressTrans;
     [SerializeField] private List<Image> progressImg;
+    [SerializeField] private Sprite girl_Icon;
+    [SerializeField] private Sprite boy_Icon;
+    [SerializeField] private Sprite x_Icon;
+    [SerializeField] private Sprite potion_Icon;
 
     [Header("카메라 이동 화살표 위치")]
-    [SerializeField] private Transform arrowPos;
-    [SerializeField] private Camera uiCamera;
-    [SerializeField] private Canvas uiCanvas;
-    [SerializeField] private RectTransform arrowButton;
+    public Camera uiCamera;
+    public Canvas uiCanvas;
+    [SerializeField] private Button moveCameraRightButton;
+    [SerializeField] private Button moveCameraLeftButton;
 
     [Header("턴 넘기기 버튼")]
-    public GameObject turnSkipButton;
+    public GameObject turnSkipTrans;
+    public Button turnSkipButton;
 
     private int progress;
     public int Progress { get => progress; }
@@ -67,38 +77,22 @@ public class BattleUI : MonoBehaviour
     // Arrow Image
     public void ShowArrow(bool buttonForVeiwMonsterSide)
     {
-        arrowButton.gameObject.SetActive(true);
-
-        // 월드 카메라에서의 좌표 전환 - 스크린 좌표 얻기
-        var screenPos = Camera.main.WorldToScreenPoint(arrowPos.position);
-
-        if (screenPos.z < 0.0f)
-            screenPos *= -1.0f;
-
-        // 캔버스 기준으로 스크린 좌표 재해석
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(uiCanvas.transform as RectTransform, screenPos, uiCamera, out Vector2 localPos);
-
-        // 캔버스 내의 rect transform의 지역좌표 설정
-        arrowButton.localPosition = localPos;
-
-        // 화살표 방향 결정 및 연결 함수 관리
-        if (!buttonForVeiwMonsterSide)
+        if(buttonForVeiwMonsterSide)
         {
-            arrowButton.rotation = Quaternion.Euler(0f, 0f, 180f);
-            arrowButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            arrowButton.GetComponent<Button>().onClick.AddListener(bm.directingLink.ShowBattleSide);
+            moveCameraRightButton.gameObject.SetActive(true);
+            moveCameraLeftButton.gameObject.SetActive(false);
         }
         else
         {
-            arrowButton.rotation = Quaternion.identity;
-            arrowButton.GetComponent<Button>().onClick.RemoveAllListeners();
-            arrowButton.GetComponent<Button>().onClick.AddListener(bm.directingLink.ShowMonsterSide);
+            moveCameraRightButton.gameObject.SetActive(false);
+            moveCameraLeftButton.gameObject.SetActive(true);
         }
     }
 
     public void HideArrow()
     {
-        arrowButton.gameObject.SetActive(false);
+        moveCameraRightButton.gameObject.SetActive(false);
+        moveCameraLeftButton.gameObject.SetActive(false);
     }
 
     // Lantern Image
@@ -136,24 +130,42 @@ public class BattleUI : MonoBehaviour
     public void UpdateProgress_Button() // 버튼 스킵용
     {
         progress++;
-        UpdateProgressUI();
+        UpdateProgressUI(ProgressIcon.X);
         bm.EndOfPlayerAction();
     }
 
-    public void UpdateProgress()
+    public void UpdateProgress(ProgressIcon type)
     {
         progress++;
-        UpdateProgressUI();
+        UpdateProgressUI(type);
     }
 
     public void ResetProgress()
     {
         progress = 0;
-        UpdateProgressUI();
+        progressImg[0].enabled = false;
+        progressImg[1].enabled = false;
     }
 
-    private void UpdateProgressUI()
+    private void UpdateProgressUI(ProgressIcon type)
     {
+        Sprite temp = null;
+        switch (type)
+        {
+            case ProgressIcon.Boy:
+                temp = boy_Icon;
+                break;
+            case ProgressIcon.Girl:
+                temp = girl_Icon;
+                break;
+            case ProgressIcon.Potion:
+                temp = potion_Icon;
+                break;
+            case ProgressIcon.X:
+                temp = x_Icon;
+                break;
+        }
+
         int prog = bm.uiLink.Progress;
         if (prog == 0)
         {
@@ -163,12 +175,13 @@ public class BattleUI : MonoBehaviour
         else if (prog == 1)
         {
             progressImg[0].enabled = true;
-            progressImg[1].enabled = false;
+            progressImg[0].sprite = temp;
+
         }
         else if (prog == 2)
         {
-            progressImg[0].enabled = true;
             progressImg[1].enabled = true;
+            progressImg[1].sprite = temp;
         }
     }
 }

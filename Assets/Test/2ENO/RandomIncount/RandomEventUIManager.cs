@@ -51,7 +51,6 @@ public class RandomEventUIManager : MonoBehaviour
     [Header("외부 UI 및 기능 끄기")]
     public GameObject minimap;
     public GameObject inventory;
-    public GameObject worldmap;
     public GameObject playerMove;
 
     private List<DataAllItem> rewardItemList = new();
@@ -88,7 +87,6 @@ public class RandomEventUIManager : MonoBehaviour
     {
         minimap.SetActive(false);
         inventory.SetActive(false);
-        worldmap.SetActive(false);
         playerMove.SetActive(false);
         isRaneomEventOn = true;
     }
@@ -96,7 +94,6 @@ public class RandomEventUIManager : MonoBehaviour
     {
         minimap.SetActive(true);
         inventory.SetActive(true);
-        worldmap.SetActive(true);
         playerMove.SetActive(true);
         isRaneomEventOn = false;
     }
@@ -157,15 +154,15 @@ public class RandomEventUIManager : MonoBehaviour
         {
             if (randomEventData.selectBtnCount < i + 1)
             {
-                selectButtons[j].GetComponent<Image>().enabled = false;
-                selectButtons[j].GetComponent<Button>().enabled = false;
+                //selectButtons[j].transform.GetChild(0).GetComponent<Image>().enabled = false;
+                //selectButtons[j].transform.GetChild(0).GetComponent<Button>().enabled = false;
+                selectButtons[j].transform.GetChild(0).gameObject.SetActive(false);
                 j--;
                 continue;
             }
-            var btnObj = selectButtons[i];
+            var btnObj = selectButtons[i].transform.GetChild(0);
 
             var button = btnObj.GetComponent<Button>();
-            var image = btnObj.GetComponent<Image>();
 
             var texts = btnObj.GetComponentsInChildren<TextMeshProUGUI>();
             var nameText = texts[0];
@@ -226,7 +223,7 @@ public class RandomEventUIManager : MonoBehaviour
         rewardItemList.Clear();
         for (int i = 0; i < selectButtons.Count; i++)
         {
-            var button = selectButtons[i].GetComponent<Button>();
+            var button = selectButtons[i].transform.GetChild(0).GetComponent<Button>();
             button.onClick.RemoveAllListeners();
         }
         gameObject.SetActive(false);

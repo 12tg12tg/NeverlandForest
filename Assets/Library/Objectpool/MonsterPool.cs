@@ -16,7 +16,7 @@ public enum MonsterPoolTag
 
 public class MonsterPool : CustomObjectPool<MonsterPoolTag>
 {
-    public Transform parent;
+    public Transform[] parents;
     protected override GameObject OnCreate(MonsterPoolTag key)
     {
         var index = (int)key;
@@ -25,10 +25,11 @@ public class MonsterPool : CustomObjectPool<MonsterPoolTag>
         return go;
     }
 
-    protected override void OnGet(GameObject go)
+    protected override void OnGet(GameObject go, MonsterPoolTag key)
     {
+        var index = (int)key;
         go.SetActive(true);
-        go.transform.SetParent(parent);
+        go.transform.SetParent(parents[index]);
         var col = go.GetComponent<Collider>();
         col.enabled = false;
         var anim = go.GetComponentInChildren<Animator>();

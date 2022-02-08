@@ -36,8 +36,7 @@ public static class Vars
     public static readonly int maxIngameHour = 24;
     public static readonly int maxIngameMinute = 60;
     public static readonly int maxStamina = 100; // 회색 스태미나 절대로 변하지 않는 스태미너칸
-    public static readonly float hunterMaxHp = 100;
-    public static readonly float herbalistMaxHp = 100;
+    public static readonly float maxHp = 50f;
     public static readonly float lanternMaxCount = 18;
 
     // Localization
