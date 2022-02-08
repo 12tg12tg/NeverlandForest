@@ -26,7 +26,8 @@ public class TutorialManager : MonoBehaviour
     {
         mainTutorial.Init();
         contentsTutorial.Init();
-        nextStepButton.gameObject.SetActive(false);
+        if(nextStepButton != null)
+            nextStepButton.gameObject.SetActive(false);
         //CheckMainTutorial();
     }
 
@@ -35,7 +36,7 @@ public class TutorialManager : MonoBehaviour
         switch (mainTutorial.MainTutorialStage)
         {
             case MainTutorialStage.Story:
-                StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text));
+                StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => mainTutorial.NextMainTutorial()));
                 break;
             case MainTutorialStage.Battle:
                 break;
