@@ -58,9 +58,9 @@ public class GameManager : MonoBehaviour
         // TODO : 해당 부분 정리 필요?
         if (cm != null)
         {
-            if (cm.mainCamera != null)
+            if (cm.worldMapCamera != null)
             {
-                var wmCamera = cm.mainCamera.GetComponent<WorldMapCamera>();
+                var wmCamera = cm.worldMapCamera.GetComponent<WorldMapCamera>();
                 if (wmCamera != null)
                     wmCamera.Init();
             }

@@ -161,6 +161,7 @@ public class HuntTutorial : MonoBehaviour
     {
         SetActive(true, true, true);
         huntButton.interactable = true;
+        huntButton.onClick.AddListener(() => huntButton.interactable = false);
         dialogBoxObj.left.SetActive(false);
         dialogBoxObj.down.SetActive(true);
 

@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Linq;
 
 public class DungeonRewardDiaryManager : MonoBehaviour
 {
@@ -23,10 +25,12 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     [Header("보상")]
     public GameObject reward;
     public ReconfirmPanelManager popupPanel;
+    public List<RewardObject> selectedItemList = new List<RewardObject>();
 
     public void Awake()
     {
         instance = this;
+        gatheringInDungeonrewardInventory.ItemButtonInit();
     }
     public void AllClose()
     {
@@ -74,13 +78,40 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         }
         else
         {
+            popupPanel.gameObject.SetActive(true);
             popupPanel.rewardNotEmptyPopup.SetActive(true);
         }
     }
 
-    public void QuitContents()
+    public void GetAllItem()
     {
-
+        var items = reward.GetComponentsInChildren<RewardObject>();
+        for (int i = 0; i < items.Length; i++)
+        {
+            if(items[i].Item != null)
+            {
+                Vars.UserData.AddItemData(items[i].Item);
+                Vars.UserData.ExperienceListAdd(items[i].Item.itemId);
+                items[i].InitItemSprite();
+            }
+        }
+        gatheringInDungeonrewardInventory.ItemButtonInit();
     }
 
+    public void GetSelectedItem()
+    {
+        if(selectedItemList.Count == 0)
+        {
+            Debug.Log("선택된 아이템이 없습니다");
+            return;
+        }
+        selectedItemList.ForEach(x => {
+            Vars.UserData.AddItemData(x.Item);
+            Vars.UserData.ExperienceListAdd(x.Item.itemId);
+            x.InitItemSprite();
+        });
+        gatheringInDungeonrewardInventory.ItemButtonInit();
+    }
+
+    public void QuitContents() => SceneManager.LoadScene("AS_RandomMap");
 }

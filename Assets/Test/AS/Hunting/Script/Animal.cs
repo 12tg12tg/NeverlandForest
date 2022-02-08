@@ -3,6 +3,7 @@ using TMPro;
 using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Animal : MonoBehaviour
 {
@@ -111,7 +112,7 @@ public class Animal : MonoBehaviour
         if (vals.Length != 1)
             return;
         var player = (HuntPlayer)vals[0];
-        
+
         // 플레이어가 이동할 때 마다 호출 되어야 하는 메서드
         var rnd = Random.Range(0f, 1f);
 
@@ -126,6 +127,7 @@ public class Animal : MonoBehaviour
             warningBox.GetComponent<Image>().sprite = runAway;
             MoveWarningBox();
             AnimalRunAway();
+            player.HuntFailAnimation();
             AnimalMove(false, () => {
                 failPopUp.SetActive(true);
                 transparentWindow.SetActive(true);
@@ -156,8 +158,6 @@ public class Animal : MonoBehaviour
 
         Debug.Log($"현재 도망 확률:{escapePercent}");
     }
-
-    
 
     public void AnimalMove(bool isDead, UnityAction action = null)
     {

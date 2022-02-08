@@ -28,6 +28,7 @@ public class HuntingManager : MonoBehaviour
     public GameObject successPopUp;
     public GameObject transparentWindow;
     public TMP_Text huntButtonText;
+    public RewardObject reward;
 
     [Header("Production")]
     public Production production;
@@ -103,15 +104,12 @@ public class HuntingManager : MonoBehaviour
             tiles[i].bush.gameObject.SetActive(false); // 현재 켜져있는 타일을 다시 꺼주고
             
             var bushIndex = (int)tiles[i].index.y;
-            if (bushIndex > 0 && bushIndex < tileMaker.col - 1)
+            if (bushIndex > 0 && bushIndex < tileMaker.col - 1 &&
+                randomBush[bushIndex - 1].Equals((int)tiles[i].index.x))
             {
-                if (randomBush[bushIndex - 1].Equals((int)tiles[i].index.x))
-                {
-                    tiles[i].bush.gameObject.SetActive(true); // 새롭게 랜덤으로 뽑힌 애들만 켜주도록..
-                }
+                tiles[i].bush.gameObject.SetActive(true); // 새롭게 랜덤으로 뽑힌 애들만 켜주도록..
             }
         }
-
 
         huntPlayers.Init();
 
@@ -134,7 +132,7 @@ public class HuntingManager : MonoBehaviour
         BottomUIManager.Instance.ButtonInteractive(false);
         huntTutorial = gameObject.AddComponent<HuntTutorial>();
         huntTutorial.huntPlayers = huntPlayers;
-        huntTutorial.tile = tiles.Where(x => x.bush != null && (int)x.index.y == 1).Select(x => x).FirstOrDefault();
+        huntTutorial.tile = tiles.Where(x => x.bush.gameObject.activeSelf && (int)x.index.y == 1).Select(x => x).FirstOrDefault();
         huntTutorial.tile.huntingManager = this;
         var huntButton = huntButtonText.gameObject.transform.parent.GetComponent<Button>();
         huntButton.onClick.AddListener(NextTutorialStep);
@@ -162,9 +160,6 @@ public class HuntingManager : MonoBehaviour
 
         HuntPercentagePrint(huntPercentUp);
     }
-    
-
-   
 
     private void OnBush(object[] vals)
     {
@@ -183,7 +178,7 @@ public class HuntingManager : MonoBehaviour
         huntButtonText.text = $"성공 {perccent}%" + "\n" + "사냥하기";
     }
 
-    private void GetItem()
+    private void SetRewardItem()
     {
         // 추후 동물이 얻을 수 있는 아이템 리스트가 생기면 거기에서 가져오게끔 변경 예정
         var tempItemNum = 5;
@@ -191,9 +186,9 @@ public class HuntingManager : MonoBehaviour
         var item = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(stringId);
         var newItem = new DataAllItem(item);
         newItem.OwnCount = Random.Range(1, 5);
-        //getItemImage.sprite = item.IconSprite;
-        Vars.UserData.AddItemData(newItem);
-        Vars.UserData.ExperienceListAdd(newItem.itemId);
+
+        reward.Item = newItem;
+        reward.SetItemSprite(item.IconSprite);
     }
 
     public void Shooting()
@@ -221,13 +216,10 @@ public class HuntingManager : MonoBehaviour
         {
             huntPlayers.HuntSuccessAnimation();
             animal.AnimalDead();
-            GetItem();
+            SetRewardItem();
 
-            if (huntTutorial != null) // 튜토리얼 진행중 이라면
-            {
+            if (huntTutorial != null)
                 huntTutorial.TutorialStep++;
-                Debug.Log(huntTutorial.TutorialStep);
-            }
         }
         else
         {

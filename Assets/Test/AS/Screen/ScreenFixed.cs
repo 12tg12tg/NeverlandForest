@@ -84,8 +84,5 @@ public class ScreenFixed : MonoBehaviour
         Debug.Log("화면 재정의 완료");
     }
 
-    public void OnPreCull()
-    {
-        GL.Clear(true, true, Color.red);
-    }
+    public void OnPreCull() => GL.Clear(true, true, Color.black);
 }

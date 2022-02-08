@@ -18,11 +18,11 @@ public class ReconfirmPanelManager : MonoBehaviour
     [Header("다이어리")]
     public DiaryManager diaryManager;
 
-    public void Start()
-    {
-        gameObject.SetActive(false);
-        AllClose();
-    }
+    //public void Start()
+    //{
+    //    gameObject.SetActive(false);
+    //    AllClose();
+    //}
     public void AllClose()
     {
         battleReconfirm.SetActive(false);

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraManager : MonoBehaviour
 {
     [Header("카메라들")]
-    public Camera mainCamera;
+    public Camera worldMapCamera;
     public Camera uiCamera;
     public Camera miniWorldMapCamera;
 }

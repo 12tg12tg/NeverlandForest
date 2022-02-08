@@ -18,9 +18,10 @@ public class HuntTile : MonoBehaviour, IPointerClickHandler
         {
             if (players.tutorialTile == null)
                 return;
-            if (players.tutorialTile.index == index/* && huntingManager != null*/)
+            var tuto = huntingManager.GetComponent<HuntTutorial>();
+            if (players.tutorialTile.index == index && tuto.TutorialStep == 1)
             {
-                huntingManager.GetComponent<HuntTutorial>().TutorialStep++;
+                tuto.TutorialStep++;
                 Debug.Log(huntingManager.GetComponent<HuntTutorial>().TutorialStep);
             }
         }
