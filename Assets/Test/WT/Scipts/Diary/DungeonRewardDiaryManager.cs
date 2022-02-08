@@ -20,6 +20,10 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     [Header("다이어리인벤토리")]
     public DiaryInventory gatheringInDungeonrewardInventory;
 
+    [Header("보상")]
+    public GameObject reward;
+    public ReconfirmPanelManager popupPanel;
+
     public void Awake()
     {
         instance = this;
@@ -52,4 +56,31 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
    
+    public void CheckRewardEmpty()
+    {
+        var items = reward.GetComponentsInChildren<RewardObject>();
+        var isEmpty = false;
+        for (int i = 0; i < items.Length; i++)
+        {
+            isEmpty = items[i].Item == null;
+            if (!isEmpty)
+                break;
+        }
+
+        if(isEmpty)
+        {
+            QuitContents();
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            popupPanel.rewardNotEmptyPopup.SetActive(true);
+        }
+    }
+
+    public void QuitContents()
+    {
+
+    }
+
 }
