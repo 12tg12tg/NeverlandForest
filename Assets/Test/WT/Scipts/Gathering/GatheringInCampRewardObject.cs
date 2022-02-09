@@ -4,12 +4,13 @@ public class GatheringInCampRewardObject : MonoBehaviour
 {
     private DataAllItem item;
     private bool isSelect;
+
     private string stringid = string.Empty;
     private bool isBlank = false;
     [Header("¹öÆ° ¼ÂÆÃ")]
-    public Button rewardButton;
     public Image rewardIcon;
     public Image selectedImg;
+    public Sprite selectedImage;
     public bool IsSelect
     {
         get => isSelect;
@@ -17,28 +18,28 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.blue;
-            else
+            {
                 selectedImg.color = Color.white;
+                selectedImg.sprite = selectedImage;
+            }
+            else
+            {
+                selectedImg.color = Color.clear;
+                selectedImg.sprite = null;
+            }
         }
     }
     public DataAllItem Item
     {
         get => item;
-        set
-        {
-            item = value;
-        }
+        set { item = value; }
     }
     public bool IsBlank
     {
         get => isBlank;
         set { isBlank = value; }
     }
-    public void Start()
-    {
-        SetRewardItemIcon();
-    }
+ 
     public void SetRewardItemIcon()
     {
         //³ª¹«Åä¸·: 1 %
@@ -54,32 +55,48 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //³ª¹«Åä¸·: 1 %
             stringid = $"ITEM_1";
+            Debug.Log("´çÃ·");
+            isBlank = false;
+
         }
         else if (randNum == 2)
         {
             //¾¾¾Ñ: 1 %
             stringid = $"ITEM_3";
+            Debug.Log("´çÃ·");
+            isBlank = false;
+
         }
         else if (randNum >= 3 && randNum <= 5)
         {
             //³ª¹µ°¡Áö3 %
             stringid = $"ITEM_2";
+            Debug.Log("´çÃ·");
+            isBlank = false;
+
         }
         else if (randNum >= 6 && randNum <= 10)
         {
             //¾àÃÊ: 5 %
             stringid = $"ITEM_4";
+            Debug.Log("´çÃ·");
+            isBlank = false;
+
         }
         else if (randNum >= 11 && randNum <= 15)
         {
             // ¹ö¼¸: 5 %
             stringid = $"ITEM_6";
+            Debug.Log("´çÃ·");
+            isBlank = false;
+
         }
         else
         {
             //²Î: 85 %
             Debug.Log("²Î");
-            rewardIcon.sprite = Resources.Load<Sprite>($"Icons/xsymbol");
+            selectedImg.sprite = null;
+            selectedImg.color = Color.clear;
             isBlank = true;
         }
 
@@ -90,16 +107,32 @@ public class GatheringInCampRewardObject : MonoBehaviour
                 OwnCount = Random.Range(1, 3)
             };
             rewardIcon.sprite = newItem.ItemTableElem.IconSprite;
+            rewardIcon.color = Color.white;
+            selectedImg.color = Color.clear;
             item = newItem;
-            CampManager.Instance.RewardList.Add(item);
+        }
+        else
+        {
+            rewardIcon.sprite =null;
+            rewardIcon.color = Color.clear;
+
         }
     }
     public void ItemButtonClick()
     {
-        if (item != null)
+        if (item == null)
+            return;
+            IsSelect = !IsSelect;
+        if (IsSelect)
         {
-            CampManager.Instance.selectItemList.Add(item);
-            IsSelect = true;
+            selectedImg.sprite = selectedImage;
+            selectedImg.color = Color.white;
+        }
+        else
+        {
+            selectedImg.sprite = null;
+            selectedImg.color = Color.clear;
+
         }
     }
 }

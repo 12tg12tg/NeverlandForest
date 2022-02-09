@@ -80,5 +80,7 @@ public class StaminaBar : MonoBehaviour
         {
             ConsumeManager.ConsumeBonfireTime(0, 1);
         }*/
+
+
     }
 }

@@ -10,21 +10,17 @@ public class CampManager : MonoBehaviour
     private float recoveryBonTime = 0;
     private float recoverySleepTime = 0;
     private float gatheringTime = 0;
-    private List<GameObject> isBlankCheckList = new List<GameObject>();
+    private int isBlankCheck = 0;
+    private int haveitemCount = 0;
     private Vector3 StartPos;
     private Vector3 EndPos;
-    private List<DataAllItem> rewardList = new List<DataAllItem>();
-    private List<GameObject> rewardGameObjectList = new List<GameObject>();
-    private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
+    [SerializeField] private List<GatheringInCampRewardObject> gatheringRewardList = new List<GatheringInCampRewardObject>();
     private GameObject reward;
 
     private bool isCookMove;
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
-
-    public List<DataAllItem> selectItemList = new List<DataAllItem>();
-
     [Header("미니맵 셋팅")]
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
@@ -52,6 +48,7 @@ public class CampManager : MonoBehaviour
     public float RecoverySleepTime => recoverySleepTime;
     [Header("텍스트 관련")]
     public TextMeshProUGUI bonTimeText;
+    public TextMeshProUGUI diarybonTimeText;
     public TextMeshProUGUI sleepTimeText;
     public TextMeshProUGUI gatheringTimeText;
     public TextMeshProUGUI gatheringRewardText;
@@ -66,14 +63,7 @@ public class CampManager : MonoBehaviour
     public GameObject bluemoonObject;
     public RecipeIcon diaryRecipeIcon;
     public GameObject campbornfire;
-    public List<DataAllItem> RewardList
-    {
-        get => rewardList;
-        set
-        {
-            rewardList = value;
-        }
-    }
+
     [Header("요리제스처")]
     public SimpleGesture simpleGesture;
     public enum CampEvent
@@ -106,7 +96,7 @@ public class CampManager : MonoBehaviour
     {
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         GameManager.Manager.State = GameState.Camp;
-        TutorialStart();
+        //TutorialStart();
     }
     public void Start()
     {
@@ -134,6 +124,7 @@ public class CampManager : MonoBehaviour
     public void SetBonTime()
     {
         bonTimeText.text = Vars.UserData.uData.BonfireHour.ToString() + "시간";
+        diarybonTimeText.text = Vars.UserData.uData.BonfireHour.ToString() + "시간";
     }
     public void RecoveryBonTime()
     {
@@ -325,29 +316,71 @@ public class CampManager : MonoBehaviour
     }
     public void CloseGatheringInCamp()
     {
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            if (gatheringRewardList[i].Item !=null)
+            {
+                haveitemCount++;
+            }
+        }
+        if (haveitemCount == 0)
+        {
+            if (isGatheringMove)
+            {
+                StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
+                isGatheringMove = false;
+            }
+            campbornfire.SetActive(true);
+            bonTimeText.gameObject.SetActive(true);
+            for (int i = 0; i < gatheringRewardList.Count; i++)
+            {
+                gatheringRewardList[i].rewardIcon.sprite = null;
+                gatheringRewardList[i].rewardIcon.color = Color.clear;
+                gatheringRewardList[i].IsSelect = false;
+                gatheringRewardList[i].Item = null;
+            }
+            isBlankCheck = 0;
+            diaryManager.gatheringInCampRewardPanel.SetActive(false);
+            diaryManager.gameObject.SetActive(false);
+            newBottomUi.SetActive(true);
+        }
+        else
+        {
+            reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.OpenRandomEventfirm();
+            haveitemCount = 0;
+        }
+    }
 
+    public void YesifinishGathering()
+    {
         if (isGatheringMove)
         {
             StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
             isGatheringMove = false;
         }
         campbornfire.SetActive(true);
-
         bonTimeText.gameObject.SetActive(true);
-        newBottomUi.SetActive(true);
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            gatheringRewardList[i].rewardIcon.sprite = null;
+            gatheringRewardList[i].rewardIcon.color = Color.clear;
+            gatheringRewardList[i].IsSelect = false;
+            gatheringRewardList[i].Item = null;
+        }
 
-        if (rewardGameObjectList.Count > 0)
-        {
-            for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
-            {
-                Destroy(rewardGameObjectList[i]);
-            }
-        }
-        if (rewardGameObjectList.Count == 0)
-        {
-            rewardGameObjectList.Clear();
-        }
+        haveitemCount = 0;
+        isBlankCheck = 0;
+        reconfirmPanelManager.AllClose();
+        reconfirmPanelManager.gameObject.SetActive(false);
         diaryManager.gatheringInCampRewardPanel.SetActive(false);
+        diaryManager.gameObject.SetActive(false);
+        newBottomUi.SetActive(true);
+    }
+    public void NotYetGetItem()
+    {
+        reconfirmPanelManager.AllClose();
+        reconfirmPanelManager.gameObject.SetActive(false);
     }
 
     //BlueMoonInCamp
@@ -538,6 +571,10 @@ public class CampManager : MonoBehaviour
     public void PlusGatheringTime()
     {
         gatheringTime += 30;
+        if (gatheringTime > 180)
+        {
+            gatheringTime = 180;
+        }
         var haveMinute = Vars.UserData.uData.BonfireHour * 60;
         if (haveMinute < gatheringTime)
         {
@@ -566,36 +603,18 @@ public class CampManager : MonoBehaviour
         Debug.Log($"gatheringTime{gatheringTime}");
         for (int i = 0; i < (int)(gatheringTime / 30); i++)
         {
-            reward = Instantiate(testPrehab, diaryManager.gatheringParent.transform);
-            if (reward.GetComponent<GatheringInCampRewardObject>().IsBlank == true)
+            gatheringRewardList[i].SetRewardItemIcon();
+            if (gatheringRewardList[i].IsBlank == true)
             {
-                isBlankCheckList.Add(reward);
+                isBlankCheck++;
             }
-
-            gatheringRewardList.Add(reward.GetComponent<GatheringInCampRewardObject>());
-            rewardGameObjectList.Add(reward);
         }
         ConsumeManager.TimeUp(gatheringTime);
-        if (rewardList.Count != 0)
-        {
-            for (int i = 0; i < rewardList.Count; i++)
-            {
-                Debug.Log($"itemReward{rewardList[i].ItemTableElem.name}");
-            }
-        }
-        if (isBlankCheckList.Count == (int)(gatheringTime / 30))
+        if (isBlankCheck == (int)(gatheringTime / 30))
         {
             Debug.Log("전부꽝");
             gatheringRewardText.text = "딱히 주울게 없네";
         }
-        Debug.Log($"꽝 갯수 : {isBlankCheckList.Count}");
-        Debug.Log($"보상갯수 : {rewardList.Count}");
-
-        for (int i = isBlankCheckList.Count - 1; i >= 0; i--)
-        {
-            isBlankCheckList.RemoveAt(i);
-        }
-        isBlankCheckList.Clear();
         gatheringTime = 0;
         SetGatheringTime();
         SetBonTime();
@@ -605,97 +624,51 @@ public class CampManager : MonoBehaviour
     {
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
-            gatheringRewardList[i].IsSelect = false;
+            if (gatheringRewardList[i].IsSelect == true)
+            {
+                if (Vars.UserData.AddItemData((gatheringRewardList[i].Item)) != false)
+                {
+                    Vars.UserData.AddItemData(gatheringRewardList[i].Item);
+                    Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
+                    gatheringRewardList[i].Item = null;
+                    gatheringRewardList[i].rewardIcon.sprite = null;
+                    gatheringRewardList[i].rewardIcon.color = Color.clear;
+                    gatheringRewardList[i].IsSelect = false;
+                }
+            }
         }
-        if (selectItemList.Count > 0)
+        diaryManager.gatheringInventory.ItemButtonInit();
+        if (BottomUIManager.Instance != null)
         {
-            for (int i = 0; i < selectItemList.Count; i++)
-            {
-                if (Vars.UserData.AddItemData(selectItemList[i]) != false)
-                {
-                    Vars.UserData.AddItemData(selectItemList[i]);
-                    Vars.UserData.ExperienceListAdd(selectItemList[i].itemId);
-
-                    for (int j = rewardList.Count-1; j>=0; j--)
-                    {
-                        if (rewardList[j] == selectItemList[i])
-                        {
-                            rewardList.RemoveAt(j);
-                        }
-                    }
-                    if (rewardList.Count == 0)
-                    {
-                        rewardList.Clear();
-                    }
-                }
-            }
-            diaryManager.gatheringInventory.ItemButtonInit();
-            if (BottomUIManager.Instance != null)
-            {
-                BottomUIManager.Instance.ItemListInit();
-            }
-            if (DiaryInventory.Instance != null)
-            {
-                DiaryInventory.Instance.ItemButtonInit();
-            }
-            for (int i = 0; i < rewardGameObjectList.Count; i++)
-            {
-                for (int j = 0; j < selectItemList.Count; j++)
-                {
-                    if (selectItemList[j] == rewardGameObjectList[i].GetComponent<GatheringInCampRewardObject>().Item)
-                    {
-                        Destroy(rewardGameObjectList[i]);
-                        rewardGameObjectList.RemoveAt(i);
-                    }
-                }
-            }
-            if (rewardGameObjectList.Count == 0)
-            {
-                rewardGameObjectList.Clear();
-            }
-            for (int i = selectItemList.Count - 1; i >= 0; i--)
-            {
-                selectItemList.RemoveAt(i);
-            }
+            BottomUIManager.Instance.ItemListInit();
+        }
+        if (DiaryInventory.Instance != null)
+        {
+            DiaryInventory.Instance.ItemButtonInit();
         }
     }
     public void AllItem()
     {
-        if (rewardList.Count > 0)
+        for (int i = 0; i < gatheringRewardList.Count; i++)
         {
-            for (int i = rewardList.Count - 1; i >= 0; i--)
+            if (Vars.UserData.AddItemData(gatheringRewardList[i].Item) != false)
             {
-                Vars.UserData.AddItemData(rewardList[i]);
-                Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
-                rewardList.RemoveAt(i);
+                Vars.UserData.AddItemData(gatheringRewardList[i].Item);
+                Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
             }
-            if (BottomUIManager.Instance != null)
-            {
-                BottomUIManager.Instance.ItemListInit();
-            }
-            if (DiaryInventory.Instance != null)
-            {
-                DiaryInventory.Instance.ItemButtonInit();
-            }
+            gatheringRewardList[i].Item = null;
+            gatheringRewardList[i].rewardIcon.sprite = null;
+            gatheringRewardList[i].rewardIcon.color = Color.clear;
+            gatheringRewardList[i].IsSelect = false;
         }
-        if (rewardList.Count == 0)
+        if (BottomUIManager.Instance != null)
         {
-            rewardList.Clear();
-
+            BottomUIManager.Instance.ItemListInit();
         }
-
-        for (int i = rewardGameObjectList.Count - 1; i >= 0; i--)
+        if (DiaryInventory.Instance != null)
         {
-            Destroy(rewardGameObjectList[i]);
+            DiaryInventory.Instance.ItemButtonInit();
         }
-        if (rewardGameObjectList.Count == 0)
-        {
-            rewardGameObjectList.Clear();
-        }
-        diaryManager.AllClose();
-        diaryManager.gameObject.SetActive(false);
-        newBottomUi.SetActive(true);
-        CloseGatheringInCamp();
     }
 
     public void BurnItemCheck()
@@ -711,4 +684,17 @@ public class CampManager : MonoBehaviour
         }
 
     }
+    public void OnGUI()
+    {
+        if (GUI.Button(new Rect(100, 100, 100, 75), "BonFireUp"))
+        {
+            ConsumeManager.RecoveryBonFire(0, 1);
+            SetBonTime();
+        }
+        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
+        {
+            ConsumeManager.CostDataReset();
+        }
+    }
+
 }
