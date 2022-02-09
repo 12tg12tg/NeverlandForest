@@ -34,6 +34,11 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     {
         instance = this;
         gatheringInDungeonrewardInventory.ItemButtonInit();
+        Close();
+    }
+    public void Close()
+    {
+        gameObject.SetActive(false);
     }
     public void AllClose()
     {
