@@ -14,6 +14,7 @@ public class WorldMapCamera : MonoBehaviour
     private Coroutine coCameraMove;
 
     private static bool isInit = false;
+    private bool isStop = false;
 
     public bool UseMiniMap;
 
@@ -37,7 +38,7 @@ public class WorldMapCamera : MonoBehaviour
 
     private void Update()
     {
-        if (coCameraMove != null)
+        if (coCameraMove != null || isStop)
             return;
 
         var touch = GameManager.Manager.MultiTouch;
@@ -85,4 +86,6 @@ public class WorldMapCamera : MonoBehaviour
     }
 
     public void RunDungoen() => isInit = true;
+    public void CameraMoveStop() => isStop = true;
+    public void CameraMoveActive() => isStop = false;
 }

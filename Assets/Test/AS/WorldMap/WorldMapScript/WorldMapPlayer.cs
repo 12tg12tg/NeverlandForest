@@ -74,7 +74,7 @@ public class WorldMapPlayer : MonoBehaviour
 
             // 게임을 처음 켰는데 던전맵이고 던전맵에서 도망갔다면 딱 한번만 실행하면 되는데.. 
             // 다른 방법 생각이 안나서 이래 해둔상태
-            GameManager.Manager.cm.mainCamera.GetComponent<WorldMapCamera>().RunDungoen();
+            GameManager.Manager.cm.worldMapCamera.GetComponent<WorldMapCamera>().RunDungoen();
         }
     }
 

@@ -17,11 +17,11 @@ public class ReconfirmPanelManager : MonoBehaviour
     public GameObject randomEventReconfirm;
  
 
-    public void Start()
-    {
-        gameObject.SetActive(false);
-        AllClose();
-    }
+    //public void Start()
+    //{
+    //    gameObject.SetActive(false);
+    //    AllClose();
+    //}
     public void AllClose()
     {
         battleReconfirm.SetActive(false);

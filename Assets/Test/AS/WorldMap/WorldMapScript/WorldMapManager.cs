@@ -21,6 +21,8 @@ public class WorldMapManager : MonoBehaviour
     public int column;
     public int row;
 
+    [Header("UI")]
+    public GameObject backDungeonBt;
 
     public void Init()
     {
@@ -49,6 +51,8 @@ public class WorldMapManager : MonoBehaviour
             });
             if (ground != null)
                 ground.Load();
+            if ((int)player.CurrentIndex.y >= 1)
+                backDungeonBt.SetActive(true);
         }
     }
 
