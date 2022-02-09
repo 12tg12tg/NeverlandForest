@@ -8,7 +8,7 @@ using System.Linq;
 public class DungeonRewardDiaryManager : MonoBehaviour
 {
     private static DungeonRewardDiaryManager instance;
-    public static DungeonRewardDiaryManager Instacne => instance;
+    public static DungeonRewardDiaryManager Instance => instance;
     [Header("태그관련")]
     public Image battleTagImage;
     public Image huntTagImage;
@@ -81,8 +81,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         }
         else
         {
-            popupPanel.gameObject.SetActive(true);
-            popupPanel.rewardNotEmptyPopup.SetActive(true);
+            PopupPanelOpne(false, true);
         }
     }
 
@@ -93,12 +92,24 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         {
             if(items[i].Item != null)
             {
-                Vars.UserData.AddItemData(items[i].Item);
+                var isInvenNotFull = Vars.UserData.AddItemData(items[i].Item);
+                if (!isInvenNotFull)
+                {
+                    PopupPanelOpne(true);
+                    return;
+                }
                 Vars.UserData.ExperienceListAdd(items[i].Item.itemId);
                 items[i].InitItemSprite();
             }
         }
         gatheringInDungeonrewardInventory.ItemButtonInit();
+    }
+
+    private void PopupPanelOpne(bool isInvenFull = false, bool isrewardEmpty = false)
+    {
+        popupPanel.gameObject.SetActive(true);
+        popupPanel.inventoryFullPopup.SetActive(isInvenFull);
+        popupPanel.rewardNotEmptyPopup.SetActive(isrewardEmpty);
     }
 
     public void GetSelectedItem()
@@ -109,7 +120,12 @@ public class DungeonRewardDiaryManager : MonoBehaviour
             return;
         }
         selectedItemList.ForEach(x => {
-            Vars.UserData.AddItemData(x.Item);
+            var isInvenNotFull = Vars.UserData.AddItemData(x.Item);
+            if (!isInvenNotFull)
+            {
+                PopupPanelOpne(true);
+                return;
+            }
             Vars.UserData.ExperienceListAdd(x.Item.itemId);
             x.InitItemSprite();
         });
