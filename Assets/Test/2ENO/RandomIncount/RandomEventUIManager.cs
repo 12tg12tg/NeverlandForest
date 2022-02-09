@@ -34,6 +34,7 @@ public class RandomEventUIManager : MonoBehaviour
     public bool isPopUp;
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
+    public RectTransform inventoryFullPanel;
 
     /*[HideInInspector]*/ public RectTransform itemBox;
 
@@ -141,6 +142,7 @@ public class RandomEventUIManager : MonoBehaviour
         windows[0].SetActive(true);
         windows[1].SetActive(false);
         confirmPanel.gameObject.SetActive(false);
+        inventoryFullPanel.gameObject.SetActive(false);
         closeBtn.gameObject.SetActive(true);
         eventDesc.text = randomEventData.eventDesc;
         SelectInit();
@@ -265,6 +267,9 @@ public class RandomEventUIManager : MonoBehaviour
             }
             RewardItemLIstInit(rewardItemList);
         }
+        if (selectRewardItems.Count > 0)
+            inventoryFullPanel.gameObject.SetActive(true);
+
         selectRewardItems.Clear();
     }
 
@@ -295,6 +300,9 @@ public class RandomEventUIManager : MonoBehaviour
         RewardItemLIstInit(rewardItemList);
         info.Init();
         info2page.Init();
+
+        if(rewardItemList.Count > 0)
+            inventoryFullPanel.gameObject.SetActive(true);
     }
 
     public void ItemButtonInit()

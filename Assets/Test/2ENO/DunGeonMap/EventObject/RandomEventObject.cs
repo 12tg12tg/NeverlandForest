@@ -24,13 +24,19 @@ public class RandomEventObject : MonoBehaviour
             dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
 
             var randEventMgr = RandomEventManager.Instance;
-            var rndEvent = randEventMgr.GetEventData(randomEventID);
-            RandomEventUIManager.Instance.EventInit(rndEvent);
             
             if(randEventMgr.isTutorialRandomEvent)
             {
-                StartCoroutine(dungeonSystem.randomEventTutorial.CoRandomEventTutorial());
+                var rndEvent = randEventMgr.tutorialEvent;
+                RandomEventUIManager.Instance.EventInit(rndEvent);
+
+                dungeonSystem.randomEventTutorial.StartRandomEventTutorial();
                 randEventMgr.isTutorialRandomEvent = false;
+            }
+            else
+            {
+                var rndEvent = randEventMgr.GetEventData(randomEventID);
+                RandomEventUIManager.Instance.EventInit(rndEvent);
             }
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             Destroy(gameObject);

@@ -18,18 +18,24 @@ public class RandomEventManager : MonoBehaviour
 
     public bool isFirstRandomEvent = true;
     public bool isTutorialRandomEvent = true;
-
+    public DataRandomEvent tutorialEvent = new();
     private void Awake()
     {
         if (!isStart)
         {
             instance = this;
             DontDestroyOnLoad(this);
+            init();
         }
         isStart = true;
     }
     public void init()
     {
+        var tempRandomTable = DataTableManager.GetTable<RandomEventTable>();
+        var tutoElem = tempRandomTable.GetData<RandomEventTableElem>("4");
+        tutorialEvent = new DataRandomEvent(tutoElem);
+        tutorialEvent.isTutorialEvent = true;
+
         if (Vars.UserData.isRandomDataLoad)
         {
             foreach (var data in Vars.UserData.randomEventDatas)
@@ -54,6 +60,7 @@ public class RandomEventManager : MonoBehaviour
         {
             // all 데이터 로드, 기본 분기
             var randomTable = DataTableManager.GetTable<RandomEventTable>();
+
             foreach (var data in randomTable.data)
             {
                 var elem = (data.Value) as RandomEventTableElem;
