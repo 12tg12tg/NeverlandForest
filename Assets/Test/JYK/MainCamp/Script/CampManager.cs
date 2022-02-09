@@ -97,19 +97,13 @@ public class CampManager : MonoBehaviour
     {
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         GameManager.Manager.State = GameState.Camp;
-        TutorialStart();
     }
     public void Start()
     {
         CampInit();
-    }
-    public void TutorialStart()
-    {
-        GameManager.Manager.tm.gameObject.SetActive(true);
-        GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
-        GameManager.Manager.tm.CheckMainTutorial();
 
     }
+   
     public void CampInit()
     {
         instance = this;
@@ -131,6 +125,17 @@ public class CampManager : MonoBehaviour
     public void RecoveryBonTime()
     {
         ConsumeManager.RecoveryBonFire(recoveryBonTime);
+    }
+
+    public void OnBonButton()
+    {
+        campbornfire.SetActive(true);
+        bonTimeText.gameObject.SetActive(true);
+    }
+    public void OffBonButton()
+    {
+        campbornfire.SetActive(false);
+        bonTimeText.gameObject.SetActive(false);
     }
 
     //Sleeping
@@ -171,15 +176,13 @@ public class CampManager : MonoBehaviour
     }
     public void StartSleepInCamp()
     {
-        campbornfire.SetActive(false);
+        OffBonButton();
         var tentPos = tent.transform.position;
         EndPos = new Vector3(tentPos.x, tentPos.y + 2f, tentPos.z - 5f);
-        bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenSleepInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
             GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialSleepingTouch = true;
-
         }
     }
     public void OpenSleepInCamp()
@@ -187,7 +190,6 @@ public class CampManager : MonoBehaviour
         isSleepMove = true;
         diaryManager.gameObject.SetActive(true);
         diaryManager.campBonfire.SetActive(false);
-
         diaryManager.OpenSleeping();
         newBottomUi.SetActive(false);
     }
@@ -195,13 +197,9 @@ public class CampManager : MonoBehaviour
     {
         if (isSleepMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f));
-            newBottomUi.SetActive(true);
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 3f, OnBonButton));
             isSleepMove = false;
         }
-        campbornfire.SetActive(true);
-
-        bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
 
@@ -215,11 +213,9 @@ public class CampManager : MonoBehaviour
 
     public void StartCookingInCamp()
     {
-        campbornfire.SetActive(false);
-
+        OffBonButton();
         var potPos = pot.transform.position;
         EndPos = new Vector3(potPos.x + 1f, potPos.y + 2f, potPos.z - 3f);
-        bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
@@ -241,14 +237,10 @@ public class CampManager : MonoBehaviour
     {
         if (isCookMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
             CloseRotationPanel();
-
             isCookMove = false;
         }
-        campbornfire.SetActive(true);
-
-        bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
     public void OpenCookInCamp()
@@ -294,11 +286,9 @@ public class CampManager : MonoBehaviour
     }
     public void StartGatheringInCamp()
     {
-        campbornfire.SetActive(false);
-
+        OffBonButton();
         var bushPos = bush.transform.position;
         EndPos = new Vector3(bushPos.x, bushPos.y + 2f, bushPos.z - 5f);
-        bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
@@ -326,11 +316,9 @@ public class CampManager : MonoBehaviour
         {
             if (isGatheringMove)
             {
-                StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
+                StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
                 isGatheringMove = false;
             }
-            campbornfire.SetActive(true);
-            bonTimeText.gameObject.SetActive(true);
             for (int i = 0; i < gatheringRewardList.Count; i++)
             {
                 gatheringRewardList[i].rewardIcon.sprite = null;
@@ -395,11 +383,9 @@ public class CampManager : MonoBehaviour
     }
     public void StartProduceInCamp()
     {
-        campbornfire.SetActive(false);
-
+        OffBonButton();
         var workPos = workshop.transform.position;
         EndPos = new Vector3(workPos.x, workPos.y + 2f, workPos.z - 5f);
-        bonTimeText.gameObject.SetActive(false);
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
@@ -423,13 +409,9 @@ public class CampManager : MonoBehaviour
     {
         if (isProduceMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
-
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
             isProduceMove = false;
         }
-        campbornfire.SetActive(true);
-
-        bonTimeText.gameObject.SetActive(true);
         newBottomUi.SetActive(true);
     }
     public void ReProduce()
@@ -685,6 +667,8 @@ public class CampManager : MonoBehaviour
         if (GameManager.Manager.State == GameState.Tutorial)
         {
             GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialBonfirecheckButtonClick = true;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.IscookingFinish = true;
+
         }
     }
     public void OnGUI()

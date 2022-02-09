@@ -55,7 +55,6 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
                 break;
             case MainTutorialStage.Camp:
-                mainTutorial.tutorialCamp = gameObject.AddComponent<CampTutorial>();
                 StartCoroutine(mainTutorial.tutorialCamp.CoCampTutorial());
                 break;
             case MainTutorialStage.Clear:

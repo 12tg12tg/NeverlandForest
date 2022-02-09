@@ -242,6 +242,11 @@ public class BottomUIManager : MonoBehaviour
         skillButtons.ForEach((n) => n.gameObject.SetActive(false));
 
         ItemListInit();
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialBonableItemCheckFinish = true;
+
+        }
     }
 
     public void ItemListInit()
