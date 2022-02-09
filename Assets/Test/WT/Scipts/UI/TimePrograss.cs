@@ -10,13 +10,18 @@ public class TimePrograss : MonoBehaviour
     public Image timeloadingBar;
     public Image changableDayState;
 
-    public Sprite daySprite;
-    public Sprite nightSprite1;
-    public Sprite nightSprite2;
-    public Sprite nightSprite3;
-    public Sprite nightSprite4;
-    public Sprite nightSprite5;
-    
+    [SerializeField]private Sprite daySprite;
+    [SerializeField] private Sprite nightSprite1;
+    [SerializeField] private Sprite nightSprite2;
+    [SerializeField] private Sprite nightSprite3;
+    [SerializeField] private Sprite nightSprite4;
+    [SerializeField] private Sprite nightSprite5;
+
+    private void Start()
+    {
+        currentValue = Vars.UserData.uData.CurIngameHour;
+    }
+
     void Update()
     {
         if (currentValue <= 12)

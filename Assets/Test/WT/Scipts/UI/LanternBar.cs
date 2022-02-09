@@ -8,9 +8,13 @@ public class LanternBar : MonoBehaviour
     public Slider slider;
     public Slider blight;
     public Image day_correction;
+    private RectTransform day_correction_StartScale;
+    private float scaleUPtime = 0.3f;
+    private float scaleDownTime = 0.3f;
     public void Start()
     {
-        ConsumeManager.init(); 
+        ConsumeManager.init();
+        day_correction_StartScale = day_correction.rectTransform;
     }
     void Update()
     {
@@ -40,6 +44,10 @@ public class LanternBar : MonoBehaviour
         if (ConsumeManager.CurTimeState == TimeState.DayTime)
         {
             day_correction.gameObject.SetActive(true);
+         /*   Utility.CoScaleChange(day_correction.GetComponent<RectTransform>(),
+                new Vector3(4f, 4f, 4f), scaleUPtime);
+            Utility.CoScaleChange(day_correction.GetComponent<RectTransform>(),
+               new Vector3(1f, 1f, 1f), scaleDownTime);*/
         }
         else
         {
