@@ -443,5 +443,6 @@ public class GatheringTutorial : MonoBehaviour
         tutorialManager.BlackPanelOff();
         SetActive(false);
         dialogBoxObj.up.SetActive(false);
+        Destroy(this);
     }
 }

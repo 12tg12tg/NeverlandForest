@@ -37,6 +37,7 @@ public class TutorialRandomEvent : MonoBehaviour
     private readonly int randomEventReturnBtn = 8;
     private readonly int randomEventAllItemGet = 9;
     private readonly int randomEventEndClose = 10;
+    private readonly int randomEventEndClose2 = 11;
 
     [Header("포지션 타겟")]
     public RectTransform randEventDesc;
@@ -78,7 +79,8 @@ public class TutorialRandomEvent : MonoBehaviour
                 TutorialStep != randomEventFastClose &&
                 TutorialStep != randomEventReturnBtn &&
                 TutorialStep != randomEventAllItemGet &&
-                TutorialStep != randomEventEndClose
+                TutorialStep != randomEventEndClose &&
+                TutorialStep != randomEventEndClose2
                 )
             {
                 delay = 0f;
@@ -121,8 +123,19 @@ public class TutorialRandomEvent : MonoBehaviour
         RandomEventFastClose();
         yield return new WaitWhile(() => TutorialStep < 7);
 
+        RandomEventRemainItemExplain();
         yield return new WaitWhile(() => TutorialStep < 8);
 
+        RandomEventReturnButton();
+        yield return new WaitWhile(() => TutorialStep < 9);
+
+        RandomEventAllItemGet();
+        yield return new WaitWhile(() => TutorialStep < 10);
+
+        RandomEventCloseBtn();
+        yield return new WaitWhile(() => TutorialStep < 11);
+
+        RandomEventEnd();
         isRandomEventTutorial = false;
         tutorialManager.BlackPanelOff();
     }
@@ -349,27 +362,127 @@ public class TutorialRandomEvent : MonoBehaviour
 
     public void RandomEventRemainItemExplain()
     {
+        SetActive(true, true);
+        target = remainWindow;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset - blackout.sizeDelta.x / 2, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "획득하지 않은 보상 창 설명";
     }
     // DirectTouch
     public void RandomEventReturnButton()
     {
+        SetActive(true, true, true);
+        target = returnButton;
+        var targetButton = target.GetComponent<Button>();
 
+        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        ButtonAddOneUseStepPlus(targetButton);
+
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = pos;
+
+        dialogBox.pivot = new Vector2(0.5f, 0.5f);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        handIcon.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "되돌아가기 버튼 설명";
     }
     // DirectTouch
     public void RandomEventAllItemGet()
     {
+        SetActive(true, true, true);
+        target = allget;
+        var targetButton = target.GetComponent<Button>();
 
+        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        ButtonAddOneUseStepPlus(targetButton);
+
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = pos;
+
+        dialogBox.pivot = new Vector2(0.5f, 0.5f);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        handIcon.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "모두 받기 버튼";
     }
     // DirectTouch
     public void RandomEventCloseBtn()
     {
+        SetActive(true, false, true);
+        target = closeButtton;
+        var targetButton = target.GetComponent<Button>();
 
+        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        ButtonAddOneUseStepPlus(targetButton);
+
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var scrPos = pos;
+
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        handIcon.anchoredPosition = pos;
     }
 
     public void RandomEventEnd()
     {
-
+        SetActive(false);
+        dialogBoxObj.right.SetActive(false);
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        Destroy(this);
     }
 }

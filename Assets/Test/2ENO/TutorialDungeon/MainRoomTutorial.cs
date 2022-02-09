@@ -241,6 +241,6 @@ public class MainRoomTutorial : MonoBehaviour
         SetActive(false);
         dialogBoxObj.down.SetActive(false);
         dialogBox.pivot = new Vector2(0f, 0.5f);
-
+        Destroy(this);
     }
 }
