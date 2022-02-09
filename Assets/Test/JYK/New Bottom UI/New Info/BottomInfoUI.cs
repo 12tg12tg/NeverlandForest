@@ -14,6 +14,7 @@ public class BottomInfoUI : MonoBehaviour
     public void Init()
     {
         img.sprite = null;
+        img.color = Color.clear;
         info_name.text = "정보 없음";
         info_description.text = "정보 없음";
     }

@@ -23,6 +23,7 @@ public class Animal : MonoBehaviour
     public Sprite runAway;
     public GameObject failPopUp;
     public GameObject transparentWindow;
+    public Button huntButton;
     private Coroutine coFadeOut;
     private readonly float delay = 1f;
     private readonly Vector3 boxOffset = new Vector3(20f, 70f, 0f);
@@ -61,7 +62,6 @@ public class Animal : MonoBehaviour
 
         Debug.Log($"±âº» µµ¸Á È®·ü:{escapePercent} µµ¸Á È®·ü¾÷:{escapePercentUp}");
     }
-
 
     private void MoveWarningBox()
     {
@@ -128,6 +128,7 @@ public class Animal : MonoBehaviour
             MoveWarningBox();
             AnimalRunAway();
             player.HuntFailAnimation();
+            huntButton.interactable = false;
             AnimalMove(false, () => {
                 failPopUp.SetActive(true);
                 transparentWindow.SetActive(true);
@@ -153,8 +154,6 @@ public class Animal : MonoBehaviour
             return;
 
         escapePercent = (bool)vals[0] ? escapePercent + escapePercentUp : escapePercent;
-        //if(escapePercent >= 20)
-        //    animator.SetTrigger("Turn");
 
         Debug.Log($"ÇöÀç µµ¸Á È®·ü:{escapePercent}");
     }
