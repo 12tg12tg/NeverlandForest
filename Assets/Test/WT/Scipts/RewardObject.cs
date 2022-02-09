@@ -24,13 +24,13 @@ public class RewardObject : MonoBehaviour
             {
                 selectedImg.color = Color.white;
                 selectedImg.sprite = selectedImage;
-                DungeonRewardDiaryManager.Instacne.selectedItemList.Add(this);
+                DungeonRewardDiaryManager.Instance.selectedItemList.Add(this);
             }
             else
             {
                 selectedImg.color = Color.clear;
                 selectedImg.sprite = null;
-                DungeonRewardDiaryManager.Instacne.selectedItemList.Remove(this);
+                DungeonRewardDiaryManager.Instance.selectedItemList.Remove(this);
             }
 
         }
@@ -40,7 +40,7 @@ public class RewardObject : MonoBehaviour
     {
         if (item == null)
             return;
-        DungeonRewardDiaryManager.Instacne.info.Init(item);
+        DungeonRewardDiaryManager.Instance.info.Init(item);
         IsSelect = !IsSelect;
     }
 

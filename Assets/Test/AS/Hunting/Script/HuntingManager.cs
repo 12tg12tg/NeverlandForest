@@ -91,6 +91,8 @@ public class HuntingManager : MonoBehaviour
 
     public void Init()
     {
+        GameManager.Manager.State = GameState.Hunt;
+
         var count = tileMaker.transform.childCount;
 
         var randomBush = new int[tileMaker.col - 2];

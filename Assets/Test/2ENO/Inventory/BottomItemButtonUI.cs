@@ -182,8 +182,7 @@ public class BottomItemButtonUI : MonoBehaviour
 
         shadeCover.color = color;
     }
-
-    public void ItemButtonClick()
+    public void DiaryItemButtonClick()
     {
         if (dataItem == null)
             return;
@@ -196,7 +195,8 @@ public class BottomItemButtonUI : MonoBehaviour
 
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
-        DungeonRewardDiaryManager.Instacne.info.Init(dataItem);
+        DungeonRewardDiaryManager.Instance.info.Init(dataItem);
+        Debug.Log(GameManager.Manager.State);
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
@@ -215,6 +215,117 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Hunt:
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
+                break;
+            case GameState.Gathering:
+                break;
+            case GameState.Cook:
+                break;
+            case GameState.Camp:
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
+                if (DiaryInventory.Instance != null)
+                {
+                    DiaryInventory.Instance.info.Init(dataItem);
+                    // 선택초기화
+                    for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
+                    {
+                        DiaryInventory.Instance.itemButtons[i].IsSelect = false;
+                    }
+                }
+                break;
+            case GameState.Dungeon:
+                if (RandomEventUIManager.Instance != null &&
+            RandomEventUIManager.Instance.isRaneomEventOn)
+                {
+                    RandomEventUIManager.Instance.info.Init(dataItem);
+                    RandomEventUIManager.Instance.info2page.Init(dataItem);
+
+                    RandomEventUIManager.Instance.selectInvenItem = dataItem;
+                    RandomEventUIManager.Instance.selectSlotNum = slotNum;
+                    RandomEventUIManager.Instance.itemBox = gameObject.GetComponent<RectTransform>();
+                    RandomEventUIManager.Instance.isPopUp = true;
+                    uiVec = RandomEventUIManager.Instance.popUpWindow.position;
+                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    RandomEventUIManager.Instance.popUpWindow.position = newVector;
+                    RandomEventUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                    RandomEventUIManager.Instance.itemButtons2page.ForEach(n => n.isSelect = false);
+                    IsSelect = true;
+                }
+                else
+                {
+                    BottomUIManager.Instance.selectItem = dataItem;
+                    BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                    BottomUIManager.Instance.isPopUp = true;
+                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    BottomUIManager.Instance.popUpWindow.position = newVector;
+                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                    IsSelect = true;
+                }
+                break;
+        }
+    }
+    public void ItemButtonClick()
+    {
+        if (dataItem == null)
+            return;
+
+        if (tm != null && tm.IsWaitingToSelectTrapTile) // 설치 코루틴 동작 중
+            return;
+
+        if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
+            return;
+
+        Vector3 uiVec = Vector3.zero;
+        Vector3 newVector = Vector3.zero;
+        BottomUIManager.Instance.info.Init(dataItem);
+        switch (GameManager.Manager.State)
+        {
+            case GameState.Battle:
+                if (BattleManager.Instance.FSM.curState == BattleState.Start && IsInstallation
+                    || BattleManager.Instance.FSM.curState == BattleState.Player && IsConsumable)
+                {
+                    BottomUIManager.Instance.selectItem = dataItem;
+                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                    BottomUIManager.Instance.isPopUp = true;
+                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    BottomUIManager.Instance.popUpWindow.position = newVector;
+                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                    IsSelect = true;
+                }
+                break;
+            case GameState.Hunt:
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
                 break;
             case GameState.Gathering:
                 break;
