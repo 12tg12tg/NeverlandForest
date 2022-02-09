@@ -62,6 +62,9 @@ public class TutorialRandomEvent : MonoBehaviour
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
+
+        //TODO : 임시용
+        ConsumeManager.CostDataReset();
     }
 
     private void Update()
@@ -85,13 +88,43 @@ public class TutorialRandomEvent : MonoBehaviour
         }
     }
 
+    public void StartRandomEventTutorial()
+    {
+        StartCoroutine(CoRandomEventTutorial());
+    }
+
     public IEnumerator CoRandomEventTutorial()
     {
+        tutorialManager.BlackPanelOn();
         isRandomEventTutorial = true;
 
+        RandomEventDescExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
 
+        RandomEventSelectButtonsExplain();
+        yield return new WaitWhile(() => TutorialStep < 2);
+
+        RandomEventSelectInfoExplain();
+        yield return new WaitWhile(() => TutorialStep < 3);
+
+        yield return new WaitForSeconds(0.05f);
+
+        RandomEventSelectedNameExplain();
+        yield return new WaitWhile(() => TutorialStep < 4);
+
+        RandomEventSelectedResultExplain();
+        yield return new WaitWhile(() => TutorialStep < 5);
+
+        RandomEventSelectedRewardExplain();
+        yield return new WaitWhile(() => TutorialStep < 6);
+
+        RandomEventFastClose();
+        yield return new WaitWhile(() => TutorialStep < 7);
+
+        yield return new WaitWhile(() => TutorialStep < 8);
+
         isRandomEventTutorial = false;
+        tutorialManager.BlackPanelOff();
     }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
@@ -107,56 +140,229 @@ public class TutorialRandomEvent : MonoBehaviour
         button.onClick.AddListener(() => button.onClick.RemoveListener(action));
     }
 
+    
     public void RandomEventDescExplain()
     {
+        SetActive(true, true);
+        target = randEventDesc;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x + boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        dialogBoxObj.left.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "랜덤이벤트 내용 설명";
     }
 
     public void RandomEventSelectButtonsExplain()
     {
+        SetActive(true, true);
+        target = randAllSelectInfo;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(1f, 0.5f);
+        dialogBoxObj.left.SetActive(false);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "랜덤이벤트 선택지 버튼들 및 내용 설명";
     }
 
+    // DirectTouch
     public void RandomEventSelectInfoExplain()
     {
+        SetActive(true, true, true);
+        target = selectButton1;
+        var targetButton = target.GetComponent<Button>();
 
+        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        ButtonAddOneUseStepPlus(targetButton);
+
+        UnityAction<int> tempAction = RandomEventManager.Instance.tutorialEvent.SelectFeedBack;
+        targetButton.onClick.AddListener(() => tempAction.Invoke(2));
+
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = pos;
+
+        dialogBox.pivot = new Vector2(1f, 0.5f); 
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        handIcon.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "랜덤이벤트 선택지 버튼 터치 설명";
     }
 
-    public void RandomEventSelectedInfoExplain()
+    public void RandomEventSelectedNameExplain()
     {
+        SetActive(true, true);
+        target = selectedName;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x + boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        dialogBoxObj.right.SetActive(false);
+        dialogBoxObj.left.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "선택이벤트 이름 설명";
     }
 
     public void RandomEventSelectedResultExplain()
     {
+        SetActive(true, true);
+        target = selectedResult;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x + boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        dialogBoxObj.left.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "선택이벤트 결과 내용 설명";
     }
 
     public void RandomEventSelectedRewardExplain()
     {
+        SetActive(true, true);
+        target = selectedReward;
 
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 0f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(1f, 0.5f);
+        dialogBoxObj.left.SetActive(false);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "랜덤이벤트 보상 설명";
     }
-
+    // DirectTouch
     public void RandomEventFastClose()
     {
+        SetActive(true, true, true);
+        target = closeButtton;
+        var targetButton = target.GetComponent<Button>();
 
+        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        ButtonAddOneUseStepPlus(targetButton);
+
+        blackout.GetComponent<Image>().sprite = rect;
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
+
+        var boxOffset = boxWidth + arrowSize;
+        var uiCam = GameManager.Manager.cm.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = pos;
+
+        dialogBox.pivot = new Vector2(0f, 0.5f);
+        dialogBoxObj.right.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        handIcon.anchoredPosition = pos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "보상 받지않고 닫기 버튼";
     }
 
     public void RandomEventRemainItemExplain()
     {
 
-    }
 
+    }
+    // DirectTouch
     public void RandomEventReturnButton()
     {
 
     }
-
+    // DirectTouch
     public void RandomEventAllItemGet()
     {
 
     }
-
+    // DirectTouch
     public void RandomEventCloseBtn()
     {
 

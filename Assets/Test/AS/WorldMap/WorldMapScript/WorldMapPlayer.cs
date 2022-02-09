@@ -179,15 +179,6 @@ public class WorldMapPlayer : MonoBehaviour
         data.goalPos = goalPos;
         data.startPos = startPos;
 
-
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
-        if(!Vars.UserData.isFirst)
-        {
-            Vars.UserData.isRandomDataLoad = true;
-        }
-        RandomEventManager.Instance.init();
-        Vars.UserData.isFirst = false;
-
         DungeonEnter(false, goal, goalIndex);
     }
     private void PlayerClearWorldMap()

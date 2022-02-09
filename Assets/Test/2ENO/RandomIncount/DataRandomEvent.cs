@@ -56,6 +56,8 @@ public class DataRandomEvent
     private RandomEventTableElem eventData;
     public RandomEventTableElem EventData => eventData;
 
+    public bool isTutorialEvent = false;
+
     public DataRandomEvent() { }
 
     public DataRandomEvent(DataRandomEvent data)
@@ -227,6 +229,9 @@ public class DataRandomEvent
                 //tempStrList = feedBackStringSelect3;
                 break;
         }
+
+        if (isTutorialEvent)
+            eventSucessChance = 100;
 
         if (eventSucessChance == 0)
             return;
