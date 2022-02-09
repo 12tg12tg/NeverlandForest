@@ -40,6 +40,7 @@ public class RewardObject : MonoBehaviour
     {
         if (item == null)
             return;
+        DungeonRewardDiaryManager.Instacne.info.Init(item);
         IsSelect = !IsSelect;
     }
 

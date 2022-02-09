@@ -29,6 +29,7 @@ public class HuntingManager : MonoBehaviour
     public GameObject transparentWindow;
     public TMP_Text huntButtonText;
     public RewardObject reward;
+    public Button optionButton;
 
     [Header("Production")]
     public Production production;
@@ -68,6 +69,7 @@ public class HuntingManager : MonoBehaviour
             huntPlayers.IsTutorialClear = GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt;
             if (!huntPlayers.IsTutorialClear)
             {
+                optionButton.interactable = false;
                 TutorialInit();
                 StartCoroutine(huntTutorial.CoHuntTutorial());
             }
