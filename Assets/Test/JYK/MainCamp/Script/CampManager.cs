@@ -96,7 +96,7 @@ public class CampManager : MonoBehaviour
     {
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         GameManager.Manager.State = GameState.Camp;
-        //TutorialStart();
+        TutorialStart();
     }
     public void Start()
     {
@@ -176,8 +176,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenSleepInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialSleepingTouch = true;
 
         }
     }
@@ -222,8 +221,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialCookingTouch = true;
         }
     }
     public void RotateButtonCheck()
@@ -302,8 +300,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialGahteringingTouch = true;
         }
     }
     public void OpenGatheringInCamp()
@@ -406,8 +403,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialStep++;
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.delay = 0f;
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialCraftTouch = true;
         }
     }
     public void OpenProduceInCamp()
@@ -682,7 +678,10 @@ public class CampManager : MonoBehaviour
                 bottomui.itemButtons[i].IsBurn = true;
             }
         }
-
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialBonfirecheckButtonClick = true;
+        }
     }
     public void OnGUI()
     {
@@ -696,5 +695,8 @@ public class CampManager : MonoBehaviour
             ConsumeManager.CostDataReset();
         }
     }
-
+    public void QuickButtonClick()
+    {
+        GameManager.Manager.tm.mainTutorial.tutorialCamp.IsquitbuttonClick = true;
+    }
 }
