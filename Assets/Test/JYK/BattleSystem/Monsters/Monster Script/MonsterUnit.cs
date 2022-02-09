@@ -91,7 +91,7 @@ public class MonsterUnit : UnitBase, IAttackable
             $"Hp : {Hp + curDamage} -> {Hp} // Sheild : {sheild + curSheildDamage} -> {sheild}");
         uiLinker.UpdateHpBar(Hp);
         uiLinker.UpdateSheild(sheild);
-        DeadCheak();
+        DeathCheck();
 
         // 만약 사냥꾼 이라면 바인드 디버프 추가.
         if (playerCommand.type == PlayerType.Boy)
@@ -411,7 +411,7 @@ public class MonsterUnit : UnitBase, IAttackable
         }
     }
 
-    public void DeadCheak()
+    public void DeathCheck()
     {
         if (Hp <= 0)
         {
@@ -470,6 +470,9 @@ public class MonsterUnit : UnitBase, IAttackable
     {
         uiLinker.Release();
         EraseThis();
+        State = MonsterState.Dead;
+        UnlinkSnare();
+        CurTile.RemoveUnit(this);
         int id = int.Parse(baseElem.id);
         MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
     }
@@ -486,6 +489,35 @@ public class MonsterUnit : UnitBase, IAttackable
 
     public MonsterCommand SetActionCommand()
     {
+        // 0. 튜토리얼
+        if(manager.isTutorial)
+        {
+            if (CheckCanAttackPlayer())
+            {
+                command.actionType = MonsterActionType.Attack;
+                var randTarget = Random.Range(0, 2);
+                command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
+            }
+            else
+            {
+                int curMoveLen;
+                if (BaseElem.id == "0")
+                    curMoveLen = 2;
+                else
+                    curMoveLen = 1;
+
+                int rangeTile = (int)type + 1; // 공격 가능한 사거리의 타일
+                var dest = Pos.y - curMoveLen;
+                if (dest < rangeTile)
+                    curMoveLen = (int)Pos.y - rangeTile;
+                command.nextMove = curMoveLen;
+                command.actionType = MonsterActionType.Move;
+            }
+            State = MonsterState.DoSomething;
+            uiLinker.UpdateCircleUI(command);
+            return command;
+        }
+
         // 1. 이전 커맨드 지우기
         command.Clear();
 
@@ -683,7 +715,7 @@ public class MonsterUnit : UnitBase, IAttackable
         var damage = ownBoobyTrap.elem.damage;
         Hp -= damage;
         uiLinker.UpdateHpBar(Hp);
-        DeadCheak();
+        DeathCheck();
         ownBoobyTrap.Release();
     }
 
@@ -742,7 +774,7 @@ public class MonsterUnit : UnitBase, IAttackable
 
         // 몬스터 죽었는지 체크
         uiLinker.UpdateHpBar(Hp);
-        DeadCheak();
+        DeathCheck();
     }
 
     private void DurationDecrease(List<ObstacleDebuff> debuffs)

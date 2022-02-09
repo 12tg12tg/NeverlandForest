@@ -43,6 +43,9 @@ public class BattleUI : MonoBehaviour
     [Header("턴 넘기기 버튼")]
     public GameObject turnSkipTrans;
     public Button turnSkipButton;
+    public Button battleStartButton;
+
+    private List<Button> battleButtons = new List<Button>();
 
     private int progress;
     public int Progress { get => progress; }
@@ -52,6 +55,11 @@ public class BattleUI : MonoBehaviour
         mt = MultiTouch.Instance;
         bm = BattleManager.Instance;
         tm = TileMaker.Instance;
+
+        battleButtons.Add(turnSkipButton);
+        battleButtons.Add(moveCameraRightButton);
+        battleButtons.Add(moveCameraLeftButton);
+        battleButtons.Add(battleStartButton);
     }
 
     private void Update()
@@ -194,6 +202,15 @@ public class BattleUI : MonoBehaviour
         {
             progressImg[1].enabled = true;
             progressImg[1].sprite = temp;
+        }
+    }
+
+    // Buttons Interactive
+    public void AllButtonInteractive(bool interactive)
+    {
+        foreach (var button in battleButtons)
+        {
+            button.interactable = interactive;
         }
     }
 }

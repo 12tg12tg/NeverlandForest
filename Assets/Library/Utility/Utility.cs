@@ -25,23 +25,23 @@ public class Utility
 
     public static IEnumerator CoRotateLoop(Transform transform, Quaternion start, Quaternion end, float time, UnityAction action = null, UnityAction action2 = null)
     {
-        float timer = 0f;
-        while (timer < time)
+        float startTime = Time.realtimeSinceStartup;
+        float endTime = startTime + time;
+        while (Time.realtimeSinceStartup < endTime)
         {
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             transform.rotation = Quaternion.Lerp(start, end, ratio);
-            timer += Time.deltaTime;
             yield return null;
         }
         transform.rotation = end;
         action?.Invoke();
 
-        timer = 0f;
-        while (timer < time)
+        startTime = Time.realtimeSinceStartup;
+        endTime = startTime + time;
+        while (Time.realtimeSinceStartup < endTime)
         {
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             transform.rotation = Quaternion.Lerp(end, start, ratio);
-            timer += Time.deltaTime;
             yield return null;
         }
         transform.rotation = start;

@@ -27,6 +27,10 @@ public class PlayerStats : UnitBase, IAttackable
             // ¿¸≈ı ≥°
             manager.boy.PlayDeadAnimation();
             manager.girl.PlayDeadAnimation();
+            if(manager.isTutorial)
+            {
+                manager.tutorial.isLose = true;
+            }
         }
         else
         {

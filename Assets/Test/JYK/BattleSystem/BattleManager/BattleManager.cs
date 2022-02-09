@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
     public Transform projectileParent;
 
     //Vars
+    public bool isTutorial;
     private const int middleOfStage = 4;
     private Queue<MonsterCommand> monsterActionQueue = new Queue<MonsterCommand>();
 
@@ -86,6 +87,14 @@ public class BattleManager : MonoBehaviour
         //Command 연결
         boy.command = boyInput;
         girl.command = girlInput;
+
+        //// 플레이어 콜라이더 제거
+        //var cols = boy.GetComponentsInChildren<Collider>();
+        //foreach (var col in cols)
+        //    col.enabled = false;
+        //cols = girl.GetComponentsInChildren<Collider>();
+        //foreach (var col in cols)
+        //    col.enabled = false;
     }
 
     // 초기화
@@ -126,12 +135,84 @@ public class BattleManager : MonoBehaviour
         FSM.ChangeState(BattleState.Start);
     }
 
-    public void TutorialInit()
+    public void TutorialInit(bool reInit = false)
     {
+        VarInit();
+        isTutorial = true;
         monsters.Clear();
         waveLink.wave1.Clear();
         waveLink.wave2.Clear();
         waveLink.wave3.Clear();
+
+        for (int i = 0; i < 3; i++)
+        {
+            waveLink.wave1.Add(null);
+            waveLink.wave2.Add(null);
+            waveLink.wave3.Add(null);
+        }
+
+        if (reInit)
+        {
+            var mushbae = FindMonsterToId(0);
+            var mushbro = FindMonsterToId(1);
+            monsters.Add(mushbae);
+            monsters.Add(mushbro);
+
+            var tile = TileMaker.Instance.GetTile(new Vector2(1, 6));
+            tile.Units_UnitAdd(mushbae);
+            mushbae.Pos = tile.index;
+            tile.Units_UnitAdd(mushbro);
+            mushbro.Pos = tile.index;
+
+            var fointDest = tile.FrontPos;
+            fointDest.y = tile.BehindMonster.transform.position.y;
+            mushbae.transform.position = fointDest;
+
+            var behindDest = tile.BehindPos;
+            behindDest.y = tile.BehindMonster.transform.position.y;
+            mushbro.transform.position = behindDest;
+
+            mushbae.SetActionCommand();
+            mushbro.SetActionCommand();
+
+            //플레이어 배치
+            boy.PlayIdleAnimation();
+            girl.PlayIdleAnimation();
+
+            // 인벤토리 비우기
+            DataAllItem temp2;
+            var tempInventory2 = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+            foreach (var item in tempInventory2)
+            {
+                temp2 = new DataAllItem(item);
+                Vars.UserData.RemoveItemData(temp2);
+            }
+
+            // 화살
+            temp2 = new DataAllItem(costLink.arrowElem);
+            temp2.OwnCount = 19;
+            Vars.UserData.AddItemData(temp2); // 20발
+
+            // 오일
+            temp2 = new DataAllItem(costLink.oilElem);
+            temp2.OwnCount = 3;
+            Vars.UserData.AddItemData(temp2); // 4개
+
+            // 포션
+            temp2 = new DataAllItem(costLink.potionElem);
+            temp2.OwnCount = 1;
+            Vars.UserData.AddItemData(temp2); // 1개
+
+            // 랜턴밝기
+            ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
+            ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
+
+            //배틀상태 Start
+            FSM.ChangeState(BattleState.Player);
+            uiLink.UpdateProgress(BattleUI.ProgressIcon.Girl);
+            return;
+        }
+
         for (int i = 0; i < 3; i++)
         {
             waveLink.wave1.Add(null);
@@ -142,42 +223,63 @@ public class BattleManager : MonoBehaviour
         waveLink.totalWave = 2;
 
         waveLink.wave1[1] = FindMonsterToId(0);
+        waveLink.wave1[1].Pos = new Vector2(1, 6);
+        waveLink.wave1[1].SetActionCommand();
         waveLink.wave2[1] = FindMonsterToId(1);
+        waveLink.wave2[1].Pos = new Vector2(1, 6);
+        waveLink.wave2[1].SetActionCommand();
+
+
+
+        // 인벤토리 비우기
+        DataAllItem temp;
+        var tempInventory = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+        foreach (var item in tempInventory)
+        {
+            temp = new DataAllItem(item);
+            Vars.UserData.RemoveItemData(temp);
+        }
 
         // 화살
-        DataAllItem temp;
-        int total = 0;
-        var inventory = Vars.UserData.HaveAllItemList;
-        foreach (var item in inventory)
-        {
-            if (item.itemId == costLink.arrowElem.id)
-            {
-                total += item.OwnCount;
-            }
-        }
         temp = new DataAllItem(costLink.arrowElem);
-        temp.OwnCount = total;
-        Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = 20;
         Vars.UserData.AddItemData(temp); // 20발
 
         // 오일
-        foreach (var item in inventory)
-        {
-            if (item.itemId == costLink.oilElem.id)
-            {
-                total += item.OwnCount;
-            }
-        }
         temp = new DataAllItem(costLink.oilElem);
-        temp.OwnCount = total;
-        Vars.UserData.RemoveItemData(temp);
-        temp.OwnCount = customBattle.oilNum;
-        Vars.UserData.AddItemData(temp); // 4발
+        temp.OwnCount = 4;
+        Vars.UserData.AddItemData(temp); // 4개
+
+        // 포션
+        temp = new DataAllItem(costLink.potionElem);
+        temp.OwnCount = 1;
+        Vars.UserData.AddItemData(temp); // 1개
+
+        // 나무트랩
+        temp = new DataAllItem(costLink.woodenTrapElem);
+        temp.OwnCount = 1;
+        Vars.UserData.AddItemData(temp); // 1개
+
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
         ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
+
+        // 웨이브 시작
+        waveLink.SetWavePosition(waveLink.wave1);
+        waveLink.SetWavePosition(waveLink.wave2);
+        waveLink.SetWavePosition(waveLink.wave3);
+
+        // 플레이어 스탯 전달받기
+        // Vars 전역 저장소에서 불러오기.
+        boy.stats.Hp = (int)Vars.UserData.uData.Hp;
+
+        //플레이어 배치
+        tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+        tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
+
+        //배틀상태 Start
+        FSM.ChangeState(BattleState.Start);
     }
 
     private void CustomInit()
@@ -458,11 +560,20 @@ public class BattleManager : MonoBehaviour
                 uiLink.progressTrans.SetActive(false);
                 uiLink.PrintMessage($"승리!", 2.5f, () =>
                     {
-                        /*보상창 띄우기*/
-                        boy.PlayWinAnimation();
-                        girl.PlayWinAnimation();
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                        //SceneManager.LoadScene("AS_RandomMap");
+                        // ★승리
+                        if (isTutorial) // 튜토리얼
+                        {
+                            tutorial.isWin = true;
+                            /*보상창 띄우기??*/
+                        }
+                        else // 평상시
+                        {
+                            /*보상창 띄우기*/
+                            boy.PlayWinAnimation();
+                            girl.PlayWinAnimation();
+                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                            //SceneManager.LoadScene("AS_RandomMap");
+                        }
                     });
             }
             else
@@ -492,8 +603,11 @@ public class BattleManager : MonoBehaviour
 
                 if (isPlayerFirst)
                 {
-                    FSM.ChangeState(BattleState.Monster);
-                    uiLink.turnSkipTrans.SetActive(false);
+                    if (!isTutorial || !tutorial.lockAutoBattleStateChange)
+                    {
+                        FSM.ChangeState(BattleState.Monster);
+                        uiLink.turnSkipTrans.SetActive(false);
+                    }
                 }
                 else
                 {

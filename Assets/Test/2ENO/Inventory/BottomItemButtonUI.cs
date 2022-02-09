@@ -7,7 +7,8 @@ using TMPro;
 
 public class BottomItemButtonUI : MonoBehaviour
 {
-    private TileMaker tm;
+    private TileMaker tm => TileMaker.Instance;
+    private BattleManager bm => BattleManager.Instance;
 
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI count;
@@ -92,11 +93,6 @@ public class BottomItemButtonUI : MonoBehaviour
     private DataAllItem dataItem;
 
     public DataAllItem DataItem { get => dataItem; }
-
-    private void Start()
-    {
-        tm = TileMaker.Instance;
-    }
 
     public void Init(DataAllItem data, int slot = -1)
     {
@@ -193,6 +189,9 @@ public class BottomItemButtonUI : MonoBehaviour
 
         if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
             return;
+
+        if (bm != null && bm.isTutorial && !bm.tutorial.tu_03_TrapClick1)
+            bm.tutorial.tu_03_TrapClick1 = true;
 
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;

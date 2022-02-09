@@ -82,6 +82,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         bm ??= BattleManager.Instance;
         bottomUiManager ??= BottomUIManager.Instance;
+
         cover.interactable = true;
         below.interactable = false;
 
@@ -143,14 +144,26 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void IntoSkillStage() // 버튼
     {
+        // 튜토리얼
+        if (bm.isTutorial && bm.tutorial.lockSkillButtonClick)
+            return;
+
         // 스킬버튼이 아닌 경우 예외처리.
-        if(buttonType == SkillButtonType.Swap)
+        if (buttonType == SkillButtonType.Swap)
         {
             SwapArrow();
             return;
         }
         else if(buttonType == SkillButtonType.Info)
             return;
+
+        // 튜토리얼
+        if (bm.isTutorial && !bm.tutorial.tu_07_BoySkill1)
+            bm.tutorial.tu_07_BoySkill1 = true;
+        else if (bm.isTutorial && !bm.tutorial.tu_10_GirlSkill1)
+            bm.tutorial.tu_10_GirlSkill1 = true;
+        else if (bm.isTutorial && !bm.tutorial.tu_12_GirlSkill1)
+            bm.tutorial.tu_12_GirlSkill1 = true;
 
         // 계산 안되있으면 첫 계산.
         if (!isCalculateOffset)
@@ -185,6 +198,8 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void Cancle() // 버튼
     {
+        if (bm.isTutorial && bm.tutorial.lockSkillButtonClick)
+            return;
         below.interactable = false;
         bottomUiManager.ExitSkillState(true);
         StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f,
@@ -207,6 +222,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
             return;
 
         if (buttonType != SkillButtonType.None)
+            return;
+
+        if (bm.isTutorial && bm.tutorial.lockSkillButtonDrag)
             return;
 
         bottomUiManager.info.Init(skill);

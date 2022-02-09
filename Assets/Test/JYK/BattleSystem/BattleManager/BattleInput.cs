@@ -5,8 +5,14 @@ using UnityEngine.UI;
 
 public class BattleInput : MonoBehaviour
 {
+    private BattleManager bm;
     [SerializeField] private Button battleStartBut;
     public bool isLastInputDrag; // 애니메이션함수에서 타겟을 정할 때 드래그방식이었는지 터치방식이었는지 확인할 때 사용.
+
+    private void Start()
+    {
+        bm = BattleManager.Instance;
+    }
 
     public void WaitUntillSettingDone()    // 플레이어 입력 대기
     {
@@ -30,17 +36,20 @@ public class BattleInput : MonoBehaviour
 
     public void StartButton() // 버튼용 함수
     {
+        if (bm.isTutorial && !bm.tutorial.tu_05_BattleStart)
+            bm.tutorial.tu_05_BattleStart = true;
+
         // 시작 버튼 숨김
         SetActivateStartButton(false);
-        BattleManager.Instance.uiLink.progressTrans.SetActive(true);
+        bm.uiLink.progressTrans.SetActive(true);
 
         // 카메라 전환 Arrow 숨김
-        BattleManager.Instance.uiLink.HideArrow();
+        bm.uiLink.HideArrow();
 
         // 몬스터 UI 고정
-        BattleManager.Instance.waveLink.SetAllMonsterFollowUI(false);
+        bm.waveLink.SetAllMonsterFollowUI(false);
 
-        var start = BattleManager.Instance.FSM.GetState(BattleState.Start) as BattleStart;
+        var start = bm.FSM.GetState(BattleState.Start) as BattleStart;
         start.IsReadyDone = true;
     }
 

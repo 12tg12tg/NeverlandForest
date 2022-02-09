@@ -1043,11 +1043,15 @@ MonoBehaviour:
   tm: {fileID: 7469303929048296704}
   rect: {fileID: 21300000, guid: a28c823e82ade48458b8ef80f9813d4d, type: 3}
   circle: {fileID: 21300000, guid: fbca0c3d4aeda9745af43d42795b6c7b, type: 3}
-  mask: {fileID: 1079719281161049828}
+  mastGo: {fileID: 0}
+  maskRt: {fileID: 0}
   maskImg: {fileID: 1079719281161049829}
   background: {fileID: 1079719281282372671}
   fingerImg: {fileID: 5366408264773752472}
-  descriptionBox: {fileID: 8731447508491658868}
+  dialogBoxRt: {fileID: 0}
+  dialogBox: {fileID: 0}
+  tu_01_CamRightButton: 0
+  tu_02_CamLeftButton: 0
 --- !u!1 &1738116873854015797
 GameObject:
   m_ObjectHideFlags: 0
@@ -1819,6 +1823,8 @@ MonoBehaviour:
   moveCameraLeftButton: {fileID: 6478191684762845350}
   turnSkipTrans: {fileID: 153406812847106176}
   turnSkipButton: {fileID: 6598475324311483987}
+  battleStartButton: {fileID: 356293980}
+  battleButtons: []
 --- !u!1 &3799742262850846139
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,6 +3243,7 @@ MonoBehaviour:
   damageUiParent: {fileID: 461075059078246593}
   trapParent: {fileID: 6832487432335786048}
   projectileParent: {fileID: 5504822257922335774}
+  isTutorial: 0
   turn: 0
   preWaveTurn: 0
   curGroup: 0
@@ -4358,10 +4365,5 @@ RectTransform:
 --- !u!224 &5366408264773752472 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3698892205648593992, guid: 1114957f5ecc4764daf9ab4b5bea29e7, type: 3}
-  m_PrefabInstance: {fileID: 8731447508408603344}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &8731447508491658868 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 121074852, guid: 1114957f5ecc4764daf9ab4b5bea29e7, type: 3}
   m_PrefabInstance: {fileID: 8731447508408603344}
   m_PrefabAsset: {fileID: 0}

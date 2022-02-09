@@ -157,9 +157,9 @@ public static class ConsumeManager
     public static void ConsumeLantern(int oil)
     {
         Vars.UserData.uData.LanternCount -= oil;
-        if (Vars.UserData.uData.LanternCount < 0)
+        if (Vars.UserData.uData.LanternCount < 1)
         {
-            Vars.UserData.uData.LanternCount = 0;
+            Vars.UserData.uData.LanternCount = 1;
         }
         LanternStateChange();
         SaveConsumableData();
@@ -167,9 +167,9 @@ public static class ConsumeManager
     public static void FullingLantern(int oil)
     {
         Vars.UserData.uData.LanternCount += oil;
-        if (Vars.UserData.uData.LanternCount > 17)
+        if (Vars.UserData.uData.LanternCount > Vars.lanternMaxCount)
         {
-            Vars.UserData.uData.LanternCount = 17;
+            Vars.UserData.uData.LanternCount = Vars.lanternMaxCount;
         }
         LanternStateChange();
         SaveConsumableData();
@@ -195,19 +195,19 @@ public static class ConsumeManager
 
     private static void SetDayLaternState(float count)
     {
-        if (count <= 17 && count > 14)
+        if (count <= 18 && count > 15)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 14 && count > 10)
+        else if (count <= 15 && count > 11)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 10 && count > 5)
+        else if (count <= 11 && count > 6)
         {
             curLanternState = LanternState.Level3;
         }
-        else if (count <= 5 && count > 0)
+        else if (count <= 6 && count > 0)
         {
             curLanternState = LanternState.Level2;
         }
@@ -218,19 +218,19 @@ public static class ConsumeManager
     }
     private static void SetNightLaternState(float count)
     {
-        if (count <= 17 && count > 14)
+        if (count <= 18 && count > 15)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 14 && count > 10)
+        else if (count <= 15 && count > 11)
         {
             curLanternState = LanternState.Level3;
         }
-        else if (count <= 10 && count > 5)
+        else if (count <= 11 && count > 6)
         {
             curLanternState = LanternState.Level2;
         }
-        else if (count <= 5 && count > 0)
+        else if (count <= 6 && count > 0)
         {
             curLanternState = LanternState.Level1;
         }
@@ -336,7 +336,7 @@ public static class ConsumeManager
         Vars.UserData.uData.Hunger = 0;
         Vars.UserData.uData.CurIngameHour = 0;
         Vars.UserData.uData.CurIngameMinute = 0;
-        Vars.UserData.uData.LanternCount = 18;
+        Vars.UserData.uData.LanternCount = Vars.lanternMaxCount;
         Vars.UserData.uData.Date = 0;
         Vars.UserData.uData.Tiredness = 100;
         Vars.UserData.uData.Hp = Vars.maxHp;

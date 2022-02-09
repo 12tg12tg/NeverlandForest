@@ -26,6 +26,8 @@ public class TrapSelecter : MonoBehaviour
 
     public void WaitUntilTrapTileSelect(DataAllItem item)
     {
+        if (bm.isTutorial && !bm.tutorial.tu_03_TrapClick2)
+            bm.tutorial.tu_03_TrapClick2 = true;
         curItem = item;
         curObstacleType = item.ItemTableElem.obstacleType;
         bm.uiLink.HideArrow();
@@ -75,11 +77,18 @@ public class TrapSelecter : MonoBehaviour
                 bottomUI.ItemListInit();
             }
 
+            // 6) 튜토리얼 확인
+            if (bm.isTutorial && !bm.tutorial.tu_04_TileClick)
+                bm.tutorial.tu_04_TileClick = true;
+
             yield return null;
         }
         bm.uiLink.ShowArrow(true);
-        bm.inputLink.EnableStartButton();
-        bottomUI.tags.ForEach(n => n.interactable = true);
+        if (!bm.isTutorial)
+        {
+            bm.inputLink.EnableStartButton();
+            bottomUI.tags.ForEach(n => n.interactable = true);
+        }
     }
 
 

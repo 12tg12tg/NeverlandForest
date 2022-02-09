@@ -53,5 +53,9 @@ public class BattleOnGUI : MonoBehaviour
             manager.monsters.ForEach(n => n.Release());
             GameManager.Manager.LoadScene(GameScene.Dungeon);
         }
+        if (GUI.Button(new Rect(Screen.width - 300, 200, 100, 50), "Æ©Åä¸®¾ó"))
+        {
+            manager.tutorial.StartDutorial();
+        }
     }
 }

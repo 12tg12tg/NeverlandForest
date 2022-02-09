@@ -20,6 +20,8 @@ public class BattleCost : MonoBehaviour
     public readonly string itemID_oil = "ITEM_19";
     public readonly string itemID_arrow = "ITEM_20";
     public readonly string itemID_ironArrow = "ITEM_21";
+    public readonly string itemID_potion = "ITEM_22"; // 튜토리얼
+    public readonly string itemID_woodenTrap = "ITEM_16"; // 튜토리얼
 
     [Header("트랩 생성기")]
     public TrapSelecter trapSelector;
@@ -27,12 +29,16 @@ public class BattleCost : MonoBehaviour
     [HideInInspector] public AllItemTableElem oilElem;
     [HideInInspector] public AllItemTableElem arrowElem;
     [HideInInspector] public AllItemTableElem ironArrowElem;
+    [HideInInspector] public AllItemTableElem potionElem;
+    [HideInInspector] public AllItemTableElem woodenTrapElem;
 
     private void Start()
     {
         oilElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_oil);
         arrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_arrow);
         ironArrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_ironArrow);
+        potionElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_potion);
+        woodenTrapElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_woodenTrap);
     }
 
     // 화살 elme 얻기
