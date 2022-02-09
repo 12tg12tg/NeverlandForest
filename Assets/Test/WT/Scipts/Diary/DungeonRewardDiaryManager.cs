@@ -27,6 +27,9 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     public ReconfirmPanelManager popupPanel;
     public List<RewardObject> selectedItemList = new List<RewardObject>();
 
+    [Header("리워드 다이어리 정보")]
+    public BottomInfoUI info;
+
     public void Awake()
     {
         instance = this;

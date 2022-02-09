@@ -196,7 +196,7 @@ public class BottomItemButtonUI : MonoBehaviour
 
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
-        BottomUIManager.Instance.info.Init(dataItem);
+        DungeonRewardDiaryManager.Instacne.info.Init(dataItem);
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
