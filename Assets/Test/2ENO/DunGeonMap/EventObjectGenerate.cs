@@ -13,6 +13,7 @@ public class EventObjectGenerate : MonoBehaviour
     public GatheringObject mushroomObj;
     public List<GameObject> eventObjInstanceList = new List<GameObject>();
     private GatheringSystem gatheringSystem;
+    public GameObject huntingPopup;
 
     public void Init()
     {
@@ -70,7 +71,7 @@ public class EventObjectGenerate : MonoBehaviour
                                 break;
                             case DunGeonEvent.Hunt:
                                 var createHt = eventObj as HuntingData;
-                                var obj3 = createHt.CreateObj(huntingObjPrefab);
+                                var obj3 = createHt.CreateObj(huntingObjPrefab, huntingPopup);
                                 eventObjInstanceList.Add(obj3.gameObject);
                                 break;
                             case DunGeonEvent.RandomIncount:
@@ -124,7 +125,7 @@ public class EventObjectGenerate : MonoBehaviour
                             break;
                         case DunGeonEvent.Hunt:
                             var createHt = eventObj as HuntingData;
-                            var obj3 = createHt.CreateObj(huntingObjPrefab);
+                            var obj3 = createHt.CreateObj(huntingObjPrefab, huntingPopup);
                             eventObjInstanceList.Add(obj3.gameObject);
                             break;
                         case DunGeonEvent.RandomIncount:

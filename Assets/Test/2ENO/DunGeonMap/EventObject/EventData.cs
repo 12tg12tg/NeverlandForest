@@ -79,7 +79,7 @@ public class GatheringData : EventData
 public class HuntingData : EventData
 {
     // 임시 이벤트 오브젝트 클래스
-    public HuntingObject CreateObj(GameObject obj)
+    public HuntingObject CreateObj(GameObject obj, GameObject popUp)
     {
         if (eventBasePos.Equals(Vector3.zero))
         {
@@ -96,7 +96,7 @@ public class HuntingData : EventData
             boxCol.center = new Vector3(0f, 1f, 0f);
             boxCol.size = new Vector3(2f, 1f, 1.3f);
             var huntingObj2 = gameObj.AddComponent<HuntingObject>();
-            huntingObj2.Init(this, roomIndex);
+            huntingObj2.Init(this, roomIndex, popUp);
             return huntingObj2;
         }
         var objPos = new Vector3(eventBasePos.x, eventBasePos.y + 1f, eventBasePos.z);
@@ -107,7 +107,7 @@ public class HuntingData : EventData
         boxCol2.center = new Vector3(0f, 1f, 0f);
         boxCol2.size = new Vector3(2f, 1f, 1.3f);
         var huntingObj = gameObj2.AddComponent<HuntingObject>();
-        huntingObj.Init(this, roomIndex);
+        huntingObj.Init(this, roomIndex, popUp);
         objectPosition = objPos;
         isCreate = true;
         return huntingObj;
