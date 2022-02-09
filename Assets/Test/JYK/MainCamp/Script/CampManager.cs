@@ -44,6 +44,7 @@ public class CampManager : MonoBehaviour
     public GameObject newBottomUi;
     public GameObject CookPanel;
     public ReconfirmPanelManager reconfirmPanelManager;
+    public ReconfirmPanelManager wtreconfirmPanelManager;
 
     public float RecoverySleepTime => recoverySleepTime;
     [Header("텍스트 관련")]
@@ -104,6 +105,7 @@ public class CampManager : MonoBehaviour
     }
     public void TutorialStart()
     {
+        GameManager.Manager.tm.gameObject.SetActive(true);
         GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
         GameManager.Manager.tm.CheckMainTutorial();
 
@@ -344,7 +346,7 @@ public class CampManager : MonoBehaviour
         else
         {
             reconfirmPanelManager.gameObject.SetActive(true);
-            //reconfirmPanelManager.OpenRandomEventfirm();
+            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
             haveitemCount = 0;
         }
     }
@@ -368,7 +370,6 @@ public class CampManager : MonoBehaviour
 
         haveitemCount = 0;
         isBlankCheck = 0;
-        //reconfirmPanelManager.AllClose();
         reconfirmPanelManager.gameObject.SetActive(false);
         diaryManager.gatheringInCampRewardPanel.SetActive(false);
         diaryManager.gameObject.SetActive(false);
@@ -376,7 +377,6 @@ public class CampManager : MonoBehaviour
     }
     public void NotYetGetItem()
     {
-        //reconfirmPanelManager.AllClose();
         reconfirmPanelManager.gameObject.SetActive(false);
     }
 
@@ -435,7 +435,7 @@ public class CampManager : MonoBehaviour
     public void ReProduce()
     {
         diaryManager.CloseProduceReward();
-        //reconfirmPanelManager.bagisFullReconfirm.gameObject.SetActive(false);
+        reconfirmPanelManager.inventoryFullPopup.SetActive(false);
         reconfirmPanelManager.gameObject.SetActive(false);
         OpenProduceInCamp();
     }
@@ -448,20 +448,24 @@ public class CampManager : MonoBehaviour
     {
         if (Vars.UserData.uData.BonfireHour != 0)
         {
-            reconfirmPanelManager.gameObject.SetActive(true);
-            //reconfirmPanelManager.OpenBonFireReconfirm();
+            wtreconfirmPanelManager.gameObject.SetActive(true);
+            wtreconfirmPanelManager.bonfireTimeRemainPopup.SetActive(true);
             bonTimeText.gameObject.SetActive(false);
+        }
+        else
+        {
+            GoDungeon();
         }
     }
 
     public void GoDungeon()
     {
+        Vars.UserData.uData.BonfireHour = 0;
         SceneManager.LoadScene("AS_RandomMap");
     }
     public void NoIdonGO()
     {
         reconfirmPanelManager.gameObject.SetActive(false);
-        //reconfirmPanelManager.AllClose();
         bonTimeText.gameObject.SetActive(true);
 
     }
@@ -697,6 +701,9 @@ public class CampManager : MonoBehaviour
     }
     public void QuickButtonClick()
     {
-        GameManager.Manager.tm.mainTutorial.tutorialCamp.IsquitbuttonClick = true;
+        if (GameManager.Manager.State == GameState.Tutorial)
+        {
+            GameManager.Manager.tm.mainTutorial.tutorialCamp.IsquitbuttonClick = true;
+        }
     }
 }

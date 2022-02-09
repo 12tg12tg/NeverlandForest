@@ -534,7 +534,7 @@ public class GatheringSystem : MonoBehaviour
         else
         {
             reconfirmPanelManager.gameObject.SetActive(true);
-            //reconfirmPanelManager.OpenRandomEventfirm();
+            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
         }
         BottomUIManager.Instance.ItemListInit();
     }
@@ -708,7 +708,7 @@ public class GatheringSystem : MonoBehaviour
                 else
                 {
                     reconfirmPanelManager.gameObject.SetActive(true);
-                    //reconfirmPanelManager.OpenBagReconfirmInGathering();
+                    reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
                 }
             }
 

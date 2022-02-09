@@ -47,6 +47,9 @@ public class CampTutorial : MonoBehaviour
         get => tutorialBonfirecheckButtonClick;
         set { tutorialBonfirecheckButtonClick = value; }
     }
+    private bool isWaitingTouch;
+    private bool tutorialBonableItemCheck;
+  
     private bool  tutorialSleepingTouch;
     public bool TutorialSleepingTouch
     {
@@ -72,44 +75,64 @@ public class CampTutorial : MonoBehaviour
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
     }
-
+    private void Update()
+    {
+        if (isWaitingTouch)
+        {
+            if (GameManager.Manager.MultiTouch.TouchCount > 0)
+            {
+                tutorialBonableItemCheck = true;
+                isWaitingTouch = false;
+            }
+        }
+    }
     public IEnumerator CoCampTutorial()
     {
         GameManager.Manager.State = GameState.Tutorial;
-        LongTouch(0.25f,0.6f,0.5f,0.8f,"제조"); //craft 
+        LongTouch(0.25f,0.6f,0.5f,0.6f,"이것은 제작을 할수있는 공간이야. \n" +
+            "도구나, 설치물,물약류를 만들수 있는곳이지. \n" +
+            "물론 제조법이 있어야 가능할거야.",true); //craft 
         yield return new WaitUntil(() => tutorialCraftTouch);
         var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        LongTouch(0.81f, 0.9f, 0.5f, 0.8f, "제조x버튼"); //Craft xbutton
+        LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자",false,true); //Craft xbutton
         tutorialCraftTouch = false;
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
         SetActive(false);
         yield return new WaitForSeconds(2.5f);
-        LongTouch(0.68f, 0.5f, 0.5f, 0.8f, "요리"); //recipe 
+        LongTouch(0.68f, 0.5f, 0.5f, 0.5f, "이것은 요리를 할 수 있는 솥이야. \n" +
+            "스태미나중 변동스태미나를 회복 할 수 있는 곳이지. \n" +
+            "물론 레시피가 있어야 요리를 만들어서 먹을 수 있어.",false,true); //recipe 
         yield return new WaitUntil(() => tutorialCookingTouch);
         tutorialCookingTouch = false;
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        LongTouch(0.81f, 0.9f, 0.5f, 0.8f, "레시피x버튼"); //reipce xbutton
+        LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //reipce xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2.5f);
-        LongTouch(0.5f, 0.45f, 0.5f, 0.8f, "모닥불"); //bonfire 
+        LongTouch(0.5f, 0.45f, 0.5f, 0.8f, "이것은 야영지내에 제작과 요리를 할 수 있게해주는 재화인 \n" +
+            "모닥불을 시간을 알려주고 아래 인벤토리에서 \n" +
+            "태울 수있는 아이템을 알려주는버튼이야 버튼을 누르면 태울수 있는 아이템이 빨갛게 변화하게 되지.",false,false,false,true); //bonfire 
         yield return new WaitUntil(() => tutorialBonfirecheckButtonClick);
         tutorialBonfirecheckButtonClick = false;
+        isWaitingTouch = true;
+        LongTouch(0.5f, 0.3f, 0.7f, 0.5f, "아이템 번 확인", false, false, false, true);
+        yield return new WaitUntil(() => tutorialBonableItemCheck);
+        tutorialBonableItemCheck = false;
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2.5f);
-        LongTouch(0.5f, 0.7f, 0.5f, 0.8f, "수면"); //bonfire 
+        LongTouch(0.5f, 0.7f, 0.5f, 0.8f, "수면", false, false, false, true); 
         yield return new WaitUntil(() =>tutorialSleepingTouch);
         tutorialSleepingTouch = false;
         yield return new WaitForSeconds(2f);
-        LongTouch(0.81f, 0.9f, 0.5f, 0.8f, "수면x버튼"); //sleeping xbutton
+        LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //sleeping xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
         SetActive(false);
@@ -119,7 +142,7 @@ public class CampTutorial : MonoBehaviour
         tutorialGahteringingTouch = false;
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        LongTouch(0.81f, 0.9f, 0.5f, 0.8f, "채집x버튼"); //gathering xbutton
+        LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //gathering xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
         CampTutorialEnd();
@@ -131,9 +154,15 @@ public class CampTutorial : MonoBehaviour
         handIcon.gameObject.SetActive(isHandActive);
     }
 
-    public void LongTouch(float widthmultifle, float heightmultifle,float boxwidthmultifle,float boxheightmultifle, string description)
+    public void LongTouch(float widthmultifle, float heightmultifle,float boxwidthmultifle,float boxheightmultifle, string description,
+        bool left=false, bool right=false, bool up =false, bool bottom =false)
     {
         SetActive(true, true, true);
+
+        dialogBoxObj.left.SetActive(left);
+        dialogBoxObj.right.SetActive(right);
+        dialogBoxObj.up.SetActive(up);
+        dialogBoxObj.down.SetActive(bottom);
 
         blackout.GetComponent<Image>().sprite = circle;
         blackout.sizeDelta = new Vector2(200f, 200f);

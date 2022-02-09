@@ -225,7 +225,7 @@ public class CraftIcon : MonoBehaviour
                 else
                 {
                     CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
-                    //CampManager.Instance.reconfirmPanelManager.OpenBagReconfirm();
+                    CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
                     Debug.Log("∞°πÊ¿Ã ∞°µÊ√°¥Ÿ");
                 }
             }
