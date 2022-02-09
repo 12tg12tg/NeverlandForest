@@ -177,7 +177,7 @@ public class BottomUIManager : MonoBehaviour
             {
                 if (!IsContainPos(touchPos))
                 {
-                    itemButtons.ForEach(n => n.IsSelect = false);
+                    itemButtons.ForEach(n => n.SelectActive(false));
                     popUpWindow.gameObject.SetActive(false);
                     isPopUp = false;
                 }

@@ -115,8 +115,8 @@ public class RandomEventUIManager : MonoBehaviour
             {
                 popUpWindow.gameObject.SetActive(false);
                 selectInvenItem = null;
-                itemButtons.ForEach(n => n.IsSelect = false);
-                itemButtons2page.ForEach(n => n.IsSelect = false);
+                itemButtons.ForEach(n => n.SelectActive(false));
+                itemButtons2page.ForEach(n => n.SelectActive(false));
             }
         }
     }
@@ -341,8 +341,8 @@ public class RandomEventUIManager : MonoBehaviour
         {
             selectInvenItem = null;
             isPopUp = false;
-            itemButtons.ForEach(n => n.IsSelect = false);
-            itemButtons2page.ForEach(n => n.IsSelect = false);
+            itemButtons.ForEach(n => n.SelectActive(false));
+            itemButtons2page.ForEach(n => n.SelectActive(false));
             info.Init();
             info2page.Init();
         }
@@ -357,11 +357,11 @@ public class RandomEventUIManager : MonoBehaviour
         allItem.OwnCount = 1;
         if (Vars.UserData.RemoveItemData(allItem))
         {
-            itemBox.GetComponent<BottomItemButtonUI>().IsSelect = false;
+            itemBox.GetComponent<BottomItemButtonUI>().SelectActive(false);
             selectInvenItem = null;
             isPopUp = false;
-            itemButtons.ForEach(n => n.IsSelect = false);
-            itemButtons2page.ForEach(n => n.IsSelect = false);
+            itemButtons.ForEach(n => n.SelectActive(false));
+            itemButtons2page.ForEach(n => n.SelectActive(false));
             info.Init();
             info2page.Init();
         }
