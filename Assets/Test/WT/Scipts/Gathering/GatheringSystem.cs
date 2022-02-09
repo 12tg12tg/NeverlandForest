@@ -291,9 +291,11 @@ public class GatheringSystem : MonoBehaviour
         handcompleteTime.SetActive(true);
 
         toolbutton.SetActive(false);
+
         handbutton.SetActive(true);
 
         toolremainTime.SetActive(false);
+
         handremainTime.SetActive(true);
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -337,7 +339,7 @@ public class GatheringSystem : MonoBehaviour
         toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
-    private void MushroomGatheing(LanternState lanternstate) //구덩이채집? 
+    private void MushroomGatheing(LanternState lanternstate) //버섯 채집? 
     {
         toolconsumeTime.SetActive(false);
         handconsumeTime.SetActive(true);
@@ -349,9 +351,14 @@ public class GatheringSystem : MonoBehaviour
         handcompleteTime.SetActive(true);
 
         toolbutton.SetActive(false);
+
         handbutton.SetActive(true);
 
         toolremainTime.SetActive(false);
+
+        handremainTime.SetActive(true);
+        toolremainTime.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
+
         handremainTime.SetActive(true);
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -708,7 +715,7 @@ public class GatheringSystem : MonoBehaviour
                 else
                 {
                     reconfirmPanelManager.gameObject.SetActive(true);
-                    reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
+                    reconfirmPanelManager.inventoryFullPopup.SetActive(true);
                 }
             }
 
@@ -746,6 +753,12 @@ public class GatheringSystem : MonoBehaviour
                 {
                     Vars.UserData.AddItemData(gatheringRewardList[i].Item);
                     Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
+                }
+                else
+                {
+                    reconfirmPanelManager.gameObject.SetActive(true);
+                    reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+
                 }
             }
         }
