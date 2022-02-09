@@ -6,40 +6,18 @@ using UnityEngine.UI;
 public class LanternBar : MonoBehaviour
 {
     public Slider slider;
-    public Slider blight;
     public Image day_correction;
     private RectTransform day_correction_StartScale;
     private float scaleUPtime = 0.3f;
     private float scaleDownTime = 0.3f;
     public void Start()
     {
-        ConsumeManager.init();
+        ConsumeManager.Init();
         day_correction_StartScale = day_correction.rectTransform;
     }
     void Update()
     {
         slider.value = Vars.UserData.uData.LanternCount / Vars.lanternMaxCount;
-        if (Vars.UserData.uData.lanternState== LanternState.Level4)
-        {
-            blight.value = 1f;
-        }
-        else if(Vars.UserData.uData.lanternState == LanternState.Level3)
-        {
-            blight.value = 0.75f;
-        }
-        else if (Vars.UserData.uData.lanternState == LanternState.Level2)
-        {
-            blight.value = 0.5f;
-        }
-        else if (Vars.UserData.uData.lanternState == LanternState.Level1)
-        {
-            blight.value = 0.25f;
-        }
-        else if (Vars.UserData.uData.lanternState == LanternState.None)
-        {
-            blight.value = 0f;
-        }
-
 
         if (ConsumeManager.CurTimeState == TimeState.DayTime)
         {

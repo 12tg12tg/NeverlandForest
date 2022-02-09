@@ -49,6 +49,9 @@ public static class SaveLoadSystem
         RandomEvent,
         ItemExperience,
         Battle,
+
+
+        Count
     }
 
     private static bool isInit;

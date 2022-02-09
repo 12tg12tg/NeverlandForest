@@ -19,4 +19,6 @@ public class CustomBattle : MonoBehaviour
     public int ironArrowNum;
     public int oilNum;
     public int lanternCount;
+
+    public int hp;
 }

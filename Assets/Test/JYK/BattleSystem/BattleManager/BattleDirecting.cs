@@ -157,6 +157,11 @@ public class BattleDirecting : MonoBehaviour
     // 카메라 이동 관련 함수 =====================================================================
     public void ShowMonsterSide()
     {
+        if(bm.isTutorial && !bm.tutorial.tu_01_CamRightButton) // 튜토에만
+        {
+            bm.tutorial.tu_01_CamRightButton = true;
+        }
+
         bm.inputLink.SetActivateStartButton(false);
         bm.uiLink.HideArrow();
         bm.uiLink.HideLanternRange();
@@ -172,6 +177,11 @@ public class BattleDirecting : MonoBehaviour
     
     public void ShowBattleSide()
     {
+        if(bm.isTutorial && !bm.tutorial.tu_02_CamLeftButton) // 튜토에만
+        {
+            bm.tutorial.tu_02_CamLeftButton = true;
+        }
+
         bm.uiLink.HideArrow();
         iTween.MoveTo(battleCamera.gameObject, iTween.Hash(
             "position", battleVeiwDest.position,

@@ -49,7 +49,7 @@ public class GatheringTutorial : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.tm;
+        tutorialManager = GameManager.Manager.TutoManager;
         tutorialManager.mainTutorial.tutorialGathering = this;
         dialogBox = tutorialManager.dialogBox;
         handIcon = tutorialManager.handIcon;
@@ -183,7 +183,7 @@ public class GatheringTutorial : MonoBehaviour
 
         target = yesButton.gameObject.GetComponent<RectTransform>();
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -211,7 +211,7 @@ public class GatheringTutorial : MonoBehaviour
         var size = target.GetComponentInChildren<RectTransform>().sizeDelta;
         blackout.sizeDelta = size + new Vector2(size.x, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -268,7 +268,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -295,7 +295,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.sizeDelta = new Vector2(480f, 260f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(rewardUp.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -325,7 +325,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(3f, 3f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -358,7 +358,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.sizeDelta = new Vector2(170f, 37f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -386,7 +386,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f,10f + target.sizeDelta.y);
 
         var boxOffset = boxHeight + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -418,7 +418,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxHeight + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;

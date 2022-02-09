@@ -38,7 +38,7 @@ public class HuntTutorial : MonoBehaviour
 
     private void Awake()
     {
-        var tm = GameManager.Manager.tm;
+        var tm = GameManager.Manager.TutoManager;
         dialogBox = tm.dialogBox;
         handIcon = tm.handIcon;
         blackout = tm.blackout;
@@ -104,7 +104,7 @@ public class HuntTutorial : MonoBehaviour
 
         HuntTutorialEndExplain();
         huntPlayers.IsTutorialClear =
-            GameManager.Manager.tm.contentsTutorial.contentsTutorialProceed.Hunt = true;
+            GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt = true;
     }
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
     {
@@ -164,7 +164,7 @@ public class HuntTutorial : MonoBehaviour
         dialogBoxObj.left.SetActive(false);
         dialogBoxObj.down.SetActive(true);
 
-        var uiCamera = GameManager.Manager.cm.uiCamera;
+        var uiCamera = GameManager.Manager.CamManager.uiCamera;
         var target = GetComponentInChildren<RepositionUI>().GetComponent<RectTransform>();
         var viewPos = uiCamera.WorldToViewportPoint(target.position);
 

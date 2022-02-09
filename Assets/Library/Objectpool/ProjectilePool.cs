@@ -9,8 +9,6 @@ public enum ProjectileTag
 
 public class ProjectilePool : CustomObjectPool<ProjectileTag>
 {
-    public Transform[] parents;
-
     protected override GameObject OnCreate(ProjectileTag key)
     {
         var index = (int)key;
@@ -19,11 +17,9 @@ public class ProjectilePool : CustomObjectPool<ProjectileTag>
         return go;
     }
 
-    protected override void OnGet(GameObject go, ProjectileTag key)
+    protected override void OnGet(GameObject go)
     {
-        var index = (int)key;
         go.SetActive(true);
-        go.transform.SetParent(parents[index]);
     }
 
     protected override void OnRelease(GameObject go)

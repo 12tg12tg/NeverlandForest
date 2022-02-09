@@ -27,6 +27,10 @@ public class PlayerStats : UnitBase, IAttackable
             // 전투 끝
             manager.boy.PlayDeadAnimation();
             manager.girl.PlayDeadAnimation();
+            if(manager.isTutorial)
+            {
+                manager.tutorial.isLose = true;
+            }
         }
         else
         {
@@ -35,6 +39,6 @@ public class PlayerStats : UnitBase, IAttackable
         }
 
         Debug.Log($"{controller.playerType}가 {attackUnit}에게 {damage}의 피해를 받다.");
-        Debug.Log($"{Hp + damage} -> {Hp}");
+        Debug.Log($"{Vars.UserData.uData.Hp + damage} -> {Vars.UserData.uData.Hp}");
     }
 }

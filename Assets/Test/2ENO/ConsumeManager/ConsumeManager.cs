@@ -40,21 +40,14 @@ public static class ConsumeManager
         set => curLanternState = value;
         get => curLanternState;
     }
-    public static void init()
+    public static void Init()
     {
         TimeStateChange();
         LanternStateChange();
-        Debug.Log($"{Vars.UserData.uData.LanternCount}");
-        Debug.Log($"{Vars.UserData.uData.lanternState}");
     }
     public static void SaveConsumableData()
     {
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ConsumableData);
-    }
-
-    public static void LoadConsumableData()
-    {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
     }
 
     public static void GetthingHunger(int hungercount)
@@ -164,9 +157,9 @@ public static class ConsumeManager
     public static void ConsumeLantern(int oil)
     {
         Vars.UserData.uData.LanternCount -= oil;
-        if (Vars.UserData.uData.LanternCount < 0)
+        if (Vars.UserData.uData.LanternCount < 1)
         {
-            Vars.UserData.uData.LanternCount = 0;
+            Vars.UserData.uData.LanternCount = 1;
         }
         LanternStateChange();
         SaveConsumableData();
@@ -174,9 +167,9 @@ public static class ConsumeManager
     public static void FullingLantern(int oil)
     {
         Vars.UserData.uData.LanternCount += oil;
-        if (Vars.UserData.uData.LanternCount > 17)
+        if (Vars.UserData.uData.LanternCount > Vars.lanternMaxCount)
         {
-            Vars.UserData.uData.LanternCount = 17;
+            Vars.UserData.uData.LanternCount = Vars.lanternMaxCount;
         }
         LanternStateChange();
         SaveConsumableData();
@@ -184,7 +177,6 @@ public static class ConsumeManager
     private static void LanternStateChange()
     {
         var count = Vars.UserData.uData.LanternCount;
-        TimeStateChange();
         switch (curTimeState)
         {
             case TimeState.None:
@@ -199,24 +191,23 @@ public static class ConsumeManager
                 break;
         }
         Vars.UserData.uData.lanternState = curLanternState;
-        SaveConsumableData();
     }
 
     private static void SetDayLaternState(float count)
     {
-        if (count <= 17 && count > 14)
+        if (count <= 18 && count > 15)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 14 && count > 10)
+        else if (count <= 15 && count > 11)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 10 && count > 5)
+        else if (count <= 11 && count > 6)
         {
             curLanternState = LanternState.Level3;
         }
-        else if (count <= 5 && count > 0)
+        else if (count <= 6 && count > 0)
         {
             curLanternState = LanternState.Level2;
         }
@@ -224,23 +215,22 @@ public static class ConsumeManager
         {
             curLanternState = LanternState.Level1;
         }
-        SaveConsumableData();
     }
     private static void SetNightLaternState(float count)
     {
-        if (count <= 17 && count > 14)
+        if (count <= 18 && count > 15)
         {
             curLanternState = LanternState.Level4;
         }
-        else if (count <= 14 && count > 10)
+        else if (count <= 15 && count > 11)
         {
             curLanternState = LanternState.Level3;
         }
-        else if (count <= 10 && count > 5)
+        else if (count <= 11 && count > 6)
         {
             curLanternState = LanternState.Level2;
         }
-        else if (count <= 5 && count > 0)
+        else if (count <= 6 && count > 0)
         {
             curLanternState = LanternState.Level1;
         }
@@ -248,7 +238,6 @@ public static class ConsumeManager
         {
             curLanternState = LanternState.None;
         }
-        SaveConsumableData();
     }
     private static void TimeStateChange()
     {
@@ -347,7 +336,7 @@ public static class ConsumeManager
         Vars.UserData.uData.Hunger = 0;
         Vars.UserData.uData.CurIngameHour = 0;
         Vars.UserData.uData.CurIngameMinute = 0;
-        Vars.UserData.uData.LanternCount = 18;
+        Vars.UserData.uData.LanternCount = Vars.lanternMaxCount;
         Vars.UserData.uData.Date = 0;
         Vars.UserData.uData.Tiredness = 100;
         Vars.UserData.uData.Hp = Vars.maxHp;

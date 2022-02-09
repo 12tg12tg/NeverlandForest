@@ -34,7 +34,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     {
         instance = this;
         gatheringInDungeonrewardInventory.ItemButtonInit();
-        Close();
+        //Close();
     }
     public void Close()
     {
@@ -137,5 +137,5 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         popupPanel.rewardNotEmptyPopup.SetActive(isrewardEmpty);
     }
 
-    public void QuitContents() => SceneManager.LoadScene("AS_RandomMap");
+    public void QuitContents() => GameManager.Manager.LoadScene(GameScene.Dungeon);
 }

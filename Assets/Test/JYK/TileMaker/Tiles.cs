@@ -300,14 +300,24 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (bm.isTutorial && bm.tutorial.lockTileClick)
+            return;
+
         if (!isHighlight && !isHighlightConsume)
             return;
 
         if (!bm.IsWaitingTileSelect && !tileMaker.IsWaitingToSelectTrapTile)
             return;
 
+        if (bm.isTutorial && !bm.tutorial.tu_07_BoySkill2 && index == new Vector2(1, 6))
+            bm.tutorial.tu_07_BoySkill2 = true;
+        else if (bm.isTutorial && !bm.tutorial.tu_10_GirlSkill2 && index == new Vector2(1, 6))
+            bm.tutorial.tu_10_GirlSkill2 = true;
+        else if (bm.isTutorial && !bm.tutorial.tu_12_GirlSkill2 && index == new Vector2(0, 0))
+            bm.tutorial.tu_12_GirlSkill2 = true;
+
         // 1) 설치 단계에서 타일 클릭
-        if(bm.FSM.curState == BattleState.Start)
+        if (bm.FSM.curState == BattleState.Start)
         {
             tileMaker.LastSelectedTile = this;
             tileMaker.IsWaitingToSelectTrapTile = false;

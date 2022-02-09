@@ -45,7 +45,7 @@ public class MainRoomTutorial : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.tm;
+        tutorialManager = GameManager.Manager.TutoManager;
         tutorialManager.mainTutorial.tutorialMainRoom = this;
         dialogBox = tutorialManager.dialogBox;
         handIcon = tutorialManager.handIcon;
@@ -122,7 +122,7 @@ public class MainRoomTutorial : MonoBehaviour
         var size = target.sizeDelta;
         blackout.sizeDelta = size + new Vector2(10f, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -153,7 +153,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -182,7 +182,7 @@ public class MainRoomTutorial : MonoBehaviour
         var size = target.sizeDelta;
         blackout.sizeDelta = size + new Vector2(5f, 5f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -214,7 +214,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;

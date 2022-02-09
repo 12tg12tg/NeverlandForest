@@ -43,6 +43,7 @@ public class BattleAnimationFunc : MonoBehaviour
     public void ShootArrowCurve(Vector3 pos)
     {
         var shootArrow = ProjectilePool.Instance.GetObject(ProjectileTag.HunterArrow);
+        shootArrow.transform.SetParent(BattleManager.Instance.projectileParent);
         shootArrow.transform.position = shootStartPos;
         var arrow = shootArrow.GetComponent<Arrow>();
         StartCoroutine(arrow.Shoot(pos, true));
@@ -51,6 +52,7 @@ public class BattleAnimationFunc : MonoBehaviour
     public void ShootArrowLine(Vector3 pos, bool isFianlShot = false)
     {
         var shootArrow = ProjectilePool.Instance.GetObject(ProjectileTag.HunterArrow);
+        shootArrow.transform.SetParent(BattleManager.Instance.projectileParent);
         shootArrow.transform.position = shootStartPos;
 
         var arrow = shootArrow.GetComponent<Arrow>();
@@ -125,6 +127,7 @@ public class BattleAnimationFunc : MonoBehaviour
         foreach (var monster in list)
         {
             var go = ProjectilePool.Instance.GetObject(ProjectileTag.LightExplosion);
+            go.transform.SetParent(BattleManager.Instance.projectileParent);
             var pos = monster.transform.position;
             var ren = monster.GetComponentInChildren<SkinnedMeshRenderer>();
             var maxY = ren.bounds.max.y;

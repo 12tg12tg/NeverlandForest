@@ -49,6 +49,11 @@ public class CustomBattleEditor : Editor
         cb.lanternCount = (int)EditorGUILayout.Slider(lantern, 1, 18, GUILayout.Width(160));
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Hp", GUILayout.Width(80));
+        cb.hp = EditorGUILayout.IntField(cb.hp, GUILayout.Width(120));
+        EditorGUILayout.EndHorizontal();
+
         EditorGUILayout.Space();
         EditorGUILayout.Space();
 

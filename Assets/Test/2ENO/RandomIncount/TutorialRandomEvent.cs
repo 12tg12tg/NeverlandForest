@@ -53,7 +53,7 @@ public class TutorialRandomEvent : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.tm;
+        tutorialManager = GameManager.Manager.TutoManager;
         dialogBox = tutorialManager.dialogBox;
         handIcon = tutorialManager.handIcon;
         blackout = tutorialManager.blackout;
@@ -163,7 +163,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -190,7 +190,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -226,7 +226,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -254,7 +254,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -282,7 +282,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(20f, 20f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -309,7 +309,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 0f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -341,7 +341,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -369,7 +369,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -400,7 +400,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -432,7 +432,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var boxOffset = boxWidth + arrowSize;
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
@@ -463,7 +463,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;

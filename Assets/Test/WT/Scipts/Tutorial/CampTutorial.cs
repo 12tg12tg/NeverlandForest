@@ -101,7 +101,7 @@ public class CampTutorial : MonoBehaviour
 
     private void Start()
     {
-        var tm = GameManager.Manager.tm;
+        var tm = GameManager.Manager.TutoManager;
         tm.mainTutorial.tutorialCamp = this;
         dialogBox = tm.dialogBox;
         handIcon = tm.handIcon;
@@ -130,8 +130,8 @@ public class CampTutorial : MonoBehaviour
 
     public void TutorialStart()
     {
-        GameManager.Manager.tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
-        GameManager.Manager.tm.CheckMainTutorial();
+        GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
+        GameManager.Manager.TutoManager.CheckMainTutorial();
     }
 
     public IEnumerator CoCampTutorial()
@@ -147,14 +147,14 @@ public class CampTutorial : MonoBehaviour
         var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        GameManager.Manager.tm.BlackPanelOn();
-        GameManager.Manager.tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        GameManager.Manager.TutoManager.BlackPanelOn();
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자",false,true); //Craft xbutton
         tutorialCraftTouch = false;
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        GameManager.Manager.tm.BlackPanelOff();
+        GameManager.Manager.TutoManager.BlackPanelOff();
         SetActive(false);
         iscraftFinish = true;
 
@@ -167,14 +167,14 @@ public class CampTutorial : MonoBehaviour
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        GameManager.Manager.tm.BlackPanelOn();
-        GameManager.Manager.tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        GameManager.Manager.TutoManager.BlackPanelOn();
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //reipce xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
 
         isquitbuttonClick = false;
-        GameManager.Manager.tm.TutorialTargetButtonActivate(bottomitemTagButton);
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(bottomitemTagButton);
 
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
@@ -182,13 +182,13 @@ public class CampTutorial : MonoBehaviour
         LongTouch(0.9f, 0.2f, 0.9f, 0.5f, "아이템 확인", false, false, false, true);
         yield return new WaitUntil(() => tutorialBonableItemCheckFinish);
         tutorialBonableItemCheckFinish = false;
-        GameManager.Manager.tm.TutorialTargetButtonActivate(campBonableCheckButton);
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(campBonableCheckButton);
         
         LongTouch(0.5f, 0.45f, 0.5f, 0.8f, "이것은 모닥불을 시간을 알려주고 아래 인벤토리에서 \n" +
             "태울 수 있는 아이템을 알려 주는 버튼이야 태울수 있는 아이템이 빨갛게 변화하게 되지.",false,false,false,true); //bonfire 
         yield return new WaitUntil(() => tutorialBonfirecheckButtonClick);
         tutorialBonfirecheckButtonClick = false;
-        GameManager.Manager.tm.BlackPanelOff();
+        GameManager.Manager.TutoManager.BlackPanelOff();
 
         isWaitingTouch = true;
         LongTouchRect(0.7f, 0.15f, 0.6f, 0.5f, "아이템 확인", false, false, false, true);
@@ -202,14 +202,14 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() =>tutorialSleepingTouch);
         tutorialSleepingTouch = false;
         yield return new WaitForSeconds(2f);
-        GameManager.Manager.tm.BlackPanelOn();
+        GameManager.Manager.TutoManager.BlackPanelOn();
 
-        GameManager.Manager.tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //sleeping xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        GameManager.Manager.tm.BlackPanelOff();
+        GameManager.Manager.TutoManager.BlackPanelOff();
 
         SetActive(false);
         yield return new WaitForSeconds(3f);
@@ -221,14 +221,14 @@ public class CampTutorial : MonoBehaviour
         tutorialGahteringingTouch = false;
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        GameManager.Manager.tm.BlackPanelOn();
+        GameManager.Manager.TutoManager.BlackPanelOn();
 
-        GameManager.Manager.tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        GameManager.Manager.TutoManager.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 튜토리얼이 종료됩니다.", false, true); //gathering xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        GameManager.Manager.tm.BlackPanelOff();
+        GameManager.Manager.TutoManager.BlackPanelOff();
 
         CampTutorialEnd();
     }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class CustomObjectPool<T> : Singleton<CustomObjectPool<T>> where T : System.Enum
 {
-    private const int poolCount = 10;
+    public int poolCount = 10;
     protected static bool isInit;
     [SerializeField] protected List<GameObject> prefabs;
 
@@ -29,7 +29,7 @@ public abstract class CustomObjectPool<T> : Singleton<CustomObjectPool<T>> where
     }
 
     protected abstract GameObject OnCreate(T key);
-    protected abstract void OnGet(GameObject go, T tag);
+    protected abstract void OnGet(GameObject go);
     protected abstract void OnRelease(GameObject go);
     public GameObject GetObject(T key)
     {
@@ -43,13 +43,13 @@ public abstract class CustomObjectPool<T> : Singleton<CustomObjectPool<T>> where
         if (queue.Count > 0)
         {
             var obj = queue.Dequeue();
-            OnGet(obj, key);
+            OnGet(obj);
             return obj;
         }
         else
         {
             var newObj = OnCreate(key);
-            OnGet(newObj, key);
+            OnGet(newObj);
             return newObj;
         }
     }
