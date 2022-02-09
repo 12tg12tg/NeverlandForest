@@ -19,18 +19,16 @@ public class BottomItemButtonUI : MonoBehaviour
     private int slotNum;
 
     private bool isSelect;
-    public bool IsSelect
+    public void SelectActive(bool isActive)
     {
-        get => isSelect;
-        set
-        {
-            isSelect = value;
-            if (isSelect)
-                selectedImg.color = Color.white;
-            else
-                selectedImg.color = Color.clear;
-        }
+        isSelect = isActive;
+        if (isSelect)
+            selectedImg.color = Color.white;
+        else
+            selectedImg.color = Color.clear;
     }
+
+
 
     private bool isInstallation;
     public bool IsInstallation
@@ -106,7 +104,7 @@ public class BottomItemButtonUI : MonoBehaviour
             dataItem = null;
             icon.sprite = null;
             count.text = string.Empty;
-            IsSelect = false;
+            SelectActive(false);
             IsConsumable = false;
             IsInstallation = false;
             return;
@@ -124,7 +122,7 @@ public class BottomItemButtonUI : MonoBehaviour
             RandomEventUImanager.selectInvenItem.itemId == dataItem.itemId
             && RandomEventUImanager.selectSlotNum == slotNum)
             {
-                IsSelect = true;
+                SelectActive(true);
             }
         }
         else
@@ -133,7 +131,7 @@ public class BottomItemButtonUI : MonoBehaviour
             BottomUIManager.Instance.selectItem.itemId == dataItem.itemId
             && BottomUIManager.Instance.selectItemSlotNum == slotNum)
             {
-                IsSelect = true;
+                SelectActive(true);
             }
         }
 
@@ -211,8 +209,8 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = BottomUIManager.Instance.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     BottomUIManager.Instance.popUpWindow.position = newVector;
-                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 break;
             case GameState.Hunt:
@@ -224,8 +222,8 @@ public class BottomItemButtonUI : MonoBehaviour
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                 BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                IsSelect = true;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                SelectActive(true);
                 break;
             case GameState.Gathering:
                 break;
@@ -239,15 +237,15 @@ public class BottomItemButtonUI : MonoBehaviour
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                 BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                IsSelect = true;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                SelectActive(true);
                 if (DiaryInventory.Instance != null)
                 {
                     DiaryInventory.Instance.info.Init(dataItem);
                     // 선택초기화
                     for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
                     {
-                        DiaryInventory.Instance.itemButtons[i].IsSelect = false;
+                        DiaryInventory.Instance.itemButtons[i].SelectActive(false);
                     }
                 }
                 break;
@@ -265,9 +263,9 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = RandomEventUIManager.Instance.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     RandomEventUIManager.Instance.popUpWindow.position = newVector;
-                    RandomEventUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                    RandomEventUIManager.Instance.itemButtons2page.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    RandomEventUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                    RandomEventUIManager.Instance.itemButtons2page.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 else
                 {
@@ -279,8 +277,8 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = BottomUIManager.Instance.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     BottomUIManager.Instance.popUpWindow.position = newVector;
-                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 break;
         }
@@ -316,8 +314,8 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = bottomUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     bottomUImanager.popUpWindow.position = newVector;
-                    bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    bottomUImanager.itemButtons.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 break;
             case GameState.Hunt:
@@ -329,8 +327,8 @@ public class BottomItemButtonUI : MonoBehaviour
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                 BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                IsSelect = true;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                SelectActive(true);
                 break;
             case GameState.Gathering:
                 break;
@@ -344,15 +342,15 @@ public class BottomItemButtonUI : MonoBehaviour
                 uiVec = bottomUImanager.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                 bottomUImanager.popUpWindow.position = newVector;
-                bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
-                IsSelect = true;
+                bottomUImanager.itemButtons.ForEach(n => n.SelectActive(false));
+                SelectActive(true);
                 if (DiaryInventory.Instance != null)
                 {
                     DiaryInventory.Instance.info.Init(dataItem);
                     // 선택초기화
                     for (int i = 0; i < DiaryInventory.Instance.itemButtons.Count; i++)
                     {
-                        DiaryInventory.Instance.itemButtons[i].IsSelect = false;
+                        DiaryInventory.Instance.itemButtons[i].SelectActive(false);
                     }
                 }
                 break;
@@ -370,9 +368,9 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = RandomEventUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     RandomEventUImanager.popUpWindow.position = newVector;
-                    RandomEventUImanager.itemButtons.ForEach(n => n.isSelect = false);
-                    RandomEventUImanager.itemButtons2page.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    RandomEventUImanager.itemButtons.ForEach(n => n.SelectActive(false));
+                    RandomEventUImanager.itemButtons2page.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 else
                 {
@@ -384,8 +382,8 @@ public class BottomItemButtonUI : MonoBehaviour
                     uiVec = bottomUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     bottomUImanager.popUpWindow.position = newVector;
-                    bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
-                    IsSelect = true;
+                    bottomUImanager.itemButtons.ForEach(n => n.SelectActive(false));
+                    SelectActive(true);
                 }
                 break;
         }
