@@ -7,7 +7,7 @@ public enum MainTutorialStage
     Story,
     Battle,
     Move,
-    Lanturn,
+    //Lanturn,
     Event,
     Stamina,
     Camp,
@@ -23,6 +23,7 @@ public class MainTutorial
     public MoveTutorial tutorialMove;
     public GatheringTutorial tutorialGathering;
     public CampTutorial tutorialCamp;
+    public MainRoomTutorial tutorialMainRoom;
     public void Init()
     {
         // 저장된 데이터 가져오기
@@ -33,10 +34,7 @@ public class MainTutorial
     {
         if (MainTutorialStage != MainTutorialStage.Clear)
         {
-            if (MainTutorialStage == MainTutorialStage.Move)
-                MainTutorialStage += 2;
-            else
-                MainTutorialStage++;
+            MainTutorialStage++;
         }
     }
 

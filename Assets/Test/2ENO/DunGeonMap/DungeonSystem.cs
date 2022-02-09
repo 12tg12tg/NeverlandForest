@@ -34,6 +34,7 @@ public class DungeonSystem : MonoBehaviour
     public TutorialPlayerMove tutorialMove;
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
+    public TutorialRandomEvent randomEventTutorial;
 
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
@@ -195,8 +196,8 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = false;
 
         //TODO : 테스트용 코드
-        if (Vars.UserData.isTutorialDungeon)
-            ChangeRoomEvent(true, true);
+        //if (Vars.UserData.isTutorialDungeon)
+        //    ChangeRoomEvent(true, true);
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때

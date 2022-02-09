@@ -23,7 +23,8 @@ public class GoCamp : MonoBehaviour
     public void OpenCampScene()
     {
         setupCampSite.SetActive(true);
-        moveTest.gameObject.SetActive(false);
+        if(moveTest != null)
+            moveTest.gameObject.SetActive(false);
         var list = Vars.UserData.HaveAllItemList;
         for (int i = 0; i < list.Count; i++)
         {

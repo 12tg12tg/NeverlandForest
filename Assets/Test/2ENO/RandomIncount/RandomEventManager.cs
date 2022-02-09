@@ -16,6 +16,9 @@ public class RandomEventManager : MonoBehaviour
 
     private DataRandomEvent beforeEventData;
 
+    public bool isFirstRandomEvent = true;
+    public bool isTutorialRandomEvent = true;
+
     private void Awake()
     {
         if (!isStart)
@@ -143,21 +146,28 @@ public class RandomEventManager : MonoBehaviour
                 index++;
             }
 
-            //var eventIndex = randomEventPool.FindIndex(x => x.EventData.id == templist[index].EventData.id);
-            //if (beforeEventData == null)
-            //{
-            //    roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
-            //    beforeEventData = randomEventPool[eventIndex];
-            //    break;
-            //}
-            //else if (beforeEventData.EventData.id != randomEventPool[eventIndex].EventData.id)
-            //{
-            //    roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
-            //    beforeEventData = randomEventPool[eventIndex];
-            //    break;
-            //}
+            if(isFirstRandomEvent && !Vars.UserData.isRandomDataLoad)
+            {
+                roomData.randomEventID = "4";
+                isFirstRandomEvent = false;
+                break;
+            }
 
-            // 특정 이벤트 확정반환 테스트코드 28 24 11
+            var eventIndex = randomEventPool.FindIndex(x => x.EventData.id == templist[index].EventData.id);
+            if (beforeEventData == null)
+            {
+                roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
+                beforeEventData = randomEventPool[eventIndex];
+                break;
+            }
+            else if (beforeEventData.EventData.id != randomEventPool[eventIndex].EventData.id)
+            {
+                roomData.randomEventID = randomEventPool[eventIndex].EventData.id;
+                beforeEventData = randomEventPool[eventIndex];
+                break;
+            }
+
+            //특정 이벤트 확정반환 테스트코드 28 24 11
             roomData.randomEventID = "4";
         }
     }
