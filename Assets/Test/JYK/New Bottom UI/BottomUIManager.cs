@@ -196,7 +196,7 @@ public class BottomUIManager : MonoBehaviour
     }
     private bool IsContainItemRect(Vector2 pos)
     {
-        if (bm.isTutorial)
+        if (bm != null && bm.isTutorial)
             return true;
 
         var camera = GameManager.Manager.CamManager.uiCamera;

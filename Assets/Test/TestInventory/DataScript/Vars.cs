@@ -65,7 +65,7 @@ public static class Vars
 
                 //인벤토리에서 테스트로 사용할 아이템 리스트
                 int tempItemNum = 19;
-                for (int i = 0; i < 4; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     var stringId = $"ITEM_{tempItemNum}";
                     var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
@@ -86,11 +86,11 @@ public static class Vars
 
                 // 나무토막류
                 tempItemNum = 1;
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     var stringId = $"ITEM_{tempItemNum}";
                     var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = 6;
+                    newItem.OwnCount = 3;
                     tempItemNum++;
                     userData.AddItemData(newItem);
                 }

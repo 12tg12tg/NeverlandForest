@@ -35,8 +35,8 @@ public class MoveTutorial : MonoBehaviour
     public int CommandSucess { get; set; } = 0;
 
     [Header("Æ÷Áö¼Ç Å¸°Ù")]
+    public RectTransform time;
     public RectTransform lantern;
-
     private void Start()
     {
         var tm = GameManager.Manager.TutoManager;
@@ -108,7 +108,7 @@ public class MoveTutorial : MonoBehaviour
         SetActive(true, true, true);
 
         blackout.GetComponent<Image>().sprite = circle;
-        blackout.sizeDelta = new Vector2(200f, canvasRt.height * 0.4f);
+        blackout.sizeDelta = new Vector2(200f, 200f);
 
         var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
         var scrPos = new Vector2(canvasRt.width * 0.75f, canvasRt.height * 0.5f);
@@ -126,7 +126,7 @@ public class MoveTutorial : MonoBehaviour
         SetActive(true, true, true);
 
         blackout.GetComponent<Image>().sprite = circle;
-        blackout.sizeDelta = new Vector2(200f, canvasRt.height * 0.4f);
+        blackout.sizeDelta = new Vector2(200f, 200f);
 
         var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
         var scrPos = new Vector2(canvasRt.width * 0.25f, canvasRt.height * 0.5f);
@@ -167,12 +167,12 @@ public class MoveTutorial : MonoBehaviour
     public void TimeCostExplain()
     {
         SetActive(true, true);
-        target = dungeonCanvasRt.transform.GetChild(0).GetComponent<RectTransform>();
+        target = time;
         blackout.GetComponent<Image>().sprite = circle;
         blackout.sizeDelta = target.sizeDelta;
 
         var uiCam = GameManager.Manager.CamManager.uiCamera;
-        var pos = uiCam.WorldToViewportPoint(target.rect.position);
+        var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
 
