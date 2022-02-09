@@ -100,6 +100,8 @@ public class BottomItemButtonUI : MonoBehaviour
 
     public void Init(DataAllItem data, int slot = -1)
     {
+        var RandomEventUImanager = RandomEventUIManager.Instance;
+
         slotNum = slot;
 
         count.color = Color.black;
@@ -119,12 +121,12 @@ public class BottomItemButtonUI : MonoBehaviour
         icon.sprite = elem.IconSprite;
         count.text = data.OwnCount.ToString();
 
-        if(RandomEventUIManager.Instance != null &&
-            RandomEventUIManager.Instance.isRaneomEventOn)
+        if(RandomEventUImanager != null &&
+            RandomEventUImanager.isRaneomEventOn)
         {
-            if (RandomEventUIManager.Instance.selectInvenItem != null &&
-            RandomEventUIManager.Instance.selectInvenItem.itemId == dataItem.itemId
-            && RandomEventUIManager.Instance.selectSlotNum == slotNum)
+            if (RandomEventUImanager.selectInvenItem != null &&
+            RandomEventUImanager.selectInvenItem.itemId == dataItem.itemId
+            && RandomEventUImanager.selectSlotNum == slotNum)
             {
                 IsSelect = true;
             }
@@ -194,23 +196,27 @@ public class BottomItemButtonUI : MonoBehaviour
         if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
             return;
 
+        var battleManager = BattleManager.Instance;
+        var bottomUImanager = BottomUIManager.Instance;
+        var RandomEventUImanager = RandomEventUIManager.Instance;
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
         DungeonRewardDiaryManager.Instacne.info.Init(dataItem);
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if (BattleManager.Instance.FSM.curState == BattleState.Start && IsInstallation
-                    || BattleManager.Instance.FSM.curState == BattleState.Player && IsConsumable)
+                
+                if (battleManager.FSM.curState == BattleState.Start && IsInstallation
+                    || battleManager.FSM.curState == BattleState.Player && IsConsumable)
                 {
-                    BottomUIManager.Instance.selectItem = dataItem;
-                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    BottomUIManager.Instance.isPopUp = true;
-                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    bottomUImanager.selectItem = dataItem;
+                    bottomUImanager.popUpWindow.gameObject.SetActive(true);
+                    bottomUImanager.isPopUp = true;
+                    bottomUImanager.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                    uiVec = bottomUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                    BottomUIManager.Instance.popUpWindow.position = newVector;
-                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                    bottomUImanager.popUpWindow.position = newVector;
+                    bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
                     IsSelect = true;
                 }
                 break;
@@ -221,14 +227,14 @@ public class BottomItemButtonUI : MonoBehaviour
             case GameState.Cook:
                 break;
             case GameState.Camp:
-                BottomUIManager.Instance.selectItem = dataItem;
-                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                BottomUIManager.Instance.isPopUp = true;
-                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                bottomUImanager.selectItem = dataItem;
+                bottomUImanager.popUpWindow.gameObject.SetActive(true);
+                bottomUImanager.isPopUp = true;
+                bottomUImanager.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = bottomUImanager.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                bottomUImanager.popUpWindow.position = newVector;
+                bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
                 IsSelect = true;
                 if (DiaryInventory.Instance != null)
                 {
@@ -241,34 +247,34 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Dungeon:
-                if (RandomEventUIManager.Instance != null &&
-            RandomEventUIManager.Instance.isRaneomEventOn)
+                if (RandomEventUImanager != null &&
+            RandomEventUImanager.isRaneomEventOn)
                 {
-                    RandomEventUIManager.Instance.info.Init(dataItem);
-                    RandomEventUIManager.Instance.info2page.Init(dataItem);
+                    RandomEventUImanager.info.Init(dataItem);
+                    RandomEventUImanager.info2page.Init(dataItem);
 
-                    RandomEventUIManager.Instance.selectInvenItem = dataItem;
-                    RandomEventUIManager.Instance.selectSlotNum = slotNum;
-                    RandomEventUIManager.Instance.itemBox = gameObject.GetComponent<RectTransform>();
-                    RandomEventUIManager.Instance.isPopUp = true;
-                    uiVec = RandomEventUIManager.Instance.popUpWindow.position;
+                    RandomEventUImanager.selectInvenItem = dataItem;
+                    RandomEventUImanager.selectSlotNum = slotNum;
+                    RandomEventUImanager.itemBox = gameObject.GetComponent<RectTransform>();
+                    RandomEventUImanager.isPopUp = true;
+                    uiVec = RandomEventUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                    RandomEventUIManager.Instance.popUpWindow.position = newVector;
-                    RandomEventUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
-                    RandomEventUIManager.Instance.itemButtons2page.ForEach(n => n.isSelect = false);
+                    RandomEventUImanager.popUpWindow.position = newVector;
+                    RandomEventUImanager.itemButtons.ForEach(n => n.isSelect = false);
+                    RandomEventUImanager.itemButtons2page.ForEach(n => n.isSelect = false);
                     IsSelect = true;
                 }
                 else
                 {
-                    BottomUIManager.Instance.selectItem = dataItem;
-                    BottomUIManager.Instance.selectItemSlotNum = slotNum;
-                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    BottomUIManager.Instance.isPopUp = true;
-                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    bottomUImanager.selectItem = dataItem;
+                    bottomUImanager.selectItemSlotNum = slotNum;
+                    bottomUImanager.popUpWindow.gameObject.SetActive(true);
+                    bottomUImanager.isPopUp = true;
+                    bottomUImanager.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                    uiVec = bottomUImanager.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                    BottomUIManager.Instance.popUpWindow.position = newVector;
-                    BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                    bottomUImanager.popUpWindow.position = newVector;
+                    bottomUImanager.itemButtons.ForEach(n => n.isSelect = false);
                     IsSelect = true;
                 }
                 break;

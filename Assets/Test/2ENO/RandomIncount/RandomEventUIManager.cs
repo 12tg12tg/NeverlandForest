@@ -50,7 +50,6 @@ public class RandomEventUIManager : MonoBehaviour
     public TextMeshProUGUI resultDesc;
 
     [Header("외부 UI 및 기능 끄기")]
-    public GameObject minimap;
     public GameObject inventory;
     public GameObject playerMove;
 
@@ -86,14 +85,12 @@ public class RandomEventUIManager : MonoBehaviour
 
     private void OnEnable()
     {
-        minimap.SetActive(false);
         inventory.SetActive(false);
         playerMove.SetActive(false);
         isRaneomEventOn = true;
     }
     private void OnDisable()
     {
-        minimap.SetActive(true);
         inventory.SetActive(true);
         playerMove.SetActive(true);
         isRaneomEventOn = false;

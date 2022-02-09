@@ -350,18 +350,21 @@ public class DungeonSystem : MonoBehaviour
     public void CurrentRoomInMinimap(DungeonRoom curRoom, DungeonRoom beforeRoom)
     {
         var obj = minimapGenerate.dungeonRoomObjectList.Find(x => x.roomIdx == curRoom.roomIdx);
-        var mesh = obj.gameObject.GetComponent<MeshRenderer>();
-        mesh.material.color = Color.blue;
+        obj.gameObject.transform.GetChild(0).gameObject.SetActive(true);
+        //var mesh = obj.gameObject.GetComponent<MeshRenderer>();
+        //mesh.material.color = Color.blue;
 
         if (beforeRoom == null)
             return;
         if (beforeRoom.IsCheck == true)
         {
             var obj2 = minimapGenerate.dungeonRoomObjectList.Find(x => x.roomIdx == beforeRoom.roomIdx);
-            var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
 
-            mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
-            new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
+            obj2.gameObject.transform.GetChild(0).gameObject.SetActive(false);
+            //var mesh2 = obj2.gameObject.GetComponent<MeshRenderer>();
+
+            //mesh2.material.color = (beforeRoom.RoomType == DunGeonRoomType.MainRoom) ?
+            //new Color(0.962f, 0.174f, 0.068f) : new Color(0.472f, 0.389f, 0.389f);
         }
     }
 }
