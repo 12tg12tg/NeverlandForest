@@ -23,9 +23,13 @@ public class BottomItemButtonUI : MonoBehaviour
     {
         isSelect = isActive;
         if (isSelect)
+        {
             selectedImg.color = Color.white;
+        }
         else
+        {
             selectedImg.color = Color.clear;
+        }
     }
 
 
@@ -103,6 +107,7 @@ public class BottomItemButtonUI : MonoBehaviour
         {
             dataItem = null;
             icon.sprite = null;
+            icon.color = Color.clear;
             count.text = string.Empty;
             SelectActive(false);
             IsConsumable = false;
@@ -113,6 +118,7 @@ public class BottomItemButtonUI : MonoBehaviour
         dataItem = data;
         AllItemTableElem elem = data.ItemTableElem;
         icon.sprite = elem.IconSprite;
+        icon.color = Color.white;
         count.text = data.OwnCount.ToString();
 
         if(RandomEventUImanager != null &&
@@ -222,7 +228,7 @@ public class BottomItemButtonUI : MonoBehaviour
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                 BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                DungeonRewardDiaryManager.Instance.gatheringInDungeonrewardInventory.itemButtons.ForEach(n => n.SelectActive(false));
                 SelectActive(true);
                 break;
             case GameState.Gathering:
@@ -303,7 +309,6 @@ public class BottomItemButtonUI : MonoBehaviour
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                
                 if (battleManager.FSM.curState == BattleState.Start && IsInstallation
                     || battleManager.FSM.curState == BattleState.Player && IsConsumable)
                 {
