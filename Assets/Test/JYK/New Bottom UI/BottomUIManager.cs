@@ -292,10 +292,9 @@ public class BottomUIManager : MonoBehaviour
                 isPopUp = false;
             }
             ItemListInit();
+            DiaryInventory.Instance.ItemButtonInit();
         }
     }
-
-
 
     public void ItemDump() // 버튼 클릭 함수
     {
@@ -311,6 +310,7 @@ public class BottomUIManager : MonoBehaviour
             isPopUp = false;
         }
         ItemListInit();
+        DiaryInventory.Instance.ItemButtonInit();
     }
 
     public void ItemBurn()

@@ -215,6 +215,16 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Hunt:
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
                 break;
             case GameState.Gathering:
                 break;
@@ -306,6 +316,16 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Hunt:
+                BottomUIManager.Instance.selectItem = dataItem;
+                BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                BottomUIManager.Instance.popUpWindow.position = newVector;
+                BottomUIManager.Instance.itemButtons.ForEach(n => n.isSelect = false);
+                IsSelect = true;
                 break;
             case GameState.Gathering:
                 break;

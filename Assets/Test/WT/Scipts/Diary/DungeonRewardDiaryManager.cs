@@ -105,13 +105,6 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
 
-    private void PopupPanelOpne(bool isInvenFull = false, bool isrewardEmpty = false)
-    {
-        popupPanel.gameObject.SetActive(true);
-        popupPanel.inventoryFullPopup.SetActive(isInvenFull);
-        popupPanel.rewardNotEmptyPopup.SetActive(isrewardEmpty);
-    }
-
     public void GetSelectedItem()
     {
         if(selectedItemList.Count == 0)
@@ -130,6 +123,13 @@ public class DungeonRewardDiaryManager : MonoBehaviour
             x.InitItemSprite();
         });
         gatheringInDungeonrewardInventory.ItemButtonInit();
+    }
+
+    private void PopupPanelOpne(bool isInvenFull = false, bool isrewardEmpty = false)
+    {
+        popupPanel.gameObject.SetActive(true);
+        popupPanel.inventoryFullPopup.SetActive(isInvenFull);
+        popupPanel.rewardNotEmptyPopup.SetActive(isrewardEmpty);
     }
 
     public void QuitContents() => SceneManager.LoadScene("AS_RandomMap");
