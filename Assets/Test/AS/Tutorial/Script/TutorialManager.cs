@@ -14,9 +14,9 @@ public class TutorialManager : MonoBehaviour
     [Header("UI")]
     public RectTransform handIcon;
     public RectTransform dialogBox;
-    public RectTransform blackout;
-    public Button nextStepButton;
+    public GameObject blackoutPanel;
     public TMP_Text dialogBoxText;
+    public RectTransform blackout;
 
     [Header("스프라이트")]
     public Sprite rect;
@@ -24,10 +24,11 @@ public class TutorialManager : MonoBehaviour
 
     public void Init()
     {
+        if(blackoutPanel != null)
+            blackout = blackoutPanel.transform.GetChild(0).GetComponent<RectTransform>();
         mainTutorial.Init();
         contentsTutorial.Init();
-        if(nextStepButton != null)
-            nextStepButton.gameObject.SetActive(false);
+
         //CheckMainTutorial();
     }
 
@@ -41,16 +42,17 @@ public class TutorialManager : MonoBehaviour
             case MainTutorialStage.Battle:
                 break;
             case MainTutorialStage.Move:
-                mainTutorial.tutorialMove = gameObject.AddComponent<MoveTutorial>();
+                mainTutorial.tutorialMove.delay = 0f;
                 StartCoroutine(mainTutorial.tutorialMove.CoMoveTutorial());
                 break;
-            case MainTutorialStage.Lanturn:
-                break;
+            //case MainTutorialStage.Lanturn:
+            //    break;
             case MainTutorialStage.Event:
-                mainTutorial.tutorialGathering = gameObject.AddComponent<GatheringTutorial>();
                 StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
                 break;
             case MainTutorialStage.Stamina:
+                mainTutorial.tutorialMainRoom.delay = 0f;
+                StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
                 break;
             case MainTutorialStage.Camp:
                 mainTutorial.tutorialCamp = gameObject.AddComponent<CampTutorial>();
@@ -63,9 +65,26 @@ public class TutorialManager : MonoBehaviour
         mainTutorial.NextMainTutorial();
     }
 
-    public void NextStep()
+    public Button TutorialTargetButtonActivate(Button target)
     {
-        mainTutorial.tutorialMove.TutorialStep++;
-        mainTutorial.tutorialMove.delay = 0f;
+        var targetObject = target.gameObject;
+        var clone = Instantiate(targetObject, blackoutPanel.transform, true);
+
+        var btn = clone.GetComponent<Button>();
+        btn.onClick.AddListener(() =>  Destroy(btn.gameObject) );
+
+        return btn;
+    }
+
+    public void BlackPanelOn()
+    {
+        var panel = blackoutPanel.transform.GetChild(1).gameObject;
+        panel.SetActive(true);
+    }
+
+    public void BlackPanelOff()
+    {
+        var panel = blackoutPanel.transform.GetChild(1).gameObject;
+        panel.SetActive(false);
     }
 }

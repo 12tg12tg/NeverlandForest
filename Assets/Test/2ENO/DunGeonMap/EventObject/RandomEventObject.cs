@@ -19,11 +19,19 @@ public class RandomEventObject : MonoBehaviour
     {
         if (other.tag is "Player")
         {
-            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
-            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
-            var rndEvent = RandomEventManager.Instance.GetEventData(randomEventID);
+            var dungeonSystem = DungeonSystem.Instance;
+            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+            dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+
+            var randEventMgr = RandomEventManager.Instance;
+            var rndEvent = randEventMgr.GetEventData(randomEventID);
             RandomEventUIManager.Instance.EventInit(rndEvent);
             
+            if(randEventMgr.isTutorialRandomEvent)
+            {
+                StartCoroutine(dungeonSystem.randomEventTutorial.CoRandomEventTutorial());
+                randEventMgr.isTutorialRandomEvent = false;
+            }
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             Destroy(gameObject);
         }

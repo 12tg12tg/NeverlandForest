@@ -36,6 +36,7 @@ public class TutorialPlayerMove : MonoBehaviour
 
     private MoveTutorial moveTutorial;
     private GatheringTutorial gatheringTutorial;
+    private MainRoomTutorial mainRoomTutorial;
 
     public void Init()
     {
@@ -64,14 +65,22 @@ public class TutorialPlayerMove : MonoBehaviour
     {
         moveTutorial = GameManager.Manager.tm.mainTutorial.tutorialMove;
         gatheringTutorial = GameManager.Manager.tm.mainTutorial.tutorialGathering;
+        mainRoomTutorial = GameManager.Manager.tm.mainTutorial.tutorialMainRoom;
+        if(mainRoomTutorial.isMainRoomTutorial)
+        {
+            playerAnimationBoy.SetFloat("Speed", 0);
+            playerAnimationGirl.SetFloat("Speed", 0);
+            RigOff();
+            return;
+        }
 
-        if(gatheringTutorial != null/* && gatheringTutorial.TutorialStep != 7*/)
+        if (gatheringTutorial.isGatheringTutorial/* && gatheringTutorial.TutorialStep != 7*/)
         {
             RigOff();
             return;
         }
 
-        if (moveTutorial != null && moveTutorial.TutorialStep != 2)
+        if (moveTutorial.isMoveTutorial && moveTutorial.TutorialStep != 2)
         {
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0);
@@ -136,6 +145,7 @@ public class TutorialPlayerMove : MonoBehaviour
                                     moveTutorial.CommandSucess++;
                                     tutorialTime = 0f;
                                     moveTutorial.TutorialStep++;
+                                    moveTutorial.delay = 0f;
                                 }
                             }
                         }

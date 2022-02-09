@@ -83,6 +83,17 @@ public static class Vars
                     tempItemNum++;
                     userData.AddItemData(newItem);
                 }
+
+                // 나무토막류
+                tempItemNum = 1;
+                for (int i = 0; i < 2; i++)
+                {
+                    var stringId = $"ITEM_{tempItemNum}";
+                    var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
+                    newItem.OwnCount = 6;
+                    tempItemNum++;
+                    userData.AddItemData(newItem);
+                }
             }
             return userData;
         }

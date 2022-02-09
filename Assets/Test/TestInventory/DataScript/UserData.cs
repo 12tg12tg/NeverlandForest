@@ -218,7 +218,7 @@ public class UserData
                         }
                         else
                         {
-                            overOwnCount = (newItem.ItemTableElem.limitCount * overInvenCount - 1) + newItem.InvenRemainCount;
+                            overOwnCount = (newItem.ItemTableElem.limitCount * (overInvenCount - 1)) + newItem.InvenRemainCount;
                         }
 
                         newItem.OwnCount -= overOwnCount;

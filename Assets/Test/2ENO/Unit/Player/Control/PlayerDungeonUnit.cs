@@ -106,7 +106,7 @@ public class PlayerDungeonUnit : UnitBase
         isCoMove = false;
         if (playerMove != null)
             playerMove.isCoMove = false;
-        else if (tutorialMove != null)
+        if (tutorialMove != null)
             tutorialMove.isCoMove = false;
     }
 
