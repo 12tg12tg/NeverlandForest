@@ -39,7 +39,7 @@ public class MoveTutorial : MonoBehaviour
 
     private void Start()
     {
-        var tm = GameManager.Manager.tm;
+        var tm = GameManager.Manager.TutoManager;
         tm.mainTutorial.tutorialMove = this;
         dialogBox = tm.dialogBox;
         handIcon = tm.handIcon;
@@ -171,8 +171,8 @@ public class MoveTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = circle;
         blackout.sizeDelta = target.sizeDelta;
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
-        var pos = uiCam.WorldToViewportPoint(target.position);
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.rect.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
 

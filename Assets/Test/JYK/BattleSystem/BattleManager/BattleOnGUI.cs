@@ -51,7 +51,11 @@ public class BattleOnGUI : MonoBehaviour
         if (GUI.Button(new Rect(Screen.width - 300, 50, 100, 50), "전투 종료 씬 전환"))
         {
             manager.monsters.ForEach(n => n.Release());
-            SceneManager.LoadScene("As_RandomMap");
+            GameManager.Manager.LoadScene(GameScene.Dungeon);
+        }
+        if (GUI.Button(new Rect(Screen.width - 300, 200, 100, 50), "튜토리얼"))
+        {
+            manager.tutorial.StartDutorial();
         }
     }
 }

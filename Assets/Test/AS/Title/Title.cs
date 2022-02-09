@@ -25,7 +25,7 @@ public class Title : MonoBehaviour
         {
             StartCoroutine(CoFadeOut(() => {
                 gameObject.SetActive(false);
-                GameManager.Manager.tm.Init();
+                GameManager.Manager.TutoManager.Init();
             }));
         }
     }

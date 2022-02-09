@@ -122,13 +122,13 @@ public class RandomEventUIManager : MonoBehaviour
     }
     private bool IsContainPos(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
     }
 
     private bool ISContainItemBox(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(itemBox, pos, camera);
     }
 

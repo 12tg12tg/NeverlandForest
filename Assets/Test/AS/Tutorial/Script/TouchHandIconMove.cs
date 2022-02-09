@@ -24,15 +24,15 @@ public class TouchHandIconMove : MonoBehaviour
 
     private IEnumerator CoScale(float time)
     {
-        float timer = 0f;
+        var startTime = Time.realtimeSinceStartup;
+        var endTime = startTime + time;
         var startScale = Vector3.one * 0.5f;
         var endScale = Vector3.one;
         var image = circle.GetComponent<Image>();
         var color = Color.white;
-        while (timer < time)
+        while (Time.realtimeSinceStartup < endTime)
         {
-            timer += Time.deltaTime;
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             circle.transform.localScale = Vector3.Lerp(startScale, endScale, ratio);
             color.a = Mathf.Lerp(1, 0, ratio); ;
             image.color = color;

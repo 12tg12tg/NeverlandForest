@@ -64,7 +64,7 @@ public class DungeonSystem : MonoBehaviour
 
     public void TutorialInit()
     {
-        tutorialManager = GameManager.Manager.tm;
+        tutorialManager = GameManager.Manager.TutoManager;
         tutorialManager.Init();
         tutorialMove.Init();
         GameManager.Manager.State = GameState.Tutorial;
@@ -141,14 +141,13 @@ public class DungeonSystem : MonoBehaviour
         if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = true;
-            Vars.UserData.isDungeonClear = true;
-            SceneManager.LoadScene("AS_WorldMap");
+            GameManager.Manager.LoadScene(GameScene.World);
             Vars.UserData.uData.Date++;
         }
         if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
         {
             Vars.UserData.WorldMapPlayerData.isClear = false;
-            SceneManager.LoadScene("AS_WorldMap");
+            GameManager.Manager.LoadScene(GameScene.World);
             Vars.UserData.uData.Date++;
         }
         if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
@@ -228,7 +227,7 @@ public class DungeonSystem : MonoBehaviour
                     Vars.UserData.WorldMapPlayerData.isClear = true;
                     Vars.UserData.isDungeonClear = true;
                 }
-                SceneManager.LoadScene("AS_WorldMap");
+                GameManager.Manager.LoadScene(GameScene.World);
                 return;
             }
             beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;

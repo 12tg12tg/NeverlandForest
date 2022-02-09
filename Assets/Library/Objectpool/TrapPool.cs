@@ -13,7 +13,6 @@ public enum TrapTag
 
 public class TrapPool : CustomObjectPool<TrapTag>
 {
-    public Transform[] parents;
     protected override GameObject OnCreate(TrapTag key)
     {
         var index = (int)key;
@@ -22,11 +21,9 @@ public class TrapPool : CustomObjectPool<TrapTag>
         return go;
     }
 
-    protected override void OnGet(GameObject go, TrapTag key)
+    protected override void OnGet(GameObject go)
     {
-        var index = (int)key;
         go.SetActive(true);
-        go.transform.SetParent(parents[index]);
     }
 
     protected override void OnRelease(GameObject go)

@@ -9,21 +9,17 @@ public enum UIPoolTag
 
 public class UIPool : CustomObjectPool<UIPoolTag>
 {
-    public Transform[] parents;
-
     protected override GameObject OnCreate(UIPoolTag key)
     {
         var index = (int)key;
-        var go = Instantiate(prefabs[index], parents[index]);
+        var go = Instantiate(prefabs[index], transform);
         go.SetActive(false);
         return go;
     }
 
-    protected override void OnGet(GameObject go, UIPoolTag key)
+    protected override void OnGet(GameObject go)
     {
-        var index = (int)key;
         go.SetActive(true);
-        go.transform.SetParent(parents[index]);
     }
 
     protected override void OnRelease(GameObject go)

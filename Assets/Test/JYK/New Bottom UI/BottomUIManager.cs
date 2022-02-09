@@ -34,6 +34,8 @@ public class BottomUIManager : MonoBehaviour
     private bool isBoySkillDone;
     private bool isGirlSkillDone;
 
+    private bool isSkillListInit;
+
     //PopUpWindow
     [Header("팝업 On/Off 확인")] public bool isPopUp;
     [Header("팝업 관련 연결")]
@@ -136,6 +138,11 @@ public class BottomUIManager : MonoBehaviour
                     n.MakeClickable();
             }
         });
+        if (bm != null && bm.isTutorial)
+        {
+            if(bm.tutorial.lockSkillButtonClick)
+                ButtonInteractive(false);
+        }
     }
 
     public void IntoSkillState(BottomSkillButtonUI skillButton)
@@ -184,12 +191,15 @@ public class BottomUIManager : MonoBehaviour
     }
     private bool IsContainPos(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
     }
     private bool IsContainItemRect(Vector2 pos)
     {
-        var camera = GameManager.Manager.cm.uiCamera;
+        if (bm.isTutorial)
+            return true;
+
+        var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
     }
 
@@ -202,26 +212,31 @@ public class BottomUIManager : MonoBehaviour
         itemButtons.ForEach((n) => n.gameObject.SetActive(false));
         skillButtons.ForEach((n) => n.gameObject.SetActive(true));
 
-        var list = Vars.BoySkillList;
-        int count = list.Count;
-
-        skillButtons[0].Init();
-        skillButtons[6].Init();
-
-        int buttonIndex = 1;
-        for (int i = 0; i < count; i++)
+        if (!isSkillListInit)
         {
-            skillButtons[buttonIndex++].Init(list[i]);
+            isSkillListInit = true;
+            var list = Vars.BoySkillList;
+            int count = list.Count;
+
+            skillButtons[0].Init();
+            skillButtons[6].Init();
+
+            int buttonIndex = 1;
+            for (int i = 0; i < count; i++)
+            {
+                skillButtons[buttonIndex++].Init(list[i]);
+            }
+
+            buttonIndex = 7;
+            list = Vars.GirlSkillList;
+            for (int i = 0; i < count; i++)
+            {
+                skillButtons[buttonIndex++].Init(list[i]);
+            }
         }
 
-        buttonIndex = 7;
-        list = Vars.GirlSkillList;
-        for (int i = 0; i < count; i++)
-        {
-            skillButtons[buttonIndex++].Init(list[i]);
-        }
-
-        UpdateSkillInteractive();
+        if(bm == null || (bm!= null && !bm.isTutorial))
+            UpdateSkillInteractive();
     }
 
     // 아이템 버튼

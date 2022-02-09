@@ -111,7 +111,7 @@ public class GoCamp : MonoBehaviour
         DungeonSystem.Instance.DungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = DungeonSystem.Instance.DungeonSystemData;
 
-        SceneManager.LoadScene("JYK_Test_Main");
+        GameManager.Manager.LoadScene(GameScene.Camp);
     }
 
 }

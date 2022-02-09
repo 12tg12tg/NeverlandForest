@@ -25,23 +25,23 @@ public class Utility
 
     public static IEnumerator CoRotateLoop(Transform transform, Quaternion start, Quaternion end, float time, UnityAction action = null, UnityAction action2 = null)
     {
-        float timer = 0f;
-        while (timer < time)
+        float startTime = Time.realtimeSinceStartup;
+        float endTime = startTime + time;
+        while (Time.realtimeSinceStartup < endTime)
         {
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             transform.rotation = Quaternion.Lerp(start, end, ratio);
-            timer += Time.deltaTime;
             yield return null;
         }
         transform.rotation = end;
         action?.Invoke();
 
-        timer = 0f;
-        while (timer < time)
+        startTime = Time.realtimeSinceStartup;
+        endTime = startTime + time;
+        while (Time.realtimeSinceStartup < endTime)
         {
-            var ratio = timer / time;
+            var ratio = (Time.realtimeSinceStartup - startTime) / time;
             transform.rotation = Quaternion.Lerp(end, start, ratio);
-            timer += Time.deltaTime;
             yield return null;
         }
         transform.rotation = start;
@@ -63,7 +63,7 @@ public class Utility
         }
         action?.Invoke();
     }
-    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, string SceneName, UnityAction action = null)
+    public static IEnumerator CoTranslate(Transform transform, Vector3 start, Vector3 end, float time, GameScene scene, UnityAction action = null)
     {
         float timer = 0f;
         while (timer < time)
@@ -75,7 +75,7 @@ public class Utility
             yield return null;
         }
         action?.Invoke();
-        SceneManager.LoadScene(SceneName);
+        GameManager.Manager.LoadScene(scene);
     }
 
     public static IEnumerator CoTranslate(RectTransform transform, Vector2 start, Vector2 end, float time, UnityAction action = null)
@@ -115,7 +115,7 @@ public class Utility
         action?.Invoke();
     }
 
-    public static IEnumerator CoSceneChange(string SceneName, float timer)
+    public static IEnumerator CoSceneChange(GameScene scene, float timer)
     {
         var time = 0f;
         while (timer > time)
@@ -123,7 +123,7 @@ public class Utility
             time += Time.deltaTime;
             yield return null;
         }
-        SceneManager.LoadScene(SceneName);
+        GameManager.Manager.LoadScene(scene);
     }
 
     public static IEnumerator CoSceneChange(int scene, float timer, UnityAction action)

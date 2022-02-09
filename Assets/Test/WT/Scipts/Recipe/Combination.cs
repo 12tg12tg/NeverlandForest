@@ -33,7 +33,7 @@ public class Combination : MonoBehaviour
     {
         if (GUILayout.Button("Main"))
         {
-            SceneManager.LoadScene("JYK_Test_Main");
+            GameManager.Manager.LoadScene(GameScene.Camp);
         }
         if (GUILayout.Button("Start Cooking"))
         {
@@ -60,7 +60,6 @@ public class Combination : MonoBehaviour
       
         if (GUILayout.Button("Start Gesture"))
         {
-
             SceneManager.LoadScene("Wt_TouchTest");
         }
     }
