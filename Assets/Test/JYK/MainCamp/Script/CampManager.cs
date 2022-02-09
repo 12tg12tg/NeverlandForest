@@ -344,7 +344,7 @@ public class CampManager : MonoBehaviour
         else
         {
             reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.OpenRandomEventfirm();
+            //reconfirmPanelManager.OpenRandomEventfirm();
             haveitemCount = 0;
         }
     }
@@ -368,7 +368,7 @@ public class CampManager : MonoBehaviour
 
         haveitemCount = 0;
         isBlankCheck = 0;
-        reconfirmPanelManager.AllClose();
+        //reconfirmPanelManager.AllClose();
         reconfirmPanelManager.gameObject.SetActive(false);
         diaryManager.gatheringInCampRewardPanel.SetActive(false);
         diaryManager.gameObject.SetActive(false);
@@ -376,7 +376,7 @@ public class CampManager : MonoBehaviour
     }
     public void NotYetGetItem()
     {
-        reconfirmPanelManager.AllClose();
+        //reconfirmPanelManager.AllClose();
         reconfirmPanelManager.gameObject.SetActive(false);
     }
 
@@ -435,7 +435,7 @@ public class CampManager : MonoBehaviour
     public void ReProduce()
     {
         diaryManager.CloseProduceReward();
-        reconfirmPanelManager.bagisFullReconfirm.gameObject.SetActive(false);
+        //reconfirmPanelManager.bagisFullReconfirm.gameObject.SetActive(false);
         reconfirmPanelManager.gameObject.SetActive(false);
         OpenProduceInCamp();
     }
@@ -449,7 +449,7 @@ public class CampManager : MonoBehaviour
         if (Vars.UserData.uData.BonfireHour != 0)
         {
             reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.OpenBonFireReconfirm();
+            //reconfirmPanelManager.OpenBonFireReconfirm();
             bonTimeText.gameObject.SetActive(false);
         }
     }
@@ -461,7 +461,7 @@ public class CampManager : MonoBehaviour
     public void NoIdonGO()
     {
         reconfirmPanelManager.gameObject.SetActive(false);
-        reconfirmPanelManager.AllClose();
+        //reconfirmPanelManager.AllClose();
         bonTimeText.gameObject.SetActive(true);
 
     }
