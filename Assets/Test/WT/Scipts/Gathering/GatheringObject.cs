@@ -46,7 +46,7 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
                 }
                 break;
             case GameState.Tutorial:
-                    GameManager.Manager.tm.mainTutorial.tutorialGathering.TutorialStep++;
+                    GameManager.Manager.TutoManager.mainTutorial.tutorialGathering.TutorialStep++;
                     gathering.curSelectedObj = this;
                 break;
             default:

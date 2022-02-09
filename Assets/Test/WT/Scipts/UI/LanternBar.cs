@@ -12,7 +12,7 @@ public class LanternBar : MonoBehaviour
     private float scaleDownTime = 0.3f;
     public void Start()
     {
-        ConsumeManager.init();
+        ConsumeManager.Init();
         day_correction_StartScale = day_correction.rectTransform;
     }
     void Update()

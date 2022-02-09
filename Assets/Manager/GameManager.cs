@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public enum GameState
 {
-    None, Battle, Hunt, Gathering, Cook, Camp, Dungeon
+    None, Battle, Hunt, Gathering, Cook, Camp, Dungeon, Tutorial
 }
 
 public enum GameOverType
@@ -49,9 +49,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         // TODO : 해당 부분 정리 필요?
         if (CamManager != null)
         {
-            if (CamManager.mainCamera != null)
+            if (CamManager.worldMapCamera != null)
             {
-                var wmCamera = CamManager.mainCamera.GetComponent<WorldMapCamera>();
+                var wmCamera = CamManager.worldMapCamera.GetComponent<WorldMapCamera>();
                 if (wmCamera != null)
                     wmCamera.Init();
             }

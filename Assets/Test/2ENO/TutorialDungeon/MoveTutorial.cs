@@ -198,7 +198,7 @@ public class MoveTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         blackout.sizeDelta = new Vector2(target.sizeDelta.x + 35f, target.sizeDelta.y * 2 + 6f);
 
-        var uiCam = GameManager.Manager.cm.uiCamera;
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;

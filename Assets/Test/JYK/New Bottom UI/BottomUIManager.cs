@@ -259,7 +259,7 @@ public class BottomUIManager : MonoBehaviour
         ItemListInit();
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.tm.mainTutorial.tutorialCamp.TutorialBonableItemCheckFinish = true;
+            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialBonableItemCheckFinish = true;
 
         }
     }
