@@ -64,9 +64,6 @@ public class GoCamp : MonoBehaviour
     {
         var list = Vars.UserData.HaveAllItemList;
 
-        if (GameManager.Manager.State == GameState.Tutorial)
-            Vars.UserData.isTutorialCamp = true;
-
         if (haveWoodChip)
         {
             for (int i = 0; i < list.Count; i++)
@@ -81,7 +78,16 @@ public class GoCamp : MonoBehaviour
                     {
                         BottomUIManager.Instance.ItemButtonInit();
                     }
-                    GoToCamp();
+
+                    if(Vars.UserData.isTutorialDungeon &&
+                        GameManager.Manager?.TutoManager?.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina)
+                    {
+                        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
+                    }
+                    else
+                    {
+                        GoToCamp();
+                    }
                 }
             }
         }
@@ -114,7 +120,9 @@ public class GoCamp : MonoBehaviour
         DungeonSystem.Instance.DungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = DungeonSystem.Instance.DungeonSystemData;
 
-        GameManager.Manager.LoadScene(GameScene.Camp);
+
+        GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.Camp)); 
+        
     }
 
 }

@@ -37,6 +37,7 @@ public class MainTutorial
         if (MainTutorialStage != MainTutorialStage.Clear)
         {
             MainTutorialStage++;
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
             Vars.UserData.mainTutorial = MainTutorialStage;
             GameManager.Manager.TutoManager.CheckMainTutorial();
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);

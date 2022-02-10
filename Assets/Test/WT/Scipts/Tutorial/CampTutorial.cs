@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class CampTutorial : MonoBehaviour
 {
+    public CampTutorialManager camTM;
+
     public Button bottomitemTagButton;
     public Button campBonableCheckButton;
     public Button campDiaryquickButton;
@@ -99,33 +101,18 @@ public class CampTutorial : MonoBehaviour
         get => isTutorialFirst;
         set { isTutorialFirst = value; }
     }
-  
 
-    private void Start()
+    private void Awake()
     {
-        var tm = GameManager.Manager.TutoManager;
-        tm.mainTutorial.tutorialCamp = this;
-        dialogBox = tm.dialogBox;
-        handIcon = tm.handIcon;
-        blackout = tm.blackout;
-        rect = tm.rect;
-        circle = tm.circle;
+        dialogBox = camTM.dialogBox;
+        handIcon = camTM.handIcon;
+        blackout = camTM.blackout;
+        rect = camTM.rect;
+        circle = camTM.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
-        //Vars.UserData.isTutorialCamp = true;
-        if (Vars.UserData.isTutorialCamp)
-        {
-            GameManager.Manager.State = GameState.Tutorial;
-            TutorialStart();
-        }
-        else
-        {
-            gameObject.SetActive(false);
-            blackPanel.SetActive(false);
-        }
-
     }
     private void Update()
     {
@@ -139,17 +126,10 @@ public class CampTutorial : MonoBehaviour
         }
     }
 
-    public void TutorialStart()
-    {
-        var tm = GameManager.Manager.TutoManager;
-        tm.mainTutorial.MainTutorialStage = MainTutorialStage.Camp;
-        tm.CheckMainTutorial();
-    }
-
     public IEnumerator CoCampTutorial()
     {
         isTutorialFirst = true;
-        var tm = GameManager.Manager.TutoManager;
+      
         LongTouch(0.25f,0.6f,0.5f,0.6f,"이것은 제작을 할수있는 공간이야. \n" +
             "도구나, 설치물,물약류를 만들수 있는곳이지. \n" +
             "물론 제조법이 있어야 가능할거야.",true); //craft 
@@ -159,14 +139,14 @@ public class CampTutorial : MonoBehaviour
         var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        tm.BlackPanelOn();
-        tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        camTM.BlackPanelOn();
+        camTM.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자",false,true); //Craft xbutton
         tutorialCraftTouch = false;
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        tm.BlackPanelOff();
+        camTM.BlackPanelOff();
         SetActive(false);
         iscraftFinish = true;
 
@@ -179,14 +159,14 @@ public class CampTutorial : MonoBehaviour
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        tm.BlackPanelOn();
-        tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        camTM.BlackPanelOn();
+        camTM.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //reipce xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
 
         isquitbuttonClick = false;
-        tm.TutorialTargetButtonActivate(bottomitemTagButton);
+        camTM.TutorialTargetButtonActivate(bottomitemTagButton);
 
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
@@ -194,13 +174,13 @@ public class CampTutorial : MonoBehaviour
         LongTouch(0.9f, 0.2f, 0.9f, 0.5f, "아이템 확인", false, false, false, true);
         yield return new WaitUntil(() => tutorialBonableItemCheckFinish);
         tutorialBonableItemCheckFinish = false;
-        tm.TutorialTargetButtonActivate(campBonableCheckButton);
+        camTM.TutorialTargetButtonActivate(campBonableCheckButton);
         
         LongTouch(0.5f, 0.45f, 0.5f, 0.8f, "이것은 모닥불을 시간을 알려주고 아래 인벤토리에서 \n" +
             "태울 수 있는 아이템을 알려 주는 버튼이야 태울수 있는 아이템이 빨갛게 변화하게 되지.",false,false,false,true); //bonfire 
         yield return new WaitUntil(() => tutorialBonfirecheckButtonClick);
         tutorialBonfirecheckButtonClick = false;
-        tm.BlackPanelOff();
+        camTM.BlackPanelOff();
 
         isWaitingTouch = true;
         LongTouchRect(0.7f, 0.15f, 0.6f, 0.5f, "아이템 확인", false, false, false, true);
@@ -214,14 +194,14 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() =>tutorialSleepingTouch);
         tutorialSleepingTouch = false;
         yield return new WaitForSeconds(2f);
-        tm.BlackPanelOn();
+        camTM.BlackPanelOn();
 
-        tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        camTM.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //sleeping xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        tm.BlackPanelOff();
+        camTM.BlackPanelOff();
 
         SetActive(false);
         yield return new WaitForSeconds(3f);
@@ -233,21 +213,19 @@ public class CampTutorial : MonoBehaviour
         tutorialGahteringingTouch = false;
         SetActive(false);
         yield return new WaitForSeconds(2f);
-        tm.BlackPanelOn();
+        camTM.BlackPanelOn();
 
-        tm.TutorialTargetButtonActivate(campDiaryquickButton);
+        camTM.TutorialTargetButtonActivate(campDiaryquickButton);
 
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 튜토리얼이 종료됩니다.", false, true); //gathering xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        tm.BlackPanelOff();
+        camTM.BlackPanelOff();
 
         CampTutorialEnd();
-
         //인호 던전 튜토리얼 신으로 가야됨.
+        CampManager.curinitState = CampManager.CampinitState.None;
         GameManager.Manager.LoadScene(GameScene.TutorialDungeon);
-        Vars.UserData.isTutorialCamp = false;
-
     }
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
     {

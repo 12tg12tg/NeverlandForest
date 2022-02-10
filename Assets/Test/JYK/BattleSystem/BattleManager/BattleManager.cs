@@ -168,6 +168,16 @@ public class BattleManager : MonoBehaviour
 
         if (reInit)
         {
+            turn = 2;
+            preWaveTurn = 1;
+            waveLink.curWave = 3;
+            IsDuringPlayerAction = false;
+            GameManager.Manager.State = GameState.Battle;
+
+            waveLink.wave1.Clear();
+            waveLink.wave2.Clear();
+            waveLink.wave3.Clear();
+
             var mushbae = FindMonsterToId(0);
             var mushbro = FindMonsterToId(1);
             monsters.Add(mushbae);
@@ -218,6 +228,14 @@ public class BattleManager : MonoBehaviour
             temp2.OwnCount = 1;
             Vars.UserData.AddItemData(temp2); // 1개
 
+            // 나무도막
+            var allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
+            temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_1"));
+            temp2.OwnCount = 1;
+            Vars.UserData.AddItemData(temp2); // 3개
+
+            BottomUIManager.Instance.UpdateCostInfo();
+
             // 랜턴밝기
             ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
             ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
@@ -225,6 +243,8 @@ public class BattleManager : MonoBehaviour
             //배틀상태 Start
             FSM.ChangeState(BattleState.Player);
             uiLink.UpdateProgress(BattleUI.ProgressIcon.Girl);
+            BottomUIManager.Instance.InteractiveSkillButton(PlayerType.Girl, false);
+            BottomUIManager.Instance.UpdateSkillInteractive();
             return;
         }
 
@@ -275,6 +295,13 @@ public class BattleManager : MonoBehaviour
         temp.OwnCount = 1;
         Vars.UserData.AddItemData(temp); // 1개
 
+        // 나무도막
+        var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
+        temp.OwnCount = 1;
+        Vars.UserData.AddItemData(temp); // 3개
+
+        BottomUIManager.Instance.UpdateCostInfo();
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
@@ -390,6 +417,8 @@ public class BattleManager : MonoBehaviour
         Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = customBattle.oilNum;
         Vars.UserData.AddItemData(temp);
+
+        BottomUIManager.Instance.UpdateCostInfo();
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);

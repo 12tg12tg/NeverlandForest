@@ -58,8 +58,6 @@ public static class Vars
             if (userData == null)
             {
                 //테스트용 리스트
-                var weaponTable = DataTableManager.GetTable<WeaponTable>();
-                var consumalbeTable = DataTableManager.GetTable<ConsumableTable>();
                 var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
                 userData = new UserData();
 

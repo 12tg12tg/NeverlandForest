@@ -418,7 +418,7 @@ public class GatheringSystem : MonoBehaviour
                 {
                     coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
                     if (GameManager.Manager.State == GameState.Tutorial)
-                        GameManager.Manager.TutoManager.mainTutorial.tutorialGathering.TutorialStep++;
+                        DungeonSystem.Instance.gatherTutorial.TutorialStep++;
                 }));
         }
     }

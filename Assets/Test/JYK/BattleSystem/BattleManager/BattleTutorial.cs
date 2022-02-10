@@ -253,7 +253,7 @@ public class BattleTutorial : MonoBehaviour
         yield return new WaitUntil(() => tu_12_GirlSkill2);
         lockTileClick = true;
         UISet_12th_End();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3.5f);
 
         // 입력 13. 랜턴 충전 확인 클릭
         UISet_13th_Enter();
@@ -308,7 +308,6 @@ public class BattleTutorial : MonoBehaviour
             bottomUI.ButtonInteractive(true);
             bm.uiLink.AllButtonInteractive(true);
             bottomUI.UpdateSkillInteractive();
-
 
             RestartBattle();
         }
@@ -643,8 +642,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(-4.7f, 251f);
-        maskRt.sizeDelta = new Vector2(312f, 45f);
+        maskRt.anchoredPosition = new Vector2(-11.4f, 248f);
+        maskRt.sizeDelta = new Vector2(325f, 92f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);
@@ -801,6 +800,7 @@ public class BattleTutorial : MonoBehaviour
         bm.waveLink.wave1.Clear();
         bm.waveLink.wave2.Clear();
         bm.waveLink.wave3.Clear();
+        tm.TileClear();
         list.ToList().ForEach(n => { if (n != null) n.Release(); });
 
         bm.TutorialInit(true);

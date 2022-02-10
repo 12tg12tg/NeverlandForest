@@ -41,17 +41,46 @@ public class DungeonSystem : MonoBehaviour
 
     private TutorialManager tutorialManager;
 
+    [Header("튜토리얼")]
+    public MoveTutorial moveTutorial;
+    public GatheringTutorial gatherTutorial;
+    public MainRoomTutorial mainRoomTutorial;
+
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
     private int lastIndex;
-
+    //public void OnGUI()
+    //{
+    //    if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = true;
+    //        GameManager.Manager.LoadScene(GameScene.World);
+    //        Vars.UserData.uData.Date++;
+    //    }
+    //    if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = false;
+    //        GameManager.Manager.LoadScene(GameScene.World);
+    //        Vars.UserData.uData.Date++;
+    //    }
+    //    if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
+    //    {
+    //        Init();
+    //    }
+    //}
     private void Awake()
     {
         instance = this;
         EndInit();
-        GameManager.Manager.TutoManager.Init();
     }
+
+    private void Start()
+    {
+        if(!Vars.UserData.isTutorialDungeon)
+            Init();
+    }
+
     public void EndInit()
     {
         dungeonPlayerGirl.gameObject.SetActive(false);
@@ -131,28 +160,7 @@ public class DungeonSystem : MonoBehaviour
         roomTool = new RoomTool();
         if (dungeonSystemData.curDungeonRoomData != null && !Vars.UserData.isTutorialDungeon)
             ConvertEventDataType();
-
         DungeonRoomSetting();
-    }
-
-    public void OnGUI()
-    {
-        if(GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
-        {
-            Vars.UserData.WorldMapPlayerData.isClear = true;
-            GameManager.Manager.LoadScene(GameScene.World);
-            Vars.UserData.uData.Date++;
-        }
-        if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
-        {
-            Vars.UserData.WorldMapPlayerData.isClear = false;
-            GameManager.Manager.LoadScene(GameScene.World);
-            Vars.UserData.uData.Date++;
-        }
-        if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
-        {
-            Init();
-        }
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -194,8 +202,42 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = false;
 
 
-        //if (Vars.UserData.isTutorialDungeon && tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Move)
-        //    ChangeRoomEvent(true, true);
+        if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Move)
+        {
+            if (moveTutorial == null)
+                return;
+            ChangeRoomEvent(true, true);
+        }
+        //else if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+        //{
+        //    if (mainRoomTutorial == null)
+        //        return;
+        //}
+
+        TutorialStart();
+    }
+
+    public void TutorialStart()
+    {
+        if (!Vars.UserData.isTutorialDungeon)
+            return;
+        switch (Vars.UserData.mainTutorial)
+        {
+            case MainTutorialStage.Move:
+                StartCoroutine(moveTutorial.CoMoveTutorial());
+                break;
+            case MainTutorialStage.Event:
+                StartCoroutine(gatherTutorial.CoGatheringTutorial());
+                break;
+            case MainTutorialStage.Stamina:
+                StartCoroutine(mainRoomTutorial.CoMainRoomTutorial());
+                break;
+            case MainTutorialStage.Camp:
+                StartCoroutine(mainRoomTutorial.CoTutorialEnd());
+                break;
+            case MainTutorialStage.Clear:
+                break;
+        }
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때
@@ -203,9 +245,10 @@ public class DungeonSystem : MonoBehaviour
     {
         if (isRoomEnd)
         {
-            if (Vars.UserData.isTutorialDungeon)
+            if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial != MainTutorialStage.Move)
             {
-                tutorialManager.CheckMainTutorial();
+                tutorialManager.mainTutorial.NextMainTutorial();
+                TutorialStart();
             }
 
             eventObjectGenerate.EventObjectClear();
@@ -252,7 +295,8 @@ public class DungeonSystem : MonoBehaviour
             {
                 if (Vars.UserData.isTutorialDungeon)
                 {
-                    tutorialManager.CheckMainTutorial();
+                    tutorialManager.mainTutorial.NextMainTutorial();
+                    TutorialStart();
                 }
 
                 ConsumeManager.TimeUp(0, 1);
