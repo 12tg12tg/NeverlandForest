@@ -297,6 +297,14 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
         Units_MonsterRemove(unit as MonsterUnit);
     }
 
+    public void ClearUnit()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i] = null;
+        }
+    }
+
     //Click
     public void OnPointerClick(PointerEventData eventData)
     {

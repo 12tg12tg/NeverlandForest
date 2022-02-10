@@ -145,7 +145,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
             tile.CancleConfirmTarget(playerType);
 
         FSM.ChangeState(CharacterBattleState.Idle); // 이 unit의 상태가 바뀌면 배틀상태의 업데이트에서 체크하다가 다음진행
-        if(!manager.isTutorial)
+        if(!manager.isTutorial || (manager.isTutorial && !manager.tutorial.lockSkillButtonClick))
             manager.uiLink.turnSkipButton.interactable = true;
         manager.EndOfPlayerAction();
     }
