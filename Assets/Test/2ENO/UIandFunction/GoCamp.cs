@@ -78,7 +78,16 @@ public class GoCamp : MonoBehaviour
                     {
                         BottomUIManager.Instance.ItemButtonInit();
                     }
-                    GoToCamp();
+
+                    if(Vars.UserData.isTutorialDungeon &&
+                        GameManager.Manager?.TutoManager?.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina)
+                    {
+                        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
+                    }
+                    else
+                    {
+                        GoToCamp();
+                    }
                 }
             }
         }
@@ -111,7 +120,9 @@ public class GoCamp : MonoBehaviour
         DungeonSystem.Instance.DungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = DungeonSystem.Instance.DungeonSystemData;
 
-        GameManager.Manager.LoadScene(GameScene.Camp);
+
+        GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.Camp)); 
+        
     }
 
 }

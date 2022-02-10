@@ -33,8 +33,11 @@ public class DunGeonMapGenerate : MonoBehaviour
     private void Start()
     {
         var manager = GameManager.Manager;
-        if (manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Move ||
-            manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+
+        if (manager.TutoManager == null || manager.TutoManager.mainTutorial == null)
+            return;
+
+        if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
             manager.Production.FadeOut(() => TutorialDungeonGenerate());
         }

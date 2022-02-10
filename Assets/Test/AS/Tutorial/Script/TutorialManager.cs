@@ -56,11 +56,12 @@ public class TutorialManager : MonoBehaviour
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.TutorialDungeon));
                 break;
             case MainTutorialStage.Event:
-                StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
+
+                //StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
                 break;
             case MainTutorialStage.Stamina:
-                mainTutorial.tutorialMainRoom.delay = 0f;
-                StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
+                //mainTutorial.tutorialMainRoom.delay = 0f;
+                //StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
                 break;
             case MainTutorialStage.Camp:
                 CampManager.curinitState = CampManager.CampinitState.Tutorial;
