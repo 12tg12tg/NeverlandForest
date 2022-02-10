@@ -43,7 +43,6 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => {
                     mainTutorial.NextMainTutorial();
                     CheckMainTutorial();
-                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
                     text.transform.parent.gameObject.SetActive(false);
                     storyBoard.SetActive(false);
                 }));
