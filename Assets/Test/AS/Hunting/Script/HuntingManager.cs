@@ -34,6 +34,9 @@ public class HuntingManager : MonoBehaviour
     [Header("Production")]
     public Production production;
 
+    [Header("Tutorial")]
+    public TutorialManager tm;
+
     // È®·ü
     private int huntPercent;
     private int huntPercentUp;
@@ -62,9 +65,8 @@ public class HuntingManager : MonoBehaviour
         production.FadeOut();
         tileMaker.InitMakeTiles();
         Init();
-        var tutoM = GameManager.Manager.TutoManager;
-        tutoM.Init();
-        huntPlayers.IsTutorialClear = tutoM.contentsTutorial.contentsTutorialProceed.Hunt;
+        tm.Init();
+        huntPlayers.IsTutorialClear = tm.contentsTutorial.contentsTutorialProceed.Hunt;
         if (!huntPlayers.IsTutorialClear)
         {
             optionButton.interactable = false;
@@ -149,6 +151,8 @@ public class HuntingManager : MonoBehaviour
     {
         BottomUIManager.Instance.ButtonInteractive(false);
         huntTutorial = gameObject.AddComponent<HuntTutorial>();
+        huntTutorial.tm = tm;
+        huntTutorial.Init();
         huntTutorial.huntPlayers = huntPlayers;
         huntTutorial.tile = tiles.Where(x => x.bush.gameObject.activeSelf && (int)x.index.y == 1).Select(x => x).FirstOrDefault();
         huntTutorial.tile.huntingManager = this;

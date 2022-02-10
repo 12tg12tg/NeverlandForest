@@ -28,7 +28,8 @@ public class MainTutorial
     public void Init()
     {
         // 저장된 데이터 가져오기
-        MainTutorialStage = Vars.UserData.mainTutorial;
+        //MainTutorialStage = Vars.UserData.mainTutorial;
+        MainTutorialStage = MainTutorialStage.Clear;
     }
 
     public void NextMainTutorial()
@@ -38,6 +39,7 @@ public class MainTutorial
             MainTutorialStage++;
             Vars.UserData.mainTutorial = MainTutorialStage;
             GameManager.Manager.TutoManager.CheckMainTutorial();
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
         }
     }
 }

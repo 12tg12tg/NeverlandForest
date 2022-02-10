@@ -35,7 +35,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void Load()
@@ -53,7 +53,7 @@ public class WorldMapPlayer : MonoBehaviour
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
         {
-            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             data = Vars.UserData.WorldMapPlayerData;
             if (data == null) 
             {
@@ -89,8 +89,7 @@ public class WorldMapPlayer : MonoBehaviour
     public void DungeonEnter(bool isReturn, Vector3 goal, Vector2 goalIndex)
     {
         mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
-
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.RandomEvent);
         if (!Vars.UserData.isFirst)
         {
             Vars.UserData.isRandomDataLoad = true;
@@ -122,7 +121,7 @@ public class WorldMapPlayer : MonoBehaviour
                     else
                     {
                         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
-                        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                     }
                 });
         }
@@ -148,11 +147,10 @@ public class WorldMapPlayer : MonoBehaviour
                 else
                 {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
-                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 }
             });
-
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.RandomEvent);
         }
 
     }
@@ -194,7 +192,7 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(data.goalIndex))
@@ -213,7 +211,7 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(currentIndex))

@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class HuntTutorial : MonoBehaviour
 {
     public int TutorialStep { get; set; } = 0;
-    
+
+    public TutorialManager tm;
+
     public HuntPlayer huntPlayers;
     public HuntTile tile;
 
@@ -36,9 +38,8 @@ public class HuntTutorial : MonoBehaviour
     private readonly int TutorialStepSuccess = 5;
     private readonly int TutorialStepGuide = 6;
 
-    private void Awake()
+    public void Init()
     {
-        var tm = GameManager.Manager.TutoManager;
         dialogBox = tm.dialogBox;
         handIcon = tm.handIcon;
         blackout = tm.blackout;

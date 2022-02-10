@@ -88,8 +88,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
         }
         Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
-
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
@@ -187,8 +185,6 @@ public class DunGeonMapGenerate : MonoBehaviour
         DungeonEventGenerate(dungeonRoomArray);
 
         action?.Invoke();
-
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void MapInit()
     {
