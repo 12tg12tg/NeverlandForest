@@ -12,7 +12,7 @@ public class MinimapGenerate : MonoBehaviour
     public void CreateMiniMapObject()
     {
         int startIndex;
-        if (Vars.UserData.isTutorialDungeon)
+        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             startIndex = 0;
         }
