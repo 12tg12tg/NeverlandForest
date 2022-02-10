@@ -1,7 +1,7 @@
 public class CostData
 {
-    public int ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
-    public int Hunger { get; set; } = 0;
+    public float ChangeableMaxStamina { get => Vars.maxStamina - Hunger; set { } }
+    public float Hunger { get; set; } = 0;
     public float CurIngameHour { get; set; } = 0;
     public float CurIngameMinute { get; set; } = 0;
     public float LanternCount { get; set; } = 18;
