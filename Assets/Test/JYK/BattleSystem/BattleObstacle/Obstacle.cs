@@ -27,7 +27,20 @@ public class ObstacleDebuff
         this.owner = owner;
         elem = obs.elem;
         trapDamage = obs.elem.damage;
-        duration = obs.elem.duration;
+
+        if(obs.elem.obstacleType == TrapTag.WoodenTrap)
+        {
+            duration = 3;
+        }
+        else if(obs.elem.obstacleType == TrapTag.ThornTrap)
+        {
+            duration = 3;
+        }
+        else if(obs.elem.obstacleType == TrapTag.Snare)
+        {
+            duration = 999;
+        }
+
         if(obs.another != null)
         {
             oppositeSnare = obs.another;
