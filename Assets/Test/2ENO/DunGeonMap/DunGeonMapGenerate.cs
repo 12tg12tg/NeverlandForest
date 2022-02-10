@@ -67,7 +67,7 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {
-        Debug.Log(range);
+        Debug.Log($"range{range}");
         switch (range)
         {
             case 1:
@@ -102,12 +102,13 @@ public class DunGeonMapGenerate : MonoBehaviour
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
         int curIdx;
-        if (Vars.UserData.isTutorialDungeon)
+        if (Vars.UserData.mainTutorial !=MainTutorialStage.Clear)
             curIdx = 0;
         else
             curIdx = Vars.UserData.dungeonStartIdx;
 
-        while(dungeonArray[curIdx].nextRoomIdx != -1)
+
+        while (dungeonArray[curIdx].nextRoomIdx != -1)
         {
             // 현재방의 이벤트 리스트 (1개~2개) 돌면서 이벤트 오브젝트 정보 셋
             for (int i = 0; i < dungeonArray[curIdx].eventList.Count; i++)
