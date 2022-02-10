@@ -669,7 +669,7 @@ public class CampManager : MonoBehaviour
 
         }
     }
-    public void OnGUI()
+   /* public void OnGUI()
     {
         if (GUI.Button(new Rect(100, 100, 100, 75), "BonFireUp"))
         {
@@ -680,7 +680,7 @@ public class CampManager : MonoBehaviour
         {
             ConsumeManager.CostDataReset();
         }
-    }
+    }*/
     public void QuickButtonClick()
     {
         if (GameManager.Manager.State == GameState.Tutorial)
