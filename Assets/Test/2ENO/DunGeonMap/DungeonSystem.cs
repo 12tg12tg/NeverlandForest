@@ -77,7 +77,7 @@ public class DungeonSystem : MonoBehaviour
 
     private void Start()
     {
-        if(!Vars.UserData.isTutorialDungeon)
+        if(Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             Init();
     }
 
@@ -213,6 +213,7 @@ public class DungeonSystem : MonoBehaviour
         //    if (mainRoomTutorial == null)
         //        return;
         //}
+        Debug.Log(dungeonSystemData.curDungeonRoomData.roomIdx);
 
         TutorialStart();
     }
@@ -243,11 +244,12 @@ public class DungeonSystem : MonoBehaviour
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때
     public void ChangeRoomEvent(bool isRoomEnd, bool isGoForward)
     {
+        Debug.Log(dungeonSystemData.curDungeonRoomData.roomIdx);
         if (isRoomEnd)
         {
             if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial != MainTutorialStage.Move)
             {
-                tutorialManager.mainTutorial.NextMainTutorial();
+                tutorialManager.mainTutorial.NextMainTutorial(false);
                 TutorialStart();
             }
 
@@ -295,7 +297,7 @@ public class DungeonSystem : MonoBehaviour
             {
                 if (Vars.UserData.isTutorialDungeon)
                 {
-                    tutorialManager.mainTutorial.NextMainTutorial();
+                    tutorialManager.mainTutorial.NextMainTutorial(false);
                     TutorialStart();
                 }
 

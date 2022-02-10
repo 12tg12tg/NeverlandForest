@@ -27,9 +27,6 @@ public class DunGeonMapGenerate : MonoBehaviour
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
     public DungeonRoom[] tutorialRoomArray = new DungeonRoom[4];
 
-    //테스트용 (내용 확인용)
-    //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
-
     private void Start()
     {
         var manager = GameManager.Manager;
@@ -39,16 +36,9 @@ public class DunGeonMapGenerate : MonoBehaviour
 
         if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
-            manager.Production.FadeOut(() => TutorialDungeonGenerate());
+            TutorialDungeonGenerate();
+            manager.Production.FadeOut();
         }
-    }
-
-    public void OnGUI()
-    {
-        //if (GUI.Button(new Rect(100, 300, 100, 75), "tutorialStart"))
-        //{
-        //    TutorialDungeonGenerate();
-        //}
     }
 
     public void TutorialDungeonGenerate()

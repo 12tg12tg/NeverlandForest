@@ -103,6 +103,8 @@ public class CampManager : MonoBehaviour
 
     public void Start()
     {
+        GameManager.Manager.Production.FadeOut();
+
         switch (curinitState)
         {
             case CampinitState.None:
@@ -126,8 +128,12 @@ public class CampManager : MonoBehaviour
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         StartPos = camera.transform.position;
 
-        CreateMiniMapObject();
-        SetMinimapCamera();
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
+        {
+            CreateMiniMapObject();
+            SetMinimapCamera();
+        }
+
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -198,7 +204,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenSleepInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialSleepingTouch = true;
+            camptutorial.TutorialSleepingTouch = true;
         }
     }
     public void OpenSleepInCamp()
@@ -235,7 +241,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenCookInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialCookingTouch = true;
+            camptutorial.TutorialCookingTouch = true;
         }
     }
     public void RotateButtonCheck()
@@ -308,7 +314,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenGatheringInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialGahteringingTouch = true;
+            camptutorial.TutorialGahteringingTouch = true;
         }
     }
     public void OpenGatheringInCamp()
@@ -405,7 +411,7 @@ public class CampManager : MonoBehaviour
         StartCoroutine(Utility.CoTranslate(camera.transform, StartPos, EndPos, 1.5f, OpenProduceInCamp));
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialCraftTouch = true;
+            camptutorial.TutorialCraftTouch = true;
         }
     }
     public void OpenProduceInCamp()
@@ -471,6 +477,7 @@ public class CampManager : MonoBehaviour
     //MinimapCreate
     public void CreateMiniMapObject()
     {
+        
         curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
         var array = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
 
@@ -682,8 +689,8 @@ public class CampManager : MonoBehaviour
         }
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.TutorialBonfirecheckButtonClick = true;
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IscookingFinish = true;
+            camptutorial.TutorialBonfirecheckButtonClick = true;
+            camptutorial.IscookingFinish = true;
 
         }
     }
@@ -703,7 +710,7 @@ public class CampManager : MonoBehaviour
     {
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IsquitbuttonClick = true;
+            camptutorial.IsquitbuttonClick = true;
         }
     }
 }

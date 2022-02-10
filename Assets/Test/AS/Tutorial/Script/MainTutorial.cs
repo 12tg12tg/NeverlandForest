@@ -23,24 +23,24 @@ public class MainTutorial
 
     public MoveTutorial tutorialMove;
     public GatheringTutorial tutorialGathering;
-    public CampTutorial tutorialCamp;
     public MainRoomTutorial tutorialMainRoom;
+
     public void Init()
     {
         // 저장된 데이터 가져오기
-        //MainTutorialStage = Vars.UserData.mainTutorial;
-        MainTutorialStage = MainTutorialStage.Clear;
+        MainTutorialStage = Vars.UserData.mainTutorial;
+        //MainTutorialStage = MainTutorialStage.Clear;
     }
 
-    public void NextMainTutorial()
+    public void NextMainTutorial(bool isCheck = true)
     {
         if (MainTutorialStage != MainTutorialStage.Clear)
         {
             MainTutorialStage++;
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
             Vars.UserData.mainTutorial = MainTutorialStage;
-            GameManager.Manager.TutoManager.CheckMainTutorial();
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
+            if(isCheck)
+                GameManager.Manager.TutoManager.CheckMainTutorial();
         }
     }
 }

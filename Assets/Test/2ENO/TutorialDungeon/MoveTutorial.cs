@@ -75,8 +75,6 @@ public class MoveTutorial : MonoBehaviour
 
     public IEnumerator CoMoveTutorial()
     {
-        yield return new WaitForSeconds(1f);
-
         isMoveTutorial = true;
         delay = 0f;
         RightLongTouch();

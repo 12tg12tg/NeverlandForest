@@ -38,6 +38,7 @@ public class WorldMapManager : MonoBehaviour
                 worldMapCamera.FollowPlayer();
                 if (ground != null)
                     ground.CreateTree(worldMapMaker.Edges, worldMapMaker.Maps);
+                GameManager.Manager.Production.FadeOut();
             }));
         }
         else
@@ -53,6 +54,17 @@ public class WorldMapManager : MonoBehaviour
                 ground.Load();
             if ((int)player.CurrentIndex.y >= 1)
                 backDungeonBt.SetActive(true);
+            //GameManager.Manager.Production.FadeOut(() =>
+            //{
+            //    worldMapCamera.FollowPlayer(() =>
+            //    {
+            //        worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
+            //    });
+            //    if (ground != null)
+            //        ground.Load();
+            //    if ((int)player.CurrentIndex.y >= 1)
+            //        backDungeonBt.SetActive(true);
+            //});
         }
     }
 

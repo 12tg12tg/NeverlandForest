@@ -23,9 +23,11 @@ public class Title : MonoBehaviour
 
         if (isStart && GameManager.Manager.MultiTouch.TouchCount > 0)
         {
+            var manager = GameManager.Manager;
             StartCoroutine(CoFadeOut(() => {
                 gameObject.SetActive(false);
-                GameManager.Manager.TutoManager.Init();
+                manager.TutoManager.Init();
+                manager.Production.black.SetActive(true);
             }));
         }
     }
