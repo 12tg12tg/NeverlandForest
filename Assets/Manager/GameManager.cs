@@ -133,7 +133,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     {
         wm = null;
         cm = null;
-        tm = null;
     }
 
 

@@ -53,6 +53,8 @@ public class MoveTutorial : MonoBehaviour
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
+
+        StartCoroutine(CoMoveTutorial());
     }
 
     private void Update()

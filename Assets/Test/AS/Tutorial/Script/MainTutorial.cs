@@ -37,6 +37,7 @@ public class MainTutorial
         {
             MainTutorialStage++;
             Vars.UserData.mainTutorial = MainTutorialStage;
+            GameManager.Manager.TutoManager.CheckMainTutorial();
         }
     }
 }
