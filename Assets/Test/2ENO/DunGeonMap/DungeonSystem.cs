@@ -41,6 +41,11 @@ public class DungeonSystem : MonoBehaviour
 
     private TutorialManager tutorialManager;
 
+    [Header("튜토리얼")]
+    public MoveTutorial moveTutorial;
+    public GatheringTutorial gatherTutorial;
+    public MainRoomTutorial mainRoomTutorial;
+
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
@@ -50,7 +55,6 @@ public class DungeonSystem : MonoBehaviour
     {
         instance = this;
         EndInit();
-        //Init();
     }
     public void EndInit()
     {
@@ -65,7 +69,6 @@ public class DungeonSystem : MonoBehaviour
     public void TutorialInit()
     {
         tutorialManager = GameManager.Manager.TutoManager;
-        tutorialManager.Init();
         tutorialMove.Init();
         GameManager.Manager.State = GameState.Tutorial;
     }
@@ -130,8 +133,10 @@ public class DungeonSystem : MonoBehaviour
         }
 
         roomTool = new RoomTool();
-        if (dungeonSystemData.curDungeonRoomData != null)
+        if (dungeonSystemData.curDungeonRoomData != null && !Vars.UserData.isTutorialDungeon)
             ConvertEventDataType();
+
+
 
         DungeonRoomSetting();
     }
@@ -194,9 +199,20 @@ public class DungeonSystem : MonoBehaviour
         else
             campButton.interactable = false;
 
-        //TODO: 테스트용 코드
-        if (Vars.UserData.isTutorialDungeon)
+
+        if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Move)
+        {
+            if (moveTutorial == null)
+                return;
             ChangeRoomEvent(true, true);
+            StartCoroutine(moveTutorial.CoMoveTutorial());
+        }
+        else if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+        {
+            if (mainRoomTutorial == null)
+                return;
+            StartCoroutine(mainRoomTutorial.CoTutorialEnd());
+        }
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때
@@ -213,13 +229,11 @@ public class DungeonSystem : MonoBehaviour
 
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
-                //Vars.UserData.curDungeonIndex = Vector2.zero;
-                //Vars.UserData.AllDungeonData.Clear();
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-
                 if (Vars.UserData.isTutorialDungeon)
                 {
                     dungeonSystemData = null;
+                    Vars.UserData.isTutorialDungeon = false;
                     // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
                 }
                 else
@@ -272,7 +286,14 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
-        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        if (Vars.UserData.isTutorialDungeon)
+        {
+            Vars.UserData.tutorialDungeonData = dungeonSystemData;
+        }
+        else
+        {
+            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        }
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }

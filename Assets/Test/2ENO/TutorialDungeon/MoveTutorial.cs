@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+[DefaultExecutionOrder(10)]
 
 public class MoveTutorial : MonoBehaviour
 {
     public bool isMoveTutorial = false;
     public int TutorialStep { get; set; } = 0;
 
+    public TutorialTool tutorialTool;
     private RectTransform target;
 
     private GameObject dungeonCanvasRt;
@@ -39,19 +41,19 @@ public class MoveTutorial : MonoBehaviour
     public RectTransform lantern;
     private void Start()
     {
-        var tm = GameManager.Manager.TutoManager;
-        tm.mainTutorial.tutorialMove = this;
-        dialogBox = tm.dialogBox;
-        handIcon = tm.handIcon;
-        blackout = tm.blackout;
-        rect = tm.rect;
-        circle = tm.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
+
+        //StartCoroutine(CoMoveTutorial());
     }
 
     private void Update()
@@ -73,7 +75,10 @@ public class MoveTutorial : MonoBehaviour
 
     public IEnumerator CoMoveTutorial()
     {
+        yield return new WaitForSeconds(1f);
+
         isMoveTutorial = true;
+        delay = 0f;
         RightLongTouch();
         yield return new WaitWhile(() => TutorialStep < 1);
 

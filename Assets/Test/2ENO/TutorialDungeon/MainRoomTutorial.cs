@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+[DefaultExecutionOrder(12)]
 
 public class MainRoomTutorial : MonoBehaviour
 {
     public bool isMainRoomTutorial = false;
     public int TutorialStep { get; set; } = 0;
+
+    public TutorialTool tutorialTool;
 
     private RectTransform target;
     private GameObject eventObject;
@@ -30,7 +33,6 @@ public class MainRoomTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    private TutorialManager tutorialManager;
 
     public float delay;
 
@@ -45,19 +47,24 @@ public class MainRoomTutorial : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
-        tutorialManager.mainTutorial.tutorialMainRoom = this;
-        dialogBox = tutorialManager.dialogBox;
-        handIcon = tutorialManager.handIcon;
-        blackout = tutorialManager.blackout;
-        rect = tutorialManager.rect;
-        circle = tutorialManager.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
+
+        //if(GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+        //{
+        //    TutorialStep = 0;
+        //    delay = 0f;
+        //    StartCoroutine(CoTutorialEnd());
+        //}
     }
 
     private void Update()
@@ -77,11 +84,37 @@ public class MainRoomTutorial : MonoBehaviour
             }
         }
     }
+    public void EndTutorialExplain()
+    {
+        SetActive(false, true);
+        var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "튜토리얼 종료! 오른쪽으로 이동해서 다음맵으로 진행해보세요";
+    }
+
+    public void TutorialTheEnd()
+    {
+        SetActive(false);
+        Destroy(this);
+    }
+
+    public IEnumerator CoTutorialEnd()
+    {
+        isMainRoomTutorial = true;
+        delay = 0f;
+        EndTutorialExplain();
+
+        yield return new WaitWhile(() => TutorialStep < 1);
+
+        isMainRoomTutorial = false;
+        TutorialTheEnd();
+    }
+
 
     public IEnumerator CoMainRoomTutorial()
     {
         isMainRoomTutorial = true;
-        tutorialManager.BlackPanelOn();
+        tutorialTool.BlackPanelOn();
 
         StaminaExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
@@ -96,7 +129,7 @@ public class MainRoomTutorial : MonoBehaviour
         yield return new WaitWhile(() => TutorialStep < 4);
 
         MainRoomTutorialEnd();
-        tutorialManager.BlackPanelOff();
+        tutorialTool.BlackPanelOff();
         isMainRoomTutorial = false;
     }
 
@@ -147,7 +180,7 @@ public class MainRoomTutorial : MonoBehaviour
         target = campBtn;
 
         var button = target.GetComponent<Button>();
-        button = tutorialManager.TutorialTargetButtonActivate(button);
+        button = tutorialTool.TutorialTargetButtonActivate(button);
         ButtonAddOneUseStepPlus(button);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -208,7 +241,7 @@ public class MainRoomTutorial : MonoBehaviour
         target = woodUseBtn;
 
         var button = target.GetComponent<Button>();
-        button = tutorialManager.TutorialTargetButtonActivate(button);
+        button = tutorialTool.TutorialTargetButtonActivate(button);
         ButtonAddOneUseStepPlus(button);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -236,11 +269,13 @@ public class MainRoomTutorial : MonoBehaviour
         dialogText.text = "재료 사용 버튼 설명";
     }
 
+
+
+
     public void MainRoomTutorialEnd()
     {
         SetActive(false);
         dialogBoxObj.down.SetActive(false);
         dialogBox.pivot = new Vector2(0f, 0.5f);
-        Destroy(this);
     }
 }
