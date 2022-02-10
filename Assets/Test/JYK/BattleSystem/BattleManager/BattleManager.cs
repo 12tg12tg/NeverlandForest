@@ -109,7 +109,7 @@ public class BattleManager : MonoBehaviour
                 break;
         }
 
-        GameManager.Manager.Production.FadeOut();
+        GameManager.Manager.Production?.FadeOut();
     }
 
     // √ ±‚»≠
@@ -168,6 +168,8 @@ public class BattleManager : MonoBehaviour
 
         if (reInit)
         {
+            waveLink.totalWave = 2;
+
             var mushbae = FindMonsterToId(0);
             var mushbro = FindMonsterToId(1);
             monsters.Add(mushbae);

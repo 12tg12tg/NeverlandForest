@@ -35,6 +35,7 @@ public class TutorialManager : MonoBehaviour
 
     public void CheckMainTutorial()
     {
+        var gm = GameManager.Manager;
         switch (mainTutorial.MainTutorialStage)
         {
             case MainTutorialStage.Story:
@@ -49,7 +50,6 @@ public class TutorialManager : MonoBehaviour
                 break;
             case MainTutorialStage.Battle:
                 BattleManager.initState = BattleInitState.Tutorial;
-                var gm = GameManager.Manager;
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.Battle));
                 break;
             case MainTutorialStage.Move:

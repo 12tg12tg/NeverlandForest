@@ -46,6 +46,7 @@ public class BattleOnGUI : MonoBehaviour
             manager.waveLink.wave2.Clear();
             manager.waveLink.wave3.Clear();
             list.ToList().ForEach(n => { if (n != null) n.Release(); });
+            TileMaker.Instance.TileClear();
             manager.FSM.ChangeState(BattleState.Monster);
         }
         if (GUI.Button(new Rect(Screen.width - 300, 50, 100, 50), "전투 종료 씬 전환"))

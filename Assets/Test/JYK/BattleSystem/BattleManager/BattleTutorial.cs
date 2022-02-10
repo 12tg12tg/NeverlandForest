@@ -643,8 +643,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(-4.7f, 251f);
-        maskRt.sizeDelta = new Vector2(312f, 45f);
+        maskRt.anchoredPosition = new Vector2(-11.4f, 248f);
+        maskRt.sizeDelta = new Vector2(325f, 92f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);

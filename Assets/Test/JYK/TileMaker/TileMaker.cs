@@ -252,6 +252,13 @@ public class TileMaker : MonoBehaviour
         return plane;
     }
 
+    // 타일 유닛 클리어
+    public void TileClear()
+    {
+        TileList.ForEach(n => n.ClearUnit());
+    }
+
+
     // 랜턴 범위 계산
     public void MoveLanternRange()
     {
