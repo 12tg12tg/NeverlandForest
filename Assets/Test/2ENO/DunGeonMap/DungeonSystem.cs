@@ -207,15 +207,14 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = false;
 
 
-        if (Vars.UserData.mainTutorial == MainTutorialStage.Move)
+        if(Vars.UserData.mainTutorial == MainTutorialStage.Move)
         {
             ChangeRoomEvent(true, false);
         }
-        else if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
+        else if(Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             TutorialStart();
         }
-        
     }
 
     public void TutorialStart()

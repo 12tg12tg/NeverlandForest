@@ -27,7 +27,9 @@ public class Title : MonoBehaviour
             StartCoroutine(CoFadeOut(() => {
                 gameObject.SetActive(false);
                 manager.TutoManager.Init();
-                //manager.Production.black.SetActive(true); // TODO : 잠시 주석
+            }, () => {
+                manager.Production.black.SetActive(true);
+                Debug.Log(manager.Production.black.activeSelf);
             }));
         }
     }
@@ -54,8 +56,9 @@ public class Title : MonoBehaviour
         action?.Invoke();
     }
 
-    private IEnumerator CoFadeOut(UnityAction action)
+    private IEnumerator CoFadeOut(UnityAction action, UnityAction action2)
     {
+        var isBlackOut = false;
         var black = Color.clear;
 
         var time = 1f;
@@ -65,11 +68,16 @@ public class Title : MonoBehaviour
             timer += Time.deltaTime;
             var ratio = timer / time;
             var value = Mathf.Lerp(0, 1, ratio);
+            if (value > 0.9 && !isBlackOut)
+            {
+                isBlackOut = true;
+                action2?.Invoke();
+            }
             black.a = value;
             fadeOut.color = black;
             yield return null;
         }
-        yield return new WaitForSeconds(1f);
         action?.Invoke();
+        yield return new WaitForSeconds(1f);
     }
 }

@@ -40,6 +40,8 @@ public class TutorialManager : MonoBehaviour
         {
             case MainTutorialStage.Story:
                 storyBoard.SetActive(true);
+                gm.Production.black.SetActive(false);
+                Debug.Log(gm.Production.black.activeSelf);
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => {
                     mainTutorial.NextMainTutorial();
                     CheckMainTutorial();
