@@ -2602,6 +2602,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &798482519
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 798482521}
+  - component: {fileID: 798482520}
+  m_Layer: 0
+  m_Name: CampTutoManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &798482520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798482519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93866839f13a6224cbf6c89c7207f063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  handIcon: {fileID: 975542614}
+  dialogBox: {fileID: 975542612}
+  blackoutPanel: {fileID: 1610240258}
+  dialogBoxText: {fileID: 975542610}
+  storyBoard: {fileID: 0}
+  blackout: {fileID: 1235890798}
+  rect: {fileID: 21300000, guid: a28c823e82ade48458b8ef80f9813d4d, type: 3}
+  circle: {fileID: 21300000, guid: fbca0c3d4aeda9745af43d42795b6c7b, type: 3}
+--- !u!4 &798482521
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 798482519}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.5118215, y: -3.3016644, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 20
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &815862737 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7455098264743408307, guid: 9d0373e4067c6eb4ca3421a3bd6295e9, type: 3}
@@ -6265,6 +6317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd0b32988d0fbd42bb51a98270632f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  camTM: {fileID: 798482520}
   bottomitemTagButton: {fileID: 1402020363}
   campBonableCheckButton: {fileID: 866798372}
   campDiaryquickButton: {fileID: 7455098263927546211}
@@ -8636,6 +8689,14 @@ PrefabInstance:
       propertyPath: campbornfire
       value: 
       objectReference: {fileID: 866798370}
+    - target: {fileID: 7151620471709208741, guid: 0612310fd6abf6a4ca5ce0ff70261881, type: 3}
+      propertyPath: camptutorial
+      value: 
+      objectReference: {fileID: 1508912391}
+    - target: {fileID: 7151620471709208741, guid: 0612310fd6abf6a4ca5ce0ff70261881, type: 3}
+      propertyPath: curinitState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7151620471709208741, guid: 0612310fd6abf6a4ca5ce0ff70261881, type: 3}
       propertyPath: diaryManager
       value: 

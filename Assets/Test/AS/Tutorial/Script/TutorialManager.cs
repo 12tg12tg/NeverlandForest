@@ -63,7 +63,8 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
                 break;
             case MainTutorialStage.Camp:
-                StartCoroutine(mainTutorial.tutorialCamp.CoCampTutorial());
+                CampManager.curinitState = CampManager.CampinitState.Tutorial;
+                gm.Production.FadeIn(() => gm.LoadScene(GameScene.Camp));
                 break;
             case MainTutorialStage.Clear:
                 StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());

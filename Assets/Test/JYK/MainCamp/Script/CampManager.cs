@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 public class CampManager : MonoBehaviour
 {
     private static CampManager instance;
@@ -67,6 +66,12 @@ public class CampManager : MonoBehaviour
 
     [Header("요리제스처")]
     public SimpleGesture simpleGesture;
+    [Header("캠프 튜토리얼")]
+    public CampTutorial camptutorial;
+
+    public enum CampinitState { None, Tutorial }
+    public static CampinitState curinitState;
+
     public enum CampEvent
     {
         StartCook,
@@ -98,10 +103,23 @@ public class CampManager : MonoBehaviour
 
     public void Start()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
-        CampInit();
+        switch (curinitState)
+        {
+            case CampinitState.None:
+                CampInit();
+                camptutorial.blackPanel.SetActive(false);
+                camptutorial.gameObject.SetActive(false);
+                break;
+            case CampinitState.Tutorial:
+                CampInit();
+                GameManager.Manager.State = GameState.Tutorial;
+                StartCoroutine(camptutorial.CoCampTutorial());
+                break;
+            default:
+                break;
+        }
     }
-   
+
     public void CampInit()
     {
         instance = this;
@@ -235,7 +253,7 @@ public class CampManager : MonoBehaviour
     {
         if (isCookMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f, OnBonButton));
             CloseRotationPanel();
             isCookMove = false;
         }
@@ -305,7 +323,7 @@ public class CampManager : MonoBehaviour
     {
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
-            if (gatheringRewardList[i].Item !=null)
+            if (gatheringRewardList[i].Item != null)
             {
                 haveitemCount++;
             }
@@ -314,7 +332,7 @@ public class CampManager : MonoBehaviour
         {
             if (isGatheringMove)
             {
-                StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
+                StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f, OnBonButton));
                 isGatheringMove = false;
             }
             for (int i = 0; i < gatheringRewardList.Count; i++)
@@ -407,7 +425,7 @@ public class CampManager : MonoBehaviour
     {
         if (isProduceMove)
         {
-            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f,OnBonButton));
+            StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f, OnBonButton));
             isProduceMove = false;
         }
         newBottomUi.SetActive(true);
@@ -669,18 +687,18 @@ public class CampManager : MonoBehaviour
 
         }
     }
-   /* public void OnGUI()
-    {
-        if (GUI.Button(new Rect(100, 100, 100, 75), "BonFireUp"))
-        {
-            ConsumeManager.RecoveryBonFire(0, 1);
-            SetBonTime();
-        }
-        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
-        {
-            ConsumeManager.CostDataReset();
-        }
-    }*/
+    /* public void OnGUI()
+     {
+         if (GUI.Button(new Rect(100, 100, 100, 75), "BonFireUp"))
+         {
+             ConsumeManager.RecoveryBonFire(0, 1);
+             SetBonTime();
+         }
+         if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
+         {
+             ConsumeManager.CostDataReset();
+         }
+     }*/
     public void QuickButtonClick()
     {
         if (GameManager.Manager.State == GameState.Tutorial)
