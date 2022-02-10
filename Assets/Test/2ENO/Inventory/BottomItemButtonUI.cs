@@ -195,9 +195,6 @@ public class BottomItemButtonUI : MonoBehaviour
         if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
             return;
 
-        if (bm != null && bm.isTutorial && !bm.tutorial.tu_03_TrapClick1)
-            bm.tutorial.tu_03_TrapClick1 = true;
-
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
         DungeonRewardDiaryManager.Instance.info.Init(dataItem);
@@ -299,6 +296,9 @@ public class BottomItemButtonUI : MonoBehaviour
 
         if (tm != null && tm.IsWaitingToHeal) // 포션 코루틴 동작 중
             return;
+
+        if (bm != null && bm.isTutorial && !bm.tutorial.tu_03_TrapClick1)
+            bm.tutorial.tu_03_TrapClick1 = true;
 
         var battleManager = BattleManager.Instance;
         var bottomUImanager = BottomUIManager.Instance;

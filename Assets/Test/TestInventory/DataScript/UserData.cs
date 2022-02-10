@@ -11,6 +11,10 @@ public class UserData
     !!      유저마다 다른 변수들       !!
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     */
+    //Scene Datas
+    public MainTutorialStage mainTutorial;
+    public ContentsTutorialProceed contentsTutorial;
+
     //Item Info
     public ArrowType arrowType;
 

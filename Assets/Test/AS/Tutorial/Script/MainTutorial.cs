@@ -28,7 +28,7 @@ public class MainTutorial
     public void Init()
     {
         // 저장된 데이터 가져오기
-        MainTutorialStage = MainTutorialStage.Move;
+        MainTutorialStage = Vars.UserData.mainTutorial;
     }
 
     public void NextMainTutorial()
@@ -36,6 +36,7 @@ public class MainTutorial
         if (MainTutorialStage != MainTutorialStage.Clear)
         {
             MainTutorialStage++;
+            Vars.UserData.mainTutorial = MainTutorialStage;
         }
     }
 }
