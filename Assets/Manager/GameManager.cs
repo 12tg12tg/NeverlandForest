@@ -92,7 +92,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         int count = (int)SaveLoadSystem.SaveType.Count;
         for (int i = 0; i < count; i++)
         {
-            SaveLoadManager.Instance.Load((SaveLoadSystem.SaveType)i);
+            sm.Load((SaveLoadSystem.SaveType)i);
         }
     }
     private void ObjectPoolInit()
