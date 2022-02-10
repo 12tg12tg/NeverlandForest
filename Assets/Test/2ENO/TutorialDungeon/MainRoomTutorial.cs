@@ -11,6 +11,8 @@ public class MainRoomTutorial : MonoBehaviour
     public bool isMainRoomTutorial = false;
     public int TutorialStep { get; set; } = 0;
 
+    public TutorialTool tutorialTool;
+
     private RectTransform target;
     private GameObject eventObject;
 
@@ -31,7 +33,6 @@ public class MainRoomTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    private TutorialManager tutorialManager;
 
     public float delay;
 
@@ -46,13 +47,11 @@ public class MainRoomTutorial : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
-        tutorialManager.mainTutorial.tutorialMainRoom = this;
-        dialogBox = tutorialManager.dialogBox;
-        handIcon = tutorialManager.handIcon;
-        blackout = tutorialManager.blackout;
-        rect = tutorialManager.rect;
-        circle = tutorialManager.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
@@ -60,12 +59,12 @@ public class MainRoomTutorial : MonoBehaviour
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
 
-        if(tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Clear)
-        {
-            TutorialStep = 0;
-            delay = 0f;
-            tutorialManager.CheckMainTutorial();
-        }
+        //if(GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+        //{
+        //    TutorialStep = 0;
+        //    delay = 0f;
+        //    StartCoroutine(CoTutorialEnd());
+        //}
     }
 
     private void Update()
@@ -102,6 +101,7 @@ public class MainRoomTutorial : MonoBehaviour
     public IEnumerator CoTutorialEnd()
     {
         isMainRoomTutorial = true;
+        delay = 0f;
         EndTutorialExplain();
 
         yield return new WaitWhile(() => TutorialStep < 1);
@@ -114,7 +114,7 @@ public class MainRoomTutorial : MonoBehaviour
     public IEnumerator CoMainRoomTutorial()
     {
         isMainRoomTutorial = true;
-        tutorialManager.BlackPanelOn();
+        tutorialTool.BlackPanelOn();
 
         StaminaExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
@@ -129,7 +129,7 @@ public class MainRoomTutorial : MonoBehaviour
         yield return new WaitWhile(() => TutorialStep < 4);
 
         MainRoomTutorialEnd();
-        tutorialManager.BlackPanelOff();
+        tutorialTool.BlackPanelOff();
         isMainRoomTutorial = false;
     }
 
@@ -180,7 +180,7 @@ public class MainRoomTutorial : MonoBehaviour
         target = campBtn;
 
         var button = target.GetComponent<Button>();
-        button = tutorialManager.TutorialTargetButtonActivate(button);
+        button = tutorialTool.TutorialTargetButtonActivate(button);
         ButtonAddOneUseStepPlus(button);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -241,7 +241,7 @@ public class MainRoomTutorial : MonoBehaviour
         target = woodUseBtn;
 
         var button = target.GetComponent<Button>();
-        button = tutorialManager.TutorialTargetButtonActivate(button);
+        button = tutorialTool.TutorialTargetButtonActivate(button);
         ButtonAddOneUseStepPlus(button);
 
         blackout.GetComponent<Image>().sprite = rect;

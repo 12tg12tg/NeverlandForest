@@ -63,10 +63,10 @@ public class TutorialPlayerMove : MonoBehaviour
 
     void Update()
     {
-        var mainTuto = GameManager.Manager.TutoManager.mainTutorial;
-        moveTutorial = mainTuto.tutorialMove;
-        gatheringTutorial = mainTuto.tutorialGathering;
-        mainRoomTutorial = mainTuto.tutorialMainRoom;
+        var dungeonSystem = DungeonSystem.Instance;
+        moveTutorial = dungeonSystem.moveTutorial;
+        gatheringTutorial = dungeonSystem.gatherTutorial;
+        mainRoomTutorial = dungeonSystem.mainRoomTutorial;
         if(mainRoomTutorial.isMainRoomTutorial)
         {
             playerAnimationBoy.SetFloat("Speed", 0);

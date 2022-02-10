@@ -10,6 +10,7 @@ public class GatheringTutorial : MonoBehaviour
     public bool isGatheringTutorial = false;
     public int TutorialStep { get; set; } = 0;
 
+    public TutorialTool tutorialTool;
     private RectTransform target;
     private GameObject eventObject;
 
@@ -28,7 +29,6 @@ public class GatheringTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    private TutorialManager tutorialManager;
 
     public float delay;
 
@@ -49,13 +49,11 @@ public class GatheringTutorial : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
-        tutorialManager.mainTutorial.tutorialGathering = this;
-        dialogBox = tutorialManager.dialogBox;
-        handIcon = tutorialManager.handIcon;
-        blackout = tutorialManager.blackout;
-        rect = tutorialManager.rect;
-        circle = tutorialManager.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
@@ -85,6 +83,7 @@ public class GatheringTutorial : MonoBehaviour
     public IEnumerator CoGatheringTutorial()
     {
         isGatheringTutorial = true;
+        delay = 0f;
         GatheringTouch();
         yield return new WaitWhile(() => TutorialStep < 1);
 
@@ -173,8 +172,8 @@ public class GatheringTutorial : MonoBehaviour
 
         var yesButton = DungeonSystem.Instance.DungeonCanvas.transform.GetChild(2).GetComponentInChildren<Button>();
 
-        tutorialManager.BlackPanelOn();
-        yesButton = tutorialManager.TutorialTargetButtonActivate(yesButton);
+        tutorialTool.BlackPanelOn();
+        yesButton = tutorialTool.TutorialTargetButtonActivate(yesButton);
 
         ButtonAddOneUseStepPlus(yesButton);
 
@@ -262,7 +261,7 @@ public class GatheringTutorial : MonoBehaviour
         target = DungeonSystem.Instance.gatheringSystem.toolbutton.GetComponent<RectTransform>();
         var toolButton = target.GetComponent<Button>();
 
-        toolButton = tutorialManager.TutorialTargetButtonActivate(toolButton);
+        toolButton = tutorialTool.TutorialTargetButtonActivate(toolButton);
         ButtonAddOneUseStepPlus(toolButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -318,7 +317,7 @@ public class GatheringTutorial : MonoBehaviour
         target = rewardItem;
         var itemButton = target.GetComponentInChildren<Button>();
 
-        itemButton = tutorialManager.TutorialTargetButtonActivate(itemButton);
+        itemButton = tutorialTool.TutorialTargetButtonActivate(itemButton);
         ButtonAddOneUseStepPlus(itemButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -351,7 +350,7 @@ public class GatheringTutorial : MonoBehaviour
         target = getItem;
         var getButton = target.GetComponent<Button>();
 
-        getButton = tutorialManager.TutorialTargetButtonActivate(getButton);
+        getButton = tutorialTool.TutorialTargetButtonActivate(getButton);
         ButtonAddOneUseStepPlus(getButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -411,7 +410,7 @@ public class GatheringTutorial : MonoBehaviour
         target = closeBtn;
         var closeButton = target.GetComponentInChildren<Button>();
 
-        closeButton = tutorialManager.TutorialTargetButtonActivate(closeButton);
+        closeButton = tutorialTool.TutorialTargetButtonActivate(closeButton);
         ButtonAddOneUseStepPlus(closeButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -440,7 +439,7 @@ public class GatheringTutorial : MonoBehaviour
 
     public void GatheringTutorialEnd()
     {
-        tutorialManager.BlackPanelOff();
+        tutorialTool.BlackPanelOff();
         SetActive(false);
         dialogBoxObj.up.SetActive(false);
         Destroy(this);
