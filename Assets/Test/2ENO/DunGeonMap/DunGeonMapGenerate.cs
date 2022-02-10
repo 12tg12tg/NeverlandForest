@@ -36,12 +36,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             return;
 
         var manager = GameManager.Manager;
-
-
-
-        if (manager.TutoManager == null || manager.TutoManager.mainTutorial == null)
-            return;
-
         if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
             manager.Production.FadeOut(() => TutorialDungeonGenerate());
@@ -67,7 +61,6 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {
-        Debug.Log($"range{range}");
         switch (range)
         {
             case 1:
@@ -102,14 +95,20 @@ public class DunGeonMapGenerate : MonoBehaviour
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
         int curIdx;
-        if (Vars.UserData.mainTutorial !=MainTutorialStage.Clear)
+        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             curIdx = 0;
         else
             curIdx = Vars.UserData.dungeonStartIdx;
 
-
+        int except = 0;
         while (dungeonArray[curIdx].nextRoomIdx != -1)
         {
+            except++;
+            if (except > 300)
+            {
+                Debug.Log("무한루프오류");
+                return;
+            }
             // 현재방의 이벤트 리스트 (1개~2개) 돌면서 이벤트 오브젝트 정보 셋
             for (int i = 0; i < dungeonArray[curIdx].eventList.Count; i++)
             {
@@ -150,7 +149,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                     var gatheringData = new GatheringData();
                     gatheringData.eventType = DunGeonEvent.Gathering;
                     gatheringData.roomIndex = curRoom.roomIdx;
-                    if (Vars.UserData.isTutorialDungeon)
+                    if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                         gatheringData.gatheringtype = GatheringObjectType.Pit;
                     else
                         gatheringData.gatheringtype = (GatheringObjectType)Random.Range(0, 4);

@@ -77,7 +77,7 @@ public class DungeonSystem : MonoBehaviour
 
     private void Start()
     {
-        if(!Vars.UserData.isTutorialDungeon)
+        if(Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             Init();
     }
 
@@ -100,14 +100,12 @@ public class DungeonSystem : MonoBehaviour
 
     public void Init()
     {
-        Debug.Log("10");
-
         DungeonCanvas.SetActive(true);
         eventObjectGenerate.Init();
         minimapCam.Init();
         roomGenerate.Init();
 
-        if(Vars.UserData.isTutorialDungeon)
+        if(Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             dungeonSystemData = Vars.UserData.tutorialDungeonData;
             startIndex = 0;
@@ -160,7 +158,7 @@ public class DungeonSystem : MonoBehaviour
         }
 
         roomTool = new RoomTool();
-        if (dungeonSystemData.curDungeonRoomData != null && !Vars.UserData.isTutorialDungeon)
+        if (dungeonSystemData.curDungeonRoomData != null && Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             ConvertEventDataType();
         DungeonRoomSetting();
     }
@@ -203,25 +201,12 @@ public class DungeonSystem : MonoBehaviour
         else
             campButton.interactable = false;
 
-
-        if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Move)
-        {
-            if (moveTutorial == null)
-                return;
-            //ChangeRoomEvent(true, false);
-        }
-        //else if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Camp)
-        //{
-        //    if (mainRoomTutorial == null)
-        //        return;
-        //}
-
         TutorialStart();
     }
 
     public void TutorialStart()
     {
-        if (!Vars.UserData.isTutorialDungeon)
+        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             return;
         switch (Vars.UserData.mainTutorial)
         {
@@ -247,9 +232,9 @@ public class DungeonSystem : MonoBehaviour
     {
         if (isRoomEnd)
         {
-            if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial != MainTutorialStage.Move)
+            if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             {
-                tutorialManager.mainTutorial.NextMainTutorial();
+                //tutorialManager.mainTutorial.NextMainTutorial();
                 TutorialStart();
             }
 
@@ -258,10 +243,9 @@ public class DungeonSystem : MonoBehaviour
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-                if (Vars.UserData.isTutorialDungeon)
+                if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                 {
                     dungeonSystemData = null;
-                    Vars.UserData.isTutorialDungeon = false;
                     // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
                 }
                 else
@@ -296,9 +280,9 @@ public class DungeonSystem : MonoBehaviour
         {
             if (isGoForward)
             {
-                if (Vars.UserData.isTutorialDungeon)
+                if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                 {
-                    tutorialManager.mainTutorial.NextMainTutorial();
+                    //tutorialManager.mainTutorial.NextMainTutorial();
                     TutorialStart();
                 }
 
@@ -315,7 +299,7 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
-        if (Vars.UserData.isTutorialDungeon)
+        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             Vars.UserData.tutorialDungeonData = dungeonSystemData;
         }

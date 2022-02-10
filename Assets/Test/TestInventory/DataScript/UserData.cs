@@ -12,7 +12,7 @@ public class UserData
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     */
     //Scene Datas
-    public MainTutorialStage mainTutorial = MainTutorialStage.Clear;
+    public MainTutorialStage mainTutorial;
     public ContentsTutorialProceed contentsTutorial;
 
     //Item Info
@@ -40,7 +40,6 @@ public class UserData
     public bool isFirst = true;
 
     // 튜토리얼 던전
-    public bool isTutorialDungeon =true;
     public DungeonData tutorialDungeonData = new DungeonData();
 
     //Experienced Recipe
