@@ -14,7 +14,6 @@ public class BottomInfoUI : MonoBehaviour
     public TextMeshProUGUI info_name;
     public TextMeshProUGUI info_description;
 
-    private List<int> desc_colorChange_Index = new List<int>();
     public void Init()
     {
         img.sprite = null;
@@ -29,7 +28,7 @@ public class BottomInfoUI : MonoBehaviour
         img.color = Color.white;
 
         info_name.text = skill.SkillTableElem.name;
-        info_description.text = skill.SkillTableElem.description;
+        info_description.text = DescriptionColoring(skill.SkillTableElem);
     }
 
     public void Init(DataAllItem item)
@@ -86,6 +85,65 @@ public class BottomInfoUI : MonoBehaviour
 
         for (int i = 0; i < desc.Length; i++)
         {
+            if (char.IsDigit(desc[i]))
+            {
+                if (isPreDigit)
+                {
+                    newDesc += desc[i];
+                }
+                else
+                {
+                    newDesc += $"{startToken}{desc[i]}";
+                }
+                isPreDigit = true;
+            }
+            else
+            {
+                if (isPreDigit)
+                {
+                    newDesc += $"{endToken}{desc[i]}";
+                }
+                else
+                {
+                    newDesc += desc[i];
+                }
+                isPreDigit = false;
+            }
+        }
+
+        return newDesc;
+    }
+    private string DescriptionColoring(PlayerSkillTableElem elem)
+    {
+        var desc = elem.description;
+        bool isPreDigit = false;
+        string newDesc = string.Empty;
+        string startToken = string.Empty;
+        switch (elem.player)
+        {
+            case PlayerType.Boy:
+                startToken = "<b><color=blue>";
+                break;
+            case PlayerType.Girl:
+                startToken = "<b><color=orange>";
+                break;
+        }
+
+        string endToken = "</color></b>";
+
+        for (int i = 0; i < desc.Length; i++)
+        {
+            if (desc[i] == '.')
+            {
+                newDesc += "\n";
+                continue;
+            }
+
+            if (desc[i] == 'L')
+            {
+                newDesc += $"·£ÅÏ ¹à±â({startToken}{(int)Vars.UserData.uData.lanternState}{endToken})";
+            }
+
             if (char.IsDigit(desc[i]))
             {
                 if (isPreDigit)
