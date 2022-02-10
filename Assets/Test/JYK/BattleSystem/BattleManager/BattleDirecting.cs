@@ -30,6 +30,12 @@ public class BattleDirecting : MonoBehaviour
     private List<MonsterUnit> layerChangeUnit = new List<MonsterUnit>();
     private PlayerBattleController attacker;
 
+    private Quaternion origianlLanternRotate;
+    private Vector3 originalLanternPos;
+    private Transform originalLanternParent;
+    public Transform lanternGo;
+    public Transform lanternLandPos;
+
     private void Start()
     {
         customShader = Shader.Find("Custom/MonsterShader");
@@ -39,6 +45,24 @@ public class BattleDirecting : MonoBehaviour
         defaultLayer = LayerMask.NameToLayer("Default");
 
         origianlColorLight = mainLight.color;
+
+        origianlLanternRotate = lanternGo.localRotation;
+        originalLanternPos = lanternGo.localPosition;
+        originalLanternParent = lanternGo.parent;
+    }
+
+    public void LandDownLantern()
+    {
+        lanternGo.SetParent(null);
+        lanternGo.position = lanternLandPos.position;
+        lanternGo.rotation = Quaternion.identity;
+    }
+
+    public void HoldLantern()
+    {
+        lanternGo.SetParent(originalLanternParent);
+        lanternGo.localPosition = originalLanternPos;
+        lanternGo.localRotation = origianlLanternRotate;
     }
 
 

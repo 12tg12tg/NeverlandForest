@@ -146,11 +146,9 @@ public static class ConsumeManager
     public static bool GetDamage(float damage)
     {
         Vars.UserData.uData.Hp -= damage;
-        if (Vars.UserData.uData.Hp < 0)
+        if (Vars.UserData.uData.Hp <= 0)
         {
             Vars.UserData.uData.Hp = 0;
-            CostDataReset();
-            SaveConsumableData();
             return true;
         }
         SaveConsumableData();

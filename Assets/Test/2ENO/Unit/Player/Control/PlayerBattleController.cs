@@ -94,12 +94,17 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
 
         if (command.skill.SkillTableElem.id == manager.costLink.skillID_chargeOil) // 오일 충전
         {
+            // 랜턴 내려놓기
+            manager.directingLink.LandDownLantern();
+
             // 충전 애니 끝나고 PlayerAction의 MotionEnd 켜질 때 까지 기다리기.
             var playerActionState = FSM.GetState(CharacterBattleState.Action) as PlayerAction;
             yield return new WaitUntil(() => playerActionState.isAttackMotionEnd);
             playerActionState.isAttackMotionEnd = false;
-
             yield return new WaitForSeconds(1.5f);
+
+            // 랜턴 다시 들기
+            manager.directingLink.HoldLantern();
         }
         else
         {

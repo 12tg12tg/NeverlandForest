@@ -73,6 +73,9 @@ public class BattleManager : MonoBehaviour
     [Header("몬스터 그룹 설정")]
     public CustomBattle customBattle;
 
+    [Header("패배 확인")]
+    public bool isLose;
+
     //Property
     public int Turn { get => turn; set => turn = value; }
     public bool IsWaitingTileSelect { get => tileLink.isWaitingTileSelect; }
@@ -152,6 +155,7 @@ public class BattleManager : MonoBehaviour
 
     public void TutorialInit(bool reInit = false)
     {
+        // 1. 변수 초기화
         VarInit();
         isTutorial = true;
         monsters.Clear();
@@ -199,10 +203,6 @@ public class BattleManager : MonoBehaviour
 
             mushbae.SetActionCommand();
             mushbro.SetActionCommand();
-
-            //플레이어 배치
-            boy.PlayIdleAnimation();
-            girl.PlayIdleAnimation();
 
             // 인벤토리 비우기
             DataAllItem temp2;
@@ -608,15 +608,19 @@ public class BattleManager : MonoBehaviour
                         if (isTutorial) // 튜토리얼
                         {
                             tutorial.isWin = true;
-                            /*보상창 띄우기??*/
+                            boy.PlayWinAnimation();
+                            girl.PlayWinAnimation();
+                            directingLink.LandDownLantern();
+                            uiLink.OpenRewardPopup();
                         }
                         else // 평상시
                         {
-                            /*보상창 띄우기*/
+                            uiLink.OpenRewardPopup();
                             boy.PlayWinAnimation();
                             girl.PlayWinAnimation();
+                            directingLink.LandDownLantern();
                             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                            //SceneManager.LoadScene("AS_RandomMap");
+                            
                         }
                     });
             }
@@ -678,5 +682,11 @@ public class BattleManager : MonoBehaviour
         }
 
         action?.Invoke();
+    }
+
+    public void Lose()
+    {
+        isLose = true;
+        GameManager.Manager.GameOver(GameOverType.BattleLoss);
     }
 }

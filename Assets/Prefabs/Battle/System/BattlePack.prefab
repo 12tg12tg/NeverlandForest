@@ -545,6 +545,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &1273766659
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1273766660}
+  m_Layer: 0
+  m_Name: LanternLandPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1273766660
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273766659}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -14.61, y: -5.36, z: -1.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 643358078077872125}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1454333325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1643,9 +1674,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f9b91e350a1e84daf94c085ed91e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCamera: {fileID: 0}
-  uiCamera2: {fileID: 8911646508015106888}
-  uiCamera3: []
+  cameras:
+  - {fileID: 0}
+  - {fileID: 8911646508015106888}
 --- !u!1 &3799742262198448787
 GameObject:
   m_ObjectHideFlags: 0
@@ -3674,6 +3705,7 @@ Transform:
   - {fileID: 7570939435853595416}
   - {fileID: 4254822460582911804}
   - {fileID: 125849907160147797}
+  - {fileID: 1273766660}
   m_Father: {fileID: 7469303928238158225}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3695,6 +3727,8 @@ MonoBehaviour:
   battleVeiwDest: {fileID: 7570939435853595416}
   mainLight: {fileID: 1454333326}
   darknessColorLight: {r: 0.1981132, g: 0.1981132, b: 0.1981132, a: 1}
+  lanternGo: {fileID: 7931422811874342077}
+  lanternLandPos: {fileID: 1273766660}
 --- !u!1 &8815458379749542406
 GameObject:
   m_ObjectHideFlags: 0
@@ -4254,6 +4288,11 @@ MonoBehaviour:
 --- !u!4 &787297438100595095 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6848695334275502200, guid: 2e7be171627c21842a01891c2c55d25e, type: 3}
+  m_PrefabInstance: {fileID: 6189774133661954543}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7931422811874342077 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4320198622510662994, guid: 2e7be171627c21842a01891c2c55d25e, type: 3}
   m_PrefabInstance: {fileID: 6189774133661954543}
   m_PrefabAsset: {fileID: 0}
 --- !u!108 &8246120723745530006 stripped

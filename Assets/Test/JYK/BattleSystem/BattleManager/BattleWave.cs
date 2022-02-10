@@ -31,7 +31,7 @@ public class BattleWave : MonoBehaviour
     }
     public bool IsReadyToNextWave(List<MonsterUnit> nextWave)
     {
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < nextWave.Count; i++)
         {
             if (nextWave[i] == null)
                 continue;
@@ -121,6 +121,10 @@ public class BattleWave : MonoBehaviour
     {
         if (curWave == 3)
             return;
+
+        if(totalWave == 2)
+            wave3.Clear();
+
 
         List<MonsterUnit> nextWave = null;
         if (curWave == 0)

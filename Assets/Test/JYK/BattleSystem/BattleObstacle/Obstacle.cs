@@ -144,6 +144,9 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
         if(BattleManager.Instance.FSM.curState == BattleState.Start
             && !TileMaker.Instance.IsWaitingToSelectTrapTile)
         {
+            if (BattleManager.Instance.isTutorial)
+                return;
+
             if (type == TrapTag.Snare)
             {
                 another.tile.obstacle = null;

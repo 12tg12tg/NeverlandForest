@@ -213,4 +213,10 @@ public class BattleUI : MonoBehaviour
             button.interactable = interactive;
         }
     }
+
+    // Reward
+    public void OpenRewardPopup()
+    {
+
+    }
 }
