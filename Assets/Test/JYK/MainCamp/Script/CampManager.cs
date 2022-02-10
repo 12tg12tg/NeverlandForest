@@ -657,9 +657,9 @@ public class CampManager : MonoBehaviour
         for (int i = 0; i < bottomui.itemButtons.Count; i++)
         {
             if (bottomui.itemButtons[i].DataItem != null &&
-                bottomui.itemButtons[i].DataItem.ItemTableElem.isBurn == true)
+                bottomui.itemButtons[i].DataItem.ItemTableElem.isBurn == false)
             {
-                bottomui.itemButtons[i].IsBurn = true;
+                bottomui.itemButtons[i].DisableItem(true);
             }
         }
         if (GameManager.Manager.State == GameState.Tutorial)

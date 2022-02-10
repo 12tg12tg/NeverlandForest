@@ -50,6 +50,7 @@ public class DungeonSystem : MonoBehaviour
     {
         instance = this;
         EndInit();
+        GameManager.Manager.TutoManager.Init();
     }
     public void EndInit()
     {
@@ -64,7 +65,6 @@ public class DungeonSystem : MonoBehaviour
     public void TutorialInit()
     {
         tutorialManager = GameManager.Manager.TutoManager;
-        tutorialManager.Init();
         tutorialMove.Init();
         GameManager.Manager.State = GameState.Tutorial;
     }
@@ -129,7 +129,7 @@ public class DungeonSystem : MonoBehaviour
         }
 
         roomTool = new RoomTool();
-        if (dungeonSystemData.curDungeonRoomData != null)
+        if (dungeonSystemData.curDungeonRoomData != null && !Vars.UserData.isTutorialDungeon)
             ConvertEventDataType();
 
         DungeonRoomSetting();
@@ -194,8 +194,8 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = false;
 
 
-        if (Vars.UserData.isTutorialDungeon && tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Battle)
-            ChangeRoomEvent(true, true);
+        //if (Vars.UserData.isTutorialDungeon && tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Move)
+        //    ChangeRoomEvent(true, true);
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때

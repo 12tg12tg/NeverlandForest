@@ -45,8 +45,6 @@ public class TutorialManager : MonoBehaviour
                 mainTutorial.tutorialMove.delay = 0f;
                 StartCoroutine(mainTutorial.tutorialMove.CoMoveTutorial());
                 break;
-            //case MainTutorialStage.Lanturn:
-            //    break;
             case MainTutorialStage.Event:
                 StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
                 break;
@@ -58,6 +56,7 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialCamp.CoCampTutorial());
                 break;
             case MainTutorialStage.Clear:
+                StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());
                 tutorialPlayer.isMainTutorial = false;
                 break;
         }

@@ -20,7 +20,7 @@ public enum GameOverType
 
 public enum GameScene
 {
-    World, Dungeon, Hunt, Battle, Camp
+    World, Dungeon, Hunt, Battle, Camp, TutorialDungeon
 }
 
 public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
@@ -122,6 +122,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 break;
             case GameScene.Camp:
                 SceneManager.LoadScene("JYK_Test_Main");
+                break;
+            case GameScene.TutorialDungeon:
+                SceneManager.LoadScene("2ENO_TutorialDungeon");
                 break;
         }
     }
