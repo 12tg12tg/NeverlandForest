@@ -31,7 +31,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
 
     // Managers
     private static GameManager gm;
-    [SerializeField] private WorldMapManager wm;
+    private WorldMapManager wm;
     private CameraManager cm;
     [SerializeField] private TutorialManager tm;
     [SerializeField] private Production pd;
@@ -47,25 +47,26 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     {
         SingletonInit();
 
-        // TODO : 해당 부분 정리 필요?
-        if (CamManager != null)
-        {
-            if (CamManager.worldMapCamera != null)
-            {
-                var wmCamera = CamManager.worldMapCamera.GetComponent<WorldMapCamera>();
-                if (wmCamera != null)
-                    wmCamera.Init();
-            }
+        #region 카메라 안쓰고있음
+        //if (CamManager != null)
+        //{
+        //    if (CamManager.worldMapCamera != null)
+        //    {
+        //        var wmCamera = CamManager.worldMapCamera.GetComponent<WorldMapCamera>();
+        //        if (wmCamera != null)
+        //            wmCamera.Init();
+        //    }
 
-            if (CamManager.miniWorldMapCamera != null)
-            {
-                var wmmCamera = CamManager.miniWorldMapCamera.GetComponent<WorldMapCamera>();
-                if (wmmCamera != null)
-                {
-                    wmmCamera.Init();
-                }
-            }
-        }
+        //    if (CamManager.miniWorldMapCamera != null)
+        //    {
+        //        var wmmCamera = CamManager.miniWorldMapCamera.GetComponent<WorldMapCamera>();
+        //        if (wmmCamera != null)
+        //        {
+        //            wmmCamera.Init();
+        //        }
+        //    }
+        //}
+        #endregion // 카메라 잠구기
 
         // 로드
         LoadAllSavedata();

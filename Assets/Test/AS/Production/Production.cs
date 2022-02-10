@@ -20,7 +20,7 @@ public class Production : MonoBehaviour
         StartCoroutine(Utility.FadeIn(img1, bg, uiCanvas, () => { 
             action?.Invoke(); 
             img1.gameObject.SetActive(false); 
-            black.SetActive(true); 
+            black.SetActive(true);
         }));
     }
     public void FadeOut(UnityAction action = null)

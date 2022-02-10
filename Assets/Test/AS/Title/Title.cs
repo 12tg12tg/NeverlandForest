@@ -27,7 +27,7 @@ public class Title : MonoBehaviour
             StartCoroutine(CoFadeOut(() => {
                 gameObject.SetActive(false);
                 manager.TutoManager.Init();
-                manager.Production.black.SetActive(true);
+                //manager.Production.black.SetActive(true); // TODO : 잠시 주석
             }));
         }
     }
