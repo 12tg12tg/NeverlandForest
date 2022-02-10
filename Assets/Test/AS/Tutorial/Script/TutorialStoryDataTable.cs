@@ -9,12 +9,14 @@ public class TutorialStoryDataTableElem : DataTableElemBase
     public string character;
     public string description;
     public string color;
+    public bool option;
     public TutorialStoryDataTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
         character = data["CHAR"];
         description = data["DESC"];
         color = data["COLOR"];
+        option = Convert.ToBoolean(data["OPTION"]);
     }
 }
 
