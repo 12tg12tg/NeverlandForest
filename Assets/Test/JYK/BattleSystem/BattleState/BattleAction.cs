@@ -38,21 +38,23 @@ public class BattleAction : State<BattleState>
 
     public override void Update()
     {
-        if (curMonsterCommand.attacker.State == MonsterState.Idle)
+        if (!manager.isLose)
         {
-            if (manager.MonsterActionQueue.Count <= 0)
+            if (curMonsterCommand.attacker.State == MonsterState.Idle)
             {
-                if (manager.isPlayerFirst)
-                    FSM.ChangeState(BattleState.Settlement);
-                else
-                    FSM.ChangeState(BattleState.Player);
-                return;
+                if (manager.MonsterActionQueue.Count <= 0)
+                {
+                    if (manager.isPlayerFirst)
+                        FSM.ChangeState(BattleState.Settlement);
+                    else
+                        FSM.ChangeState(BattleState.Player);
+                    return;
+                }
+
+                curMonsterCommand = manager.MonsterActionQueue.Dequeue();
+                curMonsterCommand.attacker.DoCommand();
             }
-
-            curMonsterCommand = manager.MonsterActionQueue.Dequeue();
-            curMonsterCommand.attacker.DoCommand();
         }
-
     }
 
     public override void FixedUpdate()

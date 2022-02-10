@@ -48,6 +48,9 @@ public class BattleOnGUI : MonoBehaviour
             list.ToList().ForEach(n => { if (n != null) n.Release(); });
             TileMaker.Instance.TileClear();
             manager.FSM.ChangeState(BattleState.Monster);
+            manager.boy.PlayIdleAnimation();
+            manager.girl.PlayIdleAnimation();
+            manager.directingLink.HoldLantern();
         }
         if (GUI.Button(new Rect(Screen.width - 300, 50, 100, 50), "전투 종료 씬 전환"))
         {

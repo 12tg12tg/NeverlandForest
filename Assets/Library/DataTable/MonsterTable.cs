@@ -23,7 +23,7 @@ public class MonsterTableElem : DataTableElemBase
     public int dodge;
     public string description;
     private Sprite iconSprite;
-
+    public string attackSound;
     public string Name
     { 
         get
@@ -57,6 +57,7 @@ public class MonsterTableElem : DataTableElemBase
         maxSpeed = int.Parse(data["SPEED_MAX"]);
         dodge = int.Parse(data["DODGE"]);
         iconSprite = Resources.Load<Sprite>($"Monsters/{iconID}");
+        attackSound = data["SOUND"];
     }
 }
 

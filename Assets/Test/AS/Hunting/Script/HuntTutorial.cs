@@ -122,7 +122,7 @@ public class HuntTutorial : MonoBehaviour
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         Debug.Log($"{canvasRt.width} {canvasRt.height}");
         dialogBox.anchoredPosition = new Vector2(canvasRt.width / 2 - boxWidth / 2, canvasRt.height / 2 + 100f);
-        dialogText.text = "랜턴 밝기 설명";
+        dialogText.text = "랜턴 밝기에 따라 성공확률과 발각확률에 차이가 있어.";
     }
     public void MoveExplain()
     {
@@ -155,13 +155,13 @@ public class HuntTutorial : MonoBehaviour
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
 
-        dialogText.text = "이동 방법 설명";
+        dialogText.text = "해당 타일을 터치하면 이동 할 수 있어";
     }
     public void BushExplain()
     {
         SetActive(true, true);
         blackout.sizeDelta = Vector2.zero;
-        dialogText.text = "부쉬 설명";
+        dialogText.text = "부쉬로 이동하면 성공확률에 보정을 받을 수 있어.";
     }
     public void HuntingExplain()
     {

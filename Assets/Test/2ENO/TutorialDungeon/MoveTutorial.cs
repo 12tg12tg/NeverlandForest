@@ -122,7 +122,7 @@ public class MoveTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "이동 방법 설명1";
+        dialogText.text = "오른쪽을 터치하면 오른쪽으로 이동할 수 있어.";
     }
 
     public void LeftLongTouch()
@@ -140,7 +140,7 @@ public class MoveTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "이동 방법 설명2";
+        dialogText.text = "왼쪽을 터치하면 왼쪽으로 이동할 수 있어.";
     }
 
     public void MoveTest()
@@ -148,7 +148,7 @@ public class MoveTutorial : MonoBehaviour
         SetActive(false, true);
         var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "이동 안내 (오른쪽, 왼쪽 순서로 각각 1초간 이동해보기)";
+        dialogText.text = "좌우 이동을 1초간 해보자.";
     }
 
     public void MoveTutorialEndExplain()
@@ -165,7 +165,7 @@ public class MoveTutorial : MonoBehaviour
         blackout.anchoredPosition = Vector2.zero;
 
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "이동 연습 완료!";
+        dialogText.text = "이동 튜토리얼 완료!";
     }
 
     public void TimeCostExplain()
@@ -190,7 +190,7 @@ public class MoveTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(pos.x, pos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "시간 코스트 설명";
+        dialogText.text = "일정 구간을 이동 할 때 마다 던전 내 시간이 지나.";
     }
 
     public void LanternCostExplain()
@@ -219,7 +219,7 @@ public class MoveTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "랜턴 관련 설명";
+        dialogText.text = "일정 구간을 이동 할 때 마다 랜턴 코스트가 소비 돼.";
     }
 
     public void MoveTutorialEnd()

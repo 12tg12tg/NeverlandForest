@@ -142,6 +142,7 @@ public class BottomInfoUI : MonoBehaviour
             if (desc[i] == 'L')
             {
                 newDesc += $"∑£≈œ π‡±‚({startToken}{(int)Vars.UserData.uData.lanternState}{endToken})";
+                continue;
             }
 
             if (char.IsDigit(desc[i]))

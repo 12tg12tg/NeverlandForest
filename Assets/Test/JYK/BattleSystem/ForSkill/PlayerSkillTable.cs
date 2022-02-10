@@ -25,6 +25,7 @@ public class PlayerSkillTableElem : DataTableElemBase
     public int hitCount;
     public SkillRangeType range;
     public string description;
+    public string attackSound;
     public int Damage
     {
         get
@@ -81,6 +82,8 @@ public class PlayerSkillTableElem : DataTableElemBase
 
         iconID = data["ICON_ID"];
         iconSprite = Resources.Load<Sprite>($"SkillSprites/{iconID}");
+
+        attackSound = data["SOUND"];
     }
 }
 

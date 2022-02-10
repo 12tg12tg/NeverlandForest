@@ -31,6 +31,10 @@ public class PlayerStats : UnitBase, IAttackable
             {
                 manager.tutorial.isLose = true;
             }
+            else
+            {
+                manager.Lose();
+            }
         }
         else
         {

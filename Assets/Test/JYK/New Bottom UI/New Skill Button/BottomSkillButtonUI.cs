@@ -165,6 +165,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         else if (bm.isTutorial && !bm.tutorial.tu_12_GirlSkill1)
             bm.tutorial.tu_12_GirlSkill1 = true;
 
+        // 턴 종료 버튼 비활성화
+        bm.uiLink.turnSkipButton.interactable = false;
+
         // 계산 안되있으면 첫 계산.
         if (!isCalculateOffset)
             CalculateOffset();
@@ -200,7 +203,10 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
     {
         if (bm.isTutorial && bm.tutorial.lockSkillButtonClick)
             return;
+        // 턴 종료 버튼 다시 활성화
+        bm.uiLink.turnSkipButton.interactable = true;
         below.interactable = false;
+        bm.uiLink.turnSkipButton.interactable = true;
         bottomUiManager.ExitSkillState(true);
         StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.3f,
             () => { cover.interactable = true; }));

@@ -17,22 +17,6 @@ public class BattleSettlement : State<BattleState>
     public override void Init()
     {
         BottomUIManager.Instance.ItemListInit();
-        //몇턴.
-        manager.uiLink.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
-        {
-            var turn = ++manager.Turn;
-
-            // 웨이브 업데이트 ( 알아서 조건 확인 후웨이브 업데이트 함. )
-            manager.waveLink.UpdateWave();
-
-            manager.uiLink.PrintMessage($"{manager.Turn}턴 시작", 0.8f, () =>
-            {
-                if(manager.isPlayerFirst)
-                    FSM.ChangeState(BattleState.Player);
-                else
-                    FSM.ChangeState(BattleState.Monster);
-            });
-        });
 
         // 약초학자 실드 회복 계산
         manager.monsters.ForEach(n =>
@@ -52,6 +36,56 @@ public class BattleSettlement : State<BattleState>
 
         // 실드깍. 디버프 피깍.
         manager.AllMonsterDebuffCheck();
+
+        // 한번더 끝났는지 확인.
+        var monsterlist = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
+        if (monsterlist.Count == 0) // 진입한 몬스터 0마리
+        {
+            if (manager.waveLink.IsAllWaveClear()) // 웨이브 모두 클리어
+            {
+                manager.uiLink.turnSkipTrans.SetActive(false);
+                manager.uiLink.progressTrans.SetActive(false);
+                manager.uiLink.PrintMessage($"승리!", 2.5f, () =>
+                {
+                    // ★승리
+                    if (manager.isTutorial) // 튜토리얼
+                    {
+                        manager.tutorial.isWin = true;
+                        manager.boy.PlayWinAnimation();
+                        manager.girl.PlayWinAnimation();
+                        manager.directingLink.LandDownLantern();
+                        manager.uiLink.OpenRewardPopup();
+                    }
+                    else // 평상시
+                    {
+                        manager.uiLink.OpenRewardPopup();
+                        manager.boy.PlayWinAnimation();
+                        manager.girl.PlayWinAnimation();
+                        manager.directingLink.LandDownLantern();
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                    }
+                });
+            }
+        }
+        else
+        {
+            //몇턴.
+            manager.uiLink.PrintMessage($"{manager.Turn}턴 끝", 0.8f, () =>
+            {
+                var turn = ++manager.Turn;
+
+            // 웨이브 업데이트 ( 알아서 조건 확인 후웨이브 업데이트 함. )
+            manager.waveLink.UpdateWave();
+
+                manager.uiLink.PrintMessage($"{manager.Turn}턴 시작", 0.8f, () =>
+                {
+                    if (manager.isPlayerFirst)
+                        FSM.ChangeState(BattleState.Player);
+                    else
+                        FSM.ChangeState(BattleState.Monster);
+                });
+            });
+        }
     }
 
     public override void Release()
