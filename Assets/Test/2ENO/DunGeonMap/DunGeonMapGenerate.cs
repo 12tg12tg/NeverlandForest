@@ -13,7 +13,7 @@ public enum DirectionInho
     Count,
 }
 
-[DefaultExecutionOrder(13)]
+//[DefaultExecutionOrder(13)]
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
@@ -32,7 +32,12 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     private void Start()
     {
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
+            return;
+
         var manager = GameManager.Manager;
+
+
 
         if (manager.TutoManager == null || manager.TutoManager.mainTutorial == null)
             return;
@@ -92,7 +97,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
         }
         Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
-
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
@@ -172,24 +176,25 @@ public class DunGeonMapGenerate : MonoBehaviour
             case DunGeonEvent.Count:
                 break;
         }
+        
     }
 
     IEnumerator MapGenerateCorutine(UnityAction action)
     {
         MapInit();
+        Debug.Log("3");
         while (remainMainRoom > 0)
         {
             // 다시 초기화
             MapInit();
+            Debug.Log("4");
             CreateMapArray(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
             yield return null;
         }
-
-
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DungeonEventGenerate(dungeonRoomArray);
-
+        
         action?.Invoke();
 
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);

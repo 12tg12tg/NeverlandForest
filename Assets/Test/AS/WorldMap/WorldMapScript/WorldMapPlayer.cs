@@ -98,6 +98,8 @@ public class WorldMapPlayer : MonoBehaviour
         RandomEventManager.Instance.init();
         Vars.UserData.isFirst = false;
 
+        Debug.Log("1");
+
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
         {
@@ -178,7 +180,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentPos = currentPos;
         data.goalPos = goalPos;
         data.startPos = startPos;
-
+        Debug.Log("0");
         DungeonEnter(false, goal, goalIndex);
     }
     private void PlayerClearWorldMap()

@@ -12,7 +12,7 @@ public class UserData
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     */
     //Scene Datas
-    public MainTutorialStage mainTutorial;
+    public MainTutorialStage mainTutorial = MainTutorialStage.Clear;
     public ContentsTutorialProceed contentsTutorial;
 
     //Item Info

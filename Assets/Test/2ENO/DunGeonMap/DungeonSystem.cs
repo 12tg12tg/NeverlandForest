@@ -100,6 +100,8 @@ public class DungeonSystem : MonoBehaviour
 
     public void Init()
     {
+        Debug.Log("10");
+
         DungeonCanvas.SetActive(true);
         eventObjectGenerate.Init();
         minimapCam.Init();
@@ -206,7 +208,7 @@ public class DungeonSystem : MonoBehaviour
         {
             if (moveTutorial == null)
                 return;
-            ChangeRoomEvent(true, true);
+            //ChangeRoomEvent(true, false);
         }
         //else if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Camp)
         //{
