@@ -147,9 +147,9 @@ public class WorldMapMaker : MonoBehaviour
             yield return null;
         }
 
-        action.Invoke();
         PaintLink();
         Save();
+        action?.Invoke();
     }
     private void MapCreateNode()
     {

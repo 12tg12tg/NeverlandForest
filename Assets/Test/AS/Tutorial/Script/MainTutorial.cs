@@ -29,6 +29,13 @@ public class MainTutorial
     {
         // 저장된 데이터 가져오기
         MainTutorialStage = Vars.UserData.mainTutorial;
+        MainTutorialStage =
+            MainTutorialStage == MainTutorialStage.Event ||
+            MainTutorialStage == MainTutorialStage.Stamina ? 
+            MainTutorialStage.Move : 
+            MainTutorialStage;
+        Vars.UserData.mainTutorial = MainTutorialStage;
+
         //MainTutorialStage = MainTutorialStage.Clear;
     }
 

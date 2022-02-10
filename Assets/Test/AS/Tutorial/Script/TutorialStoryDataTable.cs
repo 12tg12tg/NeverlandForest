@@ -10,6 +10,7 @@ public class TutorialStoryDataTableElem : DataTableElemBase
     public string description;
     public string color;
     public bool option;
+    public bool typing;
     public TutorialStoryDataTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
@@ -17,6 +18,7 @@ public class TutorialStoryDataTableElem : DataTableElemBase
         description = data["DESC"];
         color = data["COLOR"];
         option = Convert.ToBoolean(data["OPTION"]);
+        typing = Convert.ToBoolean(data["TYPING"]);
     }
 }
 
