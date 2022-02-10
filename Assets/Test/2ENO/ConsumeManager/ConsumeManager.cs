@@ -50,16 +50,17 @@ public static class ConsumeManager
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ConsumableData);
     }
 
-    public static void GetthingHunger(int hungercount)
+    public static void GetthingHunger(float hungercount)
     {
-        if (Vars.UserData.uData.ChangeableMaxStamina > 0)
+        Vars.UserData.uData.Hunger += hungercount;
+        if (Vars.UserData.uData.Hunger > 100)
         {
-            Vars.UserData.uData.Hunger += hungercount;
+            Vars.UserData.uData.Hunger = 100;
             ChangeableMaxStaminChange();
         }
         SaveConsumableData();
     }
-    public static void RecoveryHunger(int hungercount)
+    public static void RecoveryHunger(float hungercount)
     {
         Vars.UserData.uData.Hunger -= hungercount;
         if (Vars.UserData.uData.Hunger < 0)
@@ -114,6 +115,8 @@ public static class ConsumeManager
     public static void GettingTired(float gettingTired)
     {
         Vars.UserData.uData.Tiredness -= gettingTired;
+        GetthingHunger(gettingTired);
+
         if (Vars.UserData.uData.Tiredness < 0)
         {
             Vars.UserData.uData.Tiredness = 0;
