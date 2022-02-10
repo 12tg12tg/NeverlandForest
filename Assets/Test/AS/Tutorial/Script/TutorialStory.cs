@@ -14,16 +14,28 @@ public struct TutorialStory
             var data = stroyTable.GetData<TutorialStoryDataTableElem>(stroyTable.ids[i]);
             var description = data.description;
             var colorData = data.color;
+            var option = data.option;
             if(colorData.Length > 0)
             {
                 ColorUtility.TryParseHtmlString(colorData, out var color);
                 text.color = color;
             }
+
+            text.text += option ? @"""" : "";
+
             for (int j = 0; j < description.Length; j++)
             {
-                text.text += description[j];
+                if(description[j].Equals('n'))
+                {
+                    text.text += "\n";
+                }
+                else
+                    text.text += description[j];
                 yield return new WaitForSeconds(0.1f);
             }
+
+            text.text += option ? @"""" : "";
+
             yield return new WaitForSeconds(1f);
 
             float time = 1f;

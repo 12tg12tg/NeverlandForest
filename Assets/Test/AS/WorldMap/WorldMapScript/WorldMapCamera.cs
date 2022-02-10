@@ -22,8 +22,8 @@ public class WorldMapCamera : MonoBehaviour
     {
         if(!UseMiniMap)
         {
-            startX = 0f;
-            distance = 30f;
+            startX = 20f;
+            distance = 40f;
             maxDistance = 120f;
             transform.position = new Vector3(playerPos.position.x + startX, transform.position.y, transform.position.z);
         }
