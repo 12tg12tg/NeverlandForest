@@ -36,7 +36,7 @@ public class UserData
     public bool isFirst = true;
 
     // 튜토리얼 던전
-    public bool isTutorialDungeon;
+    public bool isTutorialDungeon = true;
     public DungeonData tutorialDungeonData = new DungeonData();
 
     //Experienced Recipe

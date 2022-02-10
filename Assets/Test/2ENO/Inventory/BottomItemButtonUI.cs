@@ -391,6 +391,18 @@ public class BottomItemButtonUI : MonoBehaviour
                     SelectActive(true);
                 }
                 break;
+            case GameState.Tutorial:
+                bottomUImanager.selectItem = dataItem;
+                bottomUImanager.selectItemSlotNum = slotNum;
+                bottomUImanager.popUpWindow.gameObject.SetActive(true);
+                bottomUImanager.isPopUp = true;
+                bottomUImanager.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = bottomUImanager.popUpWindow.position;
+                newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                bottomUImanager.popUpWindow.position = newVector;
+                bottomUImanager.itemButtons.ForEach(n => n.SelectActive(false));
+                SelectActive(true);
+                break;
         }
     }
 }

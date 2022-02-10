@@ -58,6 +58,14 @@ public class MainRoomTutorial : MonoBehaviour
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
+
+        if(tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+        {
+            TutorialStep = 0;
+            delay = 0f;
+            tutorialManager.CheckMainTutorial();
+            StartCoroutine(CoTutorialEnd());
+        }
     }
 
     private void Update()
@@ -77,6 +85,31 @@ public class MainRoomTutorial : MonoBehaviour
             }
         }
     }
+    public void EndTutorialExplain()
+    {
+        SetActive(false, true);
+        var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "튜토리얼 종료! 오른쪽으로 이동해서 다음맵으로 진행해보세요";
+    }
+
+    public void TutorialTheEnd()
+    {
+        SetActive(false);
+        Destroy(this);
+    }
+
+    public IEnumerator CoTutorialEnd()
+    {
+        isMainRoomTutorial = true;
+        EndTutorialExplain();
+
+        yield return new WaitWhile(() => TutorialStep < 1);
+
+        isMainRoomTutorial = false;
+        TutorialTheEnd();
+    }
+
 
     public IEnumerator CoMainRoomTutorial()
     {
@@ -236,11 +269,13 @@ public class MainRoomTutorial : MonoBehaviour
         dialogText.text = "재료 사용 버튼 설명";
     }
 
+
+
+
     public void MainRoomTutorialEnd()
     {
         SetActive(false);
         dialogBoxObj.down.SetActive(false);
         dialogBox.pivot = new Vector2(0f, 0.5f);
-        Destroy(this);
     }
 }

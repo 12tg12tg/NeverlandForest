@@ -29,6 +29,12 @@ public class DunGeonMapGenerate : MonoBehaviour
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
 
+    private void Start()
+    {
+        if(Vars.UserData.isTutorialDungeon)
+            TutorialDungeonGenerate();
+    }
+
     public void OnGUI()
     {
         if (GUI.Button(new Rect(100, 300, 100, 75), "tutorialStart"))
@@ -39,7 +45,6 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void TutorialDungeonGenerate()
     {
-        Vars.UserData.isTutorialDungeon = true;
         CreateTutorialMapArray();
         Vars.UserData.tutorialDungeonData.dungeonRoomArray = tutorialRoomArray;
 

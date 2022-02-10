@@ -50,7 +50,6 @@ public class DungeonSystem : MonoBehaviour
     {
         instance = this;
         EndInit();
-        //Init();
     }
     public void EndInit()
     {
@@ -194,8 +193,8 @@ public class DungeonSystem : MonoBehaviour
         else
             campButton.interactable = false;
 
-        //TODO: 테스트용 코드
-        if (Vars.UserData.isTutorialDungeon)
+
+        if (Vars.UserData.isTutorialDungeon && tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Battle)
             ChangeRoomEvent(true, true);
     }
 
@@ -213,13 +212,11 @@ public class DungeonSystem : MonoBehaviour
 
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
-                //Vars.UserData.curDungeonIndex = Vector2.zero;
-                //Vars.UserData.AllDungeonData.Clear();
                 //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-
                 if (Vars.UserData.isTutorialDungeon)
                 {
                     dungeonSystemData = null;
+                    Vars.UserData.isTutorialDungeon = false;
                     // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
                 }
                 else
@@ -272,7 +269,14 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
-        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        if (Vars.UserData.isTutorialDungeon)
+        {
+            Vars.UserData.tutorialDungeonData = dungeonSystemData;
+        }
+        else
+        {
+            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        }
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
         //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
