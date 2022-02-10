@@ -79,7 +79,7 @@ public class GoCamp : MonoBehaviour
                         BottomUIManager.Instance.ItemButtonInit();
                     }
 
-                    if(Vars.UserData.isTutorialDungeon &&
+                    if(Vars.UserData.mainTutorial != MainTutorialStage.Clear &&
                         GameManager.Manager?.TutoManager?.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina)
                     {
                         GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();

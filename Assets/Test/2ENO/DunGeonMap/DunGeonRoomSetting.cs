@@ -158,6 +158,7 @@ public static class DunGeonRoomSetting
     public static void DungeonRoadCount(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
     {
         int curIdx = dungeonRoom.roomIdx;
+
         while(dungeonArray[curIdx].nextRoomIdx != -1)
         {
             int roadCount = 0;
@@ -179,6 +180,7 @@ public static class DunGeonRoomSetting
     {
         int roadCount;
         int curIdx = dungeonRoom.roomIdx;
+
         while (dungeonArray[curIdx].nextRoomIdx != -1)
         {
             if (dungeonArray[curIdx].RoomType == DunGeonRoomType.MainRoom)

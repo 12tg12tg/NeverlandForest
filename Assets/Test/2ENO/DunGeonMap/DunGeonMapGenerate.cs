@@ -13,7 +13,6 @@ public enum DirectionInho
     Count,
 }
 
-[DefaultExecutionOrder(13)]
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
@@ -29,11 +28,10 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     private void Start()
     {
-        var manager = GameManager.Manager;
-
-        if (manager.TutoManager == null || manager.TutoManager.mainTutorial == null)
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             return;
 
+        var manager = GameManager.Manager;
         if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
             TutorialDungeonGenerate();
@@ -52,7 +50,6 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void DungeonGenerate(int range , DungeonRoom[] mapArrayData, UnityAction action)
     {
-        Debug.Log(range);
         switch (range)
         {
             case 1:
@@ -86,13 +83,20 @@ public class DunGeonMapGenerate : MonoBehaviour
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
         int curIdx;
-        if (Vars.UserData.isTutorialDungeon)
+        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             curIdx = 0;
         else
             curIdx = Vars.UserData.dungeonStartIdx;
 
-        while(dungeonArray[curIdx].nextRoomIdx != -1)
+        int except = 0;
+        while (dungeonArray[curIdx].nextRoomIdx != -1)
         {
+            except++;
+            if (except > 300)
+            {
+                Debug.Log("무한루프오류");
+                return;
+            }
             // 현재방의 이벤트 리스트 (1개~2개) 돌면서 이벤트 오브젝트 정보 셋
             for (int i = 0; i < dungeonArray[curIdx].eventList.Count; i++)
             {
@@ -133,7 +137,7 @@ public class DunGeonMapGenerate : MonoBehaviour
                     var gatheringData = new GatheringData();
                     gatheringData.eventType = DunGeonEvent.Gathering;
                     gatheringData.roomIndex = curRoom.roomIdx;
-                    if (Vars.UserData.isTutorialDungeon)
+                    if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                         gatheringData.gatheringtype = GatheringObjectType.Pit;
                     else
                         gatheringData.gatheringtype = (GatheringObjectType)Random.Range(0, 4);
@@ -160,24 +164,25 @@ public class DunGeonMapGenerate : MonoBehaviour
             case DunGeonEvent.Count:
                 break;
         }
+        
     }
 
     IEnumerator MapGenerateCorutine(UnityAction action)
     {
         MapInit();
+        Debug.Log("3");
         while (remainMainRoom > 0)
         {
             // 다시 초기화
             MapInit();
+            Debug.Log("4");
             CreateMapArray(Vars.UserData.dungeonStartIdx, -1, DirectionInho.Right, 0);
             yield return null;
         }
-
-
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DungeonEventGenerate(dungeonRoomArray);
-
+        
         action?.Invoke();
     }
     public void MapInit()
