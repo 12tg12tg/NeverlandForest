@@ -201,12 +201,19 @@ public class DungeonSystem : MonoBehaviour
         else
             campButton.interactable = false;
 
-        TutorialStart();
+        if(Vars.UserData.mainTutorial == MainTutorialStage.Move)
+        {
+            ChangeRoomEvent(true, false);
+        }
+        else if(Vars.UserData.mainTutorial != MainTutorialStage.Clear)
+        {
+            TutorialStart();
+        }
     }
 
     public void TutorialStart()
     {
-        if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             return;
         switch (Vars.UserData.mainTutorial)
         {
@@ -236,6 +243,7 @@ public class DungeonSystem : MonoBehaviour
             if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             {
                 TutorialStart();
+                GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
             }
 
             eventObjectGenerate.EventObjectClear();
@@ -282,6 +290,7 @@ public class DungeonSystem : MonoBehaviour
                 if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                 {
                     TutorialStart();
+                    GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
                 }
 
                 ConsumeManager.TimeUp(0, 1);

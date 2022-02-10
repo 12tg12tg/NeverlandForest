@@ -47,7 +47,7 @@ public class GatheringTutorial : MonoBehaviour
     public RectTransform itemList;
     public RectTransform closeBtn;
 
-    private void Start()
+    private void Awake()
     {
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;
