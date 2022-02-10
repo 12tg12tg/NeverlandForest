@@ -309,8 +309,8 @@ public class BottomItemButtonUI : MonoBehaviour
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if (battleManager.FSM.curState == BattleState.Start && IsInstallation
-                    || battleManager.FSM.curState == BattleState.Player && IsConsumable)
+                if ((battleManager.FSM.curState == BattleState.Start
+                    || battleManager.FSM.curState == BattleState.Player) && !isDisable)
                 {
                     bottomUImanager.selectItem = dataItem;
                     bottomUImanager.popUpWindow.gameObject.SetActive(true);

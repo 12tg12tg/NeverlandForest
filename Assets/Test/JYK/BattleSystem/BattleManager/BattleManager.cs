@@ -109,7 +109,7 @@ public class BattleManager : MonoBehaviour
                 break;
         }
 
-        GameManager.Manager.Production.FadeOut();
+        GameManager.Manager.Production?.FadeOut();
     }
 
     // √ ±‚»≠
