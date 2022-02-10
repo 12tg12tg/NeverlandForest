@@ -24,8 +24,10 @@ public class WorldMapManager : MonoBehaviour
     [Header("UI")]
     public GameObject backDungeonBt;
 
-    public void Init()
+    public void Awake()
     {
+        worldMapCamera.Init();
+
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapData);
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
@@ -46,25 +48,25 @@ public class WorldMapManager : MonoBehaviour
             worldMapMaker.LoadWorldMap(loadData);
             NodeLinkToPlayer();
             player.ComeBackWorldMap();
-            worldMapCamera.FollowPlayer(() =>
-            {
-                worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
-            });
-            if (ground != null)
-                ground.Load();
-            if ((int)player.CurrentIndex.y >= 1)
-                backDungeonBt.SetActive(true);
-            //GameManager.Manager.Production.FadeOut(() =>
+            //worldMapCamera.FollowPlayer(() =>
             //{
-            //    worldMapCamera.FollowPlayer(() =>
-            //    {
-            //        worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
-            //    });
-            //    if (ground != null)
-            //        ground.Load();
-            //    if ((int)player.CurrentIndex.y >= 1)
-            //        backDungeonBt.SetActive(true);
+            //    worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
             //});
+            //if (ground != null)
+            //    ground.Load();
+            //if ((int)player.CurrentIndex.y >= 1)
+            //    backDungeonBt.SetActive(true);
+            GameManager.Manager.Production.FadeOut(() =>
+            {
+                worldMapCamera.FollowPlayer(() =>
+                {
+                    worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
+                });
+                if (ground != null)
+                    ground.Load();
+                if ((int)player.CurrentIndex.y >= 1)
+                    backDungeonBt.SetActive(true);
+            });
         }
     }
 
