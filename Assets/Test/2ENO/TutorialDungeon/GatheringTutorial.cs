@@ -163,7 +163,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = pos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "채집 설명";
+        dialogText.text = "던전 내 채집 할 수 있는 요소가 있어. 터치 해 보자";
     }
 
     public void GatheringStartExplain()
@@ -198,7 +198,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = pos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "채집 시작버튼 설명";
+        dialogText.text = "채집은 맨손 혹은 도구를 사용 할 수 있어";
     }
     // + 165 - 125
     public void GatheringToolUse()
@@ -226,7 +226,7 @@ public class GatheringTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "채집아이템 획득 방법 설명";
+        dialogText.text = "채집은 맨손을 사용하거나";
     }
 
     //public void GatheringToolNoUse()
@@ -283,7 +283,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = pos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "도구 사용";
+        dialogText.text = "더 큰 보상을 위해 도구를 사용 할 수 있어";
     }
 
     public void GatheringReWardExplain()
@@ -308,7 +308,7 @@ public class GatheringTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "보상 설명";
+        dialogText.text = "채집 대상에 따라 받을 수 있는 보상이 달라";
     }
 
     public void GatheringReWardItemExplain()
@@ -341,7 +341,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "보상 아이템 선택 설명";
+        dialogText.text = "보상 아이템은 선택하거나 모두 받기를 할 수 있어";
     }
 
     public void GatheringGetItemExplain()
@@ -373,7 +373,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "아이템 획득 설명";
+        dialogText.text = "받기 버튼을 눌러보자";
     }
 
     public void GatheringItemListExplain()
@@ -401,7 +401,7 @@ public class GatheringTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "아이템 리스트 설명";
+        dialogText.text = "아래의 아이템 리스트에 옮겨진 것을 확인 할 수 있어";
     }
 
     public void GatheringEndTouch()
@@ -434,7 +434,7 @@ public class GatheringTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "닫기 버튼 설명";
+        dialogText.text = "닫기 버튼으로 보상 창을 나갈 수 있어";
     }
 
     public void GatheringTutorialEnd()
