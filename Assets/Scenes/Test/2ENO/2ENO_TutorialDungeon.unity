@@ -22633,9 +22633,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f9b91e350a1e84daf94c085ed91e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCamera: {fileID: 1270512238}
-  uiCamera2: {fileID: 2146383860}
-  uiCamera3: []
+  cameras:
+  - {fileID: 2146383860}
+  - {fileID: 1270512238}
+  - {fileID: 810250009}
 --- !u!114 &2041361948
 MonoBehaviour:
   m_ObjectHideFlags: 0

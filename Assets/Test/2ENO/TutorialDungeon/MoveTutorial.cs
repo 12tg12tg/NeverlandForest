@@ -39,8 +39,9 @@ public class MoveTutorial : MonoBehaviour
     [Header("Æ÷Áö¼Ç Å¸°Ù")]
     public RectTransform time;
     public RectTransform lantern;
-    private void Awake()
+    private void Start()
     {
+        Debug.Log("asdasdsad");
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;
         blackout = tutorialTool.blackout;

@@ -4960,6 +4960,9 @@ MonoBehaviour:
   DungeonCanvas: {fileID: 1239936674}
   randomEventTutorial: {fileID: 1731740298}
   worldMap: {fileID: 1995851672}
+  moveTutorial: {fileID: 0}
+  gatherTutorial: {fileID: 0}
+  mainRoomTutorial: {fileID: 0}
 --- !u!1 &390200373
 GameObject:
   m_ObjectHideFlags: 0
@@ -5465,7 +5468,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9076151087642714304, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9076151087642714306, guid: eca17e82b9bb54748bb48fec9654a126, type: 3}
       propertyPath: cm
@@ -22775,7 +22778,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.38, y: -3.83}
+  m_AnchoredPosition: {x: 4.38, y: -3.8300018}
   m_SizeDelta: {x: -8.76, y: -7.66}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1880367654
@@ -24344,7 +24347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1873224512033909253, guid: 20ef06d9451487142bfc0e01d1453487, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20ef06d9451487142bfc0e01d1453487, type: 3}
@@ -24702,9 +24705,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f9b91e350a1e84daf94c085ed91e81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uiCamera: {fileID: 1740014750}
-  uiCamera2: {fileID: 1289931475}
-  uiCamera3: []
+  cameras:
+  - {fileID: 1289931475}
+  - {fileID: 1740014750}
+  - {fileID: 312235309}
 --- !u!224 &2132954516 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4315756652363492277, guid: ac39c646286170445bf44a0f5a21ef69, type: 3}

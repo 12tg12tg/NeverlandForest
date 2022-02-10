@@ -29,7 +29,6 @@ public class Title : MonoBehaviour
                 manager.TutoManager.Init();
             }, () => {
                 manager.Production.black.SetActive(true);
-                Debug.Log(manager.Production.black.activeSelf);
             }));
         }
     }
