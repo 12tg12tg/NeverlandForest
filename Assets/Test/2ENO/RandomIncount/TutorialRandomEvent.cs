@@ -7,6 +7,7 @@ using TMPro;
 
 public class TutorialRandomEvent : MonoBehaviour
 {
+    public TutorialTool tutorialTool;
     public bool isRandomEventTutorial = false;
     public int TutorialStep { get; set; } = 0;
 
@@ -27,8 +28,6 @@ public class TutorialRandomEvent : MonoBehaviour
     private readonly float boxHeight = 100f;
 
     private DialogBoxObject dialogBoxObj;
-
-    private TutorialManager tutorialManager;
 
     public float delay;
 
@@ -53,12 +52,11 @@ public class TutorialRandomEvent : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
-        dialogBox = tutorialManager.dialogBox;
-        handIcon = tutorialManager.handIcon;
-        blackout = tutorialManager.blackout;
-        rect = tutorialManager.rect;
-        circle = tutorialManager.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
@@ -97,7 +95,7 @@ public class TutorialRandomEvent : MonoBehaviour
 
     public IEnumerator CoRandomEventTutorial()
     {
-        tutorialManager.BlackPanelOn();
+        tutorialTool.BlackPanelOn();
         isRandomEventTutorial = true;
 
         RandomEventDescExplain();
@@ -137,7 +135,7 @@ public class TutorialRandomEvent : MonoBehaviour
 
         RandomEventEnd();
         isRandomEventTutorial = false;
-        tutorialManager.BlackPanelOff();
+        tutorialTool.BlackPanelOff();
     }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
@@ -216,7 +214,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = selectButton1;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         UnityAction<int> tempAction = RandomEventManager.Instance.tutorialEvent.SelectFeedBack;
@@ -334,7 +332,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = closeButtton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -393,7 +391,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = returnButton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -425,7 +423,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = allget;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -457,7 +455,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = closeButtton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;

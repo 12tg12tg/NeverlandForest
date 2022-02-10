@@ -15,6 +15,7 @@ public class StaminaBar : MonoBehaviour
     void Update()
     {
         slider.value = Vars.UserData.uData.Tiredness / Vars.maxStamina;
+        ChangeableStaminaChange();
     }
     private void ChangeableStaminaChange()
     {
@@ -26,6 +27,16 @@ public class StaminaBar : MonoBehaviour
 
     public void OnGUI()
     {
+
+       /* if (GUI.Button(new Rect(100, 100, 100, 75), "Im hungry"))
+        {
+            ConsumeManager.GetthingHunger(5); //최대치 감소
+            ChangeableStaminaChange();
+
+            //ConsumeManager.RecoveryBonFire(0, 1);
+            //SetBonTime();
+        }*/
+
         /*if (GUILayout.Button("RecoverTiredness"))
         {
             ConsumeManager.RecoveryTiredness();

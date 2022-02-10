@@ -133,7 +133,6 @@ public class CampManager : MonoBehaviour
             CreateMiniMapObject();
             SetMinimapCamera();
         }
-
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -213,6 +212,8 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(true);
         diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenSleeping();
+        diaryManager.curdiaryType = DiaryType.Sleep;
+
         newBottomUi.SetActive(false);
     }
     public void CloseSleepInCamp()
@@ -271,6 +272,7 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(true);
         diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenCooking();
+        diaryManager.curdiaryType = DiaryType.Cook;
         newBottomUi.SetActive(false);
     }
     public void StartCooking()
@@ -323,6 +325,8 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(true);
         diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenGatheringInCamp();
+        diaryManager.curdiaryType = DiaryType.GatheringInCamp;
+
         newBottomUi.SetActive(false);
     }
     public void CloseGatheringInCamp()
@@ -420,6 +424,8 @@ public class CampManager : MonoBehaviour
         diaryManager.gameObject.SetActive(true);
         diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenProduce();
+        diaryManager.curdiaryType = DiaryType.Craft;
+
         newBottomUi.SetActive(false);
     }
 
@@ -694,23 +700,19 @@ public class CampManager : MonoBehaviour
 
         }
     }
-    /* public void OnGUI()
-     {
-         if (GUI.Button(new Rect(100, 100, 100, 75), "BonFireUp"))
-         {
-             ConsumeManager.RecoveryBonFire(0, 1);
-             SetBonTime();
-         }
-         if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
-         {
-             ConsumeManager.CostDataReset();
-         }
-     }*/
+    public void OnGUI()
+    {
+        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
+        {
+            ConsumeManager.CostDataReset();
+        }
+    }
     public void QuickButtonClick()
     {
         if (GameManager.Manager.State == GameState.Tutorial)
         {
             camptutorial.IsquitbuttonClick = true;
         }
+        diaryManager.curdiaryType = DiaryType.None;
     }
 }

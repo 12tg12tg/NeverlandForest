@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
+public enum DiaryType { None, Craft, Cook, Sleep, GatheringInCamp}
+
 public class DiaryManager : MonoBehaviour
 {
     [Header("태그관련")]
@@ -63,6 +66,8 @@ public class DiaryManager : MonoBehaviour
    
     private static DiaryManager instance;
     public static DiaryManager Instacne => instance;
+
+    public DiaryType curdiaryType = DiaryType.None;
 
     public void Start()
     {
