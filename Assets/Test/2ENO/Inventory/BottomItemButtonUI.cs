@@ -45,36 +45,6 @@ public class BottomItemButtonUI : MonoBehaviour
             disableImg.color = Color.clear;
         }
     }
-
-
-
-    private bool isInstallation;
-    public bool IsInstallation
-    {
-        get => isInstallation;
-        set
-        {
-            isInstallation = value;
-            if(isInstallation)
-                disableImg.color = Color.blue;
-            else
-                disableImg.color = Color.white;
-        }
-    }
-
-    private bool isConsumable;
-    public bool IsConsumable
-    {
-        get => isConsumable;
-        set
-        {
-            isConsumable = value;
-            if (isConsumable)
-                disableImg.color = Color.gray;
-            else
-                disableImg.color = Color.white;
-        }
-    }
     private bool isBurn;
     public bool IsBurn
     {
@@ -109,8 +79,6 @@ public class BottomItemButtonUI : MonoBehaviour
             count.text = string.Empty;
             SelectActive(false);
             DisableItem(false);
-            IsConsumable = false;
-            IsInstallation = false;
             return;
         }
 
