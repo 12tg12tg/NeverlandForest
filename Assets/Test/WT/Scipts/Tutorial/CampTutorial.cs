@@ -245,7 +245,7 @@ public class CampTutorial : MonoBehaviour
         CampTutorialEnd();
 
         //인호 던전 튜토리얼 신으로 가야됨.
-        //GameManager.Manager.LoadScene(GameScene.Dungeon);
+        GameManager.Manager.LoadScene(GameScene.TutorialDungeon);
         Vars.UserData.isTutorialCamp = false;
 
     }

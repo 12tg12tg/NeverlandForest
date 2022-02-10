@@ -15,6 +15,7 @@ using CraftSaveDataCurrentVersion = CraftSaveData_0;
 using RandomEventSaveDataCurrentVersion = RandomEventSaveData_0;
 using ExperienceSaveDataCurrentVersion = ItemExperienceSaveData_0;
 using BattleSaveDataCurrentVersion = BattleSaveData_0;
+using SceneSaveDataCurrentVersion = SceneSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -49,7 +50,7 @@ public static class SaveLoadSystem
         RandomEvent,
         ItemExperience,
         Battle,
-
+        Scene,
 
         Count
     }
@@ -324,6 +325,14 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
+            case SaveType.Scene:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<SceneSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -396,6 +405,12 @@ public static class SaveLoadSystem
                 return data;
             case SaveType.Battle:
                 while (!(data is BattleSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
+            case SaveType.Scene:
+                while (!(data is SceneSaveDataCurrentVersion))
                 {
                     data = data.VersionUp();
                 }

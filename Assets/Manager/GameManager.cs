@@ -20,7 +20,7 @@ public enum GameOverType
 
 public enum GameScene
 {
-    World, Dungeon, Hunt, Battle, Camp
+    World, Dungeon, Hunt, Battle, Camp, TutorialDungeon
 }
 
 public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
@@ -33,7 +33,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     private static GameManager gm;
     private WorldMapManager wm;
     private CameraManager cm;
-    private TutorialManager tm;
+    [SerializeField] private TutorialManager tm;
+    [SerializeField] private Production pd;
 
     // Vars
     private GameState state;
@@ -123,6 +124,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             case GameScene.Camp:
                 SceneManager.LoadScene("JYK_Test_Main");
                 break;
+            case GameScene.TutorialDungeon:
+                SceneManager.LoadScene("2ENO_TutorialDungeon");
+                break;
         }
     }
     private void ReleaseValue()
@@ -203,11 +207,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     {
         get
         {
-            if (tm == null)
-            {
-                var go = (TutorialManager)FindObjectOfType(typeof(TutorialManager));
-                tm = go;
-            }
             return tm;
         }
     }
@@ -219,5 +218,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public static GameManager Manager => gm;
     public MultiTouch MultiTouch => mt;
     public SaveLoadManager SaveLoad => sm;
+    public Production Production => pd;
 
 }

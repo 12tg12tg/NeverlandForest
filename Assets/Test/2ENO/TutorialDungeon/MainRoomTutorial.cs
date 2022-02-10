@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
+[DefaultExecutionOrder(12)]
 
 public class MainRoomTutorial : MonoBehaviour
 {
@@ -59,12 +60,11 @@ public class MainRoomTutorial : MonoBehaviour
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
 
-        if(tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+        if(tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Clear)
         {
             TutorialStep = 0;
             delay = 0f;
             tutorialManager.CheckMainTutorial();
-            StartCoroutine(CoTutorialEnd());
         }
     }
 

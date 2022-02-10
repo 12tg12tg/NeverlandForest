@@ -9,12 +9,16 @@ using UnityEngine.SceneManagement;
 public enum MonsterActionType { None, Attack, Move }
 public enum PlayerType { None, Boy, Girl }
 public enum ActionType { Skill, Item }
+public enum BattleInitState { None, Dungeon, Tutorial, Bluemoon }
 
-
+[DefaultExecutionOrder(10)]
 public class BattleManager : MonoBehaviour
 {
     private static BattleManager instance;
     public static BattleManager Instance { get => instance; }
+
+    //Battle Static
+    public static BattleInitState initState;
 
     //Unit
     public List<MonsterUnit> monsters = new List<MonsterUnit>();
@@ -88,13 +92,24 @@ public class BattleManager : MonoBehaviour
         boy.command = boyInput;
         girl.command = girlInput;
 
-        //// 플레이어 콜라이더 제거
-        //var cols = boy.GetComponentsInChildren<Collider>();
-        //foreach (var col in cols)
-        //    col.enabled = false;
-        //cols = girl.GetComponentsInChildren<Collider>();
-        //foreach (var col in cols)
-        //    col.enabled = false;
+        //시작
+        switch (initState)
+        {
+            case BattleInitState.None:
+                Init(false, false);
+                break;
+            case BattleInitState.Dungeon:
+                Init(false, true);
+                break;            
+            case BattleInitState.Tutorial:
+                tutorial.StartDutorial();
+                break;
+            case BattleInitState.Bluemoon:
+                Init(true);
+                break;
+        }
+
+        GameManager.Manager.Production.FadeOut();
     }
 
     // 초기화

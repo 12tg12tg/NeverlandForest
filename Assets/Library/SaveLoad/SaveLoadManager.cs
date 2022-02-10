@@ -14,6 +14,8 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     RandomEventSaveData_0 randomEvent;
     ItemExperienceSaveData_0 itemExperienceSaveData;
     BattleSaveData_0 battleData;
+    SceneSaveData_0 sceneData;
+
     private void Start()
     {
         //SaveLoadSystem.Init();	
@@ -55,6 +57,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Battle:
                 SaveBattleData();
                 break;
+            case SaveLoadSystem.SaveType.Scene:
+                SaveSceneData();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -93,6 +98,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Battle:
                 LoadBattleData();
+                break;
+            case SaveLoadSystem.SaveType.Scene:
+                LoadSceneData();
                 break;
         }
     }
@@ -216,6 +224,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
     }
+    private void SaveSceneData()
+    {
+        sceneData = new SceneSaveData_0();
+        sceneData.MainTutorialStage = Vars.UserData.mainTutorial;
+        sceneData.contentsTutorialProceed = Vars.UserData.contentsTutorial;
+
+        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
+    }
 
     private void LoadPlayer()
     {
@@ -337,7 +353,22 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         }
         else
         {
-            Vars.UserData.arrowType = ArrowType.Normal; 
+            Vars.UserData.arrowType = ArrowType.Normal;
+        }
+    }
+
+    private void LoadSceneData()
+    {
+        sceneData = (SceneSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
+        if (sceneData != null)
+        {
+            Vars.UserData.mainTutorial = sceneData.MainTutorialStage;
+            Vars.UserData.contentsTutorial = sceneData.contentsTutorialProceed;
+        }
+        else
+        {
+            Vars.UserData.mainTutorial = MainTutorialStage.Story;
+            Vars.UserData.contentsTutorial = new ContentsTutorialProceed();
         }
     }
 }

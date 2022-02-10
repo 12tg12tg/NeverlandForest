@@ -13,7 +13,7 @@ public class BottomItemButtonUI : MonoBehaviour
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI count;
     [SerializeField] private Image selectedImg;
-    [SerializeField] private Image type;
+    [SerializeField] private Image disableImg;
     [SerializeField] private Button ownButton;
     [SerializeField] private Image shadeCover;
     private int slotNum;
@@ -32,6 +32,20 @@ public class BottomItemButtonUI : MonoBehaviour
         }
     }
 
+    private bool isDisable;
+    public void DisableItem(bool disable)
+    {
+        isDisable = disable;
+        if(isDisable)
+        {
+            disableImg.color = Color.white;
+        }
+        else
+        {
+            disableImg.color = Color.clear;
+        }
+    }
+
 
 
     private bool isInstallation;
@@ -42,39 +56,23 @@ public class BottomItemButtonUI : MonoBehaviour
         {
             isInstallation = value;
             if(isInstallation)
-                type.color = Color.blue;
+                disableImg.color = Color.blue;
             else
-                type.color = Color.white;
+                disableImg.color = Color.white;
         }
     }
 
     private bool isConsumable;
     public bool IsConsumable
     {
-        //get
-        //{
-        //    if (dataItem != null)
-        //    {
-        //        if (dataItem.ItemTableElem.stat_Hp > 0)
-        //        {
-        //            isConsumable = true;
-        //            type.color = Color.gray;
-        //        }
-        //        else
-        //        {
-        //            isConsumable = false;
-        //        }
-        //    }
-        //    return isConsumable;
-        //}
         get => isConsumable;
         set
         {
             isConsumable = value;
             if (isConsumable)
-                type.color = Color.gray;
+                disableImg.color = Color.gray;
             else
-                type.color = Color.white;
+                disableImg.color = Color.white;
         }
     }
     private bool isBurn;
@@ -85,9 +83,9 @@ public class BottomItemButtonUI : MonoBehaviour
         {
             isBurn = value;
             if (isBurn)
-                type.color = Color.red;
+                disableImg.color = Color.red;
             else
-                type.color = Color.white;
+                disableImg.color = Color.white;
         }
     }
 
@@ -110,6 +108,7 @@ public class BottomItemButtonUI : MonoBehaviour
             icon.color = Color.clear;
             count.text = string.Empty;
             SelectActive(false);
+            DisableItem(false);
             IsConsumable = false;
             IsInstallation = false;
             return;
@@ -147,16 +146,17 @@ public class BottomItemButtonUI : MonoBehaviour
                 if (BattleManager.Instance.FSM.curState == BattleState.Start
                      && BattleManager.Instance.isPlayerFirst)
                 {
-                    if (elem.type == "INSTALLATION" && (elem.id != $"ITEM_{18}"))
+                    if (!(elem.type == "INSTALLATION" && (elem.id != $"ITEM_{18}")))
                     {
-                        IsInstallation = true;
+                        DisableItem(true);
                     }
+
                 }
                 else if(BattleManager.Instance.FSM.curState == BattleState.Player)
                 {
-                    if (elem.stat_Hp > 0)
+                    if (elem.stat_Hp <= 0)
                     {
-                        IsConsumable = true;
+                        DisableItem(true);
                     }
                 }
                 break;
@@ -202,8 +202,8 @@ public class BottomItemButtonUI : MonoBehaviour
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if (BattleManager.Instance.FSM.curState == BattleState.Start && IsInstallation
-                    || BattleManager.Instance.FSM.curState == BattleState.Player && IsConsumable)
+                if (BattleManager.Instance.FSM.curState == BattleState.Start && !isDisable
+                    || BattleManager.Instance.FSM.curState == BattleState.Player && !isDisable)
                 {
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);

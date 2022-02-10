@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+[DefaultExecutionOrder(10)]
 
 public class MoveTutorial : MonoBehaviour
 {

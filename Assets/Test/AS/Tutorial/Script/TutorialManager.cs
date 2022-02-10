@@ -8,7 +8,6 @@ public class TutorialManager : MonoBehaviour
 {
     public MainTutorial mainTutorial = new MainTutorial();
     public ContentsTutorial contentsTutorial = new ContentsTutorial();
-    public TutorialPlayer tutorialPlayer;
     public TMP_Text text;
 
     [Header("UI")]
@@ -16,6 +15,7 @@ public class TutorialManager : MonoBehaviour
     public RectTransform dialogBox;
     public GameObject blackoutPanel;
     public TMP_Text dialogBoxText;
+    public GameObject storyBoard;
     public RectTransform blackout;
 
     [Header("스프라이트")]
@@ -26,10 +26,11 @@ public class TutorialManager : MonoBehaviour
     {
         if(blackoutPanel != null)
             blackout = blackoutPanel.transform.GetChild(0).GetComponent<RectTransform>();
-        mainTutorial.Init();
+
+        mainTutorial.Init(); // 저장정보불러오기
         contentsTutorial.Init();
 
-        //CheckMainTutorial();
+        CheckMainTutorial();
     }
 
     public void CheckMainTutorial()
@@ -37,16 +38,24 @@ public class TutorialManager : MonoBehaviour
         switch (mainTutorial.MainTutorialStage)
         {
             case MainTutorialStage.Story:
-                StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => mainTutorial.NextMainTutorial()));
+                storyBoard.SetActive(true);
+                StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => {
+                    mainTutorial.NextMainTutorial();
+                    CheckMainTutorial();
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
+                    text.transform.parent.gameObject.SetActive(false);
+                    storyBoard.SetActive(false);
+                }));
                 break;
             case MainTutorialStage.Battle:
+                BattleManager.initState = BattleInitState.Tutorial;
+                var gm = GameManager.Manager;
+                gm.Production.FadeIn(() => gm.LoadScene(GameScene.Battle));
                 break;
             case MainTutorialStage.Move:
                 mainTutorial.tutorialMove.delay = 0f;
                 StartCoroutine(mainTutorial.tutorialMove.CoMoveTutorial());
                 break;
-            //case MainTutorialStage.Lanturn:
-            //    break;
             case MainTutorialStage.Event:
                 StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
                 break;
@@ -58,10 +67,9 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialCamp.CoCampTutorial());
                 break;
             case MainTutorialStage.Clear:
-                tutorialPlayer.isMainTutorial = false;
+                StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());
                 break;
         }
-        mainTutorial.NextMainTutorial();
     }
 
     public Button TutorialTargetButtonActivate(Button target)

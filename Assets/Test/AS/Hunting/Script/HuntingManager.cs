@@ -57,37 +57,50 @@ public class HuntingManager : MonoBehaviour
         EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.PlayerMove, HuntPercentageUp);
         EventBus<HuntingEvent>.Unsubscribe(HuntingEvent.Hunting, Hunting);
     }
-
-    private void OnGUI()
+    private void Start()
     {
-        if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
-        {
-            production.FadeOut();
-            tileMaker.InitMakeTiles();
-            Init();
+        production.FadeOut();
+        tileMaker.InitMakeTiles();
+        Init();
 
-            huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
-            if (!huntPlayers.IsTutorialClear)
-            {
-                optionButton.interactable = false;
-                TutorialInit();
-                StartCoroutine(huntTutorial.CoHuntTutorial());
-            }
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "사냥시작"))
+        huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
+        if (!huntPlayers.IsTutorialClear)
         {
-            production.FadeOut();
-            tileMaker.InitMakeTiles();
-            Init();
-            huntPlayers.IsTutorialClear = true;
-        }
-        if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "재시작"))
-        {
-            production.FadeOut();
-            Init();
-            huntPlayers.IsTutorialClear = true;
+            optionButton.interactable = false;
+            TutorialInit();
+            StartCoroutine(huntTutorial.CoHuntTutorial());
         }
     }
+    //private void OnGUI()
+    //{
+    //    if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
+    //    {
+    //        production.FadeOut();
+    //        tileMaker.InitMakeTiles();
+    //        Init();
+
+    //        huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
+    //        if (!huntPlayers.IsTutorialClear)
+    //        {
+    //            optionButton.interactable = false;
+    //            TutorialInit();
+    //            StartCoroutine(huntTutorial.CoHuntTutorial());
+    //        }
+    //    }
+    //    if (GUI.Button(new Rect(Screen.width - 105, 100, 100, 100), "사냥시작"))
+    //    {
+    //        production.FadeOut();
+    //        tileMaker.InitMakeTiles();
+    //        Init();
+    //        huntPlayers.IsTutorialClear = true;
+    //    }
+    //    if (GUI.Button(new Rect(Screen.width - 105, 200, 100, 100), "재시작"))
+    //    {
+    //        production.FadeOut();
+    //        Init();
+    //        huntPlayers.IsTutorialClear = true;
+    //    }
+    //}
 
     public void Init()
     {
