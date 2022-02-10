@@ -253,7 +253,7 @@ public class BattleTutorial : MonoBehaviour
         yield return new WaitUntil(() => tu_12_GirlSkill2);
         lockTileClick = true;
         UISet_12th_End();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3.5f);
 
         // 입력 13. 랜턴 충전 확인 클릭
         UISet_13th_Enter();
@@ -308,7 +308,6 @@ public class BattleTutorial : MonoBehaviour
             bottomUI.ButtonInteractive(true);
             bm.uiLink.AllButtonInteractive(true);
             bottomUI.UpdateSkillInteractive();
-
 
             RestartBattle();
         }
@@ -801,6 +800,7 @@ public class BattleTutorial : MonoBehaviour
         bm.waveLink.wave1.Clear();
         bm.waveLink.wave2.Clear();
         bm.waveLink.wave3.Clear();
+        tm.TileClear();
         list.ToList().ForEach(n => { if (n != null) n.Release(); });
 
         bm.TutorialInit(true);

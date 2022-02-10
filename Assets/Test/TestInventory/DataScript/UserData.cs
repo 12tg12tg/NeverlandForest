@@ -119,6 +119,9 @@ public class UserData
 
     public bool AddItemData(DataAllItem newItem)
     {
+        if (newItem.OwnCount == 0)
+            return false;
+
         // 칸 하나를 전부 차지한 경우의 개수
         int myInventoryFullCount = 0;
         // 칸 하나를 일부 차지한 경우의 개수
