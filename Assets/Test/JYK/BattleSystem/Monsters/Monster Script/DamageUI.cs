@@ -45,7 +45,6 @@ public class DamageUI : MonoBehaviour
             var alpha = Mathf.Lerp(1f, 0f, ratio);
             // 위치러프
             var pos = Vector2.Lerp(startPos, endPos, ratio);
-            Debug.Log(pos);
 
             text.alpha = alpha;
             rt.localPosition = pos;

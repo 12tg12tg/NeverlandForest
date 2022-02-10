@@ -82,6 +82,8 @@ public class CampManager : MonoBehaviour
         EventBus<CampEvent>.Subscribe(CampEvent.StartSleep, StartSleep);
         EventBus<CampEvent>.Subscribe(CampEvent.StartBlueMoon, OpenBlueMoonScene);
         EventBus<CampEvent>.Subscribe(CampEvent.StartMaking, OpenMaking);
+        GameManager.Manager.State = GameState.Camp;
+
     }
     private void OnDisable()
     {
@@ -93,15 +95,11 @@ public class CampManager : MonoBehaviour
 
         EventBus<CampEvent>.ResetEventBus();
     }
-    public void Awake()
-    {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
-        GameManager.Manager.State = GameState.Camp;
-    }
+
     public void Start()
     {
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         CampInit();
-
     }
    
     public void CampInit()

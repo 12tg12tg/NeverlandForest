@@ -374,8 +374,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(299f, -198);
-        maskRt.sizeDelta = new Vector2(77f, 77f);
+        maskRt.anchoredPosition = new Vector2(292f, -198);
+        maskRt.sizeDelta = new Vector2(65f, 65f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);
@@ -393,8 +393,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(299f, -80f);
-        maskRt.sizeDelta = new Vector2(138f, 50f);
+        maskRt.anchoredPosition = new Vector2(291f, -75f);
+        maskRt.sizeDelta = new Vector2(91f, 36f);
         maskImg.sprite = rect;
 
         // 손가락 위치
@@ -438,7 +438,7 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(0f, 158f);
+        maskRt.anchoredPosition = new Vector2(0f, 159f);
         maskRt.sizeDelta = new Vector2(197f, 50f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
@@ -494,8 +494,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(231, -197);
-        maskRt.sizeDelta = new Vector2(68, 64);
+        maskRt.anchoredPosition = new Vector2(225f, -197f);
+        maskRt.sizeDelta = new Vector2(61f, 59f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);
@@ -587,8 +587,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(231f, -261.8f);
-        maskRt.sizeDelta = new Vector2(68, 64);
+        maskRt.anchoredPosition = new Vector2(225f, -261.8f);
+        maskRt.sizeDelta = new Vector2(61f, 59f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);
@@ -693,8 +693,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(433f, -262f);
-        maskRt.sizeDelta = new Vector2(65f, 65f);
+        maskRt.anchoredPosition = new Vector2(426f, -262f);
+        maskRt.sizeDelta = new Vector2(61f, 59f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);
@@ -738,8 +738,8 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(-4.7f, 251f);
-        maskRt.sizeDelta = new Vector2(312f, 45f);
+        maskRt.anchoredPosition = new Vector2(-11.4f, 248f);
+        maskRt.sizeDelta = new Vector2(325f, 92f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
         dialogBoxRt.gameObject.SetActive(true);

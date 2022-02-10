@@ -22,10 +22,6 @@ public class LanternBar : MonoBehaviour
         if (ConsumeManager.CurTimeState == TimeState.DayTime)
         {
             day_correction.gameObject.SetActive(true);
-         /*   Utility.CoScaleChange(day_correction.GetComponent<RectTransform>(),
-                new Vector3(4f, 4f, 4f), scaleUPtime);
-            Utility.CoScaleChange(day_correction.GetComponent<RectTransform>(),
-               new Vector3(1f, 1f, 1f), scaleDownTime);*/
         }
         else
         {
