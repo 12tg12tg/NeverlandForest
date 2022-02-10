@@ -35,7 +35,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.startPos = data.currentPos = transform.position;
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     public void Load()
@@ -53,7 +53,7 @@ public class WorldMapPlayer : MonoBehaviour
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
         {
-            GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
             data = Vars.UserData.WorldMapPlayerData;
             if (data == null) 
             {
@@ -74,7 +74,7 @@ public class WorldMapPlayer : MonoBehaviour
 
             // 게임을 처음 켰는데 던전맵이고 던전맵에서 도망갔다면 딱 한번만 실행하면 되는데.. 
             // 다른 방법 생각이 안나서 이래 해둔상태
-            GameManager.Manager.CamManager.worldMapCamera.GetComponent<WorldMapCamera>().RunDungoen();
+            //GameManager.Manager.CamManager.worldMapCamera.GetComponent<WorldMapCamera>().RunDungoen();
         }
     }
 
@@ -89,16 +89,13 @@ public class WorldMapPlayer : MonoBehaviour
     public void DungeonEnter(bool isReturn, Vector3 goal, Vector2 goalIndex)
     {
         mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
-
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.RandomEvent);
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.RandomEvent);
         if (!Vars.UserData.isFirst)
         {
             Vars.UserData.isRandomDataLoad = true;
         }
         RandomEventManager.Instance.init();
         Vars.UserData.isFirst = false;
-
-        Debug.Log("1");
 
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
@@ -124,7 +121,7 @@ public class WorldMapPlayer : MonoBehaviour
                     else
                     {
                         coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
-                        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                     }
                 });
         }
@@ -150,11 +147,10 @@ public class WorldMapPlayer : MonoBehaviour
                 else
                 {
                     coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
-                    GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 }
             });
-
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.RandomEvent);
         }
 
     }
@@ -180,7 +176,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentPos = currentPos;
         data.goalPos = goalPos;
         data.startPos = startPos;
-        Debug.Log("0");
+
         DungeonEnter(false, goal, goalIndex);
     }
     private void PlayerClearWorldMap()
@@ -196,7 +192,7 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(data.goalIndex))
@@ -215,7 +211,7 @@ public class WorldMapPlayer : MonoBehaviour
             coMove = null;
             ani.SetTrigger("Idle");
             transform.eulerAngles = new Vector3(0f, 90f, 0f);
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
         }));
 
         var trans = totalMap.Where(x => x.index.Equals(currentIndex))

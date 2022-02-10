@@ -47,30 +47,32 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     {
         SingletonInit();
 
-        // TODO : 해당 부분 정리 필요?
-        if (CamManager != null)
-        {
-            if (CamManager.worldMapCamera != null)
-            {
-                var wmCamera = CamManager.worldMapCamera.GetComponent<WorldMapCamera>();
-                if (wmCamera != null)
-                    wmCamera.Init();
-            }
+        #region 카메라 안쓰고있음
+        //if (CamManager != null)
+        //{
+        //    if (CamManager.worldMapCamera != null)
+        //    {
+        //        var wmCamera = CamManager.worldMapCamera.GetComponent<WorldMapCamera>();
+        //        if (wmCamera != null)
+        //            wmCamera.Init();
+        //    }
 
-            if (CamManager.miniWorldMapCamera != null)
-            {
-                var wmmCamera = CamManager.miniWorldMapCamera.GetComponent<WorldMapCamera>();
-                if (wmmCamera != null)
-                {
-                    wmmCamera.Init();
-                }
-            }
-        }
-        if (WorldManager != null)
-            WorldManager.Init();
+        //    if (CamManager.miniWorldMapCamera != null)
+        //    {
+        //        var wmmCamera = CamManager.miniWorldMapCamera.GetComponent<WorldMapCamera>();
+        //        if (wmmCamera != null)
+        //        {
+        //            wmmCamera.Init();
+        //        }
+        //    }
+        //}
+        #endregion // 카메라 잠구기
 
         // 로드
         LoadAllSavedata();
+
+        //if (WorldManager != null)
+        //    WorldManager.Init();
 
         // 로드된 데이터를 기반으로 추가 전역 데이터 설정
         ConsumeManager.Init();
@@ -135,7 +137,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         cm = null;
     }
 
-
     // 게임오버 ======================================================================
     public void GameOver(GameOverType type)
     {
@@ -186,6 +187,15 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             {
                 var go = (CameraManager)FindObjectOfType(typeof(CameraManager));
                 cm = go;
+
+                //if (cm != null && cm.miniWorldMapCamera != null)
+                //{
+                //    var wmmCamera = cm.miniWorldMapCamera.GetComponent<WorldMapCamera>();
+                //    if (wmmCamera != null)
+                //    {
+                //        wmmCamera.Init();
+                //    }
+                //}
             }
             return cm;
         }

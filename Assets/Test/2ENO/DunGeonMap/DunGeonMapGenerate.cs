@@ -13,7 +13,6 @@ public enum DirectionInho
     Count,
 }
 
-//[DefaultExecutionOrder(13)]
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
@@ -27,9 +26,6 @@ public class DunGeonMapGenerate : MonoBehaviour
     public DungeonRoom[] dungeonRoomArray = new DungeonRoom[400];
     public DungeonRoom[] tutorialRoomArray = new DungeonRoom[4];
 
-    //테스트용 (내용 확인용)
-    //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
-
     private void Start()
     {
         if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
@@ -38,16 +34,9 @@ public class DunGeonMapGenerate : MonoBehaviour
         var manager = GameManager.Manager;
         if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
-            manager.Production.FadeOut(() => TutorialDungeonGenerate());
+            TutorialDungeonGenerate();
+            manager.Production.FadeOut();
         }
-    }
-
-    public void OnGUI()
-    {
-        //if (GUI.Button(new Rect(100, 300, 100, 75), "tutorialStart"))
-        //{
-        //    TutorialDungeonGenerate();
-        //}
     }
 
     public void TutorialDungeonGenerate()
@@ -90,7 +79,6 @@ public class DunGeonMapGenerate : MonoBehaviour
             curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
         }
         Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
@@ -196,8 +184,6 @@ public class DunGeonMapGenerate : MonoBehaviour
         DungeonEventGenerate(dungeonRoomArray);
         
         action?.Invoke();
-
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
     public void MapInit()
     {

@@ -24,10 +24,12 @@ public class WorldMapManager : MonoBehaviour
     [Header("UI")]
     public GameObject backDungeonBt;
 
-    public void Init()
+    public void Awake()
     {
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapData);
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+        worldMapCamera.Init();
+
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapData);
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMapMaker.Init(column, row, nodePrefab, linePrefab, fogPrefab);
         if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행
@@ -38,6 +40,7 @@ public class WorldMapManager : MonoBehaviour
                 worldMapCamera.FollowPlayer();
                 if (ground != null)
                     ground.CreateTree(worldMapMaker.Edges, worldMapMaker.Maps);
+                GameManager.Manager.Production.FadeOut();
             }));
         }
         else
@@ -45,14 +48,15 @@ public class WorldMapManager : MonoBehaviour
             worldMapMaker.LoadWorldMap(loadData);
             NodeLinkToPlayer();
             player.ComeBackWorldMap();
+            if (ground != null)
+                ground.Load();
             worldMapCamera.FollowPlayer(() =>
             {
                 worldMapMaker.FogMove(Vars.UserData.uData.Date, false, player.PlayerDeathChack);
             });
-            if (ground != null)
-                ground.Load();
             if ((int)player.CurrentIndex.y >= 1)
                 backDungeonBt.SetActive(true);
+            GameManager.Manager.Production.FadeOut();
         }
     }
 

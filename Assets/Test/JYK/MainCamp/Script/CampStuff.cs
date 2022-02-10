@@ -18,10 +18,10 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     {
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            if (GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IscraftFinish)
+            if (CampManager.Instance.camptutorial.IscraftFinish)
             {
                 EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartCook);
-                GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IscraftFinish = false;
+                CampManager.Instance.camptutorial.IscraftFinish = false;
             }
         }
         else
@@ -34,10 +34,10 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
 
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            if (GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IssleepingFinish)
+            if (CampManager.Instance.camptutorial.IssleepingFinish)
             {
                 EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartGathering);
-                GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IssleepingFinish = false;
+                CampManager.Instance.camptutorial.IssleepingFinish = false;
             }
         }
         else
@@ -50,10 +50,10 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     {
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            if (GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IscookingFinish)
+            if (CampManager.Instance.camptutorial.IscookingFinish)
             {
                 EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartSleep);
-                GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IscookingFinish = false;
+                CampManager.Instance.camptutorial.IscookingFinish = false;
             }
         }
         else
@@ -72,11 +72,11 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
 
         if (GameManager.Manager.State == GameState.Tutorial)
         {
-            if (GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IsTutorialFirst)
+            if (CampManager.Instance.camptutorial.IsTutorialFirst)
             {
                 EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartMaking);
 
-                GameManager.Manager.TutoManager.mainTutorial.tutorialCamp.IsTutorialFirst = false;
+                CampManager.Instance.camptutorial.IsTutorialFirst = false;
             }
         }
         else

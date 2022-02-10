@@ -45,7 +45,7 @@ public class MainRoomTutorial : MonoBehaviour
     public RectTransform campMenu;
     public RectTransform woodUseBtn;
 
-    private void Start()
+    private void Awake()
     {
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;

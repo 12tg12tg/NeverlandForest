@@ -40,6 +40,8 @@ public class TutorialManager : MonoBehaviour
         {
             case MainTutorialStage.Story:
                 storyBoard.SetActive(true);
+                gm.Production.black.SetActive(false);
+                Debug.Log(gm.Production.black.activeSelf);
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => {
                     mainTutorial.NextMainTutorial();
                     CheckMainTutorial();
@@ -55,19 +57,17 @@ public class TutorialManager : MonoBehaviour
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.TutorialDungeon));
                 break;
             case MainTutorialStage.Event:
-
-                //StartCoroutine(mainTutorial.tutorialGathering.CoGatheringTutorial());
+                gm.Production.FadeIn(() => gm.LoadScene(GameScene.TutorialDungeon));
                 break;
             case MainTutorialStage.Stamina:
-                //mainTutorial.tutorialMainRoom.delay = 0f;
-                //StartCoroutine(mainTutorial.tutorialMainRoom.CoMainRoomTutorial());
+                gm.Production.FadeIn(() => gm.LoadScene(GameScene.TutorialDungeon));
                 break;
             case MainTutorialStage.Camp:
                 CampManager.curinitState = CampManager.CampinitState.Tutorial;
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.Camp));
                 break;
             case MainTutorialStage.Clear:
-                //StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());
+                GameManager.Manager.LoadScene(GameScene.World);
                 break;
         }
     }
