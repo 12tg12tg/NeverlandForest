@@ -39,7 +39,7 @@ public class MoveTutorial : MonoBehaviour
     [Header("Æ÷Áö¼Ç Å¸°Ù")]
     public RectTransform time;
     public RectTransform lantern;
-    private void Start()
+    private void Awake()
     {
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;
