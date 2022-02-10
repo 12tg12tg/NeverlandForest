@@ -66,7 +66,7 @@ public class TutorialManager : MonoBehaviour
                 StartCoroutine(mainTutorial.tutorialCamp.CoCampTutorial());
                 break;
             case MainTutorialStage.Clear:
-                StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());
+                //StartCoroutine(mainTutorial.tutorialMainRoom.CoTutorialEnd());
                 break;
         }
     }

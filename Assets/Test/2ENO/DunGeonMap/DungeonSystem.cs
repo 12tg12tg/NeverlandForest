@@ -41,6 +41,11 @@ public class DungeonSystem : MonoBehaviour
 
     private TutorialManager tutorialManager;
 
+    [Header("튜토리얼")]
+    public MoveTutorial moveTutorial;
+    public GatheringTutorial gatherTutorial;
+    public MainRoomTutorial mainRoomTutorial;
+
     // 코드 길이 간편화 작업에 필요한 것들 - 진행중..
     private Vector2 curDungeonIndex;
     private int startIndex;
@@ -50,7 +55,6 @@ public class DungeonSystem : MonoBehaviour
     {
         instance = this;
         EndInit();
-        GameManager.Manager.TutoManager.Init();
     }
     public void EndInit()
     {
@@ -132,6 +136,8 @@ public class DungeonSystem : MonoBehaviour
         if (dungeonSystemData.curDungeonRoomData != null && !Vars.UserData.isTutorialDungeon)
             ConvertEventDataType();
 
+
+
         DungeonRoomSetting();
     }
 
@@ -194,8 +200,19 @@ public class DungeonSystem : MonoBehaviour
             campButton.interactable = false;
 
 
-        //if (Vars.UserData.isTutorialDungeon && tutorialManager.mainTutorial.MainTutorialStage == MainTutorialStage.Move)
-        //    ChangeRoomEvent(true, true);
+        if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Move)
+        {
+            if (moveTutorial == null)
+                return;
+            ChangeRoomEvent(true, true);
+            StartCoroutine(moveTutorial.CoMoveTutorial());
+        }
+        else if (Vars.UserData.isTutorialDungeon && Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+        {
+            if (mainRoomTutorial == null)
+                return;
+            StartCoroutine(mainRoomTutorial.CoTutorialEnd());
+        }
     }
 
     // 방마다 위치해있는 트리거 발동할때 실행, 방 바뀔때
