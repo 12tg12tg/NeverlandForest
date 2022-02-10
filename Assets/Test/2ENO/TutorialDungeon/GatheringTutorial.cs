@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
-
+[DefaultExecutionOrder(11)]
 public class GatheringTutorial : MonoBehaviour
 {
     public bool isGatheringTutorial = false;

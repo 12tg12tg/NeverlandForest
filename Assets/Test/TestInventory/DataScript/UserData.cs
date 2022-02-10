@@ -40,8 +40,11 @@ public class UserData
     public bool isFirst = true;
 
     // Æ©Åä¸®¾ó ´øÀü
-    public bool isTutorialDungeon;
+    public bool isTutorialDungeon = true;
     public DungeonData tutorialDungeonData = new DungeonData();
+
+    //Æ©Åä¸®¾ó Ä·ÇÁ
+    public bool isTutorialCamp;
 
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();

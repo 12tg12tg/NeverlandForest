@@ -13,6 +13,7 @@ public enum DirectionInho
     Count,
 }
 
+[DefaultExecutionOrder(13)]
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;
@@ -29,6 +30,12 @@ public class DunGeonMapGenerate : MonoBehaviour
     //테스트용 (내용 확인용)
     //public List<DungeonRoom> dungeonRoomList = new List<DungeonRoom>();
 
+    private void Start()
+    {
+        if(Vars.UserData.isTutorialDungeon)
+            TutorialDungeonGenerate();
+    }
+
     public void OnGUI()
     {
         if (GUI.Button(new Rect(100, 300, 100, 75), "tutorialStart"))
@@ -39,7 +46,6 @@ public class DunGeonMapGenerate : MonoBehaviour
 
     public void TutorialDungeonGenerate()
     {
-        Vars.UserData.isTutorialDungeon = true;
         CreateTutorialMapArray();
         Vars.UserData.tutorialDungeonData.dungeonRoomArray = tutorialRoomArray;
 
@@ -222,7 +228,7 @@ public class DunGeonMapGenerate : MonoBehaviour
 
         tutorialRoomArray[0].IsCheck = true;
         tutorialRoomArray[0].RoomType = DunGeonRoomType.MainRoom;
-        tutorialRoomArray[0].SetEvent(DunGeonEvent.Battle);
+        tutorialRoomArray[0].SetEvent(DunGeonEvent.Empty);
         tutorialRoomArray[0].beforeRoomIdx = -1;
 
         tutorialRoomArray[1].IsCheck = true;
