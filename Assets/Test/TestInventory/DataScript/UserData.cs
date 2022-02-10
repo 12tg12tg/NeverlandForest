@@ -43,9 +43,6 @@ public class UserData
     public bool isTutorialDungeon = true;
     public DungeonData tutorialDungeonData = new DungeonData();
 
-    //Æ©Åä¸®¾ó Ä·ÇÁ
-    public bool isTutorialCamp;
-
     //Experienced Recipe
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
     //Experienced Craft

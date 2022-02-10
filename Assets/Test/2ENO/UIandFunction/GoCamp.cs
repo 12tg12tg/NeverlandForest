@@ -64,9 +64,6 @@ public class GoCamp : MonoBehaviour
     {
         var list = Vars.UserData.HaveAllItemList;
 
-        if (GameManager.Manager.State == GameState.Tutorial)
-            Vars.UserData.isTutorialCamp = true;
-
         if (haveWoodChip)
         {
             for (int i = 0; i < list.Count; i++)
