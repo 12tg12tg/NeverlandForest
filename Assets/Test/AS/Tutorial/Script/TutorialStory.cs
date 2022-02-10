@@ -15,7 +15,9 @@ public struct TutorialStory
             var description = data.description;
             var colorData = data.color;
             var option = data.option;
-            if(colorData.Length > 0)
+            var typing = data.typing;
+            text.fontSize = typing ? 48 : 36;
+            if (colorData.Length > 0)
             {
                 ColorUtility.TryParseHtmlString(colorData, out var color);
                 text.color = color;
@@ -31,7 +33,8 @@ public struct TutorialStory
                 }
                 else
                     text.text += description[j];
-                //yield return new WaitForSeconds(0.01f);
+                if(typing)
+                    yield return new WaitForSeconds(0.1f);
             }
 
             text.text += option ? @"""" : "";

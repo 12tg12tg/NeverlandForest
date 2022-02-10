@@ -298,7 +298,7 @@ public class BattleManager : MonoBehaviour
         // 나무도막
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
         temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
-        temp.OwnCount = 1;
+        temp.OwnCount = 3;
         Vars.UserData.AddItemData(temp); // 3개
 
         BottomUIManager.Instance.UpdateCostInfo();
