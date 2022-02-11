@@ -60,10 +60,8 @@ public class BattleTutorial : MonoBehaviour
     }
     //===========================================================================
     // 스토리 변수 영역
-
     private StoryManager stm;
-
-
+    public bool tu_00_StoryChapter1;
 
 
     //===========================================================================
@@ -85,24 +83,63 @@ public class BattleTutorial : MonoBehaviour
         {
             if (GameManager.Manager.MultiTouch.IsTap)
             {
-                stm.isNext = true;
-                //isWaitingTouch = false;
-                //isTouched = true;
+                isWaitingTouch = false;
+                isTouched = true;
             }
+        }
+        if (GameManager.Manager.MultiTouch.IsTap && tu_00_StoryChapter1)
+        {
+            stm.isNext = true;
         }
     }
 
     //===========================================================================
     private IEnumerator CoStartStory()
     {
+        tu_00_StoryChapter1 = true;
         // 준비 1) 타일베이스 게임오브젝트 안보이게
         TileMaker.Instance.gameObject.SetActive(false);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(false);
+        var cameraTrans = Camera.main.transform;
+        var op = cameraTrans.localPosition;
+        var or = cameraTrans.localRotation;
+        cameraTrans.localPosition = new Vector3(0f, 2.9f, -4.6f);
+        cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
+        BattleManager.Instance.boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
+
         // 스토리 대사 시작
         var isNextChapter = false;
         stm.MessageBox.SetActive(true); // 대화창 오픈
         StartCoroutine(stm.CoStory(StoryType.Chapter1, () => isNextChapter = true));
-        yield return new WaitWhile(() => isNextChapter);
-        // 준비 취소) 타일베이스 게임오브젝트 보이게
+        yield return new WaitWhile(() => !isNextChapter);
+
+        cameraTrans.localPosition += new Vector3(2.5f, 0f, 0f);
+        isNextChapter = false;
+        StartCoroutine(stm.CoStory(StoryType.Chapter2, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
+
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter3, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //// 준비 취소) 타일베이스 게임오브젝트 보이게
+        //isNextChapter = false;
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        tu_00_StoryChapter1 = false;
+        cameraTrans.localPosition = op;
+        cameraTrans.localRotation = or;
+        stm.MessageBox.SetActive(false);
+        TileMaker.Instance.gameObject.SetActive(true);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
     }
 
     private IEnumerator CoEndStory()
@@ -115,7 +152,7 @@ public class BattleTutorial : MonoBehaviour
     {
         // 스토리
         yield return StartCoroutine(CoStartStory());
-
+        GameManager.Manager.Production.FadeOut();
         // 웨이브 생성
         bm.TutorialInit();
         bottomUI.ButtonInteractive(false);

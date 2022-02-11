@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using UnityEngine.UI;
 
 public enum StoryType
 {
@@ -30,8 +31,10 @@ public class StoryManager : MonoBehaviour
     public GameObject messageBox;
     public TMP_Text talker;
     public TMP_Text talk;
-
+    public GameObject hunter;
+    public GameObject herbalist;
     public GameObject MessageBox => messageBox;
+
 
     [Header("화살표 UI")]
     [SerializeField] private RectTransform target;
@@ -39,6 +42,8 @@ public class StoryManager : MonoBehaviour
 
     private Coroutine CoFade;
     private Vector2 startPos;
+
+    public Image fadeInOut;
 
     public bool isNext;
 
@@ -76,6 +81,7 @@ public class StoryManager : MonoBehaviour
         var datas = storyTable.Where(x => (x.Value as TutorialStoryDataTableElem).index == (int)storyType)
                               .Select(x => x)
                               .ToList();
+        talk.text = "";
         for (int i = 0; i < datas.Count; i++)
         {
             var data = (TutorialStoryDataTableElem)datas[i].Value;
@@ -86,31 +92,98 @@ public class StoryManager : MonoBehaviour
             var character = data.character;
             var fade = data.fade;
 
-            talker.text = character == StoryChar.Hunter.ToString() ? "사냥꾼" :
-                character == StoryChar.Herbalist.ToString() ? "약초학자" : "";
+            if(character == StoryChar.Hunter.ToString())
+            {
+                talker.text = "사냥꾼";
+                ColorUtility.TryParseHtmlString("#fffa7c", out var color);
+                talker.color = color;
+                hunter.SetActive(true);
+                herbalist.SetActive(false);
+            }
+            else if(character == StoryChar.Herbalist.ToString())
+            {
+                talker.text = "약초학자";
+                ColorUtility.TryParseHtmlString("#ff9000", out var color);
+                talker.color = color;
+                herbalist.SetActive(true);
+                hunter.SetActive(false);
+            }
+            else
+            {
+                herbalist.SetActive(false);
+                hunter.SetActive(false);
+                talker.text = " ";
+            }
 
             if (colorData.Length > 0)
             {
                 ColorUtility.TryParseHtmlString(colorData, out var color);
                 talk.color = color;
             }
-            if (typing)
+
+            for (int j = 0; j < description.Length; j++)
             {
-                for (int j = 0; j < description.Length; j++)
+                if (description[j].Equals('n'))
                 {
-                    talk.text += description[j];
-                    yield return new WaitForSeconds(0.1f);
+                    talk.text += "\n";
                 }
+                else
+                    talk.text += description[j];
+                if (typing)
+                    yield return new WaitForSeconds(0.1f);
+            }
+            if (fade)
+            {
+                StartCoroutine(CoFadeOut(() => {
+                    BattleManager.Instance.girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
+                    BattleManager.Instance.girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+                    isNext = true;
+                }));
             }
             else
-            {
-                talk.text = description;
-            }
-            yield return new WaitWhile(() => isNext);
+                yield return new WaitWhile(() => !isNext);
+
             talk.text = "";
             talk.color = Color.white;
             isNext = false;
         }
+        herbalist.SetActive(false);
+        hunter.SetActive(false);
         action?.Invoke();
+    }
+
+    private IEnumerator CoFadeOut(UnityAction action)
+    {
+        fadeInOut.gameObject.SetActive(true);
+        var black = Color.clear;
+
+        var time = 0.5f;
+        var timer = 0f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            var value = Mathf.Lerp(0, 1, ratio);
+
+            black.a = value;
+            fadeInOut.color = black;
+            yield return null;
+        }
+
+        action?.Invoke();
+        yield return new WaitForSeconds(0.5f);
+
+        timer = 0f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            var value = Mathf.Lerp(1, 0, ratio);
+
+            black.a = value;
+            fadeInOut.color = black;
+            yield return null;
+        }
+        fadeInOut.gameObject.SetActive(false);
     }
 }

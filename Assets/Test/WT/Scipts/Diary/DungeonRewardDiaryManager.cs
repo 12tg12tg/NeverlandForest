@@ -93,7 +93,6 @@ public class DungeonRewardDiaryManager : MonoBehaviour
             PopupPanelOpne(false, true);
         }
     }
-
     public void GetAllItem()
     {
         var items = reward.GetComponentsInChildren<RewardObject>();
@@ -113,7 +112,6 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         }
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
-
     public void GetSelectedItem()
     {
         if(selectedItemList.Count == 0)
