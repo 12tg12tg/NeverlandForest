@@ -56,6 +56,10 @@ public static class DataTableManager
         var stroyTable = new TutorialStoryDataTable();
         stroyTable.Load();
         tables.Add(typeof(TutorialStoryDataTable), stroyTable);
+
+        var memoTable = new MemoTable();
+        memoTable.Load();
+        tables.Add(typeof(MemoTable), memoTable);
     }
 
     public static T GetTable<T>() where T : DataTableBase

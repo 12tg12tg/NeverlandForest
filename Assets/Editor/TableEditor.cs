@@ -8,7 +8,7 @@ public class TableEditor : EditorWindow
 {
     private static readonly string[] tableName = { "ConsumDataTable", "DefDataTable", "WeaponDataTable",
         "AllItemDataTable", "RecipeDataTable", "PlayerSkillTable", "MonsterTable", "LocalizationTable",
-        "RandomEventTable", "CraftDataTable", "TutorialStoryDataTable" };
+        "RandomEventTable", "CraftDataTable", "TutorialStoryDataTable", "MemoDataTable" };
     private static readonly string csvFilePath = "Tables/";
 
     private int typeIndex;
@@ -79,6 +79,8 @@ public class TableEditor : EditorWindow
                 ViewCraftData(tableList);
                 break;
             case "TutorialStoryDataTable":
+                break;
+            case "MemoDataTable":
                 break;
         }
         GUIButton(tableList, tableType[typeIndex]);
