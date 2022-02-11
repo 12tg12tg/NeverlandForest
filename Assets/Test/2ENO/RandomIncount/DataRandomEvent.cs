@@ -304,11 +304,19 @@ public class DataRandomEvent
             switch (eventTypes[i])
             {
                 case EventFeedBackType.GetNote:
-
                     var newMemoTable = DataTableManager.GetTable<MemoTable>();
                     var stringId2 = $"ME_0{Random.Range(1, 6)}";
                     var memo = newMemoTable.GetData<MemoTableElem>(stringId2);
-                    // Vars.Userdata에 추가, 플레이어 메모구조에도 추가
+
+                    Debug.Log(" 노트획득 1");
+                    var memoList = Vars.UserData.HaveMemoIDList;
+                    Debug.Log($"{Vars.UserData.HaveMemoIDList.Count}, {Vars.UserData.HaveMemoIDList}");
+                    if (!memoList.Contains(stringId2))
+                    {
+                        Debug.Log(" 노트획득 2");
+                        memoList.Add(stringId2);
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Memo);
+                    }
                     selectResultDesc = string.Format(selectResultDesc, memo.desc);
 
                     Debug.Log(selectResultDesc);

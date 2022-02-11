@@ -204,11 +204,11 @@ public class GatheringTutorial : MonoBehaviour
     public void GatheringToolUse()
     {
         SetActive(true, true);
-        target = DungeonSystem.Instance.gatheringSystem.toolbutton.GetComponent<RectTransform>();
+        target = DungeonSystem.Instance.gatheringSystem.handbutton.GetComponent<RectTransform>();
 
         blackout.GetComponent<Image>().sprite = rect;
         var size = target.GetComponentInChildren<RectTransform>().sizeDelta;
-        blackout.sizeDelta = size + new Vector2(size.x, 10f);
+        blackout.sizeDelta = size + new Vector2(10f, 10f);
 
         var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
@@ -216,8 +216,8 @@ public class GatheringTutorial : MonoBehaviour
         pos.y *= canvasRt.height;
 
         var boxOffset = boxHeight + arrowSize;
-        var boxPos = new Vector2(pos.x, pos.y + boxOffset);
-        var scrPos = new Vector2(pos.x + 122f, pos.y);
+        var boxPos = new Vector2(pos.x - boxWidth / 2, pos.y + boxOffset);
+        var scrPos = new Vector2(pos.x, pos.y);
 
         dialogBoxObj.up.SetActive(false);
         dialogBoxObj.down.SetActive(true);
