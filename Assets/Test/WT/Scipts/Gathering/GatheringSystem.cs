@@ -407,15 +407,19 @@ public class GatheringSystem : MonoBehaviour
             womenbeforePosition = womenplayer.transform.position;
             manbeforePosition = boyPlayer.transform.position;
             boyPlayer.IsCoMove = true;
+            Debug.Log("채집시작");
             if (coWomenMove == null)
             {
                 //PlayWalkAnimation();
                 PlayWalkAnimationBoy();
+                Debug.Log("채집시작222");
             }
+
             boyPlayer.tag = "Untagged";
             coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f,
                 () =>
                 {
+                    Debug.Log("채집종료");
                     coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
                     if (GameManager.Manager.State == GameState.Tutorial)
                         DungeonSystem.Instance.gatherTutorial.TutorialStep++;

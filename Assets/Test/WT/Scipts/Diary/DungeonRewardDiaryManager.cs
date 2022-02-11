@@ -35,10 +35,10 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         instance = this;
         gatheringInDungeonrewardInventory.ItemButtonInit();
 
-        if (GameManager.Manager.State ==GameState.Dungeon)
-        {
-            Close();
-        }
+        //if (GameManager.Manager.State == GameState.Dungeon)
+        //{
+        //    Close();
+        //}
     }
     public void Close()
     {

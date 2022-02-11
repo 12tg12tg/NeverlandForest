@@ -162,7 +162,10 @@ public class DungeonSystem : MonoBehaviour
 
         roomTool = new RoomTool();
         if (dungeonSystemData.curDungeonRoomData != null && Vars.UserData.mainTutorial == MainTutorialStage.Clear)
+        {
+            Debug.Log("이벤트타입!!");
             ConvertEventDataType();
+        }
         DungeonRoomSetting();
 
         GameManager.Manager.Production.FadeOut();
