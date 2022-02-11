@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class BattleTutorial : MonoBehaviour
 {
+    //===========================================================================
+    // 튜토리얼 변수 영역
     [SerializeField] private BattleManager bm;
     [SerializeField] private TileMaker tm;
     private BottomUIManager bottomUI;
@@ -44,7 +46,6 @@ public class BattleTutorial : MonoBehaviour
     public bool lockSkillButtonDrag;
     public bool lockTileClick;
     public bool lockAutoBattleStateChange;
-
     private void Init()
     {
         bottomUI = BottomUIManager.Instance;
@@ -56,12 +57,24 @@ public class BattleTutorial : MonoBehaviour
         lockAutoBattleStateChange = true;
         lockSkillButtonDrag = true;
     }
+    //===========================================================================
+    // 스토리 변수 영역
 
+
+
+
+
+    //===========================================================================
     public void StartDutorial()
     {
         gameObject.SetActive(true);
         Init();
         StartCoroutine(CoBattleTutorial());
+    }
+    public void EndDutorial()
+    {
+        bm.uiLink.AllButtonInteractive(true);
+        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
     }
 
     private void Update()
@@ -76,14 +89,30 @@ public class BattleTutorial : MonoBehaviour
         }
     }
 
-    public void EndDutorial()
+    //===========================================================================
+    private IEnumerator CoStartStory()
     {
-        bm.uiLink.AllButtonInteractive(true);
-        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
+        // 준비 1) 타일베이스 게임오브젝트 안보이게
+
+        // 스토리 대사 시작
+        
+
+        yield return null;
+
+        // 준비 취소) 타일베이스 게임오브젝트 보이게
     }
+
+    private IEnumerator CoEndStory()
+    {
+        yield return null;
+    }
+
 
     private IEnumerator CoBattleTutorial()
     {
+        // 스토리
+        yield return StartCoroutine(CoStartStory());
+
         // 웨이브 생성
         bm.TutorialInit();
         bottomUI.ButtonInteractive(false);

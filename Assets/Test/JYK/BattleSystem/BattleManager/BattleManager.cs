@@ -485,30 +485,44 @@ public class BattleManager : MonoBehaviour
                       where (n as MonsterTableElem).@group == curGroup
                       select int.Parse(n.id)).ToList();
 
-        if (isBlueMoonBattle || isEndOfDeongun)
+        if (isBlueMoonBattle)
         {
-            if (groups.Count != 3)
-                Debug.LogError($"보스전에 몬스터 후보가 {groups.Count}마리");
-
             // 보스전 - Wave2
             var bossIndex = groups.Max();
             groups.Remove(bossIndex);
 
-            var rand = Random.Range(0, groups.Count);
-            waveLink.wave2[0] = FindMonsterToId(groups[rand]);
-
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+            waveLink.wave2[1].SetActionCommand();
 
-            rand = Random.Range(0, groups.Count);
-            waveLink.wave2[2] = FindMonsterToId(groups[rand]);
-
-            for (int i = 0; i < 3; i++)
+            int randNum = Random.Range(1, 3); // 보스 제외 몬스터 수
+            if(randNum == 1)
             {
-                waveLink.wave2[i].Pos = new Vector2(i, 6);
-                waveLink.wave2[i].SetActionCommand();
+                randNum = Random.Range(0, 2);
+                if(randNum == 0)
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[0].SetActionCommand();
+                }
+                else
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[2].SetActionCommand();
+                }
+            }
+            else // 2
+            {
+                var randId = Random.Range(0, groups.Count);
+                waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[0].SetActionCommand();
+                randId = Random.Range(0, groups.Count);
+                waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[2].SetActionCommand();
             }
 
             // Wave1, Wave3
+            int totalMonsterNum = 2;
             List<MonsterUnit> temp;
             for (int i = 0; i < 2; i++)
             {
@@ -517,15 +531,25 @@ public class BattleManager : MonoBehaviour
                 else
                     temp = waveLink.wave3;
 
-                MakeNormalWave(groups, temp);
+                //MakeNormalWave(groups, temp);
             }
+        }
+        else if (isEndOfDeongun)
+        {
+
         }
         else
         {
+            int totlaMonsterNum = 4;
+
             // 일반 배틀
             List<MonsterUnit> temp = null;
             for (int i = 0; i < waveLink.totalWave; i++)
             {
+                int curWaveMonsterNum = Random.Range(1, 4);
+                if (curWaveMonsterNum > totlaMonsterNum)
+                    curWaveMonsterNum = totlaMonsterNum;
+
                 if (i == 0)
                     temp = waveLink.wave1;
                 else if (i == 1)
@@ -533,7 +557,7 @@ public class BattleManager : MonoBehaviour
                 else
                     temp = waveLink.wave3;
 
-                MakeNormalWave(groups, temp);
+                MakeNormalWave(groups, temp, curWaveMonsterNum);
             }
         }
     }
@@ -546,19 +570,19 @@ public class BattleManager : MonoBehaviour
         unitSc.Init();
         return unitSc;
     }
-    public void MakeNormalWave(List<int> idGroup, List<MonsterUnit> wave)
+    public void MakeNormalWave(List<int> idGroup, List<MonsterUnit> wave, int createNum)
     {
-        int monsterInWave = Random.Range(2, 4);
         int exceptCol = -1;
-        if (monsterInWave == 2)
+        if (createNum != 3)
             exceptCol = Random.Range(0, 3);
 
         int rand;
         int colIndex = 0;
-        for (int k = 0; k < monsterInWave; k++, colIndex++)
+        for (int k = 0; k < createNum; k++, colIndex++)
         {
             rand = Random.Range(0, idGroup.Count);
-            if (colIndex == exceptCol)
+            if ((createNum == 2 && colIndex == exceptCol)
+                || createNum == 1 && colIndex != exceptCol)
                 colIndex++;
             wave[colIndex] = FindMonsterToId(idGroup[rand]);
             wave[colIndex].Pos = new Vector2(colIndex, 6);
