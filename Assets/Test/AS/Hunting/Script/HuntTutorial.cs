@@ -216,6 +216,8 @@ public class HuntTutorial : MonoBehaviour
     }
     public void HuntTutorialEndExplain()
     {
+        Vars.UserData.contentsTutorial.Hunt = true;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
         SetActive(false);
         Destroy(this);
     }

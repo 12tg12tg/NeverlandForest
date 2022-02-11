@@ -50,7 +50,10 @@ public class ScreenFixed : MonoBehaviour
                 }
             }
             if (GameManager.Manager.ProductionCamera != null)
-                GameManager.Manager.ProductionCamera.rect = rect;
+            {
+                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
+                Destroy(GameManager.Manager.ProductionCamera);
+            }
         }
         else
         {
@@ -67,7 +70,10 @@ public class ScreenFixed : MonoBehaviour
                 }
             }
             if (GameManager.Manager.ProductionCamera != null)
-                GameManager.Manager.ProductionCamera.rect = rect;
+            {
+                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
+                Destroy(GameManager.Manager.ProductionCamera);
+            }
         }
 
         Debug.Log("화면 재정의 완료");

@@ -44,8 +44,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     [SerializeField] private GameObject gameoverUI;
 
     [Header("UI 연출용 카메라")]
-    [SerializeField] private Camera productionCamera;
-    public Camera ProductionCamera { get => productionCamera; set => productionCamera = value; }
+    [SerializeField] private ScreenFixed productionCamera;
+    public ScreenFixed ProductionCamera { get => productionCamera; set => productionCamera = value; }
 
 
     private void Awake() // 게임 실행시 준비

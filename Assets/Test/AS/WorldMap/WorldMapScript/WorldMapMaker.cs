@@ -89,6 +89,7 @@ public class WorldMapMaker : MonoBehaviour
     [Header("미니월드맵에서 쓰는 것들")]
     public Material material;
     public bool isMiniMap;
+    [SerializeField] private WorldMapCamera worldMapCamera;
     private GameObject fog;
     private readonly float offset = 500f;
 
@@ -127,8 +128,8 @@ public class WorldMapMaker : MonoBehaviour
     }
     public void InitWorldMiniMap()
     {
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.WorldMapData);
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapData);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         var layerName = "WorldMap";
         var date = Vars.UserData.uData.Date;
@@ -136,6 +137,7 @@ public class WorldMapMaker : MonoBehaviour
         PaintLink(layerName);
         FogInit(date);
         FogMove(date, true);
+        worldMapCamera.Init();
     }
     public IEnumerator InitMap(UnityAction action)
     {
