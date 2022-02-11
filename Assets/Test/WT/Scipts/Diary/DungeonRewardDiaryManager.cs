@@ -9,6 +9,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
 {
     private static DungeonRewardDiaryManager instance;
     public static DungeonRewardDiaryManager Instance => instance;
+
     [Header("태그관련")]
     public Image battleTagImage;
     public Image huntTagImage;
@@ -19,6 +20,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     public GameObject huntRewardPanel;
     public GameObject gatheringInDungeonPanel;
     public GameObject gatheringInDungeonRewardPanel;
+
     [Header("다이어리인벤토리")]
     public DiaryInventory gatheringInDungeonrewardInventory;
 
@@ -29,6 +31,9 @@ public class DungeonRewardDiaryManager : MonoBehaviour
 
     [Header("리워드 다이어리 정보")]
     public BottomInfoUI info;
+
+    [Header("리워드 6칸 연결")]
+    [SerializeField] private List<RewardObject> rewardSlots;
 
     public void Awake()
     {
@@ -90,7 +95,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         }
         else
         {
-            PopupPanelOpne(false, true);
+            PopupPanelOpen(false, true);
         }
     }
     public void GetAllItem()
@@ -103,7 +108,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
                 var isInvenNotFull = Vars.UserData.AddItemData(items[i].Item);
                 if (!isInvenNotFull)
                 {
-                    PopupPanelOpne(true);
+                    PopupPanelOpen(true);
                     return;
                 }
                 Vars.UserData.ExperienceListAdd(items[i].Item.itemId);
@@ -123,7 +128,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
             var isInvenNotFull = Vars.UserData.AddItemData(x.Item);
             if (!isInvenNotFull)
             {
-                PopupPanelOpne(true);
+                PopupPanelOpen(true);
                 return;
             }
             Vars.UserData.ExperienceListAdd(x.Item.itemId);
@@ -132,11 +137,24 @@ public class DungeonRewardDiaryManager : MonoBehaviour
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
 
-    private void PopupPanelOpne(bool isInvenFull = false, bool isrewardEmpty = false)
+    private void PopupPanelOpen(bool isInvenFull = false, bool isrewardEmpty = false)
     {
         popupPanel.gameObject.SetActive(true);
         popupPanel.inventoryFullPopup.SetActive(isInvenFull);
         popupPanel.rewardNotEmptyPopup.SetActive(isrewardEmpty);
+    }
+
+    public void OpenRewardsPopup(List<DataAllItem> rewards)
+    {
+        for (int i = 0; i < rewardSlots.Count; i++)
+        {
+            if (i < rewards.Count)
+                rewardSlots[i].Init(rewards[i]);
+            else
+            {
+                rewardSlots[i].Init(null);
+            }
+        }
     }
 
     public void QuitContents() => GameManager.Manager.LoadScene(GameScene.Dungeon);

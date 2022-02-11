@@ -144,6 +144,7 @@ public class BattleWave : MonoBehaviour
                 nextWave = wave2;
             else if (curWave == 2)
                 nextWave = wave3;
+            curWave--;
         }
 
         if (!IsReadyToNextWave(nextWave))

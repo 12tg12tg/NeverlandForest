@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RewardObject : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class RewardObject : MonoBehaviour
     public Image itemIcon;
 
     public Sprite selectedImage;
+
+    public TextMeshProUGUI count;
 
     public bool IsSelect
     {
@@ -36,7 +39,25 @@ public class RewardObject : MonoBehaviour
         }
     }
 
-    public void ItemButtonClick()
+    public void Init(DataAllItem item)
+    {
+        if (item != null)
+        {
+            Item = item;
+            itemIcon.sprite = item.ItemTableElem.IconSprite;
+            itemIcon.color = Color.white;
+            count.enabled = true;
+            count.text = item.OwnCount.ToString();
+        }
+        else
+        {
+            InitItemSprite();
+            count.enabled = false; 
+        }
+    }
+
+
+    public void ItemButtonClick() // 버튼 클릭 함수
     {
         if (item == null)
             return;
@@ -60,5 +81,8 @@ public class RewardObject : MonoBehaviour
 
         selectedImg.sprite = null;
         selectedImg.color = Color.clear;
+
+        if(count != null)
+            count.enabled = false;
     }
 }
