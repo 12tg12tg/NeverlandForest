@@ -315,8 +315,6 @@ public class DataRandomEvent
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Memo);
                     }
                     selectResultDesc = string.Format(selectResultDesc, memo.desc);
-
-                    Debug.Log(selectResultDesc);
                     break;
                 case EventFeedBackType.Stamina:
                     // 소비값 부족시 예외처리

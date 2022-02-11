@@ -25,7 +25,6 @@ public class DungeonDiaryManger : MonoBehaviour
     }
     public void Start()
     {
-        gameObject.SetActive(false);
         OpenInventoryPanel();
     }
 
@@ -39,21 +38,29 @@ public class DungeonDiaryManger : MonoBehaviour
     public void OpenInventoryPanel()
     {
         AllClose();
+        gameObject.SetActive(true);
+
         inventoryPanel.SetActive(true);
     }
     public void OpenSkillPanel()
     {
         AllClose();
+        gameObject.SetActive(true);
+
         skillPanel.SetActive(true);
     }
     public void OpenRecipePanel()
     {
         AllClose();
+        gameObject.SetActive(true);
+
         recipePanel.SetActive(true);
     }
     public void OpenNotesPanel()
     {
         AllClose();
+        gameObject.SetActive(true);
+
         notesPanel.SetActive(true);
     }
 }
