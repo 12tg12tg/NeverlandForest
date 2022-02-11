@@ -49,14 +49,11 @@ public class OptionPanelManager : MonoBehaviour
             soundButton.GetComponent<Image>().sprite = soundOffImage;
         }
     }
-
     public void DungeonGiveUp()
     {
-
+        // TODO : 던전 포기 기능은 던전 씬에서만 동작 하도록 추가 해야함
+        Vars.UserData.WorldMapPlayerData.isClear = false;
+        GameManager.Manager.LoadScene(GameScene.World);
     }
-    public void ProgramDown()
-    {
-
-    }
-
+    public void ProgramDown() => GameManager.Manager.GoToGameEnd();
 }
