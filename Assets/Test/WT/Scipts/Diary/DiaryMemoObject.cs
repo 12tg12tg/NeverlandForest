@@ -27,7 +27,7 @@ public class DiaryMemoObject : MonoBehaviour
     {
         this.memo = diaryMemo;
         memoid = id;
-        text.text = table.GetData<MemoTableElem>(id).desc;
+        text.text = table.GetData<MemoTableElem>(id).date;
     }
 
     public void ButtonOnClick()
