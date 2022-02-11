@@ -10,12 +10,15 @@ public class TimePrograss : MonoBehaviour
     public Image timeloadingBar;
     public Image changableDayState;
 
-    [SerializeField]private Sprite daySprite;
+    [SerializeField] private Sprite daySprite;
     [SerializeField] private Sprite nightSprite1;
     [SerializeField] private Sprite nightSprite2;
     [SerializeField] private Sprite nightSprite3;
     [SerializeField] private Sprite nightSprite4;
     [SerializeField] private Sprite nightSprite5;
+
+    [SerializeField] private Material daymatherial;
+    [SerializeField] private Material nightmatherial;
 
     private void Start()
     {
@@ -58,5 +61,40 @@ public class TimePrograss : MonoBehaviour
         }
         currentValue = Vars.UserData.uData.CurIngameHour + (Vars.UserData.uData.CurIngameMinute / 60);
         timeloadingBar.fillAmount = currentValue / 24;
+        ChangeSkyBox();
+    }
+
+
+    public void ChangeSkyBox()
+    {   
+        var camera = GameObject.FindWithTag("MainCamera");
+        var skybox = camera.GetComponent<Skybox>();
+        if (skybox == null)
+            return;
+
+        switch (ConsumeManager.CurTimeState)
+        {
+            case TimeState.None:
+                break;
+            case TimeState.NightTime:
+                skybox.material = nightmatherial;
+                break;
+            case TimeState.DayTime:
+                skybox.material = daymatherial;
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    public void OnGUI()
+    {/*
+
+        if (GUI.Button(new Rect(100, 100, 100, 75), "hourUP"))
+        {
+            ConsumeManager.TimeUp(0, 1);
+            Debug.Log(ConsumeManager.CurTimeState);
+        }*/
     }
 }

@@ -104,7 +104,6 @@ public class CampManager : MonoBehaviour
     public void Start()
     {
         GameManager.Manager.Production.FadeOut();
-
         switch (curinitState)
         {
             case CampinitState.None:
@@ -700,13 +699,13 @@ public class CampManager : MonoBehaviour
 
         }
     }
-    public void OnGUI()
+   /* public void OnGUI()
     {
         if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
         {
             ConsumeManager.CostDataReset();
         }
-    }
+    }*/
     public void QuickButtonClick()
     {
         if (GameManager.Manager.State == GameState.Tutorial)

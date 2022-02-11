@@ -28,13 +28,10 @@ public class StaminaBar : MonoBehaviour
     public void OnGUI()
     {
 
-       /* if (GUI.Button(new Rect(100, 100, 100, 75), "Im hungry"))
+      /*  if (GUI.Button(new Rect(100, 100, 100, 75), "hourUP"))
         {
-            ConsumeManager.GetthingHunger(5); //최대치 감소
-            ChangeableStaminaChange();
-
-            //ConsumeManager.RecoveryBonFire(0, 1);
-            //SetBonTime();
+            ConsumeManager.TimeUp(0, 1);
+            Debug.Log(ConsumeManager.CurTimeState);
         }*/
 
         /*if (GUILayout.Button("RecoverTiredness"))
