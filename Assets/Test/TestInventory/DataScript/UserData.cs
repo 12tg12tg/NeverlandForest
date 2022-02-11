@@ -39,6 +39,7 @@ public class UserData
     public List<string> useEventID = new List<string>();
     public bool isRandomDataLoad;
     public bool isFirst = true;
+    public bool isTutorialRandomEvent = true;
 
     // 튜토리얼 던전
     public DungeonData tutorialDungeonData = new DungeonData();

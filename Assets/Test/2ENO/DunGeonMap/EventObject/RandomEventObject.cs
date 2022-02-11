@@ -24,7 +24,6 @@ public class RandomEventObject : MonoBehaviour
             dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
 
             var randEventMgr = RandomEventManager.Instance;
-            randEventMgr.isTutorialRandomEvent = false;
 
             if (randEventMgr.isTutorialRandomEvent)
             {
@@ -33,6 +32,7 @@ public class RandomEventObject : MonoBehaviour
 
                 dungeonSystem.randomEventTutorial.StartRandomEventTutorial();
                 randEventMgr.isTutorialRandomEvent = false;
+                randEventMgr.isFirstRandomEvent = false;
             }
             else
             {

@@ -125,6 +125,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
         randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
         randomEvent.isFirst = Vars.UserData.isFirst;
+        randomEvent.isTutorialRandomEvent = Vars.UserData.isTutorialRandomEvent;
 
         SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
     }
@@ -325,7 +326,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
             Vars.UserData.useEventID = randomEvent.useEventIDs;
             Vars.UserData.isFirst = randomEvent.isFirst;
+            Vars.UserData.isTutorialRandomEvent = randomEvent.isTutorialRandomEvent;
+            Vars.UserData.isRandomDataLoad = true;
         }
+        Vars.UserData.isRandomDataLoad = false;
     }
     private void ListConvertArray(List<DungeonRoom> list, DungeonRoom[] array)
     {

@@ -9,6 +9,7 @@ public class RandomEventSaveData_0 : SaveDataBase
     public List<string> useEventIDs = new List<string>();
     public List<DataRandomEvent> randomEventAllData = new List<DataRandomEvent>();
     public bool isFirst = true;
+    public bool isTutorialRandomEvent = true;
 }
 
 public class DataRandomEvent

@@ -89,6 +89,9 @@ public class RandomEventManager : MonoBehaviour
             Vars.UserData.useEventID.Add(id.EventData.id);
         }
 
+        Vars.UserData.isFirst = isFirstRandomEvent;
+        Vars.UserData.isTutorialRandomEvent = isTutorialRandomEvent;
+
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
     }
 
