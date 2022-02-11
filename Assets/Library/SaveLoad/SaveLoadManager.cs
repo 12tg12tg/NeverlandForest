@@ -15,6 +15,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     ItemExperienceSaveData_0 itemExperienceSaveData;
     BattleSaveData_0 battleData;
     SceneSaveData_0 sceneData;
+    memoSaveData_0 memoData;
 
     private void Start()
     {
@@ -60,6 +61,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Scene:
                 SaveSceneData();
                 break;
+            case SaveLoadSystem.SaveType.Memo:
+                SaveMemoData();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -101,6 +105,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Scene:
                 LoadSceneData();
+                break;
+            case SaveLoadSystem.SaveType.Memo:
+                LoadMemoData();
                 break;
         }
     }
@@ -237,6 +244,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         sceneData.contentsTutorialProceed = Vars.UserData.contentsTutorial;
 
         SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
+    }
+
+    private void SaveMemoData()
+    {
+        memoData = new memoSaveData_0();
+        memoData.havememo = Vars.UserData.HaveMemoIDList;
+
+        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
     }
 
     private void LoadPlayer()
@@ -380,6 +395,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         {
             Vars.UserData.mainTutorial = MainTutorialStage.Story;
             Vars.UserData.contentsTutorial = new ContentsTutorialProceed();
+        }
+    }
+
+    private void LoadMemoData()
+    {
+        memoData = (memoSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        if (memoData != null)
+        {
+            Vars.UserData.HaveMemoIDList = memoData.havememo;
         }
     }
 }
