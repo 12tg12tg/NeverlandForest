@@ -56,12 +56,12 @@ public class BattleTutorial : MonoBehaviour
         lockTileClick = true;
         lockAutoBattleStateChange = true;
         lockSkillButtonDrag = true;
+        stm = GameManager.Manager.StoryManager;
     }
     //===========================================================================
     // 스토리 변수 영역
-
-
-
+    private StoryManager stm;
+    public bool tu_00_StoryChapter1;
 
 
     //===========================================================================
@@ -87,19 +87,59 @@ public class BattleTutorial : MonoBehaviour
                 isTouched = true;
             }
         }
+        if (GameManager.Manager.MultiTouch.IsTap && tu_00_StoryChapter1)
+        {
+            stm.isNext = true;
+        }
     }
 
     //===========================================================================
     private IEnumerator CoStartStory()
     {
+        tu_00_StoryChapter1 = true;
         // 준비 1) 타일베이스 게임오브젝트 안보이게
+        TileMaker.Instance.gameObject.SetActive(false);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(false);
+        var cameraTrans = Camera.main.transform;
+        var op = cameraTrans.localPosition;
+        var or = cameraTrans.localRotation;
+        cameraTrans.localPosition = new Vector3(0f, 2.9f, -4.6f);
+        cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
+        BattleManager.Instance.boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
 
         // 스토리 대사 시작
-        
+        var isNextChapter = false;
+        stm.MessageBox.SetActive(true); // 대화창 오픈
+        StartCoroutine(stm.CoStory(StoryType.Chapter1, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
 
-        yield return null;
+        cameraTrans.localPosition += new Vector3(2.5f, 0f, 0f);
+        isNextChapter = false;
+        StartCoroutine(stm.CoStory(StoryType.Chapter2, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
 
-        // 준비 취소) 타일베이스 게임오브젝트 보이게
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter3, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        //// 준비 취소) 타일베이스 게임오브젝트 보이게
+        //isNextChapter = false;
+        //yield return new WaitWhile(() => !isNextChapter);
+
+        tu_00_StoryChapter1 = false;
+        cameraTrans.localPosition = op;
+        cameraTrans.localRotation = or;
+        stm.MessageBox.SetActive(false);
+        TileMaker.Instance.gameObject.SetActive(true);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
     }
 
     private IEnumerator CoEndStory()
@@ -112,7 +152,7 @@ public class BattleTutorial : MonoBehaviour
     {
         // 스토리
         yield return StartCoroutine(CoStartStory());
-
+        GameManager.Manager.Production.FadeOut();
         // 웨이브 생성
         bm.TutorialInit();
         bottomUI.ButtonInteractive(false);
@@ -136,7 +176,7 @@ public class BattleTutorial : MonoBehaviour
 
         // 입력 3. 인벤토리 나무트랩 클릭 유도 & 설명 띄우기
         bottomUI.ButtonInteractive(false);
-        var targetButton = bottomUI.itemButtons[3].GetComponent<Button>();
+        var targetButton = bottomUI.itemButtons[2].GetComponent<Button>();
         targetButton.interactable = true;
         UISet_3rd_01_Enter();
         yield return new WaitUntil(() => tu_03_TrapClick1);
@@ -402,7 +442,7 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(292f, -198);
+        maskRt.anchoredPosition = new Vector2(224.67f, -198f);
         maskRt.sizeDelta = new Vector2(65f, 65f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
@@ -411,23 +451,23 @@ public class BattleTutorial : MonoBehaviour
         dialogBox.left.SetActive(false);
         dialogBox.right.SetActive(false);
         dialogBox.down.SetActive(true);
-        dialogBoxRt.anchoredPosition = new Vector2(816, 335);
+        dialogBoxRt.anchoredPosition = new Vector2(733f, 335f);
         dialogBox.text.text = "설치물을 설치해서 전투에 도움을 받을 수 있습니다.\n나무트랩을 설치해봅시다!";
         // 손가락 위치
         fingerImg.gameObject.SetActive(true);
-        fingerImg.anchoredPosition = new Vector2(946, 94);
+        fingerImg.anchoredPosition = new Vector2(863f, 94f);
     }
     private void UISet_3rd_02_Enter()
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(292f, -60f);
+        maskRt.anchoredPosition = new Vector2(225f, -60f);
         maskRt.sizeDelta = new Vector2(91f, 36f);
         maskImg.sprite = rect;
 
         // 손가락 위치
         fingerImg.gameObject.SetActive(true);
-        fingerImg.anchoredPosition = new Vector2(965, 216);
+        fingerImg.anchoredPosition = new Vector2(882.3f, 233f);
     }
     private void UISet_3rd_End()
     {

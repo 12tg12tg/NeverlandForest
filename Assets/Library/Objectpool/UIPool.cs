@@ -20,10 +20,12 @@ public class UIPool : CustomObjectPool<UIPoolTag>
     protected override void OnGet(GameObject go)
     {
         go.SetActive(true);
+        go.transform.SetParent(null);
     }
 
     protected override void OnRelease(GameObject go)
     {
         go.SetActive(false);
+        go.transform.SetParent(transform);
     }
 }

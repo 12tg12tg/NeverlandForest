@@ -214,17 +214,17 @@ public class BattleManager : MonoBehaviour
             }
 
             // 화살
-            temp2 = new DataAllItem(costLink.arrowElem);
-            temp2.OwnCount = 20;
+            temp2 = new DataAllItem(costLink.ArrowElem);
+            temp2.OwnCount = 19;
             Vars.UserData.AddItemData(temp2); // 20발
 
             // 오일
-            temp2 = new DataAllItem(costLink.oilElem);
-            temp2.OwnCount = 4;
+            temp2 = new DataAllItem(costLink.OilElem);
+            temp2.OwnCount = 3;
             Vars.UserData.AddItemData(temp2); // 4개
 
-            // 포션
-            //temp2 = new DataAllItem(costLink.potionElem);
+            //// 포션
+            //temp2 = new DataAllItem(costLink.PotionElem);
             //temp2.OwnCount = 1;
             //Vars.UserData.AddItemData(temp2); // 1개
 
@@ -276,22 +276,22 @@ public class BattleManager : MonoBehaviour
         }
 
         // 화살
-        temp = new DataAllItem(costLink.arrowElem);
+        temp = new DataAllItem(costLink.ArrowElem);
         temp.OwnCount = 20;
         Vars.UserData.AddItemData(temp); // 20발
 
         // 오일
-        temp = new DataAllItem(costLink.oilElem);
+        temp = new DataAllItem(costLink.OilElem);
         temp.OwnCount = 4;
         Vars.UserData.AddItemData(temp); // 4개
 
-        // 포션
-        temp = new DataAllItem(costLink.potionElem);
-        temp.OwnCount = 1;
-        Vars.UserData.AddItemData(temp); // 1개
+        //// 포션
+        //temp = new DataAllItem(costLink.PotionElem);
+        //temp.OwnCount = 1;
+        //Vars.UserData.AddItemData(temp); // 1개
 
         // 나무트랩
-        temp = new DataAllItem(costLink.woodenTrapElem);
+        temp = new DataAllItem(costLink.WoodenTrapElem);
         temp.OwnCount = 1;
         Vars.UserData.AddItemData(temp); // 1개
 
@@ -379,12 +379,12 @@ public class BattleManager : MonoBehaviour
         var inventory = Vars.UserData.HaveAllItemList;
         foreach (var item in inventory)
         {
-            if (item.itemId == costLink.arrowElem.id)
+            if (item.itemId == costLink.ArrowElem.id)
             {
                 total += item.OwnCount;
             }
         }
-        temp = new DataAllItem(costLink.arrowElem);
+        temp = new DataAllItem(costLink.ArrowElem);
         temp.OwnCount = total;
         Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = customBattle.arrowNum;
@@ -393,12 +393,12 @@ public class BattleManager : MonoBehaviour
         // 쇠화살
         foreach (var item in inventory)
         {
-            if (item.itemId == costLink.ironArrowElem.id)
+            if (item.itemId == costLink.IronArrowElem.id)
             {
                 total += item.OwnCount;
             }
         }
-        temp = new DataAllItem(costLink.ironArrowElem);
+        temp = new DataAllItem(costLink.IronArrowElem);
         temp.OwnCount = total;
         Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = customBattle.ironArrowNum;
@@ -407,12 +407,12 @@ public class BattleManager : MonoBehaviour
         // 오일
         foreach (var item in inventory)
         {
-            if (item.itemId == costLink.oilElem.id)
+            if (item.itemId == costLink.OilElem.id)
             {
                 total += item.OwnCount;
             }
         }
-        temp = new DataAllItem(costLink.oilElem);
+        temp = new DataAllItem(costLink.OilElem);
         temp.OwnCount = total;
         Vars.UserData.RemoveItemData(temp);
         temp.OwnCount = customBattle.oilNum;
@@ -487,6 +487,9 @@ public class BattleManager : MonoBehaviour
 
         if (isBlueMoonBattle)
         {
+            // 블루문은 총 7마리
+            int totalMonsterNum = 7;
+
             // 보스전 - Wave2
             var bossIndex = groups.Max();
             groups.Remove(bossIndex);
@@ -494,11 +497,14 @@ public class BattleManager : MonoBehaviour
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
             waveLink.wave2[1].SetActionCommand();
 
-            int randNum = Random.Range(1, 3); // 보스 제외 몬스터 수
-            if(randNum == 1)
+            int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
+            if(randNum == 0)
             {
-                randNum = Random.Range(0, 2);
-                if(randNum == 0)
+            }
+            else if(randNum == 1)
+            {
+                int rand = Random.Range(0, 2);
+                if(rand == 0)
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[0] = FindMonsterToId(groups[randId]);
@@ -522,21 +528,68 @@ public class BattleManager : MonoBehaviour
             }
 
             // Wave1, Wave3
-            int totalMonsterNum = 2;
-            List<MonsterUnit> temp;
-            for (int i = 0; i < 2; i++)
-            {
-                if (i == 0)
-                    temp = waveLink.wave1;
-                else
-                    temp = waveLink.wave3;
+            totalMonsterNum -= randNum + 1; // 4 ~ 6
+            randNum = Random.Range(1, 4); // 1 ~ 3
 
-                //MakeNormalWave(groups, temp);
-            }
+            while (totalMonsterNum - randNum > 3)
+                ++randNum;
+
+            MakeNormalWave(groups, waveLink.wave1, randNum);
+            MakeNormalWave(groups, waveLink.wave3, totalMonsterNum - randNum);
         }
         else if (isEndOfDeongun)
         {
+            // 보스방은 총 4~5마리
+            int totalMonsterNum = Random.Range(4, 6);
 
+            // 보스전 - Wave2
+            var bossIndex = groups.Max();
+            groups.Remove(bossIndex);
+
+            waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+            waveLink.wave2[1].SetActionCommand();
+
+            int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
+            if (randNum == 0)
+            {
+            }
+            else if (randNum == 1)
+            {
+                int rand = Random.Range(0, 2);
+                if (rand == 0)
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[0].SetActionCommand();
+                }
+                else
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[2].SetActionCommand();
+                }
+            }
+            else // 2
+            {
+                var randId = Random.Range(0, groups.Count);
+                waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[0].SetActionCommand();
+                randId = Random.Range(0, groups.Count);
+                waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[2].SetActionCommand();
+            }
+
+            Debug.Log($"2웨이브 : {randNum + 1}");
+
+            // Wave1, Wave3
+            totalMonsterNum -= randNum + 1; // 1 ~ 4
+            int max = (totalMonsterNum > 3) ? 3 : totalMonsterNum;
+            randNum = Random.Range(1, max + 1);
+
+            MakeNormalWave(groups, waveLink.wave1, randNum);
+            MakeNormalWave(groups, waveLink.wave3, totalMonsterNum - randNum);
+            Debug.Log($"1웨이브 : {randNum}");
+            Debug.Log($"3웨이브 : {totalMonsterNum - randNum}");
         }
         else
         {
@@ -544,20 +597,30 @@ public class BattleManager : MonoBehaviour
 
             // 일반 배틀
             List<MonsterUnit> temp = null;
-            for (int i = 0; i < waveLink.totalWave; i++)
+            if(waveLink.totalWave == 3)
             {
-                int curWaveMonsterNum = Random.Range(1, 4);
-                if (curWaveMonsterNum > totlaMonsterNum)
-                    curWaveMonsterNum = totlaMonsterNum;
+                int exceptNum = Random.Range(1, 4); // 1 2 3 
+                for (int i = 0; i < 3; i++)
+                {
+                    if (i == 0)
+                        temp = waveLink.wave1;
+                    else if (i == 1)
+                        temp = waveLink.wave2;
+                    else
+                        temp = waveLink.wave3;
 
-                if (i == 0)
-                    temp = waveLink.wave1;
-                else if (i == 1)
-                    temp = waveLink.wave2;
-                else
-                    temp = waveLink.wave3;
-
-                MakeNormalWave(groups, temp, curWaveMonsterNum);
+                    if (i == exceptNum)
+                        MakeNormalWave(groups, temp, 2);
+                    else
+                        MakeNormalWave(groups, temp, 1);
+                }
+            }
+            else if (waveLink.totalWave == 2)
+            {
+                var rand = Random.Range(1, 4);
+                MakeNormalWave(groups, waveLink.wave1, rand);
+                totlaMonsterNum -= rand;
+                MakeNormalWave(groups, waveLink.wave2, totlaMonsterNum);
             }
         }
     }
@@ -583,7 +646,9 @@ public class BattleManager : MonoBehaviour
             rand = Random.Range(0, idGroup.Count);
             if ((createNum == 2 && colIndex == exceptCol)
                 || createNum == 1 && colIndex != exceptCol)
+            {
                 colIndex++;
+            }
             wave[colIndex] = FindMonsterToId(idGroup[rand]);
             wave[colIndex].Pos = new Vector2(colIndex, 6);
             wave[colIndex].SetActionCommand();

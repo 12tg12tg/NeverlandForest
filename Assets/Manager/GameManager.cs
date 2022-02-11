@@ -36,6 +36,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     private CameraManager cm;
     [SerializeField] private TutorialManager tm;
     [SerializeField] private Production pd;
+    [SerializeField] private StoryManager stm;
 
     // Vars
     private GameState state;
@@ -233,5 +234,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public MultiTouch MultiTouch => mt;
     public SaveLoadManager SaveLoad => sm;
     public Production Production => pd;
+    public StoryManager StoryManager => stm;
 
 }
