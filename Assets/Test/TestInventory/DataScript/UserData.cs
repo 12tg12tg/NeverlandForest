@@ -47,6 +47,9 @@ public class UserData
     //Experienced Craft
     public List<string> HaveCraftIDList { get; set; } = new List<string>();
 
+    public List<string> HaveMemoIDList { get; set; } = new List<string>();
+
+
     //??? - Vars로 이사가도 되는가?
     public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
 
