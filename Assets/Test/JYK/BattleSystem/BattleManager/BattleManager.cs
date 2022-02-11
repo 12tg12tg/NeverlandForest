@@ -64,8 +64,9 @@ public class BattleManager : MonoBehaviour
     public int turn;
     public int preWaveTurn;
 
-    [Header("현재 그룹 확인")]
+    [Header("현재 몬스터들 정보 확인")]
     [SerializeField] private int curGroup;
+    public int curMonstersNum;
 
     [Header("선공 / 후공 확인")]
     public bool isPlayerFirst;
@@ -126,7 +127,7 @@ public class BattleManager : MonoBehaviour
             // 2. Grade & Wave
             //  마지막방전투인지 일반전투인지를 판단하고,
             //  중반이 지나갔는지 아닌지를 판단하고,
-            GradeWaveInit(isBlueMoonBattle, isEndOfDeongun);
+            SetGradeAndWave(isBlueMoonBattle, isEndOfDeongun);
 
             // 3. 몬스터 (랜덤뽑기) & 배치
             MonsterInit(isBlueMoonBattle, isEndOfDeongun);
@@ -162,6 +163,8 @@ public class BattleManager : MonoBehaviour
         waveLink.wave1.Clear();
         waveLink.wave2.Clear();
         waveLink.wave3.Clear();
+
+        curMonstersNum = 2;
 
         for (int i = 0; i < 3; i++)
         {
@@ -326,6 +329,7 @@ public class BattleManager : MonoBehaviour
 
     private void CustomInit()
     {
+        int totalMonsterNum = 0;
         monsters.Clear();
         waveLink.wave1.Clear();
         waveLink.wave2.Clear();
@@ -366,12 +370,15 @@ public class BattleManager : MonoBehaviour
             {
                 if (existList[k])
                 {
+                    ++totalMonsterNum;
                     realWave[k] = FindMonsterToId((int)customWave[k]);
                     realWave[k].Pos = new Vector2(k, 6);
                     realWave[k].SetActionCommand();
                 }
             }
         }
+
+        curMonstersNum = totalMonsterNum;
 
         // 화살
         DataAllItem temp;
@@ -428,8 +435,7 @@ public class BattleManager : MonoBehaviour
         Vars.maxHp = customBattle.hp;
         ConsumeManager.CostDataReset();
     }
-
-    private void GradeWaveInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
+    private void SetGradeAndWave(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
         if (isBlueMoonBattle)
         {
@@ -489,6 +495,7 @@ public class BattleManager : MonoBehaviour
         {
             // 블루문은 총 7마리
             int totalMonsterNum = 7;
+            curMonstersNum = totalMonsterNum;
 
             // 보스전 - Wave2
             var bossIndex = groups.Max();
@@ -541,6 +548,7 @@ public class BattleManager : MonoBehaviour
         {
             // 보스방은 총 4~5마리
             int totalMonsterNum = Random.Range(4, 6);
+            curMonstersNum = totalMonsterNum;
 
             // 보스전 - Wave2
             var bossIndex = groups.Max();
@@ -593,7 +601,8 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            int totlaMonsterNum = 4;
+            int totalMonsterNum = 4;
+            curMonstersNum = totalMonsterNum;
 
             // 일반 배틀
             List<MonsterUnit> temp = null;
@@ -619,8 +628,8 @@ public class BattleManager : MonoBehaviour
             {
                 var rand = Random.Range(1, 4);
                 MakeNormalWave(groups, waveLink.wave1, rand);
-                totlaMonsterNum -= rand;
-                MakeNormalWave(groups, waveLink.wave2, totlaMonsterNum);
+                totalMonsterNum -= rand;
+                MakeNormalWave(groups, waveLink.wave2, totalMonsterNum);
             }
         }
     }

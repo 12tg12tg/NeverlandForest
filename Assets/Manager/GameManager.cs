@@ -40,6 +40,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
 
     // Vars
     private GameState state;
+    public ContentsRewards reward = new ContentsRewards();
 
     [Header("UI 연결")]
     [SerializeField] private GameObject gameoverUI;

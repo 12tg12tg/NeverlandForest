@@ -45,6 +45,10 @@ public class BattleUI : MonoBehaviour
     public Button turnSkipButton;
     public Button battleStartButton;
 
+    [Header("보상창띄우기")]
+    public GameObject rewardPopup;
+    public DungeonRewardDiaryManager rewardDiaryManager;
+
     private List<Button> battleButtons = new List<Button>();
 
     private int progress;
@@ -217,6 +221,7 @@ public class BattleUI : MonoBehaviour
     // Reward
     public void OpenRewardPopup()
     {
-
+        rewardPopup.SetActive(true);
+        rewardDiaryManager.OpenRewardsPopup(GameManager.Manager.reward.GetBattleRewards(bm.curMonstersNum));
     }
 }
