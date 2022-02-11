@@ -56,10 +56,12 @@ public class BattleTutorial : MonoBehaviour
         lockTileClick = true;
         lockAutoBattleStateChange = true;
         lockSkillButtonDrag = true;
+        stm = GameManager.Manager.StoryManager;
     }
     //===========================================================================
     // 스토리 변수 영역
 
+    private StoryManager stm;
 
 
 
@@ -83,8 +85,9 @@ public class BattleTutorial : MonoBehaviour
         {
             if (GameManager.Manager.MultiTouch.IsTap)
             {
-                isWaitingTouch = false;
-                isTouched = true;
+                stm.isNext = true;
+                //isWaitingTouch = false;
+                //isTouched = true;
             }
         }
     }
@@ -93,12 +96,12 @@ public class BattleTutorial : MonoBehaviour
     private IEnumerator CoStartStory()
     {
         // 준비 1) 타일베이스 게임오브젝트 안보이게
-
+        TileMaker.Instance.gameObject.SetActive(false);
         // 스토리 대사 시작
-        
-
-        yield return null;
-
+        var isNextChapter = false;
+        stm.MessageBox.SetActive(true); // 대화창 오픈
+        StartCoroutine(stm.CoStory(StoryType.Chapter1, () => isNextChapter = true));
+        yield return new WaitWhile(() => isNextChapter);
         // 준비 취소) 타일베이스 게임오브젝트 보이게
     }
 

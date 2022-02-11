@@ -9,16 +9,26 @@ public class TutorialStoryDataTableElem : DataTableElemBase
     public string character;
     public string description;
     public string color;
+
+    public int index;
+
     public bool option;
     public bool typing;
+    public bool fade;
+
     public TutorialStoryDataTableElem(Dictionary<string, string> data) : base(data)
     {
         id = data["ID"];
+
         character = data["CHAR"];
         description = data["DESC"];
         color = data["COLOR"];
+
+        index = Convert.ToInt32(data["INDEX"]);
+
         option = Convert.ToBoolean(data["OPTION"]);
         typing = Convert.ToBoolean(data["TYPING"]);
+        fade = Convert.ToBoolean(data["FADE"]);
     }
 }
 
