@@ -38,8 +38,10 @@ public class BottomUIManager : MonoBehaviour
 
     //PopUpWindow
     [Header("팝업 On/Off 확인")] public bool isPopUp;
+    [Header("팝업 On/Off 확인2")] public bool isDiaryPopUp;
     [Header("팝업 관련 연결")]
     public RectTransform popUpWindow;
+    public RectTransform diaryPopUpWindow;
     public DataAllItem selectItem;
     public RectTransform selectedItemRect;
     public GameObject burnButton;
@@ -188,6 +190,27 @@ public class BottomUIManager : MonoBehaviour
         {
             isPopUp = false;
         }
+
+        
+        //if (!isDiaryPopUp)
+        //{
+        //    if (MultiTouch.Instance.TouchCount > 0)
+        //    {
+        //        if (!IsContainPos2(touchPos))
+        //        {
+        //            var dm = dungeonDiaryPanel.GetComponent<DungeonRewardDiaryManager>();
+        //            var diry = dm.gatheringInDungeonrewardInventory.GetComponent<DiaryInventory>();
+        //            diry.itemButtons.ForEach(n => n.SelectActive(false));
+        //            diaryPopUpWindow.gameObject.SetActive(false);
+        //            isDiaryPopUp = false;
+        //        }
+        //    }
+        //}
+
+        //if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect2(touchPos))
+        //{
+        //    isDiaryPopUp = false;
+        //}
     }
     private bool IsContainPos(Vector2 pos)
     {
@@ -202,6 +225,21 @@ public class BottomUIManager : MonoBehaviour
         var camera = GameManager.Manager.CamManager.uiCamera;
         return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
     }
+
+    //private bool IsContainPos2(Vector2 pos)
+    //{
+    //    var camera = GameManager.Manager.CamManager.uiCamera;
+    //    return RectTransformUtility.RectangleContainsScreenPoint(diaryPopUpWindow, pos, camera);
+    //}
+    //private bool IsContainItemRect2(Vector2 pos)
+    //{
+    //    if (bm != null && bm.isTutorial)
+    //        return true;
+
+    //    var camera = GameManager.Manager.CamManager.uiCamera;
+    //    return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
+    //}
+
 
     public void SkillButtonInit() // 스킬아이콘 12개 세팅 : 태그 버튼 + 자동 활성화를 위한 함수
     {
