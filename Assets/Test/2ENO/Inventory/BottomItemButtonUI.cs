@@ -164,7 +164,9 @@ public class BottomItemButtonUI : MonoBehaviour
             return;
 
         Vector3 uiVec = Vector3.zero;
+        Vector3 uiVec2 = Vector3.zero;
         Vector3 newVector = Vector3.zero;
+        Vector3 newVector2 = Vector3.zero;
         DungeonRewardDiaryManager.Instance.info.Init(dataItem);
         Debug.Log(GameManager.Manager.State);
         switch (GameManager.Manager.State)
@@ -176,6 +178,7 @@ public class BottomItemButtonUI : MonoBehaviour
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                     BottomUIManager.Instance.isPopUp = true;
+                    BottomUIManager.Instance.isDiaryPopUp = true;
                     BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                     uiVec = BottomUIManager.Instance.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -189,6 +192,7 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.selectItemSlotNum = slotNum;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.isDiaryPopUp = true;
                 BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -204,9 +208,11 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.selectItem = dataItem;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;
+                BottomUIManager.Instance.isDiaryPopUp = true;
                 BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+
                 BottomUIManager.Instance.popUpWindow.position = newVector;
                 BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
                 SelectActive(true);
@@ -242,12 +248,20 @@ public class BottomItemButtonUI : MonoBehaviour
                 {
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.selectItemSlotNum = slotNum;
-                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    BottomUIManager.Instance.isPopUp = true;
+                    //BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                    BottomUIManager.Instance.diaryPopUpWindow.gameObject.SetActive(true);
+                    //BottomUIManager.Instance.isPopUp = true;
+                    BottomUIManager.Instance.isDiaryPopUp = true;
                     BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                    uiVec = BottomUIManager.Instance.popUpWindow.position;
-                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                    BottomUIManager.Instance.popUpWindow.position = newVector;
+                    //uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    //newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    uiVec2 = BottomUIManager.Instance.diaryPopUpWindow.position;
+                    newVector2 = new Vector3(transform.position.x, uiVec2.y, uiVec2.z);
+                    Debug.Log(transform.position.x);
+                    Debug.Log(gameObject.name);
+
+                    //BottomUIManager.Instance.popUpWindow.position = newVector2;
+                    BottomUIManager.Instance.diaryPopUpWindow.position = newVector2;
                     BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
                     SelectActive(true);
                 }
