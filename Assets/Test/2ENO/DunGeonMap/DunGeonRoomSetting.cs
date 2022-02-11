@@ -86,7 +86,7 @@ public static class DunGeonRoomSetting
 
 
         //배틀 / 채집 / 사냥 / 랜덤인카운트 / 빈방
-        var tempPercent = new List<int> { 20, 20, 20, 20, 20 };
+        var tempPercent = new List<int> { 15, 25, 25, 25, 10 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
             room.SetEvent(DunGeonEvent.Gathering);
