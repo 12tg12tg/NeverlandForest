@@ -364,7 +364,7 @@ public class GatheringSystem : MonoBehaviour
         toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
+        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolImage.GetComponent<Image>().color = Color.clear;
 
     }
