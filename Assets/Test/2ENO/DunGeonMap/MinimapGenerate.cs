@@ -8,6 +8,7 @@ public class MinimapGenerate : MonoBehaviour
     public MiniMapCamMove minimapCam;
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
+    public RoomObject lastRoomPrefab;
 
     public void CreateMiniMapObject()
     {
@@ -33,7 +34,7 @@ public class MinimapGenerate : MonoBehaviour
         bottom = curIdx / 20;
 
         /*dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx*/
-        while (curIdx != -1)
+        while (DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx != -1)
         {
             var room = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
             RoomObject obj;
@@ -84,8 +85,18 @@ public class MinimapGenerate : MonoBehaviour
                     bottomPos = obj.transform.position;
                 }
             }
+
+
+
             curIdx = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx;
         }
+
+        var room2 = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
+        var obj2 = Instantiate(lastRoomPrefab, new Vector3(room2.Pos.x, 0f, room2.Pos.y)
+                     , Quaternion.Euler(0f,180f,0f), transform);
+        var objectInfo2 = obj2.GetComponent<RoomObject>();
+        objectInfo2.roomIdx = room2.roomIdx;
+        dungeonRoomObjectList.Add(obj2);
 
         minimapCam.leftVec = leftPos;
         minimapCam.rightVec = rightPos;
