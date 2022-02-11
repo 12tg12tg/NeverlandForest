@@ -24,4 +24,16 @@ public class SaveDataDelete : MonoBehaviour
                 File.Delete(path);
         }
     }
+    public void AllSaveDataDelete()
+    {
+        var path = Application.persistentDataPath;
+        var dir = new DirectoryInfo(path);
+        FileInfo[] files = dir.GetFiles("*.*", SearchOption.AllDirectories);
+        foreach (var file in files)
+        {
+            file.Attributes = FileAttributes.Normal;
+        }
+        Directory.Delete(path, true);
+    }
+    public void OpenFolder() => System.Diagnostics.Process.Start(Application.persistentDataPath);
 }
