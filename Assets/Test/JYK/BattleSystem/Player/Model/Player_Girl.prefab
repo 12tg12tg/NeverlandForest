@@ -562,7 +562,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 71b5f8c19fc10f14d98410a4d317939b, type: 2}
+  - {fileID: 2100000, guid: 3138f688257f83a4abe1e9eb389943fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2890,7 +2890,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 81ad7b800dfff9140a1863646943009e, type: 2}
+  - {fileID: 2100000, guid: 5c15e84f1aa15dd4bbbae8d7600d5a62, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3286,7 +3286,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eba391066a33730488bd38659dec7796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  huntingSystem: {fileID: 0}
+  huntingManager: {fileID: 0}
+  gathringSystem: {fileID: 0}
   arrow: {fileID: 0}
 --- !u!1 &6850092754825777067
 GameObject:
@@ -4126,6 +4127,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5275299027026248461}
     m_Modifications:
+    - target: {fileID: 5505517721394399144, guid: f5158436fc31c5345b33e47a5f9d0e00, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 662b5ba2206d83b49be839968e9dc10c, type: 2}
     - target: {fileID: 6298138129697826429, guid: f5158436fc31c5345b33e47a5f9d0e00, type: 3}
       propertyPath: m_Name
       value: Eye_02_L
@@ -4272,6 +4277,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3307138866593977480, guid: 106ffde3695d8f6469dd067f5698decd, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f885114f8ed4c7f47a7fc5614d50746c, type: 2}
     - target: {fileID: 8921014746659513813, guid: 106ffde3695d8f6469dd067f5698decd, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -4575,6 +4584,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9053379651934174195, guid: f077eb19f8b48ae4cb694a51246c00f3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 662b5ba2206d83b49be839968e9dc10c, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f077eb19f8b48ae4cb694a51246c00f3, type: 3}
 --- !u!4 &2432061504937599317 stripped
@@ -4637,6 +4650,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4127920386252792573, guid: b08b87446df2eeb4d86f9c0f69265868, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f885114f8ed4c7f47a7fc5614d50746c, type: 2}
     m_RemovedComponents:
     - {fileID: 1954072940791926155, guid: b08b87446df2eeb4d86f9c0f69265868, type: 3}
     - {fileID: 1954072940604888724, guid: b08b87446df2eeb4d86f9c0f69265868, type: 3}
@@ -4773,6 +4790,10 @@ PrefabInstance:
       value: Face_BlendShapes
       objectReference: {fileID: 0}
     - target: {fileID: 8163825747164142773, guid: 94f3d3d4513b0e84b9e5ec059a45bb0e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5c15e84f1aa15dd4bbbae8d7600d5a62, type: 2}
+    - target: {fileID: 8163825747164142773, guid: 94f3d3d4513b0e84b9e5ec059a45bb0e, type: 3}
       propertyPath: m_BlendShapeWeights.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -4862,6 +4883,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4346241615778914194, guid: abe0fa6ddf3a84b4d828a8959218062c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: f26725b0ad945614992d503b2a075f21, type: 2}
     m_RemovedComponents:
     - {fileID: 9089733349217957469, guid: abe0fa6ddf3a84b4d828a8959218062c, type: 3}
     - {fileID: 9089733349795440002, guid: abe0fa6ddf3a84b4d828a8959218062c, type: 3}
