@@ -215,18 +215,18 @@ public class BattleManager : MonoBehaviour
 
             // 화살
             temp2 = new DataAllItem(costLink.arrowElem);
-            temp2.OwnCount = 19;
+            temp2.OwnCount = 20;
             Vars.UserData.AddItemData(temp2); // 20발
 
             // 오일
             temp2 = new DataAllItem(costLink.oilElem);
-            temp2.OwnCount = 3;
+            temp2.OwnCount = 4;
             Vars.UserData.AddItemData(temp2); // 4개
 
             // 포션
-            temp2 = new DataAllItem(costLink.potionElem);
-            temp2.OwnCount = 1;
-            Vars.UserData.AddItemData(temp2); // 1개
+            //temp2 = new DataAllItem(costLink.potionElem);
+            //temp2.OwnCount = 1;
+            //Vars.UserData.AddItemData(temp2); // 1개
 
             // 나무도막
             var allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();

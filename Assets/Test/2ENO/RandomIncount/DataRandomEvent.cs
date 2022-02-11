@@ -307,6 +307,7 @@ public class DataRandomEvent
                     var newMemoTable = DataTableManager.GetTable<MemoTable>();
                     var stringId2 = $"ME_0{Random.Range(1, 6)}";
                     var memo = newMemoTable.GetData<MemoTableElem>(stringId2);
+
                     var memoList = Vars.UserData.HaveMemoIDList;
                     if (!memoList.Contains(stringId2))
                     {
@@ -314,8 +315,6 @@ public class DataRandomEvent
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Memo);
                     }
                     selectResultDesc = string.Format(selectResultDesc, memo.desc);
-
-                    Debug.Log(selectResultDesc);
                     break;
                 case EventFeedBackType.Stamina:
                     // 소비값 부족시 예외처리

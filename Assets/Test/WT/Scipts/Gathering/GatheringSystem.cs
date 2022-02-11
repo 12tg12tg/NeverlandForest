@@ -426,15 +426,19 @@ public class GatheringSystem : MonoBehaviour
             womenbeforePosition = womenplayer.transform.position;
             manbeforePosition = boyPlayer.transform.position;
             boyPlayer.IsCoMove = true;
+            Debug.Log("Ã¤Áý½ÃÀÛ");
             if (coWomenMove == null)
             {
                 //PlayWalkAnimation();
                 PlayWalkAnimationBoy();
+                Debug.Log("Ã¤Áý½ÃÀÛ222");
             }
+
             boyPlayer.tag = "Untagged";
             coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f,
                 () =>
                 {
+                    Debug.Log("Ã¤ÁýÁ¾·á");
                     coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
                     if (GameManager.Manager.State == GameState.Tutorial)
                         DungeonSystem.Instance.gatherTutorial.TutorialStep++;
@@ -549,8 +553,24 @@ public class GatheringSystem : MonoBehaviour
             if (isMove)
             {
                 boyPlayer.IsCoMove = true;
-                playerAnimationBoy.speed = 0.5f;
-                playerAnimationBoy.SetTrigger("Pick");
+
+                switch (curSelectedObj.objectType)
+                {
+                    case GatheringObjectType.Tree:
+                        playerAnimationBoy.SetTrigger("Axe");
+                        break;
+                    case GatheringObjectType.Pit:
+                        playerAnimationBoy.SetTrigger("Shovel");
+                        break;
+                    case GatheringObjectType.Herbs:
+                        playerAnimationBoy.speed = 0.5f;
+                        playerAnimationBoy.SetTrigger("Pick");
+                        break;
+                    case GatheringObjectType.Mushroom:
+                        playerAnimationBoy.SetTrigger("Hand");
+                        break;
+                }
+                
                 dungeonrewarddiaryManager.gameObject.SetActive(false);
                 Debug.Log("ÆË¾÷²¯´Ù");
                 dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
@@ -572,8 +592,22 @@ public class GatheringSystem : MonoBehaviour
         if (isMove)
         {
             boyPlayer.IsCoMove = true;
-            playerAnimationBoy.speed = 0.5f;
-            playerAnimationBoy.SetTrigger("Pick");
+            switch (curSelectedObj.objectType)
+            {
+                case GatheringObjectType.Tree:
+                    playerAnimationBoy.SetTrigger("Axe");
+                    break;
+                case GatheringObjectType.Pit:
+                    playerAnimationBoy.SetTrigger("Shovel");
+                    break;
+                case GatheringObjectType.Herbs:
+                    playerAnimationBoy.speed = 0.5f;
+                    playerAnimationBoy.SetTrigger("Pick");
+                    break;
+                case GatheringObjectType.Mushroom:
+                    playerAnimationBoy.SetTrigger("Hand");
+                    break;
+            }
             dungeonrewarddiaryManager.gameObject.SetActive(false);
             Debug.Log("ÆË¾÷²¯´Ù");
             dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
@@ -588,10 +622,21 @@ public class GatheringSystem : MonoBehaviour
             gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
         }
     }
+    public void GatheringEnd()
+    {
+        playerAnimationBoy.speed = 1f;
+        if (coWomenMove == null)
+        {
+            PlayWalkAnimationBoy();
+        }
+        playerAnimation.SetTrigger("Clap");
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        Destroy(curSelectedObj.gameObject);
+    }
+
     public void NotYetGathering()
     {
         reconfirmPanelManager.gameObject.SetActive(false);
-
     }
 
 
@@ -640,17 +685,7 @@ public class GatheringSystem : MonoBehaviour
     {
         reconfirmPanelManager.gameObject.SetActive(false);
     }
-    public void GatheringEnd()
-    {
-        playerAnimationBoy.speed = 1f;
-        if (coWomenMove == null)
-        {
-            PlayWalkAnimationBoy();
-        }
-        playerAnimation.SetTrigger("Clap");
-        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
-        Destroy(curSelectedObj.gameObject);
-    }
+    
     private static void GatheringTreeByHand()
     {
         var lanternstate = ConsumeManager.CurLanternState;

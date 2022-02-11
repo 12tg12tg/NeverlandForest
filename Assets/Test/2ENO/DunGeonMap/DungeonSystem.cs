@@ -162,7 +162,10 @@ public class DungeonSystem : MonoBehaviour
 
         roomTool = new RoomTool();
         if (dungeonSystemData.curDungeonRoomData != null && Vars.UserData.mainTutorial == MainTutorialStage.Clear)
+        {
+            Debug.Log("이벤트타입!!");
             ConvertEventDataType();
+        }
         DungeonRoomSetting();
 
         GameManager.Manager.Production.FadeOut();
@@ -327,8 +330,7 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
         }
-        // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+
     }
 
     // 세이브 후 로드할때 이벤트 타입이 부모타입으로 바뀌어있는걸 다시 변경
