@@ -251,7 +251,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         memoData = new memoSaveData_0();
         memoData.havememo = Vars.UserData.HaveMemoIDList;
 
-        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        SaveLoadSystem.Save(memoData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
     }
 
     private void LoadPlayer()
