@@ -27,6 +27,14 @@ public class CampManager : MonoBehaviour
     public Camera campminimapCamera;
     public GameObject minimapPanel;
     private int curDungeonRoomIndex;
+    public int CurDungeonRoomIndex
+    {
+        get => curDungeonRoomIndex;
+        set { curDungeonRoomIndex = value; }
+    }
+    public MinimapGenerate minimpaGenerate;
+
+
     public GameObject camera;
 
     int left, right, top, bottom;
@@ -108,17 +116,22 @@ public class CampManager : MonoBehaviour
         {
             case CampinitState.None:
                 CampInit();
-                camptutorial.blackPanel.SetActive(false);
                 camptutorial.gameObject.SetActive(false);
+                camptutorial.blackPanel.SetActive(false);
+                curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
+                minimpaGenerate.CreateMiniMapObject();
+                minimpaGenerate.minimapCam.SetMinimapObjectInCamp();
                 break;
             case CampinitState.Tutorial:
                 CampInit();
+                camptutorial.blackPanel.SetActive(true);
                 GameManager.Manager.State = GameState.Tutorial;
                 StartCoroutine(camptutorial.CoCampTutorial());
                 break;
             default:
                 break;
         }
+       
     }
 
     public void CampInit()
@@ -127,11 +140,11 @@ public class CampManager : MonoBehaviour
         GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         StartPos = camera.transform.position;
 
-        if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
+      /*  if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
         {
             CreateMiniMapObject();
             SetMinimapCamera();
-        }
+        }*/
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -479,11 +492,11 @@ public class CampManager : MonoBehaviour
 
     }
 
-    //MinimapCreate
+/*    //MinimapCreate
     public void CreateMiniMapObject()
     {
         
-        curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
+       
         var array = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
 
         int curIdx = Vars.UserData.dungeonStartIdx;
@@ -572,7 +585,7 @@ public class CampManager : MonoBehaviour
         var x = (first.position.x + last.position.x) / 2;
         //campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
         //new Vector3(x, mapPos.transform.position.y + 10f, -47f);
-    }
+    }*/
 
     public void SetGatheringTime()
     {
