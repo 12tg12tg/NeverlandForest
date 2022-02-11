@@ -86,4 +86,15 @@ public class TimePrograss : MonoBehaviour
                 break;
         }
     }
+
+
+    public void OnGUI()
+    {/*
+
+        if (GUI.Button(new Rect(100, 100, 100, 75), "hourUP"))
+        {
+            ConsumeManager.TimeUp(0, 1);
+            Debug.Log(ConsumeManager.CurTimeState);
+        }*/
+    }
 }

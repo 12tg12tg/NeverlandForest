@@ -671,6 +671,7 @@ GameObject:
   - component: {fileID: 1204652321}
   - component: {fileID: 1204652320}
   - component: {fileID: 1204652319}
+  - component: {fileID: 1204652322}
   m_Layer: 0
   m_Name: WorldMap Camera
   m_TagString: MainCamera
@@ -788,6 +789,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameras:
   - {fileID: 775282447}
+--- !u!45 &1204652322
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1204652315}
+  m_Enabled: 0
+  m_CustomSkybox: {fileID: 2100000, guid: b8e7aa4e51cb8514e9b75951a9382d63, type: 2}
 --- !u!1 &1509158741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,6 +1146,7 @@ MonoBehaviour:
   row: 0
   material: {fileID: 0}
   isMiniMap: 0
+  worldMapCamera: {fileID: 0}
 --- !u!1 &1975650468
 GameObject:
   m_ObjectHideFlags: 0
