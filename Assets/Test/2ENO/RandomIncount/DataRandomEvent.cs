@@ -305,6 +305,13 @@ public class DataRandomEvent
             {
                 case EventFeedBackType.GetNote:
 
+                    var newMemoTable = DataTableManager.GetTable<MemoTable>();
+                    var stringId2 = $"ME_0{Random.Range(1, 6)}";
+                    var memo = newMemoTable.GetData<MemoTableElem>(stringId2);
+                    // Vars.Userdata에 추가, 플레이어 메모구조에도 추가
+                    selectResultDesc = string.Format(selectResultDesc, memo.desc);
+
+                    Debug.Log(selectResultDesc);
                     break;
                 case EventFeedBackType.Stamina:
                     // 소비값 부족시 예외처리

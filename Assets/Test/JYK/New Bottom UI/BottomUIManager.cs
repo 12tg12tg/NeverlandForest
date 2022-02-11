@@ -473,8 +473,8 @@ public class BottomUIManager : MonoBehaviour
             case GameState.Camp:
                 break;
             case GameState.Dungeon:
-                gameObject.SetActive(false);
                 dungeonDiaryPanel.SetActive(true);
+                gameObject.SetActive(false);
                 break;
             default:
                 break;

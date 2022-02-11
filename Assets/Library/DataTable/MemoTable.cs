@@ -18,7 +18,7 @@ public class MemoTableElem : DataTableElemBase
 }
 public class MemoTable : DataTableBase
 {
-    public MemoTable() => csvFilePath = "LocalizationTable";
+    public MemoTable() => csvFilePath = "MemoDataTable";
 
     public override void Load()
     {

@@ -12,12 +12,12 @@ public enum DunGeonRoomType
 [Flags]
 public enum DunGeonEvent
 {
-    Empty = 0b_0000_0000,
+    SubStory = 0b_0000_0000,
     Battle = 0b_0000_0001,
     Gathering = 0b_0000_0010,
     Hunt = 0b_0000_0100,
     RandomIncount = 0b_0000_1000,
-    SubStory = 0b_0001_0000,
+    Empty = 0b_0001_0000,
     Count = 0b_0010_0000,
 }
 
@@ -84,7 +84,9 @@ public static class DunGeonRoomSetting
         // 입력받은 방에 1~2개 사이의 이벤트를 넣어주고
         // 각 이벤트를 나올수 있는 이벤트 타입중 확률적으로 1개 골라서 넣어준다
 
-        var tempPercent = new List<int> { 25, 25, 25, 25, 0 };
+
+        //배틀 / 채집 / 사냥 / 랜덤인카운트 / 빈방
+        var tempPercent = new List<int> { 20, 30, 20, 20, 10 };
         if (room.RoomType == DunGeonRoomType.MainRoom)
         {
             room.SetEvent(DunGeonEvent.Gathering);
@@ -120,7 +122,7 @@ public static class DunGeonRoomSetting
         }
         DunGeonEvent eventType = DunGeonEvent.Empty;
 
-        var rnd = UnityEngine.Random.Range(0, 110);
+        var rnd = UnityEngine.Random.Range(0, 101);
 
         // i는 이벤트enum 순회느낌, j는 확률 리스트 인덱스용
         for (int i = 1, j = 0; i != (int)DunGeonEvent.Count;)

@@ -126,7 +126,7 @@ public class Utility
         GameManager.Manager.LoadScene(scene);
     }
 
-    public static IEnumerator CoSceneChange(int scene, float timer, UnityAction action)
+    public static IEnumerator CoSceneChange(string scene, float timer, UnityAction action)
     {
         var time = 0f;
         while (timer > time)

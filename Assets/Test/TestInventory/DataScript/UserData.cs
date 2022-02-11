@@ -32,6 +32,7 @@ public class UserData
     public int dungeonLastIdx;
     public bool isDungeonReStart;
     public bool isDungeonClear;
+    public bool isPlayerDungeonIn;
 
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
@@ -46,6 +47,9 @@ public class UserData
     public List<string> HaveRecipeIDList { get; set; } = new List<string>();
     //Experienced Craft
     public List<string> HaveCraftIDList { get; set; } = new List<string>();
+
+    public List<string> HaveMemoIDList { get; set; } = new List<string>();
+
 
     //??? - Vars로 이사가도 되는가?
     public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();

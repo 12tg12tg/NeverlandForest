@@ -15,6 +15,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     ItemExperienceSaveData_0 itemExperienceSaveData;
     BattleSaveData_0 battleData;
     SceneSaveData_0 sceneData;
+    memoSaveData_0 memoData;
 
     private void Start()
     {
@@ -60,6 +61,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Scene:
                 SaveSceneData();
                 break;
+            case SaveLoadSystem.SaveType.Memo:
+                SaveMemoData();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -101,6 +105,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Scene:
                 LoadSceneData();
+                break;
+            case SaveLoadSystem.SaveType.Memo:
+                LoadMemoData();
                 break;
         }
     }
@@ -148,6 +155,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.dungeonRoomList = rList2;
         dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
         dungeonMapData.curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
+
+        dungeonMapData.dungeonLastIdx = Vars.UserData.dungeonLastIdx;
+        dungeonMapData.isDungeonReStart = Vars.UserData.isDungeonReStart;
+        dungeonMapData.isDungeonClear = Vars.UserData.isDungeonClear;
+        dungeonMapData.isPlayerDungeonIn = Vars.UserData.isPlayerDungeonIn;
+
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
 
@@ -233,6 +246,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
     }
 
+    private void SaveMemoData()
+    {
+        memoData = new memoSaveData_0();
+        memoData.havememo = Vars.UserData.HaveMemoIDList;
+
+        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+    }
+
     private void LoadPlayer()
     {
     }
@@ -287,6 +308,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData =
                 Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonMapData.curDungeonRoomIndex];
+
+            Vars.UserData.dungeonLastIdx = dungeonMapData.dungeonLastIdx;
+            Vars.UserData.isDungeonReStart = dungeonMapData.isDungeonReStart;
+            Vars.UserData.isDungeonClear = dungeonMapData.isDungeonClear;
+            Vars.UserData.isPlayerDungeonIn = dungeonMapData.isPlayerDungeonIn;
 
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }
@@ -369,6 +395,15 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         {
             Vars.UserData.mainTutorial = MainTutorialStage.Story;
             Vars.UserData.contentsTutorial = new ContentsTutorialProceed();
+        }
+    }
+
+    private void LoadMemoData()
+    {
+        memoData = (memoSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        if (memoData != null)
+        {
+            Vars.UserData.HaveMemoIDList = memoData.havememo;
         }
     }
 }

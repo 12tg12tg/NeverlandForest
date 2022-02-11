@@ -36,7 +36,7 @@ public class DunGeonMapGenerate : MonoBehaviour
         if (manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Clear)
         {
             TutorialDungeonGenerate();
-            manager.Production.FadeOut();
+            //manager.Production.FadeOut();
         }
     }
 

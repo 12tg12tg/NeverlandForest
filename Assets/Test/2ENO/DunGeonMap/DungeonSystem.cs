@@ -116,9 +116,9 @@ public class DungeonSystem : MonoBehaviour
             playerMove.Init();
             rndUi.Init();
 
-            // 현재 불러올 맵 데이터가 없을 때
-            if (Vars.UserData.AllDungeonData.Count <= 0)
-                GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
+            //// 현재 불러올 맵 데이터가 없을 때
+            //if (Vars.UserData.AllDungeonData.Count <= 0)
+            //    GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
 
             curDungeonIndex = Vars.UserData.curDungeonIndex;
             startIndex = Vars.UserData.dungeonStartIdx;
@@ -161,6 +161,8 @@ public class DungeonSystem : MonoBehaviour
         if (dungeonSystemData.curDungeonRoomData != null && Vars.UserData.mainTutorial == MainTutorialStage.Clear)
             ConvertEventDataType();
         DungeonRoomSetting();
+
+        GameManager.Manager.Production.FadeOut();
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
@@ -267,7 +269,7 @@ public class DungeonSystem : MonoBehaviour
                     Vars.UserData.WorldMapPlayerData.isClear = true;
                     Vars.UserData.isDungeonClear = true;
                 }
-                GameManager.Manager.LoadScene(GameScene.World);
+                GameManager.Manager.Production.FadeIn( () => GameManager.Manager.LoadScene(GameScene.World));
                 return;
             }
             beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
@@ -322,7 +324,7 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
         }
         // TODO: 이거 안풀면 curDungeonData 저장 재대로 못함
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
     }
 
     // 세이브 후 로드할때 이벤트 타입이 부모타입으로 바뀌어있는걸 다시 변경
