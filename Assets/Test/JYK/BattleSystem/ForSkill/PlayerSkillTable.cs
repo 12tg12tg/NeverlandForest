@@ -44,7 +44,7 @@ public class PlayerSkillTableElem : DataTableElemBase
             if (player == PlayerType.Boy && Vars.UserData.arrowType == ArrowType.Iron
                 && !BattleManager.Instance.costLink.skillIDs_NearAttack.Contains(id))
             {
-                damage += BattleManager.Instance.costLink.ironArrowElem.damage;
+                damage += BattleManager.Instance.costLink.IronArrowElem.damage;
             }
 
             return damage;

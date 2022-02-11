@@ -136,7 +136,7 @@ public class BattleTutorial : MonoBehaviour
 
         // 입력 3. 인벤토리 나무트랩 클릭 유도 & 설명 띄우기
         bottomUI.ButtonInteractive(false);
-        var targetButton = bottomUI.itemButtons[3].GetComponent<Button>();
+        var targetButton = bottomUI.itemButtons[2].GetComponent<Button>();
         targetButton.interactable = true;
         UISet_3rd_01_Enter();
         yield return new WaitUntil(() => tu_03_TrapClick1);
@@ -402,7 +402,7 @@ public class BattleTutorial : MonoBehaviour
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(292f, -198);
+        maskRt.anchoredPosition = new Vector2(224.67f, -198f);
         maskRt.sizeDelta = new Vector2(65f, 65f);
         maskImg.sprite = rect;
         // 설명박스 위치 & 내용 & 화살표
@@ -411,23 +411,23 @@ public class BattleTutorial : MonoBehaviour
         dialogBox.left.SetActive(false);
         dialogBox.right.SetActive(false);
         dialogBox.down.SetActive(true);
-        dialogBoxRt.anchoredPosition = new Vector2(816, 335);
+        dialogBoxRt.anchoredPosition = new Vector2(733f, 335f);
         dialogBox.text.text = "설치물을 설치해서 전투에 도움을 받을 수 있습니다.\n나무트랩을 설치해봅시다!";
         // 손가락 위치
         fingerImg.gameObject.SetActive(true);
-        fingerImg.anchoredPosition = new Vector2(946, 94);
+        fingerImg.anchoredPosition = new Vector2(863f, 94f);
     }
     private void UISet_3rd_02_Enter()
     {
         // 마스크 위치 & 크기 & 도형
         maskRt.gameObject.SetActive(true);
-        maskRt.anchoredPosition = new Vector2(292f, -60f);
+        maskRt.anchoredPosition = new Vector2(225f, -60f);
         maskRt.sizeDelta = new Vector2(91f, 36f);
         maskImg.sprite = rect;
 
         // 손가락 위치
         fingerImg.gameObject.SetActive(true);
-        fingerImg.anchoredPosition = new Vector2(965, 216);
+        fingerImg.anchoredPosition = new Vector2(882.3f, 233f);
     }
     private void UISet_3rd_End()
     {

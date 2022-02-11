@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[DefaultExecutionOrder(-1)]
+
 public class BattleCost : MonoBehaviour
 {
     [Header("매니저 연결")]
@@ -27,28 +27,65 @@ public class BattleCost : MonoBehaviour
     [Header("트랩 생성기")]
     public TrapSelecter trapSelector;
 
-    [HideInInspector] public AllItemTableElem oilElem;
-    [HideInInspector] public AllItemTableElem arrowElem;
-    [HideInInspector] public AllItemTableElem ironArrowElem;
-    [HideInInspector] public AllItemTableElem potionElem;
-    [HideInInspector] public AllItemTableElem woodenTrapElem;
+    private AllItemTableElem oilElem;
+    private AllItemTableElem arrowElem;
+    private AllItemTableElem ironArrowElem;
+    private AllItemTableElem potionElem;
+    private AllItemTableElem woodenTrapElem;
 
-    private void Start()
+    public AllItemTableElem OilElem
     {
-        oilElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_oil);
-        arrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_arrow);
-        ironArrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_ironArrow);
-        potionElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_potion);
-        woodenTrapElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_woodenTrap);
+        get
+        {
+            if (oilElem == null)
+                oilElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_oil);
+            return oilElem;
+        }
+    }
+    public AllItemTableElem ArrowElem
+    {
+        get
+        {
+            if (arrowElem == null)
+                arrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_arrow);
+            return arrowElem;
+        }
+    }
+    public AllItemTableElem IronArrowElem
+    {
+        get
+        {
+            if (ironArrowElem == null)
+                ironArrowElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_ironArrow);
+            return ironArrowElem;
+        }
+    }
+    public AllItemTableElem PotionElem
+    {
+        get
+        {
+            if (potionElem == null)
+                potionElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_potion);
+            return potionElem;
+        }
+    }
+    public AllItemTableElem WoodenTrapElem
+    {
+        get
+        {
+            if (woodenTrapElem == null)
+                woodenTrapElem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(itemID_woodenTrap);
+            return woodenTrapElem;
+        }
     }
 
     // 화살 elme 얻기
     public AllItemTableElem GetCurrentArrowElem()
     {
         if (Vars.UserData.arrowType == ArrowType.Normal)
-            return arrowElem;
+            return ArrowElem;
         else if (Vars.UserData.arrowType == ArrowType.Iron)
-            return ironArrowElem;
+            return IronArrowElem;
         else
             return null;
     }
@@ -56,9 +93,9 @@ public class BattleCost : MonoBehaviour
     public AllItemTableElem GetOtherArrowElem()
     {
         if (Vars.UserData.arrowType == ArrowType.Normal)
-            return ironArrowElem;
+            return IronArrowElem;
         else if (Vars.UserData.arrowType == ArrowType.Iron)
-            return arrowElem;
+            return ArrowElem;
         else
             return null;
     }
@@ -235,9 +272,9 @@ public class BattleCost : MonoBehaviour
     {
         AllItemTableElem costArrow;
         if (Vars.UserData.arrowType == ArrowType.Normal)
-            costArrow = arrowElem;
+            costArrow = ArrowElem;
         else
-            costArrow = ironArrowElem;
+            costArrow = IronArrowElem;
 
         var dataItem = new DataAllItem(costArrow);
         dataItem.OwnCount = skill.SkillTableElem.cost;
@@ -249,7 +286,7 @@ public class BattleCost : MonoBehaviour
     {
         if(skill.SkillTableElem.id == skillID_chargeOil) // 오일 충전
         {
-            var dataItem = new DataAllItem(oilElem);
+            var dataItem = new DataAllItem(OilElem);
             dataItem.OwnCount = skill.SkillTableElem.cost;
             Vars.UserData.RemoveItemData(dataItem);
             BottomUIManager.Instance.ItemListInit();
