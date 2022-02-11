@@ -48,6 +48,7 @@ public class HuntTutorial : MonoBehaviour
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
+        Debug.Log($"{canvasRt.width} {canvasRt.height}");
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
     }
 
@@ -70,6 +71,7 @@ public class HuntTutorial : MonoBehaviour
     public IEnumerator CoHuntTutorial()
     {
         // 랜턴 밝기에 따른 사냥 성공 및 발각률 설명(아무곳 터치로 넘어감)
+        yield return new WaitForSeconds(1f);
         LanternExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
 
@@ -117,8 +119,10 @@ public class HuntTutorial : MonoBehaviour
     {
         SetActive(true, true);
         dialogBoxObj.up.SetActive(true);
+        canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
+        Debug.Log($"{canvasRt.width} {canvasRt.height}");
         dialogBox.anchoredPosition = new Vector2(canvasRt.width / 2 - boxWidth / 2, canvasRt.height / 2 + 100f);
-        dialogText.text = "랜턴 밝기 설명";
+        dialogText.text = "랜턴 밝기에 따라 성공확률과 발각확률에 차이가 있어.";
     }
     public void MoveExplain()
     {
@@ -135,7 +139,8 @@ public class HuntTutorial : MonoBehaviour
 
         var boxPos = Camera.main.WorldToViewportPoint(tile.transform.position - offset);
         var scrPos = Camera.main.WorldToViewportPoint(tile.transform.position);
-        
+        canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
+        Debug.Log($"{canvasRt.width} {canvasRt.height}");
         scrPos.x *= canvasRt.width;
         scrPos.y *= canvasRt.height;
 
@@ -150,13 +155,13 @@ public class HuntTutorial : MonoBehaviour
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
 
-        dialogText.text = "이동 방법 설명";
+        dialogText.text = "해당 타일을 터치하면 이동 할 수 있어";
     }
     public void BushExplain()
     {
         SetActive(true, true);
         blackout.sizeDelta = Vector2.zero;
-        dialogText.text = "부쉬 설명";
+        dialogText.text = "부쉬로 이동하면 성공확률에 보정을 받을 수 있어.";
     }
     public void HuntingExplain()
     {
@@ -172,7 +177,8 @@ public class HuntTutorial : MonoBehaviour
         blackout.GetComponent<Image>().sprite = rect;
         var offset = new Vector2(10f, 10f);
         blackout.sizeDelta = target.sizeDelta + offset;
-
+        canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
+        Debug.Log($"{canvasRt.width} {canvasRt.height}");
         viewPos.x *= canvasRt.width;
         viewPos.y *= canvasRt.height;
         viewPos.y += target.rect.height / 2;
@@ -201,6 +207,8 @@ public class HuntTutorial : MonoBehaviour
         var sizeUp = dialogBox.sizeDelta * 3;
         dialogBox.sizeDelta += sizeUp;
         dialogBox.pivot = new Vector2(0.5f, 0.5f);
+        canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
+        Debug.Log($"{canvasRt.width} {canvasRt.height}");
         dialogBox.anchoredPosition = canvasRt.size / 2;
         dialogBoxObj.guide.gameObject.SetActive(true);
         dialogBoxObj.guide.sizeDelta += sizeUp;
@@ -208,6 +216,8 @@ public class HuntTutorial : MonoBehaviour
     }
     public void HuntTutorialEndExplain()
     {
+        Vars.UserData.contentsTutorial.Hunt = true;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
         SetActive(false);
         Destroy(this);
     }

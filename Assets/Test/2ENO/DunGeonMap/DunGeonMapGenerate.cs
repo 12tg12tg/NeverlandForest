@@ -13,6 +13,7 @@ public enum DirectionInho
     Count,
 }
 
+[DefaultExecutionOrder(11)]
 public class DunGeonMapGenerate : MonoBehaviour
 {
     private float distance = 2f;

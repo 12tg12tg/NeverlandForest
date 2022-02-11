@@ -317,6 +317,11 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
         if (!bm.IsWaitingTileSelect && !tileMaker.IsWaitingToSelectTrapTile)
             return;
 
+        if (bm.isTutorial && !bm.tutorial.tu_04_TileClick && index == new Vector2(1, 5))
+            bm.tutorial.tu_04_TileClick = true;
+        else if (bm.isTutorial && !bm.tutorial.tu_04_TileClick && index != new Vector2(1, 5))
+            return;
+
         if (bm.isTutorial && !bm.tutorial.tu_07_BoySkill2 && index == new Vector2(1, 6))
             bm.tutorial.tu_07_BoySkill2 = true;
         else if (bm.isTutorial && !bm.tutorial.tu_10_GirlSkill2 && index == new Vector2(1, 6))

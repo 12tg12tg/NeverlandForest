@@ -2,26 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-1)]
 public class ScreenFixed : MonoBehaviour
 {
-    public Camera uiCamera;
-    public Camera uiCamera2;
-    public Camera[] uiCamera3;
+    public List<Camera> cameras;
 
     [Header("화면 해상도")]
     public readonly int fixedWidth = 3040;
     public readonly int fixedHeight = 1440;
 
-    private void Start()
+    private void Awake()
     {
         SetResolution();
     }
-
-    //private void OnGUI()
-    //{
-    //    if (GUI.Button(new Rect(Screen.width * 0.5f, Screen.height * 0.5f, 100, 50), "SetScreen"))
-    //        SetResolution();
-    //}
 
     public void SetResolution()
     {
@@ -47,37 +40,39 @@ public class ScreenFixed : MonoBehaviour
             var rect = new Rect((1f - newWidth) / 2f, 0f, newWidth, 1f);
 
             // TODO : 카메라가 추가될 때 하단에 추가해야 함(else 부분도)
-            Camera.main.rect = rect;
-            if (uiCamera != null)
-                uiCamera.rect = rect;
-            if (uiCamera2 != null)
-                uiCamera2.rect = rect;
-            if (uiCamera3 != null)
+            if(Camera.main != null)
+                Camera.main.rect = rect;
+            if (cameras != null)
             {
-                for (int i = 0; i < uiCamera3.Length; i++)
+                for (int i = 0; i < cameras.Count; i++)
                 {
-                    uiCamera3[i].rect = rect;
+                    cameras[i].rect = rect;
                 }
             }
-
+            if (GameManager.Manager.ProductionCamera != null)
+            {
+                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
+                Destroy(GameManager.Manager.ProductionCamera);
+            }
         }
         else
         {
             // 높이 다시 계산
             float newHeight = deviceRatioFixed / myRatioFixed;
             var rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight);
-
-            Camera.main.rect = rect;
-            if (uiCamera != null)
-                uiCamera.rect = rect;
-            if (uiCamera2 != null)
-                uiCamera2.rect = rect;
-            if (uiCamera3 != null)
+            if(Camera.main != null)
+                Camera.main.rect = rect;
+            if (cameras != null)
             {
-                for (int i = 0; i < uiCamera3.Length; i++)
+                for (int i = 0; i < cameras.Count; i++)
                 {
-                    uiCamera3[i].rect = rect;
+                    cameras[i].rect = rect;
                 }
+            }
+            if (GameManager.Manager.ProductionCamera != null)
+            {
+                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
+                Destroy(GameManager.Manager.ProductionCamera);
             }
         }
 

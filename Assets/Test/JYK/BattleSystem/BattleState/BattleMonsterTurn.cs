@@ -23,12 +23,37 @@ public class BattleMonsterTurn : State<BattleState>
         var stageMonster = manager.monsters.Where(n => n.State != MonsterState.Dead).ToList();
         if (stageMonster.Count == 0)
         {
-            if(manager.waveLink.IsAllWaveClear())
-                manager.uiLink.PrintMessage($"승리!", 2.5f, () => Debug.Log("#########################################################################################################################################################"));
+            if (manager.waveLink.IsAllWaveClear())
+            {
+                manager.uiLink.PrintMessage($"승리!", 2.5f, () =>
+                {
+                    manager.uiLink.turnSkipTrans.SetActive(false);
+                    manager.uiLink.progressTrans.SetActive(false);
+
+                    // ★승리
+                    if (manager.isTutorial) // 튜토리얼
+                    {
+                        manager.tutorial.isWin = true;
+                        manager.boy.PlayWinAnimation();
+                        manager.girl.PlayWinAnimation();
+                        manager.directingLink.LandDownLantern();
+                        manager.uiLink.OpenRewardPopup();
+                    }
+                    else // 평상시
+                    {
+                        manager.uiLink.OpenRewardPopup();
+                        manager.boy.PlayWinAnimation();
+                        manager.girl.PlayWinAnimation();
+                        manager.directingLink.LandDownLantern();
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                    }
+
+                });
+            }
             else
             {
                 noMonster = true;
-                manager.uiLink.PrintMessage("행동할 몬스터 없음!", 1f, 
+                manager.uiLink.PrintMessage("행동할 몬스터 없음!", 1f,
                     () =>
                     {
                         canEndState = true;

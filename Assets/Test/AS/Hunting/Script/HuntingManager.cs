@@ -13,6 +13,8 @@ public enum HuntingEvent
     AnimalEscape,
     Hunting,
 }
+
+[DefaultExecutionOrder(100)]
 public class HuntingManager : MonoBehaviour
 {
     [Header("Actor")]
@@ -65,8 +67,8 @@ public class HuntingManager : MonoBehaviour
         production.FadeOut();
         tileMaker.InitMakeTiles();
         Init();
-        tm.Init();
-        huntPlayers.IsTutorialClear = tm.contentsTutorial.contentsTutorialProceed.Hunt;
+        tm.contentsTutorial.Init();
+        huntPlayers.IsTutorialClear = Vars.UserData.contentsTutorial.Hunt;
         if (!huntPlayers.IsTutorialClear)
         {
             optionButton.interactable = false;
@@ -74,6 +76,8 @@ public class HuntingManager : MonoBehaviour
             StartCoroutine(huntTutorial.CoHuntTutorial());
         }
     }
+
+    #region 사냥 매니저 OnGUI -> 게임 완료되면 안씀
     //private void OnGUI()
     //{
     //    if (GUI.Button(new Rect(Screen.width - 105, 0, 100, 100), "사냥시작"))
@@ -104,6 +108,7 @@ public class HuntingManager : MonoBehaviour
     //        huntPlayers.IsTutorialClear = true;
     //    }
     //}
+    #endregion
 
     public void Init()
     {

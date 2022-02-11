@@ -77,10 +77,6 @@ public class TrapSelecter : MonoBehaviour
                 bottomUI.ItemListInit();
             }
 
-            // 6) 튜토리얼 확인
-            if (bm.isTutorial && !bm.tutorial.tu_04_TileClick)
-                bm.tutorial.tu_04_TileClick = true;
-
             yield return null;
         }
         bm.uiLink.ShowArrow(true);

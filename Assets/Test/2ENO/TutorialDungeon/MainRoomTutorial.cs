@@ -89,7 +89,7 @@ public class MainRoomTutorial : MonoBehaviour
         SetActive(false, true);
         var boxPos = new Vector2(canvasRt.width * 0.5f - boxWidth / 2, canvasRt.height * 0.8f);
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "튜토리얼 종료! 오른쪽으로 이동해서 다음맵으로 진행해보세요";
+        dialogText.text = "튜토리얼 종료! 오른쪽으로 이동해서 다음맵으로 진행해보세요.";
     }
 
     public void TutorialTheEnd()
@@ -171,7 +171,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "스테미나 관련 설명";
+        dialogText.text = "일정 구간을 이동하거나 던전 내 행동을 할 때 마다 스태미나가 소비 돼.";
     }
 
     public void CampButtonExplain()
@@ -203,7 +203,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "캠프 시작 버튼 설명";
+        dialogText.text = "메인 스테이지에선 야영지를 설치 할 수 있어.";
     }
 
     public void CampNeedMaterialUseExplain()
@@ -232,7 +232,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "캠프 필요 재료 설명";
+        dialogText.text = "야영지를 설치 하기 위해선 다음과 같은 아이템이 필요해.";
     }
 
     public void UseButtonExplain()
@@ -266,7 +266,7 @@ public class MainRoomTutorial : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "재료 사용 버튼 설명";
+        dialogText.text = "나무토막 3개를 소비하여 야영지를 설치 해 보자.";
     }
 
 

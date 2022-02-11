@@ -7,6 +7,7 @@ using TMPro;
 
 public class TutorialRandomEvent : MonoBehaviour
 {
+    public TutorialTool tutorialTool;
     public bool isRandomEventTutorial = false;
     public int TutorialStep { get; set; } = 0;
 
@@ -27,8 +28,6 @@ public class TutorialRandomEvent : MonoBehaviour
     private readonly float boxHeight = 100f;
 
     private DialogBoxObject dialogBoxObj;
-
-    private TutorialManager tutorialManager;
 
     public float delay;
 
@@ -53,12 +52,11 @@ public class TutorialRandomEvent : MonoBehaviour
 
     private void Start()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
-        dialogBox = tutorialManager.dialogBox;
-        handIcon = tutorialManager.handIcon;
-        blackout = tutorialManager.blackout;
-        rect = tutorialManager.rect;
-        circle = tutorialManager.circle;
+        dialogBox = tutorialTool.dialogBox;
+        handIcon = tutorialTool.handIcon;
+        blackout = tutorialTool.blackout;
+        rect = tutorialTool.rect;
+        circle = tutorialTool.circle;
 
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
@@ -97,7 +95,7 @@ public class TutorialRandomEvent : MonoBehaviour
 
     public IEnumerator CoRandomEventTutorial()
     {
-        tutorialManager.BlackPanelOn();
+        tutorialTool.BlackPanelOn();
         isRandomEventTutorial = true;
 
         RandomEventDescExplain();
@@ -137,7 +135,7 @@ public class TutorialRandomEvent : MonoBehaviour
 
         RandomEventEnd();
         isRandomEventTutorial = false;
-        tutorialManager.BlackPanelOff();
+        tutorialTool.BlackPanelOff();
     }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
@@ -178,7 +176,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "랜덤이벤트 내용 설명";
+        dialogText.text = "랜덤 이벤트의 내용을 통해 결과를 유추 할 수 있어.";
     }
 
     public void RandomEventSelectButtonsExplain()
@@ -206,7 +204,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "랜덤이벤트 선택지 버튼들 및 내용 설명";
+        dialogText.text = "이에 따른 선택을 버튼을 통하여 할 수 있어.";
     }
 
     // DirectTouch
@@ -216,7 +214,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = selectButton1;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         UnityAction<int> tempAction = RandomEventManager.Instance.tutorialEvent.SelectFeedBack;
@@ -242,7 +240,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "랜덤이벤트 선택지 버튼 터치 설명";
+        dialogText.text = "아래 버튼을 터치하여 선택지를 골라보자.";
     }
 
     public void RandomEventSelectedNameExplain()
@@ -270,7 +268,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "선택이벤트 이름 설명";
+        dialogText.text = "네가 고른 선택지를 확인할 수 있어.";
     }
 
     public void RandomEventSelectedResultExplain()
@@ -297,7 +295,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "선택이벤트 결과 내용 설명";
+        dialogText.text = "선택에 따른 결과는 아래에서 확인 할 수 있어.";
     }
 
     public void RandomEventSelectedRewardExplain()
@@ -325,7 +323,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "랜덤이벤트 보상 설명";
+        dialogText.text = "이 곳에선 선택에 따른 보상을 확인 할 수 있어.";
     }
     // DirectTouch
     public void RandomEventFastClose()
@@ -334,7 +332,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = closeButtton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -357,7 +355,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "보상 받지않고 닫기 버튼";
+        dialogText.text = "만약 보상을 선택하지 않고 닫기 버튼을 누른다면.";
     }
 
     public void RandomEventRemainItemExplain()
@@ -384,7 +382,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
         blackout.anchoredPosition = scrPos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "획득하지 않은 보상 창 설명";
+        dialogText.text = "재확인 팝업이 노출되어 선택하지 않은 보상을 다시 확인 할 수 있어.";
     }
     // DirectTouch
     public void RandomEventReturnButton()
@@ -393,7 +391,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = returnButton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -416,7 +414,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "되돌아가기 버튼 설명";
+        dialogText.text = "아니오 버튼을 눌러 보상확인창으로 돌아가보자.";
     }
     // DirectTouch
     public void RandomEventAllItemGet()
@@ -425,7 +423,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = allget;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
@@ -448,7 +446,7 @@ public class TutorialRandomEvent : MonoBehaviour
         blackout.anchoredPosition = scrPos;
         handIcon.anchoredPosition = pos;
         dialogBox.anchoredPosition = boxPos;
-        dialogText.text = "모두 받기 버튼";
+        dialogText.text = "모두 받기 버튼을 누르면 보상 아이템을 일괄 수령할 수 있어.";
     }
     // DirectTouch
     public void RandomEventCloseBtn()
@@ -457,7 +455,7 @@ public class TutorialRandomEvent : MonoBehaviour
         target = closeButtton;
         var targetButton = target.GetComponent<Button>();
 
-        targetButton = tutorialManager.TutorialTargetButtonActivate(targetButton);
+        targetButton = tutorialTool.TutorialTargetButtonActivate(targetButton);
         ButtonAddOneUseStepPlus(targetButton);
 
         blackout.GetComponent<Image>().sprite = rect;
