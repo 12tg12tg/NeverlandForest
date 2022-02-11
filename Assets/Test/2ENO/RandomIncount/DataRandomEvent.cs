@@ -303,6 +303,9 @@ public class DataRandomEvent
         {
             switch (eventTypes[i])
             {
+                case EventFeedBackType.GetNote:
+
+                    break;
                 case EventFeedBackType.Stamina:
                     // 소비값 부족시 예외처리
                     var stamina = eventVals[i];
