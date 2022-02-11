@@ -25,6 +25,7 @@ public class DungeonDiaryManger : MonoBehaviour
     }
     public void Start()
     {
+        gameObject.SetActive(false);
         OpenInventoryPanel();
     }
 

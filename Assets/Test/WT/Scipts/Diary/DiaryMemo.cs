@@ -23,22 +23,21 @@ public class DiaryMemo : MonoBehaviour
         SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Memo);
         table = DataTableManager.GetTable<MemoTable>();
         var memoList = Vars.UserData.HaveMemoIDList;
-
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < itemGoList.Count; i++)
         {
-            if (memoList[i] != null)
+            itemGoList[i].Text.text = string.Empty;
+            itemGoList[i].MemoImage.color = Color.clear;
+        }
+        memoday.text = string.Empty;
+        meomodescription.text = string.Empty;
+        for (int i = 0; i < memoList.Count; i++)
+        {
+            if (memoList[i] != string.Empty)
             {
+                itemGoList[i].MemoImage.color = Color.white;
                 itemGoList[i].Init(table, memoList[i], this);
             }
-            else
-            {
-                itemGoList[i].Text.text = string.Empty;  
-            }
         }
-
-        memoday.text = "XXXX년 XX월 XX일";
-        meomodescription.text = "텍스트가 들어가는 곳입니다.텍스트가 들어가는 곳입니다.텍스트가 들어가는 곳입니다.";
-
     }
 
     public void OnChangedSelection()
