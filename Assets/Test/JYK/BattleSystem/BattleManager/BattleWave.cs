@@ -134,6 +134,18 @@ public class BattleWave : MonoBehaviour
         else if (curWave == 2)
             nextWave = wave3;
 
+        if(nextWave.All(n=>n==null))
+        {
+            nextWave.Clear();
+            curWave++;
+            if (curWave == 0)
+                nextWave = wave1;
+            else if (curWave == 1)
+                nextWave = wave2;
+            else if (curWave == 2)
+                nextWave = wave3;
+        }
+
         if (!IsReadyToNextWave(nextWave))
             return;
         if (manager.turn != 1 && manager.turn - manager.preWaveTurn < 1)
