@@ -91,7 +91,7 @@ public class WorldMapPlayer : MonoBehaviour
         Vars.UserData.isPlayerDungeonIn = true;
 
         mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
-        RandomEventManager.Instance.init();
+        //RandomEventManager.Instance.init();
 
         // 이미 맵이 만들어 졌을때
         if (Vars.UserData.AllDungeonData.ContainsKey(goalIndex))
