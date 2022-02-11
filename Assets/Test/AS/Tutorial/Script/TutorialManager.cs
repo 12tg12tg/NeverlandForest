@@ -67,7 +67,14 @@ public class TutorialManager : MonoBehaviour
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.Camp));
                 break;
             case MainTutorialStage.Clear:
-                GameManager.Manager.LoadScene(GameScene.World);
+                if(Vars.UserData.isPlayerDungeonIn)
+                {
+                    gm.Production.FadeIn(() => gm.LoadScene(GameScene.Dungeon));
+                }
+                else
+                {
+                    GameManager.Manager.LoadScene(GameScene.World);
+                }
                 break;
         }
     }

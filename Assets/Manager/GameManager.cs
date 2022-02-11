@@ -167,6 +167,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         {
             Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
             Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
+            Utility.DeleteSaveData(SaveDataName.TextDungeonMapPath);
             Debug.Log("사망");
             Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
             Vars.UserData.WorldMapPlayerData = default;

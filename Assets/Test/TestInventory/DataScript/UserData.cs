@@ -32,6 +32,7 @@ public class UserData
     public int dungeonLastIdx;
     public bool isDungeonReStart;
     public bool isDungeonClear;
+    public bool isPlayerDungeonIn;
 
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
