@@ -21,7 +21,12 @@ public class DungeonMapSaveData_0 : SaveDataBase
     public List<Vector2> dungeonIndex;
     public Vector2 curDungeonIndex;
     public int curDungeonRoomIndex;
-    
+
+    public int dungeonLastIdx;
+    public bool isDungeonReStart;
+    public bool isDungeonClear;
+    public bool isPlayerDungeonIn;
+
     public override SaveDataBase VersionUp()
     {
         return new DungeonMapSaveData_0();

@@ -88,6 +88,8 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void DungeonEnter(bool isReturn, Vector3 goal, Vector2 goalIndex)
     {
+        Vars.UserData.isPlayerDungeonIn = true;
+
         mapGenerator = GameObject.FindWithTag("Dungeon").GetComponent<DunGeonMapGenerate>();
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.RandomEvent);
         if (!Vars.UserData.isFirst)
