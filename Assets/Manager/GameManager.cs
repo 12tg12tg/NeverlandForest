@@ -47,7 +47,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     [SerializeField] private ScreenFixed productionCamera;
     public ScreenFixed ProductionCamera { get => productionCamera; set => productionCamera = value; }
 
-
     private void Awake() // 게임 실행시 준비
     {
         SingletonInit();
@@ -161,21 +160,30 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 break;
         }
     }
-    public void GoToTitle() // 버튼 클릭 함수 - 타이틀씬이 없어서 현재씬을 재시작 하는 형태로 되어있음
+
+    public void DungeonGiveUp()
     {
-        var coScene = Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f, () =>
-        {
-            Utility.DeleteSaveData(SaveDataName.TextWorldMapPlayerDataPath);
-            Utility.DeleteSaveData(SaveDataName.TextWorldMapDataPath);
-            Utility.DeleteSaveData(SaveDataName.TextDungeonMapPath);
-            Debug.Log("사망");
+        // TODO : 던전 포기 기능은 던전 씬에서만 동작 하도록 추가 해야함
+        Vars.UserData.WorldMapPlayerData.isClear = false;
+        SceneManager.LoadScene("AS_WorldMap");
+    }
+    public void GoToTitle() // 죽었을 때 타이틀로 버튼 클릭 함수
+    {
+        pd.FadeIn(() => {
+            // TODO : 사망 했을 때 지워져야 할 세이브 데이터들 및 초기화 되어야 하는 유저 데이터들 여기에
+            var len = System.Enum.GetValues(typeof(SaveDataName)).Length;
+            for (int i = 0; i < len; i++)
+            {
+                Utility.DeleteSaveData((SaveDataName)i);
+            }
             Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
             Vars.UserData.WorldMapPlayerData = default;
             Vars.UserData.uData.Date = 0;
+            // End
+            SceneManager.LoadScene("Game");
         });
-        StartCoroutine(coScene);
     }
-    public void GoToGameEnd() // 버튼 클릭 함수
+    public void GoToGameEnd() // 버튼 클릭 함수 (옵션창, 게임오버창)에서 사용해야함
     {
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
@@ -193,15 +201,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             {
                 var go = (CameraManager)FindObjectOfType(typeof(CameraManager));
                 cm = go;
-
-                //if (cm != null && cm.miniWorldMapCamera != null)
-                //{
-                //    var wmmCamera = cm.miniWorldMapCamera.GetComponent<WorldMapCamera>();
-                //    if (wmmCamera != null)
-                //    {
-                //        wmmCamera.Init();
-                //    }
-                //}
             }
             return cm;
         }
