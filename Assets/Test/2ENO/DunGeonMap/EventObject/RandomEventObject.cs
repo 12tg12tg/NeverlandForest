@@ -24,8 +24,9 @@ public class RandomEventObject : MonoBehaviour
             dungeonSystem.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
 
             var randEventMgr = RandomEventManager.Instance;
-            
-            if(randEventMgr.isTutorialRandomEvent)
+            randEventMgr.isTutorialRandomEvent = false;
+
+            if (randEventMgr.isTutorialRandomEvent)
             {
                 var rndEvent = randEventMgr.tutorialEvent;
                 RandomEventUIManager.Instance.EventInit(rndEvent);

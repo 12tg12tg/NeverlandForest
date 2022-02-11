@@ -155,6 +155,12 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.dungeonRoomList = rList2;
         dungeonMapData.curDungeonIndex = Vars.UserData.curDungeonIndex;
         dungeonMapData.curDungeonRoomIndex = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData.roomIdx;
+
+        dungeonMapData.dungeonLastIdx = Vars.UserData.dungeonLastIdx;
+        dungeonMapData.isDungeonReStart = Vars.UserData.isDungeonReStart;
+        dungeonMapData.isDungeonClear = Vars.UserData.isDungeonClear;
+        dungeonMapData.isPlayerDungeonIn = Vars.UserData.isPlayerDungeonIn;
+
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
 
@@ -245,7 +251,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         memoData = new memoSaveData_0();
         memoData.havememo = Vars.UserData.HaveMemoIDList;
 
-        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        SaveLoadSystem.Save(memoData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
     }
 
     private void LoadPlayer()
@@ -302,6 +308,11 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.curDungeonIndex = dungeonMapData.curDungeonIndex;
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].curDungeonRoomData =
                 Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray[dungeonMapData.curDungeonRoomIndex];
+
+            Vars.UserData.dungeonLastIdx = dungeonMapData.dungeonLastIdx;
+            Vars.UserData.isDungeonReStart = dungeonMapData.isDungeonReStart;
+            Vars.UserData.isDungeonClear = dungeonMapData.isDungeonClear;
+            Vars.UserData.isPlayerDungeonIn = dungeonMapData.isPlayerDungeonIn;
 
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }
