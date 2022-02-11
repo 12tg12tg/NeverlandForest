@@ -487,6 +487,9 @@ public class BattleManager : MonoBehaviour
 
         if (isBlueMoonBattle)
         {
+            // 블루문은 총 7마리
+            int totalMonsterNum = 7;
+
             // 보스전 - Wave2
             var bossIndex = groups.Max();
             groups.Remove(bossIndex);
@@ -494,7 +497,7 @@ public class BattleManager : MonoBehaviour
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
             waveLink.wave2[1].SetActionCommand();
 
-            int randNum = Random.Range(1, 3); // 보스 제외 몬스터 수
+            int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
             if(randNum == 1)
             {
                 randNum = Random.Range(0, 2);
@@ -522,21 +525,57 @@ public class BattleManager : MonoBehaviour
             }
 
             // Wave1, Wave3
-            int totalMonsterNum = 2;
-            List<MonsterUnit> temp;
-            for (int i = 0; i < 2; i++)
-            {
-                if (i == 0)
-                    temp = waveLink.wave1;
-                else
-                    temp = waveLink.wave3;
+            totalMonsterNum -= randNum + 1; // 4 ~ 6
+            randNum = Random.Range(1, 4); // 1 ~ 3
 
-                //MakeNormalWave(groups, temp);
-            }
+            MakeNormalWave(groups, waveLink.wave1, randNum);
+            MakeNormalWave(groups, waveLink.wave3, totalMonsterNum - randNum);
         }
         else if (isEndOfDeongun)
         {
+            // 보스방은 총 4~5마리
+            int totalMonsterNum = Random.Range(4, 6);
 
+            // 보스전 - Wave2
+            var bossIndex = groups.Max();
+            groups.Remove(bossIndex);
+
+            waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+            waveLink.wave2[1].SetActionCommand();
+
+            int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
+            if (randNum == 1)
+            {
+                randNum = Random.Range(0, 2);
+                if (randNum == 0)
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[0].SetActionCommand();
+                }
+                else
+                {
+                    var randId = Random.Range(0, groups.Count);
+                    waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                    waveLink.wave2[2].SetActionCommand();
+                }
+            }
+            else // 2
+            {
+                var randId = Random.Range(0, groups.Count);
+                waveLink.wave2[0] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[0].SetActionCommand();
+                randId = Random.Range(0, groups.Count);
+                waveLink.wave2[2] = FindMonsterToId(groups[randId]);
+                waveLink.wave2[2].SetActionCommand();
+            }
+
+            // Wave1, Wave3
+            totalMonsterNum -= randNum + 1; // 1 ~ 4
+            randNum = Random.Range(1, 4); // 1 ~ 3
+
+            MakeNormalWave(groups, waveLink.wave1, randNum);
+            MakeNormalWave(groups, waveLink.wave1, totalMonsterNum - randNum);
         }
         else
         {
