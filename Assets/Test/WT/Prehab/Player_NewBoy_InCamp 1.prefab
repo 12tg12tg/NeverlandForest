@@ -2716,6 +2716,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7647636560171101714}
   - component: {fileID: 7647636560180871554}
+  - component: {fileID: 1690965599}
   m_Layer: 0
   m_Name: Player_NewBoy_InCamp 1
   m_TagString: Untagged
@@ -2762,6 +2763,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1690965599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7647636560171398128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a817acd52ca67a49a6daade4c05fa51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boyAnimator: {fileID: 7647636560180871554}
 --- !u!1 &7652948260305613359
 GameObject:
   m_ObjectHideFlags: 0
