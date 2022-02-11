@@ -408,7 +408,6 @@ public class WorldMapMaker : MonoBehaviour
         {
             fog.transform.position += new Vector3(posX, 0f, 0f);
         }
-        //beforeDate = date;
     }
 
     public void FogMove(int date, bool isMiniMap = false, UnityAction action = null)
@@ -456,7 +455,7 @@ public class WorldMapMaker : MonoBehaviour
             var passNodes = maps.Select(x => x.Where(x => x != null && Mathf.Approximately(x.index.y, i))
                                           .Select(x => x)
                                           .ToArray())
-                            .ToArray();
+                                .ToArray();
 
             for (int j = 0; j < passNodes.Length; j++)
             {

@@ -27,8 +27,6 @@ public class WorldMapManager : MonoBehaviour
     public void Awake()
     {
         worldMapCamera.Init();
-        //SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapData);
-        //SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.DungeonMap);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         worldMapMaker.Init(column, row, nodePrefab, linePrefab, fogPrefab);
         if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행

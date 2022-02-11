@@ -26,7 +26,6 @@ public class Production : MonoBehaviour
     public void FadeOut(UnityAction action = null)
     {
         black.SetActive(false);
-        Debug.Log(black.activeSelf);
         bg.gameObject.SetActive(true);
         img2.gameObject.SetActive(true);
 

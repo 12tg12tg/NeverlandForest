@@ -11,10 +11,13 @@ public class ScreenFixed : MonoBehaviour
     public readonly int fixedWidth = 3040;
     public readonly int fixedHeight = 1440;
 
+    private void OnEnable() { }
+
     private void Awake()
     {
         SetResolution();
     }
+
 
     public void SetResolution()
     {
@@ -40,44 +43,41 @@ public class ScreenFixed : MonoBehaviour
             var rect = new Rect((1f - newWidth) / 2f, 0f, newWidth, 1f);
 
             // TODO : 카메라가 추가될 때 하단에 추가해야 함(else 부분도)
-            if(Camera.main != null)
-                Camera.main.rect = rect;
-            if (cameras != null)
-            {
-                for (int i = 0; i < cameras.Count; i++)
-                {
-                    cameras[i].rect = rect;
-                }
-            }
-            if (GameManager.Manager.ProductionCamera != null)
-            {
-                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
-                Destroy(GameManager.Manager.ProductionCamera);
-            }
+            SetCamera(rect);
         }
         else
         {
             // 높이 다시 계산
             float newHeight = deviceRatioFixed / myRatioFixed;
             var rect = new Rect(0f, (1f - newHeight) / 2f, 1f, newHeight);
-            if(Camera.main != null)
-                Camera.main.rect = rect;
-            if (cameras != null)
-            {
-                for (int i = 0; i < cameras.Count; i++)
-                {
-                    cameras[i].rect = rect;
-                }
-            }
-            if (GameManager.Manager.ProductionCamera != null)
-            {
-                GameManager.Manager.ProductionCamera.GetComponent<Camera>().rect = rect;
-                Destroy(GameManager.Manager.ProductionCamera);
-            }
+
+            SetCamera(rect);
         }
 
         Debug.Log("화면 재정의 완료");
     }
 
-    public void OnPreCull() => GL.Clear(true, true, Color.black);
+    private void SetCamera(Rect rect)
+    {
+        if (Camera.main != null)
+            Camera.main.rect = rect;
+
+        if (cameras != null)
+        {
+            for (int i = 0; i < cameras.Count; i++)
+            {
+                cameras[i].rect = rect;
+            }
+        }
+
+        var pc = GameManager.Manager.ProductionCamera;
+        if (pc != null)
+        {
+            pc.GetComponent<Camera>().rect = rect;
+            pc.enabled = false;
+            Debug.Log($"활성화 {pc.enabled}");
+        }
+    }
+
+    private void OnPreCull() => GL.Clear(true, true, Color.black);
 }
