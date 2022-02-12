@@ -47,7 +47,9 @@ public class EventObjectGenerate : MonoBehaviour
                                 eventObjInstanceList.Add(obj.gameObject);
                                 break;
                             case DunGeonEvent.Gathering:
+                                
                                 var createGt = eventObj as GatheringData;
+
                                 GatheringObject obj2;
                                 switch (eventObj.gatheringtype)
                                 {

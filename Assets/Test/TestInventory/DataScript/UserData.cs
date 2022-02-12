@@ -304,12 +304,13 @@ public class UserData
         //테스트용 리스트
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
         var stringId = string.Empty;
-        var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
+        DataAllItem newItem;
         //인벤토리에서 테스트로 사용할 아이템 리스트
         int tempItemNum = 19;
         for (int i = 0; i < 3; i++)
         {
             stringId = $"ITEM_{tempItemNum}";
+            newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
             newItem.OwnCount = 3;//newItem.ItemTableElem.limitCount;
             tempItemNum += 1;
             AddItemData(newItem);
@@ -319,6 +320,7 @@ public class UserData
         for (int i = 0; i < 5; i++)
         {
             stringId = $"ITEM_{tempItemNum}";
+            newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
             newItem.OwnCount = Random.Range(1, 5);
             tempItemNum++;
             AddItemData(newItem);
@@ -328,6 +330,7 @@ public class UserData
         for (int i = 0; i < 1; i++)
         {
             stringId = $"ITEM_{tempItemNum}";
+            newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
             newItem.OwnCount = 3;
             tempItemNum++;
             AddItemData(newItem);
