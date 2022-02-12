@@ -58,7 +58,7 @@ public static class Vars
             if (userData == null)
             {
                 userData = new UserData();
-                userData.UsetItemInit();
+                userData.UserItemInit();
             }
             return userData;
         }
