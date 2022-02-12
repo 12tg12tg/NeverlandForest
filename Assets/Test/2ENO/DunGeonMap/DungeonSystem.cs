@@ -320,6 +320,9 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
+        dungeonSystemData.curPlayerBoyData.SetUnitData(dungeonPlayerBoy);
+        dungeonSystemData.curPlayerGirlData.SetUnitData(dungeonPlayerGirl);
+
         if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             Vars.UserData.tutorialDungeonData = dungeonSystemData;
@@ -329,6 +332,7 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             ConsumeManager.SaveConsumableData();
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.item);
         }
     }
 

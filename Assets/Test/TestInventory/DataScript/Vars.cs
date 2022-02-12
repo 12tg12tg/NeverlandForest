@@ -42,9 +42,6 @@ public static class Vars
     // Localization
     public static Localization localization = Localization.Korean;
 
-    
-
-
     /*
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     !!  게임에서 사용되는 공통 변수들  !!
@@ -58,7 +55,6 @@ public static class Vars
             if (userData == null)
             {
                 userData = new UserData();
-                userData.UsetItemInit();
             }
             return userData;
         }

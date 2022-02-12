@@ -111,11 +111,17 @@ public class WorldMapPlayer : MonoBehaviour
                 {
                     if (isReturn)
                     {
-                        GameManager.Manager.LoadScene(GameScene.Dungeon);
+                        GameManager.Instance.Production.FadeIn(() => GameManager.Instance.LoadScene(GameScene.Dungeon));
                     }
                     else
                     {
-                        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
+                        coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, () =>
+                        {
+                            coMove = null;
+                            GameManager.Instance.Production.FadeIn(() => GameManager.Instance.LoadScene(GameScene.Dungeon));
+                        }
+                        ));
+
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                     }
                 });
@@ -137,11 +143,16 @@ public class WorldMapPlayer : MonoBehaviour
             {
                 if (isReturn)
                 {
-                    GameManager.Manager.LoadScene(GameScene.Dungeon);
+                    GameManager.Instance.Production.FadeIn(() => GameManager.Instance.LoadScene(GameScene.Dungeon));
                 }
                 else
                 {
-                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, GameScene.Dungeon, () => coMove = null));
+                    coMove ??= StartCoroutine(Utility.CoTranslate(transform, transform.position, goal, 0.5f, () =>
+                    {
+                        coMove = null;
+                        GameManager.Instance.Production.FadeIn(() => GameManager.Instance.LoadScene(GameScene.Dungeon));
+                    }
+                    ));
                     SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
                 }
             });
