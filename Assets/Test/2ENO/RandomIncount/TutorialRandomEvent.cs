@@ -61,9 +61,6 @@ public class TutorialRandomEvent : MonoBehaviour
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
-
-        //TODO : юс╫ц©К
-        ConsumeManager.CostDataReset();
     }
 
     private void Update()

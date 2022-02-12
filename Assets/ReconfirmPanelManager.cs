@@ -11,4 +11,10 @@ public class ReconfirmPanelManager : MonoBehaviour
     [Header("Popups use by wt")]
     public GameObject inventoryFull_NotToProducePopup;
     public GameObject bonfireTimeRemainPopup;
+
+    public void Close()
+    {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+    }
+
 }

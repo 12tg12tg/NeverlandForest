@@ -22,6 +22,8 @@ public class GoCamp : MonoBehaviour
     }
     public void OpenCampScene()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         setupCampSite.SetActive(true);
         if(moveTest != null)
             moveTest.gameObject.SetActive(false);
