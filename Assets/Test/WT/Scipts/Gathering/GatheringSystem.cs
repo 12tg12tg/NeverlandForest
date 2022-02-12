@@ -679,14 +679,9 @@ public class GatheringSystem : MonoBehaviour
     private void AfterMove()
     {
         coWomenMove = null;
-        womenplayer.transform.rotation = Quaternion.Euler(Vector3.zero);
+        womenplayer.transform.rotation = Quaternion.Euler(new Vector3(0f,90f,0f));
         boyPlayer.CoMoveStop();
         boyPlayer.tag = "Player";
-    }
-    private void PlayWalkAnimation()
-    {
-        //playerAnimation.SetTrigger("Walk");
-        playerAnimationWomen.SetFloat("Speed", 3f);
     }
 
     private void PlayWalkAnimationBoy()

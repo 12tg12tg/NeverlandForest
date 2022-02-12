@@ -30,7 +30,7 @@ public class DungeonSystem : MonoBehaviour
     [Header("기타")]
     public Button campButton;
     public RandomEventUIManager rndUi;
-    public MoveTest playerMove;
+    public PlayerMoveControl playerMove;
     public TutorialPlayerMove tutorialMove;
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
@@ -119,10 +119,6 @@ public class DungeonSystem : MonoBehaviour
             playerMove.Init();
             rndUi.Init();
 
-            //// 현재 불러올 맵 데이터가 없을 때
-            //if (Vars.UserData.AllDungeonData.Count <= 0)
-            //    GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
-
             curDungeonIndex = Vars.UserData.curDungeonIndex;
             startIndex = Vars.UserData.dungeonStartIdx;
             lastIndex = Vars.UserData.dungeonLastIdx;
@@ -155,8 +151,8 @@ public class DungeonSystem : MonoBehaviour
                 dungeonSystemData = Vars.UserData.AllDungeonData[curDungeonIndex];
             }
             worldMap.InitWorldMiniMap();
+
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-            // TODO: 임시! 가라로 해놓은거
             GameManager.Manager.State = GameState.Dungeon;
         }
 
@@ -260,8 +256,11 @@ public class DungeonSystem : MonoBehaviour
                 TutorialStart();
                 GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
             }
-            eventObjectGenerate.EventObjectClear();
+            else
+                GameManager.Manager.Production.FadeOut();
 
+
+            eventObjectGenerate.EventObjectClear();
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
                 if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)

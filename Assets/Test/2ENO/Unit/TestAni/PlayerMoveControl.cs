@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.EventSystems;
 
-public class MoveTest : MonoBehaviour
+public class PlayerMoveControl : MonoBehaviour
 {
     private Animator playerAnimationBoy;
     private Animator playerAnimationGirl;
@@ -47,7 +47,6 @@ public class MoveTest : MonoBehaviour
     public void Init()
     {
         lanternIdle = new Vector3(-1.46f, -176.92f, 129f);
-
         //lanternRightRunPos = new Vector3(-0.05f, 0.008f, -0.04f);
         lanternRightRunRotate = new Vector3(54.3f, -285.5f, 85.72f);
 
