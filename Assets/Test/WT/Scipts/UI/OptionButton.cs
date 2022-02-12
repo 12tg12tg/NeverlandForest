@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class OptionButton : MonoBehaviour
 {
-    public GameObject OptionPanel;
-
-    public void OnClickButton()
+    public void Open()
     {
-        OptionPanel.SetActive(true);
+        GameManager.Manager.ObtionPanelUi.SetActive(true);
     }
    
 }

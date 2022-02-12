@@ -44,6 +44,12 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
 
     [Header("UI 연결")]
     [SerializeField] private GameObject gameoverUI;
+    [SerializeField] private GameObject optionPanelUI;
+    public GameObject ObtionPanelUi
+    {
+        get => optionPanelUI;
+        set { optionPanelUI = value; }
+    }
 
     [Header("UI 연출용 카메라")]
     [SerializeField] private ScreenFixed productionCamera;
@@ -122,8 +128,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     // 씬 호출 ======================================================================
     public void LoadScene(GameScene scene)
     {
+        //TODO 씬 변경되도 안꺼짐
         SoundManager.Instance.PlayWalkSound(false);
-        //씬 변경되도 안꺼짐
         ReleaseValue();
         switch (scene)
         {

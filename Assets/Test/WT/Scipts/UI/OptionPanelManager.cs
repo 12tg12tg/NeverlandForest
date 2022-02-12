@@ -18,11 +18,6 @@ public class OptionPanelManager : MonoBehaviour
     private bool isBgmOn =true;
     private bool isSoundOn = true;
 
-    public void Update()
-    {
-        
-    }
-
     public  void BgmButtonClick()
     {
         isBgmOn = !isBgmOn;
