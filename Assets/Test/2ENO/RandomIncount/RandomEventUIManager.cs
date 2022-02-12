@@ -60,6 +60,7 @@ public class RandomEventUIManager : MonoBehaviour
     [HideInInspector] public int curOperatorFeedback = -1;
     [HideInInspector] public bool isRaneomEventOn;
     [HideInInspector] public int selectSlotNum;
+    [HideInInspector] public bool isBattleStart;
 
     private void Awake()
     {
@@ -143,6 +144,12 @@ public class RandomEventUIManager : MonoBehaviour
         closeBtn.gameObject.SetActive(true);
         eventDesc.text = randomEventData.eventDesc;
         SelectInit();
+
+        if (isBattleStart)
+        {
+            isBattleStart = false;
+            GameManager.Manager.LoadScene(GameScene.Battle);
+        }
     }
 
     private void SelectInit()
@@ -255,7 +262,10 @@ public class RandomEventUIManager : MonoBehaviour
 
         for (int i = 0; i < selectRewardItems.Count; i++)
         {
-            Vars.UserData.AddItemData(selectRewardItems[i]);
+            if(Vars.UserData.AddItemData(selectRewardItems[i]))
+            {
+                inventoryFullPanel.gameObject.SetActive(true);
+            }
             Vars.UserData.ExperienceListAdd(selectRewardItems[i].itemId);
             ItemListInit();
             if(selectRewardItems[i].OwnCount <= 0)
@@ -267,8 +277,6 @@ public class RandomEventUIManager : MonoBehaviour
             }
             RewardItemLIstInit(rewardItemList);
         }
-        if (selectRewardItems.Count > 0)
-            inventoryFullPanel.gameObject.SetActive(true);
 
         selectRewardItems.Clear();
     }

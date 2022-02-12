@@ -30,13 +30,15 @@ public class HuntingObject : MonoBehaviour, IPointerClickHandler
 
     public void HuntingStart()
     {
-        DungeonSystem.Instance.DungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
-        DungeonSystem.Instance.DungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
-        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = DungeonSystem.Instance.DungeonSystemData;
+        var dungeonSystemData = DungeonSystem.Instance.DungeonSystemData;
+        dungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
+        dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
+
+        Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
-        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
-        DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+        dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+        dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
         GameManager.Manager.LoadScene(GameScene.Hunt);
         Destroy(gameObject);
     }

@@ -116,6 +116,9 @@ public class MainRoomTutorial : MonoBehaviour
         isMainRoomTutorial = true;
         tutorialTool.BlackPanelOn();
 
+        // Ã©ÅÍ 4 ½ºÅä¸®
+        //yield return
+
         StaminaExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
 

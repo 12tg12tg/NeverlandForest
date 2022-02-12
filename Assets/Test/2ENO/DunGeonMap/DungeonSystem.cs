@@ -371,6 +371,7 @@ public class DungeonSystem : MonoBehaviour
                     newData2.offSetBasePos = (eventList[i] as GatheringData) == null ? 0 : (eventList[i] as GatheringData).offSetBasePos;
                     newData2.roomIndex = eventList[i].roomIndex;
                     newData2.objectPosition = eventList[i].objectPosition;
+                    Debug.Log($"{newData2.objectPosition},  {eventList[i].objectPosition}");
                     newData2.gatheringtype = eventList[i].gatheringtype;
                     newList.Add(newData2);
                     break;

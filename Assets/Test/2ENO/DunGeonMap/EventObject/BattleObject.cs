@@ -20,8 +20,14 @@ public class BattleObject : MonoBehaviour
     {
         if (other.tag is "Player")
         {
-            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
-            DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+            var dungeonSystemData = DungeonSystem.Instance.DungeonSystemData;
+
+            dungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
+            dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
+            Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+
+            dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+            dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             BattleManager.initState = BattleInitState.Dungeon;
             GameManager.Manager.LoadScene(GameScene.Battle);

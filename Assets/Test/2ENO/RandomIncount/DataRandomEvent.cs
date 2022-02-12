@@ -198,12 +198,14 @@ public class DataRandomEvent
     // 피드백 함수들, 피드백 함수로 인해 값의 변화가 없는 케이스는 return
     public void SelectFeedBack(int selectNum)
     {
+        var randomEventUiManager = RandomEventUIManager.Instance;
+
         if (selectNum < 1 || selectNum > 3)
         {
             Debug.Log("잘못된 선택번호 들어옴");
             return;
         }
-        if(RandomEventUIManager.Instance.curOperatorFeedback == selectNum)
+        if(randomEventUiManager.curOperatorFeedback == selectNum)
         {
             return;
         }
@@ -364,12 +366,12 @@ public class DataRandomEvent
                             isInsufficiency[selectNum - 1] = true;
                         else
                             Vars.UserData.RemoveItemData(newItem);
-                        Debug.Log("아이템감소");
+
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 감소\n";
                     }
                     else
                     {
-                        Debug.Log("아이템획득");
+
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 획득\n";
                         rewardItems.Add(newItem);
                     }
@@ -439,14 +441,16 @@ public class DataRandomEvent
 
                     tempStr = $"이벤트 해금\n";
                     sb.Append(tempStr);
-
+                    break;
+                case EventFeedBackType.Battle:
+                    randomEventUiManager.isBattleStart = true;
                     break;
             }
         }
 
         resultInfo = sb.ToString();
         if (!isInsufficiency[selectNum - 1])
-            RandomEventUIManager.Instance.NextPage();
+            randomEventUiManager.NextPage();
         else
         {
             Debug.Log("조건 불충분");
@@ -461,9 +465,10 @@ public class DataRandomEvent
         selectInfos[selectNum - 1] = sb2.ToString();
 
         // 두번클릭 방지
-        RandomEventUIManager.Instance.curOperatorFeedback = selectNum;
+        randomEventUiManager.curOperatorFeedback = selectNum;
 
         RandomEventManager.Instance.SaveEventData();
+        GameManager.Instance.SaveLoad.Save(SaveLoadSystem.SaveType.ConsumableData);
     }
 
     public void DataDefaultEventExit()
