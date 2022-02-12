@@ -479,6 +479,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -5581064379070246930}
   arrowTrigger: {fileID: 8488094816668663709}
   moveTrigger: {fileID: 1285145892298623803}
+  clickTrigger: {fileID: 4199415265764599076}
 --- !u!114 &6409644554293951706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,6 +832,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1474291294554732072}
   - component: {fileID: 7388252571287512607}
+  - component: {fileID: 4199415265764599076}
+  - component: {fileID: 4449656808806579050}
   m_Layer: 0
   m_Name: Death Mage
   m_TagString: Untagged
@@ -925,6 +928,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.043547392, y: -0.51426154, z: 0.00004887581}
     m_Extent: {x: 2.1771452, y: 1.7237723, z: 4.087055}
   m_DirtyAABB: 0
+--- !u!64 &4199415265764599076
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625444356502255762}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -3767546240234446164, guid: 8fa8165bd2864844894425e23c6ee88d, type: 3}
+--- !u!114 &4449656808806579050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7625444356502255762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -5581064379070246930}
 --- !u!1 &8152327062767937012
 GameObject:
   m_ObjectHideFlags: 0

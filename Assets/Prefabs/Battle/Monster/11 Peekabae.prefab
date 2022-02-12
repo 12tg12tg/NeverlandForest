@@ -240,6 +240,7 @@ MonoBehaviour:
   monsterUnit: {fileID: 4501658650802276561}
   arrowTrigger: {fileID: 6333794242100136533}
   moveTrigger: {fileID: 3542478875057781027}
+  clickTrigger: {fileID: 2638019448933694855}
 --- !u!114 &7204654172566116575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,6 +271,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4524045572468371746}
   - component: {fileID: 4524045572464762880}
+  - component: {fileID: 2638019448933694855}
+  - component: {fileID: 133758877137452910}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -362,6 +365,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.20042266, y: -0.055770934, z: 0.00000011920929}
     m_Extent: {x: 0.5826983, y: 0.4684801, z: 0.46958727}
   m_DirtyAABB: 0
+--- !u!64 &2638019448933694855
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4524045572467879170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: db13331a9ade1df46a30c1179d2f4539, type: 3}
+--- !u!114 &133758877137452910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4524045572467879170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 4501658650802276561}
 --- !u!1 &4524045572467879172
 GameObject:
   m_ObjectHideFlags: 0

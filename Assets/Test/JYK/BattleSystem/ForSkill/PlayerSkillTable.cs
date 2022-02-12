@@ -25,7 +25,8 @@ public class PlayerSkillTableElem : DataTableElemBase
     public int hitCount;
     public SkillRangeType range;
     public string description;
-    public string attackSound;
+    private string attackSound;
+    public SoundType soundType;
     public int Damage
     {
         get
@@ -84,6 +85,34 @@ public class PlayerSkillTableElem : DataTableElemBase
         iconSprite = Resources.Load<Sprite>($"SkillSprites/{iconID}");
 
         attackSound = data["SOUND"];
+
+        switch (attackSound)
+        {
+            case "10_se_Attack":
+                soundType = SoundType.Se_Attack;
+                break;
+            case "16_se_bow":
+                soundType = SoundType.Se_bowSingleShot;
+                break;
+            case "17_se_bow":
+                soundType = SoundType.Se_bowMultyShot;
+                break;
+            case "18_se_bow":
+                soundType = SoundType.Se_knockBack;
+                break;
+            case "11_se_Light":
+                soundType = SoundType.Se_lightSingleAttack;
+                break;
+            case "12_se_Light":
+                soundType = SoundType.Se_lightWide_attack;
+                break;
+            case "13_se_Light":
+                soundType = SoundType.Se_lightForceMove;
+                break;
+            case "26_se_Light":
+                soundType = SoundType.Se_OilFulling;
+                break;
+        }
     }
 }
 

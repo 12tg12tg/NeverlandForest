@@ -1536,6 +1536,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -2218374482373343403}
   arrowTrigger: {fileID: 2698032522945403838}
   moveTrigger: {fileID: -7396032348978196367}
+  clickTrigger: {fileID: 3418934469235059392}
 --- !u!114 &8239647835964766134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1566,6 +1567,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3118294153675890164}
   - component: {fileID: 3118294153689058512}
+  - component: {fileID: 3418934469235059392}
+  - component: {fileID: 597152832955884525}
   m_Layer: 0
   m_Name: Shade
   m_TagString: Untagged
@@ -1686,6 +1689,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.15343991, y: -0.04217702, z: 0}
     m_Extent: {x: 0.765918, y: 0.3459638, z: 0.94955415}
   m_DirtyAABB: 0
+--- !u!64 &3418934469235059392
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118294153675456980}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 4e4caa156d5db094fa7fb6a85200e6eb, type: 3}
+--- !u!114 &597152832955884525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3118294153675456980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -2218374482373343403}
 --- !u!1 &3118294153675456982
 GameObject:
   m_ObjectHideFlags: 0
