@@ -92,14 +92,16 @@ public class MainRoomTutorial : MonoBehaviour
                 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Camp
                 )
             {
+                Debug.Log($"스테미나면 이곳으로 들어옴 {GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage}");
                 delay = 0f;
                 TutorialStep++;
                 Debug.Log(TutorialStep);
             }
             else
             {
-                if (TutorialStep != 2)
+                if (TutorialStep != 2 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Stamina)
                 {
+                    Debug.Log($"스테미나면 이곳으로 들어오면 안됨 {GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage}");
                     delay = 0f;
                     TutorialStep++;
                     Debug.Log(TutorialStep);
@@ -192,6 +194,7 @@ public class MainRoomTutorial : MonoBehaviour
     public IEnumerator CoMainRoomTutorial()
     {
         isMainRoomTutorial = true;
+        storyChapter4 = true;
         yield return new WaitForSeconds(1f);
 
         #region 챕터 4

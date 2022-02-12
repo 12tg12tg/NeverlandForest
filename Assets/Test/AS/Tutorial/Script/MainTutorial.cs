@@ -12,6 +12,7 @@ public enum MainTutorialStage
     Event,
     Stamina,
     Camp,
+    Play,
     Clear
 }
 

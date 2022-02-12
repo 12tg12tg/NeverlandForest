@@ -66,6 +66,9 @@ public class TutorialManager : MonoBehaviour
                 CampManager.curinitState = CampManager.CampinitState.Tutorial;
                 gm.Production.FadeIn(() => gm.LoadScene(GameScene.Camp));
                 break;
+            case MainTutorialStage.Play:
+                gm.Production.FadeIn(() => gm.LoadScene(GameScene.TutorialDungeon));
+                break;
             case MainTutorialStage.Clear:
                 if(Vars.UserData.isPlayerDungeonIn)
                 {
