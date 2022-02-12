@@ -123,6 +123,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public void LoadScene(GameScene scene)
     {
         SoundManager.Instance.PlayWalkSound(false);
+        //씬 변경되도 안꺼짐
         ReleaseValue();
         switch (scene)
         {
