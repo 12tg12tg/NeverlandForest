@@ -51,10 +51,6 @@ public class UserData
 
     public List<string> HaveMemoIDList { get; set; } = new List<string>();
 
-
-    //??? - Vars로 이사가도 되는가?
-    public List<DataMaterial> HaveMaterialList { get; set; } = new List<DataMaterial>();
-
     //ConsumeManager
     //피로도는 실질적으로 줄어드는 수치
     public CostData uData = new CostData();
@@ -96,7 +92,7 @@ public class UserData
         var recipeTable = DataTableManager.GetTable<RecipeDataTable>();
         var idList = recipeTable.allRecipeIdList;
         var resultIdDic = recipeTable.allRecipeDictionary;
-      
+
         for (int i = 0; i < idList.Count; i++)
         {
             var resultid = resultIdDic[idList[i]];
@@ -114,7 +110,7 @@ public class UserData
                 }
             }
             if (isExperience)
-            {   
+            {
                 AddRecipeList(recipeTable.GetRecipeId(resultid));
             }
         }
@@ -274,10 +270,69 @@ public class UserData
 
     public void UserDataInit() //초기화 하는 느낌
     {
+        //WorldMap Info
         WorldMapNodeStruct = new List<WorldMapNodeStruct>();
         WorldMapPlayerData = null;
-        uData.Date = 0;
+
+        //Consume
+        ConsumeManager.CostDataReset(); //리셋 함수안에서 코스트 정보 저장함
+
+        // 던전맵 데이터
+        AllDungeonData = new SerializeDictionary<Vector2, DungeonData>();
+        curDungeonIndex = Vector2.zero;
+        dungeonStartIdx = 100;
+        dungeonLastIdx = -1;
+        isDungeonReStart = false;
+        isDungeonClear = false;
         isPlayerDungeonIn = false;
+
+        // 랜덤이벤트 데이터
+        randomEventDatas = new List<DataRandomEvent>();
+        useEventID = new List<string>();
+        isFirst = false;
+        isRandomDataLoad = false;
+        isTutorialRandomEvent = false;
+
+        // 인벤토리에 사용
+        maxInventoryItemCount = 12;
+        haveAllItemList.Clear();
+        experienceHaveItemList = new List<string>();
     }
+
+    public void UsetItemInit()
+    {
+        //테스트용 리스트
+        var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        var stringId = string.Empty;
+        var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
+        //인벤토리에서 테스트로 사용할 아이템 리스트
+        int tempItemNum = 19;
+        for (int i = 0; i < 3; i++)
+        {
+            stringId = $"ITEM_{tempItemNum}";
+            newItem.OwnCount = 3;//newItem.ItemTableElem.limitCount;
+            tempItemNum += 1;
+            AddItemData(newItem);
+        }
+        // 올가미류
+        tempItemNum = 14;
+        for (int i = 0; i < 5; i++)
+        {
+            stringId = $"ITEM_{tempItemNum}";
+            newItem.OwnCount = Random.Range(1, 5);
+            tempItemNum++;
+            AddItemData(newItem);
+        }
+        // 나무토막류
+        tempItemNum = 1;
+        for (int i = 0; i < 1; i++)
+        {
+            stringId = $"ITEM_{tempItemNum}";
+            newItem.OwnCount = 3;
+            tempItemNum++;
+            AddItemData(newItem);
+        }
+    }
+
 
 }

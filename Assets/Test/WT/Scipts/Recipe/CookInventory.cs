@@ -48,7 +48,5 @@ public class CookInventory : MonoBehaviour
 
     public void Start()
     {
-        var data = Vars.UserData.HaveMaterialList;
-        listinfo.Init(data,currentMaterial);
     }
 }

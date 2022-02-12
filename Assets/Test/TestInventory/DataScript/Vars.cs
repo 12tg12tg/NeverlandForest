@@ -57,41 +57,8 @@ public static class Vars
         {
             if (userData == null)
             {
-                //테스트용 리스트
-                var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
                 userData = new UserData();
-
-                //인벤토리에서 테스트로 사용할 아이템 리스트
-                int tempItemNum = 19;
-                for (int i = 0; i < 3; i++)
-                {
-                    var stringId = $"ITEM_{tempItemNum}";
-                    var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = 3;//newItem.ItemTableElem.limitCount;
-                    tempItemNum += 1;
-                    userData.AddItemData(newItem);
-                }
-                // 올가미류
-                tempItemNum = 14;
-                for (int i = 0; i < 5; i++)
-                {
-                    var stringId = $"ITEM_{tempItemNum}";
-                    var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = Random.Range(1, 5);
-                    tempItemNum++;
-                    userData.AddItemData(newItem);
-                }
-
-                // 나무토막류
-                tempItemNum = 1;
-                for (int i = 0; i < 1; i++)
-                {
-                    var stringId = $"ITEM_{tempItemNum}";
-                    var newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-                    newItem.OwnCount = 3;
-                    tempItemNum++;
-                    userData.AddItemData(newItem);
-                }
+                userData.UsetItemInit();
             }
             return userData;
         }

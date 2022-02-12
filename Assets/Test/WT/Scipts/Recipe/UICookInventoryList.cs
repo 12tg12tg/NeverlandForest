@@ -136,7 +136,7 @@ public class UICookInventoryList : MonoBehaviour
     }
     public void GetResultIcon()
     {
-        if (fireObject != null && condimentObject != null && materialObject != null
+       /* if (fireObject != null && condimentObject != null && materialObject != null
             && fire.sprite != null && condiment.sprite != null && material.sprite != null)
         {
             var list = Vars.UserData.HaveMaterialList;
@@ -159,6 +159,6 @@ public class UICookInventoryList : MonoBehaviour
 
             material.sprite = xSprite;
             materialObject = null;
-        }
+        }*/
     }
 }
