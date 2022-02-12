@@ -74,7 +74,9 @@ public class NewRoomGenerate : MonoBehaviour
         foreach (var room in roomList)
         {
             objPosList.Clear();
+            room.gameObject.SetActive(false);
             Destroy(room.gameObject);
+            Debug.Log("πÊ ªË¡¶");
             //room.isActive = false;
             //room.gameObject.SetActive(false);
         }
@@ -163,16 +165,18 @@ public class NewRoomGenerate : MonoBehaviour
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
         for (int i = 0; i < childEnd.Length; i++)
         {
-            childEnd[i].isLastPos = false;
-        }
-
-        for (int i = 0; i < childEnd.Length; i++)
-        {
             childEnd[i].roomNumber = i;
+            Debug.Log(childEnd[i].gameObject.name);
             if (i == childEnd.Length - 1)
             {
                 childEnd[i].isLastPos = true;
             }
+        }
+
+        for (int i = 0; i < childEnd.Length; i++)
+        {
+            
+
         }
     }
 

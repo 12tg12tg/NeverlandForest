@@ -182,7 +182,7 @@ public class MainRoomTutorial : MonoBehaviour
     public IEnumerator CoMainRoomTutorial()
     {
         isMainRoomTutorial = true;
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(1f);
 
         #region ц╘ем 4
         storyChapter4 = true;

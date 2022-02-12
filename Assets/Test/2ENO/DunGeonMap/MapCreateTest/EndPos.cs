@@ -16,7 +16,7 @@ public class EndPos : MonoBehaviour
             if (isLastPos)
             {
                 player.CurRoomNumber = 0;
-                DungeonSystem.Instance.ChangeRoomEvent(true, true);
+                GameManager.Manager.Production.FadeIn(() => DungeonSystem.Instance.ChangeRoomEvent(true, true));
             }
         }
     }
