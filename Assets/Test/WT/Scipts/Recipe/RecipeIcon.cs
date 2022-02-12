@@ -181,7 +181,7 @@ public class RecipeIcon : MonoBehaviour
                 }
 
                 ConsumeManager.TimeUp(makeTime);
-                ConsumeManager.RecoveryHunger(20);
+                ConsumeManager.RecoveryHunger(resultitem.ItemTableElem.stat_str);
 
                 isfireok = false;
                 iscondimentok = false;

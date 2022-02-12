@@ -34,73 +34,77 @@ public class MinimapGenerate : MonoBehaviour
         bottom = curIdx / 20;
 
         /*dungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx*/
-        while (DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx != -1)
+        if (DungeonSystem.Instance !=null)
         {
-            var room = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
-            RoomObject obj;
-            if (room.RoomType == DunGeonRoomType.MainRoom)
+            while (DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx != -1)
             {
-                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                     , Quaternion.identity, transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                dungeonRoomObjectList.Add(obj);
-            }
-            else
-            {
-                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                , Quaternion.identity, transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                dungeonRoomObjectList.Add(obj);
-            }
-            if (curIdx == startIndex)
-            {
-                leftPos = obj.transform.position;
-                rightPos = obj.transform.position;
-                topPos = obj.transform.position;
-                bottomPos = obj.transform.position;
-            }
-
-            if (curIdx != 0)
-            {
-                if (left > curIdx % 20)
+                var room = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
+                RoomObject obj;
+                if (room.RoomType == DunGeonRoomType.MainRoom)
                 {
-                    left = curIdx % 20;
+                    obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
+                         , Quaternion.identity, transform);
+                    var objectInfo = obj.GetComponent<RoomObject>();
+                    objectInfo.roomIdx = room.roomIdx;
+                    dungeonRoomObjectList.Add(obj);
+                }
+                else
+                {
+                    obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
+                    , Quaternion.identity, transform);
+                    var objectInfo = obj.GetComponent<RoomObject>();
+                    objectInfo.roomIdx = room.roomIdx;
+                    dungeonRoomObjectList.Add(obj);
+                }
+                if (curIdx == startIndex)
+                {
                     leftPos = obj.transform.position;
-                }
-                if (right < curIdx % 20)
-                {
-                    right = curIdx % 20;
                     rightPos = obj.transform.position;
-                }
-                if (top > curIdx / 20)
-                {
-                    top = curIdx / 20;
                     topPos = obj.transform.position;
-                }
-                if (bottom < curIdx / 20)
-                {
-                    bottom = curIdx / 20;
                     bottomPos = obj.transform.position;
                 }
+
+                if (curIdx != 0)
+                {
+                    if (left > curIdx % 20)
+                    {
+                        left = curIdx % 20;
+                        leftPos = obj.transform.position;
+                    }
+                    if (right < curIdx % 20)
+                    {
+                        right = curIdx % 20;
+                        rightPos = obj.transform.position;
+                    }
+                    if (top > curIdx / 20)
+                    {
+                        top = curIdx / 20;
+                        topPos = obj.transform.position;
+                    }
+                    if (bottom < curIdx / 20)
+                    {
+                        bottom = curIdx / 20;
+                        bottomPos = obj.transform.position;
+                    }
+                }
+
+
+
+                curIdx = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx;
             }
 
+            var room2 = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
+            var obj2 = Instantiate(lastRoomPrefab, new Vector3(room2.Pos.x, 0f, room2.Pos.y)
+                         , Quaternion.Euler(0f, 180f, 0f), transform);
+            var objectInfo2 = obj2.GetComponent<RoomObject>();
+            objectInfo2.roomIdx = room2.roomIdx;
+            dungeonRoomObjectList.Add(obj2);
 
-
-            curIdx = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx].nextRoomIdx;
+            minimapCam.leftVec = leftPos;
+            minimapCam.rightVec = rightPos;
+            minimapCam.topVec = topPos;
+            minimapCam.bottomVec = bottomPos;
         }
-
-        var room2 = DungeonSystem.Instance.DungeonSystemData.dungeonRoomArray[curIdx];
-        var obj2 = Instantiate(lastRoomPrefab, new Vector3(room2.Pos.x, 0f, room2.Pos.y)
-                     , Quaternion.Euler(0f,180f,0f), transform);
-        var objectInfo2 = obj2.GetComponent<RoomObject>();
-        objectInfo2.roomIdx = room2.roomIdx;
-        dungeonRoomObjectList.Add(obj2);
-
-        minimapCam.leftVec = leftPos;
-        minimapCam.rightVec = rightPos;
-        minimapCam.topVec = topPos;
-        minimapCam.bottomVec = bottomPos;
+      
     }
 }

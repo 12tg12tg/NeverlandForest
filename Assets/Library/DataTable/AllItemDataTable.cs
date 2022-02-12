@@ -14,6 +14,7 @@ public class AllItemTableElem : DataTableElemBase
     public bool isBurn;
     public float burn_recovery;
     public int stat_Hp;
+    public float stat_str;
     public TrapTag obstacleType;
     public int obstacleHp;
     public int damage;
@@ -44,6 +45,7 @@ public class AllItemTableElem : DataTableElemBase
         isBurn = Convert.ToBoolean(int.Parse(data["BURN"]));
         burn_recovery =float.Parse(data["BURN_RECOVERY"]);
         stat_Hp = int.Parse(data["STAT_HP"]);
+        stat_str = float.Parse(data["STAT_STR"]);
         obstacleType = (TrapTag)int.Parse(data["OBSTACLE_TYPE"]);
         obstacleHp = int.Parse(data["OBSTACLE_HP"]);
         damage = int.Parse(data["DAMAGE"]);

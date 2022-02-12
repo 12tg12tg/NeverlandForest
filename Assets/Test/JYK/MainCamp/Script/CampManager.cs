@@ -111,7 +111,10 @@ public class CampManager : MonoBehaviour
 
     public void Start()
     {
-        GameManager.Manager.Production.FadeOut();
+        if (GameManager.Manager.Production!=null)
+        {
+            GameManager.Manager.Production.FadeOut();
+        }
         switch (curinitState)
         {
             case CampinitState.None:
