@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class PlayerItemListSaveData_0
+{
+    public List<string> itemIdList = new List<string>();
+    public List<int> itemOwnCountList = new List<int>();
+}
+
 public class DataAllItem
 {
     public string itemId;
@@ -22,7 +28,6 @@ public class DataAllItem
     }
 
     public int OwnCount { get; set; }
-    public int GetCount { get; set; }
 
     private AllItemTableElem itemTableElem;
     public AllItemTableElem ItemTableElem
@@ -55,4 +60,3 @@ public class DataAllItem
         }
     }
 }
-//public DataAllItem(DataItem item) : base(item) { }

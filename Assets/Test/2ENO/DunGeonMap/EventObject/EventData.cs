@@ -7,6 +7,7 @@ public class EventData
 {
     public DunGeonEvent eventType;
     public Vector3 eventBasePos;
+    public int offSetBasePos;
     // 첫 생성인지, 이미 생성한적 있던 이벤트인지
     public bool isCreate;
     public Vector3 objectPosition;
@@ -19,7 +20,6 @@ public class EventData
 }
 public class GatheringData : EventData
 {
-    public int offSetBasePos;
     GatheringObject gatheringObj;
     public GatheringObject CreateObj(GatheringObject obj, GatheringSystem system)
     {

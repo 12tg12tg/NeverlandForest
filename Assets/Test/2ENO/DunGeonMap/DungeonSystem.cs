@@ -338,7 +338,7 @@ public class DungeonSystem : MonoBehaviour
         var array = Vars.UserData.AllDungeonData[curDungeonIndex].dungeonRoomArray;
         var curIdx = startIndex;
 
-        while (array[curIdx].nextRoomIdx != -1)
+        while (curIdx != -1)
         {
             EventDataTypeInit(array[curIdx].eventObjDataList);
             curIdx = array[curIdx].nextRoomIdx;
@@ -368,10 +368,10 @@ public class DungeonSystem : MonoBehaviour
                     newData2.eventType = DunGeonEvent.Gathering;
                     newData2.isCreate = eventList[i].isCreate;
                     newData2.eventBasePos = eventList[i].eventBasePos;
-                    newData2.offSetBasePos = (eventList[i] as GatheringData) == null ? 0 : (eventList[i] as GatheringData).offSetBasePos;
+                    newData2.offSetBasePos = eventList[i].offSetBasePos;
                     newData2.roomIndex = eventList[i].roomIndex;
                     newData2.objectPosition = eventList[i].objectPosition;
-                    Debug.Log($"{newData2.objectPosition},  {eventList[i].objectPosition}");
+
                     newData2.gatheringtype = eventList[i].gatheringtype;
                     newList.Add(newData2);
                     break;
