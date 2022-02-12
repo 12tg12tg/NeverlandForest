@@ -188,6 +188,10 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
+            if (walkSoundPlayer.isPlaying)
+            {
+                walkSoundPlayer.Stop();
+            }
             walkSoundPlayer.Stop();
         }
     }
