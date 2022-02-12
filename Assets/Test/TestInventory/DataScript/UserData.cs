@@ -299,7 +299,7 @@ public class UserData
         experienceHaveItemList = new List<string>();
     }
 
-    public void UsetItemInit()
+    public void UserItemInit()
     {
         //테스트용 리스트
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
