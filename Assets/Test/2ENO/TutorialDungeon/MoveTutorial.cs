@@ -41,7 +41,6 @@ public class MoveTutorial : MonoBehaviour
     public RectTransform lantern;
     private void Start()
     {
-        Debug.Log("asdasdsad");
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;
         blackout = tutorialTool.blackout;
@@ -53,8 +52,6 @@ public class MoveTutorial : MonoBehaviour
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
 
         dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
-
-        //StartCoroutine(CoMoveTutorial());
     }
 
     private void Update()

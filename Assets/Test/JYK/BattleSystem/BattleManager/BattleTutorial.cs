@@ -171,17 +171,6 @@ public class BattleTutorial : MonoBehaviour
         stm.MessageBox.SetActive(false);
         TileMaker.Instance.gameObject.SetActive(true);
         GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
-
-        #region ц╘ем 4
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-        #endregion
-        #region ц╘ем 5
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-        #endregion
     }
 
 
