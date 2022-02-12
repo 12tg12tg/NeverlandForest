@@ -90,7 +90,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
             }
         }
 
-        if(type == TrapTag.Snare)
+        if(type == TrapTag.Snare || type == TrapTag.BoobyTrap)
         {
             sprite = GetComponentInChildren<SpriteRenderer>();
         }
@@ -98,7 +98,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
 
     private void Update()
     {
-        if (isInit && type == TrapTag.Snare)
+        if (isInit && (type == TrapTag.Snare || type == TrapTag.BoobyTrap))
         {
             var rotate = Quaternion.LookRotation(sprite.transform.position - Camera.main.transform.position);
             sprite.transform.rotation = rotate;

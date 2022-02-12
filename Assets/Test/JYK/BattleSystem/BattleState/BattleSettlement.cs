@@ -54,7 +54,7 @@ public class BattleSettlement : State<BattleState>
                         manager.boy.PlayWinAnimation();
                         manager.girl.PlayWinAnimation();
                         manager.directingLink.LandDownLantern();
-                        manager.uiLink.OpenRewardPopup();
+                        //manager.uiLink.OpenRewardPopup();
                     }
                     else // Æò»ó½Ã
                     {

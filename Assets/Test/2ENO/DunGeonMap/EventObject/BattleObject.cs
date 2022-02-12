@@ -29,7 +29,12 @@ public class BattleObject : MonoBehaviour
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
-            BattleManager.initState = BattleInitState.Dungeon;
+
+            if(thisRoomIdx == Vars.UserData.dungeonLastIdx)
+                BattleManager.initState = BattleInitState.Dungeon;
+            else
+                BattleManager.initState = BattleInitState.None;
+
             GameManager.Manager.LoadScene(GameScene.Battle);
             Destroy(gameObject);
         }
