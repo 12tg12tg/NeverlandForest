@@ -1,5 +1,6 @@
 using UnityEngine;
 
+#region 강사님이 추천해주셨던 것
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
@@ -62,3 +63,44 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         applicationIsQuitting = true;
     }
 }
+#endregion
+
+#region 강사님 디자인패턴 수업 때 있던 오픈소스
+//public class Singleton<T> : MonoBehaviour where T : Component
+//{
+//    private static T _instance;
+
+//    public static T Instance
+//    {
+//        get
+//        {
+//            if (_instance == null)
+//            {
+//                _instance = FindObjectOfType<T>();
+
+//                if (_instance == null)
+//                {
+//                    GameObject obj = new GameObject();
+//                    obj.name = typeof(T).Name;
+//                    _instance = obj.AddComponent<T>();
+//                }
+//            }
+
+//            return _instance;
+//        }
+//    }
+
+//    public virtual void Awake()
+//    {
+//        if (_instance == null)
+//        {
+//            _instance = this as T;
+//            DontDestroyOnLoad(gameObject);
+//        }
+//        else
+//        {
+//            Destroy(gameObject);
+//        }
+//    }
+//}
+#endregion

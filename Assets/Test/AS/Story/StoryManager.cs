@@ -90,7 +90,6 @@ public class StoryManager : MonoBehaviour
             var colorData = data.color;
             var typing = data.typing;
             var character = data.character;
-            var fade = data.fade;
 
             if(character == StoryChar.Hunter.ToString())
             {
@@ -132,16 +131,7 @@ public class StoryManager : MonoBehaviour
                 if (typing)
                     yield return new WaitForSeconds(0.1f);
             }
-            if (fade)
-            {
-                StartCoroutine(CoFadeOut(() => {
-                    BattleManager.Instance.girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
-                    BattleManager.Instance.girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
-                    isNext = true;
-                }));
-            }
-            else
-                yield return new WaitWhile(() => !isNext);
+            yield return new WaitWhile(() => !isNext);
 
             talk.text = "";
             talk.color = Color.white;
@@ -149,10 +139,10 @@ public class StoryManager : MonoBehaviour
         }
         herbalist.SetActive(false);
         hunter.SetActive(false);
-        action?.Invoke();
+        StartCoroutine(CoFadeOut(() => action?.Invoke()));
     }
 
-    private IEnumerator CoFadeOut(UnityAction action)
+    public IEnumerator CoFadeOut(UnityAction action = null)
     {
         fadeInOut.gameObject.SetActive(true);
         var black = Color.clear;
