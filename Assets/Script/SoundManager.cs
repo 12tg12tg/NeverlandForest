@@ -59,6 +59,7 @@ public class SoundManager : MonoBehaviour
             if(!sfx_Players[i].isPlaying)
             {
                 sfx_Players[i].PlayOneShot(clip);
+                break;
             }
         }
     }
