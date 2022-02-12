@@ -10,6 +10,7 @@ public class CampTutorial : MonoBehaviour
     public Button bottomitemTagButton;
     public Button campBonableCheckButton;
     public Button campDiaryquickButton;
+
     public GameObject blackPanel;
 
     private RectTransform target;
@@ -146,11 +147,13 @@ public class CampTutorial : MonoBehaviour
         tutorialCraftTouch = false;
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        camTM.BlackPanelOff();
+
         SetActive(false);
         iscraftFinish = true;
 
         yield return new WaitForSeconds(2.5f);
+        camTM.BlackPanelOff();
+
         LongTouch(0.68f, 0.5f, 0.5f, 0.5f, "이것은 요리를 할 수 있는 솥이야. \n" +
             "스태미나중 변동스태미나를 회복 할 수 있는 곳이지. \n" +
             "물론 레시피가 있어야 요리를 만들어서 먹을 수 있어.",false,true); //recipe 
@@ -171,6 +174,7 @@ public class CampTutorial : MonoBehaviour
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2.5f);
+
         LongTouch(0.9f, 0.2f, 0.9f, 0.5f, "아이템 확인", false, false, false, true);
         yield return new WaitUntil(() => tutorialBonableItemCheckFinish);
         tutorialBonableItemCheckFinish = false;
@@ -180,7 +184,6 @@ public class CampTutorial : MonoBehaviour
             "태울 수 있는 아이템을 알려 주는 버튼이야 태울수 있는 아이템이 빨갛게 변화하게 되지.",false,false,false,true); //bonfire 
         yield return new WaitUntil(() => tutorialBonfirecheckButtonClick);
         tutorialBonfirecheckButtonClick = false;
-        camTM.BlackPanelOff();
 
         isWaitingTouch = true;
         LongTouchRect(0.7f, 0.15f, 0.6f, 0.5f, "아이템 확인", false, false, false, true);
@@ -201,10 +204,10 @@ public class CampTutorial : MonoBehaviour
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //sleeping xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
-        camTM.BlackPanelOff();
-
         SetActive(false);
         yield return new WaitForSeconds(3f);
+        camTM.BlackPanelOff();
+
         issleepingFinish = true;
 
         LongTouch(0.8f, 0.6f, 0.5f, 0.8f, "이곳은 남은 모닥불시간을 소비해서 \n" +
@@ -221,7 +224,6 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() => isquitbuttonClick);
         isquitbuttonClick = false;
         camTM.BlackPanelOff();
-
         CampTutorialEnd();
         //인호 던전 튜토리얼 신으로 가야됨.
         CampManager.curinitState = CampManager.CampinitState.None;

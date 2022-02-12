@@ -47,6 +47,8 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     public void Close()
     {
         gameObject.SetActive(false);
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
     public void AllClose()
     {
@@ -59,23 +61,28 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     {
         AllClose();
         battleRewardPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
     public void OpenHuntReward()
     {
         AllClose();
         huntRewardPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
     }
     public void OpenGatheringInDungeon()
     {
         AllClose();
         gatheringInDungeonPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
     public void OpenGatheringInDungeonReward()
     {
         gatheringInDungeonRewardPanel.SetActive(true);
         gatheringInDungeonrewardInventory.ItemButtonInit();
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
-   
+
     public void CheckRewardEmpty()
     {
         var isEmpty = false;
@@ -152,6 +159,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
                 rewardSlots[i].Init(null);
             }
         }
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
 
     public void QuitContents() => GameManager.Manager.LoadScene(GameScene.Dungeon);

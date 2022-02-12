@@ -136,7 +136,8 @@ public class CampManager : MonoBehaviour
             default:
                 break;
         }
-       
+        SoundManager.Instance.Play(SoundType.BG_Camp);
+
     }
 
     public void CampInit()
@@ -178,6 +179,8 @@ public class CampManager : MonoBehaviour
     }
     public void PlusSleepTime()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         recoverySleepTime += 30;
         var haveMinute = Vars.UserData.uData.BonfireHour * 60;
         if (haveMinute < recoverySleepTime)
@@ -188,6 +191,8 @@ public class CampManager : MonoBehaviour
     }
     public void MinuseSleepTime()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         recoverySleepTime -= 30;
         if (recoverySleepTime < 0)
         {
@@ -207,6 +212,8 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         StartSleepInCamp();
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
     public void StartSleepInCamp()
     {
@@ -245,6 +252,8 @@ public class CampManager : MonoBehaviour
         if (vals.Length != 0) return;
         diaryRecipeIcon.Init();
         StartCookingInCamp();
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
 
     public void StartCookingInCamp()
@@ -307,11 +316,15 @@ public class CampManager : MonoBehaviour
     }
     public void ReCook()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         OpenCookInCamp();
         diaryManager.CloseCookingReward();
     }
     public void CallMakeCook()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         diaryManager.CallMakeCook();
     }
 
@@ -320,6 +333,8 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         StartGatheringInCamp();
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
     public void StartGatheringInCamp()
     {
@@ -380,6 +395,8 @@ public class CampManager : MonoBehaviour
 
     public void YesifinishGathering()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         if (isGatheringMove)
         {
             StartCoroutine(Utility.CoTranslate(camera.transform, EndPos, StartPos, 1.5f));
@@ -404,6 +421,8 @@ public class CampManager : MonoBehaviour
     }
     public void NotYetGetItem()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         reconfirmPanelManager.gameObject.SetActive(false);
     }
     //BlueMoonInCamp
@@ -411,12 +430,16 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Open BlueMoon Scene ");
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
     //ProducingInCamp
     public void OpenMaking(object[] vals)
     {
         if (vals.Length != 0) return;
         StartProduceInCamp();
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
     public void StartProduceInCamp()
     {
@@ -442,6 +465,8 @@ public class CampManager : MonoBehaviour
 
     public void MakeProduce()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         diaryManager.CallMakeProduce();
     }
     public void CloseProduceInCamp()
@@ -455,6 +480,8 @@ public class CampManager : MonoBehaviour
     }
     public void ReProduce()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         diaryManager.CloseProduceReward();
         reconfirmPanelManager.inventoryFullPopup.SetActive(false);
         reconfirmPanelManager.gameObject.SetActive(false);
@@ -463,6 +490,8 @@ public class CampManager : MonoBehaviour
     //SceneChange
     public void GoDungeonCheck()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         if (Vars.UserData.uData.BonfireHour != 0)
         {
             wtreconfirmPanelManager.gameObject.SetActive(true);
@@ -480,10 +509,14 @@ public class CampManager : MonoBehaviour
     public void GoDungeon()
     {
         Vars.UserData.uData.BonfireHour = 0;
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         GameManager.Manager.LoadScene(GameScene.Dungeon);
     }
     public void NoIdonGO()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         reconfirmPanelManager.gameObject.SetActive(false);
         bonTimeText.gameObject.SetActive(true);
 
@@ -494,6 +527,8 @@ public class CampManager : MonoBehaviour
     }
     public void PlusGatheringTime()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         gatheringTime += 30;
         if (gatheringTime > 180)
         {
@@ -508,6 +543,8 @@ public class CampManager : MonoBehaviour
     }
     public void MinusGatheringTime()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         gatheringTime -= 30;
         if (gatheringTime < 0)
         {
@@ -599,6 +636,8 @@ public class CampManager : MonoBehaviour
 
     public void BurnItemCheck()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         var bottomui = newBottomUi.GetComponent<BottomUIManager>();
         for (int i = 0; i < bottomui.itemButtons.Count; i++)
         {
@@ -615,13 +654,6 @@ public class CampManager : MonoBehaviour
 
         }
     }
-   /* public void OnGUI()
-    {
-        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
-        {
-            ConsumeManager.CostDataReset();
-        }
-    }*/
     public void QuickButtonClick()
     {
         if (GameManager.Manager.State == GameState.Tutorial)
@@ -629,5 +661,14 @@ public class CampManager : MonoBehaviour
             camptutorial.IsquitbuttonClick = true;
         }
         diaryManager.curdiaryType = DiaryType.None;
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
     }
+    /* public void OnGUI()
+   {
+       if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))
+       {
+           ConsumeManager.CostDataReset();
+       }
+   }*/
 }

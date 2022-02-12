@@ -157,6 +157,8 @@ public static class ConsumeManager
     }
     public static void FullingLantern(int oil)
     {
+        SoundManager.Instance.Play(SoundType.Se_OilFulling);
+
         Vars.UserData.uData.LanternCount += oil;
         if (Vars.UserData.uData.LanternCount > Vars.lanternMaxCount)
         {

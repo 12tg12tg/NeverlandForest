@@ -186,30 +186,39 @@ public class DiaryManager : MonoBehaviour
     {
         AllClose();
         producePanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
         produceInventory.ItemButtonInit();
     }
     public void OpenCooking()
     {
         AllClose();
         cookingPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
         cookInventory.ItemButtonInit();
     }
     public void OpenSleeping()
     {
         AllClose();
         sleepingPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
         sleepInventory.ItemButtonInit();
     }
     public void OpenGatheringInCamp()
     {
         AllClose();
         gatheringIncCampPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
         gatheringInventory.ItemButtonInit();
     }
     public void OpenGatheringReward()
     {
         AllClose();
         gatheringInCampRewardPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
         gatheringrewardInventory.ItemButtonInit();
     }
     public void GetItem()

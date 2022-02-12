@@ -72,6 +72,7 @@ public class HuntingManager : MonoBehaviour
             TutorialInit();
             StartCoroutine(huntTutorial.CoHuntTutorial());
         }
+        SoundManager.Instance.Play(SoundType.BG_Hunt);
     }
 
     #region 사냥 매니저 OnGUI -> 게임 완료되면 안씀
@@ -222,7 +223,11 @@ public class HuntingManager : MonoBehaviour
         huntPlayers.ShootArrow(pos);
     }
 
-    public void LookOnTarget() => huntPlayers.ShootAnimation(animal.transform.position);
+    public void LookOnTarget()
+    {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+        huntPlayers.ShootAnimation(animal.transform.position);
+    }
     private void Hunting(object[] vals)
     {
         if (isHunted)

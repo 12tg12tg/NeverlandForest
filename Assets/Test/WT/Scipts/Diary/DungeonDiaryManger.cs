@@ -42,29 +42,36 @@ public class DungeonDiaryManger : MonoBehaviour
     {
         AllClose();
         gameObject.SetActive(true);
-
         inventoryPanel.SetActive(true);
+        if (SoundManager.Instance.WalkSoundPlayer.isPlaying)
+        {
+            SoundManager.Instance.PlayWalkSound(false);
+        }
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
     public void OpenSkillPanel()
     {
         AllClose();
         gameObject.SetActive(true);
-
         skillPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
     }
     public void OpenRecipePanel()
     {
         AllClose();
         gameObject.SetActive(true);
-
         recipePanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
     }
     public void OpenNotesPanel()
     {
         AllClose();
         gameObject.SetActive(true);
-
         notesPanel.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_Diary);
+
     }
 
     public void OpenNewBottomUi()
