@@ -411,11 +411,10 @@ public class GatheringSystem : MonoBehaviour
         {
             case GatheringObjectType.Tree:
                 GatheringTreeByTool();
-                SoundManager.Instance.Play(SoundType.Se_Axe);
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByTool();
-                SoundManager.Instance.Play(SoundType.Se_Spade);
+       
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
@@ -531,9 +530,12 @@ public class GatheringSystem : MonoBehaviour
                 {
                     case GatheringObjectType.Tree:
                         playerAnimationBoy.SetTrigger("Axe");
+                        SoundManager.Instance.Play(SoundType.Se_Axe);
                         break;
                     case GatheringObjectType.Pit:
                         playerAnimationBoy.SetTrigger("Shovel");
+                        SoundManager.Instance.Play(SoundType.Se_Spade);
+
                         break;
                     case GatheringObjectType.Herbs:
                         playerAnimationBoy.speed = 0.5f;

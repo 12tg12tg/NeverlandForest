@@ -198,6 +198,9 @@ public class DataRandomEvent
     // 피드백 함수들, 피드백 함수로 인해 값의 변화가 없는 케이스는 return
     public void SelectFeedBack(int selectNum)
     {
+
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         var randomEventUiManager = RandomEventUIManager.Instance;
 
         if (selectNum < 1 || selectNum > 3)
