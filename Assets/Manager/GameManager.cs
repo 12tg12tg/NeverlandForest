@@ -48,9 +48,21 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     [Header("UI 연출용 카메라")]
     [SerializeField] private ScreenFixed productionCamera;
     public ScreenFixed ProductionCamera { get => productionCamera; set => productionCamera = value; }
-
     private void Awake() // 게임 실행시 준비
     {
+        gm = Instance;
+
+        if (FindObjectsOfType(typeof(GameManager)).Length > 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            DontDestroyOnLoad(this);
+        }
+
+
         SingletonInit();
 
         #region 카메라 안쓰고있음
@@ -87,10 +99,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     // 초기화 ======================================================================
     private void SingletonInit()
     {
-        gm = Instance;
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
-        DontDestroyOnLoad(this);
+
     }
     private void LoadAllSavedata()
     {
@@ -177,8 +188,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             }
             Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
             Vars.UserData.WorldMapPlayerData = null;
-            Vars.UserData.uData.Date = 0;
             Vars.UserData.isPlayerDungeonIn = false;
+            Vars.UserData.uData.Date = 0;
             // End
             SceneManager.LoadScene("Game");
         });

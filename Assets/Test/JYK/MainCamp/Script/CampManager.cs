@@ -124,6 +124,8 @@ public class CampManager : MonoBehaviour
                 break;
             case CampinitState.Tutorial:
                 CampInit();
+                // Ω∫≈‰∏Æ √©≈Õ 4
+
                 camptutorial.blackPanel.SetActive(true);
                 GameManager.Manager.State = GameState.Tutorial;
                 StartCoroutine(camptutorial.CoCampTutorial());

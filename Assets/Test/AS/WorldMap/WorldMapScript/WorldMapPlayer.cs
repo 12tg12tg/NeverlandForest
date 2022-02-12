@@ -53,7 +53,7 @@ public class WorldMapPlayer : MonoBehaviour
         var data = Vars.UserData.WorldMapPlayerData;
         if (data == null) // 게임을 처음 켰을 때
         {
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
             data = Vars.UserData.WorldMapPlayerData;
             if (data == null) 
             {

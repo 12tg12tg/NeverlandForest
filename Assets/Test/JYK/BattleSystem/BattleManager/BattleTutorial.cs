@@ -56,12 +56,19 @@ public class BattleTutorial : MonoBehaviour
         lockTileClick = true;
         lockAutoBattleStateChange = true;
         lockSkillButtonDrag = true;
+
+        // 스토리에 쓰는중
         stm = GameManager.Manager.StoryManager;
+        boy = BattleManager.Instance.boy;
+        girl = BattleManager.Instance.girl;
     }
     //===========================================================================
     // 스토리 변수 영역
     private StoryManager stm;
-    public bool tu_00_StoryChapter1;
+    private PlayerBattleController boy;
+    private PlayerBattleController girl;
+    private bool tu_00_StoryChapter1to2 = false;
+    private bool tu_13_StoryChapter3 = false;
 
 
     //===========================================================================
@@ -87,17 +94,18 @@ public class BattleTutorial : MonoBehaviour
                 isTouched = true;
             }
         }
-        if (GameManager.Manager.MultiTouch.IsTap && tu_00_StoryChapter1)
+        if (GameManager.Manager.MultiTouch.IsTap && (tu_00_StoryChapter1to2 || tu_13_StoryChapter3))
         {
             stm.isNext = true;
         }
     }
 
     //===========================================================================
-    private IEnumerator CoStartStory()
+    private IEnumerator CoBattleStoryStart()
     {
-        tu_00_StoryChapter1 = true;
-        // 준비 1) 타일베이스 게임오브젝트 안보이게
+        tu_00_StoryChapter1to2 = true;
+        #region 챕터 1
+        // 챕터1 준비) 타일베이스 게임오브젝트 안보이고, 카메라 및 플레이어들 위치 지정
         TileMaker.Instance.gameObject.SetActive(false);
         GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(false);
         var cameraTrans = Camera.main.transform;
@@ -105,36 +113,29 @@ public class BattleTutorial : MonoBehaviour
         var or = cameraTrans.localRotation;
         cameraTrans.localPosition = new Vector3(0f, 2.9f, -4.6f);
         cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
-        BattleManager.Instance.boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
+        boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
 
-        // 스토리 대사 시작
+        // 챕터1
         var isNextChapter = false;
         stm.MessageBox.SetActive(true); // 대화창 오픈
         StartCoroutine(stm.CoStory(StoryType.Chapter1, () => isNextChapter = true));
         yield return new WaitWhile(() => !isNextChapter);
-
+        #endregion
+        #region 챕터 2
+        // 챕터2 준비) 카메라 및 플레이어들 위치 재 정의
+        girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
+        girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
         cameraTrans.localPosition += new Vector3(2.5f, 0f, 0f);
+
+        // 챕터2
         isNextChapter = false;
         StartCoroutine(stm.CoStory(StoryType.Chapter2, () => isNextChapter = true));
         yield return new WaitWhile(() => !isNextChapter);
-
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter3, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-
-        //// 준비 취소) 타일베이스 게임오브젝트 보이게
-        //isNextChapter = false;
-        //yield return new WaitWhile(() => !isNextChapter);
-
-        tu_00_StoryChapter1 = false;
+        #endregion
+        
+        // 준비 취소) 타일베이스 게임오브젝트 보이게
+        tu_00_StoryChapter1to2 = false;
+        girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
         cameraTrans.localPosition = op;
         cameraTrans.localRotation = or;
         stm.MessageBox.SetActive(false);
@@ -142,16 +143,52 @@ public class BattleTutorial : MonoBehaviour
         GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
     }
 
-    private IEnumerator CoEndStory()
+    private IEnumerator CoBattleStoryEnd()
     {
-        yield return null;
+        tu_13_StoryChapter3 = true;
+        #region 챕터 3
+        // 챕터3 준비) 타일베이스 게임오브젝트 안보이고, 카메라 및 플레이어들 위치 지정
+        TileMaker.Instance.gameObject.SetActive(false);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(false);
+        var cameraTrans = Camera.main.transform;
+        cameraTrans.localPosition = new Vector3(2.5f, 2.9f, -4.6f);
+        cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
+        boy.PlayIdleAnimation();
+        girl.PlayIdleAnimation();
+        boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
+        girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
+        girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+
+        // 챕터3
+        var isNextChapter = false;
+        stm.MessageBox.SetActive(true); // 대화창 오픈
+        StartCoroutine(stm.CoStory(StoryType.Chapter3, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
+        #endregion
+
+        // 되돌리기
+        tu_00_StoryChapter1to2 = false;
+        stm.MessageBox.SetActive(false);
+        TileMaker.Instance.gameObject.SetActive(true);
+        GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
+
+        #region 챕터 4
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+        #endregion
+        #region 챕터 5
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+        #endregion
     }
 
 
     private IEnumerator CoBattleTutorial()
     {
         // 스토리
-        yield return StartCoroutine(CoStartStory());
+        yield return StartCoroutine(CoBattleStoryStart());
         GameManager.Manager.Production.FadeOut();
         // 웨이브 생성
         bm.TutorialInit();
@@ -380,7 +417,11 @@ public class BattleTutorial : MonoBehaviour
 
             RestartBattle();
         }
-        
+
+        // 스토리 챕터3
+        GameManager.Manager.Production.FadeOut();
+        yield return StartCoroutine(CoBattleStoryEnd());
+
         //승리 - 종료 (보상창을 띄울것인지, 씬은 어디로 넘어갈 것인지)
         EndDutorial();
     }
