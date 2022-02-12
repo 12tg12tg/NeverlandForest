@@ -188,6 +188,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             }
             //유저데이터안에 함수 만들고 한번 호출해서 초기화하는 방법으로 가자.
             Vars.UserData.UserDataInit();
+            WorldMapCamera.isInit = false; // 월드맵 카메라 초기화
             SceneManager.LoadScene("Game");
         });
     }

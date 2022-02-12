@@ -32,11 +32,8 @@ public class MainTutorial
         MainTutorialStage =
             MainTutorialStage == MainTutorialStage.Event ||
             MainTutorialStage == MainTutorialStage.Stamina ? 
-            MainTutorialStage.Move : 
-            MainTutorialStage;
+            MainTutorialStage.Move : MainTutorialStage;
         Vars.UserData.mainTutorial = MainTutorialStage;
-
-        //MainTutorialStage = MainTutorialStage.Clear;
     }
 
     public void NextMainTutorial(bool isCheck = true)

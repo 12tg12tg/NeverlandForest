@@ -45,6 +45,9 @@ public class MainRoomTutorial : MonoBehaviour
     public RectTransform campMenu;
     public RectTransform woodUseBtn;
 
+    // 스토리
+    private StoryManager stm;
+
     private void Awake()
     {
         dialogBox = tutorialTool.dialogBox;
@@ -65,6 +68,9 @@ public class MainRoomTutorial : MonoBehaviour
         //    delay = 0f;
         //    StartCoroutine(CoTutorialEnd());
         //}
+
+        // 스토리
+        stm = GameManager.Manager.StoryManager;
     }
 
     private void Update()
@@ -113,11 +119,24 @@ public class MainRoomTutorial : MonoBehaviour
 
     public IEnumerator CoMainRoomTutorial()
     {
-        isMainRoomTutorial = true;
-        tutorialTool.BlackPanelOn();
+        // 챕터 4에서 필요 없는 것들 끄기
 
         // 챕터 4 스토리
-        //yield return
+        #region 챕터 4
+        var isNextChapter = false;
+        StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
+        #endregion
+
+        #region 챕터 5
+        //isNextChapter = false;
+        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
+        //yield return new WaitWhile(() => !isNextChapter);
+        #endregion
+
+
+        isMainRoomTutorial = true;
+        tutorialTool.BlackPanelOn();
 
         StaminaExplain();
         yield return new WaitWhile(() => TutorialStep < 1);

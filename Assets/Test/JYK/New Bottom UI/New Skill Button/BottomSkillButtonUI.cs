@@ -138,7 +138,6 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
             else
                 Vars.UserData.arrowType = ArrowType.Normal;
             UpdateCostInfo();
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
         }
     }
 

@@ -31,7 +31,7 @@ public class WorldMapManager : MonoBehaviour
         worldMapMaker.Init(column, row, nodePrefab, linePrefab, fogPrefab);
         if (loadData.Count.Equals(0)) // 저장 데이터가 없을 때 실행
         {
-            StartCoroutine(worldMapMaker.InitMap(() => {
+            StartCoroutine(worldMapMaker.CreateWorldMap(() => {
                 NodeLinkToPlayer();
                 player.Init();
                 worldMapCamera.FollowPlayer();

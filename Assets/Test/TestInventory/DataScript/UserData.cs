@@ -13,7 +13,7 @@ public class UserData
     */
     //Scene Datas
     public MainTutorialStage mainTutorial;
-    public ContentsTutorialProceed contentsTutorial;
+    public ContentsTutorialProceed contentsTutorial = new ContentsTutorialProceed();
 
     //Item Info
     public ArrowType arrowType;
@@ -300,7 +300,7 @@ public class UserData
         experienceHaveItemList = new List<string>();
     }
 
-    public void UsetItemInit()
+    public void UserItemInit()
     {
         //테스트용 리스트
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();

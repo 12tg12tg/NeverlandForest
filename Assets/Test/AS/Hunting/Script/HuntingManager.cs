@@ -68,7 +68,8 @@ public class HuntingManager : MonoBehaviour
         tileMaker.InitMakeTiles();
         Init();
         tm.contentsTutorial.Init();
-        huntPlayers.IsTutorialClear = Vars.UserData.contentsTutorial.Hunt;
+        
+        huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
         if (!huntPlayers.IsTutorialClear)
         {
             optionButton.interactable = false;
