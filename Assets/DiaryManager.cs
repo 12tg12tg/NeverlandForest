@@ -32,6 +32,7 @@ public class DiaryManager : MonoBehaviour
     private bool isRotation = false;
     [Header("Ä·ÇÁ ¸ð´ÚºÒ")]
     public GameObject campBonfire;
+
     public bool IsRotation
     {
         get
@@ -63,7 +64,9 @@ public class DiaryManager : MonoBehaviour
     public DiaryInventory sleepInventory;
     public DiaryInventory gatheringInventory;
     public DiaryInventory gatheringrewardInventory;
-   
+    [Header("Ä·ÇÁ ¸ðÇèÀç°³ ¹öÆ°")]
+    public GameObject adventureButton;
+
     private static DiaryManager instance;
     public static DiaryManager Instacne => instance;
 
@@ -98,7 +101,10 @@ public class DiaryManager : MonoBehaviour
         {
             campBonfire.gameObject.SetActive(true);
         }
-
+        if (adventureButton!=null)
+        {
+            adventureButton.SetActive(false);
+        }
     }
 
     public void OpenCookingRotation()
@@ -171,6 +177,10 @@ public class DiaryManager : MonoBehaviour
         CookingRotationPanel.SetActive(false);
         CookingRewardPanel.SetActive(false);
         produceRewardPanel.SetActive(false);
+        if (adventureButton!=null)
+        {
+            adventureButton.SetActive(true);
+        }
     }
     public void OpenProduce()
     {

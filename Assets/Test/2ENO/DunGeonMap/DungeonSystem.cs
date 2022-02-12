@@ -152,7 +152,7 @@ public class DungeonSystem : MonoBehaviour
             }
             worldMap.InitWorldMiniMap();
 
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+           // GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             GameManager.Manager.State = GameState.Dungeon;
         }
 
