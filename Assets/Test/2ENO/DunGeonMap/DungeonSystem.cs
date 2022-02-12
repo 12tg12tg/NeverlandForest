@@ -328,8 +328,8 @@ public class DungeonSystem : MonoBehaviour
         {
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+            ConsumeManager.SaveConsumableData();
         }
-
     }
 
     // 세이브 후 로드할때 이벤트 타입이 부모타입으로 바뀌어있는걸 다시 변경

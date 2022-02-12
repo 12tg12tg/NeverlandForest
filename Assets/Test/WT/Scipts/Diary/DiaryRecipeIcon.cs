@@ -33,7 +33,6 @@ public class DiaryRecipeIcon : MonoBehaviour
             var button = item.GetComponent<Button>();
             button.onClick.AddListener(() => OnChangedDiarySelection(item.Slot));
         }
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
     }
     public void Init()
     {

@@ -385,7 +385,10 @@ public class GatheringSystem : MonoBehaviour
             }
 
             boyPlayer.tag = "Untagged";
-            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, objectPos, 1f,
+
+            var newPos = new Vector3(objectPos.x-1f, objectPos.y, objectPos.z - 1.5f);
+
+            coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, newPos, 1f,
                 () =>
                 {
                     Debug.Log("채집종료");

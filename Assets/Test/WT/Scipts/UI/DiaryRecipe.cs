@@ -33,7 +33,6 @@ public class DiaryRecipe : MonoBehaviour
     }
     public void Init()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
         table = DataTableManager.GetTable<RecipeDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var itemList = Vars.UserData.HaveRecipeIDList;

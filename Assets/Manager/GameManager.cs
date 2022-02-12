@@ -186,11 +186,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             {
                 Utility.DeleteSaveData((SaveDataName)i);
             }
-            Vars.UserData.WorldMapNodeStruct = new List<WorldMapNodeStruct>();
-            Vars.UserData.WorldMapPlayerData = null;
-            Vars.UserData.isPlayerDungeonIn = false;
-            Vars.UserData.uData.Date = 0;
-            // End
+            //유저데이터안에 함수 만들고 한번 호출해서 초기화하는 방법으로 가자.
+            Vars.UserData.UserDataInit();
             SceneManager.LoadScene("Game");
         });
     }

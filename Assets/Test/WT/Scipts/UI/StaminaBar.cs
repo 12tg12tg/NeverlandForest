@@ -9,7 +9,6 @@ public class StaminaBar : MonoBehaviour
 
     public void Start()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.ConsumableData);
         ChangeableStaminaChange();
     }
     void Update()
