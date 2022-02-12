@@ -13,7 +13,7 @@ public class UserData
     */
     //Scene Datas
     public MainTutorialStage mainTutorial;
-    public ContentsTutorialProceed contentsTutorial;
+    public ContentsTutorialProceed contentsTutorial = new ContentsTutorialProceed();
 
     //Item Info
     public ArrowType arrowType;

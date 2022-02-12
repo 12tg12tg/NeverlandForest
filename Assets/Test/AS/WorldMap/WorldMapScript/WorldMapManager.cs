@@ -75,6 +75,7 @@ public class WorldMapManager : MonoBehaviour
                     {
                         if (x.Parent[i].index.Equals(player.CurrentIndex))
                         {
+                            GameManager.Manager.Production.FadeIn();
                             player.PlayerWorldMap(x);
                             return;
                         }

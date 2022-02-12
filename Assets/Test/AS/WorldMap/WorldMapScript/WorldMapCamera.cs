@@ -13,7 +13,7 @@ public class WorldMapCamera : MonoBehaviour
     private Vector3 startPos;
     private Coroutine coCameraMove;
 
-    private static bool isInit = false;
+    public static bool isInit = false;
     private bool isStop = false;
 
     public bool UseMiniMap;
