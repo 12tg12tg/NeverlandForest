@@ -108,7 +108,10 @@ public class RandomEventUIManager : MonoBehaviour
         if (isPopUp)
         {
             if (!popUpWindow.gameObject.activeSelf)
+            {
                 popUpWindow.gameObject.SetActive(true);
+                SoundManager.Instance.PlayWalkSound(false);
+            }
         }
         else
         {

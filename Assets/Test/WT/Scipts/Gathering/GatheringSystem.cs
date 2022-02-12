@@ -105,11 +105,15 @@ public class GatheringSystem : MonoBehaviour
     }
     public void YesIGathering()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         gatheringPanel.SetActive(false);
         ToolPopUp();
     }
     public void NoIDonGathering()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         gatheringPanel.SetActive(false);
         boyPlayer.IsCoMove = true;
         if (coWomenMove == null)
@@ -401,17 +405,21 @@ public class GatheringSystem : MonoBehaviour
     public void YesTool()
     {
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+        SoundManager.Instance.Play(SoundType.Se_Button);
 
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
                 GatheringTreeByTool();
+                SoundManager.Instance.Play(SoundType.Se_Axe);
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByTool();
+                SoundManager.Instance.Play(SoundType.Se_Spade);
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
+                SoundManager.Instance.Play(SoundType.Se_Spade);
                 gatheringRewardList[0].Item = curSelectedObj.subitem;
                 gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.subitem.ItemTableElem.IconSprite;
                 gatheringRewardList[0].IsHaveItem = true;
@@ -420,6 +428,7 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByTool();
+                SoundManager.Instance.Play(SoundType.Se_Spade);
                 break;
             default:
                 break;
@@ -446,17 +455,24 @@ public class GatheringSystem : MonoBehaviour
     public void NoTool()
     {
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+        SoundManager.Instance.Play(SoundType.Se_Button);
 
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
                 GatheringTreeByHand();
+                SoundManager.Instance.Play(SoundType.Se_Hand);
+
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByHand();
+                SoundManager.Instance.Play(SoundType.Se_Hand);
+
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
+                SoundManager.Instance.Play(SoundType.Se_Hand);
+
                 gatheringRewardList[0].Item = curSelectedObj.subitem;
                 gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.subitem.ItemTableElem.IconSprite;
                 gatheringRewardList[0].IsHaveItem = true;
@@ -465,6 +481,8 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByHand();
+                SoundManager.Instance.Play(SoundType.Se_Hand);
+
                 break;
             default:
                 break;
@@ -490,6 +508,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void ClosePopup()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
             if (gatheringRewardList[i].IsHaveItem)
@@ -541,6 +561,7 @@ public class GatheringSystem : MonoBehaviour
     {
         reconfirmPanelManager.gameObject.SetActive(false);
         gatheringPanel.SetActive(false);
+        SoundManager.Instance.Play(SoundType.Se_Button);
 
         if (isMove)
         {
@@ -589,6 +610,8 @@ public class GatheringSystem : MonoBehaviour
 
     public void NotYetGathering()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         reconfirmPanelManager.gameObject.SetActive(false);
     }
 
@@ -693,6 +716,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void GetSelectedItem()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         if (selecteditemList.Count > 0)
         {
             for (int i = 0; i < selecteditemList.Count; i++)
@@ -747,6 +772,8 @@ public class GatheringSystem : MonoBehaviour
     }
     public void GetAllItem()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
             if (gatheringRewardList[i].Item != null)

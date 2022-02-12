@@ -14,6 +14,11 @@ public class Title : MonoBehaviour
     public Image panel;
     public Image fadeOut;
 
+    public void Start()
+    {
+        SoundManager.Instance.Play(SoundType.BG_Intro);
+    }
+
     private void Update()
     {
         coTapToStart ??= StartCoroutine(CoStartTextFadeIn(() => {

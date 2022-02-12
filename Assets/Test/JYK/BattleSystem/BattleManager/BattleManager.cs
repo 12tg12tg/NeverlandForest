@@ -114,6 +114,7 @@ public class BattleManager : MonoBehaviour
         }
 
         GameManager.Manager.Production?.FadeOut();
+        SoundManager.Instance.Play(SoundType.BG_Battle);
     }
 
     // √ ±‚»≠

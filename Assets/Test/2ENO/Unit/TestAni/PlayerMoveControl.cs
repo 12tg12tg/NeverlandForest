@@ -97,7 +97,6 @@ public class PlayerMoveControl : MonoBehaviour
                         if (!isTurn)
                             RigOff();
                         isTurn = true;
-
                         var pos = boySpeed * Time.deltaTime * Vector3.right;
                         playerBoy.transform.position += pos;
                         playerBoy.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
@@ -209,6 +208,15 @@ public class PlayerMoveControl : MonoBehaviour
 
                 playerAnimationBoy.SetFloat("Speed", boySpeed);
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
+                if (boySpeed>0f)
+                {
+                    SoundManager.Instance.PlayWalkSound(true);
+                }
+                else
+                {
+                    SoundManager.Instance.PlayWalkSound(false);
+                }
+
             }
             else
             {
