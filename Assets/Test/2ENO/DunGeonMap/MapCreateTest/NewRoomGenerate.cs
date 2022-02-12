@@ -47,35 +47,38 @@ public class NewRoomGenerate : MonoBehaviour
         if(roadNumList.Count <= 0)
             roadNumList = RoomListSet(roadCount, isMain);
 
-        if (pool.Count <= 0)
-        {
-            // 현재 만들어진 프리팹 돌면서 한개씩 미리 생성해놓기
-            for (int i = 0; i < subPrefabList.Count; i++)
-            {
-                var roomObj = Instantiate(subPrefabList[i], transform);
-                roomObj.prefabId = i;
-                roomObj.isActive = false;
-                roomObj.isMain = false;
-                roomObj.gameObject.SetActive(false);
-                pool.Add(roomObj);
-            }
+        //if (pool.Count <= 0)
+        //{
+        //    // 현재 만들어진 프리팹 돌면서 한개씩 미리 생성해놓기
+        //    for (int i = 0; i < subPrefabList.Count; i++)
+        //    {
+        //        var roomObj = Instantiate(subPrefabList[i], transform);
+        //        roomObj.prefabId = i;
+        //        roomObj.isActive = false;
+        //        roomObj.isMain = false;
+        //        roomObj.gameObject.SetActive(false);
+        //        pool.Add(roomObj);
+        //    }
 
-            for(int i=0; i< mainPrefabList.Count; i++)
-            {
-                var roomObj = Instantiate(mainPrefabList[i], transform);
-                roomObj.prefabId = i;
-                roomObj.isActive = false;
-                roomObj.isMain = true;
-                roomObj.gameObject.SetActive(false);
-                pool.Add(roomObj);
-            }
-        }
+        //    for(int i=0; i< mainPrefabList.Count; i++)
+        //    {
+        //        var roomObj = Instantiate(mainPrefabList[i], transform);
+        //        roomObj.prefabId = i;
+        //        roomObj.isActive = false;
+        //        roomObj.isMain = true;
+        //        roomObj.gameObject.SetActive(false);
+        //        pool.Add(roomObj);
+        //    }
+        //}
         // 방 세팅전 초기화
         foreach (var room in roomList)
         {
             objPosList.Clear();
-            room.isActive = false;
             room.gameObject.SetActive(false);
+            Destroy(room.gameObject);
+            Debug.Log("방 삭제");
+            //room.isActive = false;
+            //room.gameObject.SetActive(false);
         }
         roomList.Clear();
 
@@ -85,29 +88,34 @@ public class NewRoomGenerate : MonoBehaviour
             NewRoomInstance roomPrefab;
             if(roadCount == 1)
             {
-                roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isMain == true && x.isActive == false);
-                if (roomPrefab == null)
-                {
-                    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
-                    roomObj.prefabId = roadNumList[i];
-                    roomObj.isActive = false;
-                    roomObj.gameObject.SetActive(false);
-                    pool.Add(roomObj);
-                    roomPrefab = roomObj;
-                }
+                //roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isMain == true && x.isActive == false);
+                //if (roomPrefab == null)
+                //{
+                //    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
+                //    roomObj.prefabId = roadNumList[i];
+                //    roomObj.isActive = false;
+                //    roomObj.gameObject.SetActive(false);
+                //    pool.Add(roomObj);
+                //    roomPrefab = roomObj;
+                //}
+
+                var roomObj = Instantiate(mainPrefabList[roadNumList[i]], transform);
+                roomPrefab = roomObj;
             }
             else
             {
-                roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isActive == false);
-                if (roomPrefab == null)
-                {
-                    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
-                    roomObj.prefabId = roadNumList[i];
-                    roomObj.isActive = false;
-                    roomObj.gameObject.SetActive(false);
-                    pool.Add(roomObj);
-                    roomPrefab = roomObj;
-                }
+                //roomPrefab = pool.Find(x => x.prefabId == roadNumList[i] && x.isActive == false);
+                //if (roomPrefab == null)
+                //{
+                //    var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
+                //    roomObj.prefabId = roadNumList[i];
+                //    roomObj.isActive = false;
+                //    roomObj.gameObject.SetActive(false);
+                //    pool.Add(roomObj);
+                //    roomPrefab = roomObj;
+                //}
+                var roomObj = Instantiate(subPrefabList[roadNumList[i]], transform);
+                roomPrefab = roomObj;
             }
             
 
@@ -115,7 +123,7 @@ public class NewRoomGenerate : MonoBehaviour
             if (roomList.Count <= 0)
             {
                 roomPrefab.gameObject.SetActive(true);
-                roomPrefab.isActive = true;
+                //roomPrefab.isActive = true;
                 roomPrefab.transform.position = transform.position;
                 roomList.Add(roomPrefab);
 
@@ -127,10 +135,9 @@ public class NewRoomGenerate : MonoBehaviour
             {
                 var newPosition = NewPos(roomList[i - 1].gameObject);
                 roomPrefab.gameObject.SetActive(true);
-                roomPrefab.isActive = true;
+                //roomPrefab.isActive = true;
                 roomPrefab.transform.position = newPosition;
                 roomList.Add(roomPrefab);
-
                 objPosList.Add(roomPrefab.transform.GetChild(1).position);
             }
         }
@@ -158,16 +165,18 @@ public class NewRoomGenerate : MonoBehaviour
         var childEnd = gameObject.GetComponentsInChildren<EndPos>();
         for (int i = 0; i < childEnd.Length; i++)
         {
-            childEnd[i].isLastPos = false;
-        }
-
-        for (int i = 0; i < childEnd.Length; i++)
-        {
             childEnd[i].roomNumber = i;
+            Debug.Log(childEnd[i].gameObject.name);
             if (i == childEnd.Length - 1)
             {
                 childEnd[i].isLastPos = true;
             }
+        }
+
+        for (int i = 0; i < childEnd.Length; i++)
+        {
+            
+
         }
     }
 

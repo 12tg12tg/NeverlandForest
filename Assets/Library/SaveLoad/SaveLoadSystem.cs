@@ -17,6 +17,7 @@ using ExperienceSaveDataCurrentVersion = ItemExperienceSaveData_0;
 using BattleSaveDataCurrentVersion = BattleSaveData_0;
 using SceneSaveDataCurrentVersion = SceneSaveData_0;
 using MemoSaveDataCurrentVersion = memoSaveData_0;
+using ItemSaveDataCurrentVersion = ItemListSaveData_0;
 
 //=========================================================================================
 // SaveData 버전 추가시 해야할 일. + Save가 하나 추가될 때 마다
@@ -53,7 +54,7 @@ public static class SaveLoadSystem
         Battle,
         Scene,
         Memo,
-
+        item,
         Count
     }
 
@@ -344,7 +345,14 @@ public static class SaveLoadSystem
                     default:
                         return null;
                 }
-
+            case SaveType.item:
+                switch (version)
+                {
+                    case 0:
+                        return JsonConvert.DeserializeObject<ItemSaveDataCurrentVersion>(json);
+                    default:
+                        return null;
+                }
             default:
                 return null;
         }
@@ -434,7 +442,12 @@ public static class SaveLoadSystem
                     data = data.VersionUp();
                 }
                 return data;
-
+            case SaveType.item:
+                while (!(data is ItemSaveDataCurrentVersion))
+                {
+                    data = data.VersionUp();
+                }
+                return data;
             default:
                 return null;
         }

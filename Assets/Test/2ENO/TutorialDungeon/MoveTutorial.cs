@@ -95,6 +95,7 @@ public class MoveTutorial : MonoBehaviour
 
         MoveTutorialEnd();
         isMoveTutorial = false;
+        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
     }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)

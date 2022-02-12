@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerItemListSaveData_0
+public class ItemListSaveData_0 : SaveDataBase
 {
     public List<string> itemIdList = new List<string>();
     public List<int> itemOwnCountList = new List<int>();

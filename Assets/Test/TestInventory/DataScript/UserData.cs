@@ -60,8 +60,9 @@ public class UserData
     private readonly List<DataAllItem> haveAllItemList = new List<DataAllItem>();
     public ReadOnlyCollection<DataAllItem> HaveAllItemList => haveAllItemList.AsReadOnly();
     public List<string> experienceHaveItemList = new List<string>();
-    //기록하는 함수
+    public bool isItemDataLoad;
 
+    //기록하는 함수
     public void ExperienceListAdd(string itemid) //ITEM_
     {
         if (!experienceHaveItemList.Contains(itemid))
@@ -327,14 +328,10 @@ public class UserData
         }
         // 나무토막류
         tempItemNum = 1;
-        for (int i = 0; i < 1; i++)
-        {
-            stringId = $"ITEM_{tempItemNum}";
-            newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
-            newItem.OwnCount = 3;
-            tempItemNum++;
-            AddItemData(newItem);
-        }
+        stringId = $"ITEM_{tempItemNum}";
+        newItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(stringId));
+        newItem.OwnCount = 3;
+        AddItemData(newItem);
     }
 
 

@@ -81,7 +81,7 @@ public class GoCamp : MonoBehaviour
                     Debug.Log(Vars.UserData.mainTutorial);
                     if(Vars.UserData.mainTutorial == MainTutorialStage.Camp)
                     {
-                        GameManager.Manager.TutoManager.CheckMainTutorial();
+                        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
                     }
                     else
                     {

@@ -10,7 +10,7 @@ public class TutorialTriger : MonoBehaviour
         if(other.tag is "Player")
         {
             // 스토리 챕터 마지막!
-            Debug.Log("트리거 발생!");
+            DungeonSystem.Instance.mainRoomTutorial.TutorialStep++;
         }
     }
 }
