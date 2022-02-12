@@ -122,6 +122,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     // 씬 호출 ======================================================================
     public void LoadScene(GameScene scene)
     {
+        SoundManager.Instance.PlayWalkSound(false);
+        //씬 변경되도 안꺼짐
         ReleaseValue();
         switch (scene)
         {
@@ -144,6 +146,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 SceneManager.LoadScene("2ENO_TutorialDungeon");
                 break;
         }
+           
+
     }
     private void ReleaseValue()
     {
@@ -155,6 +159,8 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public void GameOver(GameOverType type)
     {
         gameoverUI.SetActive(true);
+        SoundManager.Instance.Play(SoundType.Se_GameOver);
+
         var texts = gameoverUI.GetComponentsInChildren<TMP_Text>();
         var text = texts.Where(x => x.CompareTag("GameOverText")).Select(x => x).FirstOrDefault();
         switch (type)

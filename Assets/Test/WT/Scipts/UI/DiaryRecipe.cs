@@ -113,6 +113,7 @@ public class DiaryRecipe : MonoBehaviour
             page--;
             SetPageButton();
         }
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
     public void NextPageOpen()
     {
@@ -121,5 +122,6 @@ public class DiaryRecipe : MonoBehaviour
             page++;
             SetPageButton();
         }
+        SoundManager.Instance.Play(SoundType.Se_Diary);
     }
 }

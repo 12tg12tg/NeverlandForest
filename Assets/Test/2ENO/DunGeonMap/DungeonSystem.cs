@@ -82,6 +82,8 @@ public class DungeonSystem : MonoBehaviour
             Debug.Log("들어오나");
             Init();
         }
+        SoundManager.Instance.Play(SoundType.BG_Main);
+
     }
 
     public void EndInit()
@@ -266,6 +268,7 @@ public class DungeonSystem : MonoBehaviour
                     Vars.UserData.WorldMapPlayerData.isClear = true;
                     Vars.UserData.isDungeonClear = true;
                 }
+                SoundManager.Instance.Play(SoundType.Se_win);
                 GameManager.Manager.Production.FadeIn( () => GameManager.Manager.LoadScene(GameScene.World));
                 return;
             }

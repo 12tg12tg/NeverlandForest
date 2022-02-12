@@ -46,12 +46,21 @@ public class MiniMapCamMove : MonoBehaviour
         }
     }
 
-    public void ExpandTrue() => IsExpand = true;
+    public void ExpandTrue()
+    {
+        IsExpand = true;
+        SoundManager.Instance.Play(SoundType.Se_Button);
+    }
 
-    public void ExpandFalse() => IsExpand = false;
-  
+    public void ExpandFalse()
+    {
+        IsExpand = false;
+        SoundManager.Instance.Play(SoundType.Se_Button);
+    }
     public void SetMinimapObjectInCamp()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         var list = CampManager.Instance.minimpaGenerate.dungeonRoomObjectList;
         var curObj = list.Find(x => x.roomIdx == CampManager.Instance.CurDungeonRoomIndex);
         if (curObj != null)
@@ -62,6 +71,8 @@ public class MiniMapCamMove : MonoBehaviour
 
     public void SetMinimapCameraInCamp()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
         transform.position = new Vector3((leftVec.x + rightVec.x) / 2, 150f, ((topVec.z + bottomVec.z) / 2) - 5f);
     }
 }
