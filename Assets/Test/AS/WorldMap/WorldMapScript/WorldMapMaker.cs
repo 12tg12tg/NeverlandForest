@@ -139,7 +139,7 @@ public class WorldMapMaker : MonoBehaviour
         FogMove(date, true);
         worldMapCamera.Init();
     }
-    public IEnumerator InitMap(UnityAction action)
+    public IEnumerator CreateWorldMap(UnityAction action)
     {
         while (!isAllLinked)
         {

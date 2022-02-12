@@ -27,7 +27,6 @@ public class WorldMapPlayer : MonoBehaviour
     public void Init()
     {
         totalMap = GameManager.Manager.WorldManager.worldMapMaker.GetComponentsInChildren<WorldMapNode>();
-        //totalMap = transform.GetComponentsInChildren<WorldMapNode>();
         currentIndex = totalMap[0].index;
         transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
 
@@ -47,7 +46,6 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void ComeBackWorldMap()
     {
-        // TODO : 씬 하나로 합치면 아래코드는 없어져도 될듯 함
         totalMap = GameManager.Manager.WorldManager.GetComponentsInChildren<WorldMapNode>();
 
         var data = Vars.UserData.WorldMapPlayerData;
