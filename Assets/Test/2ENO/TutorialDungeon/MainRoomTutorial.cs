@@ -33,7 +33,6 @@ public class MainRoomTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-
     public float delay;
 
     private readonly int mainRoomCampButton = 1;
@@ -45,8 +44,13 @@ public class MainRoomTutorial : MonoBehaviour
     public RectTransform campMenu;
     public RectTransform woodUseBtn;
 
-    // 스토리
+    // 스토리에서 쓰고 있는 변수들
     private StoryManager stm;
+    private MultiTouch multiTouch;
+    private bool storyChapter4 = false;
+    private bool storyChapter5 = false;
+    private PlayerDungeonUnit boy;
+    private PlayerDungeonUnit girl;
 
     private void Awake()
     {
@@ -68,14 +72,17 @@ public class MainRoomTutorial : MonoBehaviour
         //    delay = 0f;
         //    StartCoroutine(CoTutorialEnd());
         //}
-
+        
         // 스토리
         stm = GameManager.Manager.StoryManager;
+        multiTouch = GameManager.Manager.MultiTouch;
+        boy = DungeonSystem.Instance.dungeonPlayerBoy;
+        girl = DungeonSystem.Instance.dungeonPlayerGirl;
     }
 
     private void Update()
     {
-        if (isMainRoomTutorial)
+        if (isMainRoomTutorial && !storyChapter4 && !storyChapter5)
         {
             delay += Time.deltaTime;
             if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
@@ -88,6 +95,12 @@ public class MainRoomTutorial : MonoBehaviour
                 TutorialStep++;
                 Debug.Log(TutorialStep);
             }
+        }
+
+        // 스토리
+        if (multiTouch.IsTap && (storyChapter4 || storyChapter5))
+        {
+            stm.isNext = true;
         }
     }
     public void EndTutorialExplain()
@@ -108,34 +121,113 @@ public class MainRoomTutorial : MonoBehaviour
     {
         isMainRoomTutorial = true;
         delay = 0f;
-        EndTutorialExplain();
-
         yield return new WaitWhile(() => TutorialStep < 1);
+
+        EndTutorialExplain();
+        yield return new WaitWhile(() => TutorialStep < 2);
+
+        isMainRoomTutorial = false;
+        SetActive(false);
+        yield return new WaitWhile(() => TutorialStep < 3);
+        isMainRoomTutorial = true;
+        #region 챕터 5
+        storyChapter5 = true;
+        // 챕터 5에서 필요 없는 것들 끄기
+        var camera = Camera.main;
+        var fov = camera.fieldOfView;
+        camera.fieldOfView = 60;
+        camera.GetComponent<MainCameraMove>().enabled = false;
+        var canvas = stamina.root.gameObject;
+        canvas.SetActive(false); //모든 UI 끄기
+
+        // 플레이어 및 카메라 위치 잡기
+        var cameraTrans = camera.transform;
+        var op = cameraTrans.localPosition;
+        var or = cameraTrans.localRotation;
+        var boyp = boy.transform.localPosition;
+        var boyr = boy.transform.localRotation;
+        var girlp = girl.transform.localPosition;
+        var girlr = girl.transform.localRotation;
+
+        cameraTrans.localPosition = new Vector3(2.5f, 2.9f, -4.6f);
+        cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
+        boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
+        boy.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+        girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
+        girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+
+        var isNextChapter = false;
+        stm.MessageBox.SetActive(true); // 대화창 오픈
+        StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
+        yield return new WaitWhile(() => !isNextChapter);
+        // 초기화
+        camera.fieldOfView = fov;
+        camera.GetComponent<MainCameraMove>().enabled = true;
+        cameraTrans.localPosition = op;
+        cameraTrans.localRotation = or;
+        boy.transform.localPosition = boyp;
+        boy.transform.localRotation = boyr;
+        girl.transform.localPosition = girlp;
+        girl.transform.localRotation = girlr;
+        canvas.SetActive(true);
+        stm.MessageBox.SetActive(false);
+        storyChapter5 = false;
+        #endregion
+        yield return new WaitWhile(() => TutorialStep < 4);
 
         isMainRoomTutorial = false;
         TutorialTheEnd();
     }
 
-
     public IEnumerator CoMainRoomTutorial()
     {
-        // 챕터 4에서 필요 없는 것들 끄기
+        isMainRoomTutorial = true;
+        yield return new WaitForSeconds(0.1f);
 
-        // 챕터 4 스토리
         #region 챕터 4
+        storyChapter4 = true;
+        // 챕터 4에서 필요 없는 것들 끄기
+        var camera = Camera.main;
+        var fov = camera.fieldOfView;
+        camera.fieldOfView = 60;
+        camera.GetComponent<MainCameraMove>().enabled = false;
+        var canvas = stamina.root.gameObject;
+        canvas.SetActive(false); //모든 UI 끄기
+
+        // 플레이어 및 카메라 위치 잡기
+        var cameraTrans = camera.transform;
+        var op = cameraTrans.localPosition;
+        var or = cameraTrans.localRotation;
+        var boyp = boy.transform.localPosition;
+        var boyr = boy.transform.localRotation;
+        var girlp = girl.transform.localPosition;
+        var girlr = girl.transform.localRotation;
+
+        cameraTrans.localPosition = new Vector3(2.5f, 2.9f, -4.6f);
+        cameraTrans.localRotation = Quaternion.Euler(new Vector3(21.153f, 0f, 0f));
+        boy.transform.localPosition = new Vector3(0f, 0f, 1.5903f);
+        boy.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
+        girl.transform.localPosition = new Vector3(5f, 0f, 1.59f);
+        girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, -90f, 0f));
+
         var isNextChapter = false;
+        stm.MessageBox.SetActive(true); // 대화창 오픈
         StartCoroutine(stm.CoStory(StoryType.Chapter4, () => isNextChapter = true));
         yield return new WaitWhile(() => !isNextChapter);
+        // 초기화
+        camera.fieldOfView = fov;
+        camera.GetComponent<MainCameraMove>().enabled = true;
+        cameraTrans.localPosition = op;
+        cameraTrans.localRotation = or;
+        boy.transform.localPosition = boyp;
+        boy.transform.localRotation = boyr;
+        girl.transform.localPosition = girlp;
+        girl.transform.localRotation = girlr;
+        canvas.SetActive(true);
+        stm.MessageBox.SetActive(false);
+        storyChapter4 = false;
         #endregion
 
-        #region 챕터 5
-        //isNextChapter = false;
-        //StartCoroutine(stm.CoStory(StoryType.Chapter5, () => isNextChapter = true));
-        //yield return new WaitWhile(() => !isNextChapter);
-        #endregion
-
-
-        isMainRoomTutorial = true;
         tutorialTool.BlackPanelOn();
 
         StaminaExplain();
@@ -153,6 +245,7 @@ public class MainRoomTutorial : MonoBehaviour
         MainRoomTutorialEnd();
         tutorialTool.BlackPanelOff();
         isMainRoomTutorial = false;
+
     }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)

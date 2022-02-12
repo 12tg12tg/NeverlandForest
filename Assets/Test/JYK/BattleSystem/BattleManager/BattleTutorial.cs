@@ -67,8 +67,8 @@ public class BattleTutorial : MonoBehaviour
     private StoryManager stm;
     private PlayerBattleController boy;
     private PlayerBattleController girl;
-    private bool tu_00_StoryChapter1to2 = false;
-    private bool tu_13_StoryChapter3 = false;
+    private bool storyChapter1to2 = false;
+    private bool storyChapter3 = false;
 
 
     //===========================================================================
@@ -94,7 +94,7 @@ public class BattleTutorial : MonoBehaviour
                 isTouched = true;
             }
         }
-        if (GameManager.Manager.MultiTouch.IsTap && (tu_00_StoryChapter1to2 || tu_13_StoryChapter3))
+        if (GameManager.Manager.MultiTouch.IsTap && (storyChapter1to2 || storyChapter3))
         {
             stm.isNext = true;
         }
@@ -103,7 +103,7 @@ public class BattleTutorial : MonoBehaviour
     //===========================================================================
     private IEnumerator CoBattleStoryStart()
     {
-        tu_00_StoryChapter1to2 = true;
+        storyChapter1to2 = true;
         #region 챕터 1
         // 챕터1 준비) 타일베이스 게임오브젝트 안보이고, 카메라 및 플레이어들 위치 지정
         TileMaker.Instance.gameObject.SetActive(false);
@@ -134,7 +134,7 @@ public class BattleTutorial : MonoBehaviour
         #endregion
         
         // 준비 취소) 타일베이스 게임오브젝트 보이게
-        tu_00_StoryChapter1to2 = false;
+        storyChapter1to2 = false;
         girl.transform.localRotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
         cameraTrans.localPosition = op;
         cameraTrans.localRotation = or;
@@ -145,7 +145,7 @@ public class BattleTutorial : MonoBehaviour
 
     private IEnumerator CoBattleStoryEnd()
     {
-        tu_13_StoryChapter3 = true;
+        storyChapter3 = true;
         #region 챕터 3
         // 챕터3 준비) 타일베이스 게임오브젝트 안보이고, 카메라 및 플레이어들 위치 지정
         TileMaker.Instance.gameObject.SetActive(false);
@@ -167,7 +167,7 @@ public class BattleTutorial : MonoBehaviour
         #endregion
 
         // 되돌리기
-        tu_00_StoryChapter1to2 = false;
+        storyChapter1to2 = false;
         stm.MessageBox.SetActive(false);
         TileMaker.Instance.gameObject.SetActive(true);
         GameManager.Manager.CamManager.uiCamera.gameObject.SetActive(true);
