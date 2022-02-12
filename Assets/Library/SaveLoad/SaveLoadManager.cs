@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 public class SaveLoadManager : Singleton<SaveLoadManager>
 {
     PlayerSaveData_1 playerDate;
@@ -16,6 +17,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     BattleSaveData_0 battleData;
     SceneSaveData_0 sceneData;
     memoSaveData_0 memoData;
+    ItemListSaveData_0 itemData;
 
     private void Start()
     {
@@ -64,6 +66,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             case SaveLoadSystem.SaveType.Memo:
                 SaveMemoData();
                 break;
+            case SaveLoadSystem.SaveType.item:
+                SaveItemListData();
+                break;
         }
     }
     public void Load(SaveLoadSystem.SaveType saveType)
@@ -108,6 +113,9 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 break;
             case SaveLoadSystem.SaveType.Memo:
                 LoadMemoData();
+                break;
+            case SaveLoadSystem.SaveType.item:
+                LoadItemData();
                 break;
         }
     }
@@ -163,7 +171,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
-
     private List<DungeonRoom> ArrayConvertList(DungeonRoom[] array)
     {
         List<DungeonRoom> list = new List<DungeonRoom>();
@@ -178,7 +185,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         return list;
     }
-
 
     private void SaveRecipe()
     {
@@ -252,6 +258,19 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         memoData.havememo = Vars.UserData.HaveMemoIDList;
 
         SaveLoadSystem.Save(memoData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+    }
+
+    private void SaveItemListData()
+    {
+        itemData = new ItemListSaveData_0();
+
+        var idList = Vars.UserData.HaveAllItemList.Select(x => x.itemId).ToList();
+        var ownCountList = Vars.UserData.HaveAllItemList.Select(x => x.OwnCount).ToList();
+
+        itemData.itemIdList = idList;
+        itemData.itemOwnCountList = ownCountList;
+
+        SaveLoadSystem.Save(itemData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
     }
 
     private void LoadPlayer()
@@ -408,6 +427,28 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         if (memoData != null)
         {
             Vars.UserData.HaveMemoIDList = memoData.havememo;
+        }
+    }
+
+    private void LoadItemData()
+    {
+        itemData = (ItemListSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
+
+        var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+
+        if (itemData != null)
+        {
+            for (int i = 0; i < itemData.itemIdList.Count; i++)
+            {
+                var loadItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(itemData.itemIdList[i]));
+                loadItem.OwnCount = itemData.itemOwnCountList[i];
+
+                Vars.UserData.AddItemData(loadItem);
+            }
+        }
+        else
+        {
+            Vars.UserData.UserItemInit();
         }
     }
 }

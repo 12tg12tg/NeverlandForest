@@ -18,9 +18,10 @@ public class Production : MonoBehaviour
         img1.gameObject.SetActive(true);
 
         StartCoroutine(Utility.FadeIn(img1, bg, uiCanvas, () => { 
-            action?.Invoke(); 
             img1.gameObject.SetActive(false); 
             black.SetActive(true);
+            action?.Invoke();
+            Debug.Log("페이드 인 끝");
         }));
     }
     public void FadeOut(UnityAction action = null)
@@ -31,7 +32,8 @@ public class Production : MonoBehaviour
 
         StartCoroutine(Utility.FadeOut(img2, bg, uiCanvas, () => { 
             action?.Invoke(); 
-            img2.gameObject.SetActive(false); 
+            img2.gameObject.SetActive(false);
+            Debug.Log("페이드 아웃 끝");
         }));
     }
 }

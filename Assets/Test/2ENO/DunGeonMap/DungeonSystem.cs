@@ -162,15 +162,15 @@ public class DungeonSystem : MonoBehaviour
             Debug.Log("이벤트타입!!");
             ConvertEventDataType();
         }
-        DungeonRoomSetting();
-
         GameManager.Manager.Production.FadeOut();
+        DungeonRoomSetting();
     }
 
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
     {
-        if (Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Camp
+            || Vars.UserData.mainTutorial == MainTutorialStage.Stamina)
         {
             dungeonSystemData.curDungeonRoomData = Vars.UserData.tutorialDungeonData.dungeonRoomArray[3];
         }
@@ -250,17 +250,9 @@ public class DungeonSystem : MonoBehaviour
         Debug.Log(dungeonSystemData.curDungeonRoomData.roomIdx);
         if (isRoomEnd)
         {
-            if (Vars.UserData.mainTutorial != MainTutorialStage.Clear
-                && Vars.UserData.mainTutorial != MainTutorialStage.Camp)
-            {
-                TutorialStart();
-                GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
-            }
-            else
-                GameManager.Manager.Production.FadeOut();
-
-
             eventObjectGenerate.EventObjectClear();
+            roomGenerate.RoadListClear();
+
             if (dungeonSystemData.curDungeonRoomData.nextRoomIdx == -1)
             {
                 if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
@@ -277,10 +269,10 @@ public class DungeonSystem : MonoBehaviour
                 GameManager.Manager.Production.FadeIn( () => GameManager.Manager.LoadScene(GameScene.World));
                 return;
             }
+
             beforeDungeonRoom = dungeonSystemData.curDungeonRoomData;
             dungeonSystemData.curDungeonRoomData = roomTool.GetNextRoom(dungeonSystemData.curDungeonRoomData);
 
-            roomGenerate.RoadListClear();
             roomGenerate.RoomPrefabSet(dungeonSystemData.curDungeonRoomData);
             eventObjectGenerate.EventObjectCreate(dungeonSystemData.curDungeonRoomData);
 
@@ -296,6 +288,14 @@ public class DungeonSystem : MonoBehaviour
                 campButton.interactable = false;
 
             ConsumeManager.TimeUp(0, 1);
+
+            if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
+            {
+                Debug.Log("방전환 튜토시작");
+                TutorialStart();
+            }
+
+            GameManager.Manager.Production.FadeOut();
         }
         else
         {
@@ -304,7 +304,6 @@ public class DungeonSystem : MonoBehaviour
                 if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                 {
                     TutorialStart();
-                    GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
                 }
 
                 ConsumeManager.TimeUp(0, 1);
@@ -320,6 +319,9 @@ public class DungeonSystem : MonoBehaviour
             }
         }
 
+        dungeonSystemData.curPlayerBoyData.SetUnitData(dungeonPlayerBoy);
+        dungeonSystemData.curPlayerGirlData.SetUnitData(dungeonPlayerGirl);
+
         if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
         {
             Vars.UserData.tutorialDungeonData = dungeonSystemData;
@@ -329,6 +331,7 @@ public class DungeonSystem : MonoBehaviour
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
             ConsumeManager.SaveConsumableData();
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.item);
         }
     }
 
