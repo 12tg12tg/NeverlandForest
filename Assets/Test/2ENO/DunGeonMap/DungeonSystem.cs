@@ -170,7 +170,8 @@ public class DungeonSystem : MonoBehaviour
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
     {
-        if (Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Camp
+            || Vars.UserData.mainTutorial == MainTutorialStage.Stamina)
         {
             dungeonSystemData.curDungeonRoomData = Vars.UserData.tutorialDungeonData.dungeonRoomArray[3];
         }
@@ -250,14 +251,11 @@ public class DungeonSystem : MonoBehaviour
         Debug.Log(dungeonSystemData.curDungeonRoomData.roomIdx);
         if (isRoomEnd)
         {
-            if (Vars.UserData.mainTutorial != MainTutorialStage.Clear
-                && Vars.UserData.mainTutorial != MainTutorialStage.Camp)
+            if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             {
                 TutorialStart();
-                GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
             }
-            else
-                GameManager.Manager.Production.FadeOut();
+            GameManager.Manager.Production.FadeOut();
 
 
             eventObjectGenerate.EventObjectClear();
@@ -304,7 +302,6 @@ public class DungeonSystem : MonoBehaviour
                 if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
                 {
                     TutorialStart();
-                    GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
                 }
 
                 ConsumeManager.TimeUp(0, 1);

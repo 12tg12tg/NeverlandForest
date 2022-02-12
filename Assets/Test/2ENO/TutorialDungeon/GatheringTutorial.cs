@@ -125,7 +125,8 @@ public class GatheringTutorial : MonoBehaviour
 
         GatheringTutorialEnd();
         isGatheringTutorial = false;
-}
+        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
+    }
 
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
     {

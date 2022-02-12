@@ -448,7 +448,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         }
         else
         {
-            Vars.UserData.UsetItemInit();
+            Vars.UserData.UserItemInit();
         }
     }
 }
