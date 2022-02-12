@@ -20,7 +20,6 @@ public class DiaryMemo : MonoBehaviour
     }
     public void Init()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Memo);
         table = DataTableManager.GetTable<MemoTable>();
         var memoList = Vars.UserData.HaveMemoIDList;
         for (int i = 0; i < itemGoList.Count; i++)

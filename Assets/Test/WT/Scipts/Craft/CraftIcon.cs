@@ -62,8 +62,6 @@ public class CraftIcon : MonoBehaviour
     }
     public void Init()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Craft);
-
         table = DataTableManager.GetTable<CraftDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var itemList = Vars.UserData.HaveCraftIDList;
@@ -210,6 +208,7 @@ public class CraftIcon : MonoBehaviour
                     Debug.Log("제작 완료");
                     ConsumeManager.TimeUp(makeTime);
                     Vars.UserData.uData.BonfireHour -= makeTime / 60;
+                    ConsumeManager.SaveConsumableData();
                     CampManager.Instance.SetBonTime();
                     Vars.UserData.RemoveItemData(fireitem);
                     if (materialobj1.id != "ITEM_0")

@@ -52,7 +52,7 @@ public class CraftTestMaker : MonoBehaviour
             if (!userRecipeData.Contains(recipeid))
             {
                 userRecipeData.Add(recipeid);
-                SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
+                //SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
             }
         }
     }
@@ -65,7 +65,7 @@ public class CraftTestMaker : MonoBehaviour
             if (!userCraftData.Contains(craftid))
             {
                 userCraftData.Add(craftid);
-                SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Craft);
+                //SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Craft);
             }
         }
 

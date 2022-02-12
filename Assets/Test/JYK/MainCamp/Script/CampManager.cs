@@ -140,14 +140,8 @@ public class CampManager : MonoBehaviour
     public void CampInit()
     {
         instance = this;
-        GameManager.Manager.SaveLoad.Load(SaveLoadSystem.SaveType.DungeonMap);
         StartPos = camera.transform.position;
-
-      /*  if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
-        {
-            CreateMiniMapObject();
-            SetMinimapCamera();
-        }*/
+        Vars.UserData.uData.BonfireHour = 3;
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -161,6 +155,7 @@ public class CampManager : MonoBehaviour
     public void RecoveryBonTime()
     {
         ConsumeManager.RecoveryBonFire(recoveryBonTime);
+        ConsumeManager.SaveConsumableData();
     }
 
     public void OnBonButton()
@@ -201,6 +196,7 @@ public class CampManager : MonoBehaviour
     public void IGoSleep()
     {
         ConsumeManager.RecoveryTiredness();
+        ConsumeManager.SaveConsumableData();
         recoverySleepTime = 0;
         SetSleepTime();
         SetBonTime();
@@ -408,14 +404,12 @@ public class CampManager : MonoBehaviour
     {
         reconfirmPanelManager.gameObject.SetActive(false);
     }
-
     //BlueMoonInCamp
     public void OpenBlueMoonScene(object[] vals)
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Open BlueMoon Scene ");
     }
-
     //ProducingInCamp
     public void OpenMaking(object[] vals)
     {
@@ -465,10 +459,6 @@ public class CampManager : MonoBehaviour
         OpenProduceInCamp();
     }
     //SceneChange
-    public void GoWorldMap()
-    {
-        GameManager.Manager.LoadScene(GameScene.World);
-    }
     public void GoDungeonCheck()
     {
         if (Vars.UserData.uData.BonfireHour != 0)
@@ -479,6 +469,8 @@ public class CampManager : MonoBehaviour
         }
         else
         {
+            Vars.UserData.uData.BonfireHour = 0;
+            ConsumeManager.SaveConsumableData();
             GoDungeon();
         }
     }
@@ -494,102 +486,6 @@ public class CampManager : MonoBehaviour
         bonTimeText.gameObject.SetActive(true);
 
     }
-
-/*    //MinimapCreate
-    public void CreateMiniMapObject()
-    {
-        
-       
-        var array = Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray;
-
-        int curIdx = Vars.UserData.dungeonStartIdx;
-        var curRoomIndex = curDungeonRoomIndex;
-
-        left = curIdx % 20;
-        right = curIdx % 20;
-        top = curIdx / 20;
-        bottom = curIdx / 20;
-        RoomObject obj;
-        while (array[curIdx].nextRoomIdx != -1)
-        {
-            var room = array[curIdx];
-            if (room.RoomType == DunGeonRoomType.MainRoom)
-            {
-                //var mainRoomPrefab = DungeonSystem.
-                obj = Instantiate(mainRoomPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                     , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                if (room.roomIdx == curRoomIndex)
-                {
-                    var mesh = obj.gameObject.GetComponent<MeshRenderer>();
-                    mesh.material.color = Color.blue;
-                }
-            }
-            else
-            {
-                obj = Instantiate(roadPrefab, new Vector3(room.Pos.x, 0f, room.Pos.y)
-                , Quaternion.identity, mapPos.transform);
-                var objectInfo = obj.GetComponent<RoomObject>();
-                objectInfo.roomIdx = room.roomIdx;
-                if (room.roomIdx == curRoomIndex)
-                {
-                    var mesh = obj.gameObject.GetComponent<MeshRenderer>();
-                    mesh.material.color = Color.blue;
-                }
-            }
-            if (curIdx == Vars.UserData.dungeonStartIdx)
-            {
-                leftPos = obj.transform.position;
-                rightPos = obj.transform.position;
-                topPos = obj.transform.position;
-                bottomPos = obj.transform.position;
-            }
-
-            if (curIdx != 0)
-            {
-                if (left > curIdx % 20)
-                {
-                    left = curIdx % 20;
-                    leftPos = obj.transform.position;
-                }
-                if (right < curIdx % 20)
-                {
-                    right = curIdx % 20;
-                    rightPos = obj.transform.position;
-                }
-                if (top > curIdx / 20)
-                {
-                    top = curIdx / 20;
-                    topPos = obj.transform.position;
-                }
-                if (bottom < curIdx / 20)
-                {
-                    bottom = curIdx / 20;
-                    bottomPos = obj.transform.position;
-                }
-            }
-
-            curIdx = array[curIdx].nextRoomIdx;
-        }
-        var lastRoom = array[curIdx];
-        var lastObj = Instantiate(mainRoomPrefab, new Vector3(lastRoom.Pos.x, lastRoom.Pos.y, 0f)
-                     , Quaternion.identity, mapPos.transform);
-        var objectInfo2 = lastObj.GetComponent<RoomObject>();
-        objectInfo2.roomIdx = lastRoom.roomIdx;
-        mapPos.transform.position = mapPos.transform.position + new Vector3(0f, 30f, 0f);
-    }
-    public void SetMinimapCamera()
-    {
-        var first = mapPos.transform.GetChild(0);
-        var count = mapPos.transform.childCount;
-        var lastIdx = count - 1;
-        var last = mapPos.transform.GetChild(lastIdx);
-        var x = (first.position.x + last.position.x) / 2;
-        //campminimapCamera.transform.position = new Vector3((leftPos.x + rightPos.x) / 2, 150f, ((topPos.z + bottomPos.z) / 2) - 5f);
-        //new Vector3(x, mapPos.transform.position.y + 10f, -47f);
-    }*/
-
     public void SetGatheringTime()
     {
         gatheringTimeText.text = gatheringTime.ToString() + "ºÐ";
@@ -636,6 +532,8 @@ public class CampManager : MonoBehaviour
             }
         }
         ConsumeManager.TimeUp(gatheringTime);
+        ConsumeManager.SaveConsumableData();
+
         if (isBlankCheck == (int)(gatheringTime / 30))
         {
             Debug.Log("ÀüºÎ²Î");

@@ -271,4 +271,13 @@ public class UserData
         return false;
     }
     // DataItem 으로 그리고 List로 다시 변환해서 사용해보기
+
+    public void UserDataInit() //초기화 하는 느낌
+    {
+        WorldMapNodeStruct = new List<WorldMapNodeStruct>();
+        WorldMapPlayerData = null;
+        uData.Date = 0;
+        isPlayerDungeonIn = false;
+    }
+
 }

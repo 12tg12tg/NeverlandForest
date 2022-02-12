@@ -27,7 +27,6 @@ public class RecipeInfo : MonoBehaviour
 
             var button = item.GetComponent<Button>();
         }
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
         Init();
     }
 

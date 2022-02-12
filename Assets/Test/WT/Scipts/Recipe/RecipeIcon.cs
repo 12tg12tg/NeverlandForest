@@ -49,7 +49,6 @@ public class RecipeIcon : MonoBehaviour
 
     public void Init()
     {
-        SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.Recipe);
         table = DataTableManager.GetTable<RecipeDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
 
@@ -182,7 +181,7 @@ public class RecipeIcon : MonoBehaviour
 
                 ConsumeManager.TimeUp(makeTime);
                 ConsumeManager.RecoveryHunger(resultitem.ItemTableElem.stat_str);
-
+                ConsumeManager.SaveConsumableData();
                 isfireok = false;
                 iscondimentok = false;
                 ismaterialok = false;

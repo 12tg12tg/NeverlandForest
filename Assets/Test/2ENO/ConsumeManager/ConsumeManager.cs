@@ -58,7 +58,6 @@ public static class ConsumeManager
             Vars.UserData.uData.Hunger = 100;
             ChangeableMaxStaminChange();
         }
-        SaveConsumableData();
     }
     public static void RecoveryHunger(float hungercount)
     {
@@ -68,7 +67,6 @@ public static class ConsumeManager
             Vars.UserData.uData.Hunger = 0;
         }
         ChangeableMaxStaminChange();
-        SaveConsumableData();
     }
     public static void RecoveryTiredness()
     {
@@ -99,7 +97,6 @@ public static class ConsumeManager
         {
             Debug.Log("모닥불의 시간이 부족합니다");
         }
-        SaveConsumableData();
     }
     public static void RecoveryTiredness(float recoverTired)
     {
@@ -108,8 +105,6 @@ public static class ConsumeManager
         {
             Vars.UserData.uData.Tiredness = 100;
         }
-        SaveConsumableData();
-
     }
 
     public static void GettingTired(float gettingTired)
@@ -122,8 +117,6 @@ public static class ConsumeManager
             Vars.UserData.uData.Tiredness = 0;
             EventBus<LivingState>.Publish(LivingState.GameOver);
         }
-        SaveConsumableData();
-
     }
     private static void ChangeableMaxStaminChange()
     {
@@ -141,7 +134,6 @@ public static class ConsumeManager
         {
             Vars.UserData.uData.Hp = Vars.maxHp;
         }
-        SaveConsumableData();
     }
     public static bool GetDamage(float damage)
     {
@@ -151,7 +143,6 @@ public static class ConsumeManager
             Vars.UserData.uData.Hp = 0;
             return true;
         }
-        SaveConsumableData();
         return false;
     }
 
@@ -163,7 +154,6 @@ public static class ConsumeManager
             Vars.UserData.uData.LanternCount = 1;
         }
         LanternStateChange();
-        SaveConsumableData();
     }
     public static void FullingLantern(int oil)
     {
@@ -173,7 +163,6 @@ public static class ConsumeManager
             Vars.UserData.uData.LanternCount = Vars.lanternMaxCount;
         }
         LanternStateChange();
-        SaveConsumableData();
     }
     private static void LanternStateChange()
     {
@@ -258,7 +247,6 @@ public static class ConsumeManager
             }
             curTimeState = TimeState.NightTime;
         }
-        SaveConsumableData();
     }
 
     public static void TimeUp(float minute, float hour = 0)
@@ -279,7 +267,6 @@ public static class ConsumeManager
             DateUp();
         }
         TimeStateChange();
-        SaveConsumableData();
     }
     public static void RecoveryTimeUp(int minute, int hour = 0)
     {
@@ -296,7 +283,6 @@ public static class ConsumeManager
             DateUp();
         }
         TimeStateChange();
-        SaveConsumableData();
     }
     public static void DateUp()
     {
@@ -310,7 +296,6 @@ public static class ConsumeManager
         {
             EventBus<DateEvent>.Publish(DateEvent.WitchEffect);
         }
-        SaveConsumableData();
     }
     public static void ConsumeBonfireTime(float minute, float hour = 0)
     {
@@ -322,7 +307,6 @@ public static class ConsumeManager
             totalTime = 0;
         }
         Vars.UserData.uData.BonfireHour = totalTime / 60;
-        SaveConsumableData();
     }
     public static void RecoveryBonFire(float minute, float hour = 0)
     {
@@ -330,7 +314,6 @@ public static class ConsumeManager
         totalTime += minute;
         totalTime += 60 * hour;
         Vars.UserData.uData.BonfireHour = totalTime / 60;
-        SaveConsumableData();
     }
     public static void CostDataReset()
     {

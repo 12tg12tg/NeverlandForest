@@ -19,6 +19,9 @@ public class DungeonDiaryManger : MonoBehaviour
     public GameObject skillPanel;
     public GameObject recipePanel;
     public GameObject notesPanel;
+
+    public GameObject bottomui;
+
     public void Awake()
     {
         instance = this;
@@ -63,4 +66,10 @@ public class DungeonDiaryManger : MonoBehaviour
 
         notesPanel.SetActive(true);
     }
+
+    public void OpenNewBottomUi()
+    {
+        bottomui.SetActive(true);
+    }
+
 }
