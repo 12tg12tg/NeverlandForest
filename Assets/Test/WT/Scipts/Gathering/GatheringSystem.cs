@@ -10,7 +10,7 @@ public enum GatheringType
 public class GatheringSystem : MonoBehaviour
 {
     [Header("플레이어")]
-    private Animator playerAnimation;
+    private Animator playerAnimationWomen;
     private Animator playerAnimationBoy;
     public PlayerDungeonUnit womenplayer;
     public PlayerDungeonUnit boyPlayer;
@@ -92,7 +92,7 @@ public class GatheringSystem : MonoBehaviour
     public void Start()
     {
         instance = this;
-        playerAnimation = womenplayer.GetComponent<Animator>();
+        playerAnimationWomen = womenplayer.GetComponent<Animator>();
         playerAnimationBoy = boyPlayer.GetComponent<Animator>();
     }
     public void DeleteObj()
@@ -315,7 +315,7 @@ public class GatheringSystem : MonoBehaviour
         toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
+        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
         toolImage.GetComponent<Image>().color = Color.clear;
 
     }
@@ -375,6 +375,7 @@ public class GatheringSystem : MonoBehaviour
             womenbeforePosition = womenplayer.transform.position;
             manbeforePosition = boyPlayer.transform.position;
             boyPlayer.IsCoMove = true;
+            
             Debug.Log("채집시작");
             if (coWomenMove == null)
             {
@@ -578,7 +579,7 @@ public class GatheringSystem : MonoBehaviour
         {
             PlayWalkAnimationBoy();
         }
-        playerAnimation.SetTrigger("Clap");
+        playerAnimationWomen.SetTrigger("Clap");
         coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
         Destroy(curSelectedObj.gameObject);
     }
@@ -685,7 +686,7 @@ public class GatheringSystem : MonoBehaviour
     private void PlayWalkAnimation()
     {
         //playerAnimation.SetTrigger("Walk");
-        playerAnimation.SetFloat("Speed", 3f);
+        playerAnimationWomen.SetFloat("Speed", 3f);
     }
 
     private void PlayWalkAnimationBoy()

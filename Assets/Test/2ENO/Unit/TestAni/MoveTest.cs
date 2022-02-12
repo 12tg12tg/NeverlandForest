@@ -17,6 +17,19 @@ public class MoveTest : MonoBehaviour
     public PlayerDungeonUnit playerBoy;
     public PlayerDungeonUnit playerGirl;
 
+    public GameObject lanternRight;
+    public GameObject lanternLeft;
+
+    //private Transform lanternRightRun;
+    //private Transform lanternLeftRun;
+
+    private Vector3 lanternIdle;
+
+    private Vector3 lanternRightRunPos;
+    private Vector3 lanternRightRunRotate;
+    private Vector3 lanternLeftRunPos;
+    private Vector3 lanternLeftRunRotate;
+
     // 달리기 움직임 및 손잡기 관련
     public float boySpeed;
     private bool isRunReady;
@@ -33,7 +46,18 @@ public class MoveTest : MonoBehaviour
     private Coroutine coHand;
     public void Init()
     {
+        lanternIdle = new Vector3(-1.46f, -176.92f, 129f);
+
+        //lanternRightRunPos = new Vector3(-0.05f, 0.008f, -0.04f);
+        lanternRightRunRotate = new Vector3(54.3f, -285.5f, 85.72f);
+
+        //lanternLeftRunPos = new Vector3(-0.06f, 0.025f, 0.005f);
+        lanternLeftRunRotate = new Vector3(-41.5f, -62.77f, 53.22f);
+
         multiTouch = GameManager.Manager.MultiTouch;
+        lanternRight.SetActive(true);
+        lanternLeft.SetActive(false);
+
         playerAnimationBoy = playerBoy.GetComponent<Animator>();
         playerAnimationGirl = playerGirl.GetComponent<Animator>();
 
@@ -52,19 +76,6 @@ public class MoveTest : MonoBehaviour
         girlRiglayers[1].active = true;
         boyRight.isRight = false;
     }
-
-    // 임시
-    //if (MultiTouch.Instance.IsTap)
-    //{
-    //    moveSpeed *= 5f;
-    //}
-    //else
-    //{
-    //    //boyRig.weight = Mathf.Lerp(0f, 1f, moveSpeed);
-    //    //girlRig.weight = boyRig.weight;
-    //    //boyRight.weightf = boyRig.weight;
-    //    moveSpeed *= 5f;
-    //}
 
     void Update()
     {
@@ -115,6 +126,11 @@ public class MoveTest : MonoBehaviour
                         girlRiglayers[1].active = false;
                         girlRiglayers[0].active = true;
                         boyRight.isRight = true;
+                        lanternRight.SetActive(true);
+                        lanternLeft.SetActive(false);
+
+                        lanternRight.transform.localRotation = Quaternion.Euler(lanternRightRunRotate);
+
                         var pos = boySpeed * Time.deltaTime * Vector3.right;
                         playerGirl.transform.position += pos;
                         playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
@@ -136,6 +152,11 @@ public class MoveTest : MonoBehaviour
                         girlRiglayers[1].active = true;
                         girlRiglayers[0].active = false;
                         boyRight.isRight = false;
+                        lanternRight.SetActive(false);
+                        lanternLeft.SetActive(true);
+
+                        lanternLeft.transform.localRotation = Quaternion.Euler(lanternLeftRunRotate);
+
                         var pos = boySpeed * Time.deltaTime * -Vector3.right;
                         playerGirl.transform.position += pos;
                         playerGirl.transform.rotation = Quaternion.Euler(new Vector3(0f, 270f, 0f));
@@ -155,6 +176,8 @@ public class MoveTest : MonoBehaviour
                     // 캐릭터 둘이 거리가 가까워질때
                     else
                     {
+                        lanternLeft.transform.localRotation = Quaternion.Euler(lanternIdle);
+                        lanternRight.transform.localRotation = Quaternion.Euler(lanternIdle);
                         if (!isHand)
                         {
                             if (coHand != null)
@@ -170,6 +193,8 @@ public class MoveTest : MonoBehaviour
                 // 터치 안누를때
                 else
                 {
+                    lanternLeft.transform.localRotation = Quaternion.Euler(lanternIdle);
+                    lanternRight.transform.localRotation = Quaternion.Euler(lanternIdle);
                     boySpeed = 0f;
                     if (!isHand)
                     {

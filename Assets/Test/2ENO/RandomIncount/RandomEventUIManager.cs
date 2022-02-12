@@ -153,8 +153,6 @@ public class RandomEventUIManager : MonoBehaviour
         {
             if (randomEventData.selectBtnCount < i + 1)
             {
-                //selectButtons[j].transform.GetChild(0).GetComponent<Image>().enabled = false;
-                //selectButtons[j].transform.GetChild(0).GetComponent<Button>().enabled = false;
                 selectButtons[j].transform.GetChild(0).gameObject.SetActive(false);
                 j--;
                 continue;
@@ -227,6 +225,11 @@ public class RandomEventUIManager : MonoBehaviour
         }
         gameObject.SetActive(false);
         BottomUIManager.Instance.ItemListInit();
+
+        Vars.UserData.randomEventDatas = RandomEventManager.Instance.allDataList;
+        Vars.UserData.isTutorialRandomEvent = RandomEventManager.Instance.isTutorialRandomEvent;
+
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
     }
     public void RewardItemLIstInit(List<DataAllItem> itemList)
     {

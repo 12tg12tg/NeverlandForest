@@ -37,9 +37,9 @@ public class UserData
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
     public List<string> useEventID = new List<string>();
+    public bool isFirst;
     public bool isRandomDataLoad;
-    public bool isFirst = true;
-    public bool isTutorialRandomEvent = true;
+    public bool isTutorialRandomEvent;
 
     // 튜토리얼 던전
     public DungeonData tutorialDungeonData = new DungeonData();

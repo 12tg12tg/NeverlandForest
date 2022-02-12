@@ -32,7 +32,6 @@ public class RandomEventObject : MonoBehaviour
 
                 dungeonSystem.randomEventTutorial.StartRandomEventTutorial();
                 randEventMgr.isTutorialRandomEvent = false;
-                randEventMgr.isFirstRandomEvent = false;
             }
             else
             {
@@ -40,6 +39,8 @@ public class RandomEventObject : MonoBehaviour
                 RandomEventUIManager.Instance.EventInit(rndEvent);
             }
             //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+
+
             Destroy(gameObject);
         }
     }

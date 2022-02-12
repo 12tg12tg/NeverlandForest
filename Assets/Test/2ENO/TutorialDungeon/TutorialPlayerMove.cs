@@ -75,11 +75,20 @@ public class TutorialPlayerMove : MonoBehaviour
             return;
         }
 
+
         if (gatheringTutorial.isGatheringTutorial/* && gatheringTutorial.TutorialStep != 7*/)
         {
-            RigOff();
+            if (isCoMove)
+                isHand = true;
+            else
+            {
+                RigOff();
+                playerAnimationBoy.SetFloat("Speed", 0);
+                playerAnimationGirl.SetFloat("Speed", 0);
+            }
             return;
         }
+
 
         if (moveTutorial.isMoveTutorial && moveTutorial.TutorialStep != 2)
         {
@@ -88,6 +97,7 @@ public class TutorialPlayerMove : MonoBehaviour
             playerAnimationGirl.SetFloat("Speed", 0);
             return;
         }
+
         if (multiTouch != null)
         {
             if (!isCoMove)

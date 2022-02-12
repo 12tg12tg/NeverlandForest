@@ -12,11 +12,10 @@ public class RandomEventManager : MonoBehaviour
 
     public List<DataRandomEvent> allDataList = new List<DataRandomEvent>();
     private List<DataRandomEvent> randomEventPool = new List<DataRandomEvent>();
-    public List<string> curDungeonRandomEventIDList = new List<string>();
 
     private DataRandomEvent beforeEventData;
 
-    public bool isFirstRandomEvent = true;
+    public bool isFirst = true;
     public bool isTutorialRandomEvent = true;
     public DataRandomEvent tutorialEvent = new();
     private void Awake()
@@ -38,6 +37,8 @@ public class RandomEventManager : MonoBehaviour
 
         if (Vars.UserData.isRandomDataLoad)
         {
+            isTutorialRandomEvent = Vars.UserData.isTutorialRandomEvent;
+
             foreach (var data in Vars.UserData.randomEventDatas)
             {
                 var newRndData = new DataRandomEvent(data);
@@ -76,36 +77,31 @@ public class RandomEventManager : MonoBehaviour
             // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
             randomEventPool.AddRange(list);
         }
+
+        Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
     }
 
     public void SaveEventData()
     {
-        Vars.UserData.randomEventDatas.Clear();
-        Vars.UserData.useEventID.Clear();
-
-        Vars.UserData.randomEventDatas.AddRange(allDataList);
-        foreach(var id in randomEventPool)
-        {
-            Vars.UserData.useEventID.Add(id.EventData.id);
-        }
-
-        Vars.UserData.isFirst = isFirstRandomEvent;
-        Vars.UserData.isTutorialRandomEvent = isTutorialRandomEvent;
-
-        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
     }
 
     public void RemoveEventInPool(DataRandomEvent evtData)
     {
         var idx = randomEventPool.FindIndex(x => x.EventData.id == evtData.EventData.id);
         randomEventPool.RemoveAt(idx);
-        int a = 100;
+
+        Vars.UserData.randomEventDatas = allDataList;
+        Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
+
     }
 
     public void AddEventInPool(DataRandomEvent evtData)
     {
         randomEventPool.Add(evtData);
-        int a = 100;
+
+        Vars.UserData.randomEventDatas = allDataList;
+        Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
+
     }
 
     public DataRandomEvent GetEventData(string eventID)
@@ -156,10 +152,11 @@ public class RandomEventManager : MonoBehaviour
                 index++;
             }
 
-            if (isFirstRandomEvent && !Vars.UserData.isRandomDataLoad)
+            if (isFirst)
             {
                 roomData.randomEventID = "4";
-                isFirstRandomEvent = false;
+                isFirst = false;
+                Vars.UserData.isFirst = isFirst;
                 break;
             }
 
