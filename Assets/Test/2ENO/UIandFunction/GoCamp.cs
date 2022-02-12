@@ -12,7 +12,7 @@ public class GoCamp : MonoBehaviour
     [Header("재확인")]
     public GameObject setupCampSite;
     [Header("움직임 관련")]
-    public MoveTest moveTest;
+    public PlayerMoveControl moveTest;
 
     public void Start()
     {

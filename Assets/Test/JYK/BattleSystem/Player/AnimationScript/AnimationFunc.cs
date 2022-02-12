@@ -8,6 +8,8 @@ public class AnimationFunc : MonoBehaviour
     public HuntingManager huntingManager;
     public GatheringSystem gathringSystem;
     public GameObject arrow;
+    public GameObject axe;
+    public GameObject shovel;
 
     public void Hit()
     {
@@ -29,5 +31,18 @@ public class AnimationFunc : MonoBehaviour
     public void GatherIngPickUpEnd()
     {
         gathringSystem.GatheringEnd();
+        axe.SetActive(false);
+        shovel.SetActive(false);
+    }
+
+    public void GatheringUseAxe()
+    {
+        axe.SetActive(true);
+    }
+
+    public void GatheringUseShovel()
+    {
+        Debug.Log("»ð »ç¿ë¸ð¼Ç");
+        shovel.SetActive(true);
     }
 }
