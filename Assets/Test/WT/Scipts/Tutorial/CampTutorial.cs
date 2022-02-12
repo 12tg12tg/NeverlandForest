@@ -227,8 +227,7 @@ public class CampTutorial : MonoBehaviour
         CampTutorialEnd();
         //인호 던전 튜토리얼 신으로 가야됨.
         CampManager.curinitState = CampManager.CampinitState.None;
-       
-        GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
+        GameManager.Manager.LoadScene(GameScene.TutorialDungeon);
     }
     public void SetActive(bool isBlackoutActive, bool isDialogActive = false, bool isHandActive = false)
     {

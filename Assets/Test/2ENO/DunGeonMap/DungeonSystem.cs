@@ -171,7 +171,7 @@ public class DungeonSystem : MonoBehaviour
     // 던전맵이 완성된 후에 정보를 토대로 방 세팅
     private void DungeonRoomSetting()
     {
-        if (Vars.UserData.mainTutorial == MainTutorialStage.Play
+        if (Vars.UserData.mainTutorial == MainTutorialStage.Camp
             || Vars.UserData.mainTutorial == MainTutorialStage.Stamina)
         {
             dungeonSystemData.curDungeonRoomData = Vars.UserData.tutorialDungeonData.dungeonRoomArray[3];
@@ -239,8 +239,6 @@ public class DungeonSystem : MonoBehaviour
                 StartCoroutine(mainRoomTutorial.CoMainRoomTutorial());
                 break;
             case MainTutorialStage.Camp:
-                break;
-            case MainTutorialStage.Play:
                 StartCoroutine(mainRoomTutorial.CoTutorialEnd());
                 break;
             case MainTutorialStage.Clear:
