@@ -25,7 +25,6 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     public DiaryInventory gatheringInDungeonrewardInventory;
 
     [Header("º¸»ó")]
-    public GameObject reward;
     public ReconfirmPanelManager popupPanel;
     public List<RewardObject> selectedItemList = new List<RewardObject>();
 
@@ -79,11 +78,10 @@ public class DungeonRewardDiaryManager : MonoBehaviour
    
     public void CheckRewardEmpty()
     {
-        var items = reward.GetComponentsInChildren<RewardObject>();
         var isEmpty = false;
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < rewardSlots.Count; i++)
         {
-            isEmpty = items[i].Item == null;
+            isEmpty = rewardSlots[i].Item == null;
             if (!isEmpty)
                 break;
         }
@@ -100,19 +98,18 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     }
     public void GetAllItem()
     {
-        var items = reward.GetComponentsInChildren<RewardObject>();
-        for (int i = 0; i < items.Length; i++)
+        for (int i = 0; i < rewardSlots.Count; i++)
         {
-            if(items[i].Item != null)
+            if(rewardSlots[i].Item != null)
             {
-                var isInvenNotFull = Vars.UserData.AddItemData(items[i].Item);
+                var isInvenNotFull = Vars.UserData.AddItemData(rewardSlots[i].Item);
                 if (!isInvenNotFull)
                 {
                     PopupPanelOpen(true);
                     return;
                 }
-                Vars.UserData.ExperienceListAdd(items[i].Item.itemId);
-                items[i].InitItemSprite();
+                Vars.UserData.ExperienceListAdd(rewardSlots[i].Item.itemId);
+                rewardSlots[i].InitItemSprite();
             }
         }
         gatheringInDungeonrewardInventory.ItemButtonInit();
