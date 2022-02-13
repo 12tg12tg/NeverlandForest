@@ -114,7 +114,7 @@ public class GatheringSystem : MonoBehaviour
         switch (type)
         {
             case GatheringObjectType.Tree:
-                if(isTool)
+                if (isTool)
                     treePlayer.aniControl.SetTrigger("UseAxe");
                 else
                     treePlayer.aniControl.SetTrigger("UseHand");
@@ -227,6 +227,34 @@ public class GatheringSystem : MonoBehaviour
             }
         }
         var lanternstate = ConsumeManager.CurLanternState;
+
+        var list = Vars.UserData.HaveAllItemList;
+        string axeId = "ITEM_12";
+        string shooveId = "ITEM_13";
+        bool isaxeHave = false;
+        bool isshooveHave = false;
+        for (int i = 0; i < list.Count; i++)
+        {
+            if (list[i].itemId == axeId)
+            {
+                isaxeHave = true;
+            }
+            else if (list[i].itemId == shooveId)
+            {
+                isshooveHave = true;
+            }
+        }
+
+        if (isaxeHave || isshooveHave)
+        {
+            toolbutton.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            toolbutton.GetComponent<Button>().interactable = false;
+        }
+
+
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
@@ -259,8 +287,6 @@ public class GatheringSystem : MonoBehaviour
         toolCompleteTimeParent.SetActive(true);
         toolButtonParent.SetActive(true);
         toolRemainParent.SetActive(true);
-
-        
 
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -364,45 +390,28 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-          + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
-    + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
 
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-          + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
 
         }
         else
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-       + "시간은 1시간 을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
-            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
-        toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
-
-      
-
     }
     private void MushroomGatheing(LanternState lanternstate) //버섯 채집? 
     {
@@ -417,41 +426,26 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-          + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
- + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-          + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
- + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비합니다" + "\n"
-       + "시간은 1시간 을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
-            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-     + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
-        toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
-      
     }
     public void GoGatheringObject(Vector3 objectPos)
     {
@@ -460,7 +454,7 @@ public class GatheringSystem : MonoBehaviour
             womenbeforePosition = womenplayer.transform.position;
             manbeforePosition = boyPlayer.transform.position;
             boyPlayer.IsCoMove = true;
-            
+
             Debug.Log("채집시작");
             if (coWomenMove == null)
             {
@@ -471,7 +465,7 @@ public class GatheringSystem : MonoBehaviour
 
             boyPlayer.tag = "Untagged";
 
-            var newPos = new Vector3(objectPos.x-1f, objectPos.y, objectPos.z - 1.5f);
+            var newPos = new Vector3(objectPos.x - 1f, objectPos.y, objectPos.z - 1.5f);
 
             coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, newPos, 1f,
                 () =>
@@ -493,41 +487,33 @@ public class GatheringSystem : MonoBehaviour
             case GatheringObjectType.Tree:
                 GatheringTreeByTool();
                 GatheringSetAni(GatheringObjectType.Tree, true);
+                gatheringRewardList[0].Init(curSelectedObj.item);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
+                SoundManager.Instance.Play(SoundType.Se_Axe);
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByTool();
                 GatheringSetAni(GatheringObjectType.Pit, true);
+                SoundManager.Instance.Play(SoundType.Se_Spade);
+                gatheringRewardList[0].Init(curSelectedObj.item);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
                 break;
             case GatheringObjectType.Herbs:
-                GatheringHerbsByTool();
-                GatheringSetAni(GatheringObjectType.Herbs);
-                SoundManager.Instance.Play(SoundType.Se_Spade);
-                gatheringRewardList[0].Init(curSelectedObj.subitem);
-                gatheringRewardList[0].IsHaveItem = true;
-                rewardList.Add(gatheringRewardList[0].Item);
-
                 break;
             case GatheringObjectType.Mushroom:
-                GatheringMushroomByTool();
-                GatheringSetAni(GatheringObjectType.Mushroom);
-                SoundManager.Instance.Play(SoundType.Se_Spade);
                 break;
             default:
                 break;
-        }
-        // 아이템 획득 준비 보상창에 생성하기
-        if (gatheringRewardList[0].Item != null)
-        {
-            gatheringRewardList[1].Init(curSelectedObj.subitem);
-            gatheringRewardList[1].IsHaveItem = true;
-            rewardList.Add(gatheringRewardList[1].Item);
-        }
-        else
-        {
-            gatheringRewardList[0].Init(curSelectedObj.item);
-            gatheringRewardList[0].IsHaveItem = true;
-
-            rewardList.Add(gatheringRewardList[0].Item);
         }
         dungeonrewarddiaryManager.OpenGatheringInDungeonReward();
     }
@@ -543,45 +529,54 @@ public class GatheringSystem : MonoBehaviour
                 GatheringSetAni(GatheringObjectType.Tree);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
+                gatheringRewardList[0].Init(curSelectedObj.subitem);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByHand();
                 GatheringSetAni(GatheringObjectType.Pit);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
-
+                gatheringRewardList[0].Init(curSelectedObj.subitem);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
                 GatheringSetAni(GatheringObjectType.Herbs);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
-
                 gatheringRewardList[0].Init(curSelectedObj.subitem);
-                gatheringRewardList[0].IsHaveItem = true;
-
-                rewardList.Add(gatheringRewardList[0].Item);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
+                gatheringRewardList[1].Init(curSelectedObj.item);
+                if (gatheringRewardList[1].Item != null)
+                {
+                    gatheringRewardList[1].IsHaveItem = true;
+                    rewardList.Add(gatheringRewardList[1].Item);
+                }
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByHand();
                 GatheringSetAni(GatheringObjectType.Mushroom);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
-
+                gatheringRewardList[0].Init(curSelectedObj.subitem);
+                if (gatheringRewardList[0].Item != null)
+                {
+                    gatheringRewardList[0].IsHaveItem = true;
+                    rewardList.Add(gatheringRewardList[0].Item);
+                }
                 break;
             default:
                 break;
-        }
-        // 아이템 획득준비 보상창에 생성하기
-        if (gatheringRewardList[0].Item != null)
-        {
-            gatheringRewardList[1].Init(curSelectedObj.subitem);
-            gatheringRewardList[1].IsHaveItem = true;
-            rewardList.Add(gatheringRewardList[1].Item);
-        }
-        else
-        {
-            gatheringRewardList[0].Init(curSelectedObj.item);
-            gatheringRewardList[0].IsHaveItem = true;
-
-            rewardList.Add(gatheringRewardList[0].Item);
         }
         dungeonrewarddiaryManager.OpenGatheringInDungeonReward();
     }
@@ -760,7 +755,7 @@ public class GatheringSystem : MonoBehaviour
     {
         reconfirmPanelManager.gameObject.SetActive(false);
     }
-    
+
     private static void GatheringTreeByHand()
     {
         var lanternstate = ConsumeManager.CurLanternState;
@@ -804,7 +799,7 @@ public class GatheringSystem : MonoBehaviour
     private void AfterMove()
     {
         coWomenMove = null;
-        womenplayer.transform.rotation = Quaternion.Euler(new Vector3(0f,90f,0f));
+        womenplayer.transform.rotation = Quaternion.Euler(new Vector3(0f, 90f, 0f));
         boyPlayer.CoMoveStop();
         boyPlayer.tag = "Player";
     }

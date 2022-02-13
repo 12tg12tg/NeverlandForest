@@ -7,13 +7,18 @@ public class OptionSaveData_0 : SaveDataBase
     public static readonly OptionSaveData_0 DefaultValue = new OptionSaveData_0()
     {
         Version = 0,
-        volume = 0f,
-        isMute = false,
+        bgmVolume = 0f,
+        sfVolume = 0f,
+        isBgmMute = false,
+        isSfMute=false,
         isVibrate = false,
     };
 
-    public float volume { get; set; }
-    public bool isMute { get; set; }
+    public float bgmVolume { get; set; }
+    public float sfVolume { get; set; }
+    public bool isBgmMute { get; set; }
+    public bool isSfMute { get; set; }
+
     public bool isVibrate { get; set; }
 
     public override SaveDataBase VersionUp()

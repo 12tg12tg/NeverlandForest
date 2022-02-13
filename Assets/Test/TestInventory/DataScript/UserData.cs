@@ -63,6 +63,13 @@ public class UserData
     public List<string> experienceHaveItemList = new List<string>();
     public bool isItemDataLoad;
 
+    //사운드옵션
+
+    public float bgmVolume;
+    public float sfVoulme;
+    public bool isBgmMute;
+    public bool isSfMute;
+
     //기록하는 함수
     public void ExperienceListAdd(string itemid) //ITEM_
     {
