@@ -751,6 +751,7 @@ public class BattleManager : MonoBehaviour
                             boy.PlayWinAnimation();
                             girl.PlayWinAnimation();
                             directingLink.LandDownLantern();
+                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                             //uiLink.OpenRewardPopup();
                         }
                         else // Æò»ó½Ã
@@ -760,7 +761,8 @@ public class BattleManager : MonoBehaviour
                             girl.PlayWinAnimation();
                             directingLink.LandDownLantern();
                             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                            
+                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+
                         }
                     });
             }

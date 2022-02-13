@@ -55,6 +55,7 @@ public class BattleSettlement : State<BattleState>
                         manager.girl.PlayWinAnimation();
                         manager.directingLink.LandDownLantern();
                         //manager.uiLink.OpenRewardPopup();
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                     }
                     else // Æò»ó½Ã
                     {
@@ -62,6 +63,7 @@ public class BattleSettlement : State<BattleState>
                         manager.boy.PlayWinAnimation();
                         manager.girl.PlayWinAnimation();
                         manager.directingLink.LandDownLantern();
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
                     }
                 });
