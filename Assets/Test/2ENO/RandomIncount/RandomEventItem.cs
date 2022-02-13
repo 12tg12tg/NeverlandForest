@@ -18,9 +18,9 @@ public class RandomEventItem : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.red;
+                selectedImg.color = Color.white;
             else
-                selectedImg.color = Color.green;
+                selectedImg.color = Color.clear;
         }
     }
 
