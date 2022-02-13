@@ -98,13 +98,20 @@ public class RecipeIcon : MonoBehaviour
         var fireid = $"ITEM_{(currentRecipe.Recipes[0])}";
         var condimentid = $"ITEM_{(currentRecipe.Recipes[1])}";
         var materialid = $"ITEM_{(currentRecipe.Recipes[2])}";
-
+        var list = Vars.UserData.HaveAllItemList;
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
 
         if (fire.sprite !=null)
         {
-            isfireok = true;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].ItemTableElem.id == fireobj.id)
+                {
+                    isfireok = true;
+                    fireNum = i;
+                }
+            }
         }
 
         if (condiment.sprite == null)
@@ -158,11 +165,6 @@ public class RecipeIcon : MonoBehaviour
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].ItemTableElem.id == fireobj.id)
-                {
-                    isfireok = true;
-                    fireNum = i;
-                }
                 if (list[i].ItemTableElem.id == condimentobj.id)
                 {
                     iscondimentok = true;

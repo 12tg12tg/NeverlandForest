@@ -34,7 +34,8 @@ public class BattleObject : MonoBehaviour
                 BattleManager.initState = BattleInitState.Dungeon;
             else
                 BattleManager.initState = BattleInitState.None;
-
+            SoundManager.Instance.PlayWalkSound(false);
+            DungeonSystem.Instance.isBattleObjectStart = true;  
             GameManager.Manager.LoadScene(GameScene.Battle);
             Destroy(gameObject);
         }

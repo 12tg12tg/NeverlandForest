@@ -17,6 +17,8 @@ public class RandomEventObject : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        SoundManager.Instance.PlayWalkSound(false);
+
         if (other.tag is "Player")
         {
             var dungeonSystem = DungeonSystem.Instance;
