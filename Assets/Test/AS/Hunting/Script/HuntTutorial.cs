@@ -100,10 +100,10 @@ public class HuntTutorial : MonoBehaviour
 
         HuntSuccessExplain();
         yield return new WaitWhile(() => TutorialStep < 6);
-        // 사냥 도움말 팝업 설명(보류)
-        delay = 0f;
-        HuntHelpExplain();
-        yield return new WaitWhile(() => TutorialStep < 7);
+        //// 사냥 도움말 팝업 설명(보류)
+        //delay = 0f;
+        //HuntHelpExplain();
+        //yield return new WaitWhile(() => TutorialStep < 7);
 
         HuntTutorialEndExplain();
         huntPlayers.IsTutorialClear =

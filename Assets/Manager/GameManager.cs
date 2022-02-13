@@ -45,12 +45,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
 
     [Header("UI 연결")]
     [SerializeField] private GameObject gameoverUI;
-    [SerializeField] private GameObject optionPanelUI;
-    public GameObject ObtionPanelUi
-    {
-        get => optionPanelUI;
-        set { optionPanelUI = value; }
-    }
+    public GameObject optionBlackPanel;
 
     [Header("UI 연출용 카메라")]
     [SerializeField] private ScreenFixed productionCamera;
@@ -106,7 +101,15 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         // 오브젝트풀 생성
         ObjectPoolInit();
     }
-
+    // 세이브 ======================================================================
+    private void SaveAllSavedata()
+    {
+        int count = (int)SaveLoadSystem.SaveType.Count;
+        for (int i = 0; i < count; i++)
+        {
+            sm.Save((SaveLoadSystem.SaveType)i);
+        }
+    }
     // 초기화 ======================================================================
     private void SingletonInit()
     {
@@ -157,8 +160,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 SceneManager.LoadScene("2ENO_TutorialDungeon");
                 break;
         }
-           
-
     }
     private void ReleaseValue()
     {
@@ -278,4 +279,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public Production Production => pd;
     public StoryManager StoryManager => stm;
 
+
+    private void OnDestroy()
+    {
+        SaveAllSavedata();
+    }
 }

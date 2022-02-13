@@ -6,7 +6,6 @@ public class OptionButton : MonoBehaviour
 {
     public void Open()
     {
-        GameManager.Manager.ObtionPanelUi.SetActive(true);
+        GameManager.Manager.optionBlackPanel.SetActive(true);
     }
-   
 }

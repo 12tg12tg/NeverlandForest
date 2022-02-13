@@ -25,6 +25,8 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     public static SoundManager Instance => instance;
 
+    private readonly float maxValue = 0.2f;
+
     private bool muteBGM;
     public bool MuteBgm
     {
@@ -165,37 +167,20 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-
     // 설정 ============================================
-    public void SetMuteBGM(bool isMute)
+    public void SetMuteBGM()
     {
-        isMute =muteBGM;
-        if (isMute)
-        {
-            SetVolumeBGM(0f);
-        }
-        else
-        {
-            SetVolumeBGM(bgmSlider.value);
-        }
+        var value = muteBGM ? 0f : bgmSlider.value;
+        SetVolumeBGM(value);
 
-        Vars.UserData.isBgmMute = isMute;
-
+        Vars.UserData.isBgmMute = muteBGM;
     }
-
-    public void SetMuteSFX(bool isMute)
+    public void SetMuteSFX()
     {
-        isMute = muteSF;
-        if (isMute)
-        {
-            SetVolumeSFX(0f);
-        }
-        else
-        {
-            SetVolumeSFX(soundSlider.value);
-        }
-        Vars.UserData.isSfMute = isMute;
+        var value = muteSF ? 0f : soundSlider.value;
+        SetVolumeSFX(value);
 
+        Vars.UserData.isSfMute = muteSF;
     }
 
     public void SetVolumeBGM(float volume)
@@ -203,14 +188,27 @@ public class SoundManager : MonoBehaviour
         bgm_Player.volume = volume;
         Vars.UserData.bgmVolume = bgm_Player.volume;
     }
+    public void SetVolumeBGM()
+    {
+        bgm_Player.volume = bgmSlider.value;
+    }
 
-    public void SetVolumeSFX(float volume)
+    public void SetVolumeSFX(float volume) // 뮤트해제시 호출
     {
         for (int i = 0; i < sfx_Players.Count; i++)
         {
             sfx_Players[i].volume = volume;
         }
-        Vars.UserData.sfVoulme = volume;
+        walkSoundPlayer.volume = volume;
+    }
+    public void SetVolumeSFX() // 슬라이더 함수
+    {
+        for (int i = 0; i < sfx_Players.Count; i++)
+        {
+            sfx_Players[i].volume = Mathf.Lerp(0, maxValue, soundSlider.value);
+        }
 
+        walkSoundPlayer.volume = Mathf.Lerp(0, maxValue, soundSlider.value);
+        Vars.UserData.sfVoulme = walkSoundPlayer.volume;
     }
 }
