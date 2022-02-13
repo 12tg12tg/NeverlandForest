@@ -168,6 +168,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.isDungeonReStart = Vars.UserData.isDungeonReStart;
         dungeonMapData.isDungeonClear = Vars.UserData.isDungeonClear;
         dungeonMapData.isPlayerDungeonIn = Vars.UserData.isPlayerDungeonIn;
+        dungeonMapData.mainRoomCount = Vars.UserData.mainRoomCount;
 
         SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
     }
@@ -332,6 +333,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.isDungeonReStart = dungeonMapData.isDungeonReStart;
             Vars.UserData.isDungeonClear = dungeonMapData.isDungeonClear;
             Vars.UserData.isPlayerDungeonIn = dungeonMapData.isPlayerDungeonIn;
+            Vars.UserData.mainRoomCount = dungeonMapData.mainRoomCount;
 
             //Vars.UserData.CurAllDungeonData[Vars.UserData.curDungeonIndex].roomList = dungeonMapData.dungeonRoomList;
         }

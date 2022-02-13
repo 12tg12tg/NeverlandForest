@@ -23,6 +23,12 @@ public class PlayerMoveControl : MonoBehaviour
     //private Transform lanternRightRun;
     //private Transform lanternLeftRun;
 
+    [Header("ÆË¾÷Ã¢µé")]
+    public GameObject dungeonMinimap;
+    public GameObject wolrdMinimap;
+    public GameObject randomEvent;
+    public GameObject huntingPopup;
+
     private Vector3 lanternIdle;
 
     private Vector3 lanternRightRunPos;
@@ -78,6 +84,15 @@ public class PlayerMoveControl : MonoBehaviour
 
     void Update()
     {
+        if(dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
+            || randomEvent.activeSelf || huntingPopup.activeSelf)
+        {
+            RigOff();
+            playerAnimationBoy.SetFloat("Speed", 0f);
+            playerAnimationGirl.SetFloat("Speed", 0f);
+            return;
+        }
+
         //var isRayCol = Physics.Raycast(Camera.main.ScreenPointToRay(multiTouch.PrimaryStartPos), out _, Mathf.Infinity);
         if (multiTouch != null)
         {
@@ -210,11 +225,11 @@ public class PlayerMoveControl : MonoBehaviour
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
                 if (boySpeed>0f)
                 {
-                    SoundManager.Instance.PlayWalkSound(true);
+                    //SoundManager.Instance.PlayWalkSound(true);
                 }
                 else
                 {
-                    SoundManager.Instance.PlayWalkSound(false);
+                    //SoundManager.Instance.PlayWalkSound(false);
                 }
 
             }
