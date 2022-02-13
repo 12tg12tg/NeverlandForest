@@ -62,4 +62,10 @@ public class OptionPanelManager : MonoBehaviour
         }
     }
     public void ProgramDown() => GameManager.Manager.GoToGameEnd();
+
+    public void SaveSoundData()
+    {
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Option);
+    }
+
 }

@@ -279,9 +279,4 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public Production Production => pd;
     public StoryManager StoryManager => stm;
 
-
-    private void OnDestroy()
-    {
-        SaveAllSavedata();
-    }
 }
