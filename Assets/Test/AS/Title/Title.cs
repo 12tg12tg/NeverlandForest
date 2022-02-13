@@ -10,7 +10,9 @@ public class Title : MonoBehaviour
     private Coroutine coTapToStart;
     private bool isStart = false;
     private bool isFinish = false;
+    private bool isStartEnding = false;
     public static bool isClear = false; // 얘는 월드맵에서 변경 시키고 들어오면 됨
+
 
     public TMP_Text startText;
     public Image panel;
@@ -40,8 +42,9 @@ public class Title : MonoBehaviour
             coTapToStart = null;
             isStart = true;
         }));
-        if (isClear) // 게임 클리어 후 월드맵에서 타이틀 화면으로 왔을 때 엔딩 스토리 실행
+        if (isClear && !isStartEnding) // 게임 클리어 후 월드맵에서 타이틀 화면으로 왔을 때 엔딩 스토리 실행
         {
+            isStartEnding = true;
             GameManager.Manager.Production.black.SetActive(false);
             prologueWindow.SetActive(true);
             storyManager.EndingStory(narration, () => resetButton.SetActive(true));
