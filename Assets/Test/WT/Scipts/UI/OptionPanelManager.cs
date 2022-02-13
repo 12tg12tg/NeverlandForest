@@ -18,37 +18,37 @@ public class OptionPanelManager : MonoBehaviour
     public  void BgmButtonClick()
     {
         isBgmOn = !isBgmOn;
-        var buttonImg = bgmButton.GetComponent<Image>().sprite;
+        var buttonImg = bgmButton.GetComponent<Image>();
         var soundManger = SoundManager.Instance;
         if (isBgmOn)
         {
-            buttonImg = bgmOnImage;
+            buttonImg.sprite = bgmOnImage;
             soundManger.MuteBgm = false;
         }
         else
         {
-            buttonImg = bgmOffImage;
+            buttonImg.sprite = bgmOffImage;
             soundManger.MuteBgm = true;
         }
-        soundManger.SetMuteBGM(soundManger.MuteBgm);
+        soundManger.SetMuteBGM();
     }
     public void SoundButtonClick()
     {
         isSoundOn = !isSoundOn;
         var soundManger = SoundManager.Instance;
        
-        var buttonImg = soundButton.GetComponent<Image>().sprite;
+        var buttonImg = soundButton.GetComponent<Image>();
         if (isBgmOn)
         {
-            buttonImg = soundOnImage;
+            buttonImg.sprite = soundOnImage;
             soundManger.MuteSf = false;
         }
         else
         {
-            buttonImg = soundOffImage;
+            buttonImg.sprite = soundOffImage;
             soundManger.MuteSf = true;
         }
-        SoundManager.Instance.SetMuteBGM(soundManger.MuteSf);
+        soundManger.SetMuteSFX();
     }
 
     public void DungeonGiveUp()
@@ -62,10 +62,4 @@ public class OptionPanelManager : MonoBehaviour
         }
     }
     public void ProgramDown() => GameManager.Manager.GoToGameEnd();
-
-    public void CloseAndSoundSave()
-    {
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Option);
-    }
-
 }

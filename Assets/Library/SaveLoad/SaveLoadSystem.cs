@@ -250,7 +250,7 @@ public static class SaveLoadSystem
                 switch (version)
                 {
                     case 0:
-                        return null;
+                        return JsonConvert.DeserializeObject<OptionSaveData_0>(json);
                     case 1:
                         return null;
                     default:

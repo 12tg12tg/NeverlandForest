@@ -54,7 +54,7 @@ public class MiniMapCamMove : MonoBehaviour
         switch(Vars.UserData.mainRoomCount)
         {
             case 4:
-                cam.fieldOfView = 85;
+                cam.fieldOfView = 90;
                 break;
             case 6:
                 cam.fieldOfView = 100;

@@ -49,6 +49,9 @@ public class BattleUI : MonoBehaviour
     public GameObject rewardPopup;
     public DungeonRewardDiaryManager rewardDiaryManager;
 
+    [Header("블루문세팅")]
+    public Button backToCampButton;
+
     private List<Button> battleButtons = new List<Button>();
 
     private int progress;

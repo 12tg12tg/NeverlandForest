@@ -129,17 +129,17 @@ public class DataRandomEvent
         fail2Info = fail2InfoString.kor;
         fail3Info = fail3InfoString.kor;
         if (string.IsNullOrEmpty(sucess1Info))
-            sucess1Info = "소모값 없음";
+            sucess1Info = "소모값 없습니다";
         if (string.IsNullOrEmpty(sucess2Info))
-            sucess2Info = "소모값 없음";
+            sucess2Info = "소모값 없습니다";
         if (string.IsNullOrEmpty(sucess3Info))
-            sucess3Info = "소모값 없음";
+            sucess3Info = "소모값 없습니다";
         if (string.IsNullOrEmpty(fail1Info))
-            fail1Info = "소모값 없음";
+            fail1Info = "소모값 없습니다";
         if (string.IsNullOrEmpty(fail2Info))
-            fail2Info = "소모값 없음";
+            fail2Info = "소모값 없습니다";
         if (string.IsNullOrEmpty(fail3Info))
-            fail3Info = "소모값 없음";
+            fail3Info = "소모값 없습니다";
 
         eventID = data.id;
         eventData = data;
@@ -303,6 +303,7 @@ public class DataRandomEvent
 
         StringBuilder sb = new StringBuilder();
         string tempStr;
+        sb.Append("[결과]\n");
 
         // TODO : tempStr도 문자 테이블로 해야댐
         for (int i = 0; i < eventTypes.Count; i++)
@@ -334,7 +335,6 @@ public class DataRandomEvent
                     }
                     tempStr = $"스테미나수치 : {stamina}\n";
                     sb.Append(tempStr);
-                    tempStr = $"스테미나수치 : {stamina} ";
                     break;
                 case EventFeedBackType.Hp:
                     var hp = eventVals[i];
@@ -350,8 +350,6 @@ public class DataRandomEvent
 
                     tempStr = $"HP수치 : {hp}\n";
                     sb.Append(tempStr);
-
-
                     break;
                 case EventFeedBackType.Item:
                     // 아이템 획득 또는 감소 - val값에 따라 ownCount 조정해서 넣음
@@ -374,7 +372,6 @@ public class DataRandomEvent
                     }
                     else
                     {
-
                         tempStr = $"아이템 {newItem.ItemTableElem.name} 획득\n";
                         rewardItems.Add(newItem);
                     }
@@ -392,7 +389,6 @@ public class DataRandomEvent
                     ConsumeManager.TimeUp(0, turnConsume);
                     tempStr = $"턴 소비 {turnConsume}\n";
                     sb.Append(tempStr);
-
                     break;
                 case EventFeedBackType.RandomMaterialLose:
                     var list = Vars.UserData.HaveAllItemList.ToList();
@@ -432,7 +428,6 @@ public class DataRandomEvent
                     rewardItems.Add(getMaterialList[index2]);
                     tempStr = $"{getMaterialList[index2].ItemTableElem.name}를 : {eventVals[i]}만큼 얻음\n";
                     sb.Append(tempStr);
-
                     break;
                 case EventFeedBackType.AnotherEvent:
                     // 다른 이벤트 해금 - 랜덤매니저 함수 호출
@@ -441,12 +436,13 @@ public class DataRandomEvent
                         RandomEventManager.Instance.AddEventInPool(newRndEvent);
                     else
                         RandomEventManager.Instance.RemoveEventInPool(newRndEvent);
-
                     tempStr = $"이벤트 해금\n";
                     sb.Append(tempStr);
                     break;
                 case EventFeedBackType.Battle:
                     randomEventUiManager.isBattleStart = true;
+                    tempStr = $"전투 발생!\n";
+                    sb.Append(tempStr);
                     break;
             }
         }
@@ -456,6 +452,7 @@ public class DataRandomEvent
             randomEventUiManager.NextPage();
         else
         {
+            randomEventUiManager.needMoreVal.gameObject.SetActive(true);
             Debug.Log("조건 불충분");
             return;
         }

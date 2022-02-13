@@ -20,16 +20,16 @@ public class PlayerMoveControl : MonoBehaviour
     public GameObject lanternRight;
     public GameObject lanternLeft;
 
-    //private Transform lanternRightRun;
-    //private Transform lanternLeftRun;
-
     [Header("ÆË¾÷Ã¢µé")]
     public GameObject dungeonMinimap;
     public GameObject wolrdMinimap;
     public GameObject randomEvent;
     public GameObject huntingPopup;
+    public GameObject campPopup;
+    public GameObject gatheringPopup;
 
     private Vector3 lanternIdle;
+    private Vector3 lanterIdlePos;
 
     private Vector3 lanternRightRunPos;
     private Vector3 lanternRightRunRotate;
@@ -53,10 +53,12 @@ public class PlayerMoveControl : MonoBehaviour
     public void Init()
     {
         lanternIdle = new Vector3(-1.46f, -176.92f, 129f);
-        //lanternRightRunPos = new Vector3(-0.05f, 0.008f, -0.04f);
+        lanterIdlePos = new Vector3(-0.104f, 0.071f, 0.005f);
+
+        lanternRightRunPos = new Vector3(-0.037f, 0.015f, -0.091f);
         lanternRightRunRotate = new Vector3(54.3f, -285.5f, 85.72f);
 
-        //lanternLeftRunPos = new Vector3(-0.06f, 0.025f, 0.005f);
+        lanternLeftRunPos = new Vector3(0.013f, -0.026f, 0.1f);
         lanternLeftRunRotate = new Vector3(-41.5f, -62.77f, 53.22f);
 
         multiTouch = GameManager.Manager.MultiTouch;
@@ -84,12 +86,14 @@ public class PlayerMoveControl : MonoBehaviour
 
     void Update()
     {
-        if (dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
-            || randomEvent.activeSelf || huntingPopup.activeSelf)
+        if(dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
+            || randomEvent.activeSelf || huntingPopup.activeSelf || campPopup.activeSelf
+            || gatheringPopup.activeSelf)
         {
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0f);
             playerAnimationGirl.SetFloat("Speed", 0f);
+            SoundManager.Instance.PlayWalkSound(false);
             return;
         }
 
@@ -143,6 +147,7 @@ public class PlayerMoveControl : MonoBehaviour
                         lanternLeft.SetActive(false);
 
                         lanternRight.transform.localRotation = Quaternion.Euler(lanternRightRunRotate);
+                        lanternRight.transform.localPosition = lanternRightRunPos;
 
                         var pos = boySpeed * Time.deltaTime * Vector3.right;
                         playerGirl.transform.position += pos;
@@ -169,6 +174,7 @@ public class PlayerMoveControl : MonoBehaviour
                         lanternLeft.SetActive(true);
 
                         lanternLeft.transform.localRotation = Quaternion.Euler(lanternLeftRunRotate);
+                        lanternLeft.transform.localPosition = lanternLeftRunPos;
 
                         var pos = boySpeed * Time.deltaTime * -Vector3.right;
                         playerGirl.transform.position += pos;
@@ -191,6 +197,9 @@ public class PlayerMoveControl : MonoBehaviour
                     {
                         lanternLeft.transform.localRotation = Quaternion.Euler(lanternIdle);
                         lanternRight.transform.localRotation = Quaternion.Euler(lanternIdle);
+                        lanternLeft.transform.localPosition = lanterIdlePos;
+                        lanternRight.transform.localPosition = lanterIdlePos;
+
                         if (!isHand)
                         {
                             if (coHand != null)
@@ -208,6 +217,8 @@ public class PlayerMoveControl : MonoBehaviour
                 {
                     lanternLeft.transform.localRotation = Quaternion.Euler(lanternIdle);
                     lanternRight.transform.localRotation = Quaternion.Euler(lanternIdle);
+                    lanternLeft.transform.localPosition = lanterIdlePos;
+                    lanternRight.transform.localPosition = lanterIdlePos;
                     boySpeed = 0f;
                     if (!isHand)
                     {
@@ -243,7 +254,7 @@ public class PlayerMoveControl : MonoBehaviour
             }
             else
             {
-                RigOff();
+                //RigOff();
                 isHand = true;
             }
         }
