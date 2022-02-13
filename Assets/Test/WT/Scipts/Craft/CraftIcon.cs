@@ -273,6 +273,8 @@ public class CraftIcon : MonoBehaviour
                 {
                     CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
                     CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+                    CampManager.Instance.reconfirmPanelManager.bonfireTimeRemainPopup.SetActive(false);
+
                 }
             }
         }
