@@ -112,5 +112,9 @@ public class Title : MonoBehaviour
         yield return new WaitForSeconds(1f);
     }
 
-    public void GameReset() => isClear = false;
+    public void GameReset()
+    {
+        isClear = false;
+        GameManager.Manager.isClear = false;
+    }
 }
