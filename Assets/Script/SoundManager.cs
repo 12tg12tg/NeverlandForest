@@ -25,6 +25,8 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     public static SoundManager Instance => instance;
 
+    private readonly float maxValue = 0.2f;
+
     private bool muteBGM;
     public bool MuteBgm
     {
@@ -165,37 +167,25 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-
     // ¼³Á¤ ============================================
-    public void SetMuteBGM(bool isMute)
+    public void SetMuteBGM()
     {
-        isMute =muteBGM;
-        if (isMute)
-        {
-            SetVolumeBGM(0f);
-        }
-        else
-        {
-            SetVolumeBGM(bgmSlider.value);
-        }
+        var value = muteBGM ? 0f : bgmSlider.value;
+        SetVolumeBGM(value);
     }
-
-    public void SetMuteSFX(bool isMute)
+    public void SetMuteSFX()
     {
-        isMute = muteSF;
-        if (isMute)
-        {
-            SetVolumeSFX(0f);
-        }
-        else
-        {
-            SetVolumeSFX(soundSlider.value);
-        }
+        var value = muteSF ? 0f : soundSlider.value;
+        SetVolumeSFX(value);
     }
 
     public void SetVolumeBGM(float volume)
     {
         bgm_Player.volume = volume;
+    }
+    public void SetVolumeBGM()
+    {
+        bgm_Player.volume = bgmSlider.value;
     }
 
     public void SetVolumeSFX(float volume)
@@ -204,5 +194,15 @@ public class SoundManager : MonoBehaviour
         {
             sfx_Players[i].volume = volume;
         }
+        walkSoundPlayer.volume = volume;
+    }
+    public void SetVolumeSFX()
+    {
+        for (int i = 0; i < sfx_Players.Count; i++)
+        {
+            sfx_Players[i].volume = Mathf.Lerp(0, maxValue, soundSlider.value);
+        }
+
+        walkSoundPlayer.volume = Mathf.Lerp(0, maxValue, soundSlider.value);
     }
 }
