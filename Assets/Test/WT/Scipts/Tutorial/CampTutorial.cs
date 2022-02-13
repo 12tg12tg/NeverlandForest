@@ -191,6 +191,8 @@ public class CampTutorial : MonoBehaviour
         blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         SetActive(false);
         yield return new WaitForSeconds(2.5f);
+        camTM.BlackPanelOff();
+
         LongTouch(0.5f, 0.7f, 0.5f, 0.8f, "여기는 잠을 자는곳이야 \n" +
             "너가 가지고 있는 모닥불시간에 비례해 \n" +
             "회복 할 수 있는 스태미나까지 회복시켜주지.", false, false, false, true); 

@@ -4,46 +4,53 @@ using UnityEngine;
 using UnityEngine.UI;
 public class OptionPanelManager : MonoBehaviour
 {
+    [SerializeField] private Button bgmButton;
+    [SerializeField] private Button soundButton;
 
-    public GameObject bgmButton;
-    public GameObject soundButton;
+    [SerializeField] private Sprite bgmOnImage;
+    [SerializeField] private Sprite bgmOffImage;
 
-
-    public Sprite bgmOnImage;
-    public Sprite bgmOffImage;
-
-    public Sprite soundOnImage;
-    public Sprite soundOffImage;
+    [SerializeField] private Sprite soundOnImage;
+    [SerializeField] private Sprite soundOffImage;
 
     private bool isBgmOn =true;
     private bool isSoundOn = true;
-
     public  void BgmButtonClick()
     {
         isBgmOn = !isBgmOn;
-
+        var buttonImg = bgmButton.GetComponent<Image>().sprite;
+        var soundManger = SoundManager.Instance;
         if (isBgmOn)
         {
-            bgmButton.GetComponent<Image>().sprite = bgmOnImage;
+            buttonImg = bgmOnImage;
+            soundManger.MuteBgm = false;
         }
         else
         {
-            bgmButton.GetComponent<Image>().sprite = bgmOffImage;
+            buttonImg = bgmOffImage;
+            soundManger.MuteBgm = true;
         }
+        soundManger.SetMuteBGM(soundManger.MuteBgm);
     }
     public void SoundButtonClick()
     {
         isSoundOn = !isSoundOn;
-
-        if (isSoundOn)
+        var soundManger = SoundManager.Instance;
+       
+        var buttonImg = soundButton.GetComponent<Image>().sprite;
+        if (isBgmOn)
         {
-            soundButton.GetComponent<Image>().sprite = soundOnImage;
+            buttonImg = soundOnImage;
+            soundManger.MuteSf = false;
         }
         else
         {
-            soundButton.GetComponent<Image>().sprite = soundOffImage;
+            buttonImg = soundOffImage;
+            soundManger.MuteSf = true;
         }
+        SoundManager.Instance.SetMuteBGM(soundManger.MuteSf);
     }
+
     public void DungeonGiveUp()
     {
         // TODO : 던전 포기 기능은 던전 씬에서만 동작 하도록 추가 해야함

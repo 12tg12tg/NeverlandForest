@@ -25,12 +25,37 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     public static SoundManager Instance => instance;
 
-    public bool muteBGM;
-    public bool muteSF;
-
+    private bool muteBGM;
+    public bool MuteBgm
+    {
+        get => muteBGM;
+        set { muteBGM = value; }
+    }
+    private bool muteSF;
+    public bool MuteSf
+    {
+        get => muteSF;
+        set { muteSF = value; }
+    }
     [SerializeField] private AudioSource bgm_Player;
     [SerializeField] private List<AudioSource> sfx_Players;
     [SerializeField] private AudioSource walkSoundPlayer;
+
+    [SerializeField] private Scrollbar bgmSlider;
+    [SerializeField] private Scrollbar soundSlider;
+
+    private float bgmVolume;
+    public float BgmVolume
+    {
+        get => bgmVolume;
+        set { bgmVolume = value; }
+    }
+    private float sfVolume;
+    public float SFVoulme
+    {
+        get => sfVolume;
+        set { sfVolume = value; }
+    }
     public AudioSource WalkSoundPlayer
     {
         get => walkSoundPlayer;
@@ -144,21 +169,40 @@ public class SoundManager : MonoBehaviour
     // ¼³Á¤ ============================================
     public void SetMuteBGM(bool isMute)
     {
-
+        isMute =muteBGM;
+        if (isMute)
+        {
+            SetVolumeBGM(0f);
+        }
+        else
+        {
+            SetVolumeBGM(bgmSlider.value);
+        }
     }
 
     public void SetMuteSFX(bool isMute)
     {
-
+        isMute = muteSF;
+        if (isMute)
+        {
+            SetVolumeSFX(0f);
+        }
+        else
+        {
+            SetVolumeSFX(soundSlider.value);
+        }
     }
 
-    public void SetVolumeBGM(float value)
+    public void SetVolumeBGM(float volume)
     {
-
+        bgm_Player.volume = volume;
     }
 
-    public void SetVolumeSFX(float value)
+    public void SetVolumeSFX(float volume)
     {
-
+        for (int i = 0; i < sfx_Players.Count; i++)
+        {
+            sfx_Players[i].volume = volume;
+        }
     }
 }
