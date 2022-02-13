@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldMapManager : MonoBehaviour
 {
@@ -57,6 +58,13 @@ public class WorldMapManager : MonoBehaviour
         }
 
         Vars.UserData.isPlayerDungeonIn = false;
+
+        if((int)player.CurrentIndex.y > 8)
+        {
+            GameManager.Manager.isClear = true;
+            Title.isClear = true;
+            GameManager.Manager.Production.FadeIn(() => SceneManager.LoadScene("Game"));
+        }
     }
 
     private void NodeLinkToPlayer()

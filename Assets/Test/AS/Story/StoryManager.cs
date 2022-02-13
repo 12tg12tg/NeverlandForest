@@ -48,6 +48,8 @@ public class StoryManager : MonoBehaviour
 
     public bool isNext;
 
+    public bool isGameReset = false;
+
     private void Awake()
     {
         startPos = target.anchoredPosition;
@@ -60,6 +62,8 @@ public class StoryManager : MonoBehaviour
             CoFade ??= StartCoroutine(UpDownLoop(distance, () => CoFade = null));
         }
     }
+
+    public void EndingStory(TMP_Text text, UnityAction action = null) => StartCoroutine(CoEnding(text, action));
 
     private IEnumerator UpDownLoop(float posY, UnityAction action)
     {
@@ -143,7 +147,7 @@ public class StoryManager : MonoBehaviour
         StartCoroutine(CoFadeOut(() => action?.Invoke()));
     }
 
-    public IEnumerator CoEnding(TMP_Text text, UnityAction action)
+    public IEnumerator CoEnding(TMP_Text text, UnityAction action = null)
     {
         var storyTable = DataTableManager.GetTable<TutorialStoryDataTable>().data;
         var datas = storyTable.Where(x => (x.Value as TutorialStoryDataTableElem).index == (int)StoryType.Ending)
@@ -151,6 +155,9 @@ public class StoryManager : MonoBehaviour
                               .ToList();
         for (int i = 0; i < datas.Count; i++)
         {
+            text.text = "";
+            text.color = Color.white;
+
             var data = (TutorialStoryDataTableElem)datas[i].Value;
             var description = data.description;
             var colorData = data.color;
@@ -180,25 +187,25 @@ public class StoryManager : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
 
-            float time = 1f;
-            float timer = 0f;
-
-            while (timer < time)
+            if(i != datas.Count -1)
             {
-                timer += Time.deltaTime;
-                var ratio = timer / time;
-                var curColor = text.color;
-                curColor.a = Mathf.Lerp(1, 0, ratio);
-                text.color = curColor;
-                yield return null;
-            }
+                float time = 1f;
+                float timer = 0f;
 
-            text.text = "";
-            text.color = Color.white;
+                while (timer < time)
+                {
+                    timer += Time.deltaTime;
+                    var ratio = timer / time;
+                    var curColor = text.color;
+                    curColor.a = Mathf.Lerp(1, 0, ratio);
+                    text.color = curColor;
+                    yield return null;
+                }
+            }
         }
 
-        yield return new WaitForSeconds(1f);
         action?.Invoke();
+        yield return new WaitWhile(() => !isGameReset);
     }
     public IEnumerator CoFadeOut(UnityAction action = null)
     {

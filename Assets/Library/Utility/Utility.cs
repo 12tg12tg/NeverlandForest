@@ -125,6 +125,16 @@ public class Utility
         }
         GameManager.Manager.LoadScene(scene);
     }
+    public static IEnumerator CoSceneChange(int sceneIndex, float timer)
+    {
+        var time = 0f;
+        while (timer > time)
+        {
+            time += Time.deltaTime;
+            yield return null;
+        }
+        SceneManager.LoadScene(sceneIndex);
+    }
 
     public static IEnumerator CoSceneChange(string scene, float timer, UnityAction action)
     {

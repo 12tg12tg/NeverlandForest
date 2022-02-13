@@ -128,8 +128,6 @@ public class WorldMapMaker : MonoBehaviour
     }
     public void InitWorldMiniMap()
     {
-        //SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-        //SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapData);
         var loadData = Vars.UserData.WorldMapNodeStruct;
         var layerName = "WorldMap";
         var date = Vars.UserData.uData.Date;
@@ -560,9 +558,6 @@ public class WorldMapMaker : MonoBehaviour
                 node.Add(data);
             }
         }
-
-        // 나무 생성할 때 세이브 하니까 안해도 될 듯 아마..?
-        //GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapData);
     }
     private void Load(List<WorldMapNodeStruct> loadData, string LayerName = "null")
     {
