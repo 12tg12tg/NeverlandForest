@@ -58,11 +58,13 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
         {
             item = null;
             rewardIcon.sprite = null;
+            rewardIcon.color = Color.clear;
         }
         else
         {
             item = new DataAllItem(data);
             AllItemTableElem elem = data.ItemTableElem;
+            rewardIcon.color = Color.white;
             rewardIcon.sprite = elem.IconSprite;
         }
     }

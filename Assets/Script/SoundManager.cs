@@ -172,23 +172,28 @@ public class SoundManager : MonoBehaviour
     {
         var value = muteBGM ? 0f : bgmSlider.value;
         SetVolumeBGM(value);
+
+        Vars.UserData.isBgmMute = muteBGM;
     }
     public void SetMuteSFX()
     {
         var value = muteSF ? 0f : soundSlider.value;
         SetVolumeSFX(value);
+
+        Vars.UserData.isSfMute = muteSF;
     }
 
     public void SetVolumeBGM(float volume)
     {
         bgm_Player.volume = volume;
+        Vars.UserData.bgmVolume = bgm_Player.volume;
     }
     public void SetVolumeBGM()
     {
         bgm_Player.volume = bgmSlider.value;
     }
 
-    public void SetVolumeSFX(float volume)
+    public void SetVolumeSFX(float volume) // 뮤트해제시 호출
     {
         for (int i = 0; i < sfx_Players.Count; i++)
         {
@@ -196,7 +201,7 @@ public class SoundManager : MonoBehaviour
         }
         walkSoundPlayer.volume = volume;
     }
-    public void SetVolumeSFX()
+    public void SetVolumeSFX() // 슬라이더 함수
     {
         for (int i = 0; i < sfx_Players.Count; i++)
         {
@@ -204,5 +209,6 @@ public class SoundManager : MonoBehaviour
         }
 
         walkSoundPlayer.volume = Mathf.Lerp(0, maxValue, soundSlider.value);
+        Vars.UserData.sfVoulme = walkSoundPlayer.volume;
     }
 }

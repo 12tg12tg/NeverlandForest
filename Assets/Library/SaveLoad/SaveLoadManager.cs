@@ -124,6 +124,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void SaveOption()
     {
+        optionDate = new OptionSaveData_0();
+        optionDate.bgmVolume = Vars.UserData.bgmVolume;
+        optionDate.sfVolume = Vars.UserData.sfVoulme;
+        optionDate.isBgmMute = Vars.UserData.isBgmMute;
+        optionDate.isSfMute = Vars.UserData.isSfMute;
+
+        SaveLoadSystem.Save(optionDate, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Option);
+
     }
 
     private void SaveRandomEvent()
@@ -279,6 +287,18 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadOption()
     {
+        optionDate = (OptionSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Option);
+        if (optionDate == null)
+        {
+            optionDate = OptionSaveData_0.DefaultValue;
+        }
+        else
+        {
+            Vars.UserData.bgmVolume = optionDate.bgmVolume;
+            Vars.UserData.sfVoulme = optionDate.sfVolume;
+            Vars.UserData.isBgmMute = optionDate.isBgmMute;
+            Vars.UserData.isSfMute = optionDate.isSfMute;
+        }
     }
     private void LoadRecipe()
     {
