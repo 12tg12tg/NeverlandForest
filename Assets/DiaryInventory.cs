@@ -24,7 +24,10 @@ public class DiaryInventory : MonoBehaviour
     private void Start()
     {
         instance = this;
-        popUpWindow.gameObject.SetActive(false);
+        if (popUpWindow !=null)
+        {
+            popUpWindow.gameObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -37,7 +40,10 @@ public class DiaryInventory : MonoBehaviour
                 if (!IsContainPos(touchPos))
                 {
                     itemButtons.ForEach(n => n.SelectActive(false));
-                    popUpWindow.gameObject.SetActive(false);
+                    if (popUpWindow != null)
+                    {
+                        popUpWindow.gameObject.SetActive(false);
+                    }
                     isPopUp = false;
                 }
             }

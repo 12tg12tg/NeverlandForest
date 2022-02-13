@@ -14,4 +14,8 @@ public class ConsumableSaveData_0 : SaveDataBase
     public float tiredness;
     public float hunger;
     public float bonfireTime;
+
+    public float hp;
+
+
 }

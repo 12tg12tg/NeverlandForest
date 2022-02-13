@@ -624,56 +624,30 @@ public class GatheringSystem : MonoBehaviour
                 haveItemCount++;
             }
         }
-
-        if (rewardList.Count > 0)
-        {
-            reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
-        }
-
         if (haveItemCount == 0)
         {
             reconfirmPanelManager.gameObject.SetActive(false);
             gatheringPanel.SetActive(false);
-
-            if (isMove)
-            {
-                boyPlayer.IsCoMove = true;
-
-                //switch (curSelectedObj.objectType)
-                //{
-                //    case GatheringObjectType.Tree:
-                //        playerAnimationBoy.SetTrigger("Axe");
-                //        SoundManager.Instance.Play(SoundType.Se_Axe);
-                //        break;
-                //    case GatheringObjectType.Pit:
-                //        playerAnimationBoy.SetTrigger("Shovel");
-                //        SoundManager.Instance.Play(SoundType.Se_Spade);
-
-                //        break;
-                //    case GatheringObjectType.Herbs:
-                //        playerAnimationBoy.speed = 0.5f;
-                //        playerAnimationBoy.SetTrigger("Pick");
-                //        break;
-                //    case GatheringObjectType.Mushroom:
-                //        playerAnimationBoy.SetTrigger("Hand");
-                //        break;
-                //}
-
-                GatheringEnd();
-                GatheringInitAni();
-                GatheringCamOff();
-                dungeonrewarddiaryManager.gameObject.SetActive(false);
-                Debug.Log("ÆË¾÷²¯´Ù");
-                dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
-                isMove = false;
-            }
         }
         else
         {
-            //reconfirmPanelManager.gameObject.SetActive(true);
-            //reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
+           /* reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);*/
         }
+
+        if (isMove)
+        {
+            boyPlayer.IsCoMove = true;
+            GatheringEnd();
+            GatheringInitAni();
+            GatheringCamOff();
+            dungeonrewarddiaryManager.gameObject.SetActive(false);
+            Debug.Log("ÆË¾÷²¯´Ù");
+            dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
+            haveItemCount = 0;
+            isMove = false;
+        }
+
         BottomUIManager.Instance.ItemListInit();
     }
     public void YesIfinishGathering()
@@ -685,22 +659,6 @@ public class GatheringSystem : MonoBehaviour
         if (isMove)
         {
             boyPlayer.IsCoMove = true;
-            //switch (curSelectedObj.objectType)
-            //{
-            //    case GatheringObjectType.Tree:
-            //        playerAnimationBoy.SetTrigger("Axe");
-            //        break;
-            //    case GatheringObjectType.Pit:
-            //        playerAnimationBoy.SetTrigger("Shovel");
-            //        break;
-            //    case GatheringObjectType.Herbs:
-            //        playerAnimationBoy.speed = 0.5f;
-            //        playerAnimationBoy.SetTrigger("Pick");
-            //        break;
-            //    case GatheringObjectType.Mushroom:
-            //        playerAnimationBoy.SetTrigger("Hand");
-            //        break;
-            //}
             GatheringEnd();
             GatheringInitAni();
             GatheringCamOff();

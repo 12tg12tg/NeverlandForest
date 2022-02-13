@@ -63,6 +63,10 @@ public class CraftDataTable : DataTableBase
 
     public Dictionary<string, string> makingTimeDictionary = new Dictionary<string, string>();
     //아이템 번호(Result)랑 시간에 대한 값들을 가지고 있다. 
+    public Dictionary<string, string> allCraftDicitionary = new Dictionary<string, string>();
+    public List<string> allCraftIdList = new List<string>();
+
+
     public override void Load()
     {
         if (data != null)
@@ -74,7 +78,7 @@ public class CraftDataTable : DataTableBase
         {
             var elem = new CraftTableElem(line);
             data.Add(elem.id, elem);
-
+            allCraftIdList.Add(elem.id);
             var id1 = byte.Parse(elem.material0);
             var id2 = byte.Parse(elem.material1);
             var id3 = byte.Parse(elem.material2);
@@ -88,7 +92,7 @@ public class CraftDataTable : DataTableBase
             string[] crafts = new string[] { elem.material0, elem.material1, elem.material2 };
 
             craftmaterialListDictionary.Add(elem.result_ID, crafts);
-
+            allCraftDicitionary.Add(elem.id, elem.result_ID);
             string craftTime = elem.duration_minute.ToString();
             makingTimeDictionary.Add(elem.result_ID, craftTime);
         }

@@ -72,15 +72,14 @@ public class DunGeonMapGenerate : MonoBehaviour
         {
             dungeonRoomArray = mapArrayData;
             action?.Invoke();
+            int curIdx = Vars.UserData.dungeonStartIdx;
+            while (dungeonRoomArray[curIdx].nextRoomIdx != -1)
+            {
+                curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
+            }
+            Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
         }
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex].dungeonRoomArray = dungeonRoomArray;
-
-        int curIdx = Vars.UserData.dungeonStartIdx;
-        while(dungeonRoomArray[curIdx].nextRoomIdx != -1)
-        {
-            curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
-        }
-        Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
     }
     public void DungeonEventGenerate(DungeonRoom[] dungeonArray)
     {
@@ -91,7 +90,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             curIdx = Vars.UserData.dungeonStartIdx;
 
         int except = 0;
-        while (dungeonArray[curIdx].nextRoomIdx != -1)
+        while (curIdx != -1)
         {
             except++;
             if (except > 300)
@@ -186,6 +185,13 @@ public class DunGeonMapGenerate : MonoBehaviour
         DungeonEventGenerate(dungeonRoomArray);
         
         action?.Invoke();
+
+        int curIdx = Vars.UserData.dungeonStartIdx;
+        while (dungeonRoomArray[curIdx].nextRoomIdx != -1)
+        {
+            curIdx = dungeonRoomArray[curIdx].nextRoomIdx;
+        }
+        Vars.UserData.dungeonLastIdx = dungeonRoomArray[curIdx].roomIdx;
     }
     public void MapInit()
     {

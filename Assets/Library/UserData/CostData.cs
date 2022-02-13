@@ -10,7 +10,7 @@ public class CostData
 
     public int Date { get; set; } = 1;
     public float Tiredness { get; set; } = 100f;
-    public float Hp { get; set; } = 50f;
+    public float Hp { get; set; } = 30f;
     public float BonfireHour { get; set; } = 3f;
 
 }

@@ -152,6 +152,7 @@ public class CraftIcon : MonoBehaviour
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+        materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
 
         if (fire.sprite != null)
         {
@@ -184,7 +185,7 @@ public class CraftIcon : MonoBehaviour
 
         result = currentCraft.Result;
         var resultid = $"ITEM_{result}";
-        materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
+     
        
         materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
