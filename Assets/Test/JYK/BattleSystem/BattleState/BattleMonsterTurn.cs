@@ -37,6 +37,7 @@ public class BattleMonsterTurn : State<BattleState>
                         manager.boy.PlayWinAnimation();
                         manager.girl.PlayWinAnimation();
                         manager.directingLink.LandDownLantern();
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                         //manager.uiLink.OpenRewardPopup();
                     }
                     else // Æò»ó½Ã
@@ -46,6 +47,7 @@ public class BattleMonsterTurn : State<BattleState>
                         manager.girl.PlayWinAnimation();
                         manager.directingLink.LandDownLantern();
                         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                     }
 
                 });
