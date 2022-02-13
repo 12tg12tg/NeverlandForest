@@ -11,8 +11,7 @@ public class GoCamp : MonoBehaviour
 
     [Header("재확인")]
     public GameObject setupCampSite;
-    [Header("움직임 관련")]
-    public PlayerMoveControl moveTest;
+
 
     public void Start()
     {
@@ -25,8 +24,6 @@ public class GoCamp : MonoBehaviour
         SoundManager.Instance.Play(SoundType.Se_Button);
 
         setupCampSite.SetActive(true);
-        if(moveTest != null)
-            moveTest.gameObject.SetActive(false);
         var list = Vars.UserData.HaveAllItemList;
         for (int i = 0; i < list.Count; i++)
         {

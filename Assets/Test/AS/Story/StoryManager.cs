@@ -144,7 +144,7 @@ public class StoryManager : MonoBehaviour
         }
         herbalist.SetActive(false);
         hunter.SetActive(false);
-        StartCoroutine(CoFadeOut(() => action?.Invoke()));
+        StartCoroutine(CoFadeInOut(() => action?.Invoke()));
     }
 
     public IEnumerator CoEnding(TMP_Text text, UnityAction action = null)
@@ -207,7 +207,7 @@ public class StoryManager : MonoBehaviour
         action?.Invoke();
         yield return new WaitWhile(() => !isGameReset);
     }
-    public IEnumerator CoFadeOut(UnityAction action = null)
+    public IEnumerator CoFadeInOut(UnityAction action = null)
     {
         fadeInOut.gameObject.SetActive(true);
         var black = Color.clear;
@@ -240,5 +240,31 @@ public class StoryManager : MonoBehaviour
             yield return null;
         }
         fadeInOut.gameObject.SetActive(false);
+    }
+
+    private IEnumerator CoFadeIn(UnityAction action = null)
+    {
+        fadeInOut.gameObject.SetActive(true);
+        var black = Color.clear;
+
+        var time = 0.5f;
+        var timer = 0f;
+        while (timer < time)
+        {
+            timer += Time.deltaTime;
+            var ratio = timer / time;
+            var value = Mathf.Lerp(0, 1, ratio);
+
+            black.a = value;
+            fadeInOut.color = black;
+            yield return null;
+        }
+
+        action?.Invoke();
+    }
+
+    public void FadeIn(UnityAction action)
+    {
+        StartCoroutine(CoFadeIn(action));
     }
 }
