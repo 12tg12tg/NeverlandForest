@@ -35,6 +35,9 @@ public class HuntingObject : MonoBehaviour, IPointerClickHandler
         dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
 
         Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
+        dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
+        dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
+
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
         dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
