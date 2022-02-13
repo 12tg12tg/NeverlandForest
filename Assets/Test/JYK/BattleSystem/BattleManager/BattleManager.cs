@@ -747,6 +747,7 @@ public class BattleManager : MonoBehaviour
                         // ¡Ú½Â¸®
                         if (isTutorial) // Æ©Åä¸®¾ó
                         {
+                            //¾îÂ¼¶ó°í
                             tutorial.isWin = true;
                             boy.PlayWinAnimation();
                             girl.PlayWinAnimation();
