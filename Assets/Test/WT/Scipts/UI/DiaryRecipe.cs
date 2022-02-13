@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class DiaryRecipe : MonoBehaviour
@@ -40,7 +38,7 @@ public class DiaryRecipe : MonoBehaviour
         for (int i = 0; i < 16; i++)
         {
             var index = i + 16 * (page - 1);
-            if (index<itemList.Count)
+            if (index < itemList.Count)
             {
                 itemGoList[i].Init(table, itemList[index], this);
             }
@@ -82,30 +80,36 @@ public class DiaryRecipe : MonoBehaviour
                 condimentid = $"ITEM_{(currentRecipe.Recipes[1])}";
                 var condimentSprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
                 if (condimentSprite == null)
-                    return;
-                material1.sprite = condimentSprite;
+                {
+                    material1.color = Color.clear;
+                }
+                else
+                {
+                    material1.sprite = condimentSprite;
+                }
+          
             }
             if (currentRecipe.Recipes[2] != null)
             {
                 materialid = $"ITEM_{(currentRecipe.Recipes[2])}";
                 var materialSprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
                 if (materialSprite == null)
-                    return;
-                material2.sprite = materialSprite;
+                {
+                    material2.color = Color.clear;
+                }
+                else
+                {
+                    material2.sprite = materialSprite;
+                }
             }
-            if (currentRecipe.Result != null)
-            {
-                result = currentRecipe.Result;
-                var resultid = $"ITEM_{result}";
-
-                recipecookImage.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
-                Time = currentRecipe.Time;
-                makingTime.text = $"제작 시간은 {Time}분 입니다. ";
-                resultName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
-                cookeffect.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
-                description.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
-            }
-
+            result = currentRecipe.Result;
+            var resultid = $"ITEM_{result}";
+            recipecookImage.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+            Time = currentRecipe.Time;
+            makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+            resultName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+            cookeffect.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+            description.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
         }
     }
     public void PreviewPageOpen()
