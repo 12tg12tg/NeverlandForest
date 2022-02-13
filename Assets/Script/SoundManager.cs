@@ -74,9 +74,9 @@ public class SoundManager : MonoBehaviour
         instance ??= this;
 
         bgmSlider.value = Vars.UserData.bgmVolume;
-        soundSlider.value = Vars.UserData.sfVoulme;
-        SetVolumeBGM(bgmSlider.value);
-        SetVolumeSFX(soundSlider.value);
+        soundSlider.value = Vars.UserData.sfVoulme / maxValue;
+        SetVolumeBGM(Vars.UserData.bgmVolume);
+        SetVolumeSFX(Vars.UserData.sfVoulme);
     }
 
     // 재생
@@ -206,6 +206,7 @@ public class SoundManager : MonoBehaviour
         }
         walkSoundPlayer.volume = volume;
     }
+
     public void SetVolumeSFX() // 슬라이더 함수
     {
         for (int i = 0; i < sfx_Players.Count; i++)

@@ -65,8 +65,8 @@ public class UserData
 
     //사운드옵션
 
-    public float bgmVolume;
-    public float sfVoulme;
+    public float bgmVolume = 1f;
+    public float sfVoulme = 0.2f;
     public bool isBgmMute;
     public bool isSfMute;
 
