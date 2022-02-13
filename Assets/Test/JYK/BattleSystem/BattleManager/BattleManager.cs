@@ -58,6 +58,7 @@ public class BattleManager : MonoBehaviour
 
     //Vars
     public bool isTutorial;
+    public bool isBluemoonSet;
     private const int middleOfStage = 4;
     private Queue<MonsterCommand> monsterActionQueue = new Queue<MonsterCommand>();
 
@@ -105,7 +106,7 @@ public class BattleManager : MonoBehaviour
                 break;
             case BattleInitState.Dungeon:
                 Init(false, true);
-                break;            
+                break;
             case BattleInitState.Tutorial:
                 tutorial.StartDutorial();
                 break;
@@ -116,6 +117,7 @@ public class BattleManager : MonoBehaviour
                 InitBlueMoonSet();
                 break;
         }
+        //InitBlueMoonSet();
 
         GameManager.Manager.Production?.FadeOut();
         SoundManager.Instance?.Play(SoundType.BG_Battle);
@@ -454,7 +456,11 @@ public class BattleManager : MonoBehaviour
         {
             waveLink.totalWave = Random.Range(2, 4);
 
-            var curCol = Vars.UserData.WorldMapPlayerData.currentIndex.y + 1; //1 ~ 9
+            float curCol;
+            if (Vars.UserData.WorldMapPlayerData != null)
+                curCol = Vars.UserData.WorldMapPlayerData.currentIndex.y + 1; //1 ~ 9
+            else
+                curCol = 7;
             bool afterMiddle = curCol >= middleOfStage;
 
             if (!afterMiddle)
@@ -676,7 +682,15 @@ public class BattleManager : MonoBehaviour
     }
     public void InitBlueMoonSet()
     {
+        // ui 설정
+        uiLink.backToCampButton.gameObject.SetActive(true);
+        uiLink.backToCampButton.interactable = true;
 
+        // 변수설정
+        isBluemoonSet = true;
+
+        // 시작
+        uiLink.PrintMessage("몬스터 습격 대비!", 2.5f, () => inputLink.WaitUntillSettingDone());
     }
 
 

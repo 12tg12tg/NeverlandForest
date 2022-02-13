@@ -106,7 +106,15 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         // 오브젝트풀 생성
         ObjectPoolInit();
     }
-
+    // 세이브 ======================================================================
+    private void SaveAllSavedata()
+    {
+        int count = (int)SaveLoadSystem.SaveType.Count;
+        for (int i = 0; i < count; i++)
+        {
+            sm.Save((SaveLoadSystem.SaveType)i);
+        }
+    }
     // 초기화 ======================================================================
     private void SingletonInit()
     {
@@ -157,8 +165,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 SceneManager.LoadScene("2ENO_TutorialDungeon");
                 break;
         }
-           
-
     }
     private void ReleaseValue()
     {
@@ -278,4 +284,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public Production Production => pd;
     public StoryManager StoryManager => stm;
 
+
+    private void OnDestroy()
+    {
+        SaveAllSavedata();
+    }
 }
