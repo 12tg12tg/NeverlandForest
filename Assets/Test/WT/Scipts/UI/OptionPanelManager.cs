@@ -48,7 +48,7 @@ public class OptionPanelManager : MonoBehaviour
             buttonImg.sprite = soundOffImage;
             soundManger.MuteSf = true;
         }
-        soundManger.SetMuteBGM();
+        soundManger.SetMuteSFX();
     }
 
     public void DungeonGiveUp()
