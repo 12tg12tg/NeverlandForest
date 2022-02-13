@@ -291,8 +291,10 @@ public class GatheringTutorial : MonoBehaviour
     {
         SetActive(true, true);
 
+        target = rewardUp;
+
         blackout.GetComponent<Image>().sprite = rect;
-        blackout.sizeDelta = new Vector2(480f, 260f);
+        blackout.sizeDelta = target.sizeDelta;
 
         var boxOffset = boxWidth + arrowSize;
         var uiCam = GameManager.Manager.CamManager.uiCamera;
@@ -301,7 +303,7 @@ public class GatheringTutorial : MonoBehaviour
         pos.y *= canvasRt.height;
 
         var boxPos = new Vector2(canvasRt.width * 0.7f - boxOffset - 280f, canvasRt.height * 0.8f);
-        var scrPos = new Vector2(pos.x + 20f, pos.y - 50f);
+        var scrPos = new Vector2(pos.x + 50f, pos.y - 50f);
         dialogBoxObj.down.SetActive(false);
         dialogBoxObj.right.SetActive(true);
 

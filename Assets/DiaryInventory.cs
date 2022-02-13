@@ -12,18 +12,55 @@ public class DiaryInventory : MonoBehaviour
     private static DiaryInventory instance;
     public static DiaryInventory Instance => instance;
 
-    //Vars
-    [HideInInspector] public ButtonState buttonState;
+    [Header("팝업 On/Off 확인")] public bool isPopUp;
+    [Header("팝업 관련 연결")]
+    public RectTransform popUpWindow;
+    public DataAllItem selectItem;
+    public RectTransform selectedItemRect;
+
+    [Header("아이템 선택 슬롯")]
+    public int selectItemSlotNum;
 
     private void Start()
     {
         instance = this;
+        popUpWindow.gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        var touchPos = MultiTouch.Instance.TouchPos;
+        if (!isPopUp)
+        {
+            if (MultiTouch.Instance.TouchCount > 0)
+            {
+                if (!IsContainPos(touchPos))
+                {
+                    itemButtons.ForEach(n => n.SelectActive(false));
+                    popUpWindow.gameObject.SetActive(false);
+                    isPopUp = false;
+                }
+            }
+        }
+        if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect(touchPos))
+        {
+            isPopUp = false;
+        }
+    }
+    private bool IsContainPos(Vector2 pos)
+    {
+        var camera = GameManager.Manager.CamManager.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
+    }
+    private bool IsContainItemRect(Vector2 pos)
+    {
+        var camera = GameManager.Manager.CamManager.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
     }
 
     public void ItemButtonInit()
     {
         info.Init();
-        buttonState = ButtonState.Item;
         itemButtons.ForEach((n) => n.gameObject.SetActive(true));
         ItemListInit();
     }
@@ -100,5 +137,52 @@ public class DiaryInventory : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    public void ItemUse() // 버튼 클릭 함수
+    {
+        if (selectItem == null)
+            return;
+        var allItem = new DataAllItem(selectItem);
+        allItem.OwnCount = 1;
+
+        if (allItem.ItemTableElem.isEat)
+        {
+            ConsumeManager.RecoveryHunger(allItem.ItemTableElem.stat_str);
+            ConsumeManager.RecoverHp(allItem.ItemTableElem.stat_Hp);
+        }
+        else if (allItem.itemId == "ITEM_19")
+        {
+            // 랜턴 1칸 채우면 되나?
+            ConsumeManager.FullingLantern(1);
+        }
+        else
+            return;
+
+        if (Vars.UserData.RemoveItemData(allItem))
+        {
+            popUpWindow.gameObject.SetActive(false);
+            selectItem = null;
+            isPopUp = false;
+        }
+        ItemListInit();
+        BottomUIManager.Instance.ItemListInit();
+    }
+    public void ItemDump() // 버튼 클릭 함수
+    {
+        if (selectItem == null)
+            return;
+
+        var allItem = new DataAllItem(selectItem);
+        allItem.OwnCount = 1;
+        if (Vars.UserData.RemoveItemData(allItem))
+        {
+            popUpWindow.gameObject.SetActive(false);
+            selectItem = null;
+            isPopUp = false;
+        }
+        ItemListInit();
+        BottomUIManager.Instance.ItemListInit();
+
     }
 }

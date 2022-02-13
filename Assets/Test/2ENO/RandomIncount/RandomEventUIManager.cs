@@ -35,6 +35,7 @@ public class RandomEventUIManager : MonoBehaviour
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
     public RectTransform inventoryFullPanel;
+    public RectTransform needMoreVal;
 
     /*[HideInInspector]*/ public RectTransform itemBox;
 
@@ -47,11 +48,11 @@ public class RandomEventUIManager : MonoBehaviour
     public TextMeshProUGUI eventDesc;
     public TextMeshProUGUI selectName;
     public TextMeshProUGUI selectDesc;
+    public GameObject resultLayout;
     public TextMeshProUGUI resultDesc;
 
     [Header("외부 UI 및 기능 끄기")]
     public GameObject inventory;
-    public GameObject playerMove;
 
     private List<DataAllItem> rewardItemList = new();
 
@@ -87,13 +88,11 @@ public class RandomEventUIManager : MonoBehaviour
     private void OnEnable()
     {
         inventory.SetActive(false);
-        playerMove.SetActive(false);
         isRaneomEventOn = true;
     }
     private void OnDisable()
     {
         inventory.SetActive(true);
-        playerMove.SetActive(true);
         isRaneomEventOn = false;
     }
     private void Update()
@@ -200,7 +199,7 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardItemList.AddRange(randomEventData.rewardItems);
 
-            resultDesc.transform.gameObject.SetActive(false);
+            resultLayout.SetActive(false);
             itemInfo.SetActive(true);
             rewardOrCheck[0].SetActive(true);
             rewardOrCheck[1].SetActive(false);
@@ -210,7 +209,7 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardOrCheck[0].SetActive(false);
             rewardOrCheck[1].SetActive(true);
-            resultDesc.transform.gameObject.SetActive(true);
+            resultLayout.SetActive(true);
             itemInfo.SetActive(false);
         }
     }
@@ -218,12 +217,16 @@ public class RandomEventUIManager : MonoBehaviour
     public void ExitEvent()
     {
         if (rewardItemList.Count > 0)
+        {
+            SoundManager.Instance.Play(SoundType.Se_Button);
             confirmPanel.gameObject.SetActive(true);
+        }
         else
             EventExitInit();
     }
     public void EventExitInit()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         // 이벤트 데이터 값중 유지되면 안되는 것들 모두 초기화
 
         randomEventData.DataDefaultEventExit();
@@ -260,12 +263,13 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void GetSelectItem()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         if (rewardItemList.Count <= 0 || selectRewardItems.Count == 0)
             return;
 
         for (int i = 0; i < selectRewardItems.Count; i++)
         {
-            if(Vars.UserData.AddItemData(selectRewardItems[i]))
+            if(!Vars.UserData.AddItemData(selectRewardItems[i]))
             {
                 inventoryFullPanel.gameObject.SetActive(true);
             }
@@ -286,6 +290,7 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void GetAllItems()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         if (rewardItemList.Count <= 0)
             return;
 
