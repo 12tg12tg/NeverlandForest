@@ -27,14 +27,10 @@ public class HuntingManager : MonoBehaviour
 
     [Header("UI")]
     public GameObject failPopUp;
-    public GameObject successPopUp;
+    public DungeonRewardDiaryManager rewardPopup;
     public GameObject transparentWindow;
     public TMP_Text huntButtonText;
-    public RewardObject reward;
     public Button optionButton;
-
-    [Header("Production")]
-    public Production production;
 
     [Header("Tutorial")]
     public TutorialManager tm;
@@ -64,7 +60,7 @@ public class HuntingManager : MonoBehaviour
     }
     private void Start()
     {
-        production.FadeOut();
+        GameManager.Manager.Production.FadeOut();
         tileMaker.InitMakeTiles();
         Init();
         tm.contentsTutorial.Init();
@@ -207,18 +203,7 @@ public class HuntingManager : MonoBehaviour
         huntButtonText.text = $"성공 {perccent}%" + "\n" + "사냥하기";
     }
 
-    private void SetRewardItem()
-    {
-        // 추후 동물이 얻을 수 있는 아이템 리스트가 생기면 거기에서 가져오게끔 변경 예정
-        var tempItemNum = 5;
-        var stringId = $"ITEM_{tempItemNum}";
-        var item = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(stringId);
-        var newItem = new DataAllItem(item);
-        newItem.OwnCount = Random.Range(1, 5);
-
-        reward.Item = newItem;
-        reward.SetItemSprite(item.IconSprite);
-    }
+    private void SetRewardItem() => rewardPopup.OpenRewardsPopup(GameManager.Manager.reward.GetHuntRewards());
 
     public void Shooting()
     {
@@ -259,7 +244,7 @@ public class HuntingManager : MonoBehaviour
             huntPlayers.HuntFailAnimation();
             animal.AnimalRunAway();
         }
-        var resultPopUp = isHunted ? successPopUp : failPopUp;
+        var resultPopUp = isHunted ? rewardPopup.gameObject : failPopUp;
         animal.AnimalMove(isHunted, () => {
             resultPopUp.SetActive(true);
             transparentWindow.SetActive(true);

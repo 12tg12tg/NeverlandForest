@@ -81,7 +81,7 @@ public class GoCamp : MonoBehaviour
                         BottomUIManager.Instance.ItemButtonInit();
                     }
                     Debug.Log(Vars.UserData.mainTutorial);
-                    if(Vars.UserData.mainTutorial == MainTutorialStage.Camp)
+                    if(Vars.UserData.mainTutorial == MainTutorialStage.Stamina)
                     {
                         GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
                     }

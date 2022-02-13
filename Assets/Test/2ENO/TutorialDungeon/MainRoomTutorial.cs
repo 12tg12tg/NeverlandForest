@@ -89,11 +89,21 @@ public class MainRoomTutorial : MonoBehaviour
                 delay > 1f &&
                 TutorialStep != mainRoomCampButton &&
                 TutorialStep != mainRoomUseButton
+                && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Camp
                 )
             {
                 delay = 0f;
                 TutorialStep++;
                 Debug.Log(TutorialStep);
+            }
+            else
+            {
+                if (TutorialStep != 2)
+                {
+                    delay = 0f;
+                    TutorialStep++;
+                    Debug.Log(TutorialStep);
+                }
             }
         }
 
