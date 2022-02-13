@@ -167,10 +167,9 @@ public class SoundManager : MonoBehaviour
 
 
     // ¼³Á¤ ============================================
-    public void SetMuteBGM(bool isMute)
+    public void SetMuteBGM()
     {
-        isMute =muteBGM;
-        if (isMute)
+        if (muteBGM)
         {
             SetVolumeBGM(0f);
         }
@@ -197,12 +196,24 @@ public class SoundManager : MonoBehaviour
     {
         bgm_Player.volume = volume;
     }
+    public void SetVolumeBGM()
+    {
+        bgm_Player.volume = bgmSlider.value;
+    }
 
     public void SetVolumeSFX(float volume)
     {
         for (int i = 0; i < sfx_Players.Count; i++)
         {
             sfx_Players[i].volume = volume;
+        }
+    }
+
+    public void SetVolumeSFX()
+    {
+        for (int i = 0; i < sfx_Players.Count; i++)
+        {
+            sfx_Players[i].volume = soundSlider.value;
         }
     }
 }
