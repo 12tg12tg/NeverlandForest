@@ -35,6 +35,7 @@ public class RandomEventUIManager : MonoBehaviour
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
     public RectTransform inventoryFullPanel;
+    public RectTransform needMoreVal;
 
     /*[HideInInspector]*/ public RectTransform itemBox;
 
@@ -47,11 +48,11 @@ public class RandomEventUIManager : MonoBehaviour
     public TextMeshProUGUI eventDesc;
     public TextMeshProUGUI selectName;
     public TextMeshProUGUI selectDesc;
+    public GameObject resultLayout;
     public TextMeshProUGUI resultDesc;
 
     [Header("외부 UI 및 기능 끄기")]
     public GameObject inventory;
-    public GameObject playerMove;
 
     private List<DataAllItem> rewardItemList = new();
 
@@ -87,13 +88,11 @@ public class RandomEventUIManager : MonoBehaviour
     private void OnEnable()
     {
         inventory.SetActive(false);
-        playerMove.SetActive(false);
         isRaneomEventOn = true;
     }
     private void OnDisable()
     {
         inventory.SetActive(true);
-        playerMove.SetActive(true);
         isRaneomEventOn = false;
     }
     private void Update()
@@ -200,7 +199,7 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardItemList.AddRange(randomEventData.rewardItems);
 
-            resultDesc.transform.gameObject.SetActive(false);
+            resultLayout.SetActive(false);
             itemInfo.SetActive(true);
             rewardOrCheck[0].SetActive(true);
             rewardOrCheck[1].SetActive(false);
@@ -210,7 +209,7 @@ public class RandomEventUIManager : MonoBehaviour
         {
             rewardOrCheck[0].SetActive(false);
             rewardOrCheck[1].SetActive(true);
-            resultDesc.transform.gameObject.SetActive(true);
+            resultLayout.SetActive(true);
             itemInfo.SetActive(false);
         }
     }

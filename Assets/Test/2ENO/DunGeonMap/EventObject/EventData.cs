@@ -36,7 +36,7 @@ public class GatheringData : EventData
                     gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
                     break;
                 case GatheringObjectType.Pit:
-                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(90f, 0f, 0f)));
+                    gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(90f, 0.015f, 0f)));
                     break;
                 case GatheringObjectType.Herbs:
                     gatheringObj = Object.Instantiate(obj, objectPosition, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
@@ -58,7 +58,7 @@ public class GatheringData : EventData
                 gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
                 break;
             case GatheringObjectType.Pit:
-                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(90f, 0f, 0f)));
+                gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(90f, 0.015f, 0f)));
                 break;
             case GatheringObjectType.Herbs:
                 gatheringObj = Object.Instantiate(obj, objPos, Quaternion.Euler(new Vector3(0f, 0f, 0f)));
