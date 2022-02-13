@@ -91,7 +91,7 @@ public class DunGeonMapGenerate : MonoBehaviour
             curIdx = Vars.UserData.dungeonStartIdx;
 
         int except = 0;
-        while (dungeonArray[curIdx].nextRoomIdx != -1)
+        while (curIdx != -1)
         {
             except++;
             if (except > 300)

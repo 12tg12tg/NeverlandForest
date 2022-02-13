@@ -14,11 +14,9 @@ public class DiarySkill : MonoBehaviour
     public void Awake()
     {
         instance = this;
-        SkillButtonInit();
     }
     public void SkillButtonInit() // 스킬아이콘 12개 세팅 : 태그 버튼 + 자동 활성화를 위한 함수
     {
-        info.Init();
         skillButtons.ForEach((n) => n.gameObject.SetActive(true));
 
         var list = Vars.BoySkillList;
@@ -36,5 +34,6 @@ public class DiarySkill : MonoBehaviour
         {
             skillButtons[buttonIndex++].Init(list[i]);
         }
+        info.Init();
     }
 }

@@ -467,7 +467,6 @@ public class DataRandomEvent
         // 두번클릭 방지
         randomEventUiManager.curOperatorFeedback = selectNum;
 
-        RandomEventManager.Instance.SaveEventData();
         GameManager.Instance.SaveLoad.Save(SaveLoadSystem.SaveType.ConsumableData);
     }
 

@@ -77,37 +77,31 @@ public class RandomEventManager : MonoBehaviour
             // 일단은 이벤트 풀과 매니저의 allData는 같은 데이터 참조하게
             randomEventPool.AddRange(list);
         }
-
         Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
-    }
-
-    public void SaveEventData()
-    {
     }
 
     public void RemoveEventInPool(DataRandomEvent evtData)
     {
+        Debug.Log("이벤트 삭제");
         var idx = randomEventPool.FindIndex(x => x.EventData.id == evtData.EventData.id);
         randomEventPool.RemoveAt(idx);
 
         Vars.UserData.randomEventDatas = allDataList;
         Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
-
     }
 
     public void AddEventInPool(DataRandomEvent evtData)
     {
+        Debug.Log("이벤트 추가");
         randomEventPool.Add(evtData);
 
         Vars.UserData.randomEventDatas = allDataList;
         Vars.UserData.useEventID = randomEventPool.Select(x => x.eventID).ToList();
-
     }
 
     public DataRandomEvent GetEventData(string eventID)
     {
         var eventt = randomEventPool.Find(x => x.EventData.id == eventID);
-
         return eventt;
     }
     // 코루틴에서 다시 일반으로 바꿔봄
@@ -175,7 +169,7 @@ public class RandomEventManager : MonoBehaviour
             }
 
             //특정 이벤트 확정반환 테스트코드 28 24 11
-            //roomData.randomEventID = "1";
+            //roomData.randomEventID = "28";
         }
     }
 
