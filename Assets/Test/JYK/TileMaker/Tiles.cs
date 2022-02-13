@@ -134,7 +134,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
         isHighlightConsume = false;
         ren.material.color = tileMaker.noneColor;
         center.material.color = tileMaker.noneColor;
-        edge.material.color = tileMaker.noneColor;
+        edge.material.color = tileMaker.edgeNoneColor;
     }
 
     public void HighlightSkillRange()
@@ -209,7 +209,7 @@ public class Tiles : MonoBehaviour, IPointerClickHandler
         center.material.color = tileMaker.noneColor;
         front.material.color = tileMaker.noneColor;
         behind.material.color = tileMaker.noneColor;
-        edge.material.color = tileMaker.noneColor;
+        edge.material.color = tileMaker.edgeNoneColor;
         frontEdge.material.color = tileMaker.noneColor;
         behindEdge.material.color = tileMaker.noneColor;
 

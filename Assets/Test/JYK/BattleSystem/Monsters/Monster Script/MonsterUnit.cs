@@ -669,7 +669,7 @@ public class MonsterUnit : UnitBase, IAttackable
             isPause = true;
         }
         animator.SetTrigger("Damaged");
-        SoundManager.Instance.Play(SoundType.Se_Monster_hitted);
+        SoundManager.Instance?.Play(SoundType.Se_Monster_hitted);
     }
     public void PlayMoveAnimation()
     {

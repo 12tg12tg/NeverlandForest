@@ -40,6 +40,7 @@ public class TileMaker : MonoBehaviour
     public Color consumeColor;
     public Color targetColor;
     public Color noneColor;
+    public Color edgeNoneColor;
     private float reductionRatio = 0.9f;
     public int row = 3;
     public int col = 7;
