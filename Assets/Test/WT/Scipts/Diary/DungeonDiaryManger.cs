@@ -20,6 +20,10 @@ public class DungeonDiaryManger : MonoBehaviour
     public GameObject recipePanel;
     public GameObject notesPanel;
 
+    [Header("버튼관리")]
+    public DiaryItem diaryItems;
+    public DiarySkill diarySkills;
+
     public GameObject bottomui;
 
     public void Awake()
@@ -29,6 +33,12 @@ public class DungeonDiaryManger : MonoBehaviour
     public void Start()
     {
         OpenInventoryPanel();
+    }
+
+    public void OnEnable()
+    {
+        diaryItems.ItemListInit();
+        diarySkills.SkillButtonInit();
     }
 
     public void AllClose()
@@ -48,6 +58,8 @@ public class DungeonDiaryManger : MonoBehaviour
             SoundManager.Instance.PlayWalkSound(false);
         }
         SoundManager.Instance.Play(SoundType.Se_Diary);
+
+        diaryItems.ItemListInit();
     }
     public void OpenSkillPanel()
     {
@@ -55,6 +67,8 @@ public class DungeonDiaryManger : MonoBehaviour
         gameObject.SetActive(true);
         skillPanel.SetActive(true);
         SoundManager.Instance.Play(SoundType.Se_Diary);
+
+        diarySkills.SkillButtonInit();
 
     }
     public void OpenRecipePanel()

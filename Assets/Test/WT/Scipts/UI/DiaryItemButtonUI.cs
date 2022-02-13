@@ -7,15 +7,14 @@ using UnityEngine.UI;
 public class DiaryItemButtonUI : MonoBehaviour
 {
     [SerializeField] private Image icon;
+    [SerializeField] private TextMeshProUGUI count;
+    [SerializeField] private Image selectedImg;
+    [SerializeField] private Button ownButton;
+    [SerializeField] private Image shadeCover;
     public Image Icon
     {
         get => icon;
     }
-    [SerializeField] private TextMeshProUGUI count;
-    [SerializeField] private Image selectedImg;
-    [SerializeField] private Image type;
-    [SerializeField] private Button ownButton;
-    [SerializeField] private Image shadeCover;
     private bool isSelect;
     public bool IsSelect
     {
@@ -24,9 +23,9 @@ public class DiaryItemButtonUI : MonoBehaviour
         {
             isSelect = value;
             if (isSelect)
-                selectedImg.color = Color.red;
+                selectedImg.color = Color.white;
             else
-                selectedImg.color = Color.green;
+                selectedImg.color = Color.clear;
         }
     }
     private DataAllItem dataItem;
@@ -37,8 +36,8 @@ public class DiaryItemButtonUI : MonoBehaviour
     public void Init(DataAllItem data, int slot = -1)
     {
         slotNum = slot;
-
         count.color = Color.black;
+
         if (data == null)
         {
             dataItem = null;
@@ -47,6 +46,7 @@ public class DiaryItemButtonUI : MonoBehaviour
             IsSelect = false;
             return;
         }
+
         dataItem = data;
         AllItemTableElem elem = data.ItemTableElem;
         icon.sprite = elem.IconSprite;
@@ -56,9 +56,22 @@ public class DiaryItemButtonUI : MonoBehaviour
     {
         if (dataItem == null)
             return;
+
+        var diaryItemInstance = DiaryItem.Instance;
         Vector3 uiVec = Vector3.zero;
         Vector3 newVector = Vector3.zero;
-        DiaryItem.Instance.info.Init(dataItem);
-        DiaryItem.Instance.itemButtons.ForEach(n => n.IsSelect = false);
+
+        diaryItemInstance.info.Init(dataItem);
+        diaryItemInstance.selectedItem = dataItem;
+        diaryItemInstance.itemButtons.ForEach(n => n.IsSelect = false);
+        diaryItemInstance.selectedItemSlotNum = slotNum;
+        diaryItemInstance.itemPopup.gameObject.SetActive(true);
+        diaryItemInstance.isPopUp = true;
+        diaryItemInstance.selectItemRect = gameObject.GetComponent<RectTransform>();
+        uiVec = diaryItemInstance.itemPopup.transform.position;
+        newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+        diaryItemInstance.itemPopup.transform.position = newVector;
+        diaryItemInstance.itemButtons.ForEach(n => n.IsSelect = false);
+        IsSelect = true;
     }
 }
