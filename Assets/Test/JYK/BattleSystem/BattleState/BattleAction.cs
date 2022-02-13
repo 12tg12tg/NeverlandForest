@@ -15,7 +15,7 @@ public class BattleAction : State<BattleState>
 
     public override void Init()
     {
-        SoundManager.Instance.Play(SoundType.Se_MonsterTurnStart);
+        SoundManager.Instance?.Play(SoundType.Se_MonsterTurnStart);
         BottomUIManager.Instance.ItemListInit();
         if (manager.MonsterActionQueue.Count <= 0)
         {

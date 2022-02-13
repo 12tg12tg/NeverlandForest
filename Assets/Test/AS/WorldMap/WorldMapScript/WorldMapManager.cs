@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WorldMapManager : MonoBehaviour
 {
@@ -53,10 +54,20 @@ public class WorldMapManager : MonoBehaviour
             });
             if ((int)player.CurrentIndex.y >= 1)
                 backDungeonBt.SetActive(true);
-            GameManager.Manager.Production.FadeOut();
+            GameManager.Manager.Production.FadeOut(() =>
+            {
+                if ((int)player.CurrentIndex.y > 8)
+                {
+                    GameManager.Manager.isClear = true;
+                    Title.isClear = true;
+                    GameManager.Manager.Production.FadeIn(() => SceneManager.LoadScene("Game"));
+                }
+            });
         }
 
         Vars.UserData.isPlayerDungeonIn = false;
+
+        
     }
 
     private void NodeLinkToPlayer()

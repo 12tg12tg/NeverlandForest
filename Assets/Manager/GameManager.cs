@@ -5,6 +5,7 @@ using TMPro;
 using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public enum GameState
 {
@@ -54,6 +55,10 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     [Header("UI 연출용 카메라")]
     [SerializeField] private ScreenFixed productionCamera;
     public ScreenFixed ProductionCamera { get => productionCamera; set => productionCamera = value; }
+
+    [Header("게임엔딩 변수")]
+    public bool isClear = true;
+
     private void Awake() // 게임 실행시 준비
     {
         gm = Instance;
@@ -204,6 +209,21 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
             SceneManager.LoadScene("Game");
         });
     }
+
+    public void GameReset() // 엔딩에서 쓰는 리셋 버튼 눌렀을 때 실행되는 메서드
+    {
+        var path = Application.persistentDataPath;
+        var dir = new DirectoryInfo(path);
+        FileInfo[] files = dir.GetFiles("*.*", SearchOption.AllDirectories);
+        foreach (var file in files)
+        {
+            file.Attributes = FileAttributes.Normal;
+        }
+        Directory.Delete(path, true);
+
+        StartCoroutine(Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f));
+    }
+
     public void GoToGameEnd() // 버튼 클릭 함수 (옵션창, 게임오버창)에서 사용해야함
     {
 #if UNITY_EDITOR

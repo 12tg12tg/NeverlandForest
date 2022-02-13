@@ -44,7 +44,7 @@ public class SoundManager : MonoBehaviour
 
     public void Awake()
     {
-        instance = this;
+        instance ??= this;
     }
 
     // Àç»ý

@@ -65,7 +65,7 @@ public class HuntingManager : MonoBehaviour
         Init();
         tm.contentsTutorial.Init();
         
-        huntPlayers.IsTutorialClear = GameManager.Manager.TutoManager.contentsTutorial.contentsTutorialProceed.Hunt;
+        huntPlayers.IsTutorialClear = Vars.UserData.contentsTutorial.Hunt;
         if (!huntPlayers.IsTutorialClear)
         {
             optionButton.interactable = false;
