@@ -8,11 +8,14 @@ public class DiarySkillInfoUI : MonoBehaviour
     public Image img;
     public TextMeshProUGUI info_name;
     public TextMeshProUGUI info_description;
+
+   [SerializeField] private List<DiarySkillButtonUi> diarySkillButtonList = new List<DiarySkillButtonUi>();
+
     public void Init()
     {
-        img.sprite = null;
-        info_name.text = "정보 없음";
-        info_description.text = "정보 없음";
+        img.sprite = diarySkillButtonList[0].SkillImg.sprite;
+        info_name.text = diarySkillButtonList[0].skill.SkillTableElem.name;
+        info_description.text = diarySkillButtonList[0].skill.SkillTableElem.description;
     }
     public void Init(DataPlayerSkill skill)
     {

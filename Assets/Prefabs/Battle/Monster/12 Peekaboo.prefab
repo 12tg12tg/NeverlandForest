@@ -397,6 +397,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -6302157861576753856}
   arrowTrigger: {fileID: 3547480039820923659}
   moveTrigger: {fileID: -9008061732754033891}
+  clickTrigger: {fileID: 1457912013574561810}
 --- !u!114 &2193736645062367398
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -994,6 +995,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2143963233178083066}
   - component: {fileID: 2143963233189678986}
+  - component: {fileID: 1457912013574561810}
+  - component: {fileID: 1880183059024546821}
   m_Layer: 0
   m_Name: Spook
   m_TagString: Untagged
@@ -1091,6 +1094,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.22815756, y: -0.080308914, z: 0.0000009834766}
     m_Extent: {x: 0.68901604, y: 0.52073, z: 0.69795203}
   m_DirtyAABB: 0
+--- !u!64 &1457912013574561810
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143963233178108634}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: eecb4f4e0bf0aee45a92a52e9dec8aeb, type: 3}
+--- !u!114 &1880183059024546821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143963233178108634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -6302157861576753856}
 --- !u!1 &2143963233178108640
 GameObject:
   m_ObjectHideFlags: 0

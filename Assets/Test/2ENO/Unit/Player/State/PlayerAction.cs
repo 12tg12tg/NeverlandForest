@@ -28,7 +28,11 @@ public class PlayerAction : State<CharacterBattleState>
         // 액션 상태, 커맨드에 따라 애니메이션, 이펙트 실행,
         // 애니메이션이 끝나면? 타겟들의 OnAttacked 실행
         isAttackMotionEnd = false;
-        playerAnimation.SetTrigger(playerController.command.skill.SkillTableElem.aniTrigger);
+        var skill = playerController.command.skill.SkillTableElem;
+        playerAnimation.SetTrigger(skill.aniTrigger);
+
+        if(skill.name == "근거리")
+            SoundManager.Instance.Play(skill.soundType);
     }
 
     public override void Release()

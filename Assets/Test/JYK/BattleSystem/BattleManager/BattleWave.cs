@@ -180,4 +180,16 @@ public class BattleWave : MonoBehaviour
             unit.SetMoveUi(moveUI);
         }
     }
+
+    public void SetAllMonsterInfoColliderEnable(bool enable)
+    {
+        foreach (var monster in AliveMonsters)
+        {
+            if (enable)
+                monster.triggerLinker.EnableClickTrigger();
+            else
+                monster.triggerLinker.DisableClickTrigger();
+        }
+    }
 }
+

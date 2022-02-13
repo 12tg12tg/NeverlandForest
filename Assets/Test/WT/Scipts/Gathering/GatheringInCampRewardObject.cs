@@ -55,7 +55,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //³ª¹«Åä¸·: 1 %
             stringid = $"ITEM_1";
-            Debug.Log("´çÃ·");
             isBlank = false;
 
         }
@@ -63,7 +62,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //¾¾¾Ñ: 1 %
             stringid = $"ITEM_3";
-            Debug.Log("´çÃ·");
             isBlank = false;
 
         }
@@ -71,7 +69,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //³ª¹µ°¡Áö3 %
             stringid = $"ITEM_2";
-            Debug.Log("´çÃ·");
             isBlank = false;
 
         }
@@ -79,7 +76,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             //¾àÃÊ: 5 %
             stringid = $"ITEM_4";
-            Debug.Log("´çÃ·");
             isBlank = false;
 
         }
@@ -87,16 +83,13 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             // ¹ö¼¸: 5 %
             stringid = $"ITEM_6";
-            Debug.Log("´çÃ·");
             isBlank = false;
 
         }
         else
         {
             //²Î: 85 %
-            Debug.Log("²Î");
             selectedImg.sprite = null;
-            selectedImg.color = Color.clear;
             isBlank = true;
         }
 

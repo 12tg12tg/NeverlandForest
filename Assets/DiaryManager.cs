@@ -29,7 +29,9 @@ public class DiaryManager : MonoBehaviour
     public GameObject gatheringParent;
 
     [Header("Ä·ÇÁ¿ä¸®°ü·Ã")]
-    private bool isRotation = false;
+    private bool isRotation = true;
+    [SerializeField]private Sprite isRotationCheckImg;
+    [SerializeField] private Sprite isNotRotationImg;
     [Header("Ä·ÇÁ ¸ð´ÚºÒ")]
     public GameObject campBonfire;
 
@@ -105,6 +107,7 @@ public class DiaryManager : MonoBehaviour
         {
             adventureButton.SetActive(false);
         }
+        ChangeRotateButtonImage();
     }
 
     public void OpenCookingRotation()
@@ -137,11 +140,11 @@ public class DiaryManager : MonoBehaviour
     {
         if (IsRotation)
         {
-           rotationButton.image.sprite = Resources.Load<Sprite>($"UI/plus"); 
+            rotationButton.image.sprite = isRotationCheckImg;
         }
         else
         {
-            rotationButton.image.sprite = Resources.Load<Sprite>($"UI/xsymbol");
+            rotationButton.image.sprite = isNotRotationImg;
         }
     }
     public void OpenCookingReward()

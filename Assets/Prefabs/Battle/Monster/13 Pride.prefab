@@ -73,6 +73,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2611149553095877765}
   - component: {fileID: 2611149553090704807}
+  - component: {fileID: 1875535010909179460}
+  - component: {fileID: 7850431276261120380}
   m_Layer: 0
   m_Name: Phantom
   m_TagString: Untagged
@@ -188,6 +190,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.3404492, y: 0.062087, z: -0.0000019669533}
     m_Extent: {x: 1.2045122, y: 0.58236337, z: 0.72810197}
   m_DirtyAABB: 0
+--- !u!64 &1875535010909179460
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2611149553095981221}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: a75b6178589a3c346b2e3dec13411209, type: 3}
+--- !u!114 &7850431276261120380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2611149553095981221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -7293539501786777073}
 --- !u!1 &2611149553095981223
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,6 +345,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -7293539501786777073}
   arrowTrigger: {fileID: 8836314031377039304}
   moveTrigger: {fileID: -1415091741411612224}
+  clickTrigger: {fileID: 1875535010909179460}
 --- !u!114 &-2739106733700413345
 MonoBehaviour:
   m_ObjectHideFlags: 0

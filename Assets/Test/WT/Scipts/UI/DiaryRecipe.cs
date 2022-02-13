@@ -44,10 +44,6 @@ public class DiaryRecipe : MonoBehaviour
             {
                 itemGoList[i].Init(table, itemList[index], this);
             }
-           /* else
-            {
-                itemGoList[i].Clear();
-            }*/
         }
         SetPageButton();
     }
@@ -84,12 +80,18 @@ public class DiaryRecipe : MonoBehaviour
             if (currentRecipe.Recipes[1] != null)
             {
                 condimentid = $"ITEM_{(currentRecipe.Recipes[1])}";
-                material1.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+                var condimentSprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+                if (condimentSprite == null)
+                    return;
+                material1.sprite = condimentSprite;
             }
             if (currentRecipe.Recipes[2] != null)
             {
                 materialid = $"ITEM_{(currentRecipe.Recipes[2])}";
-                material2.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+                var materialSprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+                if (materialSprite == null)
+                    return;
+                material2.sprite = materialSprite;
             }
             if (currentRecipe.Result != null)
             {

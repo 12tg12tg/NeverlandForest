@@ -23,7 +23,8 @@ public class MonsterTableElem : DataTableElemBase
     public int dodge;
     public string description;
     private Sprite iconSprite;
-    public string attackSound;
+    private string attackSound;
+    public SoundType soundType;
     public string Name
     { 
         get
@@ -58,6 +59,25 @@ public class MonsterTableElem : DataTableElemBase
         dodge = int.Parse(data["DODGE"]);
         iconSprite = Resources.Load<Sprite>($"Monsters/{iconID}");
         attackSound = data["SOUND"];
+
+        switch (attackSound)
+        {
+            case "21_se_monster_Attack":
+                soundType = SoundType.Se_BetTypeMonsterAttack;
+                break;
+            case "22_se_monster_Attack":
+                soundType = SoundType.Se_SpiderTypeMonsterAttack;
+                break;
+            case "23_se_monster_Attack":
+                soundType = SoundType.Se_BigPlantTypeMonsterAttack;
+                break;
+            case "24_se_monster_Attack":
+                soundType = SoundType.Se_GhostTypeMonsterAttack;
+                break;
+            case "25_se_monster_Attack":
+                soundType = SoundType.Se_SmallTypeMonsterAttack;
+                break;
+        }
     }
 }
 

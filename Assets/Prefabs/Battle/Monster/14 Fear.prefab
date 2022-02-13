@@ -41,6 +41,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3511934396945343673}
   - component: {fileID: 4034018363971234235}
+  - component: {fileID: 7141502139950576488}
+  - component: {fileID: 4385240871256492248}
   m_Layer: 0
   m_Name: Death
   m_TagString: Untagged
@@ -122,6 +124,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.023311913, y: -0.21059719, z: 0.035719067}
     m_Extent: {x: 0.6443693, y: 0.5251837, z: 0.62351346}
   m_DirtyAABB: 0
+--- !u!64 &7141502139950576488
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818576942078725844}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8618853370436925509, guid: ce9d52aae4636894ea27004fdb277e14, type: 3}
+--- !u!114 &4385240871256492248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2818576942078725844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -6795058199092436546}
 --- !u!1 &3501964185032463173
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,6 +347,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -6795058199092436546}
   arrowTrigger: {fileID: 6387481944631239764}
   moveTrigger: {fileID: -7168774147276672911}
+  clickTrigger: {fileID: 7141502139950576488}
 --- !u!114 &-2961260400300620292
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -156,6 +156,7 @@ public class BottomUIManager : MonoBehaviour
         bm.tileLink.DisplaySkillTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
+        bm.waveLink.SetAllMonsterInfoColliderEnable(false);
     }
 
     public void ExitSkillState(bool isButton)
@@ -168,6 +169,7 @@ public class BottomUIManager : MonoBehaviour
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();
         tags.ForEach(n => n.interactable = true);
+        bm.waveLink.SetAllMonsterInfoColliderEnable(false);
     }
 
     private void Update()

@@ -60,6 +60,19 @@ public class BottomInfoUI : MonoBehaviour
         info_name.text = allItem.ItemTableElem.name;
     }
 
+    public void Init(MonsterUnit unit)
+    {
+        img.sprite = unit.BaseElem.IconSprite;
+        img.color = Color.white;
+
+        info_name.text = unit.BaseElem.Name;
+
+        var newDesc = string.Empty;
+        newDesc += $"방어막 : <b><color=orange>{unit.Shield}</color></b> / <b><color=orange>{unit.maxSheild}</color></b>\n";
+        newDesc += $"체력 : <b><color=red>{unit.Hp}</color></b> / <b><color=red>{unit.initHp}</color></b>";
+        info_description.text = newDesc;
+    }
+
     private string DescriptionColoring(DescriptionType type, string desc)
     {
         bool isPreDigit = false;

@@ -115,7 +115,7 @@ public static class ConsumeManager
         if (Vars.UserData.uData.Tiredness < 0)
         {
             Vars.UserData.uData.Tiredness = 0;
-            EventBus<LivingState>.Publish(LivingState.GameOver);
+            GameManager.Manager.GameOver(GameOverType.StaminaZero);
         }
     }
     private static void ChangeableMaxStaminChange()
@@ -157,7 +157,7 @@ public static class ConsumeManager
     }
     public static void FullingLantern(int oil)
     {
-        SoundManager.Instance.Play(SoundType.Se_OilFulling);
+        //SoundManager.Instance?.Play(SoundType.Se_OilFulling);
 
         Vars.UserData.uData.LanternCount += oil;
         if (Vars.UserData.uData.LanternCount > Vars.lanternMaxCount)
