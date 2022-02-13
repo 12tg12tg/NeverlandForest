@@ -27,6 +27,8 @@ public class DungeonMapSaveData_0 : SaveDataBase
     public bool isDungeonClear;
     public bool isPlayerDungeonIn;
 
+    public int mainRoomCount;
+
     public override SaveDataBase VersionUp()
     {
         return new DungeonMapSaveData_0();
