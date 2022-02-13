@@ -217,12 +217,16 @@ public class RandomEventUIManager : MonoBehaviour
     public void ExitEvent()
     {
         if (rewardItemList.Count > 0)
+        {
+            SoundManager.Instance.Play(SoundType.Se_Button);
             confirmPanel.gameObject.SetActive(true);
+        }
         else
             EventExitInit();
     }
     public void EventExitInit()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         // 이벤트 데이터 값중 유지되면 안되는 것들 모두 초기화
 
         randomEventData.DataDefaultEventExit();
@@ -259,12 +263,13 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void GetSelectItem()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         if (rewardItemList.Count <= 0 || selectRewardItems.Count == 0)
             return;
 
         for (int i = 0; i < selectRewardItems.Count; i++)
         {
-            if(Vars.UserData.AddItemData(selectRewardItems[i]))
+            if(!Vars.UserData.AddItemData(selectRewardItems[i]))
             {
                 inventoryFullPanel.gameObject.SetActive(true);
             }
@@ -285,6 +290,7 @@ public class RandomEventUIManager : MonoBehaviour
 
     public void GetAllItems()
     {
+        SoundManager.Instance.Play(SoundType.Se_Button);
         if (rewardItemList.Count <= 0)
             return;
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class GatheringInDungeonRewardObject : MonoBehaviour
 {
     private DataAllItem item;
@@ -9,7 +10,7 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     public Button rewardButton;
     public Image rewardIcon;
     public Image selectedImg;
-    public Sprite selectedImage;
+    [SerializeField] private TextMeshProUGUI count;
     public bool IsSelect
     {
         get => isSelect;
@@ -19,12 +20,10 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
             if (isSelect)
             {
                 selectedImg.color = Color.white;
-                selectedImg.sprite = selectedImage;
             }
             else
             {
                 selectedImg.color = Color.clear;
-                selectedImg.sprite = null;
             }
         }
     }
@@ -49,16 +48,23 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
     {
         if (item == null)
             return;
+
         IsSelect = !IsSelect;
-        GatheringSystem.Instance.selecteditemList.Add(item);
+
+        if(IsSelect)
+            GatheringSystem.Instance.selecteditemList.Add(item);
+        else
+            GatheringSystem.Instance.selecteditemList.Remove(item);
     }
     public void Init(DataAllItem data)
     {
         if (data == null)
         {
             item = null;
+            IsSelect = false;
             rewardIcon.sprite = null;
             rewardIcon.color = Color.clear;
+            count.text = string.Empty;
         }
         else
         {
@@ -66,6 +72,7 @@ public class GatheringInDungeonRewardObject : MonoBehaviour
             AllItemTableElem elem = data.ItemTableElem;
             rewardIcon.color = Color.white;
             rewardIcon.sprite = elem.IconSprite;
+            count.text = data.OwnCount.ToString();
         }
     }
 }

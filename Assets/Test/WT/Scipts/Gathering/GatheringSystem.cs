@@ -487,6 +487,7 @@ public class GatheringSystem : MonoBehaviour
     {
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         SoundManager.Instance.Play(SoundType.Se_Button);
+        gatheringRewardList.ForEach(n => n.Init(null));
 
         switch (curSelectedObj.objectType)
         {
@@ -515,6 +516,8 @@ public class GatheringSystem : MonoBehaviour
             default:
                 break;
         }
+        
+
         // 아이템 획득 준비 보상창에 생성하기
         if (gatheringRewardList[0].Item != null)
         {
@@ -535,6 +538,7 @@ public class GatheringSystem : MonoBehaviour
     {
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         SoundManager.Instance.Play(SoundType.Se_Button);
+        gatheringRewardList.ForEach(n => n.Init(null));
 
         switch (curSelectedObj.objectType)
         {
@@ -597,6 +601,12 @@ public class GatheringSystem : MonoBehaviour
             }
         }
 
+        if (rewardList.Count > 0)
+        {
+            reconfirmPanelManager.gameObject.SetActive(true);
+            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
+        }
+
         if (haveItemCount == 0)
         {
             reconfirmPanelManager.gameObject.SetActive(false);
@@ -637,8 +647,8 @@ public class GatheringSystem : MonoBehaviour
         }
         else
         {
-            reconfirmPanelManager.gameObject.SetActive(true);
-            reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
+            //reconfirmPanelManager.gameObject.SetActive(true);
+            //reconfirmPanelManager.rewardNotEmptyPopup.SetActive(true);
         }
         BottomUIManager.Instance.ItemListInit();
     }
@@ -813,6 +823,25 @@ public class GatheringSystem : MonoBehaviour
     {
         playerAnimationBoy.SetFloat("Speed", 3f);
     }
+
+    public void RewardItemLIstInit(List<DataAllItem> itemList)
+    {
+        gatheringRewardList.ForEach(n => n.Init(null));
+        gatheringRewardList.ForEach(n => n.IsSelect = false);
+
+        var count = itemList.Count;
+
+        for (int i = 0; i < count; i++)
+        {
+            if (i >= gatheringRewardList.Count)
+            {
+                Debug.LogError("수치 이상!");
+            }
+            gatheringRewardList[i].Init(itemList[i]);
+        }
+    }
+
+
     public void GetSelectedItem()
     {
         SoundManager.Instance.Play(SoundType.Se_Button);
@@ -823,23 +852,28 @@ public class GatheringSystem : MonoBehaviour
             {
                 if (Vars.UserData.AddItemData(selecteditemList[i]) != false)
                 {
-                    Vars.UserData.AddItemData(selecteditemList[i]);
                     Vars.UserData.ExperienceListAdd(selecteditemList[i].itemId);
-                    for (int j = rewardList.Count - 1; j >= 0; j--)
+                    //for (int j = rewardList.Count - 1; j >= 0; j--)
+                    //{
+                    //    if (rewardList[j] == selecteditemList[i])
+                    //    {
+                    //        rewardList.RemoveAt(j);
+                    //    }
+                    //}
+                    if (selecteditemList[i].OwnCount <= 0)
                     {
-                        if (rewardList[j] == selecteditemList[i])
-                        {
-                            rewardList.RemoveAt(j);
-                        }
-
+                        var index = rewardList.FindIndex(x => x.itemId == selecteditemList[i].itemId);
+                        rewardList.RemoveAt(index);
                     }
                     if (rewardList.Count == 0)
                     {
                         rewardList.Clear();
                     }
+                    RewardItemLIstInit(rewardList);
                 }
                 else
                 {
+                    RewardItemLIstInit(rewardList);
                     reconfirmPanelManager.gameObject.SetActive(true);
                     reconfirmPanelManager.inventoryFullPopup.SetActive(true);
                 }
@@ -849,55 +883,80 @@ public class GatheringSystem : MonoBehaviour
         dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
 
-        for (int i = selecteditemList.Count - 1; i >= 0; i--)
-        {
-            selecteditemList.RemoveAt(i);
-        }
-        if (selecteditemList.Count == 0)
-        {
-            selecteditemList.Clear();
-        }
-        for (int i = 0; i < gatheringRewardList.Count; i++)
-        {
-            if (gatheringRewardList[i].IsSelect)
-            {
-                gatheringRewardList[i].Item = null;
-                gatheringRewardList[i].IsSelect = false;
-                gatheringRewardList[i].IsHaveItem = false;
-                gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
-            }
-        }
-
+        //for (int i = selecteditemList.Count - 1; i >= 0; i--)
+        //{
+        //    selecteditemList.RemoveAt(i);
+        //}
+        //if (selecteditemList.Count == 0)
+        //{
+        //    selecteditemList.Clear();
+        //}
+        //for (int i = 0; i < gatheringRewardList.Count; i++)
+        //{
+        //    if (gatheringRewardList[i].IsSelect)
+        //    {
+        //        gatheringRewardList[i].Item = null;
+        //        gatheringRewardList[i].IsSelect = false;
+        //        gatheringRewardList[i].IsHaveItem = false;
+        //        gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
+        //    }
+        //}
     }
+
+
     public void GetAllItem()
     {
         SoundManager.Instance.Play(SoundType.Se_Button);
 
-        for (int i = 0; i < gatheringRewardList.Count; i++)
+        var removeList = new List<string>();
+        for (int i = 0; i < rewardList.Count; i++)
         {
-            if (gatheringRewardList[i].Item != null)
-            {
-                if (Vars.UserData.AddItemData(gatheringRewardList[i].Item) != false)
-                {
-                    Vars.UserData.AddItemData(gatheringRewardList[i].Item);
-                    Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
-                }
-                else
-                {
-                    reconfirmPanelManager.gameObject.SetActive(true);
-                    reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+            Vars.UserData.AddItemData(rewardList[i]);
+            Vars.UserData.ExperienceListAdd(rewardList[i].itemId);
+            dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
 
-                }
+            if (rewardList[i].OwnCount <= 0)
+            {
+                removeList.Add(rewardList[i].itemId);
             }
         }
-        dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
-        BottomUIManager.Instance.ItemListInit();
-        for (int i = 0; i < gatheringRewardList.Count; i++)
+
+        foreach (var id in removeList)
         {
-            gatheringRewardList[i].Item = null;
-            gatheringRewardList[i].IsSelect = false;
-            gatheringRewardList[i].IsHaveItem = false;
-            gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
+            var index = rewardList.FindIndex(x => x.itemId == id);
+            if (index != -1)
+                rewardList.RemoveAt(index);
         }
+        RewardItemLIstInit(rewardList);
+
+        if (rewardList.Count > 0)
+            reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+
+        //for (int i = 0; i < gatheringRewardList.Count; i++)
+        //{
+        //    if (gatheringRewardList[i].Item != null)
+        //    {
+        //        if (Vars.UserData.AddItemData(gatheringRewardList[i].Item) != false)
+        //        {
+        //            Vars.UserData.AddItemData(gatheringRewardList[i].Item);
+        //            Vars.UserData.ExperienceListAdd(gatheringRewardList[i].Item.itemId);
+        //        }
+        //        else
+        //        {
+        //            reconfirmPanelManager.gameObject.SetActive(true);
+        //            reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+
+        //        }
+        //    }
+        //}
+        //dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
+        //BottomUIManager.Instance.ItemListInit();
+        //for (int i = 0; i < gatheringRewardList.Count; i++)
+        //{
+        //    gatheringRewardList[i].Item = null;
+        //    gatheringRewardList[i].IsSelect = false;
+        //    gatheringRewardList[i].IsHaveItem = false;
+        //    gatheringRewardList[i].rewardButton.GetComponent<Image>().sprite = nonImage;
+        //}
     }
 }

@@ -152,6 +152,31 @@ public class BottomItemButtonUI : MonoBehaviour
 
         shadeCover.color = color;
     }
+
+    public void GatheringInvenButtonClick()
+    {
+        if (dataItem == null)
+            return;
+
+        Vector3 uiVec = Vector3.zero;
+        Vector3 newVector = Vector3.zero;
+
+        var gatheringInven = DiaryInventory.Instance;
+        gatheringInven.info.Init(dataItem);
+
+        gatheringInven.isPopUp = true;
+        gatheringInven.popUpWindow.gameObject.SetActive(true);
+        uiVec = gatheringInven.popUpWindow.position;
+        newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+        gatheringInven.popUpWindow.position = newVector;
+
+        gatheringInven.selectItem = dataItem;
+        gatheringInven.selectItemSlotNum = slotNum;
+        gatheringInven.selectedItemRect = gameObject.GetComponent<RectTransform>();
+        gatheringInven.itemButtons.ForEach(n => n.SelectActive(false));
+        SelectActive(true);
+    }
+
     public void DiaryItemButtonClick()
     {
         if (dataItem == null)
@@ -178,7 +203,6 @@ public class BottomItemButtonUI : MonoBehaviour
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                     BottomUIManager.Instance.isPopUp = true;
-                    BottomUIManager.Instance.isDiaryPopUp = true;
                     BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                     uiVec = BottomUIManager.Instance.popUpWindow.position;
                     newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -192,7 +216,6 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.selectItemSlotNum = slotNum;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;
-                BottomUIManager.Instance.isDiaryPopUp = true;
                 BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -208,7 +231,6 @@ public class BottomItemButtonUI : MonoBehaviour
                 BottomUIManager.Instance.selectItem = dataItem;
                 BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                 BottomUIManager.Instance.isPopUp = true;
-                BottomUIManager.Instance.isDiaryPopUp = true;
                 BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                 uiVec = BottomUIManager.Instance.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
@@ -246,22 +268,14 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 else
                 {
-                    //BottomUIManager.Instance.isPopUp = true;
-                    //BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    //uiVec = BottomUIManager.Instance.popUpWindow.position;
-                    //newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    BottomUIManager.Instance.isPopUp = true;
+                    BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
+                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.selectItemSlotNum = slotNum;
-                    BottomUIManager.Instance.diaryPopUpWindow.gameObject.SetActive(true);
-                    BottomUIManager.Instance.isDiaryPopUp = true;
                     BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                    uiVec2 = BottomUIManager.Instance.diaryPopUpWindow.position;
                     newVector2 = new Vector3(transform.position.x, uiVec2.y, uiVec2.z);
-                    Debug.Log(transform.position.x);
-                    Debug.Log(gameObject.name);
-
-                    //BottomUIManager.Instance.popUpWindow.position = newVector2;
-                    BottomUIManager.Instance.diaryPopUpWindow.position = newVector2;
                     BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
                     SelectActive(true);
                 }

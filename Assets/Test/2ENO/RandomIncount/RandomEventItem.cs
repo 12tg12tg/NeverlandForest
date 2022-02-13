@@ -34,6 +34,7 @@ public class RandomEventItem : MonoBehaviour
         {
             dataItem = null;
             icon.sprite = null;
+            icon.color = Color.clear;
             count.text = string.Empty;
         }
         else
@@ -41,6 +42,7 @@ public class RandomEventItem : MonoBehaviour
             dataItem = data;
             AllItemTableElem elem = data.ItemTableElem;
             icon.sprite = elem.IconSprite;
+            icon.color = Color.white;
             count.text = data.OwnCount.ToString();
         }
     }
