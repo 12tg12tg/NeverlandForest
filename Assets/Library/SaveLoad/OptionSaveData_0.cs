@@ -7,8 +7,8 @@ public class OptionSaveData_0 : SaveDataBase
     public static readonly OptionSaveData_0 DefaultValue = new OptionSaveData_0()
     {
         Version = 0,
-        bgmVolume = 0f,
-        sfVolume = 0f,
+        bgmVolume = 1f,
+        sfVolume = 0.2f,
         isBgmMute = false,
         isSfMute=false,
         isVibrate = false,

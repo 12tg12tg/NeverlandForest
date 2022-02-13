@@ -25,7 +25,6 @@ public class CampManager : MonoBehaviour
     public RoomObject roadPrefab;
     public GameObject mapPos;
     public Camera campminimapCamera;
-    public GameObject minimapPanel;
     private int curDungeonRoomIndex;
     public int CurDungeonRoomIndex
     {
@@ -495,6 +494,7 @@ public class CampManager : MonoBehaviour
         if (Vars.UserData.uData.BonfireHour != 0)
         {
             wtreconfirmPanelManager.gameObject.SetActive(true);
+            wtreconfirmPanelManager.inventoryFull_NotToProducePopup.SetActive(false);
             wtreconfirmPanelManager.bonfireTimeRemainPopup.SetActive(true);
             bonTimeText.gameObject.SetActive(false);
         }

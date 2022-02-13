@@ -79,6 +79,7 @@ public class UserData
             Debug.Log($"itemid{ itemid}");
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ItemExperience);
             UpdateRecipe();
+            UpdateCraft();
         }
         else
         {
@@ -93,6 +94,16 @@ public class UserData
         {
             userRecipeDataList.Add(resultId);
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Recipe);
+        }
+    }
+
+    public void AddCraftList(string resultId)  //CR_01
+    {
+        var userCraftDataList = Vars.UserData.HaveCraftIDList;
+        if (!userCraftDataList.Contains(resultId))
+        {
+            userCraftDataList.Add(resultId);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Craft);
         }
     }
 
@@ -125,9 +136,46 @@ public class UserData
         }
     }
 
+    public void UpdateCraft()
+    {
+        var craftTable = DataTableManager.GetTable<CraftDataTable>();
+        var idList = craftTable.allCraftIdList;
+        var resultIdDic = craftTable.allCraftDicitionary;
+
+        for (int i = 0; i < idList.Count; i++)
+        {
+            var resultid = resultIdDic[idList[i]];
+            var materials = craftTable.GetCombination(resultid);
+            bool isExperience = true;
+            for (int j = 0; j < materials.Length; j++)
+            {
+                if (materials[j] == "0")
+                    continue;
+                var stringid = $"ITEM_{materials[j]}";
+                if (!experienceHaveItemList.Contains(stringid))
+                {
+                    isExperience = false;
+                    break;
+                }
+            }
+            if (isExperience)
+            {
+                AddCraftList(craftTable.GetCraftId(resultid));
+            }
+        }
+    }
+    
+
+
+    public void DirectAddItem(DataAllItem newItem)
+    {
+        haveAllItemList.Add(newItem);
+    }
 
     public bool AddItemData(DataAllItem newItem)
     {
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+
         if (newItem.OwnCount == 0)
             return false;
 
@@ -307,7 +355,7 @@ public class UserData
         haveAllItemList.Clear();
         experienceHaveItemList = new List<string>();
     }
-
+ 
     public void UserItemInit()
     {
         //테스트용 리스트

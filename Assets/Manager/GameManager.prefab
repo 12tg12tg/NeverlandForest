@@ -1275,7 +1275,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.2
+  m_Volume: 1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -2792,6 +2792,22 @@ PrefabInstance:
     - target: {fileID: 8617020775025847312, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0.99
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617020775132256232, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1821236534798909526}
+    - target: {fileID: 8617020775132256232, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Save
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617020775132256232, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: SoundManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8617020775132256232, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8617020775233804631, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
       propertyPath: m_AnchorMax.y

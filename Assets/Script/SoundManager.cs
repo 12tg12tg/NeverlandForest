@@ -73,8 +73,10 @@ public class SoundManager : MonoBehaviour
     {
         instance ??= this;
 
-        SetVolumeBGM(Vars.UserData.bgmVolume);
-        SetVolumeSFX(Vars.UserData.sfVoulme);
+        bgmSlider.value = Vars.UserData.bgmVolume;
+        soundSlider.value = Vars.UserData.sfVoulme;
+        SetVolumeBGM(bgmSlider.value);
+        SetVolumeSFX(soundSlider.value);
     }
 
     // 재생
@@ -189,11 +191,11 @@ public class SoundManager : MonoBehaviour
     public void SetVolumeBGM(float volume)
     {
         bgm_Player.volume = volume;
-        Vars.UserData.bgmVolume = bgm_Player.volume;
     }
     public void SetVolumeBGM()
     {
         bgm_Player.volume = bgmSlider.value;
+        Vars.UserData.bgmVolume = bgm_Player.volume;
     }
 
     public void SetVolumeSFX(float volume) // 뮤트해제시 호출
@@ -214,4 +216,6 @@ public class SoundManager : MonoBehaviour
         walkSoundPlayer.volume = Mathf.Lerp(0, maxValue, soundSlider.value);
         Vars.UserData.sfVoulme = walkSoundPlayer.volume;
     }
+
+    public void Save() => SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Option);
 }

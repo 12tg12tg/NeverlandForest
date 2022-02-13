@@ -101,7 +101,7 @@ public class RecipeIcon : MonoBehaviour
         var list = Vars.UserData.HaveAllItemList;
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
-
+        fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
         if (fire.sprite !=null)
         {
             for (int i = 0; i < list.Count; i++)
@@ -136,7 +136,7 @@ public class RecipeIcon : MonoBehaviour
         }
         result = currentRecipe.Result;
 
-        fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
+       
         condimentobj = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj = allitemTable.GetData<AllItemTableElem>(materialid);
 
