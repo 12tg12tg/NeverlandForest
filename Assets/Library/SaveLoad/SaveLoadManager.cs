@@ -131,7 +131,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         optionDate.isSfMute = Vars.UserData.isSfMute;
 
         SaveLoadSystem.Save(optionDate, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Option);
-
     }
 
     private void SaveRandomEvent()
