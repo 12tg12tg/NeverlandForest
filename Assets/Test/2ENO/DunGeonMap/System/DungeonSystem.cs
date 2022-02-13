@@ -35,7 +35,7 @@ public class DungeonSystem : MonoBehaviour
     public MiniMapCamMove minimapCam;
     public GameObject DungeonCanvas;
     public TutorialRandomEvent randomEventTutorial;
-
+    public bool isBattleObjectStart=false;
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
 

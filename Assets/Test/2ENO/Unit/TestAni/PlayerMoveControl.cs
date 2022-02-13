@@ -8,7 +8,7 @@ public class PlayerMoveControl : MonoBehaviour
 {
     private Animator playerAnimationBoy;
     private Animator playerAnimationGirl;
-    
+
     private MultiTouch multiTouch;
     private float speed = 10f;
 
@@ -84,7 +84,7 @@ public class PlayerMoveControl : MonoBehaviour
 
     void Update()
     {
-        if(dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
+        if (dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
             || randomEvent.activeSelf || huntingPopup.activeSelf)
         {
             RigOff();
@@ -223,9 +223,17 @@ public class PlayerMoveControl : MonoBehaviour
 
                 playerAnimationBoy.SetFloat("Speed", boySpeed);
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
-                if (boySpeed>0f)
+                if (boySpeed > 0f)
                 {
-                    SoundManager.Instance.PlayWalkSound(true);
+                    if (DungeonSystem.Instance.isBattleObjectStart)
+                    {
+                        SoundManager.Instance.PlayWalkSound(false);
+                        DungeonSystem.Instance.isBattleObjectStart = false;
+                    }
+                    else
+                    {
+                        SoundManager.Instance.PlayWalkSound(true);
+                    }
                 }
                 else
                 {
@@ -248,10 +256,10 @@ public class PlayerMoveControl : MonoBehaviour
         RigOn();
         var timer = 0f;
         var handSpeed = 10f;
-        while(timer < 1.1f)
+        while (timer < 1.1f)
         {
             boyRig.weight = Mathf.Lerp(0f, 1f, timer);
-            if(girlRiglayers[0].active == true)
+            if (girlRiglayers[0].active == true)
                 girlRigs[0].weight = boyRig.weight;
             else
                 girlRigs[1].weight = boyRig.weight;
