@@ -54,6 +54,7 @@ public class MainRoomTutorial : MonoBehaviour
 
     private void Awake()
     {
+        TutorialStep = 0;
         dialogBox = tutorialTool.dialogBox;
         handIcon = tutorialTool.handIcon;
         blackout = tutorialTool.blackout;
@@ -85,20 +86,22 @@ public class MainRoomTutorial : MonoBehaviour
         if (isMainRoomTutorial && !storyChapter4 && !storyChapter5)
         {
             delay += Time.deltaTime;
+            // 첫 스테미나 튜토리얼 진행중일때
             if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
                 delay > 1f &&
                 TutorialStep != mainRoomCampButton &&
                 TutorialStep != mainRoomUseButton
-                && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage != MainTutorialStage.Camp
+                && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina
                 )
             {
                 delay = 0f;
                 TutorialStep++;
                 Debug.Log(TutorialStep);
             }
+            // 
             else
             {
-                if (TutorialStep != 2)
+                if (TutorialStep != 2 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
                 {
                     delay = 0f;
                     TutorialStep++;

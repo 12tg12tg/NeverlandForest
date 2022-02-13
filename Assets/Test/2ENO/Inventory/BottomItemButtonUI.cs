@@ -246,15 +246,15 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 else
                 {
-                    BottomUIManager.Instance.selectItem = dataItem;
-                    BottomUIManager.Instance.selectItemSlotNum = slotNum;
-                    //BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    BottomUIManager.Instance.diaryPopUpWindow.gameObject.SetActive(true);
                     //BottomUIManager.Instance.isPopUp = true;
-                    BottomUIManager.Instance.isDiaryPopUp = true;
-                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                    //BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
                     //uiVec = BottomUIManager.Instance.popUpWindow.position;
                     //newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    BottomUIManager.Instance.selectItem = dataItem;
+                    BottomUIManager.Instance.selectItemSlotNum = slotNum;
+                    BottomUIManager.Instance.diaryPopUpWindow.gameObject.SetActive(true);
+                    BottomUIManager.Instance.isDiaryPopUp = true;
+                    BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
                     uiVec2 = BottomUIManager.Instance.diaryPopUpWindow.position;
                     newVector2 = new Vector3(transform.position.x, uiVec2.y, uiVec2.z);
                     Debug.Log(transform.position.x);

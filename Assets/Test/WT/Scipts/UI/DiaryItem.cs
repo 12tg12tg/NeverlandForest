@@ -8,10 +8,18 @@ public class DiaryItem : MonoBehaviour
     private static DiaryItem instance;
     public static DiaryItem Instance => instance;
 
+    // 아이템 선택 관련
+    public DataAllItem selectedItem;
+    public int selectedItemSlotNum;
+    public bool isPopUp;
+    public RectTransform selectItemRect;
+
     [Header("왼쪽 정보 창 연결")]
     public DiaryItemInfoUI info;
     [Header("우측 12개 아이콘 연결")]
     public List<DiaryItemButtonUI> itemButtons;
+
+    public RectTransform itemPopup;
 
     public void Awake()
     {
@@ -20,6 +28,39 @@ public class DiaryItem : MonoBehaviour
     public void Start()
     {
         ItemButtonInit();
+    }
+
+    public void Update()
+    {
+        var touchPos = MultiTouch.Instance.TouchPos;
+        if (!isPopUp)
+        {
+            if (MultiTouch.Instance.TouchCount > 0)
+            {
+                if (!IsContainPos(touchPos))
+                {
+                    itemButtons.ForEach(n => n.IsSelect = false);
+                    itemPopup.gameObject.SetActive(false);
+                    isPopUp = false;
+                }
+            }
+        }
+
+        if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect(touchPos))
+        {
+            isPopUp = false;
+        }
+    }
+
+    private bool IsContainPos(Vector2 pos)
+    {
+        var camera = GameManager.Manager.CamManager.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(itemPopup, pos, camera);
+    }
+    private bool IsContainItemRect(Vector2 pos)
+    {
+        var camera = GameManager.Manager.CamManager.uiCamera;
+        return RectTransformUtility.RectangleContainsScreenPoint(selectItemRect, pos, camera);
     }
 
     public void ItemButtonInit()
@@ -33,11 +74,11 @@ public class DiaryItem : MonoBehaviour
         var list= CreateDivideItemList(Vars.UserData.HaveAllItemList.ToList());
         SortItemList(list);
         int count = list.Count;
-
         for (int i = 0; i < count; i++)
         {
             itemButtons[i].Init(list[i]);
         }
+        info.Init();
     }
     private void SortItemList(List<DataAllItem> itemList)
     {
@@ -96,5 +137,53 @@ public class DiaryItem : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    public void ItemUse() // 버튼 클릭 함수
+    {
+        if (selectedItem == null)
+            return;
+
+        var allItem = new DataAllItem(selectedItem);
+        allItem.OwnCount = 1;
+
+        if (allItem.ItemTableElem.isEat)
+        {
+            ConsumeManager.RecoveryHunger(allItem.ItemTableElem.stat_str);
+            ConsumeManager.RecoverHp(allItem.ItemTableElem.stat_Hp);
+        }
+        else if (allItem.itemId == "ITEM_19")
+        {
+            // 랜턴 1칸 채우면 되나?
+            ConsumeManager.FullingLantern(1);
+        }
+        else
+            return;
+
+        if (Vars.UserData.RemoveItemData(allItem))
+        {
+            itemPopup.gameObject.SetActive(false);
+            selectedItem = null;
+            isPopUp = false;
+        }
+        ItemListInit();
+        BottomUIManager.Instance.ItemListInit();
+    }
+
+    public void ItemDump() // 버튼 클릭 함수
+    {
+        if (selectedItem == null)
+            return;
+
+        var allItem = new DataAllItem(selectedItem);
+        allItem.OwnCount = 1;
+        if (Vars.UserData.RemoveItemData(allItem))
+        {
+            itemPopup.gameObject.SetActive(false);
+            selectedItem = null;
+            isPopUp = false;
+        }
+        ItemListInit();
+        BottomUIManager.Instance.ItemListInit();
     }
 }
