@@ -29,7 +29,6 @@ public class GatheringSystem : MonoBehaviour
     public TextMeshProUGUI gatheringHandConsumeText;
     public TextMeshProUGUI handCompleteTimeText;
 
-    //New
     [Header("채집이미지관련")]
     public Image toolImage;
     public Image handimage;
@@ -50,6 +49,13 @@ public class GatheringSystem : MonoBehaviour
 
     [Header("채집보상아이템관련")]
     public Sprite nonImage;
+
+    [Header("채집종류 한가지로 변경할때 사용")]
+    public GameObject toolConsumeParent;
+    public GameObject toolIconParent;
+    public GameObject toolCompleteTimeParent;
+    public GameObject toolButtonParent;
+    public GameObject toolRemainParent;
 
     private List<GameObject> gatherings = new List<GameObject>();
     [SerializeField]
@@ -171,23 +177,11 @@ public class GatheringSystem : MonoBehaviour
 
     private void TreeGatheing(LanternState lanternstate)
     {
-        toolconsumeTime.SetActive(true);
-        handconsumeTime.SetActive(true);
-
-        toolitemicon.SetActive(true);
-        toolImage.GetComponent<Image>().color = Color.white;
-
-        handitemicon.SetActive(true);
-
-        toolcompleteTime.SetActive(true);
-        handcompleteTime.SetActive(true);
-
-        toolbutton.SetActive(true);
-
-        handbutton.SetActive(true);
-
-        toolremainTime.SetActive(true);
-        handremainTime.SetActive(true);
+        toolConsumeParent.SetActive(true);
+        toolIconParent.SetActive(true);
+        toolCompleteTimeParent.SetActive(true);
+        toolButtonParent.SetActive(true);
+        toolRemainParent.SetActive(true);
 
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -231,6 +225,12 @@ public class GatheringSystem : MonoBehaviour
     }
     private void PitGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolConsumeParent.SetActive(true);
+        toolIconParent.SetActive(true);
+        toolCompleteTimeParent.SetActive(true);
+        toolButtonParent.SetActive(true);
+        toolRemainParent.SetActive(true);
+
         toolImage.GetComponent<Image>().color = Color.white;
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -269,11 +269,17 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     private void HerbsGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolConsumeParent.SetActive(false);
+        toolIconParent.SetActive(false);
+        toolCompleteTimeParent.SetActive(false);
+        toolButtonParent.SetActive(false);
+        toolRemainParent.SetActive(false);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -313,18 +319,20 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
 
-        toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolImage.GetComponent<Image>().color = Color.clear;
+      
 
     }
     private void MushroomGatheing(LanternState lanternstate) //버섯 채집? 
     {
+        toolConsumeParent.SetActive(false);
+        toolIconParent.SetActive(false);
+        toolCompleteTimeParent.SetActive(false);
+        toolButtonParent.SetActive(false);
+        toolRemainParent.SetActive(false);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -362,15 +370,9 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
-
-        toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolImage.GetComponent<Image>().color = Color.clear;
-
+      
     }
     public void GoGatheringObject(Vector3 objectPos)
     {

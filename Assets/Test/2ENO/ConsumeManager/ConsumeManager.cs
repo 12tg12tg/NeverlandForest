@@ -115,7 +115,7 @@ public static class ConsumeManager
         if (Vars.UserData.uData.Tiredness < 0)
         {
             Vars.UserData.uData.Tiredness = 0;
-            EventBus<LivingState>.Publish(LivingState.GameOver);
+            GameManager.Manager.GameOver(GameOverType.StaminaZero);
         }
     }
     private static void ChangeableMaxStaminChange()

@@ -16,8 +16,12 @@ public class DiaryItem : MonoBehaviour
     public void Awake()
     {
         instance = this;
+    }
+    public void Start()
+    {
         ItemButtonInit();
     }
+
     public void ItemButtonInit()
     {
         info.Init();

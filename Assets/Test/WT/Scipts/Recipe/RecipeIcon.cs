@@ -34,9 +34,14 @@ public class RecipeIcon : MonoBehaviour
     public Image condiment;
     public Image material;
     public TextMeshProUGUI makingTime;
+
     public Image resultItemIcon;
     public TextMeshProUGUI resultItemName;
     public TextMeshProUGUI resultItemDesc;
+
+    public Image rewardresultItemIcon;
+    public TextMeshProUGUI rewardresultItemName;
+    public TextMeshProUGUI rewardresultItemDesc;
 
 
     [SerializeField] private Button previewButton;
@@ -127,6 +132,12 @@ public class RecipeIcon : MonoBehaviour
         resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
         resultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
 
+        rewardresultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        rewardresultItemIcon.color = Color.white;
+        rewardresultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+        rewardresultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+
+
         CampManager.Instance.cookingText.text = "요리 하기";
     }
     public void MakeCooking()
@@ -216,7 +227,6 @@ public class RecipeIcon : MonoBehaviour
                 material.sprite = null;
                 result = string.Empty;
                 makingTime.text = string.Empty;
-                Debug.Log("요리 완료");
                 DiaryManager.Instacne.OpenCookingReward();
             }
         }
