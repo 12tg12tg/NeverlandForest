@@ -225,11 +225,11 @@ public class PlayerMoveControl : MonoBehaviour
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
                 if (boySpeed>0f)
                 {
-                    //SoundManager.Instance.PlayWalkSound(true);
+                    SoundManager.Instance.PlayWalkSound(true);
                 }
                 else
                 {
-                    //SoundManager.Instance.PlayWalkSound(false);
+                    SoundManager.Instance.PlayWalkSound(false);
                 }
 
             }
