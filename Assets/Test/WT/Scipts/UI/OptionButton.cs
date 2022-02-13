@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class OptionButton : MonoBehaviour
 {
+    public GameObject panel;
     public void Open()
     {
-        GameManager.Manager.ObtionPanelUi.SetActive(true);
+        GameManager.Manager.optionBlackPanel.SetActive(true);
     }
-   
 }
