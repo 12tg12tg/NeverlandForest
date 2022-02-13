@@ -9,10 +9,25 @@ public class Title : MonoBehaviour
 {
     private Coroutine coTapToStart;
     private bool isStart = false;
+    private bool isFinish = false;
+    public static bool isClear = false; // 얘는 월드맵에서 변경 시키고 들어오면 됨
 
-    public TextMeshProUGUI startText;
+    public TMP_Text startText;
     public Image panel;
     public Image fadeOut;
+    public TMP_Text narration;
+    public GameObject prologueWindow;
+    public GameObject resetButton;
+
+    private MultiTouch multiTouch;
+    private StoryManager storyManager;
+
+    public void Awake()
+    {
+        multiTouch = GameManager.Manager.MultiTouch;
+        storyManager = GameManager.Manager.StoryManager;
+        isFinish = GameManager.Manager.isClear;
+    }
 
     public void Start()
     {
@@ -25,15 +40,27 @@ public class Title : MonoBehaviour
             coTapToStart = null;
             isStart = true;
         }));
-
-        if (isStart && GameManager.Manager.MultiTouch.TouchCount > 0)
+        if (isClear) // 게임 클리어 후 월드맵에서 타이틀 화면으로 왔을 때 엔딩 스토리 실행
+        {
+            GameManager.Manager.Production.black.SetActive(false);
+            prologueWindow.SetActive(true);
+            storyManager.EndingStory(narration, () => resetButton.SetActive(true));
+        }
+        else if (isStart && multiTouch.TouchCount > 0)
         {
             var manager = GameManager.Manager;
             StartCoroutine(CoFadeOut(() => {
                 gameObject.SetActive(false);
-                manager.TutoManager.Init();
+                if (isFinish) // 게임 클리어 후 리셋 버튼을 누르지 않고 게임을 껏다가 켰다면 여기로
+                {
+                    prologueWindow.SetActive(true);
+                    storyManager.EndingStory(narration, () => resetButton.SetActive(true));
+                }
+                else
+                    manager.TutoManager.Init();
             }, () => {
-                manager.Production.black.SetActive(true);
+                if (!isFinish)
+                    manager.Production.black.SetActive(true);
             }));
         }
     }
@@ -83,5 +110,11 @@ public class Title : MonoBehaviour
         }
         action?.Invoke();
         yield return new WaitForSeconds(1f);
+    }
+
+    public void GameReset()
+    {
+        isClear = false;
+        GameManager.Manager.isClear = false;
     }
 }

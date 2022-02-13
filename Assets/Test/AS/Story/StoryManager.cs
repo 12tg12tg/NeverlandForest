@@ -14,6 +14,7 @@ public enum StoryType
     Chapter3,
     Chapter4,
     Chapter5,
+    Ending,
 }
 
 public enum StoryChar
@@ -47,6 +48,8 @@ public class StoryManager : MonoBehaviour
 
     public bool isNext;
 
+    public bool isGameReset = false;
+
     private void Awake()
     {
         startPos = target.anchoredPosition;
@@ -59,6 +62,8 @@ public class StoryManager : MonoBehaviour
             CoFade ??= StartCoroutine(UpDownLoop(distance, () => CoFade = null));
         }
     }
+
+    public void EndingStory(TMP_Text text, UnityAction action = null) => StartCoroutine(CoEnding(text, action));
 
     private IEnumerator UpDownLoop(float posY, UnityAction action)
     {
@@ -142,6 +147,66 @@ public class StoryManager : MonoBehaviour
         StartCoroutine(CoFadeOut(() => action?.Invoke()));
     }
 
+    public IEnumerator CoEnding(TMP_Text text, UnityAction action = null)
+    {
+        var storyTable = DataTableManager.GetTable<TutorialStoryDataTable>().data;
+        var datas = storyTable.Where(x => (x.Value as TutorialStoryDataTableElem).index == (int)StoryType.Ending)
+                              .Select(x => x)
+                              .ToList();
+        for (int i = 0; i < datas.Count; i++)
+        {
+            text.text = "";
+            text.color = Color.white;
+
+            var data = (TutorialStoryDataTableElem)datas[i].Value;
+            var description = data.description;
+            var colorData = data.color;
+            var option = data.option;
+            var typing = data.typing;
+            text.fontSize = typing ? 48 : 36;
+            if (colorData.Length > 0)
+            {
+                ColorUtility.TryParseHtmlString(colorData, out var color);
+                text.color = color;
+            }
+            text.text += option ? @"""" : "";
+
+            for (int j = 0; j < description.Length; j++)
+            {
+                if (description[j].Equals('n'))
+                {
+                    text.text += "\n";
+                }
+                else
+                    text.text += description[j];
+                if (typing)
+                    yield return new WaitForSeconds(0.1f);
+            }
+
+            text.text += option ? @"""" : "";
+
+            yield return new WaitForSeconds(1f);
+
+            if(i != datas.Count -1)
+            {
+                float time = 1f;
+                float timer = 0f;
+
+                while (timer < time)
+                {
+                    timer += Time.deltaTime;
+                    var ratio = timer / time;
+                    var curColor = text.color;
+                    curColor.a = Mathf.Lerp(1, 0, ratio);
+                    text.color = curColor;
+                    yield return null;
+                }
+            }
+        }
+
+        action?.Invoke();
+        yield return new WaitWhile(() => !isGameReset);
+    }
     public IEnumerator CoFadeOut(UnityAction action = null)
     {
         fadeInOut.gameObject.SetActive(true);

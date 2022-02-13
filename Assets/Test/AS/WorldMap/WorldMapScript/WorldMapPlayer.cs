@@ -51,30 +51,13 @@ public class WorldMapPlayer : MonoBehaviour
         totalMap = GameManager.Manager.WorldManager.GetComponentsInChildren<WorldMapNode>();
 
         var data = Vars.UserData.WorldMapPlayerData;
-        if (data == null) // 게임을 처음 켰을 때
-        {
-            SaveLoadManager.Instance.Load(SaveLoadSystem.SaveType.WorldMapPlayerData);
-            data = Vars.UserData.WorldMapPlayerData;
-            if (data == null) 
-            {
-                Init(); // 플레이어가 죽어서 플레이어 데이터 초기화 됐을 때
-            }
-            else
-            {
-                Load();
-            }
-        }
-        else if (data.isClear)
+        if (data.isClear)
         {
             PlayerClearWorldMap();
         }
         else
         {
             PlayerRunWorldMap();
-
-            // 게임을 처음 켰는데 던전맵이고 던전맵에서 도망갔다면 딱 한번만 실행하면 되는데.. 
-            // 다른 방법 생각이 안나서 이래 해둔상태
-            //GameManager.Manager.CamManager.worldMapCamera.GetComponent<WorldMapCamera>().RunDungoen();
         }
     }
 
