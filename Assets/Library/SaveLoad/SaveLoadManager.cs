@@ -234,7 +234,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         consumableSaveData = new ConsumableSaveData_0();
         consumableSaveData.curIngameHour = Vars.UserData.uData.CurIngameHour;
         consumableSaveData.curIngameMinute = Vars.UserData.uData.CurIngameMinute;
-
+        consumableSaveData.hp = Vars.UserData.uData.Hp;
         consumableSaveData.curTimeState = ConsumeManager.CurTimeState;
         consumableSaveData.curLanternCount = Vars.UserData.uData.LanternCount;
 
@@ -412,6 +412,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.uData.Date = consumableSaveData.date;
             Vars.UserData.uData.Hunger = consumableSaveData.hunger;
             Vars.UserData.uData.BonfireHour   = consumableSaveData.bonfireTime;
+            Vars.UserData.uData.Hp = consumableSaveData.hp;
         }
     }
 
@@ -465,7 +466,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
                 var loadItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(itemData.itemIdList[i]));
                 loadItem.OwnCount = itemData.itemOwnCountList[i];
 
-                Vars.UserData.AddItemData(loadItem);
+                Vars.UserData.DirectAddItem(loadItem);
             }
         }
         else
