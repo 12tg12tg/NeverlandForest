@@ -124,6 +124,7 @@ public class MonsterUnit : UnitBase, IAttackable
                     KickoutAnyWhere();
             }
             triggerLinker.DisableHitTrigger();
+            BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(true);
         }
     }
 
@@ -621,6 +622,7 @@ public class MonsterUnit : UnitBase, IAttackable
 
         if (moveFoward) // 직선이동할때만 트랩 계산
         {
+            BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(false);
             triggerLinker.EnableMoveTrigger();
             CheckBoobyTrapOnLoad();
             //ObstacleAdd();
@@ -637,7 +639,10 @@ public class MonsterUnit : UnitBase, IAttackable
                 if (stepOnBoobyTrap)
                     BoobyTrap();
                 if (moveFoward)
+                {
                     triggerLinker.DisableMoveTrigger();
+                    BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(true);
+                }
             });
     }
 
@@ -650,6 +655,7 @@ public class MonsterUnit : UnitBase, IAttackable
     public void PlayAttackAnimation()
     {
         animator.SetTrigger("Attack");
+        SoundManager.Instance.Play(baseElem.soundType);
     }
     public void PlayDeadAnimation()
     {
@@ -663,6 +669,7 @@ public class MonsterUnit : UnitBase, IAttackable
             isPause = true;
         }
         animator.SetTrigger("Damaged");
+        SoundManager.Instance.Play(SoundType.Se_Monster_hitted);
     }
     public void PlayMoveAnimation()
     {

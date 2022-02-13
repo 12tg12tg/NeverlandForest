@@ -32,7 +32,8 @@ public class BattleAnimationFunc : MonoBehaviour
 
     public void Shoot()
     {
-        if(shootStartPos == Vector3.zero)
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
+        if (shootStartPos == Vector3.zero)
             shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
         var dest = TileMaker.Instance.GetTile(controller.command.target).CenterPos;
@@ -64,6 +65,7 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot2 애니메이션
     public void Shoot2()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         if (shootStartPos == Vector3.zero)
             shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
@@ -75,6 +77,7 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot3 애니메이션
     public void Shoot3()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         if (shootStartPos == Vector3.zero)
             shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
@@ -95,6 +98,7 @@ public class BattleAnimationFunc : MonoBehaviour
     // Shoot4 애니메이션
     public void Shoot4()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         if (shootStartPos == Vector3.zero)
             shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
@@ -104,6 +108,7 @@ public class BattleAnimationFunc : MonoBehaviour
     }
     public void FinalShoot()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         if (shootStartPos == Vector3.zero)
             shootStartPos = arrow.transform.position;
         arrow.SetActive(false);
@@ -120,6 +125,7 @@ public class BattleAnimationFunc : MonoBehaviour
 
     public void Burn()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         StartCoroutine(CoLightDown());
         var command = controller.command;
         var isDrag = BattleManager.Instance.inputLink.isLastInputDrag;
@@ -172,6 +178,7 @@ public class BattleAnimationFunc : MonoBehaviour
     }
     public void Charge()
     {
+        SoundManager.Instance.Play(controller.command.skill.SkillTableElem.soundType);
         var chargeSkillElem = DataTableManager.GetTable<PlayerSkillTable>().GetData<PlayerSkillTableElem>(BattleManager.Instance.costLink.skillID_chargeOil);
         var chargeAmount = chargeSkillElem.Damage;
         var curLanternCount = Vars.UserData.uData.LanternCount;

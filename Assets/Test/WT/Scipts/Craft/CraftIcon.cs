@@ -1,13 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Linq;
 
 public class CraftIcon : MonoBehaviour
-{   
-    public enum CraftButtonType {Tool,Battle,Herb};
+{
+    public enum CraftButtonType { Tool, Battle, Herb };
 
     [SerializeField] private List<CraftObj> itemGoList = new List<CraftObj>();
     private CraftDataTable table;
@@ -26,9 +25,9 @@ public class CraftIcon : MonoBehaviour
     private string Time = null;
     private AllItemDataTable allitemTable;
 
-    private int page=1;
+    private int page = 1;
     private CraftButtonType currentButtonType = CraftButtonType.Tool;
-    [HideInInspector]public CraftObj currentCraft;
+    [HideInInspector] public CraftObj currentCraft;
     private int maxPage;
     public Image fire;
     public Image condiment;
@@ -36,6 +35,15 @@ public class CraftIcon : MonoBehaviour
 
     public TextMeshProUGUI makingTime;
     public string result = string.Empty;
+
+    public Image resultItemIcon;
+    public TextMeshProUGUI resultItemName;
+    public TextMeshProUGUI resultItemDesc;
+
+    public Image rewardresultItemIcon;
+    public TextMeshProUGUI rewardresultItemName;
+    public TextMeshProUGUI rewardresultItemDesc;
+
 
     [SerializeField] private Button previewButton;
     [SerializeField] private Button nextButton;
@@ -65,7 +73,7 @@ public class CraftIcon : MonoBehaviour
         table = DataTableManager.GetTable<CraftDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var itemList = Vars.UserData.HaveCraftIDList;
-        int type ;
+        int type;
         var fillterList = itemList.Where(n =>
         {
             switch (currentButtonType)
@@ -88,7 +96,7 @@ public class CraftIcon : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            var index = i+5 *(page - 1);
+            var index = i + 5 * (page - 1);
             if (index < fillterList.Count)
             {
                 itemGoList[i].Init(table, fillterList[index], this);
@@ -102,7 +110,7 @@ public class CraftIcon : MonoBehaviour
     }
     public void PreviewPageOpen()
     {
-        if (page>1)
+        if (page > 1)
         {
             page--;
             SetPageButton();
@@ -110,7 +118,7 @@ public class CraftIcon : MonoBehaviour
     }
     public void NextPageOpen()
     {
-        if (page< maxPage)
+        if (page < maxPage)
         {
             page++;
             SetPageButton();
@@ -118,11 +126,11 @@ public class CraftIcon : MonoBehaviour
     }
     private void SetPageButton()
     {
-        if (page==1)
+        if (page == 1)
         {
             previewButton.interactable = false;
         }
-        else if (page ==maxPage)
+        else if (page == maxPage)
         {
             nextButton.interactable = false;
         }
@@ -144,10 +152,21 @@ public class CraftIcon : MonoBehaviour
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
         result = currentCraft.Result;
-
+        var resultid = $"ITEM_{result}";
         materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
         materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
+
+        resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        resultItemIcon.color = Color.white;
+        resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+        resultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+
+        rewardresultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        rewardresultItemIcon.color = Color.white;
+        rewardresultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+        rewardresultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+
 
         Time = currentCraft.Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
@@ -180,17 +199,32 @@ public class CraftIcon : MonoBehaviour
                 }
             }
 
+            if (!is0ok)
+            {
+                CampManager.Instance.producingText.text = "재료가 부족합니다";
+            }
+            var zeroId = "ITEM_0";
+
+
+            if (materialobj1.id == zeroId)
+            {
+                is1ok = true;
+            }
+            if (materialobj2.id == zeroId)
+            {
+                is2ok = true;
+            }
+
             if (is0ok && is1ok && is2ok)
             {
-
                 fireitem = new DataAllItem(list[material0Num]);
                 fireitem.OwnCount = 1;
-                if (materialobj1.id != "ITEM_0")
+                if (materialobj1.id != zeroId)
                 {
                     condimentitem = new DataAllItem(list[material1Num]);
                     condimentitem.OwnCount = 1;
                 }
-                if (materialobj2.id != "ITEM_0")
+                if (materialobj2.id != zeroId)
                 {
                     materialitem = new DataAllItem(list[material2Num]);
                     materialitem.OwnCount = 1;
@@ -205,17 +239,16 @@ public class CraftIcon : MonoBehaviour
                 if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
                 {
                     Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
-                    Debug.Log("제작 완료");
                     ConsumeManager.TimeUp(makeTime);
                     Vars.UserData.uData.BonfireHour -= makeTime / 60;
                     ConsumeManager.SaveConsumableData();
                     CampManager.Instance.SetBonTime();
                     Vars.UserData.RemoveItemData(fireitem);
-                    if (materialobj1.id != "ITEM_0")
+                    if (materialobj1.id != zeroId)
                     {
                         Vars.UserData.RemoveItemData(condimentitem);
                     }
-                    if (materialobj2.id != "ITEM_0")
+                    if (materialobj2.id != zeroId)
                     {
                         Vars.UserData.RemoveItemData(materialitem);
                     }
@@ -225,34 +258,7 @@ public class CraftIcon : MonoBehaviour
                 {
                     CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
                     CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
-                    Debug.Log("가방이 가득찼다");
                 }
-            }
-            else if (!is1ok)
-            {
-                if (materialobj1.id == "ITEM_0")
-                {
-                    is1ok = true;
-                }
-                else
-                {
-                    CampManager.Instance.producingText.text = "재료가 부족합니다";
-                }
-            }
-            else if (!is2ok)
-            {
-                if (materialobj2.id == "ITEM_0")
-                {
-                    is2ok = true;
-                }
-                else
-                {
-                    CampManager.Instance.producingText.text = "재료가 부족합니다";
-                }
-            }
-            if (!is0ok)
-            {
-                CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
         }
     }

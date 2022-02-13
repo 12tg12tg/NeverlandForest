@@ -9,6 +9,7 @@ public class MonsterTrigger : MonoBehaviour
 
     [SerializeField] private Collider arrowTrigger;
     [SerializeField] private Collider moveTrigger;
+    [SerializeField] private Collider clickTrigger;
 
     private void Start()
     {
@@ -37,6 +38,15 @@ public class MonsterTrigger : MonoBehaviour
     {
         moveTrigger.enabled = false;
     }
+    public void EnableClickTrigger()
+    {
+        clickTrigger.enabled = true;
+    }
+
+    public void DisableClickTrigger()
+    {
+        clickTrigger.enabled = false;
+    }
 
 
     // Event Func
@@ -50,6 +60,7 @@ public class MonsterTrigger : MonoBehaviour
                 {
                     boyAction.isAttackMotionEnd = true;
                     DisableHitTrigger();
+                    BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(true);
                 }
                 monsterUnit.PlayHitAnimation();
                 monsterUnit.OnAttacked(BattleManager.Instance.boy.command);
@@ -57,6 +68,7 @@ public class MonsterTrigger : MonoBehaviour
             else
             {
                 boyAction.isAttackMotionEnd = true;
+                BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(true);
                 DisableHitTrigger();
             }
         }

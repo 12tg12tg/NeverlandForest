@@ -138,6 +138,7 @@ MonoBehaviour:
   monsterUnit: {fileID: 4511900101503581785}
   arrowTrigger: {fileID: 1639722500187141562}
   moveTrigger: {fileID: -7415683762171777417}
+  clickTrigger: {fileID: 7663581776589208906}
 --- !u!114 &2682216477549732438
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +169,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4480251189079836706}
   - component: {fileID: 4480251189077154048}
+  - component: {fileID: 7663581776589208906}
+  - component: {fileID: 9150387877451823317}
   m_Layer: 0
   m_Name: Mushroom
   m_TagString: Untagged
@@ -255,6 +258,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.23076087, y: -0.0289599, z: 0}
     m_Extent: {x: 0.3554663, y: 0.3526074, z: 0.31742084}
   m_DirtyAABB: 0
+--- !u!64 &7663581776589208906
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480251189080331266}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 7a45b261c41faac44b10007875eeae00, type: 3}
+--- !u!114 &9150387877451823317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4480251189080331266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 4511900101503581785}
 --- !u!1 &4480251189080331268
 GameObject:
   m_ObjectHideFlags: 0

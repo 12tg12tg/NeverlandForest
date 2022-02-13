@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class DiaryItemButtonUI : MonoBehaviour
 {
     [SerializeField] private Image icon;
+    public Image Icon
+    {
+        get => icon;
+    }
     [SerializeField] private TextMeshProUGUI count;
     [SerializeField] private Image selectedImg;
     [SerializeField] private Image type;

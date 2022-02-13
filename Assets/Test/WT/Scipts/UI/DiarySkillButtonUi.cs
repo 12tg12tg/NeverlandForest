@@ -8,6 +8,10 @@ public class DiarySkillButtonUi : MonoBehaviour
 {
     public DataPlayerSkill skill;
     [SerializeField] private Image skillImg;
+    public Image SkillImg
+    {
+        get => skillImg;
+    }
 
     public void Init(DataPlayerSkill skill)
     {

@@ -29,7 +29,6 @@ public class GatheringSystem : MonoBehaviour
     public TextMeshProUGUI gatheringHandConsumeText;
     public TextMeshProUGUI handCompleteTimeText;
 
-    //New
     [Header("채집이미지관련")]
     public Image toolImage;
     public Image handimage;
@@ -50,6 +49,23 @@ public class GatheringSystem : MonoBehaviour
 
     [Header("채집보상아이템관련")]
     public Sprite nonImage;
+
+    [Header("채집랜더 이미지관련")]
+    public PlayerAniControl treePlayer;
+    public PlayerAniControl holePlayer;
+    public PlayerAniControl flowerPlayer;
+    public PlayerAniControl mushPlayer;
+    public Camera treeCam;
+    public Camera holeCam;
+    public Camera flowerCam;
+    public Camera mushCam;
+
+    [Header("채집종류 한가지로 변경할때 사용")]
+    public GameObject toolConsumeParent;
+    public GameObject toolIconParent;
+    public GameObject toolCompleteTimeParent;
+    public GameObject toolButtonParent;
+    public GameObject toolRemainParent;
 
     private List<GameObject> gatherings = new List<GameObject>();
     [SerializeField]
@@ -73,6 +89,69 @@ public class GatheringSystem : MonoBehaviour
     private Vector3 womenbeforePosition;
     int count = 0;
     private List<Vector3> posCheckList = new List<Vector3>();
+
+    public void GatheringRenderCamSet(GatheringObjectType type)
+    {
+        switch (type)
+        {
+            case GatheringObjectType.Tree:
+                treeCam.gameObject.SetActive(true);
+                break;
+            case GatheringObjectType.Pit:
+                holeCam.gameObject.SetActive(true);
+                break;
+            case GatheringObjectType.Herbs:
+                flowerCam.gameObject.SetActive(true);
+                break;
+            case GatheringObjectType.Mushroom:
+                mushCam.gameObject.SetActive(true);
+                break;
+        }
+    }
+
+    public void GatheringSetAni(GatheringObjectType type, bool isTool = false)
+    {
+        switch (type)
+        {
+            case GatheringObjectType.Tree:
+                if(isTool)
+                    treePlayer.aniControl.SetTrigger("UseAxe");
+                else
+                    treePlayer.aniControl.SetTrigger("UseHand");
+                break;
+            case GatheringObjectType.Pit:
+                if (isTool)
+                    holePlayer.aniControl.SetTrigger("Shovel");
+                else
+                    holePlayer.aniControl.SetTrigger("DigHand");
+                break;
+            case GatheringObjectType.Herbs:
+                flowerPlayer.aniControl.SetTrigger("PickUp");
+                break;
+            case GatheringObjectType.Mushroom:
+                mushPlayer.aniControl.SetTrigger("HandMush");
+                break;
+        }
+        Debug.Log("애니시작");
+    }
+
+    public void GatheringInitAni()
+    {
+        treePlayer.aniControl.SetTrigger("Idle");
+        holePlayer.aniControl.SetTrigger("Idle");
+        flowerPlayer.aniControl.SetTrigger("Idle");
+        mushPlayer.aniControl.SetTrigger("Idle");
+        Debug.Log("애니종료");
+    }
+
+    public void GatheringCamOff()
+    {
+        treeCam.gameObject.SetActive(false);
+        holeCam.gameObject.SetActive(false);
+        flowerCam.gameObject.SetActive(false);
+        mushCam.gameObject.SetActive(false);
+    }
+
     public bool PositionCheck(Vector3 pos)
     {
         if (posCheckList.Count > 1)
@@ -151,15 +230,19 @@ public class GatheringSystem : MonoBehaviour
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
+                GatheringRenderCamSet(GatheringObjectType.Tree);
                 TreeGatheing(lanternstate);
                 break;
             case GatheringObjectType.Pit:
+                GatheringRenderCamSet(GatheringObjectType.Pit);
                 PitGatheing(lanternstate);
                 break;
             case GatheringObjectType.Herbs:
+                GatheringRenderCamSet(GatheringObjectType.Herbs);
                 HerbsGatheing(lanternstate);
                 break;
             case GatheringObjectType.Mushroom:
+                GatheringRenderCamSet(GatheringObjectType.Mushroom);
                 MushroomGatheing(lanternstate);
                 break;
             default:
@@ -171,23 +254,13 @@ public class GatheringSystem : MonoBehaviour
 
     private void TreeGatheing(LanternState lanternstate)
     {
-        toolconsumeTime.SetActive(true);
-        handconsumeTime.SetActive(true);
+        toolConsumeParent.SetActive(true);
+        toolIconParent.SetActive(true);
+        toolCompleteTimeParent.SetActive(true);
+        toolButtonParent.SetActive(true);
+        toolRemainParent.SetActive(true);
 
-        toolitemicon.SetActive(true);
-        toolImage.GetComponent<Image>().color = Color.white;
-
-        handitemicon.SetActive(true);
-
-        toolcompleteTime.SetActive(true);
-        handcompleteTime.SetActive(true);
-
-        toolbutton.SetActive(true);
-
-        handbutton.SetActive(true);
-
-        toolremainTime.SetActive(true);
-        handremainTime.SetActive(true);
+        
 
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -231,6 +304,12 @@ public class GatheringSystem : MonoBehaviour
     }
     private void PitGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolConsumeParent.SetActive(true);
+        toolIconParent.SetActive(true);
+        toolCompleteTimeParent.SetActive(true);
+        toolButtonParent.SetActive(true);
+        toolRemainParent.SetActive(true);
+
         toolImage.GetComponent<Image>().color = Color.white;
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -269,11 +348,17 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
     private void HerbsGatheing(LanternState lanternstate) //구덩이채집? 
     {
+        toolConsumeParent.SetActive(false);
+        toolIconParent.SetActive(false);
+        toolCompleteTimeParent.SetActive(false);
+        toolButtonParent.SetActive(false);
+        toolRemainParent.SetActive(false);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -313,18 +398,20 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
 
-        toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolImage.GetComponent<Image>().color = Color.clear;
+      
 
     }
     private void MushroomGatheing(LanternState lanternstate) //버섯 채집? 
     {
+        toolConsumeParent.SetActive(false);
+        toolIconParent.SetActive(false);
+        toolCompleteTimeParent.SetActive(false);
+        toolButtonParent.SetActive(false);
+        toolRemainParent.SetActive(false);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -362,15 +449,9 @@ public class GatheringSystem : MonoBehaviour
        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
         }
         toolName.text = "삽";
-        toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
+        toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
-
-        toolconsumeTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolcompleteTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolbutton.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolremainTime.GetComponent<TextMeshProUGUI>().text = string.Empty;
-        toolImage.GetComponent<Image>().color = Color.clear;
-
+      
     }
     public void GoGatheringObject(Vector3 objectPos)
     {
@@ -411,13 +492,15 @@ public class GatheringSystem : MonoBehaviour
         {
             case GatheringObjectType.Tree:
                 GatheringTreeByTool();
+                GatheringSetAni(GatheringObjectType.Tree, true);
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByTool();
-       
+                GatheringSetAni(GatheringObjectType.Pit, true);
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByTool();
+                GatheringSetAni(GatheringObjectType.Herbs);
                 SoundManager.Instance.Play(SoundType.Se_Spade);
                 gatheringRewardList[0].Item = curSelectedObj.subitem;
                 gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.subitem.ItemTableElem.IconSprite;
@@ -427,6 +510,7 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByTool();
+                GatheringSetAni(GatheringObjectType.Mushroom);
                 SoundManager.Instance.Play(SoundType.Se_Spade);
                 break;
             default:
@@ -460,16 +544,19 @@ public class GatheringSystem : MonoBehaviour
         {
             case GatheringObjectType.Tree:
                 GatheringTreeByHand();
+                GatheringSetAni(GatheringObjectType.Tree);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByHand();
+                GatheringSetAni(GatheringObjectType.Pit);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
                 break;
             case GatheringObjectType.Herbs:
                 GatheringHerbsByHand();
+                GatheringSetAni(GatheringObjectType.Herbs);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
                 gatheringRewardList[0].Item = curSelectedObj.subitem;
@@ -480,6 +567,7 @@ public class GatheringSystem : MonoBehaviour
                 break;
             case GatheringObjectType.Mushroom:
                 GatheringMushroomByHand();
+                GatheringSetAni(GatheringObjectType.Mushroom);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
                 break;
@@ -526,26 +614,29 @@ public class GatheringSystem : MonoBehaviour
             {
                 boyPlayer.IsCoMove = true;
 
-                switch (curSelectedObj.objectType)
-                {
-                    case GatheringObjectType.Tree:
-                        playerAnimationBoy.SetTrigger("Axe");
-                        SoundManager.Instance.Play(SoundType.Se_Axe);
-                        break;
-                    case GatheringObjectType.Pit:
-                        playerAnimationBoy.SetTrigger("Shovel");
-                        SoundManager.Instance.Play(SoundType.Se_Spade);
+                //switch (curSelectedObj.objectType)
+                //{
+                //    case GatheringObjectType.Tree:
+                //        playerAnimationBoy.SetTrigger("Axe");
+                //        SoundManager.Instance.Play(SoundType.Se_Axe);
+                //        break;
+                //    case GatheringObjectType.Pit:
+                //        playerAnimationBoy.SetTrigger("Shovel");
+                //        SoundManager.Instance.Play(SoundType.Se_Spade);
 
-                        break;
-                    case GatheringObjectType.Herbs:
-                        playerAnimationBoy.speed = 0.5f;
-                        playerAnimationBoy.SetTrigger("Pick");
-                        break;
-                    case GatheringObjectType.Mushroom:
-                        playerAnimationBoy.SetTrigger("Hand");
-                        break;
-                }
-                
+                //        break;
+                //    case GatheringObjectType.Herbs:
+                //        playerAnimationBoy.speed = 0.5f;
+                //        playerAnimationBoy.SetTrigger("Pick");
+                //        break;
+                //    case GatheringObjectType.Mushroom:
+                //        playerAnimationBoy.SetTrigger("Hand");
+                //        break;
+                //}
+
+                GatheringEnd();
+                GatheringInitAni();
+                GatheringCamOff();
                 dungeonrewarddiaryManager.gameObject.SetActive(false);
                 Debug.Log("팝업껏다");
                 dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
@@ -568,22 +659,25 @@ public class GatheringSystem : MonoBehaviour
         if (isMove)
         {
             boyPlayer.IsCoMove = true;
-            switch (curSelectedObj.objectType)
-            {
-                case GatheringObjectType.Tree:
-                    playerAnimationBoy.SetTrigger("Axe");
-                    break;
-                case GatheringObjectType.Pit:
-                    playerAnimationBoy.SetTrigger("Shovel");
-                    break;
-                case GatheringObjectType.Herbs:
-                    playerAnimationBoy.speed = 0.5f;
-                    playerAnimationBoy.SetTrigger("Pick");
-                    break;
-                case GatheringObjectType.Mushroom:
-                    playerAnimationBoy.SetTrigger("Hand");
-                    break;
-            }
+            //switch (curSelectedObj.objectType)
+            //{
+            //    case GatheringObjectType.Tree:
+            //        playerAnimationBoy.SetTrigger("Axe");
+            //        break;
+            //    case GatheringObjectType.Pit:
+            //        playerAnimationBoy.SetTrigger("Shovel");
+            //        break;
+            //    case GatheringObjectType.Herbs:
+            //        playerAnimationBoy.speed = 0.5f;
+            //        playerAnimationBoy.SetTrigger("Pick");
+            //        break;
+            //    case GatheringObjectType.Mushroom:
+            //        playerAnimationBoy.SetTrigger("Hand");
+            //        break;
+            //}
+            GatheringEnd();
+            GatheringInitAni();
+            GatheringCamOff();
             dungeonrewarddiaryManager.gameObject.SetActive(false);
             Debug.Log("팝업껏다");
             dungeonrewarddiaryManager.gatheringInDungeonRewardPanel.SetActive(false);
@@ -606,6 +700,17 @@ public class GatheringSystem : MonoBehaviour
             PlayWalkAnimationBoy();
         }
         playerAnimationWomen.SetTrigger("Clap");
+        coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
+        Destroy(curSelectedObj.gameObject);
+    }
+
+    public void GatheringEndFail()
+    {
+        playerAnimationBoy.speed = 1f;
+        if (coWomenMove == null)
+        {
+            PlayWalkAnimationBoy();
+        }
         coWomenMove ??= StartCoroutine(Utility.CoTranslateLookFoward(boyPlayer.transform, boyPlayer.transform.position, manbeforePosition, speed, AfterMove));
         Destroy(curSelectedObj.gameObject);
     }

@@ -43,6 +43,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
     }
     public void PlayHitAnimation()
     {
+        SoundManager.Instance.Play(SoundType.Se_Character_hitted);
         FSM.animator.SetTrigger("Hit");
     }
 
@@ -109,6 +110,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
         else
         {
             //몬스터 맞을 준비. 콜라이더 켜기
+            manager.waveLink.SetAllMonsterInfoColliderEnable(false);
             var monsterList = TileMaker.Instance.GetTargetList(command.target, command.skill.SkillTableElem.range, isDrag);
             var neverChangeMonsterList = new List<MonsterUnit>(monsterList);
             foreach (var target in neverChangeMonsterList)

@@ -328,6 +328,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8636221708215849516}
   - component: {fileID: 322953857038499853}
+  - component: {fileID: 503204968787129392}
+  - component: {fileID: 4253705287221793397}
   m_Layer: 0
   m_Name: Nightmare
   m_TagString: Untagged
@@ -442,6 +444,33 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.4921527, y: 0.0117173195, z: 0.000044107437}
     m_Extent: {x: 0.9018179, y: 0.61065954, z: 0.6718828}
   m_DirtyAABB: 0
+--- !u!64 &503204968787129392
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2316708496449701811}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -215049353937188462, guid: fc44aa86f4286c14f87482f3dc6513ae, type: 3}
+--- !u!114 &4253705287221793397
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2316708496449701811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: -6068789466521622862}
 --- !u!1 &2444248937854807004
 GameObject:
   m_ObjectHideFlags: 0
@@ -10673,6 +10702,7 @@ MonoBehaviour:
   monsterUnit: {fileID: -6068789466521622862}
   arrowTrigger: {fileID: 9152369610843814805}
   moveTrigger: {fileID: -5824986261559539959}
+  clickTrigger: {fileID: 503204968787129392}
 --- !u!114 &8338976006022578376
 MonoBehaviour:
   m_ObjectHideFlags: 0

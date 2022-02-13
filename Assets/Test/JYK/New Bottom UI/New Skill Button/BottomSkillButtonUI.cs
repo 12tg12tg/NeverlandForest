@@ -47,20 +47,25 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         cover.interactable = true;
         below.interactable = false;
 
-        if (bm == null)
-            return;
-
         if(buttonType == SkillButtonType.Swap)
         {
-            var arrow = bm.costLink.GetCurrentArrowElem();
-            skillImg.sprite = arrow.IconSprite;
-            costItemCount.text = bm.costLink.NumberOfArrows().ToString();
+            costItemCount.text = NumberOfArrows().ToString();
+            if (Vars.UserData.arrowType == ArrowType.Normal)
+            {
+                var arrow = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_20");
+                skillImg.sprite = arrow.IconSprite;
+            }
+            else
+            {
+                var arrow = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_21");
+                skillImg.sprite = arrow.IconSprite;
+            }
         }
         else if(buttonType == SkillButtonType.Info)
         {
             var oil = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_19");
             skillImg.sprite = oil.IconSprite;
-            costItemCount.text = bm.costLink.NumberOfOil().ToString();
+            costItemCount.text = NumberOfOil().ToString();
         }
     }
 
@@ -143,6 +148,15 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void IntoSkillStage() // 버튼
     {
+        // (공통) 스킬 정보 갱신, 사운드 재생
+        if(skill != null)
+            bottomUiManager.info.Init(skill);
+        SoundManager.Instance?.Play(SoundType.Se_Button);
+
+        // 널처리
+        if (bm == null)
+            return;
+
         // 튜토리얼
         if (bm.isTutorial && bm.tutorial.lockSkillButtonClick)
             return;
@@ -171,8 +185,6 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         if (!isCalculateOffset)
             CalculateOffset();
 
-        // 스킬 정보 갱신
-        bottomUiManager.info.Init(skill);
         if (!bottomUiManager.IsSkillLock)
         {
             // 스킬에 대한 소모값이 부족한 경우.
@@ -200,6 +212,9 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void Cancle() // 버튼
     {
+        // (공통) 사운드
+        SoundManager.Instance?.Play(SoundType.Se_Button);
+
         if (bm.isTutorial && bm.tutorial.lockSkillButtonClick)
             return;
         // 턴 종료 버튼 다시 활성화
@@ -292,5 +307,55 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
                 bottomUiManager.curSkillButton.Cancle();
         }
         bm.dragLink.Release();
+    }
+
+    //==========================================================================
+    private int NumberOfArrows()
+    {
+        if (Vars.UserData.arrowType == ArrowType.Normal)
+            return NumberOfArrow();
+        else
+            return NumberOfIronArrow();
+    }
+    private int NumberOfArrow()
+    {
+        int total = 0;
+        var inventory = Vars.UserData.HaveAllItemList;
+        foreach (var item in inventory)
+        {
+            if (item.itemId == "ITEM_20")
+            {
+                total += item.OwnCount;
+            }
+        }
+        return total;
+    }
+
+    private int NumberOfIronArrow()
+    {
+        int total = 0;
+        var inventory = Vars.UserData.HaveAllItemList;
+        foreach (var item in inventory)
+        {
+            if (item.itemId == "ITEM_21")
+            {
+                total += item.OwnCount;
+            }
+        }
+        return total;
+    }
+
+    public int NumberOfOil()
+    {
+        int total = 0;
+        var inventory = Vars.UserData.HaveAllItemList;
+        foreach (var item in inventory)
+        {
+            if (item.itemId == "ITEM_19")
+            {
+                total += item.OwnCount;
+            }
+        }
+        return total;
     }
 }

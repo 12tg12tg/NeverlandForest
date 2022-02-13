@@ -28,21 +28,27 @@ public class AnimationFunc : MonoBehaviour
         huntingManager.Shooting();
     }
 
-    public void GatherIngPickUpEnd()
-    {
-        gathringSystem.GatheringEnd();
-        axe.SetActive(false);
-        shovel.SetActive(false);
-    }
+    //public void GatherIngPickUpEnd()
+    //{
+    //    gathringSystem.GatheringEnd();
+    //    axe.SetActive(false);
+    //    shovel.SetActive(false);
+    //}
 
     public void GatheringUseAxe()
     {
         axe.SetActive(true);
     }
-
     public void GatheringUseShovel()
     {
-        Debug.Log("»ð »ç¿ë¸ð¼Ç");
         shovel.SetActive(true);
     }
+    public void GatheringIdle()
+    {
+        if(axe != null)
+            axe.SetActive(false);
+        if(shovel != null)
+            shovel.SetActive(false);
+    }
+
 }

@@ -156,6 +156,7 @@ public class BottomUIManager : MonoBehaviour
         bm.tileLink.DisplaySkillTile(curSkillButton.skill.SkillTableElem);
         skillButtons.ForEach(n => { if (n != curSkillButton) n.MakeUnclickable(); });
         tags.ForEach(n => n.interactable = false);
+        bm.waveLink.SetAllMonsterInfoColliderEnable(false);
     }
 
     public void ExitSkillState(bool isButton)
@@ -168,6 +169,7 @@ public class BottomUIManager : MonoBehaviour
         bm.tileLink.UndisplayMonsterTile();
         UpdateSkillInteractive();
         tags.ForEach(n => n.interactable = true);
+        bm.waveLink.SetAllMonsterInfoColliderEnable(false);
     }
 
     private void Update()
@@ -344,6 +346,20 @@ public class BottomUIManager : MonoBehaviour
         {
             var allItem = new DataAllItem(selectItem);
             allItem.OwnCount = 1;
+
+            if (allItem.ItemTableElem.isEat)
+            {
+                ConsumeManager.RecoveryHunger(allItem.ItemTableElem.stat_str);
+                ConsumeManager.RecoverHp(allItem.ItemTableElem.stat_Hp);
+            }
+            else if (allItem.itemId == "ITEM_19")
+            {
+                // 랜턴 1칸 채우면 되나?
+                ConsumeManager.FullingLantern(1);
+            }
+            else
+                return;
+
             if (Vars.UserData.RemoveItemData(allItem))
             {
                 popUpWindow.gameObject.SetActive(false);

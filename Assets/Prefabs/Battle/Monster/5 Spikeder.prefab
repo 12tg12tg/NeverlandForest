@@ -360,6 +360,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9220383817017491281}
   - component: {fileID: 9220383817028693519}
+  - component: {fileID: 2111363395095013379}
+  - component: {fileID: 7152428702709775909}
   m_Layer: 0
   m_Name: Spider King
   m_TagString: Untagged
@@ -474,6 +476,33 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.05664742, y: 0.09379655, z: 0.00005340576}
     m_Extent: {x: 1.1192688, y: 0.850442, z: 1.1757898}
   m_DirtyAABB: 0
+--- !u!64 &2111363395095013379
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220383817017189041}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: d2be7501b2c5da34798024d07c8d2c73, type: 3}
+--- !u!114 &7152428702709775909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9220383817017189041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f459e226a7540649a076f09ff17a61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unit: {fileID: 1332837144032885741}
 --- !u!1 &9220383817017189043
 GameObject:
   m_ObjectHideFlags: 0
@@ -1071,6 +1100,7 @@ MonoBehaviour:
   monsterUnit: {fileID: 1332837144032885741}
   arrowTrigger: {fileID: 7848955563663305559}
   moveTrigger: {fileID: 2606669802353808720}
+  clickTrigger: {fileID: 2111363395095013379}
 --- !u!114 &-1949735183627475427
 MonoBehaviour:
   m_ObjectHideFlags: 0
