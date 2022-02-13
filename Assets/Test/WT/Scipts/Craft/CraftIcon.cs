@@ -151,12 +151,37 @@ public class CraftIcon : MonoBehaviour
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+
+        if (fire.sprite != null)
+        {
+            is0ok = true;
+            fire.color = Color.white;
+
+        }
+        if (condiment.sprite == null)
+        {
+            is1ok = true;
+        }
+        else
+        {
+            condiment.color = Color.white;
+        }
+        if (material.sprite == null)
+        {
+            is2ok = true;
+        }
+        else
+        {
+            material.color = Color.white;
+        }
+
         result = currentCraft.Result;
         var resultid = $"ITEM_{result}";
         materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
+       
         materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
-
+       
         resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
         resultItemIcon.color = Color.white;
         resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
@@ -177,43 +202,30 @@ public class CraftIcon : MonoBehaviour
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
+        var zeroId = "ITEM_0";
         if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].ItemTableElem.id == materialobj0.id)
-                {
-                    is0ok = true;
+                {   
                     material0Num = i;
                 }
                 if (list[i].ItemTableElem.id == materialobj1.id)
                 {
-                    is1ok = true;
                     material1Num = i;
 
                 }
                 if (list[i].ItemTableElem.id == materialobj2.id)
                 {
-                    is2ok = true;
                     material2Num = i;
                 }
             }
-
             if (!is0ok)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
-            var zeroId = "ITEM_0";
-
-
-            if (materialobj1.id == zeroId)
-            {
-                is1ok = true;
-            }
-            if (materialobj2.id == zeroId)
-            {
-                is2ok = true;
-            }
+          
 
             if (is0ok && is1ok && is2ok)
             {
@@ -281,4 +293,23 @@ public class CraftIcon : MonoBehaviour
         page = 1;
         Init();
     }
+
+    public void CraftReset()
+    {
+        is0ok = false;
+        is1ok = false;
+        is2ok = false;
+
+        fire.sprite = null;
+        fire.color = Color.clear;
+        condiment.sprite = null;
+        condiment.color = Color.clear;
+
+        material.sprite = null;
+        material.color = Color.clear;
+
+        result = string.Empty;
+        makingTime.text = string.Empty;
+    }
+
 }

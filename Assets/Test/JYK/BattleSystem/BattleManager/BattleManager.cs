@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public enum MonsterActionType { None, Attack, Move }
 public enum PlayerType { None, Boy, Girl }
 public enum ActionType { Skill, Item }
-public enum BattleInitState { None, Dungeon, Tutorial, Bluemoon }
+public enum BattleInitState { None, Dungeon, Tutorial, Bluemoon, BluemoonSet }
 
 [DefaultExecutionOrder(10)]
 public class BattleManager : MonoBehaviour
@@ -39,6 +39,7 @@ public class BattleManager : MonoBehaviour
     public BattleDrag dragLink;
     public BattleCost costLink;
     public BattleTutorial tutorial;
+    public BluemoonSetting blueMoonSetLink;
 
     //Instance
     [Header("몬스터 관련 UI 캔버스 연결")]
@@ -111,6 +112,9 @@ public class BattleManager : MonoBehaviour
             case BattleInitState.Bluemoon:
                 Init(true);
                 break;
+            case BattleInitState.BluemoonSet:
+                InitBlueMoonSet();
+                break;
         }
 
         GameManager.Manager.Production?.FadeOut();
@@ -154,7 +158,6 @@ public class BattleManager : MonoBehaviour
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
     }
-
     public void TutorialInit(bool reInit = false)
     {
         // 1. 변수 초기화
@@ -327,7 +330,6 @@ public class BattleManager : MonoBehaviour
         //배틀상태 Start
         FSM.ChangeState(BattleState.Start);
     }
-
     private void CustomInit()
     {
         int totalMonsterNum = 0;
@@ -473,7 +475,6 @@ public class BattleManager : MonoBehaviour
         IsDuringPlayerAction = false;
         GameManager.Manager.State = GameState.Battle;
     }
-
     private void MonsterInit(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
         monsters.Clear();
@@ -673,6 +674,11 @@ public class BattleManager : MonoBehaviour
             wave[colIndex].SetActionCommand();
         }
     }
+    public void InitBlueMoonSet()
+    {
+
+    }
+
 
     //Command
     public void ClearCommand()

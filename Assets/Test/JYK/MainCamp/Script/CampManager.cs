@@ -306,9 +306,9 @@ public class CampManager : MonoBehaviour
         }
         else
         {
-            if (diaryManager.recipeIcon.fire.sprite != null &&
-                diaryManager.recipeIcon.condiment.sprite != null &&
-                diaryManager.recipeIcon.material.sprite != null)
+            if (diaryManager.recipeIcon.Isfireok &&
+                diaryManager.recipeIcon.Iscondimentok&&
+                diaryManager.recipeIcon.Ismaterialok)
             {
                 diaryManager.CallMakeCook();
             }

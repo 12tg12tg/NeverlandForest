@@ -502,8 +502,7 @@ public class GatheringSystem : MonoBehaviour
                 GatheringHerbsByTool();
                 GatheringSetAni(GatheringObjectType.Herbs);
                 SoundManager.Instance.Play(SoundType.Se_Spade);
-                gatheringRewardList[0].Item = curSelectedObj.subitem;
-                gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.subitem.ItemTableElem.IconSprite;
+                gatheringRewardList[0].Init(curSelectedObj.subitem);
                 gatheringRewardList[0].IsHaveItem = true;
                 rewardList.Add(gatheringRewardList[0].Item);
 
@@ -519,16 +518,13 @@ public class GatheringSystem : MonoBehaviour
         // 아이템 획득 준비 보상창에 생성하기
         if (gatheringRewardList[0].Item != null)
         {
-            gatheringRewardList[1].Item = curSelectedObj.item;
-            gatheringRewardList[1].rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+            gatheringRewardList[1].Init(curSelectedObj.subitem);
             gatheringRewardList[1].IsHaveItem = true;
-
             rewardList.Add(gatheringRewardList[1].Item);
         }
         else
         {
-            gatheringRewardList[0].Item = curSelectedObj.item;
-            gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+            gatheringRewardList[0].Init(curSelectedObj.item);
             gatheringRewardList[0].IsHaveItem = true;
 
             rewardList.Add(gatheringRewardList[0].Item);
@@ -559,8 +555,7 @@ public class GatheringSystem : MonoBehaviour
                 GatheringSetAni(GatheringObjectType.Herbs);
                 SoundManager.Instance.Play(SoundType.Se_Hand);
 
-                gatheringRewardList[0].Item = curSelectedObj.subitem;
-                gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.subitem.ItemTableElem.IconSprite;
+                gatheringRewardList[0].Init(curSelectedObj.subitem);
                 gatheringRewardList[0].IsHaveItem = true;
 
                 rewardList.Add(gatheringRewardList[0].Item);
@@ -577,16 +572,13 @@ public class GatheringSystem : MonoBehaviour
         // 아이템 획득준비 보상창에 생성하기
         if (gatheringRewardList[0].Item != null)
         {
-            gatheringRewardList[1].Item = curSelectedObj.item;
-            gatheringRewardList[1].rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+            gatheringRewardList[1].Init(curSelectedObj.subitem);
             gatheringRewardList[1].IsHaveItem = true;
-
             rewardList.Add(gatheringRewardList[1].Item);
         }
         else
         {
-            gatheringRewardList[0].Item = curSelectedObj.item;
-            gatheringRewardList[0].rewardIcon.sprite = curSelectedObj.item.ItemTableElem.IconSprite;
+            gatheringRewardList[0].Init(curSelectedObj.item);
             gatheringRewardList[0].IsHaveItem = true;
 
             rewardList.Add(gatheringRewardList[0].Item);

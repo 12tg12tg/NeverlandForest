@@ -29,7 +29,7 @@ public class DiaryManager : MonoBehaviour
     public GameObject gatheringParent;
 
     [Header("Ä·ÇÁ¿ä¸®°ü·Ã")]
-    private bool isRotation = true;
+    private bool isRotation = false;
     [SerializeField]private Sprite isRotationCheckImg;
     [SerializeField] private Sprite isNotRotationImg;
     [Header("Ä·ÇÁ ¸ð´ÚºÒ")]
@@ -114,9 +114,10 @@ public class DiaryManager : MonoBehaviour
     {
         if (isRotation)
         {
-            if (recipeIcon.fire.sprite !=null && recipeIcon.condiment.sprite != null && recipeIcon.material.sprite != null)
+            if (recipeIcon.Isfireok && recipeIcon.Iscondimentok && recipeIcon.Ismaterialok)
             {
                 CookingRotationPanel.SetActive(true);
+                recipeIcon.CookReset();
             }
             else
             {
@@ -168,7 +169,7 @@ public class DiaryManager : MonoBehaviour
     public void CloseProduceReward()
     {
         produceRewardPanel.SetActive(false);
-
+        craftIcon.CraftReset();
     }
     public void AllClose()
     {
