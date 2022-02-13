@@ -101,9 +101,16 @@ public class RecipeIcon : MonoBehaviour
 
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+
+        if (fire.sprite !=null)
+        {
+            isfireok = true;
+        }
+
         if (condiment.sprite == null)
         {
             condiment.color = Color.clear;
+            iscondimentok = true;
         }
         else
         {
@@ -113,6 +120,8 @@ public class RecipeIcon : MonoBehaviour
         if (material.sprite == null)
         {
             material.color = Color.clear;
+            ismaterialok = true;
+
         }
         else
         {
@@ -144,6 +153,7 @@ public class RecipeIcon : MonoBehaviour
     {
         var makeTime = int.Parse(Time);
         var list = Vars.UserData.HaveAllItemList;
+      
         if (result != null)
         {
             for (int i = 0; i < list.Count; i++)
@@ -219,14 +229,7 @@ public class RecipeIcon : MonoBehaviour
                 ConsumeManager.TimeUp(makeTime);
                 ConsumeManager.RecoveryHunger(resultitem.ItemTableElem.stat_str);
                 ConsumeManager.SaveConsumableData();
-                isfireok = false;
-                iscondimentok = false;
-                ismaterialok = false;
-                fire.sprite = null;
-                condiment.sprite = null;
-                material.sprite = null;
-                result = string.Empty;
-                makingTime.text = string.Empty;
+               
                 DiaryManager.Instacne.OpenCookingReward();
             }
         }
@@ -246,5 +249,23 @@ public class RecipeIcon : MonoBehaviour
             page++;
             SetPageButton();
         }
+    }
+
+    public void CookReset()
+    {
+        isfireok = false;
+        iscondimentok = false;
+        ismaterialok = false;
+
+        fire.sprite = null;
+        fire.color = Color.clear;
+        condiment.sprite = null;
+        condiment.color = Color.clear;
+
+        material.sprite = null;
+        material.color = Color.clear;
+
+        result = string.Empty;
+        makingTime.text = string.Empty;
     }
 }
