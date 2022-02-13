@@ -66,6 +66,8 @@ public class CampStuff : MonoBehaviour, IPointerClickHandler
     public void StartBlueMoon()
     {
         EventBus<CampManager.CampEvent>.Publish(CampManager.CampEvent.StartBlueMoon);
+        BattleManager.initState = BattleInitState.BluemoonSet;
+        GameManager.Instance.LoadScene(GameScene.Battle);
     }
     public void StartMaking()
     {

@@ -429,7 +429,7 @@ public class CampManager : MonoBehaviour
     {
         if (vals.Length != 0) return;
         Debug.Log($"Open Open BlueMoon Scene ");
-        SoundManager.Instance.Play(SoundType.Se_Button);
+        SoundManager.Instance?.Play(SoundType.Se_Button);
 
     }
     //ProducingInCamp

@@ -137,7 +137,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public void LoadScene(GameScene scene)
     {
         //TODO 씬 변경되도 안꺼짐
-        SoundManager.Instance.PlayWalkSound(false);
+        SoundManager.Instance?.PlayWalkSound(false);
         ReleaseValue();
         switch (scene)
         {

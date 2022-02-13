@@ -111,22 +111,35 @@ public class BottomItemButtonUI : MonoBehaviour
         switch (GameManager.Manager.State)
         {
             case GameState.Battle:
-                if (BattleManager.Instance.FSM.curState == BattleState.Start
-                     && BattleManager.Instance.isPlayerFirst)
+                if(BattleManager.Instance.isBluemoonSet)
                 {
-                    if (!(elem.type == "INSTALLATION" && (elem.id != $"ITEM_{18}")))
+                    // 블루문일 경우
+                    if (!(elem.type == "INSTALLATION"))
                     {
                         DisableItem(true);
                     }
+                }
+                else
+                {
+                    // 블루문이 아닐경우
+                    if (BattleManager.Instance.FSM.curState == BattleState.Start
+                        && BattleManager.Instance.isPlayerFirst)
+                    {
+                        if (!(elem.type == "INSTALLATION" && (elem.id != $"ITEM_{18}")))
+                        {
+                            DisableItem(true);
+                        }
 
-                }
-                else if(BattleManager.Instance.FSM.curState == BattleState.Player)
-                {
-                    if (elem.stat_Hp <= 0)
+                    }
+                    else if (BattleManager.Instance.FSM.curState == BattleState.Player)
                     {
-                        DisableItem(true);
+                        if (elem.stat_Hp <= 0)
+                        {
+                            DisableItem(true);
+                        }
                     }
                 }
+
                 break;
             case GameState.Hunt:
                 break;

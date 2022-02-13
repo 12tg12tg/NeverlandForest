@@ -123,6 +123,27 @@ public class BattleManager : MonoBehaviour
         SoundManager.Instance?.Play(SoundType.BG_Battle);
     }
 
+    // Release
+    public void Release()
+    {
+        // 오브젝트풀 반환
+        var monsters = waveLink.AliveMonsters;
+        foreach (var monster in monsters)
+        {
+            monster.Release(); // 몬스터 -> 몬스터UI -> 토큰 전부 반환
+        }
+
+        // 트랩류
+        var tiles = TileMaker.Instance.TileList;
+        var traps = from n in tiles
+                    where n.obstacle != null
+                    select n.obstacle;
+        foreach (var trap in traps)
+        {
+            trap.Release();
+        }
+    }
+
     // 초기화
     public void Init(bool isBlueMoonBattle, bool isEndOfDeongun = false)
     {
@@ -700,15 +721,29 @@ public class BattleManager : MonoBehaviour
     }
     public void InitBlueMoonSet()
     {
+        // 게임 상태 설정
+        VarInit();
+        FSM.ChangeState(BattleState.Start);
+        tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+        tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
+
+        // 트랩정보 불러오기
+        blueMoonSetLink.LoadTrapData();
+
         // ui 설정
         uiLink.backToCampButton.gameObject.SetActive(true);
         uiLink.backToCampButton.interactable = true;
+
+        //Vars.UserData.UserItemInit(); // 임시 ★★★★★★★★★★
+
+        // 바텀 ui
+        BottomUIManager.Instance.ItemButtonInit();
 
         // 변수설정
         isBluemoonSet = true;
 
         // 시작
-        uiLink.PrintMessage("몬스터 습격 대비!", 2.5f, () => inputLink.WaitUntillSettingDone());
+        uiLink.PrintMessage("블루문 습격 대비!", 2.5f, () => inputLink.WaitUntillSettingDone());
     }
 
 
@@ -750,27 +785,7 @@ public class BattleManager : MonoBehaviour
                 uiLink.progressTrans.SetActive(false);
                 uiLink.PrintMessage($"승리!", 2.5f, () =>
                     {
-                        // ★승리
-                        if (isTutorial) // 튜토리얼
-                        {
-                            //어쩌라고
-                            tutorial.isWin = true;
-                            boy.PlayWinAnimation();
-                            girl.PlayWinAnimation();
-                            directingLink.LandDownLantern();
-                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-                            //uiLink.OpenRewardPopup();
-                        }
-                        else // 평상시
-                        {
-                            uiLink.OpenRewardPopup();
-                            boy.PlayWinAnimation();
-                            girl.PlayWinAnimation();
-                            directingLink.LandDownLantern();
-                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-
-                        }
+                        Win();
                     });
             }
             else
@@ -836,6 +851,32 @@ public class BattleManager : MonoBehaviour
     public void Lose()
     {
         isLose = true;
+        Release();
         GameManager.Manager.GameOver(GameOverType.BattleLoss);
+    }
+
+    public void Win()
+    {
+        // ★승리
+        if (isTutorial) // 튜토리얼
+        {
+            tutorial.isWin = true;
+            boy.PlayWinAnimation();
+            girl.PlayWinAnimation();
+            directingLink.LandDownLantern();
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+            //uiLink.OpenRewardPopup();
+        }
+        else // 평상시
+        {
+            uiLink.OpenRewardPopup();
+            boy.PlayWinAnimation();
+            girl.PlayWinAnimation();
+            directingLink.LandDownLantern();
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+        }
+
+        Release();
     }
 }

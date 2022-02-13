@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3103612831352625126}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: -0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -123,11 +123,32 @@ MonoBehaviour:
     isBurn: 0
     burn_recovery: 0
     stat_Hp: 0
+    stat_str: 0
     obstacleType: 0
     obstacleHp: 0
-    trapDamage: 0
+    damage: 0
     duration: 0
   another: {fileID: 0}
+  anotherDebuff:
+    owner: {fileID: 0}
+    elem:
+      id: 
+      name: 
+      desc: 
+      type: 
+      limitCount: 0
+      isEat: 0
+      isBurn: 0
+      burn_recovery: 0
+      stat_Hp: 0
+      stat_str: 0
+      obstacleType: 0
+      obstacleHp: 0
+      damage: 0
+      duration: 0
+    trapDamage: 0
+    duration: 0
+    oppositeSnare: {fileID: 0}
   hp: 0
 --- !u!1001 &8759077621501076641
 PrefabInstance:

@@ -152,6 +152,17 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
                 another.tile.obstacle = null;
                 another.Release();
             }
+            else if (type == TrapTag.Fence)
+            {
+                int col = (int)tile.index.y;
+                var tile0 = TileMaker.Instance.GetTile(new Vector2(0, col));
+                var tile1 = TileMaker.Instance.GetTile(new Vector2(1, col));
+                var tile2 = TileMaker.Instance.GetTile(new Vector2(2, col));
+
+                tile0.obstacle = null;
+                tile1.obstacle = null;
+                tile2.obstacle = null;
+            }
 
             tile.obstacle = null;
             Release();

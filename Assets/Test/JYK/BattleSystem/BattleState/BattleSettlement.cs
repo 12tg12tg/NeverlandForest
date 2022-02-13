@@ -47,25 +47,7 @@ public class BattleSettlement : State<BattleState>
                 manager.uiLink.progressTrans.SetActive(false);
                 manager.uiLink.PrintMessage($"½Â¸®!", 2.5f, () =>
                 {
-                    // ¡Ú½Â¸®
-                    if (manager.isTutorial) // Æ©Åä¸®¾ó
-                    {
-                        manager.tutorial.isWin = true;
-                        manager.boy.PlayWinAnimation();
-                        manager.girl.PlayWinAnimation();
-                        manager.directingLink.LandDownLantern();
-                        //manager.uiLink.OpenRewardPopup();
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-                    }
-                    else // Æò»ó½Ã
-                    {
-                        manager.uiLink.OpenRewardPopup();
-                        manager.boy.PlayWinAnimation();
-                        manager.girl.PlayWinAnimation();
-                        manager.directingLink.LandDownLantern();
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                    }
+                    manager.Win();
                 });
             }
             else

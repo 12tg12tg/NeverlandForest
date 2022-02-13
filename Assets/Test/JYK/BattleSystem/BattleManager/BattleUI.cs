@@ -227,4 +227,25 @@ public class BattleUI : MonoBehaviour
         rewardPopup.SetActive(true);
         rewardDiaryManager.OpenRewardsPopup(GameManager.Manager.reward.GetBattleRewards(bm.curMonstersNum));
     }
+
+    // BlueMoon
+    public void BackToCamp()
+    {
+        var trapPos = Vars.UserData.trapPos;
+        var trapType = Vars.UserData.trapType;
+        trapPos.Clear();
+        trapType.Clear();
+
+        var tiles = tm.TileList;
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i].obstacle == null)
+                continue;
+            trapPos.Add(tiles[i].index);
+            trapType.Add(tiles[i].obstacle.type);
+        }
+
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+        GameManager.Manager.LoadScene(GameScene.Camp);
+    }
 }

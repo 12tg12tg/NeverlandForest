@@ -19,14 +19,22 @@ public class BattleInput : MonoBehaviour
         //인벤토리에서 트랩류 스킬 테두리 On && 나머지 비활성화
         BottomUIManager.Instance.ItemListInit();
 
-        // 전투시작 버튼 활성화
-        SetActivateStartButton(true);
+        if (bm.isBluemoonSet)
+        {
+            // 블루문 준비일 경우
 
-        // 화살표 제 위치에 생성
-        BattleManager.Instance.uiLink.ShowArrow(true);
+        }
+        else
+        {
+            // 전투시작 버튼 활성화
+            SetActivateStartButton(true);
 
-        // 몬스터 UI 카메라 따라다니도록
-        BattleManager.Instance.waveLink.SetAllMonsterFollowUI(true);
+            // 화살표 제 위치에 생성
+            BattleManager.Instance.uiLink.ShowArrow(true);
+
+            // 몬스터 UI 카메라 따라다니도록
+            BattleManager.Instance.waveLink.SetAllMonsterFollowUI(true);
+        }
     }
 
     public void SetActivateStartButton(bool isShow)

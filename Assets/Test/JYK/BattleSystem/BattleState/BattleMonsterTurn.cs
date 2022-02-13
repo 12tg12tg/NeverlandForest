@@ -30,25 +30,7 @@ public class BattleMonsterTurn : State<BattleState>
                     manager.uiLink.turnSkipTrans.SetActive(false);
                     manager.uiLink.progressTrans.SetActive(false);
 
-                    // ¡Ú½Â¸®
-                    if (manager.isTutorial) // Æ©Åä¸®¾ó
-                    {
-                        manager.tutorial.isWin = true;
-                        manager.boy.PlayWinAnimation();
-                        manager.girl.PlayWinAnimation();
-                        manager.directingLink.LandDownLantern();
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-                        //manager.uiLink.OpenRewardPopup();
-                    }
-                    else // Æò»ó½Ã
-                    {
-                        manager.uiLink.OpenRewardPopup();
-                        manager.boy.PlayWinAnimation();
-                        manager.girl.PlayWinAnimation();
-                        manager.directingLink.LandDownLantern();
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
-                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-                    }
+                    manager.Win();
 
                 });
             }

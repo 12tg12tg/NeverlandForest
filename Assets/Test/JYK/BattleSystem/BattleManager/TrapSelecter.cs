@@ -79,11 +79,15 @@ public class TrapSelecter : MonoBehaviour
 
             yield return null;
         }
-        bm.uiLink.ShowArrow(true);
-        if (!bm.isTutorial)
+
+        if (!bm.isBluemoonSet)
         {
-            bm.inputLink.EnableStartButton();
-            bottomUI.tags.ForEach(n => n.interactable = true);
+            bm.uiLink.ShowArrow(true);
+            if (!bm.isTutorial)
+            {
+                bm.inputLink.EnableStartButton();
+                bottomUI.tags.ForEach(n => n.interactable = true);
+            }
         }
     }
 
@@ -158,7 +162,7 @@ public class TrapSelecter : MonoBehaviour
                     var tile2 = tm.GetTile(new Vector2(2, col));
                     bool selectable = tile0.obstacle == null 
                         && tile1.obstacle == null
-                        && tile2.obstacle == null;
+                        && tile2?.obstacle == null;
 
                     if (notPlayerTileAndStartLine && notStartLine && selectable)
                     {
@@ -226,7 +230,7 @@ public class TrapSelecter : MonoBehaviour
                 pos.y = obs.transform.position.y;
                 obs.transform.position = pos;
 
-                obs.Init(tile);
+                obs.Init(tile1);
                 break;
             default:
                 break;

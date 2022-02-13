@@ -159,7 +159,7 @@ public class DungeonRewardDiaryManager : MonoBehaviour
                 rewardSlots[i].Init(null);
             }
         }
-        SoundManager.Instance.Play(SoundType.Se_Diary);
+        SoundManager.Instance?.Play(SoundType.Se_Diary);
     }
 
     public void QuitContents() => GameManager.Manager.LoadScene(GameScene.Dungeon);

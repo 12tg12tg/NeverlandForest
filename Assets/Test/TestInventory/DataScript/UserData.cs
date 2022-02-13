@@ -15,8 +15,10 @@ public class UserData
     public MainTutorialStage mainTutorial;
     public ContentsTutorialProceed contentsTutorial = new ContentsTutorialProceed();
 
-    //Item Info
+    //Battle Info
     public ArrowType arrowType;
+    public List<Vector2> trapPos;
+    public List<TrapTag> trapType;
 
     //World Info
     public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();
@@ -174,8 +176,6 @@ public class UserData
 
     public bool AddItemData(DataAllItem newItem)
     {
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-
         if (newItem.OwnCount == 0)
             return false;
 
@@ -195,6 +195,7 @@ public class UserData
         if (myInventoryFullCount == maxInventoryItemCount)
         {
             Debug.Log("아이템이 초과되어 전부 넣지 못합니다");
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
             return false;
             // 아이템 못넣음
         }
@@ -218,12 +219,14 @@ public class UserData
                         newItem.OwnCount -= (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount); // 서순중요
                         myItem.OwnCount += (myItem.ItemTableElem.limitCount - myItem.InvenRemainCount);
                         // 아이템 다 안들어감
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                         return false;
                     }
                 }
                 else
                 {
                     // 아이템 못넣음
+                    SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                     return false;
                 }
             }
@@ -258,6 +261,7 @@ public class UserData
                                 myItem.OwnCount--;
                                 newItem.OwnCount++;
                                 // 아이템 다 안들어감
+                                SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                                 return false;
                             }
                         }
@@ -290,6 +294,7 @@ public class UserData
                         myItem.OwnCount = newItem.OwnCount;
                         newItem.OwnCount = overOwnCount;
                         // 아이템 다 안들어감
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
                         return false;
                     }
                 }
@@ -297,6 +302,7 @@ public class UserData
         }
         // 전부 들어감!
         newItem.OwnCount = 0;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
         return true;
     }
     public bool RemoveItemData(DataAllItem removeItem)
