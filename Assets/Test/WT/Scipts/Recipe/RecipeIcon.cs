@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 // 인벤토리 컨트롤러 제거, DataAllItem 속성들 다양해짐
@@ -36,6 +35,15 @@ public class RecipeIcon : MonoBehaviour
     public Image material;
     public TextMeshProUGUI makingTime;
 
+    public Image resultItemIcon;
+    public TextMeshProUGUI resultItemName;
+    public TextMeshProUGUI resultItemDesc;
+
+    public Image rewardresultItemIcon;
+    public TextMeshProUGUI rewardresultItemName;
+    public TextMeshProUGUI rewardresultItemDesc;
+
+
     [SerializeField] private Button previewButton;
     [SerializeField] private Button nextButton;
 
@@ -57,9 +65,9 @@ public class RecipeIcon : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             var index = i + 5 * (page - 1);
-            if (index< itemList.Count)
+            if (index < itemList.Count)
             {
-                itemGoList[i].Init(table, itemList[index],this);
+                itemGoList[i].Init(table, itemList[index], this);
             }
             else
             {
@@ -93,7 +101,23 @@ public class RecipeIcon : MonoBehaviour
 
         fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+        if (condiment.sprite == null)
+        {
+            condiment.color = Color.clear;
+        }
+        else
+        {
+            condiment.color = Color.white;
+        }
         material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+        if (material.sprite == null)
+        {
+            material.color = Color.clear;
+        }
+        else
+        {
+            condiment.color = Color.white;
+        }
         result = currentRecipe.Result;
 
         fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
@@ -102,6 +126,18 @@ public class RecipeIcon : MonoBehaviour
 
         Time = currentRecipe.Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+        var resultid = $"ITEM_{result}";
+        resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        resultItemIcon.color = Color.white;
+        resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+        resultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+
+        rewardresultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        rewardresultItemIcon.color = Color.white;
+        rewardresultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
+        rewardresultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+
+
         CampManager.Instance.cookingText.text = "요리 하기";
     }
     public void MakeCooking()
@@ -133,17 +169,18 @@ public class RecipeIcon : MonoBehaviour
             {
                 CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
-            else if (!iscondimentok)
+            var zeroId = "ITEM_0";
+
+            if (condimentobj.id == zeroId)
             {
+                condimentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(zeroId));
                 iscondimentok = true;
-                var stringid = "ITEM_0";
-                condimentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid));
             }
-            else if (!ismaterialok)
+
+            if (materialobj.id == zeroId)
             {
                 ismaterialok = true;
-                var stringid = "ITEM_0";
-                materialitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringid));
+                materialitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(zeroId));
             }
 
             if (isfireok && iscondimentok && ismaterialok)
@@ -152,7 +189,7 @@ public class RecipeIcon : MonoBehaviour
                 fireitem = new DataAllItem(list[fireNum]);
                 fireitem.OwnCount = 1;
 
-                if (condimentitem ==null)
+                if (condimentitem == null)
                 {
                     condimentitem = new DataAllItem(list[condimentNum]);
                     condimentitem.OwnCount = 1;
@@ -166,15 +203,15 @@ public class RecipeIcon : MonoBehaviour
                 var stringId = $"ITEM_{result}";
                 resultitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
 
-                if (fireitem.itemId != "ITEM_0")
+                if (fireitem.itemId != zeroId)
                 {
                     Vars.UserData.RemoveItemData(fireitem);
                 }
-                if (condimentitem.itemId != "ITEM_0")
+                if (condimentitem.itemId != zeroId)
                 {
                     Vars.UserData.RemoveItemData(condimentitem);
                 }
-                if (materialitem.itemId != "ITEM_0")
+                if (materialitem.itemId != zeroId)
                 {
                     Vars.UserData.RemoveItemData(materialitem);
                 }
@@ -190,7 +227,6 @@ public class RecipeIcon : MonoBehaviour
                 material.sprite = null;
                 result = string.Empty;
                 makingTime.text = string.Empty;
-                Debug.Log("요리 완료");
                 DiaryManager.Instacne.OpenCookingReward();
             }
         }
