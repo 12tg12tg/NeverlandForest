@@ -221,7 +221,9 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         }
         Directory.Delete(path, true);
 
-        StartCoroutine(Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f));
+        stm.FadeIn(() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
+
+        //StartCoroutine(Utility.CoSceneChange(SceneManager.GetActiveScene().buildIndex, 1f));
     }
 
     public void GoToGameEnd() // 버튼 클릭 함수 (옵션창, 게임오버창)에서 사용해야함

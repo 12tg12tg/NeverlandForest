@@ -614,6 +614,9 @@ public class CampManager : MonoBehaviour
     {
         for (int i = 0; i < gatheringRewardList.Count; i++)
         {
+            if (gatheringRewardList[i].Item == null)
+                continue;
+
             if (Vars.UserData.AddItemData(gatheringRewardList[i].Item) != false)
             {
                 Vars.UserData.AddItemData(gatheringRewardList[i].Item);
