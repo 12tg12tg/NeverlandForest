@@ -72,6 +72,9 @@ public class SoundManager : MonoBehaviour
     public void Awake()
     {
         instance ??= this;
+
+        SetVolumeBGM(Vars.UserData.bgmVolume);
+        SetVolumeSFX(Vars.UserData.sfVoulme);
     }
 
     // Àç»ý

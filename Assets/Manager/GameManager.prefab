@@ -44,7 +44,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -172,7 +172,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -321,8 +321,8 @@ MonoBehaviour:
   - {fileID: 7518764700048671705}
   - {fileID: 5645873509411612849}
   walkSoundPlayer: {fileID: 699965709315563659}
-  bgmSlider: {fileID: 0}
-  soundSlider: {fileID: 0}
+  bgmSlider: {fileID: 1113669858043498540}
+  soundSlider: {fileID: 4824272670940220741}
   soundList:
   - {fileID: 8300000, guid: cd6eb9a50f5eedb439179c5bc1115504, type: 3}
   - {fileID: 8300000, guid: 6d019e8c90ee5664f9872a39b2cea60e, type: 3}
@@ -432,7 +432,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: ad9657c317a89a544a169fcae86afb08, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -560,7 +560,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1084,7 +1084,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1275,7 +1275,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1403,7 +1403,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1531,7 +1531,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1708,7 +1708,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1836,7 +1836,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.189
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1973,7 +1973,6 @@ MonoBehaviour:
   pd: {fileID: 6944982644018452585}
   stm: {fileID: 5327264892044660255}
   gameoverUI: {fileID: 1763084964469484418}
-  optionPanelUI: {fileID: 1113669857577114174}
   optionBlackPanel: {fileID: 8451138474389393811}
   productionCamera: {fileID: 25882064784125172}
   isClear: 0
@@ -2836,11 +2835,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
---- !u!1 &1113669857577114174 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8617020773635340115, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+--- !u!114 &1113669858043498540 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8617020773304745281, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
   m_PrefabInstance: {fileID: 8710316172433927533}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4824272670940220741 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4184407038010843176, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
+  m_PrefabInstance: {fileID: 8710316172433927533}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4db7a114972834c8e4117be1d82ba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5076340409415992233 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4509100330321981124, guid: 68de55fbd1362fe419a4c9b480ce8329, type: 3}
