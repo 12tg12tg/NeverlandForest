@@ -66,6 +66,13 @@ public class GatheringSystem : MonoBehaviour
     public GameObject toolCompleteTimeParent;
     public GameObject toolButtonParent;
     public GameObject toolRemainParent;
+    [Header("채집종류 한가지 때 레이어 사용")]
+    public GameObject toolConsumeEmptyLayer;
+    public GameObject toolIconEmptyLayer;
+    public GameObject toolCompleteTimeEmptyLayert;
+    public GameObject toolButtonEmptyLayer;
+    public GameObject toolRemainEmptyLayer;
+
 
     private List<GameObject> gatherings = new List<GameObject>();
     [SerializeField]
@@ -288,6 +295,13 @@ public class GatheringSystem : MonoBehaviour
         toolButtonParent.SetActive(true);
         toolRemainParent.SetActive(true);
 
+        toolConsumeEmptyLayer.SetActive(true);
+        toolIconEmptyLayer.SetActive(true);
+        toolCompleteTimeEmptyLayert.SetActive(true);
+        toolButtonEmptyLayer.SetActive(true);
+        toolRemainEmptyLayer.SetActive(true);
+
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -336,7 +350,12 @@ public class GatheringSystem : MonoBehaviour
         toolButtonParent.SetActive(true);
         toolRemainParent.SetActive(true);
 
-        toolImage.GetComponent<Image>().color = Color.white;
+        toolConsumeEmptyLayer.SetActive(true);
+        toolIconEmptyLayer.SetActive(true);
+        toolCompleteTimeEmptyLayert.SetActive(true);
+        toolButtonEmptyLayer.SetActive(true);
+        toolRemainEmptyLayer.SetActive(true);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -385,6 +404,12 @@ public class GatheringSystem : MonoBehaviour
         toolButtonParent.SetActive(false);
         toolRemainParent.SetActive(false);
 
+        toolConsumeEmptyLayer.SetActive(false);
+        toolIconEmptyLayer.SetActive(false);
+        toolCompleteTimeEmptyLayert.SetActive(false);
+        toolButtonEmptyLayer.SetActive(false);
+        toolRemainEmptyLayer.SetActive(false);
+
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
@@ -420,6 +445,12 @@ public class GatheringSystem : MonoBehaviour
         toolCompleteTimeParent.SetActive(false);
         toolButtonParent.SetActive(false);
         toolRemainParent.SetActive(false);
+
+        toolConsumeEmptyLayer.SetActive(false);
+        toolIconEmptyLayer.SetActive(false);
+        toolCompleteTimeEmptyLayert.SetActive(false);
+        toolButtonEmptyLayer.SetActive(false);
+        toolRemainEmptyLayer.SetActive(false);
 
         if (lanternstate == LanternState.Level4) // 가장 밝은 상태
         {
@@ -729,26 +760,6 @@ public class GatheringSystem : MonoBehaviour
             ConsumeManager.TimeUp(0, 1);
         else
             ConsumeManager.TimeUp(30, 1);
-    }
-    private static void GatheringHerbsByTool() // 약초
-    {
-        var lanternstate = ConsumeManager.CurLanternState;
-        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
-            ConsumeManager.TimeUp(30);
-        else if (lanternstate == LanternState.Level3)
-            ConsumeManager.TimeUp(30);
-        else
-            ConsumeManager.TimeUp(0, 1);
-    }
-    private static void GatheringMushroomByTool() // 버섯
-    {
-        var lanternstate = ConsumeManager.CurLanternState;
-        if (lanternstate == LanternState.Level4) // 가장 밝은 상태
-            ConsumeManager.TimeUp(30);
-        else if (lanternstate == LanternState.Level3)
-            ConsumeManager.TimeUp(30);
-        else
-            ConsumeManager.TimeUp(0, 1);
     }
 
     public void CloseBagisFull()
