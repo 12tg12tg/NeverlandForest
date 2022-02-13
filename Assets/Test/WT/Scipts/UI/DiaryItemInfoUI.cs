@@ -12,6 +12,7 @@ public class DiaryItemInfoUI : MonoBehaviour
     public void Init()
     {
         img.sprite = null;
+        img.color = Color.clear;
         info_name.text = "정보 없음";
         info_description.text = "정보 없음";
     }
@@ -22,6 +23,7 @@ public class DiaryItemInfoUI : MonoBehaviour
 
         var allItem = item;
         img.sprite = allItem.ItemTableElem.IconSprite;
+        img.color = Color.white;
         info_name.text = allItem.ItemTableElem.name;
         info_description.text = allItem.ItemTableElem.desc;
     }
