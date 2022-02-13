@@ -243,6 +243,12 @@ public class BattleManager : MonoBehaviour
             temp2.OwnCount = 3;
             Vars.UserData.AddItemData(temp2); // 3°³
 
+            // »ð
+            allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
+            temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_13"));
+            temp2.OwnCount = 1;
+            Vars.UserData.AddItemData(temp2); // 1°³
+
             BottomUIManager.Instance.UpdateCostInfo();
 
             // ·£ÅÏ¹à±â
@@ -309,6 +315,12 @@ public class BattleManager : MonoBehaviour
         temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
         temp.OwnCount = 3;
         Vars.UserData.AddItemData(temp); // 3°³
+
+        // »ð
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_13"));
+        temp.OwnCount = 1;
+        Vars.UserData.AddItemData(temp); // 1°³
 
         BottomUIManager.Instance.UpdateCostInfo();
 

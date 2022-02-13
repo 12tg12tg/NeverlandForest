@@ -45,13 +45,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
 
     [Header("UI 연결")]
     [SerializeField] private GameObject gameoverUI;
-    [SerializeField] private GameObject optionPanelUI;
     public GameObject optionBlackPanel;
-    public GameObject ObtionPanelUi
-    {
-        get => optionPanelUI;
-        set { optionPanelUI = value; }
-    }
 
     [Header("UI 연출용 카메라")]
     [SerializeField] private ScreenFixed productionCamera;
