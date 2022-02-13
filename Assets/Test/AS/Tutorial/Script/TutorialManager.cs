@@ -39,6 +39,9 @@ public class TutorialManager : MonoBehaviour
         switch (mainTutorial.MainTutorialStage)
         {
             case MainTutorialStage.Story:
+                var textGo = GameObject.FindGameObjectWithTag("StoryText");
+                text = textGo.GetComponent<TMP_Text>();
+                storyBoard = GameObject.FindGameObjectWithTag("StoryWindow");
                 storyBoard.SetActive(true);
                 gm.Production.black.SetActive(false);
                 StartCoroutine(mainTutorial.tutorialStory.CoTutorialStory(text, () => {

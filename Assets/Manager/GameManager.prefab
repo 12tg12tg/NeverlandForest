@@ -962,7 +962,6 @@ GameObject:
   - component: {fileID: 6982713613906664773}
   - component: {fileID: 5424192354945171867}
   - component: {fileID: 25882064784125172}
-  - component: {fileID: 6140677019484365120}
   m_Layer: 0
   m_Name: UI camera
   m_TagString: Untagged
@@ -1041,14 +1040,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameras: []
---- !u!81 &6140677019484365120
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5009254600954232689}
-  m_Enabled: 1
 --- !u!1 &5747521258541038562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1984,6 +1975,7 @@ MonoBehaviour:
   gameoverUI: {fileID: 1763084964469484418}
   optionPanelUI: {fileID: 859989509799437104}
   productionCamera: {fileID: 25882064784125172}
+  isClear: 1
 --- !u!1001 &2005849640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2219,11 +2211,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4101484767016821533, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4101484767016821533, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326899917516645, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2351,35 +2343,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 400
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 387.3555
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 200
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900637467441, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -193.67775
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900933651437, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.01
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5331326900933651437, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ffd91ef421e7b4347836b662dac622d4, type: 3}
