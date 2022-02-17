@@ -146,10 +146,11 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         }
     }
 
-    public void IntoSkillStage() // 버튼
+    public void IntoSkillStage() // 버튼 함수
     {
+        #region Exception
         // (공통) 스킬 정보 갱신, 사운드 재생
-        if(skill != null)
+        if (skill != null)
             bottomUiManager.info.Init(skill);
         SoundManager.Instance?.Play(SoundType.Se_Button);
 
@@ -184,6 +185,7 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
         // 계산 안되있으면 첫 계산.
         if (!isCalculateOffset)
             CalculateOffset();
+        #endregion
 
         if (!bottomUiManager.IsSkillLock)
         {
@@ -195,17 +197,17 @@ public class BottomSkillButtonUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
                 bm.uiLink.PrintCaution(cautionMessage, 0.75f, 0.3f, null);
 
-                // 깔짝
+                // 깔짝 연출
                 StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, alittleOpenPos, 0.15f,
                     () => { StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOrigianlPos, 0.15f, null)); }));
             }
+            // 스킬을 사용할 수 있는 경우
             else
             {
                 cover.interactable = false;
                 bottomUiManager.IntoSkillState(this);
                 StartCoroutine(Utility.CoTranslate(coverRt, coverRt.anchoredPosition, CoverOpenPos, 0.3f,
                     () => { below.interactable = true; }));
-
             }
         }
     }

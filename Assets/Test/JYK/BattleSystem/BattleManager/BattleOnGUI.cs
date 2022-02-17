@@ -23,7 +23,9 @@ public class BattleOnGUI : MonoBehaviour
         }
         if (GUILayout.Button("블루문O, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
         {
-            manager.Init(true);
+            BattleManager.initState = BattleInitState.Bluemoon;
+            GameManager.Manager.LoadScene(GameScene.Battle);
+            //manager.Init(true);
         }
 
         if (GUILayout.Button("Lantern -12", GUILayout.Width(100), GUILayout.Height(100)))

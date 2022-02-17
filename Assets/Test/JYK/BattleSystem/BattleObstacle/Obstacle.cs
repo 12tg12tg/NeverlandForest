@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Events;
 
 [Serializable]
 public class ObstacleDebuff
@@ -76,6 +77,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
 
     private bool isInit;
     private SpriteRenderer sprite;
+    private MeshRenderer[] rens;
 
     private void Start()
     {
@@ -93,6 +95,10 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
         if(type == TrapTag.Snare || type == TrapTag.BoobyTrap)
         {
             sprite = GetComponentInChildren<SpriteRenderer>();
+        }
+        else if(type == TrapTag.Fence)
+        {
+            rens = GetComponentsInChildren<MeshRenderer>();
         }
     }
 
@@ -137,6 +143,81 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
         another = null;
         anotherDebuff = null;
         TrapPool.Instance.ReturnObject(type, gameObject);
+    }
+
+    public void Attacked(int damage)
+    {
+        hp -= damage;
+        if (hp <= 0)
+        {
+            int col = (int)tile.index.y;
+            var tile0 = TileMaker.Instance.GetTile(new Vector2(0, col));
+            var tile1 = TileMaker.Instance.GetTile(new Vector2(1, col));
+            var tile2 = TileMaker.Instance.GetTile(new Vector2(2, col));
+            tile0.obstacle = null;
+            tile1.obstacle = null;
+            tile2.obstacle = null;
+            StartCoroutine(CoDisapear());
+        }
+        else
+        {
+            StartCoroutine(CoColoringRed());
+        }
+    }
+
+    private IEnumerator CoColoringRed()
+    {
+        var startColor = Color.white;
+        var endColor = Color.red;
+        var term = 0.5f;
+
+        var startTime = Time.realtimeSinceStartup;
+        var endTime = startTime + term;
+
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / term;
+            var color = Color.Lerp(startColor, endColor, ratio);
+            foreach (var ren in rens)
+                ren.material.color = color;
+            yield return null;
+        }
+
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / term;
+            var color = Color.Lerp(endColor, startColor, ratio);
+            foreach (var ren in rens)
+                ren.material.color = color;
+            yield return null;
+        }
+
+        foreach (var ren in rens)
+            ren.material.color = startColor;
+    }
+
+    private IEnumerator CoDisapear()
+    {
+        var startColor = Color.white;
+        var endColor = Color.black;
+        var term = 0.5f;
+
+        var startTime = Time.realtimeSinceStartup;
+        var endTime = startTime + term;
+
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / term;
+            var color = Color.Lerp(startColor, endColor, ratio);
+            foreach (var ren in rens)
+                ren.material.color = color;
+            yield return null;
+        }
+
+        foreach (var ren in rens)
+            ren.material.color = startColor;
+
+        Release();
     }
 
     public void OnPointerClick(PointerEventData eventData)

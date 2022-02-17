@@ -150,6 +150,11 @@ public class BattleManager : MonoBehaviour
         // 1. 변수 초기화
         VarInit();
 
+        if(isBlueMoonBattle)
+        {
+            blueMoonSetLink.LoadTrapData();
+        }
+
         if (!customBattle.useCustomMode)
         {
             // 2. Grade & Wave
@@ -261,7 +266,7 @@ public class BattleManager : MonoBehaviour
             // 나무도막
             var allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
             temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_1"));
-            temp2.OwnCount = 3;
+            temp2.OwnCount = 6;
             Vars.UserData.AddItemData(temp2); // 3개
 
             // 삽
@@ -410,6 +415,7 @@ public class BattleManager : MonoBehaviour
                 customWave = customBattle.cwave3;
                 existList = customBattle.haveMonster3;
             }
+
             for (int k = 0; k < 3; k++)
             {
                 if (existList[k])
@@ -423,6 +429,15 @@ public class BattleManager : MonoBehaviour
         }
 
         curMonstersNum = totalMonsterNum;
+
+        // 인벤토리 비우기
+        DataAllItem temp2;
+        var tempInventory2 = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+        foreach (var item in tempInventory2)
+        {
+            temp2 = new DataAllItem(item);
+            Vars.UserData.RemoveItemData(temp2);
+        }
 
         // 화살
         DataAllItem temp;
@@ -470,6 +485,28 @@ public class BattleManager : MonoBehaviour
         Vars.UserData.AddItemData(temp);
 
         BottomUIManager.Instance.UpdateCostInfo();
+
+        // 트랩 류
+        temp = new DataAllItem(costLink.WoodenTrapElem);
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_17"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_18"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_15"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_14"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
@@ -746,14 +783,12 @@ public class BattleManager : MonoBehaviour
         uiLink.PrintMessage("블루문 습격 대비!", 2.5f, () => inputLink.WaitUntillSettingDone());
     }
 
-
-    //Command
+    // Command
     public void ClearCommand()
     {
         boyInput.Clear();
         girlInput.Clear();
     }
-
     public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill, bool isDrag)
     {
         PlayerCommand command;
@@ -772,7 +807,6 @@ public class BattleManager : MonoBehaviour
         command.Create(target, skill);
         attacker.TurnInit(ActionType.Skill, isDrag);
     }
-
     public void EndOfPlayerAction()
     {
         // 이겼는지 체크
@@ -833,7 +867,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
     public void AllMonsterDebuffCheck(UnityAction action = null)
     {
         var monster = monsters.Where(x => x.obsDebuffs != null)
@@ -848,13 +881,13 @@ public class BattleManager : MonoBehaviour
         action?.Invoke();
     }
 
+    // Settlement
     public void Lose()
     {
         isLose = true;
         Release();
         GameManager.Manager.GameOver(GameOverType.BattleLoss);
     }
-
     public void Win()
     {
         // ★승리

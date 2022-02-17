@@ -796,4 +796,10 @@ public class MonsterUnit : UnitBase, IAttackable
             }
         }
     }
+
+    // BluemoonBattle
+    private void AttackFence(Obstacle fence)
+    {
+        fence.Attacked(baseElem.atk);
+    }
 }

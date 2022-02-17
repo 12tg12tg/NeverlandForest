@@ -43,7 +43,7 @@ public class PlayerBattleController : MonoBehaviour, IDropHandler
     }
     public void PlayHitAnimation()
     {
-        SoundManager.Instance.Play(SoundType.Se_Character_hitted);
+        SoundManager.Instance?.Play(SoundType.Se_Character_hitted);
         FSM.animator.SetTrigger("Hit");
     }
 

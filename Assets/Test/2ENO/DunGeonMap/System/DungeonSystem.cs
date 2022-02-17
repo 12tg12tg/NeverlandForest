@@ -52,22 +52,22 @@ public class DungeonSystem : MonoBehaviour
     private int lastIndex;
     //public void OnGUI()
     //{
-    //    //if (GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
-    //    //{
-    //    //    Vars.UserData.WorldMapPlayerData.isClear = true;
-    //    //    GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.World));
-    //    //    Vars.UserData.uData.Date++;
-    //    //}
-    //    //if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
-    //    //{
-    //    //    Vars.UserData.WorldMapPlayerData.isClear = false;
-    //    //    GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.World));
-    //    //    Vars.UserData.uData.Date++;
-    //    //}
-    //    //if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
-    //    //{
-    //    //    Init();
-    //    //}
+    //    if (GUI.Button(new Rect(100, 100, 100, 75), "Clear"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = true;
+    //        GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.World));
+    //        Vars.UserData.uData.Date++;
+    //    }
+    //    if (GUI.Button(new Rect(100, 200, 100, 75), "Run"))
+    //    {
+    //        Vars.UserData.WorldMapPlayerData.isClear = false;
+    //        GameManager.Manager.Production.FadeIn(() => GameManager.Manager.LoadScene(GameScene.World));
+    //        Vars.UserData.uData.Date++;
+    //    }
+    //    if (GUI.Button(new Rect(100, 400, 100, 150), "Start"))
+    //    {
+    //        Init();
+    //    }
     //}
     private void Awake()
     {

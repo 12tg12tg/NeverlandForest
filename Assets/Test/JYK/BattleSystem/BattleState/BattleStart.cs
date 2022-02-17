@@ -25,7 +25,7 @@ public class BattleStart : State<BattleState>
         manager.uiLink.ShowLanternRange();
 
         isReadyDone = false;
-        if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2)
+        if((int)Vars.UserData.uData.lanternState <= (int)LanternState.Level2 || BattleManager.initState == BattleInitState.Bluemoon)
         {
             // 몬스터 선공
             manager.uiLink.progressTrans.SetActive(true);
