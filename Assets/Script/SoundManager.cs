@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public enum SoundType
-{   
+{
     //BG
-    BG_Intro, BG_Main, BG_Battle,BG_Hunt, BG_Camp,
+    BG_Intro, BG_Main, BG_Battle, BG_Hunt, BG_Camp,
     //Se
-    Se_win,Se_Fail,Se_GameWin,Se_GameOver,Se_Axe,Se_Spade,Se_Hand,Se_Button,Se_Diary,
-    Se_Attack,Se_lightSingleAttack, Se_lightWide_attack,Se_lightForceMove,
+    Se_win, Se_Fail, Se_GameWin, Se_GameOver, Se_Axe, Se_Spade, Se_Hand, Se_Button, Se_Diary,
+    Se_Attack, Se_lightSingleAttack, Se_lightWide_attack, Se_lightForceMove,
     Se_Monster_hitted, Se_Character_hitted,
     Se_bowSingleShot, Se_bowMultyShot, Se_knockBack, Se_Walk, Se_MonsterTurnStart,
     Se_BetTypeMonsterAttack,
@@ -26,7 +25,12 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance => instance;
 
     private readonly float maxValue = 0.2f;
-
+    [SerializeField] private AudioSource bgm_Player;
+    [SerializeField] private List<AudioSource> sfx_Players;
+    [SerializeField] private AudioSource walkSoundPlayer;
+    [SerializeField] private Scrollbar bgmSlider;
+    [SerializeField] private Scrollbar soundSlider;
+    [SerializeField] private List<AudioClip> soundList;
     private bool muteBGM;
     public bool MuteBgm
     {
@@ -39,13 +43,6 @@ public class SoundManager : MonoBehaviour
         get => muteSF;
         set { muteSF = value; }
     }
-    [SerializeField] private AudioSource bgm_Player;
-    [SerializeField] private List<AudioSource> sfx_Players;
-    [SerializeField] private AudioSource walkSoundPlayer;
-
-    [SerializeField] private Scrollbar bgmSlider;
-    [SerializeField] private Scrollbar soundSlider;
-
     private float bgmVolume;
     public float BgmVolume
     {
@@ -61,14 +58,8 @@ public class SoundManager : MonoBehaviour
     public AudioSource WalkSoundPlayer
     {
         get => walkSoundPlayer;
-        set
-        {
-            walkSoundPlayer = value;
-        }
+        set { walkSoundPlayer = value; }
     }
-
-    [SerializeField] private List<AudioClip> soundList;
-
     public void Awake()
     {
         instance ??= this;
@@ -149,7 +140,7 @@ public class SoundManager : MonoBehaviour
         var cound = sfx_Players.Count;
         for (int i = 0; i < cound; i++)
         {
-            if(!sfx_Players[i].isPlaying)
+            if (!sfx_Players[i].isPlaying)
             {
                 sfx_Players[i].PlayOneShot(clip);
                 break;

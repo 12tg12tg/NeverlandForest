@@ -8,27 +8,27 @@ using UnityEngine.UI;
 public class RecipeIcon : MonoBehaviour
 {
     [SerializeField] private List<RecipeObj> itemGoList = new List<RecipeObj>();
-    private RecipeDataTable table;
-    private AllItemTableElem fireobj;
-    private AllItemTableElem condimentobj;
-    private AllItemTableElem materialobj;
     private string Time = null;
     private string result = string.Empty;
-    private bool isfireok;
-    private bool iscondimentok;
-    private bool ismaterialok;
+
     private int fireNum;
     private int condimentNum;
     private int materialNum;
+
+    private RecipeDataTable recipetable;
+    private AllItemTableElem fireobj;
+    private AllItemTableElem condimentobj;
+    private AllItemTableElem materialobj;
+
     private DataAllItem fireitem;
     private DataAllItem condimentitem;
     private DataAllItem materialitem;
     private DataAllItem resultitem;
     private AllItemDataTable allitemTable;
-
     private int page = 1;
+
     [HideInInspector] public RecipeObj currentRecipe;
-    private int maxPage;
+    private readonly int maxPage;
 
     public Image fire;
     public Image condiment;
@@ -47,6 +47,9 @@ public class RecipeIcon : MonoBehaviour
     [SerializeField] private Button previewButton;
     [SerializeField] private Button nextButton;
 
+    private bool isfireok;
+    private bool iscondimentok;
+    private bool ismaterialok;
     public bool Isfireok => isfireok;
     public bool Iscondimentok => iscondimentok;
     public bool Ismaterialok => ismaterialok;
@@ -57,35 +60,25 @@ public class RecipeIcon : MonoBehaviour
 
     public void Init()
     {
-        table = DataTableManager.GetTable<RecipeDataTable>();
+        recipetable = DataTableManager.GetTable<RecipeDataTable>();
         allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-
-        var itemList = Vars.UserData.HaveRecipeIDList;
-
+        var haverecipeList = Vars.UserData.HaveRecipeIDList;
         for (int i = 0; i < 5; i++)
         {
             var index = i + 5 * (page - 1);
-            if (index < itemList.Count)
-            {
-                itemGoList[i].Init(table, itemList[index], this);
-            }
+            if (index < haverecipeList.Count)
+                itemGoList[i].Init(recipetable, haverecipeList[index], this);
             else
-            {
                 itemGoList[i].Clear();
-            }
         }
         SetPageButton();
     }
     public void SetPageButton()
     {
         if (page == 1)
-        {
             previewButton.interactable = false;
-        }
         else if (page == maxPage)
-        {
             nextButton.interactable = false;
-        }
         else
         {
             previewButton.interactable = true;
@@ -98,51 +91,44 @@ public class RecipeIcon : MonoBehaviour
         var fireid = $"ITEM_{(currentRecipe.Recipes[0])}";
         var condimentid = $"ITEM_{(currentRecipe.Recipes[1])}";
         var materialid = $"ITEM_{(currentRecipe.Recipes[2])}";
-        var list = Vars.UserData.HaveAllItemList;
-        fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
-        condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
-        fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
-        if (fire.sprite !=null)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].ItemTableElem.id == fireobj.id)
-                {
-                    isfireok = true;
-                    fireNum = i;
-                }
-            }
-        }
-
-        if (condiment.sprite == null)
-        {
-            condiment.color = Color.clear;
-            iscondimentok = true;
-        }
-        else
-        {
-            condiment.color = Color.white;
-        }
-        material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
-        if (material.sprite == null)
-        {
-            material.color = Color.clear;
-            ismaterialok = true;
-
-        }
-        else
-        {
-            condiment.color = Color.white;
-        }
         result = currentRecipe.Result;
 
-       
+        var resultid = $"ITEM_{result}";
+        var userItemList = Vars.UserData.HaveAllItemList;
+        var zeroId = "ITEM_0";
+
+        fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
+        if (fire.sprite !=null)
+            fire.color = Color.white;
+        condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+        if (condiment.sprite != null)
+            condiment.color = Color.white;
+        else
+            condiment.color = Color.clear;
+        material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+        if (material.sprite != null)
+            material.color = Color.white;
+        else
+            material.color = Color.clear;
+        fireobj = allitemTable.GetData<AllItemTableElem>(fireid);
         condimentobj = allitemTable.GetData<AllItemTableElem>(condimentid);
         materialobj = allitemTable.GetData<AllItemTableElem>(materialid);
 
-        Time = currentRecipe.Time;
-        makingTime.text = $"제작 시간은 {Time}분 입니다. ";
-        var resultid = $"ITEM_{result}";
+        fireitem = new DataAllItem(fireobj);
+        fireitem.OwnCount = 1;
+
+        condimentitem = new DataAllItem(condimentobj);
+        condimentitem.OwnCount = 1;
+
+        materialitem = new DataAllItem(materialobj);
+        materialitem.OwnCount = 1;
+
+        if (condimentobj.id == zeroId)
+            iscondimentok = true;
+        if (materialobj.id == zeroId)
+            ismaterialok = true;
+
+        resultitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(resultid));
         resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
         resultItemIcon.color = Color.white;
         resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
@@ -153,68 +139,46 @@ public class RecipeIcon : MonoBehaviour
         rewardresultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
         rewardresultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
 
+        Time = currentRecipe.Time;
+        makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+      
+        for (int i = 0; i < userItemList.Count; i++)
+        {
+            if (userItemList[i].ItemTableElem.id == fireobj.id)
+            {
+                isfireok = true;
+                fireNum = i;
+            }
+        }
 
-        CampManager.Instance.cookingText.text = "요리 하기";
+       CampManager.Instance.cookingText.text = "요리 하기";
     }
     public void MakeCooking()
     {
         var makeTime = int.Parse(Time);
-        var list = Vars.UserData.HaveAllItemList;
-      
+        var userItemList = Vars.UserData.HaveAllItemList;
+        var zeroId = "ITEM_0";
         if (result != null)
         {
-            for (int i = 0; i < list.Count; i++)
+            for (int i = 0; i < userItemList.Count; i++)
             {
-                if (list[i].ItemTableElem.id == condimentobj.id)
+                if (userItemList[i].ItemTableElem.id == condimentobj.id)
                 {
-                    iscondimentok = true;
                     condimentNum = i;
-
+                    iscondimentok = true;
                 }
-                if (list[i].ItemTableElem.id == materialobj.id)
+                if (userItemList[i].ItemTableElem.id == materialobj.id)
                 {
-                    ismaterialok = true;
                     materialNum = i;
+                    ismaterialok = true;
                 }
             }
             if (!isfireok)
             {
                 CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
-            var zeroId = "ITEM_0";
-
-            if (condimentobj.id == zeroId)
+            else
             {
-                condimentitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(zeroId));
-                iscondimentok = true;
-            }
-
-            if (materialobj.id == zeroId)
-            {
-                ismaterialok = true;
-                materialitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(zeroId));
-            }
-
-            if (isfireok && iscondimentok && ismaterialok)
-            {
-
-                fireitem = new DataAllItem(list[fireNum]);
-                fireitem.OwnCount = 1;
-
-                if (condimentitem == null)
-                {
-                    condimentitem = new DataAllItem(list[condimentNum]);
-                    condimentitem.OwnCount = 1;
-                }
-                if (materialitem == null)
-                {
-                    materialitem = new DataAllItem(list[materialNum]);
-                    materialitem.OwnCount = 1;
-                }
-
-                var stringId = $"ITEM_{result}";
-                resultitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
-
                 if (fireitem.itemId != zeroId)
                 {
                     Vars.UserData.RemoveItemData(fireitem);
@@ -227,16 +191,20 @@ public class RecipeIcon : MonoBehaviour
                 {
                     Vars.UserData.RemoveItemData(materialitem);
                 }
-
+                if (DiaryManager.Instacne.IsRotation && ismaterialok && iscondimentok)
+                {
+                    DiaryManager.Instacne.CookingRotationPanel.SetActive(true);
+                }
                 ConsumeManager.TimeUp(makeTime);
                 ConsumeManager.RecoveryHunger(resultitem.ItemTableElem.stat_str);
                 ConsumeManager.SaveConsumableData();
-               
+                CookReset();
                 DiaryManager.Instacne.OpenCookingReward();
             }
         }
+        CampManager.Instance.camptutorial.TutorialCook_startButton = true;
     }
-    public void PreviewPageOpen()
+    public void PreviewPageOpen() //버튼함수
     {
         if (page > 1)
         {
@@ -244,7 +212,7 @@ public class RecipeIcon : MonoBehaviour
             SetPageButton();
         }
     }
-    public void NextPageOpen()
+    public void NextPageOpen() //버튼함수
     {
         if (page < maxPage)
         {

@@ -50,7 +50,13 @@ public class GatheringInCampRewardObject : MonoBehaviour
         //²Î: 85 %
         var randNum = Random.Range(1, 101);
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        //buttonimage.sprite = newItem.ItemTableElem.IconSprite;
+
+        if (GameManager.Manager.State ==GameState.Tutorial)
+        {
+            randNum = 95;
+            isBlank = true;
+        }
+
         if (randNum == 1)
         {
             //³ª¹«Åä¸·: 1 %
@@ -108,7 +114,6 @@ public class GatheringInCampRewardObject : MonoBehaviour
         {
             rewardIcon.sprite =null;
             rewardIcon.color = Color.clear;
-
         }
     }
     public void ItemButtonClick()

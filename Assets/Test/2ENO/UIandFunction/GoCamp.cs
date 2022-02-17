@@ -93,15 +93,15 @@ public class GoCamp : MonoBehaviour
     public void UseTreeBranch()
     {
         var list = Vars.UserData.HaveAllItemList;
-
         if (haveTreeBranch)
         {
             for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].itemId == "ITEM_2")
                 {
-                    list[i].OwnCount = 6;
-                    Vars.UserData.RemoveItemData(list[i]);
+                    var tempItem = new DataAllItem(list[i]);
+                    tempItem.OwnCount = 6;
+                    Vars.UserData.RemoveItemData(tempItem);
                     if (BottomUIManager.Instance != null)
                     {
                         BottomUIManager.Instance.ItemButtonInit();

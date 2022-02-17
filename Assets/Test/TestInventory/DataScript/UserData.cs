@@ -78,7 +78,6 @@ public class UserData
         if (!experienceHaveItemList.Contains(itemid))
         {
             experienceHaveItemList.Add(itemid);
-            Debug.Log($"itemid{ itemid}");
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ItemExperience);
             UpdateRecipe();
             UpdateCraft();
@@ -122,7 +121,7 @@ public class UserData
             bool isExperience = true;
             for (int j = 0; j < materials.Length; j++)
             {
-                if (materials[j] == "0")
+                if (materials[j] == "0") //재료가 필요없는 아이템 None아이템을 의미
                     continue;
                 var stringid = $"ITEM_{materials[j]}";
                 if (!experienceHaveItemList.Contains(stringid))

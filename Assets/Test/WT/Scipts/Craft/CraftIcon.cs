@@ -10,12 +10,12 @@ public class CraftIcon : MonoBehaviour
 
     [SerializeField] private List<CraftObj> itemGoList = new List<CraftObj>();
     private CraftDataTable table;
-    private AllItemTableElem materialobj0;
-    private AllItemTableElem materialobj1;
-    private AllItemTableElem materialobj2;
-    private bool is0ok;
-    private bool is1ok;
-    private bool is2ok;
+    private AllItemTableElem material0obj;
+    private AllItemTableElem material1obj;
+    private AllItemTableElem material2obj;
+    private bool ismaterial0have;
+    private bool ismaterial1have;
+    private bool ismaterial2have;
     private int material0Num;
     private int material1Num;
     private int material2Num;
@@ -23,7 +23,7 @@ public class CraftIcon : MonoBehaviour
     private DataAllItem condimentitem;
     private DataAllItem materialitem;
     private string Time = null;
-    private AllItemDataTable allitemTable;
+    private AllItemDataTable ItemTable;
 
     private int page = 1;
     private CraftButtonType currentButtonType = CraftButtonType.Tool;
@@ -48,33 +48,45 @@ public class CraftIcon : MonoBehaviour
     [SerializeField] private Button previewButton;
     [SerializeField] private Button nextButton;
 
-    public bool Is0ok
+    public bool Ismaterial0haveitem
     {
-        get => is0ok;
+        get => ismaterial0have;
         set
-        { is0ok = value; }
+        { ismaterial0have = value; }
     }
-    public bool Is1ok
+    public bool Ismaterial1haveitem
     {
-        get => is1ok;
-        set { is1ok = value; }
+        get => ismaterial1have;
+        set { ismaterial1have = value; }
     }
-    public bool Is2ok
+    public bool Ismaterial2haveitem
     {
-        get => is2ok;
-        set { is2ok = value; }
+        get => ismaterial2have;
+        set { ismaterial2have = value; }
     }
     public void Start()
     {
+        currentButtonType = CraftButtonType.Tool;
         Init();
     }
     public void Init()
     {
         table = DataTableManager.GetTable<CraftDataTable>();
-        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var itemList = Vars.UserData.HaveCraftIDList;
+        ItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        if (GameManager.Manager.State ==GameState.Tutorial)
+        {
+            currentButtonType = CraftButtonType.Herb;
+        }
+       
+        var craftList = Vars.UserData.HaveCraftIDList;
+
+        for (int i = 0; i < craftList.Count; i++)
+        {
+            Debug.Log($"{i}번째 제조법 타입은 { table.GetData<CraftTableElem>(craftList[i]).type}");
+        }
+
         int type;
-        var fillterList = itemList.Where(n =>
+        var fillterList = craftList.Where(n =>
         {
             switch (currentButtonType)
             {
@@ -108,7 +120,7 @@ public class CraftIcon : MonoBehaviour
         }
         SetPageButton();
     }
-    public void PreviewPageOpen()
+    public void PreviewPageOpen() //버튼함수
     {
         if (page > 1)
         {
@@ -116,7 +128,7 @@ public class CraftIcon : MonoBehaviour
             SetPageButton();
         }
     }
-    public void NextPageOpen()
+    public void NextPageOpen() //버튼함수
     {
         if (page < maxPage)
         {
@@ -143,71 +155,73 @@ public class CraftIcon : MonoBehaviour
     }
     public void OnChangedSelection()
     {
-        // 누른 레시피의 조합을 보여주자.
         var fireid = $"ITEM_{(currentCraft.Crafts[0])}";
         var condimentid = $"ITEM_{(currentCraft.Crafts[1])}";
         var materialid = $"ITEM_{(currentCraft.Crafts[2])}";
-        var list = Vars.UserData.HaveAllItemList; //인벤토리
+        var userItemList = Vars.UserData.HaveAllItemList;
+        var zeroId = "ITEM_0";
 
-        fire.sprite = allitemTable.GetData<AllItemTableElem>(fireid).IconSprite;
-        condiment.sprite = allitemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
-        material.sprite = allitemTable.GetData<AllItemTableElem>(materialid).IconSprite;
-        materialobj0 = allitemTable.GetData<AllItemTableElem>(fireid);
-
+        fire.sprite = ItemTable.GetData<AllItemTableElem>(fireid).IconSprite;
         if (fire.sprite != null)
-        {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list[i].ItemTableElem.id == materialobj0.id)
-                {
-                    is0ok = true;
-                    material0Num = i;
-                }
-            }
             fire.color = Color.white;
-        }
-        if (condiment.sprite == null)
-        {
-            is1ok = true;
-        }
         else
-        {
+            fire.color = Color.clear;
+        condiment.sprite = ItemTable.GetData<AllItemTableElem>(condimentid).IconSprite;
+        if (condiment.sprite != null)
             condiment.color = Color.white;
-        }
-        if (material.sprite == null)
-        {
-            is2ok = true;
-        }
         else
-        {
+            condiment.color = Color.clear;
+        material.sprite = ItemTable.GetData<AllItemTableElem>(materialid).IconSprite;
+        if (material.sprite != null)
             material.color = Color.white;
-        }
+        else
+            material.color = Color.clear;
+        material0obj = ItemTable.GetData<AllItemTableElem>(fireid);
+        material1obj = ItemTable.GetData<AllItemTableElem>(condimentid);
+        material2obj = ItemTable.GetData<AllItemTableElem>(materialid);
+
+        fireitem = new DataAllItem(material0obj);
+        fireitem.OwnCount = 1;
+        condimentitem = new DataAllItem(material1obj);
+        condimentitem.OwnCount = 1;
+        materialitem = new DataAllItem(material2obj);
+        materialitem.OwnCount = 1;
+
+        if (material1obj.id == zeroId)
+            ismaterial1have = true;
+        if (material2obj.id == zeroId)
+            ismaterial2have = true;
 
         result = currentCraft.Result;
         var resultid = $"ITEM_{result}";
-     
        
-        materialobj1 = allitemTable.GetData<AllItemTableElem>(condimentid);
-        materialobj2 = allitemTable.GetData<AllItemTableElem>(materialid);
-       
-        resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        resultItemIcon.sprite = ItemTable.GetData<AllItemTableElem>(resultid).IconSprite;
         resultItemIcon.color = Color.white;
-        resultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
-        resultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
+        resultItemName.text = ItemTable.GetData<AllItemTableElem>(resultid).name;
+        resultItemDesc.text = ItemTable.GetData<AllItemTableElem>(resultid).desc;
 
-        rewardresultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
+        rewardresultItemIcon.sprite = ItemTable.GetData<AllItemTableElem>(resultid).IconSprite;
         rewardresultItemIcon.color = Color.white;
-        rewardresultItemName.text = allitemTable.GetData<AllItemTableElem>(resultid).name;
-        rewardresultItemDesc.text = allitemTable.GetData<AllItemTableElem>(resultid).desc;
-
+        rewardresultItemName.text = ItemTable.GetData<AllItemTableElem>(resultid).name;
+        rewardresultItemDesc.text = ItemTable.GetData<AllItemTableElem>(resultid).desc;
 
         Time = currentCraft.Time;
         makingTime.text = $"제작 시간은 {Time}분 입니다. ";
+
+        for (int i = 0; i < userItemList.Count; i++)
+        {
+            if (userItemList[i].ItemTableElem.id == material0obj.id)
+            {
+                ismaterial0have = true;
+                material0Num = i;
+            }
+        }
+
         CampManager.Instance.producingText.text = "제작 하기";
     }
     public void MakeProducing()
     {
-        allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+        ItemTable = DataTableManager.GetTable<AllItemDataTable>();
         var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
         var zeroId = "ITEM_0";
@@ -215,40 +229,26 @@ public class CraftIcon : MonoBehaviour
         {
             for (int i = 0; i < list.Count; i++)
             {
-                if (list[i].ItemTableElem.id == materialobj1.id)
+                if (list[i].ItemTableElem.id == material1obj.id)
                 {
                     material1Num = i;
-
+                    ismaterial1have = true;
                 }
-                if (list[i].ItemTableElem.id == materialobj2.id)
+                if (list[i].ItemTableElem.id == material2obj.id)
                 {
                     material2Num = i;
+                    ismaterial2have = true;
                 }
             }
-            if (!is0ok)
+            if (!ismaterial0have)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
-          
-
-            if (is0ok && is1ok && is2ok)
+            else
             {
-                fireitem = new DataAllItem(list[material0Num]);
-                fireitem.OwnCount = 1;
-                if (materialobj1.id != zeroId)
-                {
-                    condimentitem = new DataAllItem(list[material1Num]);
-                    condimentitem.OwnCount = 1;
-                }
-                if (materialobj2.id != zeroId)
-                {
-                    materialitem = new DataAllItem(list[material2Num]);
-                    materialitem.OwnCount = 1;
-                }
-
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
-                var stringId = $"ITEM_{result}";
-                DiaryManager.Instacne.CraftResultItem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(stringId));
+                var resultId = $"ITEM_{result}";
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(ItemTable.GetData<AllItemTableElem>(resultId));
                 DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
@@ -260,11 +260,11 @@ public class CraftIcon : MonoBehaviour
                     ConsumeManager.SaveConsumableData();
                     CampManager.Instance.SetBonTime();
                     Vars.UserData.RemoveItemData(fireitem);
-                    if (materialobj1.id != zeroId)
+                    if (material1obj.id != zeroId)
                     {
                         Vars.UserData.RemoveItemData(condimentitem);
                     }
-                    if (materialobj2.id != zeroId)
+                    if (material2obj.id != zeroId)
                     {
                         Vars.UserData.RemoveItemData(materialitem);
                     }
@@ -275,25 +275,26 @@ public class CraftIcon : MonoBehaviour
                     CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
                     CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
                     CampManager.Instance.reconfirmPanelManager.bonfireTimeRemainPopup.SetActive(false);
-
                 }
             }
         }
+        CampManager.Instance.camptutorial.TutorialCraftStartbuttonClick = true;
+
     }
 
-    public void FillterByTool()
+    public void FillterByTool() //버튼함수
     {
         currentButtonType = CraftButtonType.Tool;
         page = 1;
         Init();
     }
-    public void FillterByBattle()
+    public void FillterByBattle()//버튼함수
     {
         currentButtonType = CraftButtonType.Battle;
         page = 1;
         Init();
     }
-    public void FillterByHerb()
+    public void FillterByHerb()//버튼함수
     {
         currentButtonType = CraftButtonType.Herb;
         page = 1;
@@ -302,9 +303,9 @@ public class CraftIcon : MonoBehaviour
 
     public void CraftReset()
     {
-        is0ok = false;
-        is1ok = false;
-        is2ok = false;
+        ismaterial0have = false;
+        ismaterial1have = false;
+        ismaterial2have = false;
 
         fire.sprite = null;
         fire.color = Color.clear;
