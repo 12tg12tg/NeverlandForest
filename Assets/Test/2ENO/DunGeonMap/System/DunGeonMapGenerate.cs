@@ -129,7 +129,13 @@ public class DunGeonMapGenerate : MonoBehaviour
                         gatheringData1.eventType = DunGeonEvent.Gathering;
                         gatheringData1.offSetBasePos = (-8 + (i * 16));
                         gatheringData1.roomIndex = curRoom.roomIdx;
-                        gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(0, 4);
+
+                        // ³ª¹«, ±¸µ¢ÀÌ, ¾àÃÊ, ¹ö¼¸
+                        var treePic = Random.Range(0f, 1f);
+                        if (treePic <= 0.3f)
+                            gatheringData1.gatheringtype = GatheringObjectType.Tree;
+                        else
+                            gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(1, 4);
                         eventData.Add(gatheringData1);
                     }
                 }

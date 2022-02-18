@@ -15,8 +15,7 @@ public class RandomEventManager : MonoBehaviour
 
     private DataRandomEvent beforeEventData;
 
-    public bool isFirst = true;
-    public bool isTutorialRandomEvent = true;
+    public bool isRandomEventTutorialExcute;
     public DataRandomEvent tutorialEvent = new();
     private void Awake()
     {
@@ -30,6 +29,8 @@ public class RandomEventManager : MonoBehaviour
     }
     public void init()
     {
+        isRandomEventTutorialExcute = Vars.UserData.contentsTutorial.RandomEvent;
+
         var tempRandomTable = DataTableManager.GetTable<RandomEventTable>();
         var tutoElem = tempRandomTable.GetData<RandomEventTableElem>("4");
         tutorialEvent = new DataRandomEvent(tutoElem);
@@ -37,8 +38,6 @@ public class RandomEventManager : MonoBehaviour
 
         if (Vars.UserData.isRandomDataLoad)
         {
-            isTutorialRandomEvent = Vars.UserData.isTutorialRandomEvent;
-
             foreach (var data in Vars.UserData.randomEventDatas)
             {
                 var newRndData = new DataRandomEvent(data);
@@ -144,14 +143,6 @@ public class RandomEventManager : MonoBehaviour
                 if (rndVal2 <= data)
                     break;
                 index++;
-            }
-
-            if (isFirst)
-            {
-                roomData.randomEventID = "4";
-                isFirst = false;
-                Vars.UserData.isFirst = isFirst;
-                break;
             }
 
             var eventIndex = randomEventPool.FindIndex(x => x.EventData.id == templist[index].EventData.id);

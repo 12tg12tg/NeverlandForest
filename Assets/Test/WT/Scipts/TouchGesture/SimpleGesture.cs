@@ -85,8 +85,6 @@ public class SimpleGesture : MonoBehaviour
         if (rightTurnDone && leftTurnDone)
         {
             /*클리어 조건 달성*/
-            Debug.Log("클리어 조건 달성");
-          
             campManager.CloseRotationPanel();
             rightTurnDone = false;
             leftTurnDone = false;

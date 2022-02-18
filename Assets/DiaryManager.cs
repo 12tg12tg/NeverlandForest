@@ -110,22 +110,6 @@ public class DiaryManager : MonoBehaviour
         ChangeRotateButtonImage();
     }
 
-    public void OpenCookingRotation()
-    {
-        if (isRotation)
-        {
-            if (recipeIcon.Isfireok && recipeIcon.Iscondimentok && recipeIcon.Ismaterialok)
-            {
-                CookingRotationPanel.SetActive(true);
-                recipeIcon.CookReset();
-            }
-            else
-            {
-                Debug.Log("재료가 설정되지 않았습니다.");
-
-            }
-        }
-    }
     public void CallMakeCook()
     {
         recipeIcon.MakeCooking();
@@ -161,6 +145,7 @@ public class DiaryManager : MonoBehaviour
     {
         craftIcon.MakeProducing();
         produceInventory.ItemButtonInit();
+        BottomUIManager.Instance.UpdateCostButton();
     }
     public void OpenProduceReward()
     {
@@ -235,9 +220,9 @@ public class DiaryManager : MonoBehaviour
         }
         produceInventory.ItemButtonInit();
         CraftResultItem = null;
-        craftIcon.Is0ok = false;
-        craftIcon.Is1ok = false;
-        craftIcon.Is2ok = false;
+        craftIcon.Ismaterial0haveitem = false;
+        craftIcon.Ismaterial1haveitem = false;
+        craftIcon.Ismaterial2haveitem = false;
         craftIcon.fire.sprite = null;
         craftIcon.condiment.sprite = null;
         craftIcon.material.sprite = null;

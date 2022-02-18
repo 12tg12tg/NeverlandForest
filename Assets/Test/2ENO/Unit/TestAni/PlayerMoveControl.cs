@@ -107,7 +107,14 @@ public class PlayerMoveControl : MonoBehaviour
                     boySpeed = Input.GetAxis("MouseAxes");
                     boySpeed *= speed;
                     if (EventSystem.current.IsPointerOverGameObject())
+                    {
+                        RigOff();
+                        playerAnimationBoy.SetFloat("Speed", 0f);
+                        playerAnimationGirl.SetFloat("Speed", 0f);
+                        Input.ResetInputAxes();
                         return;
+                    }
+
                     // 내가 터치하고 있을 때 플레이어보다 왼쪽인지 오른쪽인지 판단하는 형태로 구현하기..
                     var touchXPos = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryPos).x;
                     var playerXPos = Camera.main.WorldToViewportPoint(playerBoy.transform.localPosition).x; // 보이가 기준
@@ -231,7 +238,6 @@ public class PlayerMoveControl : MonoBehaviour
                         isHand = true;
                     }
                 }
-
                 playerAnimationBoy.SetFloat("Speed", boySpeed);
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
                 if (boySpeed > 0f)

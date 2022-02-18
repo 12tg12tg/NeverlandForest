@@ -29,6 +29,7 @@ public class CraftObj : MonoBehaviour
     {
         craftIcon.currentCraft = this;
         craftIcon.OnChangedSelection();
+        CampManager.Instance.camptutorial.TutorialCraftIconClick = true;
     }
     public void Clear()
     {

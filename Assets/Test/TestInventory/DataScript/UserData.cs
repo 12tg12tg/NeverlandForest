@@ -19,6 +19,7 @@ public class UserData
     public ArrowType arrowType;
     public List<Vector2> trapPos;
     public List<TrapTag> trapType;
+    public bool isbluemoonDone = false;
 
     //World Info
     public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();
@@ -40,9 +41,7 @@ public class UserData
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
     public List<string> useEventID = new List<string>();
-    public bool isFirst;
     public bool isRandomDataLoad;
-    public bool isTutorialRandomEvent;
 
     // 튜토리얼 던전
     public DungeonData tutorialDungeonData = new DungeonData();
@@ -64,7 +63,6 @@ public class UserData
     public ReadOnlyCollection<DataAllItem> HaveAllItemList => haveAllItemList.AsReadOnly();
     public List<string> experienceHaveItemList = new List<string>();
     public bool isItemDataLoad;
-
     //사운드옵션
 
     public float bgmVolume = 1f;
@@ -78,7 +76,6 @@ public class UserData
         if (!experienceHaveItemList.Contains(itemid))
         {
             experienceHaveItemList.Add(itemid);
-            Debug.Log($"itemid{ itemid}");
             SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.ItemExperience);
             UpdateRecipe();
             UpdateCraft();
@@ -122,7 +119,7 @@ public class UserData
             bool isExperience = true;
             for (int j = 0; j < materials.Length; j++)
             {
-                if (materials[j] == "0")
+                if (materials[j] == "0") //재료가 필요없는 아이템 None아이템을 의미
                     continue;
                 var stringid = $"ITEM_{materials[j]}";
                 if (!experienceHaveItemList.Contains(stringid))
@@ -327,6 +324,9 @@ public class UserData
             }
             Debug.Log("아이템 감소됨");
         }
+
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+
         return false;
     }
     // DataItem 으로 그리고 List로 다시 변환해서 사용해보기
@@ -352,9 +352,7 @@ public class UserData
         // 랜덤이벤트 데이터
         randomEventDatas = new List<DataRandomEvent>();
         useEventID = new List<string>();
-        isFirst = false;
         isRandomDataLoad = false;
-        isTutorialRandomEvent = false;
 
         // 인벤토리에 사용
         maxInventoryItemCount = 12;

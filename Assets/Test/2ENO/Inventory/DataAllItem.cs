@@ -1,11 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ItemListSaveData_0 : SaveDataBase
 {
     public List<string> itemIdList = new List<string>();
     public List<int> itemOwnCountList = new List<int>();
+    public List<int> itemRemainCountList = new List<int>();
 }
 
 public class DataAllItem
@@ -22,12 +21,14 @@ public class DataAllItem
     public DataAllItem(DataAllItem item)
     {
         OwnCount = item.OwnCount;
+        ToolCount = item.itemTableElem.tool_remainCount;
         var elem = DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>(item.itemTableElem.id);
         itemTableElem = elem;
         itemId = item.itemId;
     }
 
     public int OwnCount { get; set; }
+    public int ToolCount { get; set; }
 
     private AllItemTableElem itemTableElem;
     public AllItemTableElem ItemTableElem

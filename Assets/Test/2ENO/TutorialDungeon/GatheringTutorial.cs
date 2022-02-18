@@ -8,7 +8,7 @@ using TMPro;
 public class GatheringTutorial : MonoBehaviour
 {
     public bool isGatheringTutorial = false;
-    public int TutorialStep { get; set; } = 0;
+    public int TutorialStep { get; private set; } = 0;
 
     public TutorialTool tutorialTool;
     private RectTransform target;
@@ -29,9 +29,6 @@ public class GatheringTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-
-    public float delay;
-
     private readonly int gatheringTouchStep = 0;
     private readonly int gatheringMoveStep = 1;
     private readonly int gatheringStartStep = 2;
@@ -40,6 +37,8 @@ public class GatheringTutorial : MonoBehaviour
     private readonly int gatheringToolGetItem = 8;
     private readonly int gatheringToolCloseBtn = 10;
 
+    private Coroutine coTuto;
+
     [Header("포지션 타겟")]
     public RectTransform rewardUp;
     public RectTransform rewardItem;
@@ -47,6 +46,11 @@ public class GatheringTutorial : MonoBehaviour
     public RectTransform itemList;
     public RectTransform closeBtn;
 
+    public void NextTutorialStep()
+    {
+        Debug.Log($"튜토리얼 현재단계{TutorialStep}, 다음단계 {TutorialStep + 1}");
+        TutorialStep++;
+    }
     private void Awake()
     {
         dialogBox = tutorialTool.dialogBox;
@@ -62,28 +66,35 @@ public class GatheringTutorial : MonoBehaviour
 
     private void Update()
     {
-        delay += Time.deltaTime;
-        if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
-            delay > 1f &&
-            TutorialStep != gatheringTouchStep &&
-            TutorialStep != gatheringMoveStep &&
-            TutorialStep != gatheringStartStep &&
-            TutorialStep != gatheringToolUseStep &&
-            TutorialStep != gatheringToolSelectItem &&
-            TutorialStep != gatheringToolGetItem &&
-            TutorialStep != gatheringToolCloseBtn
-            )
+        if (isGatheringTutorial)
         {
-            delay = 0f;
-            TutorialStep++;
-            Debug.Log(TutorialStep);
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
+                TutorialStep != gatheringTouchStep &&
+                TutorialStep != gatheringMoveStep &&
+                TutorialStep != gatheringStartStep &&
+                TutorialStep != gatheringToolUseStep &&
+                TutorialStep != gatheringToolSelectItem &&
+                TutorialStep != gatheringToolGetItem &&
+                TutorialStep != gatheringToolCloseBtn
+                )
+            {
+                coTuto ??= StartCoroutine(CoTutorialTouch());
+            }
         }
+    }
+
+    public IEnumerator CoTutorialTouch()
+    {
+        yield return new WaitForSeconds(0.3f);
+        NextTutorialStep();
+        yield return new WaitForSeconds(1f);
+        coTuto = null;
+        Debug.Log("지금 Null만듬");
     }
 
     public IEnumerator CoGatheringTutorial()
     {
         isGatheringTutorial = true;
-        delay = 0f;
         GatheringTouch();
         yield return new WaitWhile(() => TutorialStep < 1);
 
@@ -102,7 +113,7 @@ public class GatheringTutorial : MonoBehaviour
         yield return new WaitWhile(() => TutorialStep < 4);
 
         //GatheringToolNoUse();
-        TutorialStep++;
+        NextTutorialStep();
         yield return new WaitWhile(() => TutorialStep < 5);
 
         GatheringToolUseStart();
@@ -137,7 +148,7 @@ public class GatheringTutorial : MonoBehaviour
     // 잘 만든건지는 모르겠...
     public void ButtonAddOneUseStepPlus(Button button)
     {
-        UnityAction action = () => { TutorialStep++; delay = 0f; };
+        UnityAction action = () => { NextTutorialStep(); button.interactable = false; };
         button.onClick.AddListener(action);
         button.onClick.AddListener(() => button.onClick.RemoveListener(action));
     }

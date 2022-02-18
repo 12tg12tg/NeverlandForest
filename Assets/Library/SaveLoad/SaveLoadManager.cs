@@ -139,8 +139,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
         randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
-        randomEvent.isTutorialRandomEvent = Vars.UserData.isTutorialRandomEvent;
-        randomEvent.isFirst = Vars.UserData.isFirst;
         SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
     }
 
@@ -250,6 +248,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         battleData.arrowType = Vars.UserData.arrowType;
         battleData.trapPos = Vars.UserData.trapPos;
         battleData.trapType = Vars.UserData.trapType;
+        battleData.isBluemoonDone = Vars.UserData.isbluemoonDone;
         SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
     }
     private void SaveSceneData()
@@ -275,10 +274,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         var idList = Vars.UserData.HaveAllItemList.Select(x => x.itemId).ToList();
         var ownCountList = Vars.UserData.HaveAllItemList.Select(x => x.OwnCount).ToList();
-
+        var remainCountList = Vars.UserData.HaveAllItemList.Select(x => x.ToolCount).ToList();
         itemData.itemIdList = idList;
         itemData.itemOwnCountList = ownCountList;
-
+        itemData.itemRemainCountList = remainCountList;
         SaveLoadSystem.Save(itemData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
     }
 
@@ -365,9 +364,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         {
             Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
             Vars.UserData.useEventID = randomEvent.useEventIDs;
-            Vars.UserData.isTutorialRandomEvent = randomEvent.isTutorialRandomEvent;
             Vars.UserData.isRandomDataLoad = true;
-            Vars.UserData.isFirst = randomEvent.isFirst;
         }
         else
             Vars.UserData.isRandomDataLoad = false;
@@ -424,12 +421,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.arrowType = battleData.arrowType;
             Vars.UserData.trapPos = battleData.trapPos;
             Vars.UserData.trapType = battleData.trapType;
+            Vars.UserData.isbluemoonDone = battleData.isBluemoonDone;
         }
         else
         {
             Vars.UserData.arrowType = ArrowType.Normal;
             Vars.UserData.trapPos = new List<Vector2>();
             Vars.UserData.trapType = new List<TrapTag>();
+            Vars.UserData.isbluemoonDone = false;
         }
     }
 
@@ -469,6 +468,8 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             {
                 var loadItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(itemData.itemIdList[i]));
                 loadItem.OwnCount = itemData.itemOwnCountList[i];
+                loadItem.ToolCount =itemData.itemRemainCountList[i];
+
 
                 Vars.UserData.DirectAddItem(loadItem);
             }

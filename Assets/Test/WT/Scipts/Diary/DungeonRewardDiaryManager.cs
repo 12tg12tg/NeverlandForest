@@ -16,8 +16,6 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     public Image gatheringInDungeonTagImage;
 
     [Header("ÆÇ³Ú°ü·Ã")]
-    public GameObject battleRewardPanel;
-    public GameObject huntRewardPanel;
     public GameObject gatheringInDungeonPanel;
     public GameObject gatheringInDungeonRewardPanel;
 
@@ -52,24 +50,10 @@ public class DungeonRewardDiaryManager : MonoBehaviour
     }
     public void AllClose()
     {
-        battleRewardPanel.SetActive(false);
-        huntRewardPanel.SetActive(false);
         gatheringInDungeonPanel.SetActive(false);
         gatheringInDungeonRewardPanel.SetActive(false);
     }
-    public void OpenBattleReward()
-    {
-        AllClose();
-        battleRewardPanel.SetActive(true);
-        SoundManager.Instance.Play(SoundType.Se_Diary);
-    }
-    public void OpenHuntReward()
-    {
-        AllClose();
-        huntRewardPanel.SetActive(true);
-        SoundManager.Instance.Play(SoundType.Se_Diary);
 
-    }
     public void OpenGatheringInDungeon()
     {
         AllClose();

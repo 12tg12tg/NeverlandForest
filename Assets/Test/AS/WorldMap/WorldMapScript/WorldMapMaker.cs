@@ -50,7 +50,7 @@ public struct Edge
         return false;
     }
 
-    public bool DistanceCheak(Vector3 pos, float dis)
+    public bool DistanceCheck(Vector3 pos, float dis)
     {
         // 사이각 구하기
         var dirVec2 = pos - start;

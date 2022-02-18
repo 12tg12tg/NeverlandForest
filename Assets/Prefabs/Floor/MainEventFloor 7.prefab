@@ -771,6 +771,7 @@ Transform:
   - {fileID: 1829588953362000194}
   - {fileID: 2438230893388392424}
   - {fileID: 1095660938961820578}
+  - {fileID: 7337286401683489840}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -854,6 +855,7 @@ MonoBehaviour:
   isMain: 0
   isActive: 0
   endPosVector: {x: 0, y: 0, z: 0}
+  endParticle: {fileID: 1108829219329366796}
 --- !u!1 &4586884045694048197
 GameObject:
   m_ObjectHideFlags: 0
@@ -17835,6 +17837,125 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4227987686411122, guid: 537fb8b5a8fdab14b9e8a0f8748eaec2, type: 3}
   m_PrefabInstance: {fileID: 7191877824053083045}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7337286401683178366
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3852165323539817435}
+    m_Modifications:
+    - target: {fileID: 123156, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_Name
+      value: DoorwayGlowEntrance
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.48
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.112
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.arc.mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.arc.spread
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.m_Position.x
+      value: -0.00002370453
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.m_Position.z
+      value: -1.4997247
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.m_Rotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.m_Rotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.m_Rotation.z
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: ShapeModule.radius.value
+      value: 1.4358381
+      objectReference: {fileID: 0}
+    - target: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: -0.42751288
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736590074660920505, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_LengthScale
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 8736590074660920505, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+      propertyPath: m_MaxParticleSize
+      value: 25
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+--- !u!198 &1108829219329366796 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7687676824579610738, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+  m_PrefabInstance: {fileID: 7337286401683178366}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7337286401683489840 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 477006, guid: b350c8e5688fa584bbdd22d09dcec70d, type: 3}
+  m_PrefabInstance: {fileID: 7337286401683178366}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7390439160823702492
 PrefabInstance:

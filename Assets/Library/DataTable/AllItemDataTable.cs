@@ -10,6 +10,7 @@ public class AllItemTableElem : DataTableElemBase
     public string desc;
     public string type;
     public int limitCount;
+    public int tool_remainCount;
     public bool isEat;
     public bool isBurn;
     public float burn_recovery;
@@ -41,6 +42,7 @@ public class AllItemTableElem : DataTableElemBase
         desc = data["DESC"];
         type = data["TYPE"];
         limitCount = int.Parse(data["LIMIT"]);
+        tool_remainCount = int.Parse(data["REMAINCOUNT"]);
         isEat = Convert.ToBoolean(int.Parse(data["EAT"]));
         isBurn = Convert.ToBoolean(int.Parse(data["BURN"]));
         burn_recovery =float.Parse(data["BURN_RECOVERY"]);

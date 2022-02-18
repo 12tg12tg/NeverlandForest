@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23082173835471528}
   - component: {fileID: 136098967398282018}
   - component: {fileID: 3518626693543184149}
+  - component: {fileID: 7626550989816787806}
   m_Layer: 31
   m_Name: Tree_05
   m_TagString: Untagged
@@ -114,6 +115,7 @@ MonoBehaviour:
   data:
     eventType: 0
     eventBasePos: {x: 0, y: 0, z: 0}
+    offSetBasePos: 0
     isCreate: 0
     objectPosition: {x: 0, y: 0, z: 0}
     roomIndex: 0
@@ -123,3 +125,27 @@ MonoBehaviour:
   objectType: 0
   gathering: {fileID: 0}
   objId: 0
+--- !u!114 &7626550989816787806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000352873293876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271c580db5fd384429cdac899152e9e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineResources: {fileID: 11400000, guid: d28e70f030b1a634db9a6a6d5478ef19, type: 2}
+  _outlineSettings:
+    _outlineSettings: {fileID: 0}
+    _outlineColor: {r: 1, g: 1, b: 1, a: 1}
+    _outlineWidth: 32
+    _outlineIntensity: 1.5
+    _outlineAlphaCutoff: 0.9
+    _outlineMode: -1
+  _ignoreLayerMask: 0
+  _cameraEvent: 15
+  _targetCamera: {fileID: 0}
+  _updateRenderers: 0

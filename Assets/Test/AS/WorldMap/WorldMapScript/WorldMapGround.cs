@@ -129,7 +129,7 @@ public class WorldMapGround : MonoBehaviour
     {
         for (int j = 0; j < edges.Count; j++)
         {
-            if (!edges[j].DistanceCheak(pos, dis))
+            if (!edges[j].DistanceCheck(pos, dis))
                 return false;
         }
         return true;

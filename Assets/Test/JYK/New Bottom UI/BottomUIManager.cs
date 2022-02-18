@@ -239,7 +239,11 @@ public class BottomUIManager : MonoBehaviour
         if(bm == null || (bm!= null && !bm.isTutorial))
             UpdateSkillInteractive();
     }
-
+    public void UpdateCostButton()
+    {
+        skillButtons[0].Init();
+        skillButtons[6].Init();
+    }
     // 아이템 버튼
     public void ItemButtonsInteractive(bool interactive)
     {
