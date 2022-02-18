@@ -24,6 +24,18 @@ public class Production : MonoBehaviour
             Debug.Log("페이드 인 끝");
         }));
     }
+    public void FadeInTitle(UnityAction action = null)
+    {
+        img1.gameObject.SetActive(true);
+
+        StartCoroutine(Utility.FadeIn(img1, bg, uiCanvas, () => {
+            img1.gameObject.SetActive(false);
+            bg.gameObject.SetActive(false);
+            action?.Invoke();
+        }));
+    }
+
+
     public void FadeOut(UnityAction action = null)
     {
         black.SetActive(false);

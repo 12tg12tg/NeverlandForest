@@ -18,7 +18,6 @@ public class ScreenFixed : MonoBehaviour
         SetResolution();
     }
 
-
     public void SetResolution()
     {
         // 디바이스의 가로, 세로 가져오기
@@ -29,17 +28,18 @@ public class ScreenFixed : MonoBehaviour
         var myRatioFixed = (float)fixedWidth / fixedHeight;
         var deviceRatioFixed = (float)deviceWidth / deviceHeight;
 
+        Debug.Log((int)(((float)deviceHeight / deviceWidth) * fixedWidth));
         // 지정한 비율로 변경한다
         Screen.SetResolution(fixedWidth, (int)(((float)deviceHeight / deviceWidth) * fixedWidth), true);
 
-        // 가로가 더 큰 경우와 세로가 더 큰 경우에 따라 보정해주는 것(가로든 세로든 하나는 꽉 찬 상태로)
+        // 기기의 해상도가 큰지 내가 지정한 해상도가 큰지에 따라 보정해주는 작업
         if (myRatioFixed < deviceRatioFixed)
         {
             // 넓이 다시 계산
             float newWidth = myRatioFixed / deviceRatioFixed;
 
             // 카메라를 보정해주는 것으로 꽉 찬 상태로 만들어 주는 것
-            // 카메라를 보정해주지 않으면 16:9 비율은 유지하지만 가로, 세로 어디든 꽉찬 상태가 되지 않는다
+            // 카메라를 보정해주지 않으면 19:9 비율은 유지하지만 가로, 세로 어디든 꽉찬 상태가 되지 않는다
             var rect = new Rect((1f - newWidth) / 2f, 0f, newWidth, 1f);
 
             // TODO : 카메라가 추가될 때 하단에 추가해야 함(else 부분도)
@@ -53,8 +53,6 @@ public class ScreenFixed : MonoBehaviour
 
             SetCamera(rect);
         }
-
-        Debug.Log("화면 재정의 완료");
     }
 
     private void SetCamera(Rect rect)
@@ -75,7 +73,6 @@ public class ScreenFixed : MonoBehaviour
         {
             pc.GetComponent<Camera>().rect = rect;
             pc.enabled = false;
-            Debug.Log($"활성화 {pc.enabled}");
         }
     }
 

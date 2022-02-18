@@ -128,16 +128,19 @@ public class DungeonRewardDiaryManager : MonoBehaviour
             Debug.Log("선택된 아이템이 없습니다");
             return;
         }
-        selectedItemList.ForEach(x => {
-            var isInvenNotFull = Vars.UserData.AddItemData(x.Item);
+
+        for(int i = 0; i < selectedItemList.Count; i++)
+        {
+            var isInvenNotFull = Vars.UserData.AddItemData(selectedItemList[i].Item);
             if (!isInvenNotFull)
             {
                 PopupPanelOpen(true);
                 return;
             }
-            Vars.UserData.ExperienceListAdd(x.Item.itemId);
-            x.InitItemSprite();
-        });
+            Vars.UserData.ExperienceListAdd(selectedItemList[i].Item.itemId);
+            selectedItemList[i].InitItemSprite();
+            selectedItemList.Remove(selectedItemList[i]);
+        }
         gatheringInDungeonrewardInventory.ItemButtonInit();
     }
 
