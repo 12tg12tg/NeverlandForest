@@ -33,7 +33,7 @@ public class MainRoomTutorial : MonoBehaviour
     private readonly int mainRoomCampButton = 2;
     private readonly int mainRoomUseButton = 4;
 
-    private Coroutine coTuto;
+    public float delay = 0f;
 
     [Header("포지션 타겟")]
     public RectTransform stamina;
@@ -85,21 +85,23 @@ public class MainRoomTutorial : MonoBehaviour
     {
         if (isMainRoomTutorial && !storyChapter4 && !storyChapter5)
         {
+            delay += Time.deltaTime;
+            if (delay > 1.3f)
+                delay = 0f;
             // 첫 스테미나 튜토리얼 진행중일때
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
                 TutorialStep != mainRoomCampButton &&
                 TutorialStep != mainRoomUseButton
                 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina
                 )
             {
-                coTuto ??= StartCoroutine(CoTutorialTouch());
+                NextTutorialStep();
+                delay = 0f;
             }
-            else
+            else if (GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
             {
-                if (TutorialStep != 2 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
-                {
-                    coTuto ??= StartCoroutine(CoTutorialTouch());
-                }
+                NextTutorialStep();
+                delay = 0f;
             }
         }
 
@@ -110,13 +112,6 @@ public class MainRoomTutorial : MonoBehaviour
         }
     }
 
-    public IEnumerator CoTutorialTouch()
-    {
-        yield return new WaitForSeconds(0.3f);
-        NextTutorialStep();
-        yield return new WaitForSeconds(1f);
-        coTuto = null;
-    }
 
     public void EndTutorialExplain()
     {
@@ -134,12 +129,13 @@ public class MainRoomTutorial : MonoBehaviour
 
     public IEnumerator CoTutorialEnd()
     {
+        delay = 0f;
         isMainRoomTutorial = true;
         yield return new WaitWhile(() => TutorialStep < 1);
-
+        delay = 0f;
         EndTutorialExplain();
         yield return new WaitWhile(() => TutorialStep < 2);
-
+        delay = 0f;
         isMainRoomTutorial = false;
         SetActive(false);
         yield return new WaitWhile(() => TutorialStep < 3);
