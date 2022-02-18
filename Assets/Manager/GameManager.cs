@@ -115,7 +115,6 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     {
         mt = MultiTouch.Instance;
         sm = SaveLoadManager.Instance;
-
     }
     private void LoadAllSavedata()
     {
