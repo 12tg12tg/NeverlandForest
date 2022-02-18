@@ -18,6 +18,8 @@ public class WorldMapCamera : MonoBehaviour
 
     public bool UseMiniMap;
 
+    private MultiTouch multiTouch;
+
     public void Init()
     {
         if(!UseMiniMap)
@@ -34,6 +36,8 @@ public class WorldMapCamera : MonoBehaviour
             startPos = transform.position;
             startX = startPos.x - distance * 0.1f;
         }
+
+        multiTouch = GameManager.Manager.MultiTouch;
     }
 
     private void Update()
@@ -41,13 +45,11 @@ public class WorldMapCamera : MonoBehaviour
         if (coCameraMove != null || isStop)
             return;
 
-        var touch = GameManager.Manager.MultiTouch;
-
-        if (touch.TouchCount > 0)
+        if (multiTouch.TouchCount > 0)
         {
-            var pos = Camera.main.ScreenToViewportPoint(touch.PrimaryStartPos - touch.PrimaryPos);
-            if (!Vector3.zero.Equals(startPos))
-                transform.position = new Vector3(pos.x, 0f, 0f) * distance + startPos;
+            var posX = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryStartPos - multiTouch.PrimaryPos).x;
+            if (!Vector3.zero.Equals(startPos) && posX != 0f)
+                transform.position = new Vector3(posX, 0f, 0f) * distance + startPos;
         }
         else
         {

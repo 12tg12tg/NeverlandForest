@@ -30,6 +30,8 @@ public class TutorialManager : MonoBehaviour
         mainTutorial.Init(); // 저장정보불러오기
         contentsTutorial.Init();
 
+        mainTutorial.MainTutorialStage = MainTutorialStage.Clear; // 빌드 테스트용
+
         CheckMainTutorial();
     }
 
