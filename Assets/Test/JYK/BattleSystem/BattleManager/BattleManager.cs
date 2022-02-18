@@ -85,6 +85,8 @@ public class BattleManager : MonoBehaviour
     public Queue<MonsterCommand> MonsterActionQueue { get => monsterActionQueue; }
     public bool IsDuringPlayerAction { get; set; }
 
+    private readonly int lanternCount = 18;
+
     private void Awake()
     {
         instance = this;
@@ -285,7 +287,7 @@ public class BattleManager : MonoBehaviour
 
             // 랜턴밝기
             ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
-            ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
+            ConsumeManager.FullingLantern(lanternCount); // 풀
 
             //배틀상태 Start
             FSM.ChangeState(BattleState.Player);
@@ -358,7 +360,7 @@ public class BattleManager : MonoBehaviour
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
-        ConsumeManager.FullingLantern(customBattle.lanternCount); // 풀
+        ConsumeManager.FullingLantern(lanternCount); // 풀
 
         // 웨이브 시작
         waveLink.SetWavePosition(waveLink.wave1);
