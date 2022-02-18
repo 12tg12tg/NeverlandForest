@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
     public void Release()
     {
         // 오브젝트풀 반환
-        var monsters = waveLink.AliveMonsters;
+        var monsters = new List<MonsterUnit>(waveLink.AliveMonsters);
         foreach (var monster in monsters)
         {
             monster.Release(); // 몬스터 -> 몬스터UI -> 토큰 전부 반환
@@ -149,6 +149,11 @@ public class BattleManager : MonoBehaviour
     {
         // 1. 변수 초기화
         VarInit();
+
+        if(isBlueMoonBattle)
+        {
+            blueMoonSetLink.LoadTrapData();
+        }
 
         if (!customBattle.useCustomMode)
         {
@@ -246,7 +251,7 @@ public class BattleManager : MonoBehaviour
             // 화살
             temp2 = new DataAllItem(costLink.ArrowElem);
             temp2.OwnCount = 19;
-            Vars.UserData.AddItemData(temp2); // 20발
+            Vars.UserData.AddItemData(temp2); // 19발
 
             // 오일
             temp2 = new DataAllItem(costLink.OilElem);
@@ -261,14 +266,14 @@ public class BattleManager : MonoBehaviour
             // 나무도막
             var allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
             temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_1"));
-            temp2.OwnCount = 3;
+            temp2.OwnCount = 6;
             Vars.UserData.AddItemData(temp2); // 3개
 
             // 삽
             allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
             temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_13"));
             temp2.OwnCount = 1;
-            Vars.UserData.AddItemData(temp2); // 1개
+            Vars.UserData.AddItemData(temp2); // 3개
 
             // 도끼
             allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
@@ -410,6 +415,7 @@ public class BattleManager : MonoBehaviour
                 customWave = customBattle.cwave3;
                 existList = customBattle.haveMonster3;
             }
+
             for (int k = 0; k < 3; k++)
             {
                 if (existList[k])
@@ -423,6 +429,15 @@ public class BattleManager : MonoBehaviour
         }
 
         curMonstersNum = totalMonsterNum;
+
+        // 인벤토리 비우기
+        DataAllItem temp2;
+        var tempInventory2 = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+        foreach (var item in tempInventory2)
+        {
+            temp2 = new DataAllItem(item);
+            Vars.UserData.RemoveItemData(temp2);
+        }
 
         // 화살
         DataAllItem temp;
@@ -470,6 +485,28 @@ public class BattleManager : MonoBehaviour
         Vars.UserData.AddItemData(temp);
 
         BottomUIManager.Instance.UpdateCostInfo();
+
+        // 트랩 류
+        temp = new DataAllItem(costLink.WoodenTrapElem);
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_17"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_18"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_15"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
+        temp = new DataAllItem(DataTableManager.GetTable<AllItemDataTable>().GetData<AllItemTableElem>("ITEM_14"));
+        temp.OwnCount = 3;
+        Vars.UserData.AddItemData(temp);
+
 
         // 랜턴밝기
         ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
@@ -549,8 +586,8 @@ public class BattleManager : MonoBehaviour
             groups.Remove(bossIndex);
 
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
-            waveLink.wave2[1].SetActionCommand();
             waveLink.wave2[1].Pos = new Vector2(1, 6);
+            waveLink.wave2[1].SetActionCommand();
 
             int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
             if(randNum == 0)
@@ -563,27 +600,27 @@ public class BattleManager : MonoBehaviour
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[0].SetActionCommand();
                     waveLink.wave2[0].Pos = new Vector2(0, 6);
+                    waveLink.wave2[0].SetActionCommand();
                 }
                 else
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[2].SetActionCommand();
                     waveLink.wave2[2].Pos = new Vector2(2, 6);
+                    waveLink.wave2[2].SetActionCommand();
                 }
             }
             else // 2
             {
                 var randId = Random.Range(0, groups.Count);
                 waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[0].SetActionCommand();
                 waveLink.wave2[0].Pos = new Vector2(0, 6);
+                waveLink.wave2[0].SetActionCommand();
                 randId = Random.Range(0, groups.Count);
                 waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[2].SetActionCommand();
                 waveLink.wave2[2].Pos = new Vector2(2, 6);
+                waveLink.wave2[2].SetActionCommand();
             }
 
             // Wave1, Wave3
@@ -607,6 +644,7 @@ public class BattleManager : MonoBehaviour
             groups.Remove(bossIndex);
 
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+            waveLink.wave2[1].Pos = new Vector2(1, 6);
             waveLink.wave2[1].SetActionCommand();
 
             int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
@@ -620,27 +658,27 @@ public class BattleManager : MonoBehaviour
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[0].SetActionCommand();
                     waveLink.wave2[0].Pos = new Vector2(0, 6);
+                    waveLink.wave2[0].SetActionCommand();
                 }
                 else
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[2].SetActionCommand();
                     waveLink.wave2[2].Pos = new Vector2(2, 6);
+                    waveLink.wave2[2].SetActionCommand();
                 }
             }
             else // 2
             {
                 var randId = Random.Range(0, groups.Count);
                 waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[0].SetActionCommand();
                 waveLink.wave2[0].Pos = new Vector2(0, 6);
+                waveLink.wave2[0].SetActionCommand();
                 randId = Random.Range(0, groups.Count);
                 waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[2].SetActionCommand();
                 waveLink.wave2[2].Pos = new Vector2(2, 6);
+                waveLink.wave2[2].SetActionCommand();
             }
 
             Debug.Log($"2웨이브 : {randNum + 1}");
@@ -746,14 +784,12 @@ public class BattleManager : MonoBehaviour
         uiLink.PrintMessage("블루문 습격 대비!", 2.5f, () => inputLink.WaitUntillSettingDone());
     }
 
-
-    //Command
+    // Command
     public void ClearCommand()
     {
         boyInput.Clear();
         girlInput.Clear();
     }
-
     public void DoCommand(PlayerType type, Vector2 target, DataPlayerSkill skill, bool isDrag)
     {
         PlayerCommand command;
@@ -772,7 +808,6 @@ public class BattleManager : MonoBehaviour
         command.Create(target, skill);
         attacker.TurnInit(ActionType.Skill, isDrag);
     }
-
     public void EndOfPlayerAction()
     {
         // 이겼는지 체크
@@ -833,7 +868,6 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
-
     public void AllMonsterDebuffCheck(UnityAction action = null)
     {
         var monster = monsters.Where(x => x.obsDebuffs != null)
@@ -848,13 +882,13 @@ public class BattleManager : MonoBehaviour
         action?.Invoke();
     }
 
+    // Settlement
     public void Lose()
     {
         isLose = true;
-        Release();
         GameManager.Manager.GameOver(GameOverType.BattleLoss);
+        //Release();
     }
-
     public void Win()
     {
         // ★승리

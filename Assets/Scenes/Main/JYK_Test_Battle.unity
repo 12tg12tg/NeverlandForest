@@ -331,17 +331,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useCustomMode: 0
-  waveNum: 3
-  haveMonster1: 010101
+  waveNum: 2
+  haveMonster1: 010001
   haveMonster2: 010101
-  haveMonster3: 010101
-  cwave1: 0a0000000a0000000a000000
-  cwave2: 090000000900000009000000
-  cwave3: 070000000700000007000000
+  haveMonster3: 010001
+  cwave1: 040000000000000004000000
+  cwave2: 050000000500000005000000
+  cwave3: 0f000000070000000e000000
   arrowNum: 20
   ironArrowNum: 20
   oilNum: 0
-  lanternCount: 18
+  lanternCount: 8
   hp: 25
 --- !u!4 &767257777
 Transform:
@@ -2339,12 +2339,20 @@ PrefabInstance:
       objectReference: {fileID: 1593224234}
     - target: {fileID: 3799742262198448787, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5366408264667970291, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1593224234}
+    - target: {fileID: 7469303927756960305, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: ad889dfbb8e65484b844bf68301c72bb, type: 2}
+    - target: {fileID: 7469303927756960305, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7469303927826509442, guid: 3e6eceb51d3eddb46a0f9d17ca5d1180, type: 3}
       propertyPath: m_fontAsset
       value: 

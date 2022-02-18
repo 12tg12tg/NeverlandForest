@@ -597,9 +597,10 @@ public class CampManager : MonoBehaviour
 
     public void GoDungeon()
     {
-        Vars.UserData.uData.BonfireHour = 0;
-        SoundManager.Instance.Play(SoundType.Se_Button);
+        Vars.UserData.trapPos.Clear(); // 블루문 저장 정보 증발
+        Vars.UserData.trapType.Clear();
 
+        SoundManager.Instance.Play(SoundType.Se_Button);
         GameManager.Manager.LoadScene(GameScene.Dungeon);
     }
     public void NoIdonGO()

@@ -168,8 +168,8 @@ public class SimpleGesture : MonoBehaviour
             {
                 if (touchPatternChain.Contains(chain))
                 {
-                    //Debug.Log($"{chain} in {touchPatternChain} 시계방향으로 돌고있다");
-                    Debug.Log("☆시계방향으로 돌고있다");
+                    Debug.Log($"{chain} in {touchPatternChain} 시계방향으로 돌고있다");
+                    //Debug.Log("☆시계방향으로 돌고있다");
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
                     RightTurn();
@@ -181,8 +181,8 @@ public class SimpleGesture : MonoBehaviour
             {
                 if (touchPatternChain.Contains(chain))
                 {
-                    //Debug.Log($"{chain} in {touchPatternChain} 반시계방향으로 돌고있다");
-                    Debug.Log($"★반시계방향으로 돌고있다");
+                    Debug.Log($"{chain} in {touchPatternChain} 반시계방향으로 돌고있다");
+                    //Debug.Log($"★반시계방향으로 돌고있다");
                     touchPatternChain = string.Empty;
                     touchPattern = string.Empty;
                     LeftTurn();

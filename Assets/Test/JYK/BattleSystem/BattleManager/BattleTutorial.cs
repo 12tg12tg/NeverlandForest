@@ -80,8 +80,67 @@ public class BattleTutorial : MonoBehaviour
     }
     public void EndDutorial()
     {
+        // 인벤토리 아이템 추가
+        RewardItem();
+
         bm.uiLink.AllButtonInteractive(true);
         GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial();
+    }
+
+    private void RewardItem()
+    {
+        // 인벤토리 비우기
+        DataAllItem temp;
+        var tempInventory = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+        foreach (var item in tempInventory)
+        {
+            temp = new DataAllItem(item);
+            Vars.UserData.RemoveItemData(temp);
+        }
+
+        // 화살
+        var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_20"));
+        temp.OwnCount = 100;
+        Vars.UserData.AddItemData(temp); // 100발
+
+        // 오일
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_19"));
+        temp.OwnCount = 8;
+        Vars.UserData.AddItemData(temp); // 8개
+
+        // 나무도막
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
+        temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5개
+
+        // 올가미
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_14"));
+        temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5개
+
+        // 부비트랩
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_15"));
+        temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5개
+
+        // 나무트랩
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_16"));
+        temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5개
+
+        // 가시트랩
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_17"));
+        temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5개
+
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
     }
 
     private void Update()
