@@ -478,6 +478,12 @@ public class TutorialRandomEvent : MonoBehaviour
         SetActive(false);
         dialogBoxObj.right.SetActive(false);
         dialogBox.pivot = new Vector2(0f, 0.5f);
+
+
+        Vars.UserData.contentsTutorial.RandomEvent = true;
+        RandomEventManager.Instance.isRandomEventTutorialExcute = Vars.UserData.contentsTutorial.RandomEvent;
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Scene);
+
         Destroy(this);
     }
 }

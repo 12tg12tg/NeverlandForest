@@ -79,7 +79,6 @@ public class DungeonSystem : MonoBehaviour
     {
         if (Vars.UserData.mainTutorial == MainTutorialStage.Clear)
         {
-            Debug.Log("들어오나");
             Init();
         }
         SoundManager.Instance.Play(SoundType.BG_Main);
@@ -161,7 +160,6 @@ public class DungeonSystem : MonoBehaviour
         roomTool = new RoomTool();
         if (dungeonSystemData.curDungeonRoomData != null && Vars.UserData.mainTutorial == MainTutorialStage.Clear)
         {
-            Debug.Log("이벤트타입!!");
             ConvertEventDataType();
         }
         GameManager.Manager.Production.FadeOut();
@@ -294,7 +292,6 @@ public class DungeonSystem : MonoBehaviour
 
             if (Vars.UserData.mainTutorial != MainTutorialStage.Clear)
             {
-                Debug.Log("방전환 튜토시작");
                 TutorialStart();
             }
 

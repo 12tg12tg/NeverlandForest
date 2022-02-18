@@ -139,8 +139,6 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
         randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
-        randomEvent.isTutorialRandomEvent = Vars.UserData.isTutorialRandomEvent;
-        randomEvent.isFirst = Vars.UserData.isFirst;
         SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
     }
 
@@ -365,9 +363,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         {
             Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
             Vars.UserData.useEventID = randomEvent.useEventIDs;
-            Vars.UserData.isTutorialRandomEvent = randomEvent.isTutorialRandomEvent;
             Vars.UserData.isRandomDataLoad = true;
-            Vars.UserData.isFirst = randomEvent.isFirst;
         }
         else
             Vars.UserData.isRandomDataLoad = false;

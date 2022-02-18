@@ -40,9 +40,7 @@ public class UserData
     // 랜덤이벤트 데이터, 세이브 로드
     public List<DataRandomEvent> randomEventDatas = new List<DataRandomEvent>();
     public List<string> useEventID = new List<string>();
-    public bool isFirst;
     public bool isRandomDataLoad;
-    public bool isTutorialRandomEvent;
 
     // 튜토리얼 던전
     public DungeonData tutorialDungeonData = new DungeonData();
@@ -352,9 +350,7 @@ public class UserData
         // 랜덤이벤트 데이터
         randomEventDatas = new List<DataRandomEvent>();
         useEventID = new List<string>();
-        isFirst = false;
         isRandomDataLoad = false;
-        isTutorialRandomEvent = false;
 
         // 인벤토리에 사용
         maxInventoryItemCount = 12;

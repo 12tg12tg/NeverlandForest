@@ -504,7 +504,7 @@ public class GatheringSystem : MonoBehaviour
                     Debug.Log("채집종료");
                     coWomenMove = null; PopUp(); playerAnimationBoy.SetFloat("Speed", 0f);
                     if (GameManager.Manager.State == GameState.Tutorial)
-                        DungeonSystem.Instance.gatherTutorial.TutorialStep++;
+                        DungeonSystem.Instance.gatherTutorial.NextTutorialStep();
                 }));
         }
     }

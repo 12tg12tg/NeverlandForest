@@ -9,14 +9,11 @@ using TMPro;
 public class MainRoomTutorial : MonoBehaviour
 {
     public bool isMainRoomTutorial = false;
-    public int TutorialStep { get; set; } = 0;
+    public int TutorialStep { get; private set; } = 0;
 
     public TutorialTool tutorialTool;
 
     private RectTransform target;
-    private GameObject eventObject;
-
-    private GameObject dungeonCanvasRt;
 
     private Rect canvasRt;
     private RectTransform handIcon;
@@ -33,10 +30,10 @@ public class MainRoomTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    public float delay;
+    private readonly int mainRoomCampButton = 2;
+    private readonly int mainRoomUseButton = 4;
 
-    private readonly int mainRoomCampButton = 1;
-    private readonly int mainRoomUseButton = 3;
+    private Coroutine coTuto;
 
     [Header("포지션 타겟")]
     public RectTransform stamina;
@@ -52,6 +49,11 @@ public class MainRoomTutorial : MonoBehaviour
     private PlayerDungeonUnit boy;
     private PlayerDungeonUnit girl;
 
+    public void NextTutorialStep()
+    {
+        Debug.Log($"튜토리얼 현재단계{TutorialStep}, 다음단계 {TutorialStep + 1}");
+        TutorialStep++;
+    }
     private void Awake()
     {
         TutorialStep = 0;
@@ -64,8 +66,6 @@ public class MainRoomTutorial : MonoBehaviour
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
-
-        dungeonCanvasRt = DungeonSystem.Instance.DungeonCanvas;
 
         //if(GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
         //{
@@ -85,27 +85,20 @@ public class MainRoomTutorial : MonoBehaviour
     {
         if (isMainRoomTutorial && !storyChapter4 && !storyChapter5)
         {
-            delay += Time.deltaTime;
             // 첫 스테미나 튜토리얼 진행중일때
             if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
-                delay > 1f &&
                 TutorialStep != mainRoomCampButton &&
                 TutorialStep != mainRoomUseButton
                 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina
                 )
             {
-                delay = 0f;
-                TutorialStep++;
-                Debug.Log(TutorialStep);
+                coTuto ??= StartCoroutine(CoTutorialTouch());
             }
-            // 
             else
             {
                 if (TutorialStep != 2 && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
                 {
-                    delay = 0f;
-                    TutorialStep++;
-                    Debug.Log(TutorialStep);
+                    coTuto ??= StartCoroutine(CoTutorialTouch());
                 }
             }
         }
@@ -116,6 +109,15 @@ public class MainRoomTutorial : MonoBehaviour
             stm.isNext = true;
         }
     }
+
+    public IEnumerator CoTutorialTouch()
+    {
+        yield return new WaitForSeconds(0.3f);
+        NextTutorialStep();
+        yield return new WaitForSeconds(1f);
+        coTuto = null;
+    }
+
     public void EndTutorialExplain()
     {
         SetActive(false, true);
@@ -133,7 +135,6 @@ public class MainRoomTutorial : MonoBehaviour
     public IEnumerator CoTutorialEnd()
     {
         isMainRoomTutorial = true;
-        delay = 0f;
         yield return new WaitWhile(() => TutorialStep < 1);
 
         EndTutorialExplain();
@@ -246,14 +247,17 @@ public class MainRoomTutorial : MonoBehaviour
         StaminaExplain();
         yield return new WaitWhile(() => TutorialStep < 1);
 
-        CampButtonExplain();
+        HungryExplain();
         yield return new WaitWhile(() => TutorialStep < 2);
 
-        CampNeedMaterialUseExplain();
+        CampButtonExplain();
         yield return new WaitWhile(() => TutorialStep < 3);
 
-        UseButtonExplain();
+        CampNeedMaterialUseExplain();
         yield return new WaitWhile(() => TutorialStep < 4);
+
+        UseButtonExplain();
+        yield return new WaitWhile(() => TutorialStep < 5);
 
         MainRoomTutorialEnd();
         tutorialTool.BlackPanelOff();
@@ -269,7 +273,7 @@ public class MainRoomTutorial : MonoBehaviour
     }
     public void ButtonAddOneUseStepPlus(Button button)
     {
-        UnityAction action = () => { TutorialStep++; delay = 0f; };
+        UnityAction action = () => { NextTutorialStep(); button.interactable = false; };
         button.onClick.AddListener(action);
         button.onClick.AddListener(() => button.onClick.RemoveListener(action));
     }
@@ -301,6 +305,35 @@ public class MainRoomTutorial : MonoBehaviour
         dialogBox.anchoredPosition = boxPos;
         dialogText.text = "일정 구간을 이동하거나 던전 내 행동을 할 때 마다 스태미나가 소비 돼.";
     }
+
+    public void HungryExplain()
+    {
+        SetActive(true, true);
+        target = stamina;
+
+        blackout.GetComponent<Image>().sprite = rect;
+        var size = target.sizeDelta;
+        blackout.sizeDelta = size + new Vector2(10f, 10f);
+
+        var uiCam = GameManager.Manager.CamManager.uiCamera;
+        var pos = uiCam.WorldToViewportPoint(target.position);
+        pos.x *= canvasRt.width;
+        pos.y *= canvasRt.height;
+
+        var boxOffset = boxHeight + arrowSize;
+        var boxPos = new Vector2(pos.x, pos.y + boxOffset);
+        var scrPos = new Vector2(pos.x, pos.y);
+
+        dialogBox.pivot = new Vector2(0.5f, 0.5f);
+        dialogBoxObj.down.SetActive(true);
+
+        var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
+        blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;
+        blackout.anchoredPosition = scrPos;
+        dialogBox.anchoredPosition = boxPos;
+        dialogText.text = "허기짐 설명.";
+    }
+
 
     public void CampButtonExplain()
     {

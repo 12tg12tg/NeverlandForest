@@ -27,13 +27,12 @@ public class RandomEventObject : MonoBehaviour
 
             var randEventMgr = RandomEventManager.Instance;
 
-            if (randEventMgr.isTutorialRandomEvent)
+            if (!randEventMgr.isRandomEventTutorialExcute)
             {
                 var rndEvent = randEventMgr.tutorialEvent;
                 RandomEventUIManager.Instance.EventInit(rndEvent);
 
                 dungeonSystem.randomEventTutorial.StartRandomEventTutorial();
-                randEventMgr.isTutorialRandomEvent = false;
             }
             else
             {

@@ -240,7 +240,6 @@ public class RandomEventUIManager : MonoBehaviour
         BottomUIManager.Instance.ItemListInit();
 
         Vars.UserData.randomEventDatas = RandomEventManager.Instance.allDataList;
-        Vars.UserData.isTutorialRandomEvent = RandomEventManager.Instance.isTutorialRandomEvent;
 
         GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.RandomEvent);
     }

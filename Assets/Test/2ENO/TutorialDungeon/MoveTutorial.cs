@@ -8,7 +8,7 @@ using TMPro;
 public class MoveTutorial : MonoBehaviour
 {
     public bool isMoveTutorial = false;
-    public int TutorialStep { get; set; } = 0;
+    public int TutorialStep { get; private set; } = 0;
 
     public TutorialTool tutorialTool;
     private RectTransform target;
@@ -30,7 +30,7 @@ public class MoveTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    public float delay;
+    private Coroutine coTuto;
 
     private readonly int tutorialStepMove = 2;
 
@@ -39,6 +39,13 @@ public class MoveTutorial : MonoBehaviour
     [Header("포지션 타겟")]
     public RectTransform time;
     public RectTransform lantern;
+
+    public void NextTutorialStep()
+    {
+        Debug.Log($"튜토리얼 현재단계{TutorialStep}, 다음단계 {TutorialStep + 1}");
+        TutorialStep++;
+    }
+
     private void Start()
     {
         dialogBox = tutorialTool.dialogBox;
@@ -58,23 +65,25 @@ public class MoveTutorial : MonoBehaviour
     {
         if (isMoveTutorial)
         {
-            delay += Time.deltaTime;
             if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
-                delay > 1f &&
                 TutorialStep != tutorialStepMove
                 )
             {
-                delay = 0f;
-                TutorialStep++;
-                Debug.Log(TutorialStep);
+                coTuto ??= StartCoroutine(CoTutorialTouch());
             }
         }
+    }
+    public IEnumerator CoTutorialTouch()
+    {
+        yield return new WaitForSeconds(0.3f);
+        NextTutorialStep();
+        yield return new WaitForSeconds(1f);
+        coTuto = null;
     }
 
     public IEnumerator CoMoveTutorial()
     {
         isMoveTutorial = true;
-        delay = 0f;
         RightLongTouch();
         yield return new WaitWhile(() => TutorialStep < 1);
 

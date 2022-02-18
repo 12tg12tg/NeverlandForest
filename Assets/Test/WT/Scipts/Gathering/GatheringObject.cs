@@ -46,8 +46,11 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
                 }
                 break;
             case GameState.Tutorial:
-                DungeonSystem.Instance.gatherTutorial.TutorialStep++;
-                gathering.curSelectedObj = this;
+                if (DungeonSystem.Instance.gatherTutorial.TutorialStep == 0)
+                {
+                    DungeonSystem.Instance.gatherTutorial.NextTutorialStep();
+                    gathering.curSelectedObj = this;
+                }
                 break;
             default:
                 break;
