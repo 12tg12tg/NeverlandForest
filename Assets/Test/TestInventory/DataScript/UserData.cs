@@ -299,7 +299,10 @@ public class UserData
         }
         // 전부 들어감!
         newItem.OwnCount = 0;
-        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+        if (GameManager.Manager.State !=GameState.Tutorial)
+        {
+            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+        }
         return true;
     }
     public bool RemoveItemData(DataAllItem removeItem)
