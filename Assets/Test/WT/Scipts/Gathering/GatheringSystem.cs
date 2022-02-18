@@ -94,7 +94,8 @@ public class GatheringSystem : MonoBehaviour
     private Vector3 womenbeforePosition;
     int count = 0;
     private List<Vector3> posCheckList = new List<Vector3>();
-
+    private int axeNum;
+    private int shooveNum;
     public void GatheringRenderCamSet(GatheringObjectType type)
     {
         switch (type)
@@ -227,15 +228,18 @@ public class GatheringSystem : MonoBehaviour
         string shooveId = "ITEM_13";
         bool isaxeHave = false;
         bool isshooveHave = false;
+
         for (int i = 0; i < list.Count; i++)
         {
             if (list[i].itemId == axeId)
             {
                 isaxeHave = true;
+                axeNum = i;
             }
             else if (list[i].itemId == shooveId)
             {
                 isshooveHave = true;
+                shooveNum = i;
             }
         }
         toolbutton.GetComponent<Button>().interactable = false;
@@ -245,6 +249,7 @@ public class GatheringSystem : MonoBehaviour
             {
                 case GatheringObjectType.Tree:
                     toolbutton.GetComponent<Button>().interactable = true;
+                    toolCount.text = list[axeNum].ToolCount.ToString();
                     break;
                 case GatheringObjectType.Pit:
                     break;
@@ -264,6 +269,7 @@ public class GatheringSystem : MonoBehaviour
                     break;
                 case GatheringObjectType.Pit:
                     toolbutton.GetComponent<Button>().interactable = true;
+                    toolCount.text = list[shooveNum].ToolCount.ToString();
                     break;
                 case GatheringObjectType.Herbs:
                     break;
@@ -323,8 +329,16 @@ public class GatheringSystem : MonoBehaviour
            + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                gatheringToolCompleteTimeText.text =Vars.UserData.uData.CurIngameHour.ToString() + "시 ";
+            }
+            else
+            {
+                gatheringToolCompleteTimeText.text =Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
              + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
            + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
@@ -336,8 +350,17 @@ public class GatheringSystem : MonoBehaviour
            + "시간은 1시간30분을 소비합니다";
             gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
             + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
-            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 ";
+            }
+            else
+            {
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
         }
         else
         {
@@ -345,8 +368,16 @@ public class GatheringSystem : MonoBehaviour
        + "시간은 1시간 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 2시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-          + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 ";
+            }
+            else
+            {
+                gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+             + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 2).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
@@ -377,8 +408,16 @@ public class GatheringSystem : MonoBehaviour
           + "시간은 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
         + "시간은 1시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
-           + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 ";
+            }
+            else
+            {
+                gatheringToolCompleteTimeText.text = Vars.UserData.uData.CurIngameHour.ToString() + "시 " + "\n"
+             + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
              + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
@@ -390,8 +429,16 @@ public class GatheringSystem : MonoBehaviour
            + "시간은 1시간30분을 소비합니다";
             gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
            + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
-            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 ";
+            }
+            else
+            {
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
         }
         else
         {
@@ -399,8 +446,16 @@ public class GatheringSystem : MonoBehaviour
        + "시간은 1시간 30분을 소비합니다";
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 2시간을 소비합니다";
-            gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-        + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 ";
+            }
+            else
+            {
+                gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour+1).ToString() + "시 " + "\n"
+             + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 2).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
@@ -445,8 +500,16 @@ public class GatheringSystem : MonoBehaviour
         {
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
-            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 ";
+            }
+            else
+            {
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
         }
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
@@ -485,8 +548,16 @@ public class GatheringSystem : MonoBehaviour
         {
             gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비합니다" + "\n"
            + "시간은 1시간30분을 소비합니다";
-            handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
-       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
+            {
+                Vars.UserData.uData.CurIngameHour += 1;
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 ";
+            }
+            else
+            {
+                handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
+      + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "분";
+            }
         }
         handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
     }
@@ -516,7 +587,7 @@ public class GatheringSystem : MonoBehaviour
         var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
         SoundManager.Instance.Play(SoundType.Se_Button);
         gatheringRewardList.ForEach(n => n.Init(null));
-
+        var haveItemList = Vars.UserData.HaveAllItemList;
         switch (curSelectedObj.objectType)
         {
             case GatheringObjectType.Tree:
@@ -526,6 +597,14 @@ public class GatheringSystem : MonoBehaviour
                 gatheringRewardList[0].IsHaveItem = true;
                 rewardList.Add(gatheringRewardList[0].Item);
                 SoundManager.Instance.Play(SoundType.Se_Axe);
+
+                haveItemList[axeNum].ToolCount -= 1;
+                if (haveItemList[axeNum].ToolCount == 0)
+                {
+                    haveItemList[axeNum].ToolCount = 5;
+                    Vars.UserData.RemoveItemData(haveItemList[axeNum]);
+                }
+
                 break;
             case GatheringObjectType.Pit:
                 GatheringPitByTool();
@@ -534,6 +613,13 @@ public class GatheringSystem : MonoBehaviour
                 gatheringRewardList[0].Init(curSelectedObj.item);
                 gatheringRewardList[0].IsHaveItem = true;
                 rewardList.Add(gatheringRewardList[0].Item);
+                haveItemList[shooveNum].ToolCount -= 1;
+                if (haveItemList[shooveNum].ToolCount == 0)
+                {
+                    haveItemList[shooveNum].ToolCount = 5;
+                    Vars.UserData.RemoveItemData(haveItemList[shooveNum]);
+                }
+
                 break;
             case GatheringObjectType.Herbs:
                 break;
@@ -630,11 +716,11 @@ public class GatheringSystem : MonoBehaviour
             haveItemCount = 0;
             isMove = false;
         }
-        for (int i = rewardList.Count-1; i >0; i--)
+        for (int i = rewardList.Count - 1; i > 0; i--)
         {
             rewardList.RemoveAt(i);
         }
-        if (rewardList.Count ==0)
+        if (rewardList.Count == 0)
         {
             rewardList.Clear();
             haveItemCount = 0;
@@ -805,7 +891,7 @@ public class GatheringSystem : MonoBehaviour
                 {
                     Vars.UserData.AddItemData(selecteditemList[i]);
                     Vars.UserData.ExperienceListAdd(selecteditemList[i].itemId);
-                   
+
                     if (selecteditemList[i].OwnCount <= 0)
                     {
                         var index = gatheringRewardList.FindIndex(x => x.Item.itemId == selecteditemList[i].itemId);

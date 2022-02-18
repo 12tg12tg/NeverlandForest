@@ -64,7 +64,6 @@ public class UserData
     public ReadOnlyCollection<DataAllItem> HaveAllItemList => haveAllItemList.AsReadOnly();
     public List<string> experienceHaveItemList = new List<string>();
     public bool isItemDataLoad;
-
     //사운드옵션
 
     public float bgmVolume = 1f;
@@ -326,6 +325,9 @@ public class UserData
             }
             Debug.Log("아이템 감소됨");
         }
+
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
+
         return false;
     }
     // DataItem 으로 그리고 List로 다시 변환해서 사용해보기

@@ -249,7 +249,14 @@ public class CraftIcon : MonoBehaviour
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
                 var resultId = $"ITEM_{result}";
                 DiaryManager.Instacne.CraftResultItem = new DataAllItem(ItemTable.GetData<AllItemTableElem>(resultId));
-                DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
+                if (resultId == "ITEM_2" || resultId == "ITEM_20" || result == "ITEM_21")
+                {
+                    DiaryManager.Instacne.CraftResultItem.OwnCount = 3;
+                }
+                else
+                {
+                    DiaryManager.Instacne.CraftResultItem.OwnCount = 1;
+                }
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
                 if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)

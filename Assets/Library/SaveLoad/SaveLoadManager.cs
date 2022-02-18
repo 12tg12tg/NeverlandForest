@@ -275,10 +275,10 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         var idList = Vars.UserData.HaveAllItemList.Select(x => x.itemId).ToList();
         var ownCountList = Vars.UserData.HaveAllItemList.Select(x => x.OwnCount).ToList();
-
+        var remainCountList = Vars.UserData.HaveAllItemList.Select(x => x.ToolCount).ToList();
         itemData.itemIdList = idList;
         itemData.itemOwnCountList = ownCountList;
-
+        itemData.itemRemainCountList = remainCountList;
         SaveLoadSystem.Save(itemData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
     }
 
@@ -469,6 +469,8 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             {
                 var loadItem = new DataAllItem(allItemTable.GetData<AllItemTableElem>(itemData.itemIdList[i]));
                 loadItem.OwnCount = itemData.itemOwnCountList[i];
+                loadItem.ToolCount =itemData.itemRemainCountList[i];
+
 
                 Vars.UserData.DirectAddItem(loadItem);
             }
