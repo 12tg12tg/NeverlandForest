@@ -52,6 +52,9 @@ public class BattleUI : MonoBehaviour
     [Header("喉风巩技泼")]
     public Button backToCampButton;
 
+    [Header("可记")]
+    public Button option;
+
     private List<Button> battleButtons = new List<Button>();
 
     private int progress;
