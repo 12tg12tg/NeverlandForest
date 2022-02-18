@@ -13,8 +13,19 @@ public class OptionPanelManager : MonoBehaviour
     [SerializeField] private Sprite soundOnImage;
     [SerializeField] private Sprite soundOffImage;
 
+    [SerializeField] private Button giveUpBtn;
+
     private bool isBgmOn =true;
     private bool isSoundOn = true;
+
+    private void OnEnable()
+    {
+        if(GameManager.Manager.State != GameState.Dungeon)
+        {
+            giveUpBtn.interactable = false;
+        }
+    }
+
     public  void BgmButtonClick()
     {
         isBgmOn = !isBgmOn;
