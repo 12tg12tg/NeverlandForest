@@ -103,13 +103,18 @@ public class Utility
         var startPos = transform.position;
         var foward = (dest - startPos).normalized;
 
-        while (Vector3.Distance(transform.position, dest) > minDist)
+        var vec = (dest - startPos).normalized;
+        Vector3 newVec = vec;
+
+        while (Vector3.Distance(transform.position, dest) > minDist && vec == newVec)
         {
             if ((isMonster && !monsterUnit.isPause) || !isMonster)
             {
                 transform.position += foward * speed * Time.deltaTime;
             }
             yield return null;
+
+            newVec = (dest - transform.position).normalized;
         }
         transform.position = dest;
         action?.Invoke();

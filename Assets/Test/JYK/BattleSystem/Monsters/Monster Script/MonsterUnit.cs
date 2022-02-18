@@ -34,7 +34,8 @@ public class MonsterUnit : UnitBase, IAttackable
     private MonsterType type;
     protected MonsterTableElem baseElem;
     public MonsterCommand command;
-    private BattleManager manager;
+    private BattleManager bm;
+    private TileMaker tm;
     public bool isActionDone;
     private float delayTimer;
     private const float actionDelay = 0.5f;
@@ -47,6 +48,9 @@ public class MonsterUnit : UnitBase, IAttackable
     public Obstacle ownBoobyTrap;
     public bool isPause;
     public bool isMove;
+
+    private bool attackFence;
+    private Obstacle nearFence;
 
     public Coroutine moveCoroutine;
     public UnityAction afterMove;
@@ -80,6 +84,39 @@ public class MonsterUnit : UnitBase, IAttackable
         }
     }
 
+    // 초기화
+    public void Init()
+    {
+        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
+
+        initHp = Hp = baseElem.hp;
+        Atk = baseElem.atk;
+        sheild = baseElem.sheild;
+        maxSheild = sheild;
+        type = baseElem.type;
+        bm ??= BattleManager.Instance;
+        tm ??= TileMaker.Instance;
+        command ??= new MonsterCommand(this);
+        obsDebuffs.Clear();
+
+        uiLinker.Init(this);
+        State = MonsterState.Idle;
+    }
+    private void EraseThis()
+    {
+        bm.monsters.Remove(this);
+    }
+    public void Release()
+    {
+        uiLinker.Release();
+        EraseThis();
+        State = MonsterState.Dead;
+        UnlinkSnare();
+        CurTile.RemoveUnit(this);
+        int id = int.Parse(baseElem.id);
+        MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
+    }
+
     // IAttackable
     public void OnAttacked(BattleCommand attacker)
     {
@@ -97,7 +134,7 @@ public class MonsterUnit : UnitBase, IAttackable
         if (playerCommand.type == PlayerType.Boy)
         {
             // 부가효과
-            if (!manager.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
+            if (!bm.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
             {
                 if (command.actionType == MonsterActionType.Move)
                 {
@@ -106,7 +143,7 @@ public class MonsterUnit : UnitBase, IAttackable
                     uiLinker.SetCantMove();
                 }
             }
-            if (playerCommand.skill.SkillTableElem.id == manager.costLink.skillID_knockBackAttack) // 넉백
+            if (playerCommand.skill.SkillTableElem.id == bm.costLink.skillID_knockBackAttack) // 넉백
             {
                 PushBack(true);
             }
@@ -114,11 +151,11 @@ public class MonsterUnit : UnitBase, IAttackable
         // 약초학자
         else
         {
-            if (!manager.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
+            if (!bm.costLink.skillIDs_NearAttack.Contains(playerCommand.skill.SkillTableElem.id)) // 근거리아닐 때
             {
                 IsBurn = true;
             }
-            if (playerCommand.skill.SkillTableElem.id == manager.costLink.skillID_threatEmission) // 위협발산
+            if (playerCommand.skill.SkillTableElem.id == bm.costLink.skillID_threatEmission) // 위협발산
             {
                 if(State != MonsterState.Dead)
                     KickoutAnyWhere();
@@ -204,79 +241,8 @@ public class MonsterUnit : UnitBase, IAttackable
             afterKickOut);
     }
 
-    // 스택 방식
-    //private bool CanMoveBackTile(int distance, out Tiles backTile)
-    //{
-    //    backTile = TileMaker.Instance.GetTile(new Vector2(CurTile.index.x, CurTile.index.y + distance));
-    //    return backTile != null && backTile.CanStand;
-    //}
-
-    //private void PushBack_UseAllSnareStack(bool isOwner)
-    //{
-    //    var list = (from n in obsDebuffs
-    //               where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
-    //               select n).ToList();
-
-    //    int count = list.Count();
-    //    count = count == 0 ? 1 : count;
-
-
-    //    for (int i = count; i > 0; i--)
-    //    {
-    //        if(CanMoveBackTile(i, out Tiles backTile))
-    //        {
-    //            Debug.Log($"{baseElem.Name}가 {CurTile.index}에서 {backTile.index}로 간다.");
-    //            SetMoveUi(true);
-    //            BattleManager.Instance.tileLink.MoveUnitOnTile(backTile.index, this, null,
-    //                () => { SetMoveUi(false); AfterPushBack(isOwner); }, false);
-    //            break;
-    //        }
-    //    }
-
-    //    foreach (var snare in list)
-    //    {
-    //        obsDebuffs.Remove(snare);
-    //    }
-    //    uiLinker.UpdateDebuffs(obsDebuffs);
-    //}
-
-    //private void FindSnarelinkedUnit(List<MonsterUnit> linker)
-    //{
-    //    var list = from n in obsDebuffs
-    //               where n.elem.obstacleType == TrapTag.Snare && n.anotherUnit != null
-    //               select n.anotherUnit;
-
-    //    foreach (var unit in list)
-    //    {
-    //        if(!linker.Contains(unit))
-    //        {
-    //            linker.Add(unit);
-    //            unit.FindSnarelinkedUnit(linker);
-    //        }
-    //    }
-    //}
-
     private void PushBack(bool isOwner)
     {
-        //스택형
-        {
-            //List<MonsterUnit> linkers = new List<MonsterUnit>();
-            //linkers.Add(this);
-
-            //FindSnarelinkedUnit(linkers);
-            //foreach (var unit in linkers)
-            //{
-            //    if(unit == this)
-            //    {
-            //        unit.PushBack_UseAllSnareStack(true);
-            //    }
-            //    else
-            //    {
-            //        unit.PushBack_UseAllSnareStack(false);
-            //    }
-            //}
-        }
-
         //하나씩 소모하는 방식
 
         UnityAction afterPushBack = () => 
@@ -368,7 +334,7 @@ public class MonsterUnit : UnitBase, IAttackable
 
         var damage = command.skill.SkillTableElem.Damage;
 
-        if (command.type == PlayerType.Boy || manager.costLink.skillIDs_NearAttack.Contains(command.skill.SkillTableElem.id))
+        if (command.type == PlayerType.Boy || bm.costLink.skillIDs_NearAttack.Contains(command.skill.SkillTableElem.id))
         {
             // 데미지계산
             curDamage = damage - sheild < 0 ? 0 : damage - sheild;
@@ -445,39 +411,6 @@ public class MonsterUnit : UnitBase, IAttackable
         }
     }
 
-    // 초기화
-    public void Init()
-    {
-        baseElem = DataTableManager.GetTable<MonsterTable>().GetData<MonsterTableElem>(monsterID);
-
-        initHp = Hp = baseElem.hp;
-        Atk = baseElem.atk;
-        sheild = baseElem.sheild;
-        maxSheild = sheild;
-        type = baseElem.type;
-        manager ??= BattleManager.Instance;
-        command ??= new MonsterCommand(this);
-        obsDebuffs.Clear();
-
-        uiLinker.Init(this);
-        State = MonsterState.Idle;
-    }
-    private void EraseThis()
-    {
-        manager.monsters.Remove(this);
-    }
-
-    public void Release()
-    {
-        uiLinker.Release();
-        EraseThis();
-        State = MonsterState.Dead;
-        UnlinkSnare();
-        CurTile.RemoveUnit(this);
-        int id = int.Parse(baseElem.id);
-        MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
-    }
-
     // Action
     private bool CheckCanAttackPlayer()
     {
@@ -491,13 +424,13 @@ public class MonsterUnit : UnitBase, IAttackable
     public MonsterCommand SetActionCommand()
     {
         // 0. 튜토리얼
-        if(manager.isTutorial)
+        if(bm.isTutorial)
         {
             if (CheckCanAttackPlayer())
             {
                 command.actionType = MonsterActionType.Attack;
                 var randTarget = Random.Range(0, 2);
-                command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
+                command.target = randTarget == 0 ? bm.boy.Stats.Pos : bm.girl.Stats.Pos;
             }
             else
             {
@@ -531,7 +464,7 @@ public class MonsterUnit : UnitBase, IAttackable
         {
             command.actionType = MonsterActionType.Attack;
             var randTarget = Random.Range(0, 2);
-            command.target = randTarget == 0 ? manager.boy.Stats.Pos : manager.girl.Stats.Pos;
+            command.target = randTarget == 0 ? bm.boy.Stats.Pos : bm.girl.Stats.Pos;
         }
         // 4. 움직일 대상 타일 찾기
         else
@@ -585,6 +518,57 @@ public class MonsterUnit : UnitBase, IAttackable
     {
         isMove = true;
         stepOnBoobyTrap = false;
+
+        bool changeCommandDistance = false;
+
+        // 블루문에만 장벽 확인
+        if (BattleManager.initState == BattleInitState.Bluemoon)
+        {
+            #region 1. 경로상에 장벽이 있는지
+            var endPosY = Pos.y - command.nextMove;
+            bool isThereFence = false;
+            float nearFenceY = -1;
+            nearFence = null;
+            var tiles = tm.TileList;
+            foreach (var tile in tiles)
+            {
+                if (tile.index.x != 1f) // 검색 최적화
+                    continue;
+                if (tile.index.y < endPosY || tile.index.y >= Pos.y) // 이동할 경로 외의 타일 배제
+                    continue;
+                if (tile.obstacle != null && tile.obstacle.type == TrapTag.Fence)
+                {
+                    isThereFence = true;
+                    if(tile.index.y > nearFenceY)
+                    {
+                        nearFenceY = tile.index.y;
+                        nearFence = tile.obstacle;
+                    }
+                }
+            }
+            #endregion
+
+            if (isThereFence)
+            {
+                int range = (int)type + 1; // 사거리
+
+                // 사거리 내 -> 옵스타클 공격 함수 호출 -> 종료
+                if ((Pos.y - range) <= nearFenceY)
+                {
+                    attackFence = true;
+                    isMove = false;
+                    AttackFence(nearFence);
+                    return;
+                }
+                // 사거리 밖 -> 단순히 nextMove만 수정하자.
+                else
+                {
+                    changeCommandDistance = true;
+                    command.nextMove = (int)(Pos.y - (nearFenceY + 1));
+                    attackFence = false;
+                }
+            }
+        }
 
         // 우선 같은 행에서 이동거리 타일이 비어있는지 확인
         var indexX = Pos.x;
@@ -640,6 +624,8 @@ public class MonsterUnit : UnitBase, IAttackable
                     BoobyTrap();
                 if (moveFoward)
                 {
+                    if (changeCommandDistance) //장벽에 막힌 경우
+                        uiLinker.CantGoAnyWhere(null);
                     triggerLinker.DisableMoveTrigger();
                     BattleManager.Instance.waveLink.SetAllMonsterInfoColliderEnable(true);
                 }
@@ -655,7 +641,7 @@ public class MonsterUnit : UnitBase, IAttackable
     public void PlayAttackAnimation()
     {
         animator.SetTrigger("Attack");
-        SoundManager.Instance.Play(baseElem.soundType);
+        SoundManager.Instance?.Play(baseElem.soundType);
     }
     public void PlayDeadAnimation()
     {
@@ -684,13 +670,23 @@ public class MonsterUnit : UnitBase, IAttackable
     // Animation Tag Function
     public void TargetAttack()
     {
-        var list = TileMaker.Instance.GetUnitsOnTile(command.target);
-        foreach (var target in list)
+        if (attackFence)
         {
-            var player = target as PlayerStats;
-            player.OnAttacked(command);
+            uiLinker.AfterFenceAttackDirect(() => isActionDone = true);
+            nearFence.Attacked(baseElem.atk, null);
+
+            // 데미지 띄우기
         }
-        isActionDone = true;
+        else
+        {
+            var list = TileMaker.Instance.GetUnitsOnTile(command.target);
+            foreach (var target in list)
+            {
+                var player = target as PlayerStats;
+                player.OnAttacked(command);
+            }
+            isActionDone = true;
+        }
     }
     public void StartSinking()
     {
@@ -703,7 +699,6 @@ public class MonsterUnit : UnitBase, IAttackable
                 MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
             }));
     }
-
     public void EndHit()
     {
         if (isPause)
@@ -725,7 +720,6 @@ public class MonsterUnit : UnitBase, IAttackable
         DeathCheck();
         ownBoobyTrap.Release();
     }
-
     public void CheckBoobyTrapOnLoad()
     {
         // 부비트랩으로 인한 목적지 수정
@@ -745,7 +739,6 @@ public class MonsterUnit : UnitBase, IAttackable
         }
 
     }
-
     public void ObstacleAdd(Vector2 pos) // Wave 진입 시 체크
     {
         var goalTile = TileMaker.Instance.GetTile(pos);
@@ -757,7 +750,6 @@ public class MonsterUnit : UnitBase, IAttackable
             goalTile.obstacle = null;
         }
     }
-
     public void ObstacleHit()
     {
         // 올가미, 나무트랩, 가시트랩 중 트랩류만 가져오기.
@@ -800,6 +792,11 @@ public class MonsterUnit : UnitBase, IAttackable
     // BluemoonBattle
     private void AttackFence(Obstacle fence)
     {
-        fence.Attacked(baseElem.atk);
+        // 공격아이콘 띄우고
+        // 공격아이콘 굴리고
+        // 애니메이션 재생
+        uiLinker.FenceAttackDirect(PlayAttackAnimation);
+
+        // 애니메이션 Func에서 Obstacle.Attacked 함수 호출
     }
 }

@@ -150,7 +150,33 @@ public class MonsterUILinker : MonoBehaviour
             ));
     }
 
+    public void FenceAttackDirect(UnityAction action)
+    {
+        StartCoroutine(CoFenceAttack(action));
+    }
+
+    public void AfterFenceAttackDirect(UnityAction action)
+    {
+        // 3배확대후 비활성화
+        StartCoroutine(CoWhenAfterMove(iconImg.rectTransform,
+            () => { iconImg.transform.localScale = new Vector3(1f, 1f, 1f); iconImg.transform.rotation = Quaternion.identity; iconImg.enabled = false; action?.Invoke(); }));
+    }
+
     // UI 기능 함수 (코루틴)
+    public IEnumerator CoFenceAttack(UnityAction action)
+    {
+        iconImg.enabled = true;
+        nextMoveDistance.enabled = false;
+        iconImg.sprite = attackIcon;
+
+        // 공격아이콘 띄우고
+        yield return StartCoroutine(Utility.CoScaleChange(iconImg.rectTransform, new Vector3(4f, 4f, 4f), magnificationTime));
+        yield return StartCoroutine(Utility.CoScaleChange(iconImg.rectTransform, new Vector3(1f, 1f, 1f), scaleDownTime));
+
+        // 공격아이콘 굴리고
+        yield return StartCoroutine(CoWhenAttack(iconImg.rectTransform, action));
+    }
+
     private readonly Vector3 startScale = new Vector3(0.2f, 0.2f, 0.2f);
     private readonly float magnificationTime = 0.3f;
     private readonly float scaleDownTime = 0.2f;

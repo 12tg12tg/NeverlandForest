@@ -97,7 +97,6 @@ public class MonsterUiInCanvas : MonoBehaviour
         for (int i = 0; i < maxSheildGaugage; i++)
         {
             var sheildToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
-            sheildToken.transform.SetParent(BattleManager.Instance.uiParent);
             var tokenScript = sheildToken.GetComponent<MonsterProgressToken>();
             sheildToken.transform.SetParent(shieldLayoutGroup.transform);
             tokenScript.image.sprite = token_Sheild;
@@ -109,7 +108,6 @@ public class MonsterUiInCanvas : MonoBehaviour
         for (int i = 0; i < maxHpGaugage; i++)
         {
             var hpToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
-            hpToken.transform.SetParent(BattleManager.Instance.uiParent);
             var tokenScript = hpToken.GetComponent<MonsterProgressToken>();
             hpToken.transform.SetParent(hpLayoutGroup.transform);
             tokenScript.image.sprite = token_Hp;

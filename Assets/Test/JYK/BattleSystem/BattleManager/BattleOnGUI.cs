@@ -21,12 +21,7 @@ public class BattleOnGUI : MonoBehaviour
         {
             manager.Init(false, true);
         }
-        if (GUILayout.Button("블루문O, 마지막전투X", GUILayout.Width(200f), GUILayout.Height(100f)))
-        {
-            BattleManager.initState = BattleInitState.Bluemoon;
-            GameManager.Manager.LoadScene(GameScene.Battle);
-            //manager.Init(true);
-        }
+
 
         if (GUILayout.Button("Lantern -12", GUILayout.Width(100), GUILayout.Height(100)))
         {
@@ -62,6 +57,20 @@ public class BattleOnGUI : MonoBehaviour
         if (GUI.Button(new Rect(Screen.width - 300, 200, 100, 50), "튜토리얼"))
         {
             manager.tutorial.StartDutorial();
+        }
+
+        if (GUI.Button(new Rect(Screen.width - 300, 300, 100, 50), "블루문준비"))
+        {
+            BattleManager.initState = BattleInitState.BluemoonSet;
+            manager.Release();
+            manager.InitBlueMoonSet();
+        }
+
+        if (GUI.Button(new Rect(Screen.width - 300, 350, 100, 50), "블루문시작"))
+        {
+            BattleManager.initState = BattleInitState.Bluemoon;
+            manager.Release();
+            manager.Init(true);
         }
     }
 }

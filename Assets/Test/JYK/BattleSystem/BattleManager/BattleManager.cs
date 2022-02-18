@@ -127,7 +127,7 @@ public class BattleManager : MonoBehaviour
     public void Release()
     {
         // 오브젝트풀 반환
-        var monsters = waveLink.AliveMonsters;
+        var monsters = new List<MonsterUnit>(waveLink.AliveMonsters);
         foreach (var monster in monsters)
         {
             monster.Release(); // 몬스터 -> 몬스터UI -> 토큰 전부 반환
@@ -251,7 +251,7 @@ public class BattleManager : MonoBehaviour
             // 화살
             temp2 = new DataAllItem(costLink.ArrowElem);
             temp2.OwnCount = 19;
-            Vars.UserData.AddItemData(temp2); // 20발
+            Vars.UserData.AddItemData(temp2); // 19발
 
             // 오일
             temp2 = new DataAllItem(costLink.OilElem);
@@ -273,7 +273,7 @@ public class BattleManager : MonoBehaviour
             allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
             temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_13"));
             temp2.OwnCount = 1;
-            Vars.UserData.AddItemData(temp2); // 1개
+            Vars.UserData.AddItemData(temp2); // 3개
 
             // 도끼
             allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
@@ -586,8 +586,8 @@ public class BattleManager : MonoBehaviour
             groups.Remove(bossIndex);
 
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
-            waveLink.wave2[1].SetActionCommand();
             waveLink.wave2[1].Pos = new Vector2(1, 6);
+            waveLink.wave2[1].SetActionCommand();
 
             int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
             if(randNum == 0)
@@ -600,27 +600,27 @@ public class BattleManager : MonoBehaviour
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[0].SetActionCommand();
                     waveLink.wave2[0].Pos = new Vector2(0, 6);
+                    waveLink.wave2[0].SetActionCommand();
                 }
                 else
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[2].SetActionCommand();
                     waveLink.wave2[2].Pos = new Vector2(2, 6);
+                    waveLink.wave2[2].SetActionCommand();
                 }
             }
             else // 2
             {
                 var randId = Random.Range(0, groups.Count);
                 waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[0].SetActionCommand();
                 waveLink.wave2[0].Pos = new Vector2(0, 6);
+                waveLink.wave2[0].SetActionCommand();
                 randId = Random.Range(0, groups.Count);
                 waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[2].SetActionCommand();
                 waveLink.wave2[2].Pos = new Vector2(2, 6);
+                waveLink.wave2[2].SetActionCommand();
             }
 
             // Wave1, Wave3
@@ -644,6 +644,7 @@ public class BattleManager : MonoBehaviour
             groups.Remove(bossIndex);
 
             waveLink.wave2[1] = FindMonsterToId(bossIndex);       // 보스 중앙
+            waveLink.wave2[1].Pos = new Vector2(1, 6);
             waveLink.wave2[1].SetActionCommand();
 
             int randNum = Random.Range(0, 3); // 보스 제외 몬스터 수
@@ -657,27 +658,27 @@ public class BattleManager : MonoBehaviour
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[0].SetActionCommand();
                     waveLink.wave2[0].Pos = new Vector2(0, 6);
+                    waveLink.wave2[0].SetActionCommand();
                 }
                 else
                 {
                     var randId = Random.Range(0, groups.Count);
                     waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                    waveLink.wave2[2].SetActionCommand();
                     waveLink.wave2[2].Pos = new Vector2(2, 6);
+                    waveLink.wave2[2].SetActionCommand();
                 }
             }
             else // 2
             {
                 var randId = Random.Range(0, groups.Count);
                 waveLink.wave2[0] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[0].SetActionCommand();
                 waveLink.wave2[0].Pos = new Vector2(0, 6);
+                waveLink.wave2[0].SetActionCommand();
                 randId = Random.Range(0, groups.Count);
                 waveLink.wave2[2] = FindMonsterToId(groups[randId]);
-                waveLink.wave2[2].SetActionCommand();
                 waveLink.wave2[2].Pos = new Vector2(2, 6);
+                waveLink.wave2[2].SetActionCommand();
             }
 
             Debug.Log($"2웨이브 : {randNum + 1}");
@@ -885,8 +886,8 @@ public class BattleManager : MonoBehaviour
     public void Lose()
     {
         isLose = true;
-        Release();
         GameManager.Manager.GameOver(GameOverType.BattleLoss);
+        //Release();
     }
     public void Win()
     {

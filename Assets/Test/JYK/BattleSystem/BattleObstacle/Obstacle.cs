@@ -79,13 +79,14 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
     private SpriteRenderer sprite;
     private MeshRenderer[] rens;
 
-    private void Start()
+    private void Awake()
     {
         var elems = DataTableManager.GetTable<AllItemDataTable>().data.Values;
         foreach (var elem in elems)
         {
-            if((elem as AllItemTableElem).type.Equals("INSTALLATION")
-                && (elem as AllItemTableElem).obstacleType == type)
+            var baseElem = elem as AllItemTableElem;
+            if (baseElem.type.Equals("INSTALLATION")
+                && baseElem.obstacleType == type)
             {
                 this.elem = elem as AllItemTableElem;
                 break;
@@ -145,7 +146,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
         TrapPool.Instance.ReturnObject(type, gameObject);
     }
 
-    public void Attacked(int damage)
+    public void Attacked(int damage, UnityAction afterDestroy)
     {
         hp -= damage;
         if (hp <= 0)
@@ -157,7 +158,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
             tile0.obstacle = null;
             tile1.obstacle = null;
             tile2.obstacle = null;
-            StartCoroutine(CoDisapear());
+            StartCoroutine(CoDisapear(afterDestroy));
         }
         else
         {
@@ -169,7 +170,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
     {
         var startColor = Color.white;
         var endColor = Color.red;
-        var term = 0.5f;
+        var term = 0.2f;
 
         var startTime = Time.realtimeSinceStartup;
         var endTime = startTime + term;
@@ -182,6 +183,10 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
                 ren.material.color = color;
             yield return null;
         }
+
+        term = 0.3f;
+        startTime = Time.realtimeSinceStartup;
+        endTime = startTime + term;
 
         while (Time.realtimeSinceStartup < endTime)
         {
@@ -196,7 +201,7 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
             ren.material.color = startColor;
     }
 
-    private IEnumerator CoDisapear()
+    private IEnumerator CoDisapear(UnityAction action)
     {
         var startColor = Color.white;
         var endColor = Color.black;
@@ -214,10 +219,27 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
             yield return null;
         }
 
+        var startPos = transform.position;
+        var endPos = startPos + new Vector3(0f, -3f, 0f);
+        startTime = Time.realtimeSinceStartup;
+        endTime = startTime + term;
+
+        while (Time.realtimeSinceStartup < endTime)
+        {
+            var ratio = (Time.realtimeSinceStartup - startTime) / term;
+            var pos = Vector3.Lerp(startPos, endPos, ratio);
+            transform.position = pos;
+            yield return null;
+        }
+
         foreach (var ren in rens)
             ren.material.color = startColor;
 
+        transform.position = startPos;
+
         Release();
+
+        action?.Invoke();
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -252,6 +274,16 @@ public class Obstacle : MonoBehaviour, IPointerClickHandler
             Vars.UserData.AddItemData(newItem);
 
             BottomUIManager.Instance.ItemListInit();
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (type != TrapTag.Fence)
+            return;
+        if (GUI.Button(new Rect(Screen.width/2, Screen.height/2, 100, 100), "Ãæ°Ý"))
+        {
+            Attacked(10, null);
         }
     }
 }
