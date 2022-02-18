@@ -74,6 +74,7 @@ public class BattleTutorial : MonoBehaviour
     //===========================================================================
     public void StartDutorial()
     {
+        bm.uiLink.option.interactable = false;
         gameObject.SetActive(true);
         Init();
         StartCoroutine(CoBattleTutorial());
@@ -138,6 +139,12 @@ public class BattleTutorial : MonoBehaviour
         allItemTable = DataTableManager.GetTable<AllItemDataTable>();
         temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_17"));
         temp.OwnCount = 5;
+        Vars.UserData.AddItemData(temp); // 5°³
+
+        // »ð
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_13"));
+        temp.OwnCount = 1;
         Vars.UserData.AddItemData(temp); // 5°³
 
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
