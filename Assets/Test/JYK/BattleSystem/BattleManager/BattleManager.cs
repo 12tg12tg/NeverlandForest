@@ -713,7 +713,7 @@ public class BattleManager : MonoBehaviour
                         temp = waveLink.wave2;
                     else
                         temp = waveLink.wave3;
-
+                    
                     if (i == exceptNum)
                         MakeNormalWave(groups, temp, 2);
                     else
@@ -750,7 +750,7 @@ public class BattleManager : MonoBehaviour
         {
             rand = Random.Range(0, idGroup.Count);
             if ((createNum == 2 && colIndex == exceptCol)
-                || createNum == 1 && colIndex != exceptCol)
+                || (createNum == 1 && colIndex != exceptCol))
             {
                 colIndex++;
             }
