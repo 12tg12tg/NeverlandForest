@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23650404010206510}
   - component: {fileID: 7912080968110497330}
   - component: {fileID: -2088024942456270872}
+  - component: {fileID: 3506234701143844721}
   m_Layer: 31
   m_Name: Mushroom_F_01
   m_TagString: Untagged
@@ -100,6 +101,7 @@ MonoBehaviour:
   data:
     eventType: 0
     eventBasePos: {x: 0, y: 0, z: 0}
+    offSetBasePos: 0
     isCreate: 0
     objectPosition: {x: 0, y: 0, z: 0}
     roomIndex: 0
@@ -122,3 +124,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.49210978, y: 0.52109516, z: 0.5207164}
   m_Center: {x: 0.025519185, y: 0.24841233, z: 0.016011395}
+--- !u!114 &3506234701143844721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716376340691642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 271c580db5fd384429cdac899152e9e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _outlineResources: {fileID: 11400000, guid: d28e70f030b1a634db9a6a6d5478ef19, type: 2}
+  _outlineSettings:
+    _outlineSettings: {fileID: 0}
+    _outlineColor: {r: 1, g: 1, b: 1, a: 1}
+    _outlineWidth: 32
+    _outlineIntensity: 2
+    _outlineAlphaCutoff: 0.9
+    _outlineMode: -1
+  _ignoreLayerMask: 0
+  _cameraEvent: 15
+  _targetCamera: {fileID: 0}
+  _updateRenderers: 0
