@@ -171,6 +171,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     public void GameOver(GameOverType type)
     {
         gameoverUI.SetActive(true);
+        SaveDataInit();
         SoundManager.Instance?.Play(SoundType.Se_GameOver);
 
         var texts = gameoverUI.GetComponentsInChildren<TMP_Text>();
@@ -197,18 +198,19 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
     }
     public void GoToTitle() // 죽었을 때 타이틀로 버튼 클릭 함수
     {
-        pd.FadeIn(() => {
-            // TODO : 사망 했을 때 지워져야 할 세이브 데이터들 및 초기화 되어야 하는 유저 데이터들 여기에
-            var len = System.Enum.GetValues(typeof(SaveDataName)).Length;
-            for (int i = 0; i < len; i++)
-            {
-                Utility.DeleteSaveData((SaveDataName)i);
-            }
-            //유저데이터안에 함수 만들고 한번 호출해서 초기화하는 방법으로 가자.
-            Vars.UserData.UserDataInit();
-            WorldMapCamera.isInit = false; // 월드맵 카메라 초기화
-            SceneManager.LoadScene("Game");
-        });
+        pd.FadeInTitle(() => SceneManager.LoadScene("Game"));
+    }
+
+    private static void SaveDataInit()
+    {
+        // TODO : 사망 했을 때 지워져야 할 세이브 데이터들 및 초기화 되어야 하는 유저 데이터들 여기에
+        var len = System.Enum.GetValues(typeof(SaveDataName)).Length;
+        for (int i = 0; i < len; i++)
+        {
+            Utility.DeleteSaveData((SaveDataName)i);
+        }
+        Vars.UserData.UserDataInit();
+        WorldMapCamera.isInit = false; // 월드맵 카메라 초기화
     }
 
     public void GameReset() // 엔딩에서 쓰는 리셋 버튼 눌렀을 때 실행되는 메서드
