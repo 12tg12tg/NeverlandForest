@@ -57,6 +57,23 @@ public class TimePrograss : MonoBehaviour
             else
             {
                 changableDayState.sprite = nightSprite5;
+
+                
+
+                if (!Vars.UserData.isbluemoonDone)
+                {
+                    var state = GameManager.Manager.State;
+                    //블루문 실행.
+                    if (date != 0&& state != GameState.Battle && state != GameState.Hunt)
+                    {
+                        Vars.UserData.isbluemoonDone = true;
+                        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.Battle);
+                        BattleManager.initState = BattleInitState.Bluemoon;
+                        GameManager.Manager.LoadScene(GameScene.Battle);
+                    }
+
+                }
+
             }
         }
         currentValue = Vars.UserData.uData.CurIngameHour + (Vars.UserData.uData.CurIngameMinute / 60);

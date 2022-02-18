@@ -20,6 +20,9 @@ public class CampManager : MonoBehaviour
     private bool isProduceMove;
     private bool isSleepMove;
     private bool isGatheringMove;
+
+    private DataAllItem tutorialMushroomitem;
+
     [Header("미니맵 셋팅")]
     public RoomObject mainRoomPrefab;
     public RoomObject roadPrefab;
@@ -69,6 +72,7 @@ public class CampManager : MonoBehaviour
     public GameObject bush;
     public GameObject bluemoonObject;
     public RecipeIcon diaryRecipeIcon;
+    public CraftIcon diaryCraftIcon;
     public GameObject campbornfire;
 
     [Header("요리제스처")]
@@ -128,6 +132,16 @@ public class CampManager : MonoBehaviour
                 CampInit();
                 // 스토리 챕터 4
 
+                //요리튜토리얼을 위한 버섯 아이템 추가 
+                var allitemTable = DataTableManager.GetTable<AllItemDataTable>();
+                tutorialMushroomitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{6}"));
+                tutorialMushroomitem.OwnCount = 1;
+                Vars.UserData.AddItemData(tutorialMushroomitem);
+                //레시피 추가 
+                Vars.UserData.ExperienceListAdd(tutorialMushroomitem.itemId);
+
+                //요리튜토리얼을 위한 스태미나, 배고픔 추가
+                ConsumeManager.GettingTired(5);
                 camptutorial.blackPanel.SetActive(true);
                 GameManager.Manager.State = GameState.Tutorial;
                 StartCoroutine(camptutorial.CoCampTutorial());
@@ -144,6 +158,7 @@ public class CampManager : MonoBehaviour
         instance = this;
         StartPos = camera.transform.position;
         Vars.UserData.uData.BonfireHour = 3;
+        BlueMoonObjectInit();
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -186,6 +201,8 @@ public class CampManager : MonoBehaviour
         {
             recoverySleepTime = haveMinute;
         }
+        camptutorial.TutorialSleepplusButtonClick = true;
+
         SetSleepTime();
     }
     public void MinuseSleepTime()
@@ -204,6 +221,8 @@ public class CampManager : MonoBehaviour
         ConsumeManager.RecoveryTiredness();
         ConsumeManager.SaveConsumableData();
         recoverySleepTime = 0;
+        camptutorial.TutorialSleep_startButtonClick = true;
+       
         SetSleepTime();
         SetBonTime();
     }
@@ -301,13 +320,14 @@ public class CampManager : MonoBehaviour
         if (diaryManager.IsRotation)
         {
             simpleGesture.Init();
-            diaryManager.OpenCookingRotation();
+            if (diaryManager.recipeIcon.Isfireok)
+            {
+                diaryManager.CallMakeCook();
+            }
         }
         else
         {
-            if (diaryManager.recipeIcon.Isfireok &&
-                diaryManager.recipeIcon.Iscondimentok&&
-                diaryManager.recipeIcon.Ismaterialok)
+            if (diaryManager.recipeIcon.Isfireok)
             {
                 diaryManager.CallMakeCook();
             }
@@ -319,6 +339,8 @@ public class CampManager : MonoBehaviour
 
         OpenCookInCamp();
         diaryManager.CloseCookingReward();
+        CampManager.Instance.camptutorial.TutorialMorecookingbuttonClick = true;
+
     }
     public void CallMakeCook()
     {
@@ -356,6 +378,72 @@ public class CampManager : MonoBehaviour
 
         newBottomUi.SetActive(false);
     }
+    public void SetGatheringTime()
+    {
+        gatheringTimeText.text = gatheringTime.ToString() + "분";
+    }
+    public void PlusGatheringTime()
+    {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
+        gatheringTime += 30;
+        if (gatheringTime > 180)
+        {
+            gatheringTime = 180;
+        }
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        if (haveMinute < gatheringTime)
+        {
+            gatheringTime = haveMinute;
+        }
+        SetGatheringTime();
+        camptutorial.Tutorialgathering_plusbuttonClick = true;
+    }
+    public void MinusGatheringTime()
+    {
+        SoundManager.Instance.Play(SoundType.Se_Button);
+
+        gatheringTime -= 30;
+        if (gatheringTime < 0)
+        {
+            gatheringTime = 0;
+        }
+        SetGatheringTime();
+    }
+    public void GatheringInCamp()
+    {
+        gatheringRewardText.text = "탐색 성공!";
+
+        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
+        haveMinute -= gatheringTime;
+        Vars.UserData.uData.BonfireHour = haveMinute / 60;
+        diaryManager.OpenGatheringReward();
+
+        Debug.Log($"gatheringTime{gatheringTime}");
+        for (int i = 0; i < (int)(gatheringTime / 30); i++)
+        {
+            gatheringRewardList[i].SetRewardItemIcon();
+            if (gatheringRewardList[i].IsBlank == true)
+            {
+                isBlankCheck++;
+            }
+        }
+        ConsumeManager.TimeUp(gatheringTime);
+        ConsumeManager.SaveConsumableData();
+
+        if (isBlankCheck == (int)(gatheringTime / 30))
+        {
+            Debug.Log("전부꽝");
+            gatheringRewardText.text = "딱히 주울게 없네";
+        }
+        gatheringTime = 0;
+        SetGatheringTime();
+        SetBonTime();
+        camptutorial.Tutorialgathering_startbuttonClick = true;
+
+    }
+
+
     public void CloseGatheringInCamp()
     {
         for (int i = 0; i < gatheringRewardList.Count; i++)
@@ -428,7 +516,6 @@ public class CampManager : MonoBehaviour
     public void OpenBlueMoonScene(object[] vals)
     {
         if (vals.Length != 0) return;
-        Debug.Log($"Open Open BlueMoon Scene ");
         SoundManager.Instance?.Play(SoundType.Se_Button);
 
     }
@@ -436,6 +523,7 @@ public class CampManager : MonoBehaviour
     public void OpenMaking(object[] vals)
     {
         if (vals.Length != 0) return;
+        diaryCraftIcon.Init();
         StartProduceInCamp();
         SoundManager.Instance.Play(SoundType.Se_Button);
 
@@ -458,7 +546,6 @@ public class CampManager : MonoBehaviour
         diaryManager.campBonfire.SetActive(false);
         diaryManager.OpenProduce();
         diaryManager.curdiaryType = DiaryType.Craft;
-
         newBottomUi.SetActive(false);
     }
 
@@ -484,6 +571,8 @@ public class CampManager : MonoBehaviour
         diaryManager.CloseProduceReward();
         reconfirmPanelManager.inventoryFullPopup.SetActive(false);
         reconfirmPanelManager.gameObject.SetActive(false);
+        camptutorial.TutorialCraftMoremakebuttonClick = true;
+
         OpenProduceInCamp();
     }
     //SceneChange
@@ -521,68 +610,7 @@ public class CampManager : MonoBehaviour
         bonTimeText.gameObject.SetActive(true);
 
     }
-    public void SetGatheringTime()
-    {
-        gatheringTimeText.text = gatheringTime.ToString() + "분";
-    }
-    public void PlusGatheringTime()
-    {
-        SoundManager.Instance.Play(SoundType.Se_Button);
-
-        gatheringTime += 30;
-        if (gatheringTime > 180)
-        {
-            gatheringTime = 180;
-        }
-        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
-        if (haveMinute < gatheringTime)
-        {
-            gatheringTime = haveMinute;
-        }
-        SetGatheringTime();
-    }
-    public void MinusGatheringTime()
-    {
-        SoundManager.Instance.Play(SoundType.Se_Button);
-
-        gatheringTime -= 30;
-        if (gatheringTime < 0)
-        {
-            gatheringTime = 0;
-        }
-        SetGatheringTime();
-    }
-    public void GatheringInCamp()
-    {
-        gatheringRewardText.text = "탐색 성공!";
-
-        var haveMinute = Vars.UserData.uData.BonfireHour * 60;
-        haveMinute -= gatheringTime;
-        Vars.UserData.uData.BonfireHour = haveMinute / 60;
-        diaryManager.OpenGatheringReward();
-
-        Debug.Log($"gatheringTime{gatheringTime}");
-        for (int i = 0; i < (int)(gatheringTime / 30); i++)
-        {
-            gatheringRewardList[i].SetRewardItemIcon();
-            if (gatheringRewardList[i].IsBlank == true)
-            {
-                isBlankCheck++;
-            }
-        }
-        ConsumeManager.TimeUp(gatheringTime);
-        ConsumeManager.SaveConsumableData();
-
-        if (isBlankCheck == (int)(gatheringTime / 30))
-        {
-            Debug.Log("전부꽝");
-            gatheringRewardText.text = "딱히 주울게 없네";
-        }
-        gatheringTime = 0;
-        SetGatheringTime();
-        SetBonTime();
-    }
-
+  
     public void GetItem()
     {
         for (int i = 0; i < gatheringRewardList.Count; i++)
@@ -667,6 +695,23 @@ public class CampManager : MonoBehaviour
         SoundManager.Instance.Play(SoundType.Se_Button);
 
     }
+
+    public void BlueMoonObjectInit()
+    {
+        var date = Vars.UserData.uData.Date;
+        bluemoonObject.SetActive(false);// 일단 먼저 끄고 
+        if (date%14==0)
+        {
+            bluemoonObject.SetActive(true); //조건에 맞으면 키고 
+        }
+        else
+        {
+            bluemoonObject.SetActive(false); //아니면 꺼라
+        }
+
+    }
+
+
     /* public void OnGUI()
    {
        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))

@@ -13,7 +13,7 @@ public class CraftTestMaker : MonoBehaviour
     {
         recipeTable = DataTableManager.GetTable<RecipeDataTable>();
         craftTable = DataTableManager.GetTable<CraftDataTable>();
-       /* SetRecipeResultList();
+      /*  SetRecipeResultList();
         SetCraftResultList();
         GetRecipeList();
         GetCraftList();*/

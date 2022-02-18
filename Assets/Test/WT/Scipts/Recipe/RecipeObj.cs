@@ -29,6 +29,8 @@ public class RecipeObj : MonoBehaviour
     {
         recipeIcon.currentRecipe = this;
         recipeIcon.OnChangedSelection();
+        CampManager.Instance.camptutorial.TutorialCook_recipeIconButton = true;
+
     }
     public void Clear()
     {
