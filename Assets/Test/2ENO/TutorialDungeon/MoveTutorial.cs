@@ -30,7 +30,7 @@ public class MoveTutorial : MonoBehaviour
 
     private DialogBoxObject dialogBoxObj;
 
-    private Coroutine coTuto;
+    public float delay;
 
     private readonly int tutorialStepMove = 2;
 
@@ -65,31 +65,29 @@ public class MoveTutorial : MonoBehaviour
     {
         if (isMoveTutorial)
         {
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
+            delay += Time.deltaTime;
+            if (delay > 1.2f)
+                delay = 0f;
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
                 TutorialStep != tutorialStepMove
                 )
             {
-                coTuto ??= StartCoroutine(CoTutorialTouch());
+                NextTutorialStep();
+                delay = 0f;
             }
         }
-    }
-    public IEnumerator CoTutorialTouch()
-    {
-        yield return new WaitForSeconds(0.3f);
-        NextTutorialStep();
-        yield return new WaitForSeconds(1f);
-        coTuto = null;
     }
 
     public IEnumerator CoMoveTutorial()
     {
         isMoveTutorial = true;
+        delay = 0f;
         RightLongTouch();
         yield return new WaitWhile(() => TutorialStep < 1);
-
+        delay = 0f;
         LeftLongTouch();
         yield return new WaitWhile(() => TutorialStep < 2);
-
+        delay = 0f;
         MoveTest();
         yield return new WaitWhile(() => TutorialStep < 3);
 

@@ -156,6 +156,7 @@ public class TutorialPlayerMove : MonoBehaviour
                                     moveTutorial.CommandSucess++;
                                     tutorialTime = 0f;
                                     moveTutorial.NextTutorialStep();
+                                    moveTutorial.delay = 0f;
                                 }
                             }
                         }

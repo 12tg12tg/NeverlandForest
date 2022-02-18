@@ -49,6 +49,8 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
                 if (DungeonSystem.Instance.gatherTutorial.TutorialStep == 0)
                 {
                     DungeonSystem.Instance.gatherTutorial.NextTutorialStep();
+                    DungeonSystem.Instance.gatherTutorial.delay = 0f;
+                    gathering.GoGatheringObject(gameObject.transform.position);
                     gathering.curSelectedObj = this;
                 }
                 break;

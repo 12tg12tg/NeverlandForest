@@ -37,7 +37,7 @@ public class GatheringTutorial : MonoBehaviour
     private readonly int gatheringToolGetItem = 8;
     private readonly int gatheringToolCloseBtn = 10;
 
-    private Coroutine coTuto;
+    public float delay = 0f;
 
     [Header("Æ÷Áö¼Ç Å¸°Ù")]
     public RectTransform rewardUp;
@@ -68,7 +68,10 @@ public class GatheringTutorial : MonoBehaviour
     {
         if (isGatheringTutorial)
         {
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 &&
+            delay += Time.deltaTime;
+            if (delay > 1.3f)
+                delay = 0f;
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
                 TutorialStep != gatheringTouchStep &&
                 TutorialStep != gatheringMoveStep &&
                 TutorialStep != gatheringStartStep &&
@@ -78,59 +81,53 @@ public class GatheringTutorial : MonoBehaviour
                 TutorialStep != gatheringToolCloseBtn
                 )
             {
-                coTuto ??= StartCoroutine(CoTutorialTouch());
+                NextTutorialStep();
+                delay = 0f;
             }
         }
     }
 
-    public IEnumerator CoTutorialTouch()
-    {
-        yield return new WaitForSeconds(0.3f);
-        NextTutorialStep();
-        yield return new WaitForSeconds(1f);
-        coTuto = null;
-        Debug.Log("Áö±Ý Null¸¸µë");
-    }
-
     public IEnumerator CoGatheringTutorial()
     {
+        delay = 0f;
         isGatheringTutorial = true;
         GatheringTouch();
+        
         yield return new WaitWhile(() => TutorialStep < 1);
-
+        delay = 0f;
         SetActive(false);
-        var gatheringSystem = DungeonSystem.Instance.gatheringSystem;
-        gatheringSystem.GoGatheringObject(eventObject.transform.position);
+        //var gatheringSystem = DungeonSystem.Instance.gatheringSystem;
+        //gatheringSystem.GoGatheringObject(eventObject.transform.position);
 
         yield return new WaitWhile(() => TutorialStep < 2);
-
+        delay = 0f;
         GatheringStartExplain();
         yield return new WaitWhile(() => TutorialStep < 3);
 
         yield return new WaitForSeconds(0.05f);
-
+        delay = 0f;
         GatheringToolUse();
         yield return new WaitWhile(() => TutorialStep < 4);
-
+        delay = 0f;
         //GatheringToolNoUse();
         NextTutorialStep();
         yield return new WaitWhile(() => TutorialStep < 5);
-
+        delay = 0f;
         GatheringToolUseStart();
         yield return new WaitWhile(() => TutorialStep < 6);
-
+        delay = 0f;
         GatheringReWardExplain();
         yield return new WaitWhile(() => TutorialStep < 7);
-
+        delay = 0f;
         GatheringReWardItemExplain();
         yield return new WaitWhile(() => TutorialStep < 8);
-
+        delay = 0f;
         GatheringGetItemExplain();
         yield return new WaitWhile(() => TutorialStep < 9);
-
+        delay = 0f;
         GatheringItemListExplain();
         yield return new WaitWhile(() => TutorialStep < 10);
-
+        delay = 0f;
         GatheringEndTouch();
         yield return new WaitWhile(() => TutorialStep < 11);
 
