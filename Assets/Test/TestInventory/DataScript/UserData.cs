@@ -19,6 +19,7 @@ public class UserData
     public ArrowType arrowType;
     public List<Vector2> trapPos;
     public List<TrapTag> trapType;
+    public bool isbluemoonDone = false;
 
     //World Info
     public List<WorldMapNodeStruct> WorldMapNodeStruct { get; set; } = new List<WorldMapNodeStruct>();

@@ -158,6 +158,7 @@ public class CampManager : MonoBehaviour
         instance = this;
         StartPos = camera.transform.position;
         Vars.UserData.uData.BonfireHour = 3;
+        BlueMoonObjectInit();
         SetBonTime();
         SetSleepTime();
         SetGatheringTime();
@@ -694,6 +695,23 @@ public class CampManager : MonoBehaviour
         SoundManager.Instance.Play(SoundType.Se_Button);
 
     }
+
+    public void BlueMoonObjectInit()
+    {
+        var date = Vars.UserData.uData.Date;
+        bluemoonObject.SetActive(false);// 일단 먼저 끄고 
+        if (date%14==0)
+        {
+            bluemoonObject.SetActive(true); //조건에 맞으면 키고 
+        }
+        else
+        {
+            bluemoonObject.SetActive(false); //아니면 꺼라
+        }
+
+    }
+
+
     /* public void OnGUI()
    {
        if (GUI.Button(new Rect(100, 200, 100, 75), "cost reset"))

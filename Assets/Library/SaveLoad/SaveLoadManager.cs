@@ -250,6 +250,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         battleData.arrowType = Vars.UserData.arrowType;
         battleData.trapPos = Vars.UserData.trapPos;
         battleData.trapType = Vars.UserData.trapType;
+        battleData.isBluemoonDone = Vars.UserData.isbluemoonDone;
         SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
     }
     private void SaveSceneData()
@@ -424,12 +425,14 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
             Vars.UserData.arrowType = battleData.arrowType;
             Vars.UserData.trapPos = battleData.trapPos;
             Vars.UserData.trapType = battleData.trapType;
+            Vars.UserData.isbluemoonDone = battleData.isBluemoonDone;
         }
         else
         {
             Vars.UserData.arrowType = ArrowType.Normal;
             Vars.UserData.trapPos = new List<Vector2>();
             Vars.UserData.trapType = new List<TrapTag>();
+            Vars.UserData.isbluemoonDone = false;
         }
     }
 
