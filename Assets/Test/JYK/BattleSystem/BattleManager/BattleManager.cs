@@ -260,11 +260,6 @@ public class BattleManager : MonoBehaviour
             temp2.OwnCount = 3;
             Vars.UserData.AddItemData(temp2); // 4개
 
-            //// 포션
-            //temp2 = new DataAllItem(costLink.PotionElem);
-            //temp2.OwnCount = 1;
-            //Vars.UserData.AddItemData(temp2); // 1개
-
             // 나무도막
             var allItemTable2 = DataTableManager.GetTable<AllItemDataTable>();
             temp2 = new DataAllItem(allItemTable2.GetData<AllItemTableElem>("ITEM_1"));
@@ -288,6 +283,15 @@ public class BattleManager : MonoBehaviour
             // 랜턴밝기
             ConsumeManager.ConsumeLantern((int)Vars.UserData.uData.LanternCount);
             ConsumeManager.FullingLantern(lanternCount); // 풀
+
+            // 플레이어 체력 & 애니메이션 & 타일 재정의
+            boy.PlayIdleAnimation();
+            girl.PlayIdleAnimation();
+
+            tileLink.SetUnitOnTile(new Vector2(0, 0), girl.Stats);
+            tileLink.SetUnitOnTile(new Vector2(1, 0), boy.Stats);
+
+            ConsumeManager.RecoverHp(Vars.maxHp);
 
             //배틀상태 Start
             FSM.ChangeState(BattleState.Player);
@@ -333,11 +337,6 @@ public class BattleManager : MonoBehaviour
         temp = new DataAllItem(costLink.OilElem);
         temp.OwnCount = 4;
         Vars.UserData.AddItemData(temp); // 4개
-
-        //// 포션
-        //temp = new DataAllItem(costLink.PotionElem);
-        //temp.OwnCount = 1;
-        //Vars.UserData.AddItemData(temp); // 1개
 
         // 나무트랩
         temp = new DataAllItem(costLink.WoodenTrapElem);

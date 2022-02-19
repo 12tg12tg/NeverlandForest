@@ -445,6 +445,10 @@ public class BattleTutorial : MonoBehaviour
             if (isWin)
                 break;
 
+            // 배틀상태멈추기
+            bm.FSM.ChangeState(BattleState.End);
+
+
             // 메세지창 및 재설정
             isLose = false;
             UISet_15th_Enter();
@@ -482,6 +486,10 @@ public class BattleTutorial : MonoBehaviour
     }
 
     // ====================================================================================
+    // ====================================================================================
+    // ====================================================================================
+    // ====================================================================================
+    #region 대기함수
     private void UISet_1st_Enter() // 웨이브 미리보기 버튼 클릭 유도 & 설명 띄우기
     {
         // 마스크 위치 & 크기 & 도형
@@ -970,4 +978,5 @@ public class BattleTutorial : MonoBehaviour
 
         bm.TutorialInit(true);
     }
+    #endregion
 }
