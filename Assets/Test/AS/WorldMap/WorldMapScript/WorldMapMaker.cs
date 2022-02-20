@@ -558,6 +558,7 @@ public class WorldMapMaker : MonoBehaviour
                 node.Add(data);
             }
         }
+        GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.WorldMapData);
     }
     private void Load(List<WorldMapNodeStruct> loadData, string LayerName = "null")
     {

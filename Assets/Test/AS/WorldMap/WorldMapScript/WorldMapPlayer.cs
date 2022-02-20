@@ -26,8 +26,8 @@ public class WorldMapPlayer : MonoBehaviour
 
     public void Init()
     {
+        Debug.Log("플레이어 초기화 시작");
         totalMap = GameManager.Manager.WorldManager.worldMapMaker.GetComponentsInChildren<WorldMapNode>();
-        //totalMap = transform.GetComponentsInChildren<WorldMapNode>();
         currentIndex = totalMap[0].index;
         transform.position = totalMap[0].transform.position + new Vector3(0f, 0.5f, 0f);
 
@@ -36,6 +36,7 @@ public class WorldMapPlayer : MonoBehaviour
         data.currentIndex = currentIndex;
         Vars.UserData.WorldMapPlayerData = data;
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.WorldMapPlayerData);
+        Debug.Log("플레이어 초기화 끝");
     }
 
     public void Load()
