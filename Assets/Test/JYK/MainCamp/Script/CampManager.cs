@@ -690,6 +690,7 @@ public class CampManager : MonoBehaviour
     {
         if (GameManager.Manager.State == GameState.Tutorial)
         {
+            camptutorial.SetActive(false);
             camptutorial.IsquitbuttonClick = true;
         }
         diaryManager.curdiaryType = DiaryType.None;
