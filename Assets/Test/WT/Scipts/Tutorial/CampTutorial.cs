@@ -219,76 +219,57 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() => tutorialCraftTouch);
         SetActive(false);
         yield return new WaitForSeconds(2f);
+        camTM.BlackPanelOn();
         LongTouch(0.54f, 0.75f, 0.4f, 0.8f, "제작대에서는 가지고있는 제조법을 볼수있어 \n" +
             "그리고 제조법을 누르면 해당 조합식을 알 수 있지.", false, true); //Craft iconbutton
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(craftIcon_button);
         yield return new WaitUntil(() => tutorialCraftIconClick);
-        SetActive(false);
-        camTM.BlackPanelOff();
-        LongTouch(0.65f, 0.37f, 0.4f, 0.35f, "마침 씨앗을 가지고있으니깐 오일을 만들어보자",
+        LongTouch(0.63f, 0.37f, 0.4f, 0.35f, "마침 씨앗을 가지고있으니깐 오일을 만들어보자",
             false,true); //Craft startbutton
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(craft_startbutton);
-        camTM.BlackPanelOff();
         yield return new WaitUntil(() => tutorialCraftStartbuttonClick);
-        SetActive(false);
-        camTM.BlackPanelOn();
-        LongTouch(0.62f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
+        LongTouch(0.64f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
           false,true); //Craft backbutton
         camTM.TutorialTargetButtonActivate(craft_moreMakebutton);
-        camTM.BlackPanelOff();
         yield return new WaitUntil(() => tutorialCraftMoremakebuttonClick);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(campDiaryquickButton);
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자",false,true); //Craft xbutton
         tutorialCraftTouch = false;
+        camTM.BlackPanelOff();
         yield return new WaitUntil(() => isquitbuttonClick);
 
         //요리 튜토리얼
-
         isquitbuttonClick = false;
-        SetActive(false);
         iscraftFinish = true;
         yield return new WaitForSeconds(2.5f);
-        camTM.BlackPanelOff();
         LongTouch(0.68f, 0.5f, 0.5f, 0.5f, "이것은 요리를 할 수 있는 솥이야. \n" +
             "스태미나중 변동스태미나를 회복 할 수 있는 곳이지. \n" +
             "물론 레시피가 있어야 요리를 만들어서 먹을 수 있어.",false,true); //recipe 
         yield return new WaitUntil(() => tutorialCookingTouch);
         tutorialCookingTouch = false;
-        yield return new WaitForSeconds(2.5f);
         SetActive(false);
+        yield return new WaitForSeconds(2.5f);
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_recipeIconbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.54f, 0.75f, 0.4f, 0.8f, "요리솥에서는 가지고있는 레시피를 볼 수 있어", false, true); //recipe iconclick
         yield return new WaitUntil(() => tutorialCook_recipeIconButton);
-        SetActive(false);
-        LongTouch(0.65f, 0.37f, 0.4f, 0.33f, "마침 버섯을 가지고있으니깐 버섯구이를 만들어보자",
+        LongTouch(0.62f, 0.35f, 0.4f, 0.33f, "마침 버섯을 가지고있으니깐 버섯구이를 만들어보자",
             false, true); //cook startbutton
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_startbutton);
-        camTM.BlackPanelOff();
         yield return new WaitUntil(() =>tutorialCook_startButton);
-        SetActive(false);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_moreCookbutton);
-        camTM.BlackPanelOff();
-        LongTouch(0.62f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
+        LongTouch(0.64f, 0.4f, 0.4f, 0.35f, "이제 돌아갈까",
           false, true); //Craft backbutton
         yield return new WaitUntil(() => tutorialMorecookingbuttonClick);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(campDiaryquickButton);
         camTM.BlackPanelOff();
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //reipce xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
 
         //모닥불 튜토리얼
-
         isquitbuttonClick = false;
+        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(bottomitemTagButton);
-        SetActive(false);
         yield return new WaitForSeconds(2.5f);
         LongTouch(0.9f, 0.2f, 0.9f, 0.5f, "아이템 확인", false, false, false, true);
         yield return new WaitUntil(() => tutorialBonableItemCheckFinish);
@@ -301,62 +282,47 @@ public class CampTutorial : MonoBehaviour
         isWaitingTouch = true;
         LongTouchRect(0.7f, 0.15f, 0.6f, 0.5f, "아이템 확인", false, false, false, true);
         yield return new WaitUntil(() => tutorialBonableItemCheck);
-        SetActive(false);
         yield return new WaitForSeconds(2.5f);
         camTM.BlackPanelOff();
 
         //수면 튜토리얼
-
         LongTouch(0.5f, 0.7f, 0.5f, 0.8f, "여기는 잠을 자는곳이야 \n" +
             "너가 가지고 있는 모닥불시간에 비례해 \n" +
             "회복 할 수 있는 스태미나까지 회복시켜주지.", false, false, false, true); 
         yield return new WaitUntil(() =>tutorialSleepingTouch);
         tutorialSleepingTouch = false;
-        yield return new WaitForSeconds(2.5f);
         SetActive(false);
+        yield return new WaitForSeconds(2.5f);
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(sleep_plusbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.7f, 0.66f, 0.5f, 0.7f, "텐트에서는 가지고 있는 모닥불 시간만큼 휴식을 취할 수 있어 \n" +
             "시간을 사용해보자", false, true); //sleep plus click
         yield return new WaitUntil(() => tutorialSleepplusButtonClick);
-        SetActive(false);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(sleep_startbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.63f, 0.4f, 0.65f, 0.7f, "휴식을 취하자 ", false, false,false,true); //sleep start click
         yield return new WaitUntil(() => tutorialSleep_startButtonClick);
         yield return new WaitForSeconds(2f);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(campDiaryquickButton);
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자", false, true); //sleeping xbutton
         yield return new WaitUntil(() => isquitbuttonClick);
         camTM.BlackPanelOff();
         isquitbuttonClick = false;
-        SetActive(false);
         yield return new WaitForSeconds(3f);
 
         // 채집 튜토리얼
-
-
-
         issleepingFinish = true;
         LongTouch(0.8f, 0.6f, 0.5f, 0.8f, "이곳은 남은 모닥불시간을 소비해서 \n" +
             "채집을 할 수있는곳이야."); //gathering
         yield return new WaitUntil(() =>tutorialGahteringingTouch);
         tutorialGahteringingTouch = false;
-        yield return new WaitForSeconds(2f);
         SetActive(false);
+        yield return new WaitForSeconds(2f);
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(gathering_plusbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.7f, 0.66f, 0.5f, 0.7f, "텐트에서는 가지고 있는 모닥불 시간만큼 채집을 할 수 있어 \n" +
             "시간을 사용해보자", false, true); //gathering plus click
         yield return new WaitUntil(() => tutorialgathering_plusbuttonClick);
-        SetActive(false);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(gathering_startbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.63f, 0.4f, 0.65f, 0.7f, "채집을 해보자 ", false, false, false, true); //gathering start click
         yield return new WaitUntil(() => tutorialgathering_startbuttonClick);
         yield return new WaitForSeconds(2f);

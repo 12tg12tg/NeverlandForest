@@ -294,10 +294,10 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비" + "\n"
-           + "시간은 30분을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-        + "시간은 1시간을 소비";
+            gatheringToolConsumetext.text = "시간 30분 소요" + "\n"
+           + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+        + "20스테미나 소요";
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;
@@ -313,10 +313,10 @@ public class GatheringSystem : MonoBehaviour
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비" + "\n"
-          + "시간은 1시간을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간30분을 소비";
+            gatheringToolConsumetext.text = "시간 1시간 소요" + "\n"
+          + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 1시간 30분 소요" + "\n"
+           + "20스테미나 소요"; 
             gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
             + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
 
@@ -333,10 +333,10 @@ public class GatheringSystem : MonoBehaviour
         }
         else
         {
-            gatheringToolConsumetext.text = "도끼는 스테미나를 10 소비" + "\n"
-       + "시간은 1시간 30분을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 2시간을 소비";
+            gatheringToolConsumetext.text = "시간 1시간 30분 소요" + "\n"
+       + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 2시간 소요" + "\n"
+           + "20스테미나 소요";
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;
@@ -364,10 +364,11 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비" + "\n"
-          + "시간은 30분을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-        + "시간은 1시간을 소비";
+            gatheringToolConsumetext.text = "시간 30분 소요" + "\n"
+         + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+        + "20스테미나 소요";
+
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;
@@ -383,10 +384,11 @@ public class GatheringSystem : MonoBehaviour
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비" + "\n"
-          + "시간은 1시간을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간30분을 소비";
+            gatheringToolConsumetext.text = "시간 1시간 소요" + "\n"
+         + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 1시간 30분 소요" + "\n"
+           + "20스테미나 소요";
+
             gatheringToolCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
            + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
@@ -402,10 +404,11 @@ public class GatheringSystem : MonoBehaviour
         }
         else
         {
-            gatheringToolConsumetext.text = "삽은 스테미나를 10 소비" + "\n"
-       + "시간은 1시간 30분을 소비";
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 2시간을 소비";
+            gatheringToolConsumetext.text = "시간 1시간 30분 소요" + "\n"
+      + "10 스테미나 소요";
+            gatheringHandConsumeText.text = "시간 2시간 소요" + "\n"
+           + "20스테미나 소요";
+
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;
@@ -433,24 +436,25 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-        + "시간은 1시간을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+        + "20스테미나 소요";
+
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
 
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+         + "20스테미나 소요";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
 
         }
         else
         {
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간30분을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 30분 소요" + "\n"
+         + "20스테미나 소요";
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;
@@ -474,22 +478,22 @@ public class GatheringSystem : MonoBehaviour
             // 1시간의 보정시간을 가진다. 나중에 소비되는 기본 시간값이 나오면 
             // 기본값에서 1시간을 빼준값을 시간으로 소비한다.
             // 스태미나는 랜턴에 영향을 받지않고 똑같이 소비된다.
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-        + "시간은 1시간을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+         + "20스테미나 소요";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else if (lanternstate == LanternState.Level3)
         {
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 소요" + "\n"
+        + "20스테미나 소요";
             handCompleteTimeText.text = (Vars.UserData.uData.CurIngameHour + 1).ToString() + "시 " + "\n"
        + (Vars.UserData.uData.CurIngameMinute).ToString() + "분";
         }
         else
         {
-            gatheringHandConsumeText.text = "맨손은 스테미나를 20 소비" + "\n"
-           + "시간은 1시간30분을 소비";
+            gatheringHandConsumeText.text = "시간 1시간 30분 소요" + "\n"
+          + "20스테미나 소요";
             if ((Vars.UserData.uData.CurIngameMinute + 30) == 60)
             {
                 Vars.UserData.uData.CurIngameHour += 1;

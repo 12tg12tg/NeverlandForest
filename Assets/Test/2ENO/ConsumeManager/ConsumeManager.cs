@@ -71,27 +71,25 @@ public static class ConsumeManager
     public static void RecoveryTiredness()
     {
         var time = CampManager.Instance.RecoverySleepTime;
-        var rimittime = Vars.UserData.uData.BonfireHour * 60;
-        if (rimittime >= time)
+        var havebonfireTime = Vars.UserData.uData.BonfireHour * 60;
+        var recoveryTiredValue = time / 10; // 6분당 스태미나 1회복
+
+        if (havebonfireTime >= time && havebonfireTime - time >= 0)
+        //가지고있는 시간이 사용하려는 시간보다 크고
+        //가지고있는 시간에서 사용하려는 시간을 뺐을때 0보다 크거나 0이되어야함.
         {
-            if (Vars.UserData.uData.Tiredness < Vars.UserData.uData.ChangeableMaxStamina)
+            TimeUp(true, time);
+            Vars.UserData.uData.Tiredness += recoveryTiredValue;
+            if (Vars.UserData.uData.Tiredness > Vars.UserData.uData.ChangeableMaxStamina)
             {
-                var recoverValue = Vars.UserData.uData.ChangeableMaxStamina - Vars.UserData.uData.Tiredness;
-                var afterValue = Vars.UserData.uData.ChangeableMaxStamina / 10;
-                var finalValue = time / 30 * afterValue;
-                if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
-                {
-                    TimeUp(time);
-                    Debug.Log($"finalvalue{time}");
-                }
-                Vars.UserData.uData.Tiredness += finalValue;
-                if (Vars.UserData.uData.Tiredness > Vars.UserData.uData.ChangeableMaxStamina)
-                {
-                    Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
-                }
+                Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
             }
-            rimittime -= time;
-            Vars.UserData.uData.BonfireHour = rimittime / 60;
+            havebonfireTime -= time;
+            Vars.UserData.uData.BonfireHour = havebonfireTime / 60;
+            if (Vars.UserData.uData.BonfireHour <= 0)
+            {
+                Vars.UserData.uData.BonfireHour = 0;
+            }
         }
         else
         {
@@ -126,7 +124,7 @@ public static class ConsumeManager
     {
         Vars.UserData.uData.Tiredness = Vars.UserData.uData.ChangeableMaxStamina;
     }
-   
+
     public static void RecoverHp(float recoveryAmount)
     {
         Vars.UserData.uData.Hp += recoveryAmount;
@@ -269,6 +267,26 @@ public static class ConsumeManager
             DateUp();
         }
         TimeStateChange();
+    }
+    public static void TimeUp(bool isCampsleep, float minute, float hour = 0)
+    {
+        if (isCampsleep)
+        {
+            Vars.UserData.uData.CurIngameHour += hour;
+            Vars.UserData.uData.CurIngameMinute += minute;
+            float consumeTotalMinute = 60 * hour + minute;
+            while (Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
+            {
+                Vars.UserData.uData.CurIngameMinute -= Vars.maxIngameMinute;
+                Vars.UserData.uData.CurIngameHour++;
+            }
+            while (Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
+            {
+                Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
+                DateUp();
+            }
+            TimeStateChange();
+        }
     }
     public static void RecoveryTimeUp(int minute, int hour = 0)
     {
