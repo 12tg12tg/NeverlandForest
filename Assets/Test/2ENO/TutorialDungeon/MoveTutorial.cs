@@ -65,12 +65,10 @@ public class MoveTutorial : MonoBehaviour
     {
         if (isMoveTutorial)
         {
-            delay += Time.deltaTime;
-            if (delay > 1.2f)
-                delay = 0f;
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
-                TutorialStep != tutorialStepMove
-                )
+            if(TutorialStep != tutorialStepMove)
+                delay += Time.deltaTime;
+
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f)
             {
                 NextTutorialStep();
                 delay = 0f;

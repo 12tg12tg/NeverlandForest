@@ -32,6 +32,7 @@ public class RandomEventUIManager : MonoBehaviour
     //PopUpWindow
     [Header("ÆË¾÷Ã¢")]
     public bool isPopUp;
+    public GameObject randomEventUI;
     public RectTransform popUpWindow;
     public RectTransform confirmPanel;
     public RectTransform inventoryFullPanel;
@@ -77,7 +78,7 @@ public class RandomEventUIManager : MonoBehaviour
     public void Init()
     {
         instance = this;
-        gameObject.SetActive(false);
+        randomEventUI.SetActive(false);
         popUpWindow.gameObject.SetActive(false);
         windows[0].SetActive(true);
         windows[1].SetActive(false);
@@ -138,7 +139,7 @@ public class RandomEventUIManager : MonoBehaviour
     public void EventInit(DataRandomEvent data)
     {
         randomEventData = data;
-        gameObject.SetActive(true);
+        randomEventUI.SetActive(true);
         windows[0].SetActive(true);
         windows[1].SetActive(false);
         confirmPanel.gameObject.SetActive(false);
@@ -236,7 +237,7 @@ public class RandomEventUIManager : MonoBehaviour
             var button = selectButtons[i].transform.GetChild(0).GetComponent<Button>();
             button.onClick.RemoveAllListeners();
         }
-        gameObject.SetActive(false);
+        randomEventUI.SetActive(false);
         BottomUIManager.Instance.ItemListInit();
 
         Vars.UserData.randomEventDatas = RandomEventManager.Instance.allDataList;

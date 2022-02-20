@@ -40,6 +40,7 @@ public class GatheringTutorial : MonoBehaviour
     public float delay = 0f;
 
     [Header("Æ÷Áö¼Ç Å¸°Ù")]
+    public RectTransform yesButton;
     public RectTransform rewardUp;
     public RectTransform rewardItem;
     public RectTransform getItem;
@@ -68,25 +69,24 @@ public class GatheringTutorial : MonoBehaviour
     {
         if (isGatheringTutorial)
         {
-            delay += Time.deltaTime;
-            if (delay > 1.3f)
-                delay = 0f;
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
-                TutorialStep != gatheringTouchStep &&
+            if (TutorialStep != gatheringTouchStep &&
                 TutorialStep != gatheringMoveStep &&
                 TutorialStep != gatheringStartStep &&
                 TutorialStep != gatheringToolUseStep &&
                 TutorialStep != gatheringToolSelectItem &&
                 TutorialStep != gatheringToolGetItem &&
-                TutorialStep != gatheringToolCloseBtn
-                )
+                TutorialStep != gatheringToolCloseBtn)
+                delay += Time.deltaTime;
+
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f)
             {
                 NextTutorialStep();
                 delay = 0f;
             }
         }
     }
-
+    //var gatheringSystem = DungeonSystem.Instance.gatheringSystem;
+    //gatheringSystem.GoGatheringObject(eventObject.transform.position);
     public IEnumerator CoGatheringTutorial()
     {
         delay = 0f;
@@ -96,12 +96,14 @@ public class GatheringTutorial : MonoBehaviour
         yield return new WaitWhile(() => TutorialStep < 1);
         delay = 0f;
         SetActive(false);
-        //var gatheringSystem = DungeonSystem.Instance.gatheringSystem;
-        //gatheringSystem.GoGatheringObject(eventObject.transform.position);
 
         yield return new WaitWhile(() => TutorialStep < 2);
+
+        yield return new WaitForSeconds(0.05f);
         delay = 0f;
+        tutorialTool.BlackPanelOn();
         GatheringStartExplain();
+
         yield return new WaitWhile(() => TutorialStep < 3);
 
         yield return new WaitForSeconds(0.05f);
@@ -115,6 +117,8 @@ public class GatheringTutorial : MonoBehaviour
         delay = 0f;
         GatheringToolUseStart();
         yield return new WaitWhile(() => TutorialStep < 6);
+
+        yield return new WaitForSeconds(0.05f);
         delay = 0f;
         GatheringReWardExplain();
         yield return new WaitWhile(() => TutorialStep < 7);
@@ -179,17 +183,15 @@ public class GatheringTutorial : MonoBehaviour
     {
         SetActive(true, true, true);
 
-        var yesButton = DungeonSystem.Instance.DungeonCanvas.transform.GetChild(2).GetComponentInChildren<Button>();
+        target = yesButton;
 
-        tutorialTool.BlackPanelOn();
-        yesButton = tutorialTool.TutorialTargetButtonActivate(yesButton);
-
-        ButtonAddOneUseStepPlus(yesButton);
+        var button = target.GetComponent<Button>();
+        
+        button = tutorialTool.TutorialTargetButtonActivate(button);
+        ButtonAddOneUseStepPlus(button);
 
         blackout.GetComponent<Image>().sprite = rect;
-        blackout.sizeDelta = yesButton.GetComponentInChildren<RectTransform>().sizeDelta + new Vector2(10f, 10f);
-
-        target = yesButton.gameObject.GetComponent<RectTransform>();
+        blackout.sizeDelta = target.sizeDelta + new Vector2(10f, 10f);
 
         var uiCam = GameManager.Manager.CamManager.uiCamera;
         var pos = uiCam.WorldToViewportPoint(target.position);
@@ -310,10 +312,12 @@ public class GatheringTutorial : MonoBehaviour
         pos.x *= canvasRt.width;
         pos.y *= canvasRt.height;
 
-        var boxPos = new Vector2(canvasRt.width * 0.7f - boxOffset - 280f, canvasRt.height * 0.8f);
-        var scrPos = new Vector2(pos.x + 50f, pos.y - 50f);
+        var boxPos = new Vector2(pos.x - boxOffset, pos.y);
+        var scrPos = new Vector2(pos.x, pos.y - 50f);
         dialogBoxObj.down.SetActive(false);
         dialogBoxObj.right.SetActive(true);
+
+        dialogBox.pivot = new Vector2(1f, 0.5f);
 
         var blackBg = blackout.GetChild(0).GetComponent<RectTransform>();
         blackBg.anchoredPosition -= new Vector2(scrPos.x, scrPos.y) - blackout.anchoredPosition;

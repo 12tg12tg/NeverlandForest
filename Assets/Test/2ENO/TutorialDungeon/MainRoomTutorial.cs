@@ -66,13 +66,6 @@ public class MainRoomTutorial : MonoBehaviour
         dialogBoxObj = dialogBox.GetComponent<DialogBoxObject>();
         canvasRt = blackout.transform.parent.GetComponent<RectTransform>().rect;
         dialogText = dialogBox.GetComponentInChildren<TMP_Text>();
-
-        //if(GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
-        //{
-        //    TutorialStep = 0;
-        //    delay = 0f;
-        //    StartCoroutine(CoTutorialEnd());
-        //}
         
         // 스토리
         stm = GameManager.Manager.StoryManager;
@@ -85,20 +78,15 @@ public class MainRoomTutorial : MonoBehaviour
     {
         if (isMainRoomTutorial && !storyChapter4 && !storyChapter5)
         {
-            delay += Time.deltaTime;
-            if (delay > 1.3f)
-                delay = 0f;
-            // 첫 스테미나 튜토리얼 진행중일때
-            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f &&
-                TutorialStep != mainRoomCampButton &&
+            if (TutorialStep != mainRoomCampButton &&
                 TutorialStep != mainRoomUseButton
-                && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina
-                )
-            {
-                NextTutorialStep();
-                delay = 0f;
-            }
+                && GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Stamina)
+                delay += Time.deltaTime;
             else if (GameManager.Manager.TutoManager.mainTutorial.MainTutorialStage == MainTutorialStage.Camp)
+                delay += Time.deltaTime;
+
+            // 첫 스테미나 튜토리얼 진행중일때
+            if (GameManager.Manager.MultiTouch.TouchCount > 0 && delay > 1f)
             {
                 NextTutorialStep();
                 delay = 0f;
