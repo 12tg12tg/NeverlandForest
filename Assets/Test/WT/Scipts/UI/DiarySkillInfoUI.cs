@@ -13,9 +13,9 @@ public class DiarySkillInfoUI : MonoBehaviour
 
     public void Init()
     {
-        img.sprite = diarySkillButtonList[0].SkillImg.sprite;
-        info_name.text = diarySkillButtonList[0].skill.SkillTableElem.name;
-        info_description.text = diarySkillButtonList[0].skill.SkillTableElem.description;
+        img.sprite = diarySkillButtonList[2].SkillImg.sprite;
+        info_name.text = diarySkillButtonList[2].skill.SkillTableElem.name;
+        info_description.text = diarySkillButtonList[2].skill.SkillTableElem.description;
     }
     public void Init(DataPlayerSkill skill)
     {

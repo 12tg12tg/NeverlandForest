@@ -22,12 +22,12 @@ public class BattleObject : MonoBehaviour
         {
             var dungeonSystemData = DungeonSystem.Instance.DungeonSystemData;
 
-            dungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
-            dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
 
             GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
+            dungeonSystemData.curPlayerGirlData.SetUnitData(DungeonSystem.Instance.dungeonPlayerGirl);
+            dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
 

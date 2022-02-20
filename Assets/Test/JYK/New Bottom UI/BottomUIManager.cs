@@ -319,8 +319,7 @@ public class BottomUIManager : MonoBehaviour
             }
             else if (allItem.itemId == "ITEM_19")
             {
-                // 랜턴 1칸 채우면 되나?
-                ConsumeManager.FullingLantern(1);
+                ConsumeManager.FullingLantern(4);
             }
             else
                 return;
@@ -332,8 +331,6 @@ public class BottomUIManager : MonoBehaviour
                 isPopUp = false;
             }
             ItemListInit();
-
-            DiaryInventory.Instance?.ItemButtonInit();
         }
     }
 

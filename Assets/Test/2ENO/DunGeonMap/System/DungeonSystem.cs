@@ -92,7 +92,6 @@ public class DungeonSystem : MonoBehaviour
         eventObjectGenerate.EventObjectClear();
         roomGenerate.EndInit();
         DungeonCanvas.SetActive(false);
-        //playerMove.gameObject.SetActive(false);
     }
 
     public void TutorialInit()
@@ -285,9 +284,6 @@ public class DungeonSystem : MonoBehaviour
                     temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
                     temp.OwnCount = 3;
                     Vars.UserData.AddItemData(temp); // 3°³
-
-
-
                 }
                 else
                 {

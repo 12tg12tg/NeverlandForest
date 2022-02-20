@@ -38,7 +38,6 @@ public class DungeonDiaryManger : MonoBehaviour
     public void OnEnable()
     {
         diaryItems.ItemListInit();
-        diarySkills.SkillButtonInit();
     }
 
     public void AllClose()

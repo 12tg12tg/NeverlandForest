@@ -188,6 +188,8 @@ public class DunGeonMapGenerate : MonoBehaviour
         }
         DunGeonRoomSetting.DungeonRoadCount(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
         DunGeonRoomSetting.DungeonPathRoomCountSet(dungeonRoomArray[Vars.UserData.dungeonStartIdx], dungeonRoomArray);
+        DunGeonRoomSetting.DungeonBattleEventSetting(dungeonRoomArray);
+
         DungeonEventGenerate(dungeonRoomArray);
         
         action?.Invoke();
