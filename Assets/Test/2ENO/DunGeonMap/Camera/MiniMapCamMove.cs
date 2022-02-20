@@ -48,30 +48,39 @@ public class MiniMapCamMove : MonoBehaviour
 
     public void ExpandTrue()
     {
-        IsExpand = true;
-        var cam = GetComponent<Camera>();
-
-        switch(Vars.UserData.mainRoomCount)
+        if (GameManager.Manager.State != GameState.Tutorial)
         {
-            case 4:
-                cam.fieldOfView = 90;
-                break;
-            case 6:
-                cam.fieldOfView = 100;
-                break;
-            case 8:
-                cam.fieldOfView = 113;
-                break;
+
+            IsExpand = true;
+            var cam = GetComponent<Camera>();
+
+            switch (Vars.UserData.mainRoomCount)
+            {
+                case 4:
+                    cam.fieldOfView = 90;
+                    break;
+                case 6:
+                    cam.fieldOfView = 100;
+                    break;
+                case 8:
+                    cam.fieldOfView = 113;
+                    break;
+            }
+            SoundManager.Instance.Play(SoundType.Se_Button);
         }
-        SoundManager.Instance.Play(SoundType.Se_Button);
     }
 
     public void ExpandFalse()
     {
-        IsExpand = false;
-        var cam = GetComponent<Camera>();
-        cam.fieldOfView = 60;
-        SoundManager.Instance.Play(SoundType.Se_Button);
+        if (GameManager.Manager.State != GameState.Tutorial)
+        {
+            IsExpand = false;
+            var cam = GetComponent<Camera>();
+            cam.fieldOfView = 60;
+            SoundManager.Instance.Play(SoundType.Se_Button);
+        }
+
+      
     }
     public void SetMinimapObjectInCamp()
     {

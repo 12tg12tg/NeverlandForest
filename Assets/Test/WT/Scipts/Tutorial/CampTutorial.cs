@@ -226,7 +226,7 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() => tutorialCraftIconClick);
         SetActive(false);
         camTM.BlackPanelOff();
-        LongTouch(0.65f, 0.37f, 0.4f, 0.35f, "마침 씨앗을 가지고있으니깐 오일을 만들어보자",
+        LongTouch(0.63f, 0.37f, 0.4f, 0.35f, "마침 씨앗을 가지고있으니깐 오일을 만들어보자",
             false,true); //Craft startbutton
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(craft_startbutton);
@@ -234,13 +234,14 @@ public class CampTutorial : MonoBehaviour
         yield return new WaitUntil(() => tutorialCraftStartbuttonClick);
         SetActive(false);
         camTM.BlackPanelOn();
-        LongTouch(0.62f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
+        LongTouch(0.64f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
           false,true); //Craft backbutton
         camTM.TutorialTargetButtonActivate(craft_moreMakebutton);
         camTM.BlackPanelOff();
         yield return new WaitUntil(() => tutorialCraftMoremakebuttonClick);
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(campDiaryquickButton);
+        camTM.BlackPanelOff();
         LongTouch(0.81f, 0.9f, 0.6f, 0.8f, "x버튼을 누르고 다음것은 진행해보자",false,true); //Craft xbutton
         tutorialCraftTouch = false;
         yield return new WaitUntil(() => isquitbuttonClick);
@@ -248,24 +249,21 @@ public class CampTutorial : MonoBehaviour
         //요리 튜토리얼
 
         isquitbuttonClick = false;
-        SetActive(false);
         iscraftFinish = true;
         yield return new WaitForSeconds(2.5f);
-        camTM.BlackPanelOff();
         LongTouch(0.68f, 0.5f, 0.5f, 0.5f, "이것은 요리를 할 수 있는 솥이야. \n" +
             "스태미나중 변동스태미나를 회복 할 수 있는 곳이지. \n" +
             "물론 레시피가 있어야 요리를 만들어서 먹을 수 있어.",false,true); //recipe 
         yield return new WaitUntil(() => tutorialCookingTouch);
+        SetActive(false);
         tutorialCookingTouch = false;
         yield return new WaitForSeconds(2.5f);
         SetActive(false);
-        camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_recipeIconbutton);
-        camTM.BlackPanelOff();
         LongTouch(0.54f, 0.75f, 0.4f, 0.8f, "요리솥에서는 가지고있는 레시피를 볼 수 있어", false, true); //recipe iconclick
         yield return new WaitUntil(() => tutorialCook_recipeIconButton);
         SetActive(false);
-        LongTouch(0.65f, 0.37f, 0.4f, 0.33f, "마침 버섯을 가지고있으니깐 버섯구이를 만들어보자",
+        LongTouch(0.62f, 0.35f, 0.4f, 0.33f, "마침 버섯을 가지고있으니깐 버섯구이를 만들어보자",
             false, true); //cook startbutton
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_startbutton);
@@ -275,7 +273,7 @@ public class CampTutorial : MonoBehaviour
         camTM.BlackPanelOn();
         camTM.TutorialTargetButtonActivate(cook_moreCookbutton);
         camTM.BlackPanelOff();
-        LongTouch(0.62f, 0.37f, 0.4f, 0.35f, "이제 돌아갈까",
+        LongTouch(0.64f, 0.4f, 0.4f, 0.35f, "이제 돌아갈까",
           false, true); //Craft backbutton
         yield return new WaitUntil(() => tutorialMorecookingbuttonClick);
         camTM.BlackPanelOn();

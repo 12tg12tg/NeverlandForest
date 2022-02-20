@@ -163,7 +163,7 @@ public class UserData
             }
         }
     }
-    
+
 
 
     public void DirectAddItem(DataAllItem newItem)
@@ -299,10 +299,7 @@ public class UserData
         }
         // 전부 들어감!
         newItem.OwnCount = 0;
-        if (GameManager.Manager.State !=GameState.Tutorial)
-        {
-            SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
-        }
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
         return true;
     }
     public bool RemoveItemData(DataAllItem removeItem)
@@ -362,7 +359,7 @@ public class UserData
         haveAllItemList.Clear();
         experienceHaveItemList = new List<string>();
     }
- 
+
     public void UserItemInit()
     {
         //테스트용 리스트
