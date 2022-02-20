@@ -81,7 +81,7 @@ public static class ConsumeManager
                 var finalValue = time / 30 * afterValue;
                 if (Vars.UserData.uData.ChangeableMaxStamina > Vars.UserData.uData.Tiredness)
                 {
-                    TimeUp(time);
+                    TimeUp(true,time);
                     Debug.Log($"finalvalue{time}");
                 }
                 Vars.UserData.uData.Tiredness += finalValue;
@@ -269,6 +269,26 @@ public static class ConsumeManager
             DateUp();
         }
         TimeStateChange();
+    }
+    public static void TimeUp(bool isCampsleep, float minute,float hour =0)
+    {
+        if (isCampsleep)
+        {
+            Vars.UserData.uData.CurIngameHour += hour;
+            Vars.UserData.uData.CurIngameMinute += minute;
+            float consumeTotalMinute = 60 * hour + minute;
+            while (Vars.UserData.uData.CurIngameMinute >= Vars.maxIngameMinute)
+            {
+                Vars.UserData.uData.CurIngameMinute -= Vars.maxIngameMinute;
+                Vars.UserData.uData.CurIngameHour++;
+            }
+            while (Vars.UserData.uData.CurIngameHour >= Vars.maxIngameHour)
+            {
+                Vars.UserData.uData.CurIngameHour -= Vars.maxIngameHour;
+                DateUp();
+            }
+            TimeStateChange();
+        }
     }
     public static void RecoveryTimeUp(int minute, int hour = 0)
     {

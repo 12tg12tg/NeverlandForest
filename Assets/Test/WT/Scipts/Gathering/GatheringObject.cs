@@ -112,25 +112,25 @@ public class GatheringObject : MonoBehaviour, IPointerClickHandler
         {
             case GatheringObjectType.Tree:
                 item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{1}"));
-                item.OwnCount = Random.Range(1, 3);
+                item.OwnCount = Random.Range(1, 2);
                 subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{2}"));
-                subitem.OwnCount = Random.Range(1, 3);
+                subitem.OwnCount = Random.Range(3, 5);
                 break;
             case GatheringObjectType.Pit:
                 item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
-                item.OwnCount = Random.Range(3, 5);
+                item.OwnCount = Random.Range(3, 4);
                 subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{3}"));
                 subitem.OwnCount = Random.Range(1, 3);
                 break;
             case GatheringObjectType.Herbs:
                 item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{4}"));
-                item.OwnCount = Random.Range(1, 3);
+                item.OwnCount = Random.Range(1, 2);
                 subitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{5}"));
-                subitem.OwnCount = Random.Range(1, 3);
+                subitem.OwnCount = Random.Range(1, 2);
                 break;
             case GatheringObjectType.Mushroom:
                 item = new DataAllItem(allitemTable.GetData<AllItemTableElem>($"ITEM_{6}"));
-                item.OwnCount = Random.Range(1, 3);
+                item.OwnCount = Random.Range(1, 2);
                 break;
             default:
                 break;
