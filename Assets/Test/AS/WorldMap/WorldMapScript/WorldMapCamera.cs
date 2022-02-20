@@ -47,9 +47,22 @@ public class WorldMapCamera : MonoBehaviour
 
         if (multiTouch.TouchCount > 0)
         {
-            var posX = Camera.main.ScreenToViewportPoint(multiTouch.PrimaryStartPos - multiTouch.PrimaryPos).x;
-            if (!Vector3.zero.Equals(startPos) && posX != 0f)
+            var movePos = multiTouch.PrimaryStartPos - multiTouch.PrimaryPos;
+            var posX = Camera.main.ScreenToViewportPoint(movePos).x;
+            if (!Mathf.Approximately(Camera.main.rect.width, 1f))
+            {
+                var reversal = 1f - Camera.main.rect.width;
+                var correct = reversal / 2f;
+                posX += correct; 
+            }
+            //Debug.Log($"{Camera.main.rect.width} {Screen.width}");
+            //Debug.Log($"{Camera.main.rect.height} {Screen.height}");
+            //Debug.Log($"{multiTouch.PrimaryStartPos} {multiTouch.PrimaryPos} {Camera.main.ScreenToViewportPoint(movePos)} {movePos} {posX}");
+            if (!Vector3.zero.Equals(startPos) && !Mathf.Approximately(posX, 0f))
+            {
                 transform.position = new Vector3(posX, 0f, 0f) * distance + startPos;
+            }
+
         }
         else
         {
