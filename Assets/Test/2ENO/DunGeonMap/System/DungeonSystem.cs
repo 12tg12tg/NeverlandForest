@@ -92,7 +92,6 @@ public class DungeonSystem : MonoBehaviour
         eventObjectGenerate.EventObjectClear();
         roomGenerate.EndInit();
         DungeonCanvas.SetActive(false);
-        //playerMove.gameObject.SetActive(false);
     }
 
     public void TutorialInit()

@@ -57,16 +57,14 @@ public class DungeonRoom
 
     public void SetEvent(DunGeonEvent eventType)
     {
-        switch (eventType)
-        {
-            case DunGeonEvent.Battle:
-            case DunGeonEvent.Hunt:
-            case DunGeonEvent.RandomIncount:
-            case DunGeonEvent.SubStory:
-                break;
-        }
         eventList.Add(eventType);
     }
+    public bool IsHaveEvent(DunGeonEvent eventType)
+    {
+        var index = eventList.FindIndex(x => x == eventType);
+        return index == -1 ? false : true;
+    }
+
     public void UseEvent(DunGeonEvent evnetType)
     {
         var index = eventList.FindIndex(x => x == evnetType);
@@ -155,7 +153,7 @@ public static class DunGeonRoomSetting
     }
 
     // 시작방 입력받기, road개수 카운트 (메인방만!), 생성된 던전맵을 순서대로 리스트에 담기
-    public static void DungeonRoadCount(DungeonRoom dungeonRoom, DungeonRoom[] dungeonArray)
+    public static void DungeonRoadCount(DungeonRoom dungeonRoom ,DungeonRoom[] dungeonArray)
     {
         int curIdx = dungeonRoom.roomIdx;
 
@@ -192,6 +190,33 @@ public static class DunGeonRoomSetting
                     dungeonArray[curIdx].roadCount = roadCount;
                     curIdx = dungeonArray[curIdx].nextRoomIdx;
                 }
+            }
+        }
+    }
+
+    public static void DungeonBattleEventSetting(DungeonRoom[] dungeonArray)
+    {
+        int battleCount = 0;
+        int curIdx = Vars.UserData.dungeonStartIdx;
+
+        while (dungeonArray[curIdx].nextRoomIdx != -1)
+        {
+            if (dungeonArray[curIdx].RoomType == DunGeonRoomType.MainRoom)
+            {
+                curIdx = dungeonArray[curIdx].nextRoomIdx;
+                while (dungeonArray[curIdx].RoomType != DunGeonRoomType.MainRoom)
+                {
+                    if(dungeonArray[curIdx].IsHaveEvent(DunGeonEvent.Battle))
+                        battleCount++;
+
+                    if(battleCount > 1)
+                    {
+                        dungeonArray[curIdx].eventList.Clear();
+                        dungeonArray[curIdx].eventList.Add(DunGeonEvent.Gathering);
+                    }
+                    curIdx = dungeonArray[curIdx].nextRoomIdx;
+                }
+                battleCount = 0;
             }
         }
     }
