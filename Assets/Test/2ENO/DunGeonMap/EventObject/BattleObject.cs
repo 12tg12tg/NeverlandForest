@@ -26,9 +26,10 @@ public class BattleObject : MonoBehaviour
             dungeonSystemData.curPlayerBoyData.SetUnitData(DungeonSystem.Instance.dungeonPlayerBoy);
             Vars.UserData.AllDungeonData[Vars.UserData.curDungeonIndex] = dungeonSystemData;
 
+            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
+
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].UseEvent(data.eventType);
             dungeonSystemData.dungeonRoomArray[thisRoomIdx].eventObjDataList.Remove(data);
-            GameManager.Manager.SaveLoad.Save(SaveLoadSystem.SaveType.DungeonMap);
 
             if(thisRoomIdx == Vars.UserData.dungeonLastIdx)
                 BattleManager.initState = BattleInitState.Dungeon;

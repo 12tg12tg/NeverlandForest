@@ -172,7 +172,7 @@ public class DataRandomEvent
             var sb = new StringBuilder();
             sb.Append(SucessInfo[i]);
             if(!string.IsNullOrEmpty(FailInfo[i]))
-                sb.Append($" || {FailInfo[i]}");
+                sb.Append($"\n{FailInfo[i]}");
 
             selectInfos.Add(sb.ToString());
         }
@@ -459,7 +459,7 @@ public class DataRandomEvent
         var sb2 = new StringBuilder();
         sb2.Append(SucessInfo[selectNum - 1]);
         if (!string.IsNullOrEmpty(FailInfo[selectNum - 1]))
-            sb2.Append($" || {FailInfo[selectNum - 1]}");
+            sb2.Append($"\n{FailInfo[selectNum - 1]}");
 
         selectInfos[selectNum - 1] = sb2.ToString();
 

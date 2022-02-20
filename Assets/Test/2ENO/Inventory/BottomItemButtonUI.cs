@@ -202,9 +202,7 @@ public class BottomItemButtonUI : MonoBehaviour
             return;
 
         Vector3 uiVec = Vector3.zero;
-        Vector3 uiVec2 = Vector3.zero;
         Vector3 newVector = Vector3.zero;
-        Vector3 newVector2 = Vector3.zero;
         DungeonRewardDiaryManager.Instance.info.Init(dataItem);
         Debug.Log(GameManager.Manager.State);
         switch (GameManager.Manager.State)
@@ -283,12 +281,12 @@ public class BottomItemButtonUI : MonoBehaviour
                 {
                     BottomUIManager.Instance.isPopUp = true;
                     BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                    uiVec = BottomUIManager.Instance.popUpWindow.position;
-                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
                     BottomUIManager.Instance.selectItem = dataItem;
                     BottomUIManager.Instance.selectItemSlotNum = slotNum;
                     BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                    newVector2 = new Vector3(transform.position.x, uiVec2.y, uiVec2.z);
+                    uiVec = BottomUIManager.Instance.popUpWindow.position;
+                    newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
+                    BottomUIManager.Instance.popUpWindow.position = newVector;
                     BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
                     SelectActive(true);
                 }
@@ -333,15 +331,15 @@ public class BottomItemButtonUI : MonoBehaviour
                 }
                 break;
             case GameState.Hunt:
-                BottomUIManager.Instance.selectItem = dataItem;
-                BottomUIManager.Instance.selectItemSlotNum = slotNum;
-                BottomUIManager.Instance.popUpWindow.gameObject.SetActive(true);
-                BottomUIManager.Instance.isPopUp = true;
-                BottomUIManager.Instance.selectedItemRect = gameObject.GetComponent<RectTransform>();
-                uiVec = BottomUIManager.Instance.popUpWindow.position;
+                bottomUImanager.selectItem = dataItem;
+                bottomUImanager.selectItemSlotNum = slotNum;
+                bottomUImanager.popUpWindow.gameObject.SetActive(true);
+                bottomUImanager.isPopUp = true;
+                bottomUImanager.selectedItemRect = gameObject.GetComponent<RectTransform>();
+                uiVec = bottomUImanager.popUpWindow.position;
                 newVector = new Vector3(transform.position.x, uiVec.y, uiVec.z);
-                BottomUIManager.Instance.popUpWindow.position = newVector;
-                BottomUIManager.Instance.itemButtons.ForEach(n => n.SelectActive(false));
+                bottomUImanager.popUpWindow.position = newVector;
+                bottomUImanager.itemButtons.ForEach(n => n.SelectActive(false));
                 SelectActive(true);
                 break;
             case GameState.Gathering:

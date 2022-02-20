@@ -838,6 +838,7 @@ public class GatheringSystem : MonoBehaviour
                     {
                         var index = gatheringRewardList.FindIndex(x => x.Item.itemId == selecteditemList[i].itemId);
                         gatheringRewardList[index].IsHaveItem = false;
+                        rewardList.RemoveAt(index);
                     }
                     RewardItemLIstInit(rewardList);
                 }
@@ -885,7 +886,6 @@ public class GatheringSystem : MonoBehaviour
         {
             reconfirmPanelManager.gameObject.SetActive(true);
             reconfirmPanelManager.inventoryFullPopup.SetActive(true);
-
         }
 
     }
