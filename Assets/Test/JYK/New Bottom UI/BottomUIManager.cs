@@ -332,7 +332,6 @@ public class BottomUIManager : MonoBehaviour
                 isPopUp = false;
             }
             ItemListInit();
-            DiaryInventory.Instance.ItemButtonInit();
         }
     }
 
@@ -350,7 +349,6 @@ public class BottomUIManager : MonoBehaviour
             isPopUp = false;
         }
         ItemListInit();
-        DiaryInventory.Instance?.ItemButtonInit();
     }
 
     public void ItemBurn()

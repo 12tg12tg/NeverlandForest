@@ -30,6 +30,11 @@ public class DiaryInventory : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        ItemButtonInit();
+    }
+
     private void Update()
     {
         var touchPos = MultiTouch.Instance.TouchPos;
