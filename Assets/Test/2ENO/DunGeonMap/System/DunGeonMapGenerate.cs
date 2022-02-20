@@ -132,10 +132,12 @@ public class DunGeonMapGenerate : MonoBehaviour
 
                         // 나무, 구덩이, 약초, 버섯
                         var treePic = Random.Range(0f, 1f);
-                        if (treePic <= 0.3f)
+                        if (treePic <= 0.4f)
                             gatheringData1.gatheringtype = GatheringObjectType.Tree;
+                        else if (treePic <= 0.7f)
+                            gatheringData1.gatheringtype = GatheringObjectType.Pit;
                         else
-                            gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(1, 4);
+                            gatheringData1.gatheringtype = (GatheringObjectType)Random.Range(2, 4);
                         eventData.Add(gatheringData1);
                     }
                 }

@@ -259,35 +259,9 @@ public class DungeonSystem : MonoBehaviour
                 {
                     dungeonSystemData = null;
                     GameManager.Manager.TutoManager.mainTutorial.NextMainTutorial(false);
+
                     // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
-                    ConsumeManager.CostDataReset();
-                    DataAllItem temp;
-                    var tempInventory = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
-                    foreach (var item in tempInventory)
-                    {
-                        temp = new DataAllItem(item);
-                        Vars.UserData.RemoveItemData(temp);
-                    }
-                    // 화살
-                    var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
-                    temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_20"));
-                    temp.OwnCount = 40;
-                    Vars.UserData.AddItemData(temp); // 40발
-
-                    // 오일
-                    allItemTable = DataTableManager.GetTable<AllItemDataTable>();
-                    temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_19"));
-                    temp.OwnCount = 4;
-                    Vars.UserData.AddItemData(temp); // 4개
-
-                    // 나무도막
-                    allItemTable = DataTableManager.GetTable<AllItemDataTable>();
-                    temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
-                    temp.OwnCount = 3;
-                    Vars.UserData.AddItemData(temp); // 3개
-
-
-
+                    GameManager.Manager.ItemResetForStart();
                 }
                 else
                 {
