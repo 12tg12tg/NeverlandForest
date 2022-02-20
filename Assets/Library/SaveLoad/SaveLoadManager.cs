@@ -130,7 +130,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         optionDate.isBgmMute = Vars.UserData.isBgmMute;
         optionDate.isSfMute = Vars.UserData.isSfMute;
 
-        SaveLoadSystem.Save(optionDate, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Option);
+        SaveLoadSystem.Save(optionDate, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Option);
     }
 
     private void SaveRandomEvent()
@@ -139,7 +139,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
         randomEvent.randomEventAllData.AddRange(Vars.UserData.randomEventDatas);
         randomEvent.useEventIDs.AddRange(Vars.UserData.useEventID);
-        SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
+        SaveLoadSystem.Save(randomEvent, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.RandomEvent);
     }
 
     private void SaveDungeonMap()
@@ -175,7 +175,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         dungeonMapData.isPlayerDungeonIn = Vars.UserData.isPlayerDungeonIn;
         dungeonMapData.mainRoomCount = Vars.UserData.mainRoomCount;
 
-        SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
+        SaveLoadSystem.Save(dungeonMapData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.DungeonMap);
     }
     private List<DungeonRoom> ArrayConvertList(DungeonRoom[] array)
     {
@@ -196,20 +196,20 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     {
         recipeData = new RecipeSaveData_0();
         recipeData.haveRecipe = Vars.UserData.HaveRecipeIDList;
-        SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
+        SaveLoadSystem.Save(recipeData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Recipe);
     }
     private void SaveCraft()
     {
         craftSaveData = new CraftSaveData_0();
         craftSaveData.haveCraft = Vars.UserData.HaveCraftIDList;
-        SaveLoadSystem.Save(craftSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
+        SaveLoadSystem.Save(craftSaveData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Craft);
 
     }
     private void SaveExperience()
     {
         itemExperienceSaveData = new ItemExperienceSaveData_0();
         itemExperienceSaveData.haveItemExperience = Vars.UserData.experienceHaveItemList;
-        SaveLoadSystem.Save(itemExperienceSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+        SaveLoadSystem.Save(itemExperienceSaveData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.ItemExperience);
 
     }
     private void SaveWorldMapData()
@@ -217,13 +217,13 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         worldMapSaveData = new WorldMapData_0();
         worldMapSaveData.WorldMapNodeStruct = Vars.UserData.WorldMapNodeStruct;
         worldMapSaveData.WorldMapTree = Vars.UserData.WorldMapTree;
-        SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapData);
+        SaveLoadSystem.Save(worldMapSaveData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.WorldMapData);
     }
     private void SaveWorldMapPlayer()
     {
         worldMapPlayerData = new WorldMapPlayerData_0();
         worldMapPlayerData.WorldMapPlayerData = Vars.UserData.WorldMapPlayerData;
-        SaveLoadSystem.Save(worldMapPlayerData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapPlayerData);
+        SaveLoadSystem.Save(worldMapPlayerData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.WorldMapPlayerData);
     }
 
     private void SaveConsumableData()
@@ -239,7 +239,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         consumableSaveData.tiredness = Vars.UserData.uData.Tiredness;
         consumableSaveData.hunger = Vars.UserData.uData.Hunger;
         consumableSaveData.bonfireTime = Vars.UserData.uData.BonfireHour;
-        SaveLoadSystem.Save(consumableSaveData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
+        SaveLoadSystem.Save(consumableSaveData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.ConsumableData);
 
     }
     private void SaveBattleData()
@@ -249,7 +249,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         battleData.trapPos = Vars.UserData.trapPos;
         battleData.trapType = Vars.UserData.trapType;
         battleData.isBluemoonDone = Vars.UserData.isbluemoonDone;
-        SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
+        SaveLoadSystem.Save(battleData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Battle);
     }
     private void SaveSceneData()
     {
@@ -257,7 +257,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         sceneData.MainTutorialStage = Vars.UserData.mainTutorial;
         sceneData.contentsTutorialProceed = Vars.UserData.contentsTutorial;
 
-        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
+        SaveLoadSystem.Save(sceneData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Scene);
     }
 
     private void SaveMemoData()
@@ -265,7 +265,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         memoData = new memoSaveData_0();
         memoData.havememo = Vars.UserData.HaveMemoIDList;
 
-        SaveLoadSystem.Save(memoData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        SaveLoadSystem.Save(memoData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Memo);
     }
 
     private void SaveItemListData()
@@ -278,7 +278,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
         itemData.itemIdList = idList;
         itemData.itemOwnCountList = ownCountList;
         itemData.itemRemainCountList = remainCountList;
-        SaveLoadSystem.Save(itemData, SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
+        SaveLoadSystem.Save(itemData, SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.item);
     }
 
     private void LoadPlayer()
@@ -286,7 +286,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadOption()
     {
-        optionDate = (OptionSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Option);
+        optionDate = (OptionSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Option);
         if (optionDate == null)
         {
             optionDate = OptionSaveData_0.DefaultValue;
@@ -301,7 +301,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadRecipe()
     {
-        recipeData = (RecipeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Recipe);
+        recipeData = (RecipeSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Recipe);
         if (recipeData != null)
         {
             Vars.UserData.HaveRecipeIDList = recipeData.haveRecipe;
@@ -309,7 +309,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadCraft()
     {
-        craftSaveData = (CraftSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Craft);
+        craftSaveData = (CraftSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Craft);
         if (craftSaveData != null)
         {
             Vars.UserData.HaveCraftIDList = craftSaveData.haveCraft;
@@ -318,7 +318,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadExperience()
     {
-        itemExperienceSaveData = (ItemExperienceSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ItemExperience);
+        itemExperienceSaveData = (ItemExperienceSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.ItemExperience);
         if (itemExperienceSaveData != null)
         {
             Vars.UserData.experienceHaveItemList = itemExperienceSaveData.haveItemExperience;
@@ -326,7 +326,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadDungeonMap()
     {
-        dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.DungeonMap);
+        dungeonMapData = (DungeonMapSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.DungeonMap);
         if (dungeonMapData != null)
         {
             for (int i = 0; i < dungeonMapData.dungeonIndex.Count; i++)
@@ -359,7 +359,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadRandomEvent()
     {
-        randomEvent = (RandomEventSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.RandomEvent);
+        randomEvent = (RandomEventSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.RandomEvent);
         if(randomEvent != null)
         {
             Vars.UserData.randomEventDatas = randomEvent.randomEventAllData;
@@ -378,7 +378,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadWorldMapNode()
     {
-        worldMapSaveData = (WorldMapData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapData);
+        worldMapSaveData = (WorldMapData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.WorldMapData);
         if (worldMapSaveData != null)
         {
             Vars.UserData.WorldMapNodeStruct = worldMapSaveData.WorldMapNodeStruct;
@@ -387,7 +387,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
     }
     private void LoadWorldMapPlayer()
     {
-        worldMapPlayerData = (WorldMapPlayerData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.WorldMapPlayerData);
+        worldMapPlayerData = (WorldMapPlayerData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.WorldMapPlayerData);
         if (worldMapPlayerData != null)
         {
             Vars.UserData.WorldMapPlayerData = worldMapPlayerData.WorldMapPlayerData;
@@ -396,7 +396,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadConsumableData()
     {
-        consumableSaveData = (ConsumableSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.ConsumableData);
+        consumableSaveData = (ConsumableSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.ConsumableData);
         if (consumableSaveData != null)
         {
             Vars.UserData.uData.Tiredness = consumableSaveData.tiredness;
@@ -415,7 +415,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadBattleData()
     {
-        battleData = (BattleSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Battle);
+        battleData = (BattleSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Battle);
         if (battleData != null)
         {
             Vars.UserData.arrowType = battleData.arrowType;
@@ -434,7 +434,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadSceneData()
     {
-        sceneData = (SceneSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Scene);
+        sceneData = (SceneSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Scene);
         if (sceneData != null)
         {
             Vars.UserData.mainTutorial = sceneData.MainTutorialStage;
@@ -449,7 +449,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadMemoData()
     {
-        memoData = (memoSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.Memo);
+        memoData = (memoSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.Memo);
         if (memoData != null)
         {
             Vars.UserData.HaveMemoIDList = memoData.havememo;
@@ -458,7 +458,7 @@ public class SaveLoadManager : Singleton<SaveLoadManager>
 
     private void LoadItemData()
     {
-        itemData = (ItemListSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Text, SaveLoadSystem.SaveType.item);
+        itemData = (ItemListSaveData_0)SaveLoadSystem.Load(SaveLoadSystem.Modes.Binary, SaveLoadSystem.SaveType.item);
 
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
 

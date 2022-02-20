@@ -173,6 +173,11 @@ public static class SaveLoadSystem
 
     public static void Save(SaveDataBase data, Modes mode, SaveType saveType)
     {
+        // Json Vector2 Vector3 세팅
+        JsonSerializerSettings setting = new JsonSerializerSettings(); ;
+        setting.Formatting = Formatting.Indented;
+        setting.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+
         var path = MakePath(mode, saveType);
         if (!File.Exists(path))
         {
@@ -184,7 +189,7 @@ public static class SaveLoadSystem
         {
             using (StreamWriter writer = new StreamWriter(new FileStream(tempPath, FileMode.Create)))
             {
-                string json = JsonConvert.SerializeObject(data, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(data, setting);
                 writer.WriteLine(json);
                 //Debug.Log(json);
             }
@@ -193,7 +198,7 @@ public static class SaveLoadSystem
         else if (mode == Modes.Binary)
         {
             //1) json string으로
-            string json = JsonConvert.SerializeObject(data);
+            string json = JsonConvert.SerializeObject(data, setting);
             //2) string을 byte[]로
             byte[] strByte = Encoding.UTF8.GetBytes(json);
             //3) AES encrypt byte[] to byte[]

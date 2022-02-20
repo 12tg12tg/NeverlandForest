@@ -93,6 +93,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         #endregion // 카메라 잠구기
 
         // 로드
+        SaveLoadSystem.Init();
         LoadAllSavedata();
 
         // 로드된 데이터를 기반으로 추가 전역 데이터 설정

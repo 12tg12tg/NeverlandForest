@@ -332,7 +332,7 @@ public class BottomUIManager : MonoBehaviour
                 isPopUp = false;
             }
             ItemListInit();
-            DiaryInventory.Instance.ItemButtonInit();
+            DiaryInventory.Instance?.ItemButtonInit();
         }
     }
 
