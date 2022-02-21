@@ -37,37 +37,37 @@ public class DiaryInventory : MonoBehaviour
 
     private void Update()
     {
-        var touchPos = MultiTouch.Instance.TouchPos;
-        if (!isPopUp)
-        {
-            if (MultiTouch.Instance.TouchCount > 0)
-            {
-                if (!IsContainPos(touchPos))
-                {
-                    itemButtons.ForEach(n => n.SelectActive(false));
-                    if (popUpWindow != null)
-                    {
-                        popUpWindow.gameObject.SetActive(false);
-                    }
-                    isPopUp = false;
-                }
-            }
-        }
-        if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect(touchPos))
-        {
-            isPopUp = false;
-        }
+        //var touchPos = MultiTouch.Instance.TouchPos;
+        //if (!isPopUp)
+        //{
+        //    if (MultiTouch.Instance.TouchCount > 0)
+        //    {
+        //        if (!IsContainPos(touchPos))
+        //        {
+        //            itemButtons.ForEach(n => n.SelectActive(false));
+        //            if (popUpWindow != null)
+        //            {
+        //                popUpWindow.gameObject.SetActive(false);
+        //            }
+        //            isPopUp = false;
+        //        }
+        //    }
+        //}
+        //if (MultiTouch.Instance.TouchCount > 0 && !IsContainItemRect(touchPos))
+        //{
+        //    isPopUp = false;
+        //}
     }
-    private bool IsContainPos(Vector2 pos)
-    {
-        var camera = GameManager.Manager.CamManager.uiCamera;
-        return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
-    }
-    private bool IsContainItemRect(Vector2 pos)
-    {
-        var camera = GameManager.Manager.CamManager.uiCamera;
-        return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
-    }
+    //private bool IsContainPos(Vector2 pos)
+    //{
+    //    var camera = GameManager.Manager.CamManager.uiCamera;
+    //    return RectTransformUtility.RectangleContainsScreenPoint(popUpWindow, pos, camera);
+    //}
+    //private bool IsContainItemRect(Vector2 pos)
+    //{
+    //    var camera = GameManager.Manager.CamManager.uiCamera;
+    //    return RectTransformUtility.RectangleContainsScreenPoint(selectedItemRect, pos, camera);
+    //}
 
     public void ItemButtonInit()
     {
