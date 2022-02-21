@@ -72,7 +72,7 @@ public static class ConsumeManager
     {
         var time = CampManager.Instance.RecoverySleepTime;
         var havebonfireTime = Vars.UserData.uData.BonfireHour * 60;
-        var recoveryTiredValue = time / 10; // 6분당 스태미나 1회복
+        var recoveryTiredValue = time / 6; // 6분당 스태미나 1회복
 
         if (havebonfireTime >= time && havebonfireTime - time >= 0)
         //가지고있는 시간이 사용하려는 시간보다 크고

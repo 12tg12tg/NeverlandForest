@@ -257,7 +257,7 @@ public class MainRoomTutorial : MonoBehaviour
     }
     public void ButtonAddOneUseStepPlus(Button button)
     {
-        UnityAction action = () => { NextTutorialStep(); button.interactable = false; };
+        UnityAction action = () => { NextTutorialStep();};
         button.onClick.AddListener(action);
         button.onClick.AddListener(() => button.onClick.RemoveListener(action));
     }

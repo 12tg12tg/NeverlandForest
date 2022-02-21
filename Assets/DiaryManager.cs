@@ -154,7 +154,6 @@ public class DiaryManager : MonoBehaviour
     public void CloseProduceReward()
     {
         produceRewardPanel.SetActive(false);
-        craftIcon.CraftReset();
     }
     public void AllClose()
     {

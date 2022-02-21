@@ -39,8 +39,6 @@ public class DungeonSystem : MonoBehaviour
     // 던전맵 생성기에서 옮겨와야 되는 기능들
     public WorldMapMaker worldMap;
 
-    private TutorialManager tutorialManager;
-
     [Header("튜토리얼")]
     public MoveTutorial moveTutorial;
     public GatheringTutorial gatherTutorial;
@@ -96,7 +94,6 @@ public class DungeonSystem : MonoBehaviour
 
     public void TutorialInit()
     {
-        tutorialManager = GameManager.Manager.TutoManager;
         tutorialMove.Init();
         GameManager.Manager.State = GameState.Tutorial;
     }
