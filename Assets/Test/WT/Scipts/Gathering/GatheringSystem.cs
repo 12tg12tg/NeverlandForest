@@ -671,6 +671,13 @@ public class GatheringSystem : MonoBehaviour
             rewardList.Clear();
             haveItemCount = 0;
         }
+
+        for (int i = 0; i < gatheringRewardList.Count; i++)
+        {
+            gatheringRewardList[i].Item = null;
+        }
+        selecteditemList.Clear();
+
         BottomUIManager.Instance.ItemListInit();
     }
     public void YesIfinishGathering()
@@ -854,6 +861,9 @@ public class GatheringSystem : MonoBehaviour
                 }
             }
         }
+
+
+
         dungeonrewarddiaryManager.gatheringInDungeonrewardInventory.ItemButtonInit();
         BottomUIManager.Instance.ItemListInit();
     }
