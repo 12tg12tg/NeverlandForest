@@ -69,6 +69,7 @@ public class TutorialPlayerMove : MonoBehaviour
         mainRoomTutorial = dungeonSystem.mainRoomTutorial;
         if(mainRoomTutorial.isMainRoomTutorial)
         {
+            SoundManager.Instance.PlayWalkSound(false);
             playerAnimationBoy.SetFloat("Speed", 0);
             playerAnimationGirl.SetFloat("Speed", 0);
             RigOff();
@@ -82,6 +83,7 @@ public class TutorialPlayerMove : MonoBehaviour
                 isHand = true;
             else
             {
+                SoundManager.Instance.PlayWalkSound(false);
                 RigOff();
                 playerAnimationBoy.SetFloat("Speed", 0);
                 playerAnimationGirl.SetFloat("Speed", 0);
@@ -92,6 +94,7 @@ public class TutorialPlayerMove : MonoBehaviour
 
         if (moveTutorial.isMoveTutorial && moveTutorial.TutorialStep != 2)
         {
+            SoundManager.Instance.PlayWalkSound(false);
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0);
             playerAnimationGirl.SetFloat("Speed", 0);
@@ -248,6 +251,15 @@ public class TutorialPlayerMove : MonoBehaviour
 
                 playerAnimationBoy.SetFloat("Speed", boySpeed);
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
+
+                if (boySpeed > 0f)
+                {
+                    SoundManager.Instance.PlayWalkSound(true);
+                }
+                else
+                {
+                    SoundManager.Instance.PlayWalkSound(false);
+                }
             }
             else
             {

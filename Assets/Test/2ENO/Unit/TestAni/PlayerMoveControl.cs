@@ -90,7 +90,6 @@ public class PlayerMoveControl : MonoBehaviour
             || randomEvent.activeSelf || huntingPopup.activeSelf || campPopup.activeSelf
             || gatheringPopup.activeSelf)
         {
-            Debug.Log("°È±â»ç¿îµå");
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0f);
             playerAnimationGirl.SetFloat("Speed", 0f);

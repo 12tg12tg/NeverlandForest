@@ -102,7 +102,7 @@ public class BattleTutorial : MonoBehaviour
         // 화살
         var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
         temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_20"));
-        temp.OwnCount = 100;
+        temp.OwnCount = 20;
         Vars.UserData.AddItemData(temp); // 100발
 
         // 오일
