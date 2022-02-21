@@ -36,10 +36,12 @@ public class BattleDirecting : MonoBehaviour
     public Transform lanternGo;
     public Transform lanternLandPos;
 
+    public List<Material> materials;
+
     private void Start()
     {
-        customShader = Shader.Find("Custom/MonsterShader");
-        standardShader = Shader.Find("Standard");
+        customShader = Shader.Find("Unlit/MonsterShader2");
+        standardShader = Shader.Find("Standard");       
 
         highlightLayer = LayerMask.NameToLayer("Highlight");
         defaultLayer = LayerMask.NameToLayer("Default");
@@ -132,8 +134,9 @@ public class BattleDirecting : MonoBehaviour
             {
                 shaderChangeUnit.Add(monster);
                 var ren = monster.mesh;
+
                 ren.material.shader = customShader;
-                ren.material.color = Color.gray;
+                ren.material.color = new Color(83 / 255f, 88 / 255f, 1f);
             }
         }
 
