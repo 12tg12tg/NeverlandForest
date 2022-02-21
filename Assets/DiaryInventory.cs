@@ -76,7 +76,7 @@ public class DiaryInventory : MonoBehaviour
         ItemListInit();
     }
 
-    private void ItemListInit()
+    public void ItemListInit()
     {
         itemButtons.ForEach(n => n.Init(null));
         // 이거 Create할때 임시리스트 생성해서 사용중이긴 한데 자주 호출됬을때 좀 찝찝할수도
