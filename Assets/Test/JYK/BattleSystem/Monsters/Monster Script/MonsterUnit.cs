@@ -113,6 +113,7 @@ public class MonsterUnit : UnitBase, IAttackable
         State = MonsterState.Dead;
         UnlinkSnare();
         CurTile.RemoveUnit(this);
+        CurTile.RemoveUnit(this);
         int id = int.Parse(baseElem.id);
         MonsterPool.Instance.ReturnObject((MonsterPoolTag)id, gameObject);
     }
@@ -323,6 +324,23 @@ public class MonsterUnit : UnitBase, IAttackable
                 }
             }
         }
+    }
+
+    private void PopupDamage(int damage)
+    {
+        // 트랩류(부비트랩 또는 다른 디버프) 에서 데미지 문구 띄우는 용도로 호출
+
+        if (uiLinker == null || uiLinker.linkedUi == null)
+            return;
+
+        var damageUiPos = uiLinker.linkedUi.rt.localPosition;
+
+        // 데미지 UI 
+        var damageUI = UIPool.Instance.GetObject(UIPoolTag.DamageTxt);
+        damageUI.transform.SetParent(BattleManager.Instance.damageUiParent);
+        var script = damageUI.GetComponent<DamageUI>();
+        script.Init(damageUiPos, damage, DamageUI.DamageType.Hp);
+
     }
 
     public void CalcultateDamage(PlayerCommand command, out int curDamage, out int curSheildDamage)
@@ -723,6 +741,7 @@ public class MonsterUnit : UnitBase, IAttackable
         PlayHitAnimation();
         var damage = ownBoobyTrap.elem.damage;
         Hp -= damage;
+        PopupDamage(damage);
         uiLinker.UpdateHpBar(Hp);
         DeathCheck();
         ownBoobyTrap.Release();
@@ -779,6 +798,7 @@ public class MonsterUnit : UnitBase, IAttackable
         DurationDecrease(debuffs);
 
         // 몬스터 죽었는지 체크
+        PopupDamage(totalDamage);
         uiLinker.UpdateHpBar(Hp);
         DeathCheck();
     }
