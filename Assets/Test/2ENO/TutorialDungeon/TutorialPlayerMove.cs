@@ -17,6 +17,8 @@ public class TutorialPlayerMove : MonoBehaviour
     public PlayerDungeonUnit playerBoy;
     public PlayerDungeonUnit playerGirl;
 
+    public GameObject optionPopup;
+
     // 달리기 움직임 및 손잡기 관련
     public float boySpeed;
     private bool isRunReady;
@@ -67,8 +69,19 @@ public class TutorialPlayerMove : MonoBehaviour
         moveTutorial = dungeonSystem.moveTutorial;
         gatheringTutorial = dungeonSystem.gatherTutorial;
         mainRoomTutorial = dungeonSystem.mainRoomTutorial;
-        if(mainRoomTutorial.isMainRoomTutorial)
+
+        if(optionPopup.activeSelf)
         {
+            SoundManager.Instance.PlayWalkSound(false);
+            playerAnimationBoy.SetFloat("Speed", 0);
+            playerAnimationGirl.SetFloat("Speed", 0);
+            RigOff();
+            return;
+        }
+
+        if (mainRoomTutorial.isMainRoomTutorial)
+        {
+            SoundManager.Instance.PlayWalkSound(false);
             playerAnimationBoy.SetFloat("Speed", 0);
             playerAnimationGirl.SetFloat("Speed", 0);
             RigOff();
@@ -82,6 +95,7 @@ public class TutorialPlayerMove : MonoBehaviour
                 isHand = true;
             else
             {
+                SoundManager.Instance.PlayWalkSound(false);
                 RigOff();
                 playerAnimationBoy.SetFloat("Speed", 0);
                 playerAnimationGirl.SetFloat("Speed", 0);
@@ -92,6 +106,7 @@ public class TutorialPlayerMove : MonoBehaviour
 
         if (moveTutorial.isMoveTutorial && moveTutorial.TutorialStep != 2)
         {
+            SoundManager.Instance.PlayWalkSound(false);
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0);
             playerAnimationGirl.SetFloat("Speed", 0);
@@ -248,6 +263,15 @@ public class TutorialPlayerMove : MonoBehaviour
 
                 playerAnimationBoy.SetFloat("Speed", boySpeed);
                 playerAnimationGirl.SetFloat("Speed", boySpeed);
+
+                if (boySpeed > 0f)
+                {
+                    SoundManager.Instance.PlayWalkSound(true);
+                }
+                else
+                {
+                    SoundManager.Instance.PlayWalkSound(false);
+                }
             }
             else
             {
