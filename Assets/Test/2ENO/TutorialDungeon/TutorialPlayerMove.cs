@@ -17,6 +17,8 @@ public class TutorialPlayerMove : MonoBehaviour
     public PlayerDungeonUnit playerBoy;
     public PlayerDungeonUnit playerGirl;
 
+    public GameObject optionPopup;
+
     // 달리기 움직임 및 손잡기 관련
     public float boySpeed;
     private bool isRunReady;
@@ -67,7 +69,17 @@ public class TutorialPlayerMove : MonoBehaviour
         moveTutorial = dungeonSystem.moveTutorial;
         gatheringTutorial = dungeonSystem.gatherTutorial;
         mainRoomTutorial = dungeonSystem.mainRoomTutorial;
-        if(mainRoomTutorial.isMainRoomTutorial)
+
+        if(optionPopup.activeSelf)
+        {
+            SoundManager.Instance.PlayWalkSound(false);
+            playerAnimationBoy.SetFloat("Speed", 0);
+            playerAnimationGirl.SetFloat("Speed", 0);
+            RigOff();
+            return;
+        }
+
+        if (mainRoomTutorial.isMainRoomTutorial)
         {
             SoundManager.Instance.PlayWalkSound(false);
             playerAnimationBoy.SetFloat("Speed", 0);

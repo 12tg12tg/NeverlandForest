@@ -27,6 +27,7 @@ public class PlayerMoveControl : MonoBehaviour
     public GameObject huntingPopup;
     public GameObject campPopup;
     public GameObject gatheringPopup;
+    public GameObject optionPopup;
 
     private Vector3 lanternIdle;
     private Vector3 lanterIdlePos;
@@ -88,7 +89,7 @@ public class PlayerMoveControl : MonoBehaviour
     {
         if(dungeonMinimap.activeSelf || wolrdMinimap.activeSelf
             || randomEvent.activeSelf || huntingPopup.activeSelf || campPopup.activeSelf
-            || gatheringPopup.activeSelf)
+            || gatheringPopup.activeSelf || optionPopup.activeSelf)
         {
             RigOff();
             playerAnimationBoy.SetFloat("Speed", 0f);
