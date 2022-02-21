@@ -221,6 +221,7 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
         temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
         temp.OwnCount = 6;
         Vars.UserData.AddItemData(temp); // 3개
+        Vars.UserData.ExperienceListAdd(temp.itemId);
 
         SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
     }
