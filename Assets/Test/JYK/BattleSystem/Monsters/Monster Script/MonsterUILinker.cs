@@ -41,16 +41,19 @@ public class MonsterUILinker : MonoBehaviour
     {
         linkedUi.Release();
         UIPool.Instance.ReturnObject(UIPoolTag.MonsterUI, linkedUi.gameObject);
+        linkedUi = null;
     }
 
     public void UpdateHpBar(int curHp)
     {
-        linkedUi.HpToken = curHp;
+        if(linkedUi != null)
+            linkedUi.HpToken = curHp;
     }
 
     public void UpdateSheild(int curS)
     {
-        linkedUi.ShieldToken = curS;
+        if (linkedUi != null)
+            linkedUi.ShieldToken = curS;
     }
 
     public void UpdateDebuffs(List<ObstacleDebuff> debuffs)

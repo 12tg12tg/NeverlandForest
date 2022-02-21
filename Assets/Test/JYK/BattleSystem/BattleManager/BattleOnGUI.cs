@@ -72,5 +72,10 @@ public class BattleOnGUI : MonoBehaviour
             manager.Release();
             manager.Init(true);
         }
+
+        if(GUI.Button(new Rect(Screen.width/2 , Screen.height/2, 50, 50), "¿ÁΩ√¿€"))
+        {
+            GameManager.Manager.LoadScene(GameScene.Battle);
+        }
     }
 }

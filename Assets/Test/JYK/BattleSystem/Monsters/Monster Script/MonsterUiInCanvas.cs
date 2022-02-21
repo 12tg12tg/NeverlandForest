@@ -27,8 +27,8 @@ public class MonsterUiInCanvas : MonoBehaviour
     [Header("프로그래스 바 토큰")]
     public HorizontalLayoutGroup shieldLayoutGroup;
     public HorizontalLayoutGroup hpLayoutGroup;
-    private List<MonsterProgressToken> shields = new List<MonsterProgressToken>();
-    private List<MonsterProgressToken> hps = new List<MonsterProgressToken>();
+    [SerializeField] private List<MonsterProgressToken> shields = new List<MonsterProgressToken>();
+    [SerializeField] private List<MonsterProgressToken> hps = new List<MonsterProgressToken>();
 
     [Header("디버프 표시 정보")]
     public List<Image> debuffUIs;
@@ -41,7 +41,6 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         set
         {
-            shieldLayoutGroup.enabled = false;
             for (int i = 0; i < shields.Count; ++i)
             {
                 if(i < value)
@@ -55,7 +54,6 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         set
         {
-            hpLayoutGroup.enabled = false;
             for (int i = 0; i < hps.Count; ++i)
             {
                 if (i < value)
@@ -97,10 +95,12 @@ public class MonsterUiInCanvas : MonoBehaviour
         for (int i = 0; i < maxSheildGaugage; i++)
         {
             var sheildToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
+            Debug.Log($"토큰 {sheildToken.GetInstanceID()}를 {shieldLayoutGroup.GetInstanceID()}에 반환함.");
             var tokenScript = sheildToken.GetComponent<MonsterProgressToken>();
             sheildToken.transform.SetParent(shieldLayoutGroup.transform);
             tokenScript.image.sprite = token_Sheild;
             tokenScript.transform.localScale.Set(1f, 1f, 1f);
+            tokenScript.transform.position.Set(0f, 0f, 0f);
             shields.Add(tokenScript);
         }
 
@@ -108,10 +108,12 @@ public class MonsterUiInCanvas : MonoBehaviour
         for (int i = 0; i < maxHpGaugage; i++)
         {
             var hpToken = UIPool.Instance.GetObject(UIPoolTag.ProgressToken);
+            Debug.Log($"토큰 {hpToken.GetInstanceID()}를 {hpLayoutGroup.GetInstanceID()}에 반환함.");
             var tokenScript = hpToken.GetComponent<MonsterProgressToken>();
             hpToken.transform.SetParent(hpLayoutGroup.transform);
             tokenScript.image.sprite = token_Hp;
             tokenScript.transform.localScale.Set(1f, 1f, 1f);
+            tokenScript.transform.position.Set(0f, 0f, 0f);
             hps.Add(tokenScript);
         }
     }
@@ -120,7 +122,6 @@ public class MonsterUiInCanvas : MonoBehaviour
     {
         targetTr = null;
         isInit = false;
-        shieldLayoutGroup.enabled = true;
         hpLayoutGroup.enabled = true;
         for (int i = 0; i < hps.Count; i++)
         {
@@ -132,6 +133,8 @@ public class MonsterUiInCanvas : MonoBehaviour
             shields[i].TokenOn();
             UIPool.Instance.ReturnObject(UIPoolTag.ProgressToken, shields[i].gameObject);
         }
+        hps.Clear();
+        shields.Clear();
     }
 
     public void RepositionUi()
@@ -176,4 +179,491 @@ public class MonsterUiInCanvas : MonoBehaviour
             //}
         }
     }
+}
+
+public class fsefsef
+{
+    /*
+    토큰 -1254398를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254412를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254426를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254440를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254454를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254468를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254314를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254328를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254342를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254356를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254370를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254384를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254566를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254580를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285528를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285542를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285556를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285570를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254482를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254496를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254510를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254524를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254538를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1254552를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285640를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285654를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285668를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285682를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285584를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285598를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285612를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285626를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286032를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286046를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286060를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286074를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:98)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285976를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1285990를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286004를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+토큰 -1286018를 반환함.
+UnityEngine.Debug:Log (object)
+MonsterUiInCanvas:SetProgress (int,int) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:111)
+MonsterUiInCanvas:Init (UnityEngine.Transform,MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUiInCanvas.cs:77)
+MonsterUILinker:SetUI (MonsterTableElem) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:37)
+MonsterUILinker:Init (MonsterUnit) (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUILinker.cs:27)
+MonsterUnit:Init () (at Assets/Test/JYK/BattleSystem/Monsters/Monster Script/MonsterUnit.cs:102)
+BattleManager:FindMonsterToId (int) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:737)
+BattleManager:CustomInit () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:425)
+BattleManager:Init (bool,bool) (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:173)
+BattleManager:Start () (at Assets/Test/JYK/BattleSystem/BattleManager/BattleManager.cs:107)
+
+
+    */
 }

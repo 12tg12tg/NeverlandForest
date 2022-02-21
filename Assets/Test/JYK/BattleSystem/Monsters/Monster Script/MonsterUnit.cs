@@ -108,7 +108,7 @@ public class MonsterUnit : UnitBase, IAttackable
     }
     public void Release()
     {
-        uiLinker.Release();
+        uiLinker?.Release();
         EraseThis();
         State = MonsterState.Dead;
         UnlinkSnare();
@@ -327,6 +327,13 @@ public class MonsterUnit : UnitBase, IAttackable
 
     public void CalcultateDamage(PlayerCommand command, out int curDamage, out int curSheildDamage)
     {
+        if (uiLinker == null || uiLinker.linkedUi == null) // 집중공격으로 이미 죽은 경우 link가 끊긴 상황이기 때문에 함수를 나간다. 데미지띄울필요도없음.
+        {
+            curDamage = 0;
+            curSheildDamage = 0;
+            return;
+        }
+
         var damageUiPos = uiLinker.linkedUi.rt.localPosition;
 
         curDamage = 0;
@@ -385,7 +392,7 @@ public class MonsterUnit : UnitBase, IAttackable
             PlayDeadAnimation();
             State = MonsterState.Dead;
             UnlinkSnare();
-            uiLinker.Release();
+            uiLinker?.Release();
             CurTile.RemoveUnit(this);
         }      
     }

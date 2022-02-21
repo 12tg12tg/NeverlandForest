@@ -352,7 +352,7 @@ public class GatheringSystem : MonoBehaviour
         }
         toolName.text = "µµ³¢";
         toolImage.sprite = Resources.Load<Sprite>($"Icons/axe");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/Hand");
     }
     private void PitGatheing(LanternState lanternstate) //±¸µ¢ÀÌÃ¤Áý 
     {
@@ -424,7 +424,7 @@ public class GatheringSystem : MonoBehaviour
         }
         toolName.text = "»ð";
         toolImage.sprite = Resources.Load<Sprite>($"Icons/shovel");
-        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/Hand");
     }
     private void HerbsGatheing(LanternState lanternstate) 
     {
@@ -466,7 +466,7 @@ public class GatheringSystem : MonoBehaviour
       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "ºÐ";
             }
         }
-        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/Hand");
     }
     private void MushroomGatheing(LanternState lanternstate)
     {
@@ -505,7 +505,7 @@ public class GatheringSystem : MonoBehaviour
       + (Vars.UserData.uData.CurIngameMinute + 30).ToString() + "ºÐ";
             }
         }
-        handimage.sprite = Resources.Load<Sprite>($"Icons/stick");
+        handimage.sprite = Resources.Load<Sprite>($"Icons/Hand");
     }
     public void GoGatheringObject(Vector3 objectPos)
     {

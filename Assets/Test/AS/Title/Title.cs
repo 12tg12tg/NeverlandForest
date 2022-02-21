@@ -38,7 +38,8 @@ public class Title : MonoBehaviour
 
     private void Update()
     {
-        coTapToStart ??= StartCoroutine(CoStartTextFadeIn(() => {
+        coTapToStart ??= StartCoroutine(CoStartTextFadeIn(() =>
+        {
             coTapToStart = null;
             isStart = true;
         }));
@@ -52,7 +53,8 @@ public class Title : MonoBehaviour
         else if (isStart && multiTouch.TouchCount > 0)
         {
             var manager = GameManager.Manager;
-            StartCoroutine(CoFadeOut(() => {
+            StartCoroutine(CoFadeOut(() =>
+            {
                 gameObject.SetActive(false);
                 if (isFinish) // 게임 클리어 후 리셋 버튼을 누르지 않고 게임을 껏다가 켰다면 여기로
                 {
@@ -61,7 +63,8 @@ public class Title : MonoBehaviour
                 }
                 else
                     manager.TutoManager.Init();
-            }, () => {
+            }, () =>
+            {
                 if (!isFinish)
                     manager.Production.black.SetActive(true);
             }));
