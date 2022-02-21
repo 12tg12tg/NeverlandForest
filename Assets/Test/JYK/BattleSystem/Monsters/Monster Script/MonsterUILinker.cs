@@ -39,7 +39,7 @@ public class MonsterUILinker : MonoBehaviour
     
     public void Release()
     {
-        linkedUi.Release();
+        linkedUi?.Release();
         UIPool.Instance.ReturnObject(UIPoolTag.MonsterUI, linkedUi.gameObject);
         linkedUi = null;
     }
