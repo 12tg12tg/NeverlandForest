@@ -188,6 +188,42 @@ public class GameManager : Singleton<GameManager> // 타이틀 화면에서 생성
                 text.text = "마녀에게 붙잡혀 발버둥치는 내용" + "\n" + "\"살려주세요....!\"";
                 break;
         }
+
+        ItemResetForStart();
+    }
+
+    public void ItemResetForStart()
+    {
+        // 새로시작할 데이터 주기
+        // 랜턴값, 스테미너값, HP값 등등 튜토리얼에서 변경된 값들 다시 초기화 해야됨
+        ConsumeManager.CostDataReset();
+        DataAllItem temp;
+        var tempInventory = new List<DataAllItem>(Vars.UserData.HaveAllItemList);
+        foreach (var item in tempInventory)
+        {
+            temp = new DataAllItem(item);
+            Vars.UserData.RemoveItemData(temp);
+        }
+        // 화살
+        var allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_20"));
+        temp.OwnCount = 40;
+        Vars.UserData.AddItemData(temp); // 40발
+
+        // 오일
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_19"));
+        temp.OwnCount = 15;
+        Vars.UserData.AddItemData(temp); // 4개
+
+        // 나무도막
+        allItemTable = DataTableManager.GetTable<AllItemDataTable>();
+        temp = new DataAllItem(allItemTable.GetData<AllItemTableElem>("ITEM_1"));
+        temp.OwnCount = 6;
+        Vars.UserData.AddItemData(temp); // 3개
+        Vars.UserData.ExperienceListAdd(temp.itemId);
+
+        SaveLoadManager.Instance.Save(SaveLoadSystem.SaveType.item);
     }
 
     public void DungeonGiveUp()

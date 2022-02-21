@@ -124,9 +124,21 @@ public class RecipeIcon : MonoBehaviour
         materialitem.OwnCount = 1;
 
         if (condimentobj.id == zeroId)
+        {
             iscondimentok = true;
+        }
+        else
+        {
+            iscondimentok = false;
+        }
         if (materialobj.id == zeroId)
+        {
             ismaterialok = true;
+        }
+        else
+        {
+            ismaterialok = false;
+        }
 
         resultitem = new DataAllItem(allitemTable.GetData<AllItemTableElem>(resultid));
         resultItemIcon.sprite = allitemTable.GetData<AllItemTableElem>(resultid).IconSprite;
@@ -155,7 +167,6 @@ public class RecipeIcon : MonoBehaviour
     }
     public void MakeCooking()
     {
-        var makeTime = int.Parse(Time);
         var userItemList = Vars.UserData.HaveAllItemList;
         var zeroId = "ITEM_0";
         if (result != null)
@@ -173,12 +184,17 @@ public class RecipeIcon : MonoBehaviour
                     ismaterialok = true;
                 }
             }
-            if (!isfireok)
+            if (!isfireok || !iscondimentok || ismaterialok)
             {
                 CampManager.Instance.cookingText.text = "재료가 부족합니다";
             }
-            else
+            var resultid = $"ITEM_{result}";
+            var consumeTime = allitemTable.GetData<AllItemTableElem>(resultid).duration;
+            var haveBonfireTime = Vars.UserData.uData.BonfireHour * 60;
+
+            if (isfireok && iscondimentok && ismaterialok && haveBonfireTime>=consumeTime)
             {
+
                 if (fireitem.itemId != zeroId)
                 {
                     Vars.UserData.RemoveItemData(fireitem);
@@ -195,9 +211,15 @@ public class RecipeIcon : MonoBehaviour
                 {
                     DiaryManager.Instacne.CookingRotationPanel.SetActive(true);
                 }
-                ConsumeManager.TimeUp(makeTime);
+                ConsumeManager.TimeUp(consumeTime);
+                Vars.UserData.uData.BonfireHour = (haveBonfireTime - consumeTime) / 60;
+                if (Vars.UserData.uData.BonfireHour<=0)
+                {
+                    Vars.UserData.uData.BonfireHour = 0;
+                }
                 ConsumeManager.RecoveryHunger(resultitem.ItemTableElem.stat_str);
                 ConsumeManager.SaveConsumableData();
+                CampManager.Instance.SetBonTime();
                 CookReset();
                 DiaryManager.Instacne.OpenCookingReward();
             }

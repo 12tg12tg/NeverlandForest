@@ -188,9 +188,21 @@ public class CraftIcon : MonoBehaviour
         materialitem.OwnCount = 1;
 
         if (material1obj.id == zeroId)
+        {
             ismaterial1have = true;
+        }
+        else
+        {
+            ismaterial1have = false;
+        }
         if (material2obj.id == zeroId)
+        {
             ismaterial2have = true;
+        }
+        else
+        {
+            ismaterial2have = false;
+        }
 
         result = currentCraft.Result;
         var resultid = $"ITEM_{result}";
@@ -222,7 +234,6 @@ public class CraftIcon : MonoBehaviour
     public void MakeProducing()
     {
         ItemTable = DataTableManager.GetTable<AllItemDataTable>();
-        var makeTime = float.Parse(Time);
         var list = Vars.UserData.HaveAllItemList; //인벤토리
         var zeroId = "ITEM_0";
         if (result != null)
@@ -240,16 +251,38 @@ public class CraftIcon : MonoBehaviour
                     ismaterial2have = true;
                 }
             }
-            if (!ismaterial0have)
+            if (!ismaterial0have || !ismaterial1have || !ismaterial2have)
             {
                 CampManager.Instance.producingText.text = "재료가 부족합니다";
             }
-            else
+
+            var resultid = $"ITEM_{result}";
+            var consumeTime = ItemTable.GetData<AllItemTableElem>(resultid).duration;
+            var haveBonfireTime = Vars.UserData.uData.BonfireHour * 60;
+            int overlap = 0;
+            var inventory = Vars.UserData.HaveAllItemList;
+
+            if (currentCraft.Crafts[0] == currentCraft.Crafts[1] && currentCraft.Crafts[1] == currentCraft.Crafts[2])
+            {
+                overlap = 3;
+            }
+            else if (currentCraft.Crafts[1] == currentCraft.Crafts[2])
+            {    
+                // 재료 없음일 때 
+                overlap = 0;
+            }
+            else if(currentCraft.Crafts[0] == currentCraft.Crafts[1])
+            {
+                // 가시트랩 부비트랩
+                overlap = 2;
+            }
+
+           
+            if (ismaterial0have && ismaterial1have && ismaterial2have && haveBonfireTime >=consumeTime)
             {
                 DiaryManager.Instacne.produceInventory.ItemButtonInit();
-                var resultId = $"ITEM_{result}";
-                DiaryManager.Instacne.CraftResultItem = new DataAllItem(ItemTable.GetData<AllItemTableElem>(resultId));
-                if (resultId == "ITEM_2" || resultId == "ITEM_20" || result == "ITEM_21")
+                DiaryManager.Instacne.CraftResultItem = new DataAllItem(ItemTable.GetData<AllItemTableElem>(resultid));
+                if (resultid == "ITEM_2" || resultid == "ITEM_20" || resultid == "ITEM_21")
                 {
                     DiaryManager.Instacne.CraftResultItem.OwnCount = 3;
                 }
@@ -259,33 +292,74 @@ public class CraftIcon : MonoBehaviour
                 }
                 DiaryManager.Instacne.craftResultItemImage.sprite = DiaryManager.Instacne.CraftResultItem.ItemTableElem.IconSprite;
 
-                if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
+                if (overlap !=0 && inventory[material0Num].OwnCount ==overlap)
                 {
-                    Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
-                    ConsumeManager.TimeUp(makeTime);
-                    Vars.UserData.uData.BonfireHour -= makeTime / 60;
-                    ConsumeManager.SaveConsumableData();
-                    CampManager.Instance.SetBonTime();
-                    Vars.UserData.RemoveItemData(fireitem);
-                    if (material1obj.id != zeroId)
+                    if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
                     {
-                        Vars.UserData.RemoveItemData(condimentitem);
+                        Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
+                        ConsumeManager.TimeUp(consumeTime);
+                        haveBonfireTime -= consumeTime;
+                        Vars.UserData.uData.BonfireHour = haveBonfireTime / 60;
+                        if (Vars.UserData.uData.BonfireHour <= 0)
+                        {
+                            Vars.UserData.uData.BonfireHour = 0;
+                        }
+                        ConsumeManager.SaveConsumableData();
+                        CampManager.Instance.SetBonTime();
+                        Vars.UserData.RemoveItemData(fireitem);
+                        if (material1obj.id != zeroId)
+                        {
+                            Vars.UserData.RemoveItemData(condimentitem);
+                        }
+                        if (material2obj.id != zeroId)
+                        {
+                            Vars.UserData.RemoveItemData(materialitem);
+                        }
+                        DiaryManager.Instacne.OpenProduceReward();
                     }
-                    if (material2obj.id != zeroId)
+                    else
                     {
-                        Vars.UserData.RemoveItemData(materialitem);
+                        CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
+                        CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+                        CampManager.Instance.reconfirmPanelManager.bonfireTimeRemainPopup.SetActive(false);
                     }
-                    DiaryManager.Instacne.OpenProduceReward();
                 }
-                else
+                else if (overlap ==0)
                 {
-                    CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
-                    CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
-                    CampManager.Instance.reconfirmPanelManager.bonfireTimeRemainPopup.SetActive(false);
+                    if (Vars.UserData.AddItemData(DiaryManager.Instacne.CraftResultItem) != false)
+                    {
+                        Vars.UserData.ExperienceListAdd(DiaryManager.Instacne.CraftResultItem.itemId);
+                        ConsumeManager.TimeUp(consumeTime);
+                        haveBonfireTime -= consumeTime;
+                        Vars.UserData.uData.BonfireHour = haveBonfireTime / 60;
+                        if (Vars.UserData.uData.BonfireHour <= 0)
+                        {
+                            Vars.UserData.uData.BonfireHour = 0;
+                        }
+                        ConsumeManager.SaveConsumableData();
+                        CampManager.Instance.SetBonTime();
+                        Vars.UserData.RemoveItemData(fireitem);
+                        if (material1obj.id != zeroId)
+                        {
+                            Vars.UserData.RemoveItemData(condimentitem);
+                        }
+                        if (material2obj.id != zeroId)
+                        {
+                            Vars.UserData.RemoveItemData(materialitem);
+                        }
+                        DiaryManager.Instacne.OpenProduceReward();
+                    }
+                    else
+                    {
+                        CampManager.Instance.reconfirmPanelManager.gameObject.SetActive(true);
+                        CampManager.Instance.reconfirmPanelManager.inventoryFullPopup.SetActive(true);
+                        CampManager.Instance.reconfirmPanelManager.bonfireTimeRemainPopup.SetActive(false);
+                    }
                 }
             }
         }
         CampManager.Instance.camptutorial.TutorialCraftStartbuttonClick = true;
+        CraftReset();
 
     }
 

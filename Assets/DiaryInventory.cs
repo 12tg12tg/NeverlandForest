@@ -164,8 +164,8 @@ public class DiaryInventory : MonoBehaviour
         }
         else if (allItem.itemId == "ITEM_19")
         {
-            // 랜턴 1칸 채우면 되나?
-            ConsumeManager.FullingLantern(1);
+            // 랜턴 4칸 채우면 되나?
+            ConsumeManager.FullingLantern(4);
         }
         else
             return;
