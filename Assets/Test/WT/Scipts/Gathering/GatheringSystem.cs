@@ -43,10 +43,10 @@ public class GatheringSystem : MonoBehaviour
     public GameObject toolParent;
 
     [Header("채집랜더 이미지관련")]
-    public PlayerAniControl treePlayer;
-    public PlayerAniControl holePlayer;
-    public PlayerAniControl flowerPlayer;
-    public PlayerAniControl mushPlayer;
+    public DummyPlayerAniControl treePlayer;
+    public DummyPlayerAniControl holePlayer;
+    public DummyPlayerAniControl flowerPlayer;
+    public DummyPlayerAniControl mushPlayer;
     public Camera treeCam;
     public Camera holeCam;
     public Camera flowerCam;
